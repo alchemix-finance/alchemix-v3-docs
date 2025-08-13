@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.8.0">
 <title data-rh="true">MYT &amp; Yield | Alchemix Docs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://keenanlukeom.github.io/alchemix-v3-docs/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://keenanlukeom.github.io/alchemix-v3-docs/img/social-card.png"><meta data-rh="true" property="og:url" content="https://keenanlukeom.github.io/alchemix-v3-docs/user/concepts/myt-and-yield"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-user-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-user-current"><meta data-rh="true" property="og:title" content="MYT &amp; Yield | Alchemix Docs"><meta data-rh="true" name="description" content="Meta Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols."><meta data-rh="true" property="og:description" content="Meta Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols."><link data-rh="true" rel="icon" href="/alchemix-v3-docs/img/favicon.png"><link data-rh="true" rel="canonical" href="https://keenanlukeom.github.io/alchemix-v3-docs/user/concepts/myt-and-yield"><link data-rh="true" rel="alternate" href="https://keenanlukeom.github.io/alchemix-v3-docs/user/concepts/myt-and-yield" hreflang="en"><link data-rh="true" rel="alternate" href="https://keenanlukeom.github.io/alchemix-v3-docs/user/concepts/myt-and-yield" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MYT & Yield","item":"https://keenanlukeom.github.io/alchemix-v3-docs/user/concepts/myt-and-yield"}]}</script><link rel="stylesheet" href="/alchemix-v3-docs/assets/css/styles.be9580bd.css">
-<script src="/alchemix-v3-docs/assets/js/runtime~main.fb2865a7.js" defer="defer"></script>
+<script src="/alchemix-v3-docs/assets/js/runtime~main.dcf60dff.js" defer="defer"></script>
 <script src="/alchemix-v3-docs/assets/js/main.0155a9f3.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -17,13 +17,13 @@
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="what-is-myt">What is MYT?<a href="#what-is-myt" class="hash-link" aria-label="Direct link to What is MYT?" title="Direct link to What is MYT?">​</a></h2>
 <ul>
 <li>
-<p><strong>Tokenised basket</strong>. MYT is an ERC-4626 token that holds deposits of ETH or USDC and routes them into several yield sources.</p>
+<p><strong>Tokenised basket.</strong> MYT is a Morpho V2 Vault token that holds deposits of ETH or USDC and routes them into several yield sources.</p>
 </li>
 <li>
 <p><strong>DAO-managed allocation.</strong> The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.</p>
 </li>
 <li>
-<p><strong>Built on Morpho V2.</strong> The core vault logic uses Morpho’s lending layer to optimise on-chain execution and safety.</p>
+<p><strong>Built on Morpho V2.</strong> The core vault logic uses Morpho’s v2 vaults layer to optimise on-chain execution and safety.</p>
 </li>
 </ul>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="per-chain-variants">Per-Chain Variants<a href="#per-chain-variants" class="hash-link" aria-label="Direct link to Per-Chain Variants" title="Direct link to Per-Chain Variants">​</a></h2>
@@ -35,7 +35,7 @@
 <p>Select the MYT that matches your base asset and preferred chain.</p>
 </li>
 <li>
-<p>Deposit ETH or USDC, and the vault will mint MYT at the current exchange rate. As yield accrues, each MYT represents an ever-larger claim on the underlying asset.</p>
+<p>Deposit ETH or USDC, and the vault will mint MYT at the current exchange rate. As yield accrues, each MYT represents an increasing claim on the underlying asset.</p>
 </li>
 <li>
 <p>Hold MYT. As strategies earn yield, the redemption value of each token increases.</p>
