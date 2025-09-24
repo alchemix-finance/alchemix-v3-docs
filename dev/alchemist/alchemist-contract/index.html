@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.8.1">
 <title data-rh="true">AlchemistV3 | Alchemix Docs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://keenanlukeom.github.io/alchemix-v3-docs/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://keenanlukeom.github.io/alchemix-v3-docs/img/social-card.png"><meta data-rh="true" property="og:url" content="https://keenanlukeom.github.io/alchemix-v3-docs/dev/alchemist/alchemist-contract"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-dev-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-dev-current"><meta data-rh="true" property="og:title" content="AlchemistV3 | Alchemix Docs"><meta data-rh="true" name="description" content="Description"><meta data-rh="true" property="og:description" content="Description"><link data-rh="true" rel="icon" href="/alchemix-v3-docs/img/favicon.png"><link data-rh="true" rel="canonical" href="https://keenanlukeom.github.io/alchemix-v3-docs/dev/alchemist/alchemist-contract"><link data-rh="true" rel="alternate" href="https://keenanlukeom.github.io/alchemix-v3-docs/dev/alchemist/alchemist-contract" hreflang="en"><link data-rh="true" rel="alternate" href="https://keenanlukeom.github.io/alchemix-v3-docs/dev/alchemist/alchemist-contract" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AlchemistV3","item":"https://keenanlukeom.github.io/alchemix-v3-docs/dev/alchemist/alchemist-contract"}]}</script><link rel="stylesheet" href="/alchemix-v3-docs/assets/css/styles.9fe47b0b.css">
-<script src="/alchemix-v3-docs/assets/js/runtime~main.3d8f572a.js" defer="defer"></script>
+<script src="/alchemix-v3-docs/assets/js/runtime~main.4cd84d5c.js" defer="defer"></script>
 <script src="/alchemix-v3-docs/assets/js/main.d11d7ef8.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -34,7 +34,7 @@
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_acceptAdmin"><code>acceptAdmin()</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>admin()</code></li>
+<li><strong>Read By</strong> - <code>admin()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>debtToken</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the address of the ERC20 token used to represent debt. i.e. the alAsset.</li>
@@ -51,7 +51,7 @@
 <li>NONE - immutable variable</li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>debtToken()</code></li>
+<li><strong>Read By</strong> - <code>debtToken()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>underlyingToken</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - The address of the ERC20 base token/mirrored asset address; ie. USDC or WETH</li>
@@ -67,7 +67,7 @@
 <li>NONE - immutable variable</li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>underlyingToken()</code></li>
+<li><strong>Read By</strong> - <code>underlyingToken()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>yieldToken</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the address of the yield token (MYT) being deposited into this contract. Actions against the contract (withdraw, deposit, etc.) operate on yield tokens.</li>
@@ -93,7 +93,7 @@
 <li>NONE - immutable variable</li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>yieldToken()</code></li>
+<li><strong>Read By</strong> - <code>yieldToken()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>tokenAdapter</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - token adapter used to get price for yield tokens.</li>
@@ -114,7 +114,7 @@
 <li><code>tokenAdapter()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_TokenAdapterUpdated"><code>TokenAdapterUpdated(address value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_TokenAdapterUpdated"><code>TokenAdapterUpdated(address value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>transmuter</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - address of the transmuter linked to this alchemist. Transmuter seizes collateral (denominated in yieldTokens) from the Alchemist to cover term obligations</li>
@@ -143,7 +143,7 @@
 <li><code>transmuter()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_TransmuterUpdated"><code>TransmuterUpdated(address value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_TransmuterUpdated"><code>TransmuterUpdated(address value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>protocolFeeReceiver</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the address that receives protocol fees.</li>
@@ -164,7 +164,7 @@
 <li><code>protocolFeeReceiver()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_ProtocolFeeReceiverUpdated"><code>ProtocolFeeReceiverUpdated(address reciever)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_ProtocolFeeReceiverUpdated"><code>ProtocolFeeReceiverUpdated(address reciever)</code></a></li>
 </ul></div></div></details>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="uint256">Uint256<a href="#uint256" class="hash-link" aria-label="Direct link to Uint256" title="Direct link to Uint256">​</a></h4>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>depositCap</summary><div><div class="collapsibleContent_i85q"><ul>
@@ -185,7 +185,7 @@
 <li><code>depositCap()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_DepositCapUpdated"><code>DepositCapUpdated(uint256 value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_DepositCapUpdated"><code>DepositCapUpdated(uint256 value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>blocksPerYear</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - chain specific number of blocks within 1 year</li>
@@ -200,7 +200,7 @@
 <li>NONE - immutable variable</li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>blocksPerYear()</code></li>
+<li><strong>Read By</strong> - <code>blocksPerYear()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>minimumCollateralization</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the minimum collateralization ratio for a specific account, or how much collateral over debt is allowed before liquidation. Inverse of LTV. Value &gt; 1.</li>
@@ -225,7 +225,7 @@
 <li><code>minimumCollateralization()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_MinimumCollateralizationUpdated"><code>MinimumCollateralizationUpdated(uint256 value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_MinimumCollateralizationUpdated"><code>MinimumCollateralizationUpdated(uint256 value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>globalMinimumCollateralization</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - represents the minimum allowed global collateralization ratio for the Alchemist. A threshold that if crossed will result in fully liquidating accounts to cover</li>
@@ -245,7 +245,7 @@
 <li><code>globalMinimumCollateralization()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_GlobalMinimumCollateralizationUpdated"><code>GlobalMinimumCollateralizationUpdated(uint256 value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_GlobalMinimumCollateralizationUpdated"><code>GlobalMinimumCollateralizationUpdated(uint256 value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>collateralizationLowerBound</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - The minimum collateralization for liquidation eligibility. between 1 and minimumCollateralization inclusive.</li>
@@ -265,7 +265,7 @@
 <li><code>collateralizationLowerBound()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_CollateralizationLowerBoundUpdated"><code>CollateralizationLowerBoundUpdated(uint256 value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_CollateralizationLowerBoundUpdated"><code>CollateralizationLowerBoundUpdated(uint256 value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>protocolFee</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the fee on user paid to the protocol. The fee is taken from collateral during redepmtions, or from collateral when users pay down their non-earmarked debt</li>
@@ -287,7 +287,7 @@
 <li><code>protocolFee()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_ProtocolFeeUpdated"><code>ProtocolFeeUpdated(uint256 fee)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_ProtocolFeeUpdated"><code>ProtocolFeeUpdated(uint256 fee)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>liquidatorFee</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - fee paid to liquidators on liquidation. This is denominated in debt token, which is then converted to yieldToken and taken from yieldToken. Also can be taken from underlying if feeBonus &gt; 0.</li>
@@ -307,7 +307,7 @@
 <li><code>liquidatorFee()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_LiquidatorFeeUpdated"><code>LiquidatorFeeUpdated(uint256 fee)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_LiquidatorFeeUpdated"><code>LiquidatorFeeUpdated(uint256 fee)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>repaymentFee</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - fee paid to liquidators on repayment. This is denominated in yieldToken.</li>
@@ -327,7 +327,7 @@
 <li><code>repaymentFee()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_RepaymentFeeUpdated"><code>RepaymentFeeUpdated(uint256 fee)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_RepaymentFeeUpdated"><code>RepaymentFeeUpdated(uint256 fee)</code></a></li>
 </ul></div></div></details>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="constants">Constants<a href="#constants" class="hash-link" aria-label="Direct link to Constants" title="Direct link to Constants">​</a></h3>
 <blockquote>
@@ -348,7 +348,7 @@
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_liquidate"><code>_liquidate(uint256 accountId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * NONE - immutable variable</li>
+<li><strong>Updated By</strong> - NONE - immutable variable</li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>FIXED_POINT_SCALAR</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - A multiplier that is used to be able to do fixed point math, since solidity does not natively handle decimals. Like ERC20 tokens which typically use 18 decimals, it expresses 1 as 1e18. Anything less is a fraction of 1.</li>
@@ -369,7 +369,7 @@
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * NONE - immutable variable</li>
+<li><strong>Updated By</strong> - NONE - immutable variable</li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>version</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Constant expressing Alchemix version. Not used for anything in the contract.</li>
@@ -379,7 +379,7 @@
 <li>NONE - immutable variable</li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>version()</code></li>
+<li><strong>Read By</strong> - <code>version()</code></li>
 </ul></div></div></details>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="account">Account<a href="#account" class="hash-link" aria-label="Direct link to Account" title="Direct link to Account">​</a></h3>
 <blockquote>
@@ -393,13 +393,7 @@
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt">`_calculateUnrealizedDebt(uint256 tokenId)</a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_deposit"><code>deposit(uint256 amount, address recipient, uint256 recipientId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_withdraw"><code>withdraw(uint256 amount, address recipient, uint256 recipientId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_burn"><code>burn(uint256 amount, uint256 recipientId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_repay"><code>repay(uint256 amount, uint256 recipientTokenId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_forceRepay"><code>_forceRepay(uint256 accountId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_liquidate"><code>_liquidate(uint256 accountId)</code></a> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_deposit"><code>deposit(uint256 amount, address recipient, uint256 recipientId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_withdraw"><code>withdraw(uint256 amount, address recipient, uint256 recipientId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_burn"><code>burn(uint256 amount, uint256 recipientId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_repay"><code>repay(uint256 amount, uint256 recipientTokenId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_forceRepay"><code>_forceRepay(uint256 accountId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_liquidate"><code>_liquidate(uint256 accountId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>debt</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - denominated in alAsset</li>
@@ -416,9 +410,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_isUnderCollateralized"><code>_isUnderCollateralized(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>earmarked</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - denominated in alAsset. Earmarked funds refer to debt that is reserved to later be redeemed for collateral.</li>
@@ -433,11 +425,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_repay"><code>repay(uint256 amount, uint256 recipientTokenId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_forceRepay"><code>_forceRepay(uint256 accountId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync">`_sync(uint256 tokenId)</a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_repay"><code>repay(uint256 amount, uint256 recipientTokenId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_forceRepay"><code>_forceRepay(uint256 accountId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync">`_sync(uint256 tokenId)</a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>freeCollateral</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the portion of an accounts collateralBalance which can currently be used to take out new debt. Denominated in yieldToken</li>
@@ -448,11 +436,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_deposit"><code>deposit(uint256 amount, uint256 recipient, uint256 recipientId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_withdraw"><code>withdraw(uint256 amount, address recipient, uint256 tokenId)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_deposit"><code>deposit(uint256 amount, uint256 recipient, uint256 recipientId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_withdraw"><code>withdraw(uint256 amount, address recipient, uint256 tokenId)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastAccruedEarmarkWeight</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Last weight of debt from the most recent account sync. This is a stored index used as a checkpoint of the last time a position had earmarking applied. The global earmark weight advances as new debt is added and as time in blocks passes (to model earmark progress). The difference between these weightings determines how much additional debt in the position needs to be earmarked.</li>
@@ -463,7 +447,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastAccruedRedemptionWeight</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Last weight of redemption from most recent account sync. This is a stored index used as a checkpoint of the last time a position had redemptions applied. The global redemption weight advances as system-wide redemptions occur and as time in blocks passes (to model redemption progress). The difference between these weightings determines how much of the account’s earmarked debt should actually be redeemed.</li>
@@ -474,7 +458,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastCollateralWeight</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Last weight of collateral from most recent account sync. This is a stored index used as a checkpoint of the last time a position had its locked collateral adjusted. The global collateral weight advances as system-wide redemptions are processed. The difference between these weightings determines how much of the account’s locked collateral should be reduced.</li>
@@ -485,7 +469,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastMintBlock</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Block of the most recent mint.</li>
@@ -496,7 +480,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_repay"><code>repay(uint256 amount, uint256 recipientId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#ReadingState_calculateLiquidation"><code>calculateLiquidation(uint256 collateral, uint256 debt, uint256 targetCollateralization, uint256 alchemistCurretnCollateralization, uint256 alchemistMinimumCollateralization, uint256 feeBps)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#ReadingState_calculateLiquidation"><code>calculateLiquidation(uint256 collateral, uint256 debt, uint256 targetCollateralization, uint256 alchemistCurretnCollateralization, uint256 alchemistMinimumCollateralization, uint256 feeBps)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastRedemptionSync</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Block the last redemption was synced to the account.</li>
@@ -506,7 +490,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>rawLocked</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the portion of an accounts collateral balance that&#x27;s already pledged to collateralize existing debt and can&#x27;t be used for new borrows until debt is repaid or a position get&#x27;s room. Denominated in yieldTokens</li>
@@ -517,9 +501,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>mintAllowances</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - allowances for minting alAssets, per version. Indexing by allowances version allows for easy efficient clearing of the entire map if needed.</li>
@@ -535,7 +517,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#ReadingState_mintAllowance"><code>mintAllowance(uint256 ownerTokenId, address spender)</code></a></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_MintAllowancesReset"><code>MintAllowancesReset(uint256 tokenId)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_MintAllowancesReset"><code>MintAllowancesReset(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>allowancesVersion</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - id used in the mintAllowances map which is incremented on reset.</li>
@@ -547,7 +529,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_decreaseMintAllowance"><code>_decreaseMintAllowance(uint256 ownerTokenId, address spener, uint256 amount)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_resetMintAllowances"><code>resetMintAllowances(uint256 tokenId)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#UserActions_resetMintAllowances"><code>resetMintAllowances(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="redemptioninfo">RedemptionInfo<a href="#redemptioninfo" class="hash-link" aria-label="Direct link to RedemptionInfo" title="Direct link to RedemptionInfo">​</a></h3>
 <blockquote>
@@ -564,7 +546,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
 </ul></div></div></details>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="public-state">Public State<a href="#public-state" class="hash-link" aria-label="Direct link to Public State" title="Direct link to Public State">​</a></h3>
 <blockquote>
@@ -584,7 +566,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><code>pendingAdmin()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_PendingAdminUpdated"><code>PendingAdminUpdated(address value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_PendingAdminUpdated"><code>PendingAdminUpdated(address value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>alchemistFeeVault</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - An external vault used to hold funds that can be used to pay liquidators in the event that Alchemist funds cannot cover the costs of liquidation. This would occur if (1) the account does not have enough funds to cover the liquidation, or (2) the entire Alchemist is undercollateralized.</li>
@@ -604,7 +586,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><code>alchemistFeeVault()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_AlchemistFeeVaultUpdated"><code>AlchemistFeeVaultUpdated(address value)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_AlchemistFeeVaultUpdated"><code>AlchemistFeeVaultUpdated(address value)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>alchemistPositionNFT</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the address of the NFT contract for this alchemist. Each position in the alchemist is tied to an NFT.</li>
@@ -625,7 +607,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#AdminActions_setAlchemistPositionNFT"><code>setAlchemistPositionNFT(address nft)</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>alchemistPositionNFT()</code></li>
+<li><strong>Read By</strong> - <code>alchemistPositionNFT()</code></li>
 </ul></div></div></details>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="uint256-1">Uint256<a href="#uint256-1" class="hash-link" aria-label="Direct link to Uint256" title="Direct link to Uint256">​</a></h4>
 <details id="Variables_underlyingConversionFactor" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>underlyingConversionFactor</summary><div><div class="collapsibleContent_i85q"><ul>
@@ -642,7 +624,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><code>initialize(AlchemixInitializationParams memory params)</code></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>underlyingConversionFactor()</code></li>
+<li><strong>Read By</strong> - <code>underlyingConversionFactor()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>cumulativeEarmarked</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Global running total of system debt currently earmarked for redemption. Can be any amount 0 up to the amount of total system debt. Unearmarked debt = totalDebt - cumulativeEarmarked.</li>
@@ -662,7 +644,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_earmark"><code>_earmark()</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>cumulativeEarmarked()</code></li>
+<li><strong>Read By</strong> - <code>cumulativeEarmarked()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastEarmarkBlock</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the block number when _earmark() last updated global earmarking. Used to compute how much to earmark from the last time earmarking occured.</li>
@@ -678,7 +660,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_earmark"><code>_earmark()</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>lastEarmarkBlock()</code></li>
+<li><strong>Read By</strong> - <code>lastEarmarkBlock()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastRedemptionBlock</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the block number of the most recent redemption that advanced global redemption state. Used to reference the snapshot of earmark and debt state at that block, so accounts can be updated consistently by applying the redemption against that state.</li>
@@ -694,7 +676,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>lastEarmarkBlock()</code></li>
+<li><strong>Read By</strong> - <code>lastEarmarkBlock()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastTransmuterTokenBalance</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - the last recorded balance of yieldTokens in the Transmuter. It is periodically updated by a Transmuter call, and is used to help the Alchemist determine how much it needs to earmark.</li>
@@ -709,7 +691,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_setLastTransmuterTokenBalance"><code>setLastTransmuterTokenBalance(uint256 amount)</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>lastTransmuterTokenBalance()</code></li>
+<li><strong>Read By</strong> - <code>lastTransmuterTokenBalance()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>totalDebt</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - The total system-wide debt.</li>
@@ -729,7 +711,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenUd, uint256 amount)</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>totalDebt()</code></li>
+<li><strong>Read By</strong> - <code>totalDebt()</code></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>totalSyntheticsIssued</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - The total system-wide debt tokens issued and circulating.</li>
@@ -746,7 +728,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_mint"><code>_mint(uint256 tokenId, uint256 amount, address recipient)</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <code>totalSyntheticsIssued()</code></li>
+<li><strong>Read By</strong> - <code>totalSyntheticsIssued()</code></li>
 </ul></div></div></details>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="booleans">Booleans<a href="#booleans" class="hash-link" aria-label="Direct link to Booleans" title="Direct link to Booleans">​</a></h4>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>depositsPaused</summary><div><div class="collapsibleContent_i85q"><ul>
@@ -767,7 +749,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><code>depositsPaused()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_DepositsPaused"><code>DepositsPaused(bool isPaused)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_DepositsPaused"><code>DepositsPaused(bool isPaused)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>loansPaused</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - A flag that prevents taking loans by users when set to true. Can be toggled by an Admin or Guardian.</li>
@@ -788,7 +770,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><code>loansPaused()</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_LoansPaused"><code>LoansPaused(bool isPaused)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_LoansPaused"><code>LoansPaused(bool isPaused)</code></a></li>
 </ul></div></div></details>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="mappings">Mappings<a href="#mappings" class="hash-link" aria-label="Direct link to Mappings" title="Direct link to Mappings">​</a></h4>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>guardians</summary><div><div class="collapsibleContent_i85q"><ul>
@@ -809,7 +791,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><code>guardians(address guardian)</code></li>
 </ul>
 </li>
-<li><strong>Notified By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_GuardianSet"><code>GuardianSet(address guardian, bool state)</code></a></li>
+<li><strong>Notified By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_GuardianSet"><code>GuardianSet(address guardian, bool state)</code></a></li>
 </ul></div></div></details>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="private-state">Private State<a href="#private-state" class="hash-link" aria-label="Direct link to Private State" title="Direct link to Private State">​</a></h3>
 <blockquote>
@@ -826,7 +808,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_earmark"><code>_earmark()</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_earmark"><code>_earmark()</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_redemptionWeight</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - A global cumulative scaling factor that increases whenever earmarked debt is redeemed. Accounts use the difference between this value and their account-specific lastAccruedRedemptionWeight to determine how much of their earmarked debt has been reconciled by redemptions.</li>
@@ -838,7 +820,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_collateralWeight</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - A global cumulative scaling factor that increases whenever collateral is redeemed or fees are taken. Accounts use the difference between this value and their account-specific lastCollateralWeight to determine how much of their locked collateral should be seized in proportion to global redemptions.</li>
@@ -849,7 +831,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_totalLocked</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - total locked collateral; aka collateral that can&#x27;t be withdrawn due to LTV constraints.</li>
@@ -859,11 +841,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalActions_resolveRepaymentFee"><code>_resolveRepaymentFee(uint256 accountId, uint256 repaidAmountInYield)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalActions_resolveRepaymentFee"><code>_resolveRepaymentFee(uint256 accountId, uint256 repaidAmountInYield)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_addDebt"><code>_addDebt(uint256 tokenId, uint256 amount)</code></a> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_subDebt"><code>_subDebt(uint256 tokenId, uint256 amount)</code></a></li>
 </ul></div></div></details>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="mappings-1">Mappings<a href="#mappings-1" class="hash-link" aria-label="Direct link to Mappings" title="Direct link to Mappings">​</a></h4>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_accounts</summary><div><div class="collapsibleContent_i85q"><ul>
@@ -904,7 +882,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_sync"><code>_sync(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Read By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#ReadingState_getCDP"><code>getCDP(uint256 tokenId)</code></a></li>
+<li><strong>Read By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#ReadingState_getCDP"><code>getCDP(uint256 tokenId)</code></a></li>
 </ul></div></div></details>
 <details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_redemptions</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - tracks historic redemptions</li>
@@ -915,7 +893,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt"><code>_calculateUnrealizedDebt(uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Updated By</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
+<li><strong>Updated By</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#TransmuterActions_redeem"><code>redeem(uint256 amount)</code></a></li>
 </ul></div></div></details>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="user-actions">User Actions<a href="#user-actions" class="hash-link" aria-label="Direct link to User Actions" title="Direct link to User Actions">​</a></h3>
@@ -938,12 +916,8 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#InternalOperations
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Deposit"><code>Deposit(uint256 amount, uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ recipient == zero address
-_ amount == 0
-_ depositsPaused
-_ deposit would result in a total deposit that exceeeds the deposit cap<br>
-<!-- -->* <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0</li>
+<li><strong>Reverts</strong> - recipient == zero address - amount == 0 - depositsPaused - deposit would result in a total deposit that exceeeds the deposit cap\</li>
+<li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0</li>
 </ul></div></div></details>
 <details id="UserActions_withdraw" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>withdraw(uint256 amount, address recipient, uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Allows the owner of an account to withdraw funds to a specfied recipient address. <br><br>First applies all earmarking, redemptions, and locked collateral adjustments to the account so it is up-to-date; then transfers funds if valid.<!-- -->
@@ -961,13 +935,7 @@ _ deposit would result in a total deposit that exceeeds the deposit cap<br>
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Withdraw"><code>Withdraw(uint256 amount, uint256 tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ recipient == zero address
-_ amount == 0
-_ attempted collateral withdrawn &gt; user&#x27;s unlocked collateral (collateral that isn&#x27;t pledged to collateralize existing debt)
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> - msg.sender is not the owner of the account identified by the passed tokenId
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - if the account is undercollateralized don&#x27;t allow a withdraw</li>
+<li><strong>Reverts</strong> - recipient == zero address - amount == 0 - attempted collateral withdrawn &gt; user&#x27;s unlocked collateral (collateral that isn&#x27;t pledged to collateralize existing debt) - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> - msg.sender is not the owner of the account identified by the passed tokenId - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0 - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - if the account is undercollateralized don&#x27;t allow a withdraw</li>
 </ul></div></div></details>
 <details id="UserActions_mint" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>mint(uint256 tokenId, uint256 amount, address recipient)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Allows the owner of the account with the passed tokenId to mint debt. <br><br>First syncs global and account state, increases the account’s debt by amount, then mints amount of the debt token to the recipient address.<!-- -->
@@ -985,13 +953,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollate
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Mint"><code>Mint(uint256 tokenId, uint256 amount, address recipient)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ recipient == zero address
-_ amount == 0
-_ loansPaused
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> - msg.sender is not the owner of the account identified by the passed tokenId
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - if the account would be undercollateralized don&#x27;t allow minting more debt</li>
+<li><strong>Reverts</strong> - recipient == zero address - amount == 0 - loansPaused - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> - msg.sender is not the owner of the account identified by the passed tokenId - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0 - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - if the account would be undercollateralized don&#x27;t allow minting more debt</li>
 </ul></div></div></details>
 <details id="UserActions_mintFrom" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>mintFrom(uint256 tokenId, uint256 amount, address recipient)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Borrow on behalf of tokenId using a mint allowance instead of ownership.<br><br> It first decreases msg.sender’s allowance for that account by amount, then performs the same actions as mint, minting debt tokens to the recipient address.<!-- -->
@@ -1009,11 +971,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollate
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Mint"><code>Mint(uint256 tokenId, uint256 amount, address recipient)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ recipient == zero address
-_ amount == 0
-_ loansPaused
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0 * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - if the account would be undercollateralized don&#x27;t allow minting more debt</li>
+<li><strong>Reverts</strong> - recipient == zero address - amount == 0 - loansPaused - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0 - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - if the account would be undercollateralized don&#x27;t allow minting more debt</li>
 </ul></div></div></details>
 <details id="UserActions_burn" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>burn(uint256 amount, uint256 recipientId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Burn debt tokens (alAssets) from the caller to repay the unearmarked portion of the position’s debt.<br><br>
@@ -1033,13 +991,7 @@ Difference between <code>repay()</code> and <code>burn()</code>:<br>
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Burn"><code>Burn(address indexed sender, uint256 amount, uint256 indexed recipientId)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ amount == 0
-_ No unearmarked debt to repay
-_ insufficient balance/allowance
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_CannotRepayOnMintBlock"><code>CannotRepayOnMintBlock()</code></a> - same-block mint repay is disallowed
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_BurnLimitExceeded"><code>BurnLimitExceeded(uint256 amount, uint256 available)</code></a> - requested burn exceeds <code>totalSyntheticsIssued - transmuter.totalLocked()</code></li>
+<li><strong>Reverts</strong> - amount == 0 - No unearmarked debt to repay - insufficient balance/allowance - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIdError()</code></a> - passed tokenId does not correspond to an existing NFT and is not 0 - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_CannotRepayOnMintBlock"><code>CannotRepayOnMintBlock()</code></a> - same-block mint repay is disallowed - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_BurnLimitExceeded"><code>BurnLimitExceeded(uint256 amount, uint256 available)</code></a> - requested burn exceeds <code>totalSyntheticsIssued - transmuter.totalLocked()</code></li>
 </ul></div></div></details>
 <details id="UserActions_repay" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>repay(uint256 amount, uint256 recipientTokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Repay the position’s debt using yield tokens provided by the caller.<br><br>
@@ -1060,11 +1012,7 @@ Difference between <code>repay()</code> and <code>burn()</code>:<br>
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Repay"><code>Repay(address indexed sender, uint256 amount, uint256 indexed recipientId, uint256 credit)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ amount == 0
-_ account lacks collateral to cover the protocol fee
-_ No outstanding debt for the account of the passed recipientId
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> - passed tokenId does not correspond to an existing NFT * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_CannotRepayOnMintBlock"><code>CannotRepayOnMintBlock()</code></a> - same-block mint repay is disallowed. For flash loan protection.</li>
+<li><strong>Reverts</strong> - amount == 0 - account lacks collateral to cover the protocol fee - No outstanding debt for the account of the passed recipientId - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> - passed tokenId does not correspond to an existing NFT - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_CannotRepayOnMintBlock"><code>CannotRepayOnMintBlock()</code></a> - same-block mint repay is disallowed. For flash loan protection.</li>
 </ul></div></div></details>
 <details id="UserActions_liquidate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>liquidate(uint256 accountId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Attempts to <code>_liquidate()</code> an undercollateralized position of the account identified by the passed accountId.<br><br>
@@ -1087,9 +1035,7 @@ First syncs state and applys earmarking so the account is up to date, then repay
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Liquidated"><code>Liquidated(uint256 indexed accountId, address liquidator, uint256 amount, uint256 feeInYield, uint256 feeInUnderlying)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError">UnknownAccountOwnerIDError()</a> — passed accountId does not correspond to an existing NFT
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_LiquidationError">LiquidationError()</a> — no liquidation/repayment occurred, either because the account is healthy, the tokenAdapter has trouble pricing the yieldToken (price == 0), etc.</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError">UnknownAccountOwnerIDError()</a> — passed accountId does not correspond to an existing NFT - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_LiquidationError">LiquidationError()</a> — no liquidation/repayment occurred, either because the account is healthy, the tokenAdapter has trouble pricing the yieldToken (price == 0), etc.</li>
 </ul></div></div></details>
 <details id="UserActions_batchLiquidate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>batchLiquidate(uint256[] accountIds)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Attempts liquidation across multiple accounts.<br><br>
@@ -1108,9 +1054,7 @@ Calls the internal <code>_liquidate</code> for each valid account, aggregates th
 </ul>
 </li>
 <li><strong>Emits</strong> - none - TODO should this emit BatchLiquidated()</li>
-<li><strong>Reverts</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_MissingInputData"><code>MissingInputData()</code></a> — <code>accountIds</code> is empty
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_LiquidationError"><code>LiquidationError()</code></a> — no liquidation/repayment occurred for any account. See <code>liquidate()</code> under <strong>User Actions</strong> for why this might occur.</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_MissingInputData"><code>MissingInputData()</code></a> — <code>accountIds</code> is empty - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_LiquidationError"><code>LiquidationError()</code></a> — no liquidation/repayment occurred for any account. See <code>liquidate()</code> under <strong>User Actions</strong> for why this might occur.</li>
 </ul></div></div></details>
 <details id="UserActions_poke" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>poke(uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Brings both global and account state up to date without changing balances.<br><br>
@@ -1123,7 +1067,7 @@ Validates the account, applies global earmarking, and syncs the specified accoun
 <li><strong>State Mutability Specifier</strong> - nonpayable</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> — passed tokenId does not correspond to an existing NFT</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> — passed tokenId does not correspond to an existing NFT</li>
 </ul></div></div></details>
 <details id="UserActions_approveMint" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>approveMint(uint256 tokenId, address spender, uint256 amount)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Grant or update a mint allowance so spender can mint debt tokens on behalf of the owner&#x27;s position (via <code>mintFrom</code>) identified by <code>tokenId</code>, for up to <code>amount</code> of debtTokens.<br><br>
@@ -1142,7 +1086,7 @@ Verifies the caller owns the position, then delegates to <code>_approveMint</cod
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_ApproveMint"><code>ApproveMint(uint256 indexed ownerTokenId, address indexed spender, uint256 amount)</code></a> <em>(emitted by <code>_approveMint</code>)</em></li>
 </ul>
 </li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> — caller is not the owner of the position identified by <code>tokenId</code></li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> — caller is not the owner of the position identified by <code>tokenId</code></li>
 </ul></div></div></details>
 <details id="UserActions_resetMintAllowances" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>resetMintAllowances(uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Clears all existing mint allowances for the position by bumping its <code>allowancesVersion</code>. Future <code>approveMint</code> entries are written under the new version. Old approvals become ineffective without needing to delete mappings. Callable by the NFT contract or by the current owner.<!-- -->
@@ -1158,7 +1102,7 @@ Verifies the caller owns the position, then delegates to <code>_approveMint</cod
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_MintAllowancesReset"><code>MintAllowancesReset(uint256 indexed tokenId)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Unauthorized"><code>Unauthorized()</code></a> — caller is neither the NFT contract nor the position’s current owner</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Unauthorized"><code>Unauthorized()</code></a> — caller is neither the NFT contract nor the position’s current owner</li>
 </ul></div></div></details>
 <details id="UserActions_acceptAdmin" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>acceptAdmin()</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Can only be called by the current pendingAdmin. Used to accept the admin role.</li>
@@ -1171,7 +1115,7 @@ Verifies the caller owns the position, then delegates to <code>_approveMint</cod
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_AdminUpdated"><code>AdminUpdated(address value)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong> * <strong>Unauthorized()</strong></li>
+<li><strong>Reverts</strong> - <strong>Unauthorized()</strong></li>
 </ul></div></div></details>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="guardian-actions">Guardian Actions<a href="#guardian-actions" class="hash-link" aria-label="Direct link to Guardian Actions" title="Direct link to Guardian Actions">​</a></h3>
 <blockquote>
@@ -1211,9 +1155,7 @@ Verifies the caller owns the position, then delegates to <code>_approveMint</cod
 <li><strong>State Mutability Specifier</strong> - nonpayable</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong>
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Errors_AlchemistV3NFTZeroAddressError"><code>AlchemistV3NFTZeroAddressError</code></a> - if the NFT is set to the zero address
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#AlchemistV3NFTAlreadySetError"><code>AlchemistV3NFTAlreadySetError</code></a> - if the NFT is set to the zero address</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Errors_AlchemistV3NFTZeroAddressError"><code>AlchemistV3NFTZeroAddressError</code></a> - if the NFT is set to the zero address - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#AlchemistV3NFTAlreadySetError"><code>AlchemistV3NFTAlreadySetError</code></a> - if the NFT is set to the zero address</li>
 </ul></div></div></details>
 <details id="AdminActions_setAlchemistFeeVault" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setAlchemistFeeVault(address value)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Sets the fee vault used for liquidations in the event of (1) an account not being able to cover, (2) the Alchemist itself being globally undercollateralized.</li>
@@ -1225,7 +1167,7 @@ _ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#AlchemistV3NFTAlre
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_AlchemistFeeVaultUpdated"><code>AlchemistFeeVaultUpdated</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Errors_AlchemistVaultTokenMismatchError"><code>AlchemistVaultTokenMismatchError</code></a> - if the token of the fee vault doesn&#x27;t match the underlying</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Errors_AlchemistVaultTokenMismatchError"><code>AlchemistVaultTokenMismatchError</code></a> - if the token of the fee vault doesn&#x27;t match the underlying</li>
 </ul></div></div></details>
 <details id="AdminActions_setPendingAdmin" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setPendingAdmin(address value)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Sets the pending admin. First part of a two-step process to change the admin. The second step is the pendingAdmin accepting the role by calling acceptAdmin.</li>
@@ -1519,7 +1461,7 @@ Adds debt to the account, validates collateralization, then mints debt tokens to
 <li><a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Events_Mint"><code>Mint(uint256 indexed tokenId, uint256 amount, address recipient)</code></a></li>
 </ul>
 </li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> — if minting would violate the minimum collateralization</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> — if minting would violate the minimum collateralization</li>
 </ul></div></div></details>
 <details id="InternalOperations_forceRepay" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_forceRepay(uint256 accountId, uint256 amount)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Repays earmarked debt using the account’s collateral (denominated in yieldToken).<br><br>
@@ -1536,9 +1478,7 @@ Both use collateral to cover the cost, however for differetn purposes. ForceRepa
 <li><strong>State Mutability Specifier</strong> - nonpayable</li>
 <li><strong>Returns</strong> - <code>uint256 creditToYield</code> - amount of yield tokens that were repaid and sent to the Transmuter</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong>
-_ No outstanding debt in the account to repay
-_ <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> — invalid <code>accountId</code></li>
+<li><strong>Reverts</strong> - No outstanding debt in the account to repay - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> — invalid <code>accountId</code></li>
 </ul></div></div></details>
 <details id="InternalOperations_addDebt" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_addDebt(uint256 tokenId, uint256 amount)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Increase an account’s debt and lock the corresponding amount of collateral required by <code>minimumCollateralization</code>.<br><br>
@@ -1552,7 +1492,7 @@ Ensures sufficient free collateral exists, then updates the account’s locked c
 <li><strong>State Mutability Specifier</strong> - nonpayable</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - not enough free collateral to lock for the additional debt</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> - not enough free collateral to lock for the additional debt</li>
 </ul></div></div></details>
 <details id="InternalOperations_subDebt" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_subDebt(uint256 tokenId, uint256 amount)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Decrease an account’s debt and free the corresponding portion of locked collateral.<br><br>
@@ -1579,7 +1519,7 @@ Updates <code>rawLocked</code> and global <code>_totalLocked</code> collateral.<
 <li><strong>State Mutability Specifier</strong> - pure</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> - owner and user are not the same</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnauthorizedAccountAccessError"><code>UnauthorizedAccountAccessError()</code></a> - owner and user are not the same</li>
 </ul></div></div></details>
 <details id="InternalOperations_checkForValidAccountId" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_checkForValidAccountId(uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Confirms the <code>tokenId</code> corresponds to an existing account NFT, or reverts.<!-- -->
@@ -1591,7 +1531,7 @@ Updates <code>rawLocked</code> and global <code>_totalLocked</code> collateral.<
 <li><strong>State Mutability Specifier</strong> - view</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> — tokenId not linked to a valid NFT</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_UnknownAccountOwnerIDError"><code>UnknownAccountOwnerIDError()</code></a> — tokenId not linked to a valid NFT</li>
 </ul></div></div></details>
 <details id="InternalOperations_tokenExists" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_tokenExists(address nft, uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Utility to check if an alchemist NFT position exists for a given tokenId.<!-- -->
@@ -1616,7 +1556,7 @@ Updates <code>rawLocked</code> and global <code>_totalLocked</code> collateral.<
 <li><strong>State Mutability Specifier</strong> - pure</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_IllegalState"><code>IllegalState()</code></a> — assertion failed</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_IllegalState"><code>IllegalState()</code></a> — assertion failed</li>
 </ul></div></div></details>
 <details id="InternalOperations_validate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_validate(uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Verifies the account identified by <code>tokenId</code> meets minimum collateralization. Reverts if undercollateralized.<!-- -->
@@ -1628,7 +1568,7 @@ Updates <code>rawLocked</code> and global <code>_totalLocked</code> collateral.<
 <li><strong>State Mutability Specifier</strong> - view</li>
 <li><strong>Returns</strong> - none</li>
 <li><strong>Emits</strong> - none</li>
-<li><strong>Reverts</strong> * <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> — account not sufficiently collateralized</li>
+<li><strong>Reverts</strong> - <a href="/alchemix-v3-docs/dev/alchemist/alchemist-contract#Error_Undercollateralized"><code>Undercollateralized()</code></a> — account not sufficiently collateralized</li>
 </ul></div></div></details>
 <details id="InternalOperations_isUnderCollateralized" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_isUnderCollateralized(uint256 tokenId)</summary><div><div class="collapsibleContent_i85q"><ul>
 <li><strong>Description</strong> - Returns true if the specified account is below the minimum collateralization ratio, otherwise returns false.<!-- -->
