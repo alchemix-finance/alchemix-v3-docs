@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-dev docs-version-current docs-doc-page docs-doc-id-myt/myt-contract" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.8.1">
+<title data-rh="true">MYTStrategy | Alchemix Docs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://keenanlukeom.github.io/alchemix-v3-docs/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://keenanlukeom.github.io/alchemix-v3-docs/img/social-card.png"><meta data-rh="true" property="og:url" content="https://keenanlukeom.github.io/alchemix-v3-docs/dev/myt/myt-contract"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-dev-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-dev-current"><meta data-rh="true" property="og:title" content="MYTStrategy | Alchemix Docs"><meta data-rh="true" name="description" content="Description"><meta data-rh="true" property="og:description" content="Description"><link data-rh="true" rel="icon" href="/alchemix-v3-docs/img/favicon.png"><link data-rh="true" rel="canonical" href="https://keenanlukeom.github.io/alchemix-v3-docs/dev/myt/myt-contract"><link data-rh="true" rel="alternate" href="https://keenanlukeom.github.io/alchemix-v3-docs/dev/myt/myt-contract" hreflang="en"><link data-rh="true" rel="alternate" href="https://keenanlukeom.github.io/alchemix-v3-docs/dev/myt/myt-contract" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MYTStrategy","item":"https://keenanlukeom.github.io/alchemix-v3-docs/dev/myt/myt-contract"}]}</script><link rel="stylesheet" href="/alchemix-v3-docs/assets/css/styles.9fe47b0b.css">
+<script src="/alchemix-v3-docs/assets/js/runtime~main.c6dcccf7.js" defer="defer"></script>
+<script src="/alchemix-v3-docs/assets/js/main.4d1fbb52.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t="dark";var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",e||t),document.documentElement.setAttribute("data-theme-choice",e||t)}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}(),document.documentElement.setAttribute("data-announcement-bar-initially-dismissed",function(){try{return"true"===localStorage.getItem("docusaurus.announcement.dismiss")}catch(t){}return!1}())</script><div id="__docusaurus"><link rel="preload" as="image" href="/alchemix-v3-docs/img/alchemix-full.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><div class="theme-announcement-bar announcementBar_mb4j" style="background-color:#FFF4E5;color:#3D2C00" role="banner"><div class="content_knG7 announcementBarContent_xLdY">🚧 <strong>Public BETA:</strong> These docs are in active development. Expect gaps and changes. <a href="https://discord.gg/E9eGjttFCB">Get support</a> · <a href="https://github.com/KeenanLukeOM/alchemix-v3-docs/issues/new">Report an issue</a></div></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/alchemix-v3-docs/user/"><div class="navbar__logo"><img src="/alchemix-v3-docs/img/alchemix-full.svg" alt="Alchemix Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/alchemix-v3-docs/img/alchemix-full.svg" alt="Alchemix Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div></a><a class="navbar__item navbar__link" href="/alchemix-v3-docs/user/">Users</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/alchemix-v3-docs/dev/">Developers</a><a class="navbar__item navbar__link" href="/alchemix-v3-docs/governance/intro">Governance</a><a class="navbar__item navbar__link" href="/alchemix-v3-docs/projects/">Integrations</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/KeenanLukeOM/alchemix-v3-docs" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG menuWithAnnouncementBar_GW3s"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/alchemix-v3-docs/dev/">Dev Overview</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/alchemix-v3-docs/dev/architecture/overview">Architecture</a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/architecture/overview">Architecture Overview</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/architecture/redemptions">Redemptions</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/architecture/security-model">Security Model</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/alchemix-v3-docs/dev/alchemist/alchemist-contract">Core Modules</a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/alchemist/alchemist-contract">AlchemistV3</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/transmuter/transmuter-contract">Transmuter</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/alchemix-v3-docs/dev/myt/myt-contract">MYTStrategy</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/alchemix-v3-docs/dev/contracts/ethereum">Smart Contracts</a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/contracts/ethereum">Ethereum</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/contracts/optimism">Optimism</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/contracts/arbitrum">Arbitrum</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="true" href="/alchemix-v3-docs/dev/integration/using-alassets">Integrating Alchemix</a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/integration/using-alassets">Using alAssets</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/integration/integrate-myt">Integrate MYT</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/integration/integrate-transmuter">Integrate The Transmuter</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/integration/integrate-alchemist">Integrate The Alchemist</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/alchemix-v3-docs/dev/integration/grants-program">Grants Program</a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/alchemix-v3-docs/dev/faq">FAQ</a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><div class="row_Wiq0"><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/alchemix-v3-docs/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Core Modules</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">MYTStrategy</span></li></ul></nav></div><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>MYTStrategy</h1></header>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="description">Description<a href="#description" class="hash-link" aria-label="Direct link to Description" title="Direct link to Description">​</a></h2>
+<p>The Alchemix V3 protocol introduces a modular system for yield generation centered around Morpho V2 Vaults. The core of this system
+is a set of strategies that function as adapters for the Morpho Vault, managing user-deposited assets such as WETH and USDC. These
+strategies are designed to allocate capital across a diverse range of third-party, yield-bearing DeFi protocols. Users deposit their assets
+into the Morpho Vault and receive Meta Yield Tokens (MYT), which represent a share of the vault’s underlying assets. The value of an MYT
+share is designed to increase over time as the strategies accrue yield. The allocation of capital is managed by an Alchemix admin or
+operator via the AlchemistAllocator contract to optimize returns and manage risk.</p>
+<p>This MYTStrategy contract is the base contract from which all individual strategy adapters are derived. Each adapter defines one of the many strategies used by the same MYT.
+This base contract defines the functions that allow allocation and deallocation into the strategy, in addition to claiming and withdrawing, and other general operations on the strategy.
+For more specific operations tailored to individual strategies, see the contract specs in /strategies section of the docs. (coming soon)</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="variables">Variables<a href="#variables" class="hash-link" aria-label="Direct link to Variables" title="Direct link to Variables">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="strategyparams">StrategyParams<a href="#strategyparams" class="hash-link" aria-label="Direct link to StrategyParams" title="Direct link to StrategyParams">​</a></h3>
+<blockquote>
+<p>A struct defining common properties between MYT strategies that must be set on initialization of the strategy contract. Params can be read by calling the <code>params()</code> function, which will return a tuple containing the value for each in the order they are listed below.</p>
+</blockquote>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>owner</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The owner of this MYT contract instance.</li>
+<li><strong>Type</strong> - address</li>
+<li><strong>Used By</strong> - none. Set once on contract deployment. NOTE: the param that is used to set this on deployment is also used to set the owner of the contract, which is used to restrict access to certain functions. This property param.owner shares that value, but not it&#x27;s function.</li>
+<li><strong>Updated By</strong> - none. Set once on contract deployment.</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>name</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The name of the MYT strategy</li>
+<li><strong>Type</strong> - string</li>
+<li><strong>Used By</strong> - none. This is just informative metadata</li>
+<li><strong>Updated By</strong> - none. Set once on contract deployment.</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>protocol</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The name of the protocol running the underlying strategy.</li>
+<li><strong>Type</strong> - string</li>
+<li><strong>Used By</strong> - none. This is just informative metadata</li>
+<li><strong>Updated By</strong> - none. Set once on contract deployment.</li>
+</ul></div></div></details>
+<details id="Variables_riskClass" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>riskClass</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The risk classification for the underlying strategy. Used</li>
+<li><strong>Type</strong> - RiskClass (an enum with possible values of LOW, MEDIUM, or HIGH)</li>
+<li><strong>Used By</strong> - none. This is informative metadata.</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><code>setRiskClass(RiskClass newClass)</code></li>
+</ul>
+</li>
+<li><strong>Notified By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_RiskClassUpdated"><code>RiskClassUpdated()</code></a></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>cap</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - TODO unused</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong> - none. TODO</li>
+<li><strong>Updated By</strong> - none TODO</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>getCap()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>globalCap</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - TODO unused</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong> - none. TODO</li>
+<li><strong>Updated By</strong> - none TODO</li>
+<li><strong>Read By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#ReadingState_getGlobalCap"><code>getGlobalCap()</code></a></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>estimatedYield</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The estimated yield of the strategy. TODO what is this denominated in?</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong> - none. This is informative metadata.</li>
+<li><strong>Updated By</strong> - none. This is informative metatdata. TODO - confirm</li>
+<li><strong>Read By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#ReadingState_getEstimatedYield"><code>getEstimatedYield()</code></a></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>additionalIncentives</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A true/false value indicating whether or not there are additional incentives on top of the base functioning of the strategy</li>
+<li><strong>Type</strong> - bool</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_snapshotYield"><code>snapshotYield()</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><code>setAdditionalIncentives(bool newValue)</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="public-state">Public State<a href="#public-state" class="hash-link" aria-label="Direct link to Public State" title="Direct link to Public State">​</a></h3>
+<blockquote>
+<p>State that is available and can be read from outside of the contract.</p>
+</blockquote>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="constants">Constants<a href="#constants" class="hash-link" aria-label="Direct link to Constants" title="Direct link to Constants">​</a></h4>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>SECONDS_PER_YEAR</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Set to 365 days. Used in yield calculations.</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_snapshotYield"><code>snapshotYield</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#InternalOperations_approxAPY"><code>_approxAPY</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong> - none. Contant variable</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>SECONDS_PER_YEAR()</code> - will return a uint256 value representing seconds</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>FIXED_POINT_SCALAR</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A multiplier that is used to be able to do fixed point math, since solidity does not natively handle decimals. Like ERC20 tokens which typically use 18 decimals, it expresses 1 as 1e18. Anything less is a fraction of 1.</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#InternalOperations_approxAPY"><code>_approxAPY</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#InternalOperations_lerp"><code>_lerp</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong> - none. Constant varible.</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>FIXED_POINT_SCALAR()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>MIN_SNAPSHOT_INTERVAL</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A value in seconds set to 1 day.</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong> - none. Constant varible.</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>MIN_SNAPSHOT_INTERVAL()</code> - returns a uint representing seconds</li>
+</ul>
+</li>
+</ul></div></div></details>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="immutable-state">Immutable State<a href="#immutable-state" class="hash-link" aria-label="Direct link to Immutable State" title="Direct link to Immutable State">​</a></h4>
+<blockquote>
+<p>State that is set once on contract deployment</p>
+</blockquote>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>MYT</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A Morpho VaultV2 contract which manages and allocates to individual strategies through adapters such as this one.</li>
+<li><strong>Type</strong> - IVault2</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#VaultActions">Vault Actions</a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong> - none</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>MYT()</code> - will return the address of the Vault2 contract, since MYT is a contract type.</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>receiptToken</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The address of the erc20 token contract for the reciept token users get for depositing into the MYT contract.</li>
+<li><strong>Type</strong> - address</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_deallocateDex"><code>deallocateDex(bytes calldata quote, bool prevSettler)</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#OwnerActions_setPermit2Address"><code>setPermit2Address(address newAddress)</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong> - none</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>receiptToken()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details id="Variables_adapterId" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>adapterId</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A hash of the protocol serving as an id for reporting on allocations/deallocations to the strategy.</li>
+<li><strong>Type</strong> - bytes32</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#VaultActions_allocate"><code>allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#VaultActions_deallocate"><code>deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong> - none</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>ids()</code> - returns an array of size 1, where the first index contains this id.</li>
+</ul>
+</li>
+</ul></div></div></details>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="updateable-state">Updateable State<a href="#updateable-state" class="hash-link" aria-label="Direct link to Updateable State" title="Direct link to Updateable State">​</a></h3>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>params</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The list of params passed at deployment-time describing the strategy. Some can be edited. For more information see the StrategyParams type above.</li>
+<li><strong>Type</strong> - StrategyParams</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#ReadingState_getIdData"><code>getIdData()</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#ReadingState_getCap"><code>getCap()</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#ReadingState_getGlobalCap"><code>getGlobalCap()</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><code>setRiskClass()</code></li>
+<li><code>setAdditionalIncentives()</code></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>params()</code> - returns a tuple containing all StrategyParam property values in the order listed in the Struct definition above.</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastSnapshotTime</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The last time the <code>snapshotYield()</code> function was successfully run.</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>lastSnapshotTime()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>lastIndex</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The last recorded price-per-share of the underlying strategy. Each time <code>snapshotYield()</code> is called, the strategy implementation (derivation of this base contract) <code>_computeBaseRatePerSecond()</code> is called which calculates the base yield rate, in addition to getting the new price-per-share value for the strategy. That is then recorded as the lastIndex. This value is used to help calculate total yield earned since that last snapshot.</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>lastIndex()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>estApr</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The last recorded estimated non-compounding APR of the underlying strategy. Scaled by 1e18. (1e18 = 100%, 5e17 = 50%, etc.)</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>estApr()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>estApy</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The last recorded estimated compounding APY for the underlying strategy. Scaled by 1e18. (1e18 = 100%, 5e17 = 50%, etc.)</li>
+<li><strong>Type</strong> - uint256</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield</code></a></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>estApy()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>killswitch</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A true/false toggle that freezes all fund-moving actions. Vault allocate/deallocate simply exit with no operations done, and operator-initiated moves revert. Nothing is auto-unstaked or withdrawn. It’s a circuit breaker, not an unwinder.</li>
+<li><strong>Type</strong> - bool</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#VaultActions_allocate"><code>allocate</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#VaultActions_deallocate"><code>deallocate</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#VaultActions_deallocateDex"><code>deallocateDex</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_claimWithdrawalQueue"><code>claimWithdrawalQueue</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_claimRewards"><code>claimRewards</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><code>setKillswitch(bool value)</code></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>killswitch()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>whitelistedAllocators</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A mapping of addresses which are allowed to call functions that move funds.</li>
+<li><strong>Type</strong> - mapping(address =&gt; bool)</li>
+<li><strong>Used By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_deallocateDex"><code>deallocateDex</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_claimWithdrawalQueue"><code>claimWithdrawalQueue</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><code>setWhitelistedAllocator(address to, bool val)</code></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>whitelistedAllocators(address)</code> - returns a true/false value indicating whether or not the address passed is a whitelisted allocator</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>permit2Address</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - The address of the Permit2 router contract to be used. Permit2 is a universal approval and transfer router that standardizes those processes through one contract.<br>
+<!-- -->Instead of granting separate approvals to each DEX or contract, the strategy grants a single allowance to Permit2, which then validates signed off-chain transfer authorizations.</li>
+<li><strong>Type</strong> - address</li>
+<li><strong>Used By</strong>
+<ul>
+<li><code>constructor(address _myt, StrategyParams memory _params, address _permit2address, address_receiptToken)</code></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#OwnerActions_setPermit2Address"><code>setPermit2Address(address newAddress)</code></a></li>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#UserActions_isValidSignature"><code>isValidSignature(bytes32 _hash, bytes memory _signature)</code></a></li>
+</ul>
+</li>
+<li><strong>Updated By</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#OwnerActions_setPermit2Address"><code>setPermit2Address(address newAddress)</code></a></li>
+</ul>
+</li>
+<li><strong>Read By</strong>
+<ul>
+<li><code>permit2Address()</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="user-actions">User Actions<a href="#user-actions" class="hash-link" aria-label="Direct link to User Actions" title="Direct link to User Actions">​</a></h3>
+<blockquote>
+<p>Actions that are performed by any external callers. In some cases this may be necessitate elevated permissions or restrict user access, but these are one-offs rather than patterns of actors decsribed by traditional only_ modifiers.</p>
+</blockquote>
+<details id="UserActions_deallocateDex" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>deallocateDex(bytes calldata quote, bool prevSettler)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Executes a deallocation through the 0x DEX Settler contract, allowing whitelistedAllocators to move or sell assets directly from the strategy. This bypasses standard withdrawal queue logic and is typically used in emergency or rebalancing scenarios.<!-- -->
+<ul>
+<li><code>@param quote</code> - ABI-encoded calldata for a verified 0x swap quote, representing the DEX trade to perform.</li>
+<li><code>@param prevSettler</code> - Boolean flag indicating whether to use the previous Settler contract (<code>true</code>) or the current one (<code>false</code>).</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 ret</code> - The amount of receipt tokens deallocated through the DEX trade. (the amount that balance of receipt tokens has increase by)</li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_DeallocateDex"><code>DeallocateDex(uint256 amountDeallocated)</code></a></li>
+</ul>
+</li>
+<li><strong>Reverts</strong>
+<ul>
+<li>With <code>&quot;emergency&quot;</code> if <code>killswitch == true</code></li>
+<li>With <code>&quot;PD&quot;</code> if <code>msg.sender</code> is not an active whitelistedAllocator</li>
+<li>With <code>&quot;SF&quot;</code> if the Settler call fails</li>
+<li>If the 0x swap parameters or slippage creates an invalid swap quote</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details id="UserActions_claimWithdrawalQueue" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>claimWithdrawalQueue(uint256 positionId)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Handles claiming withdrawals from strategies that implement a withdrawal queue system.<br><br>
+First checks that the caller is a whitelistedAllocator and that the strategy is not in emergency mode, then delegates to the internal function <code>_claimWithdrawalQueue()</code> which is overrideen and defined in derived strategy implementations.<!-- -->
+<ul>
+<li><code>@param positionId</code> - The ID of the position to claim for from the underlying protocol.</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 ret</code> - The amount of assets claimed from the withdrawal queue (returned by the strategy-specific implementation).</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong>
+<ul>
+<li>With <code>&quot;PD&quot;</code> if <code>msg.sender</code> is not whitelisted</li>
+<li>With <code>&quot;emergency&quot;</code> if <code>killSwitch == true</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details id="UserActions_claimRewards" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>claimRewards()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Claims any pending reward tokens from the underlying strategy’s protocol<br><br>
+First verifies that the strategy is not in emergency mode then delegates to the internal <code>_claimRewards()</code> implementation, which must be overrideen in derived contracts to define protocol-specific claiming logic.</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256</code> - The amount of reward tokens claimed, as defined by the derived implementation.</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong>
+<ul>
+<li>With <code>&quot;emergency&quot;</code> if <code>killSwitch == true</code></li>
+</ul>
+</li>
+</ul></div></div></details>
+<details id="UserOperations_snapshotYield" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>snapshotYield()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Recomputes the strategies estimated rates for base yield and incentives yield and returns an aggregate estimated apy scaled by 1e18. (1e18 = 100%)<br><br>
+First ensures that the <code>MINIMUM_SNAPSHOT_INTERVAL</code> has passed since the last call to prevent griefing, then calls internal functions <code>_computeBaseRatePerSecond()</code> and <code>_computeRewardsRatePerSecond()</code>, both of which are implemented in derived contracts, to calculate the most up-to-date current rates. Then those rates are combined and projected out a year. A smoothign rate of .7 is then applied, and passed with the newly calculated rates to the internal <code>_lerp()</code> function to calculate estimated rates from the new snapshot and the previously snaphshotted rate.</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 estApy</code></li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_YieldUpdated"><code>YieldUpdated(uint256 estApy)</code></a></li>
+</ul>
+</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="owner-actions">Owner Actions<a href="#owner-actions" class="hash-link" aria-label="Direct link to Owner Actions" title="Direct link to Owner Actions">​</a></h3>
+<blockquote>
+<p>Actions guarded by the onlyOwner modifier, which restricts access to the owner set at deployment time</p>
+</blockquote>
+<details id="OwnerActions_setPermit2Address" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setPermit2Address(address newAddress)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Updates the <a href="/alchemix-v3-docs/dev/myt/myt-contract#Variables_permit2Address"><code>permit2Address</code></a> used for token transfer approvals through the Permit2 router contract.<br><br>
+First revokes existing token approvals from the old Permit2 address, grants maximum allowance to the new Permit2 address for the MYT <code>receiptToken</code>, and then updates the stored <code>permit2Address</code> value.<!-- -->
+<ul>
+<li><code>@param newAddress</code> - the new Permit2 router contract address</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong>
+<ul>
+<li>With <code>&quot;Zero address&quot;</code> if <code>newAddress</code> is the zero address</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details id="OwnerActions_setRiskClass" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setRiskClass(RiskClass newClass)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Updates the <a href="/alchemix-v3-docs/dev/myt/myt-contract#Variables_riskClass"><code>params.riskClass</code></a> to recategorize the strategy under a new risk class<!-- -->
+<ul>
+<li><code>@param newClass</code> - new risk category for the strategy (LOW, MEDIUM, HIGH)</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_RiskClassUpdated"><code>RiskClassUpdated(RiskClass newClass)</code></a></li>
+</ul>
+</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="OwnerActions_setAdditionalIncentives" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setAdditionalIncentives(bool newValue)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Enables or disables tracking of additional incentive tokens earned by the strategy in yield calculations.<!-- -->
+<ul>
+<li><code>@param newValue</code> - true or false value to enable or disable</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_IncentivesUpdated"><code>IncentivesUpdated(bool newValue)</code></a></li>
+</ul>
+</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="OwnerActions_setWhitelistedAllocator" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setWhitelistedAllocator(address to, bool val)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Sets or unsets an address as a whitelisted allocator authorized to call various functions listed under <a href="/alchemix-v3-docs/dev/myt/myt-contract#user-actions"><code>UserActions</code></a>
+<ul>
+<li><code>@param to</code> — address to set or unset as a whitelisted allocator</li>
+<li><code>@param val</code> — true or false value to set or unset as a whitelisted alloactor</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong>
+<ul>
+<li>if <code>to</code> is the zero address</li>
+</ul>
+</li>
+</ul></div></div></details>
+<details id="OwnerActions_setKillSwitch" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>setKillSwitch(bool val)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Toggles the emergency stop (<code>killSwitch</code>) for this strategy. When enabled many operations such as allocations, deallocations, and reward claims are halted to prevent further activity.<!-- -->
+<ul>
+<li><code>@param val</code> - true to activate emergency mode, false to resume normal operation</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Modifiers</strong> - <a href="/alchemix-v3-docs/dev/myt/myt-contract#AccessControl_onlyOwner"><code>onlyOwner</code></a></li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_Emergency"><code>Emergency(bool val)</code></a></li>
+</ul>
+</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="vault-actions">Vault Actions<a href="#vault-actions" class="hash-link" aria-label="Direct link to Vault Actions" title="Direct link to Vault Actions">​</a></h3>
+<blockquote>
+<p>Functions guarded by the onlyVault modifier, which restricts access to the vault managed by the MYT contract (Referenced by the MYT variable, not referring to this MYTStrategyContract)</p>
+</blockquote>
+<details id="VaultActions_allocate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Allocates <code>assets</code> from the vault into the underlying strategy, computes the delta between the new allocation and previous allocation, and reports the change.<br><br>
+Assets are allocated using an internal call to <code>_allocate()</code> which is overrideen and defined in derived strategy contract implementations. If <code>killSwitch</code> is enabled, the simply exits with a change of 0.<!-- -->
+<ul>
+<li><code>@param data</code> - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.</li>
+<li><code>@param assets</code> - the amount of tokens the vault is requesting to allocated to the strategy.</li>
+<li><code>@param selector</code> - TODO unused and not intherited. Do we need?</li>
+<li><code>@param sender</code> - TODO unused and not inherited. Do we need?</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the <a href="/alchemix-v3-docs/dev/myt/myt-contract#Variables_adapterId"><code>adapterId</code></a>, and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation</li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_Allocate"><code>Allocate(uint256 amountAllocated, address this)</code></a></li>
+</ul>
+</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="VaultActions_deallocate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Deallocates <code>assets</code> from the underlying strategy back to the vault, computes the delta between the new allocation and previous allocation, and reports the change.<br><br>
+Assets are withdrawn using an internal call to <code>_deallocate()</code> which is overridden and defined in derived strategy contract implementations. If <code>killSwitch</code> is enabled, the function exits early with a change of 0.<!-- -->
+<ul>
+<li><code>@param data</code> - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.</li>
+<li><code>@param assets</code> - the amount of tokens the vault is requesting to deallocate from the strategy.</li>
+<li><code>@param selector</code> - TODO unused and not inherited. Do we need?</li>
+<li><code>@param sender</code> - TODO unused and not inherited. Do we need?</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the <a href="/alchemix-v3-docs/dev/myt/myt-contract#Variables_adapterId"><code>adapterId</code></a>, and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation</li>
+<li><strong>Emits</strong>
+<ul>
+<li><a href="/alchemix-v3-docs/dev/myt/myt-contract#Events_Deallocate"><code>Deallocate(uint256 amountDeallocated, address this)</code></a></li>
+<li>[<code>MYTLog(string message, uint256 value)</code>] - emit old allocation, amount deallocated, and resulting new allocation for transparency.</li>
+</ul>
+</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="internal-operations">Internal Operations<a href="#internal-operations" class="hash-link" aria-label="Direct link to Internal Operations" title="Direct link to Internal Operations">​</a></h3>
+<details id="InternalOperations_allocate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_allocate(uint256 amount)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for how to allocate to a strategy. Must be overridden by derived contracts.<!-- -->
+<ul>
+<li><code>@param amount</code> - The amount of assets to allocate into the underlying protocol.</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 depositReturn</code> - The amount of assets successfully allocated by the protocol.</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implementation-dependent</li>
+</ul></div></div></details>
+<details id="InternalOperations_deallocate" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_deallocate(uint256 amount)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for how to deallocate from a strategy. Must be overridden by derived contracts.<!-- -->
+<ul>
+<li><code>@param amount</code> - The amount of assets to deallocate or withdraw from the underlying protocol.</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 withdrawReturn</code> - The amount of assets successfully withdrawn from the protocol.</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implmentation-dependent</li>
+</ul></div></div></details>
+<details id="InternalOperations_claimWithdrawalQueue" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_claimWithdrawalQueue(uint256 positionId)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for how to claim or withdraw from strategies that utilize a withdrawal queue. Must be overridden by derived contracts.<!-- -->
+<ul>
+<li><code>@param positionId</code> - The ID of position to claim or withdraw for from the underlying protocol.</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 claimAmount</code> - The amount of assets successfully claimed from the withdrawal queue.</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implementation-dependent</li>
+</ul></div></div></details>
+<details id="InternalOperations_claimRewards" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_claimRewards()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for how to claim from a strategy. Must be overridden by derived contracts.</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 rewardAmount</code> - The amount of reward tokens claimed from the protocol.</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implementation-dependent</li>
+</ul></div></div></details>
+<details id="InternalOperations_computeBaseRatePerSecond" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_computeBaseRatePerSecond()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for how to compute base per-second yield rate from the underlying protocol. Must be overridden by derived contracts.</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>(uint256 ratePerSec, uint256 newIndex)</code> - a tupe where:<!-- -->
+<ul>
+<li>The first value <code>ratePerSec</code> is the rate of yield per second scaled to 1e18. (1e18 = 100% per second, 1e16 = 1% per second, etc.)</li>
+<li>The second value <code>newIndex</code> is the most up-to-date price-per-share value of the MYT shares</li>
+</ul>
+</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implementation-dependent</li>
+</ul></div></div></details>
+<details id="InternalOperations_computeRewardsRatePerSecond" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_computeRewardsRatePerSecond()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for how to compute incentive/reward per-second yield rate from the underlying protocol. Must be overridden by derived contracts.</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - nonpayable</li>
+<li><strong>Returns</strong> - <code>uint256 ratePerSec</code> - the rate of yield per second scaled to 1e18. (1e18 = 100% per second, 1e16 = 1% per second, etc.)</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implementation-dependent</li>
+</ul></div></div></details>
+<details id="InternalOperations_approxAPY" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_approxAPY(uint256 ratePerSecWad)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Approximates the APY from a given per-second WAD-scaled (1e18) rate.<br><br><br>
+<!-- -->First multiplies the per-second rate by the number of seconds in a year to estimate APR. Then approxiamtes compounding using a formula of <code>APR^2 / (2 × SECONDS_PER_YEAR)</code>
+<ul>
+<li><code>@param ratePerSecWad</code> — per-second yield rate (1e18 = 100% per second)</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - pure</li>
+<li><strong>Returns</strong> - <code>uint256 approxApyPercentage</code> - a percentage scaled by 1e18 (1e18 = 100% per year)</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="InternalOperations_lerp" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>_lerp(uint256 oldVal, uint256 newVal, uint256 alpha)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - A smoothing function to blend <code>oldVal</code> and <code>newVal</code> using a weighted average, in order to calculate a new yield rate without sharp differences.<br><br>
+Uses a factor <code>alpha</code> to determine how much of the previous value to retain vs. how much of the new value to apply. This is currently set to 70% (7e17) in <a href="/alchemix-v3-docs/dev/myt/myt-contract#UserOperations_snapshotYield"><code>snapshotYield()</code></a>, the only caller of this function.
+This means newly calculated results will use approximately 70% of <code>oldVal</code> and 30% of <code>newVal</code>, in order to prevent sudden jumps in estimated APR and APY.<!-- -->
+<ul>
+<li><code>@param oldVal</code> — previous recorded value (scaled by 1e18)</li>
+<li><code>@param newVal</code> — new calculated value (scaled by 1e18)</li>
+<li><code>@param alpha</code> — smoothing factor between 0 and 1e18 (7e17 = 70%)</li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - internal</li>
+<li><strong>State Mutability Specifier</strong> - pure</li>
+<li><strong>Returns</strong> - <code>uint256 smoothedYieldRate</code></li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="reading-state">Reading State<a href="#reading-state" class="hash-link" aria-label="Direct link to Reading State" title="Direct link to Reading State">​</a></h3>
+<blockquote>
+<p>Reads derived, calculated, or internal state. For getters of public variables see the Variable section.</p>
+</blockquote>
+<details id="ReadingState_getEstimatedYield" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>getEstimatedYield()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Returns the last recorded estimated yield value for this strategy. This value may not reflect the most recent on-chain state and could differ from live protocol values.</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>uint256 estimatedYield</code> - last snapshotted yield value (1e18 = 100%)</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="ReadingState_getCap" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>getCap()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Returns the <code>params.cap</code> variable. TODO - not used?</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>uint256 cap</code></li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="ReadingState_getGlobalCap" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>getGlobalCap()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Returns the <code>params.globalCap</code> variable. TODO - not used??</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>uint256 globalCap</code></li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="ReadingState_ids" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>ids()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Returns an array of size 1 where the value at the first index is the <a href="/alchemix-v3-docs/dev/myt/myt-contract#Variables_adapterId"><code>adapterId</code></a> associated with this strategy.</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>bytes32[] memory ids</code></li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="ReadingState_getIdData" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>getIdData()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Returns the ABI-encoded protocol identifier and address for this adapter.</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>bytes memory abiEncodedValue</code></li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<details id="ReadingState_realAssets" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>realAssets()</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - An empty virtual function defining internal logic for getting the actual amount of underlying assets currently held or represented by this strategy. Must be overridden by derived contracts.</li>
+<li><strong>Visibility Specifier</strong> - external</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>uint256 assets</code></li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - implementation-dependent</li>
+</ul></div></div></details>
+<details id="ReadingState_isValidSignature" class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary>isValidSignature(bytes32 _hash, bytes memory _signature)</summary><div><div class="collapsibleContent_i85q"><ul>
+<li><strong>Description</strong> - Definistion for ERC721 interface for Permit2 signature verification. It allows callers to confirm that this strategy contract has validly authorized a specific operation for <a href="/alchemix-v3-docs/dev/myt/myt-contract#Variables_permit2Address"><code>permit2Address</code></a> via signature.<!-- -->
+<ul>
+<li><code>@param _hash</code></li>
+<li><code>@param _signature</code></li>
+</ul>
+</li>
+<li><strong>Visibility Specifier</strong> - public</li>
+<li><strong>State Mutability Specifier</strong> - view</li>
+<li><strong>Returns</strong> - <code>bytes4 isValid</code> - The ERC721 defined value of 0x1626ba7e to indicated a signature is valid. Any other return value indicates an invalid signature.</li>
+<li><strong>Emits</strong> - none</li>
+<li><strong>Reverts</strong> - none</li>
+</ul></div></div></details>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="errors">Errors<a href="#errors" class="hash-link" aria-label="Direct link to Errors" title="Direct link to Errors">​</a></h2>
+<ul>
+<li>
+<span id="Errors_CounterfeitSettler"><strong><code>CounterfeitSettler(address)</code></strong> - TODO not used anywhere?</span>
+</li>
+</ul>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="events">Events<a href="#events" class="hash-link" aria-label="Direct link to Events" title="Direct link to Events">​</a></h2>
+<ul>
+<li>
+<span id="Events_Allocate"><strong><code>Allocate(uint256 indexed amount, address indexed strategy)</code></strong> - emitted when funds have been allocated to the strategy described by this adapter.</span>
+</li>
+<li>
+<span id="Events_Deallocate"><strong><code>Deallocate(uint256 indexed amount, address indexed strategy)</code></strong> - emmitted when funds have been de-alloacted or removed from the strategy described by this adapter.</span>
+</li>
+<li>
+<span id="Events_DeallocateDex"><strong><code>DeallocateDex(uint256 indexed amount)</code></strong> - emitted when funds have been deallocated via DEX swap.</span>
+</li>
+<li>
+<span id="Events_YieldUpdated"><strong><code>YieldUpdated(uint256 indexed yield)</code></strong> - emitted after taking a yield snapshot.</span>
+</li>
+<li>
+<span id="Events_RiskClassUpdated"><strong><code>RiskClassUpdated(RiskClass indexed class)</code></strong> - emitted when updating the params.riskClass to recalify the strategies risk level.</span>
+</li>
+<li>
+<span id="Events_IncentivesUpdated"><strong><code>IncentivesUpdated(bool indexed enabled)</code></strong> - emitted when the additionalIncentives flag is set.</span>
+</li>
+<li>
+<span id="Events_Emergency"><strong><code>Emergency(bool indexed isEmergency)</code></strong> - emitted after enabling the killswitch on this strategy.</span>
+</li>
+<li>
+<span id="Events_MYTLog"><strong><code>MYTLog(string message, uint256 value)</code></strong> - debug logging used to output a message and value from the contract.</span>
+</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/keenanlukeom/alchemix-v3-docs/edit/main/docs/dev/docs/dev/myt/myt-contract.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/alchemix-v3-docs/dev/transmuter/transmuter-contract"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Transmuter</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/alchemix-v3-docs/dev/contracts/ethereum"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Ethereum</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#description" class="table-of-contents__link toc-highlight">Description</a></li><li><a href="#variables" class="table-of-contents__link toc-highlight">Variables</a><ul><li><a href="#strategyparams" class="table-of-contents__link toc-highlight">StrategyParams</a></li><li><a href="#public-state" class="table-of-contents__link toc-highlight">Public State</a></li><li><a href="#updateable-state" class="table-of-contents__link toc-highlight">Updateable State</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#user-actions" class="table-of-contents__link toc-highlight">User Actions</a></li><li><a href="#owner-actions" class="table-of-contents__link toc-highlight">Owner Actions</a></li><li><a href="#vault-actions" class="table-of-contents__link toc-highlight">Vault Actions</a></li><li><a href="#internal-operations" class="table-of-contents__link toc-highlight">Internal Operations</a></li><li><a href="#reading-state" class="table-of-contents__link toc-highlight">Reading State</a></li></ul></li><li><a href="#errors" class="table-of-contents__link toc-highlight">Errors</a></li><li><a href="#events" class="table-of-contents__link toc-highlight">Events</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/alchemix-v3-docs/user">Tutorial</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-hidden="true" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-hidden="true" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 My Project, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
