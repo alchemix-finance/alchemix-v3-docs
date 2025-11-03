@@ -7,7 +7,7 @@ sidebar_position: 10
 <details>
 
 <summary>
-  W<strong>ha</strong>t is Alchemix?
+  What is Alchemix?
 </summary>
 
 Alchemix is a pioneering DeFi platform and community DAO that empowers users to unlock the potential of their assets through Self-Repaying, non-liquidating loans. Alchemix reimagines the traditional lending and borrowing experience, offering a secure and innovative way to balance spending and saving while mitigating liquidation risks.

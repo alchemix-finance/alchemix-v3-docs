@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Security & Audits
 
-TODO
+<!-- TODO -->
 
 At Alchemix, security is foundational. With every major protocol upgrade—including Alchemix V3—we prioritize rigorous testing, independent audits, and transparent processes to protect users and partners alike.
 

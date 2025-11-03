@@ -1,8 +1,12 @@
 ---
 sidebar_position: 3
+hide_title: true
+sidebar_label: How Peg Is Maintained
 ---
 
-# How Peg Is Maintained
+import pegMaintained from '@site/static/img/peg-maintained-01.png';
+
+<img src={pegMaintained} alt="How Peg Is Maintained" class="banner-spacing" />
 
 alAssets are the synthetic debt tokens in which loans are denominated, which are soft-pegged rather than hard-pegged. The protocol does not forcibly fix their price at 1.00 but relies on market incentives and redemption mechanics to pull the price back toward parity after short-term drifts.
 

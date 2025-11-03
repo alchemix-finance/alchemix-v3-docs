@@ -1,8 +1,16 @@
 ---
 sidebar_position: 4
+hide_title: true
+sidebar_label: Redemption Rate
 ---
 
-# Redemption Rate
+import redemption from '@site/static/img/redemption-rate-01.png';
+
+<!-- TODO -->
+
+<!-- # Redemption Rate -->
+
+<img src={redemption} alt="Redemption Rate" class="banner-spacing" />
 
 Redemptions convert earmarked collateral into the asset required to repay debt. Two ideas matter:
 

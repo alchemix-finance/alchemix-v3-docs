@@ -1,12 +1,15 @@
 ---
 sidebar_position: 1
+hide_title: true
+sidebar_label: Developer Docs
 ---
 
 import AlchemixStats from "@site/src/components/AlchemixStats";
+import devdocs from '@site/static/img/devdocs-01.png';
 
-# Dev Overview
+<img src={devdocs} alt="Developer Docs" class="banner-spacing" />
 
-This section of the docs will contain contract descriptions and architecture describing how Alchemix contracts work and interact on a technical level.
+This section of the docs will contain contract descriptions and architecture describing how Alchemix contracts work and interact on a technical level. These docs are in active development. Expect gaps and changes.
 
 # Quick Start Guide
 

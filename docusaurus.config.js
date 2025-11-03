@@ -179,16 +179,27 @@ const config = {
           },
         ],
       },
-      // TODO
       footer: {
         style: "dark",
         links: [
           {
-            title: "Docs",
+            title: "Documentation",
             items: [
               {
-                label: "Tutorial",
+                label: "User",
                 to: "/alchemix-v3-docs/user",
+              },
+              {
+                label: "Developer",
+                to: "/alchemix-v3-docs/dev",
+              },
+              {
+                label: "Governance",
+                to: "/alchemix-v3-docs/governance/intro",
+              },
+              {
+                label: "Integrations",
+                to: "/alchemix-v3-docs/projects",
               },
             ],
           },
@@ -196,16 +207,20 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus",
+                label: "Live dAPP",
+                href: "https://alchemix.fi/",
               },
               {
                 label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus",
+                href: "https://discord.gg/E9eGjttFCB",
               },
               {
-                label: "X",
-                href: "https://x.com/docusaurus",
+                label: "X (Prev. Twitter)",
+                href: "https://x.com/AlchemixFi",
+              },
+              {
+                label: "Newsletter",
+                href: "https://alchemixfi.substack.com/",
               },
             ],
           },
@@ -214,12 +229,34 @@ const config = {
             items: [
               {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/alchemix-finance",
+              },
+              {
+                label: "Forum",
+                href: "https://forum.alchemix.fi/public/",
+              },
+              {
+                label: "DefiLlama",
+                href: "https://defillama.com/",
+              },
+              {
+                label: "Snapshot",
+                href: "https://snapshot.org/",
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        logo: {
+          alt: "Alchemix Logo",
+          src: "img/alchemix-full.svg",
+          href: "https://alchemix.fi/",
+          width: 160,
+        },
+        copyright: `Copyright © 2020 - ${new Date().getFullYear()} Alchemix Labs.
+        <br>
+        <span style="font-size: 0.6em; opacity: 0.8;">
+        All rights reserved, no guarantees given. DeFi tools are not toys. Use at your own risk.
+      </span>`,
       },
       prism: {
         theme: prismThemes.github,

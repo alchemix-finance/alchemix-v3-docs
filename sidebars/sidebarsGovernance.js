@@ -5,10 +5,10 @@ const sidebarsGovernance = {
 
     {
       type: "category",
-      label: "Onchain Governance System",
+      label: "Key Concepts",
+      className: "sidebarBold",
       collapsed: false,
       items: [
-        "onchain/why-onchain-governance",
         "onchain/how-to-vote",
         "onchain/vqalcx",
         "onchain/onchain-governance-infrastructure",

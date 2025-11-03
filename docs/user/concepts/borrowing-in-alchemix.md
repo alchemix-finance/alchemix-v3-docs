@@ -1,8 +1,14 @@
 ---
 sidebar_position: 2
+hide_title: true
+sidebar_label: Borrowing In Alchemix
 ---
 
-# Borrowing in Alchemix
+import borrowing from '@site/static/img/borrowing-01.png';
+
+<!-- TODO -->
+
+<img src={borrowing} alt="Borrowing" class="banner-spacing" />
 
 After converting ETH or USDC into the Meta-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral’s face value.
 

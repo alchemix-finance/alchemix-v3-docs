@@ -9,14 +9,16 @@ module.exports = {
     {
       type: "category",
       label: "Why Integrate",
+      className: "sidebarBold",
       collapsed: false,
-      items: ["why-integrate/overview", "why-integrate/use-cases"],
+      items: ["why-integrate/use-cases"],
     },
 
     //  How to Integrate
     {
       type: "category",
       label: "How to Integrate",
+      className: "sidebarBold",
       collapsed: false,
       items: ["how-to/friendly-fork"],
     },
@@ -25,6 +27,7 @@ module.exports = {
     {
       type: "category",
       label: "Support",
+      className: "sidebarBold",
       collapsed: false,
       items: [
         "support/brand-assets",
@@ -37,6 +40,7 @@ module.exports = {
     {
       type: "category",
       label: "Contact & Onboarding",
+      className: "sidebarBold",
       collapsed: false,
       items: [
         "contact/apply-to-partner", // Apply to Partner

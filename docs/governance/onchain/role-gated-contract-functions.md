@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Role Gated Contract Functions
 
-TODO
+<!-- TODO -->
 
 This section is meant to describe all function calls that require whitelisted permissions (Admin, SEntinel, Guardian, etc)
 

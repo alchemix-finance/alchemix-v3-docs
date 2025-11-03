@@ -1,8 +1,12 @@
 ---
 sidebar_position: 1
+hide_title: true
+sidebar_label: Deposit & Borrow
 ---
 
-# Deposit and Borrow
+import depositBorrow from '@site/static/img/deposit-borrow-01.png';
+
+<img src={depositBorrow} alt="Deposit & Borrow" class="banner-spacing" />
 
 A single vault deposit gives you immediate, auto-compounded yield through the Meta-Yield Token (MYT). From there you can:
 

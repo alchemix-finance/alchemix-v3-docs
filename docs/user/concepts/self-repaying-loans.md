@@ -1,8 +1,14 @@
 ---
 sidebar_position: 3
+hide_title: true
+sidebar_label: Self-Repaying Loans
 ---
 
-# Self-Repaying Loans
+import self from '@site/static/img/self-repaying-01.png';
+
+<!-- TODO -->
+
+<img src={self} alt="Self-Repaying Loans" class="banner-spacing" />
 
 A self-repaying loan lets you unlock liquidity without immediately selling your core position.
 
