@@ -30,7 +30,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 - **Description** - The first step in a two-step process of setting a new administrator. The pendingAdmin is set by the current admin, then the pendingAdmin must accept the responsibility to lock in the change of admin.
 - **Type** - address
 - **Updated By**
-  - [`transferAdminOwnership(address _newAdmin)`](/dev/alchemist/alchemist-curator-contract#AdminActions_transferAdminOwnership)
+  - [`transferAdminOwnership(address _newAdmin)`](/dev/alchemist/alchemist-curator-contract#AdminActions_transferAdminOwnerShip)
 - **Read By**
   - `pendingAdmin()`
 - **Notified By** - none
