@@ -14,7 +14,7 @@ A self-repaying loan lets you unlock liquidity without immediately selling your 
 
 Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or alUSD, that mirrors the price of what you deposited. You may mint alAssets worth up to **90%** of your collateral’s face value and deploy them however you like. Meanwhile, two built-in cash flows reduce the loan balance:
 
-- **Vault yield** – Your collateral is wrapped in the Meta-Yield Token, which earns yield continuously.
+- **Vault yield** – Your collateral is wrapped in the Mixed-Yield Token, which earns yield continuously.
 
 - **Scheduled redemptions** – As Transmuter redemption positions mature, users will redeem their positions, which then triggers debt repayments using user collateral.
 
