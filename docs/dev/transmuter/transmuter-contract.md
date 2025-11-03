@@ -186,10 +186,10 @@ The Transmuter is a contract that allows redemption of synthetic debt assets cre
 - **Used By**
   - [`createRedemption(uint256 syntheticDepositAmount)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
 - **Updated By**
-  - [`setDepositCap(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#AdminActions_setDepositCap)
+  - [`setDepositCap(uint256 cap)`](/dev/transmuter/transmuter-contract#AdminActions_setDepositCap)
 - **Read By**
   - `depositCap()`
-- **Notified By** - [`DepositCapUpdated(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#Events_DepositCapUpdated)
+- **Notified By** - [`DepositCapUpdated(uint256 cap)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
 </details>
 <details>
   <summary>totalLocked</summary>
@@ -214,10 +214,10 @@ The Transmuter is a contract that allows redemption of synthetic debt assets cre
 - **Used By**
   - [`acceptAdmin()`](/dev/transmuter/transmuter-contract#UserActions_acceptAdmin)
 - **Updated By**
-  - [`setPendingAdmin(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#AdminActions_setPendingAdmin)
+  - [`setPendingAdmin(uint256 cap)`](/dev/transmuter/transmuter-contract#AdminActions_setPendingAdmin)
 - **Read By**
   - `pendingAdmin()`
-- **Notified By** - [`PendingAdminUpdated(address value)`](/docs/dev/alchemist/alchemist-contract.md#Events_PendingAdminUpdated)
+- **Notified By** - [`PendingAdminUpdated(address value)`](/dev/transmuter/transmuter-contract#Events_PendingAdminUpdated)
 </details>
 <details>
   <summary>alchemist</summary>
@@ -228,10 +228,10 @@ The Transmuter is a contract that allows redemption of synthetic debt assets cre
   - [`createRedemption(uint256 syntheticDepositAmount)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
   - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
 - **Updated By**
-  - [`setAlchemist(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#AdminActions_setAlchemist)
+  - [`setAlchemist(uint256 cap)`](/dev/transmuter/transmuter-contract#AdminActions_setAlchemist)
 - **Read By**
   - `alchemist()`
-- **Notified By** - [`AlchemistUpdated(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#Events_DepositCapUpdated)
+- **Notified By** - [`AlchemistUpdated(uint256 cap)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
 </details>
 <details>
   <summary>alchemists</summary>
@@ -261,7 +261,7 @@ The Transmuter is a contract that allows redemption of synthetic debt assets cre
 - **Updated By**
   - [`createRedemption(uint256 syntheticDepositAmount)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
   - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
-- **Read By** - [`getPosition(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#Events_DepositCapUpdated)
+- **Read By** - [`getPosition(uint256 cap)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
 </details>
 <details>
   <summary>_stakingGraph</summary>
@@ -275,7 +275,7 @@ The Transmuter is a contract that allows redemption of synthetic debt assets cre
 - **Updated By**
   - [`createRedemption(uint256 syntheticDepositAmount)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
   - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
-- **Read By** - [`getPosition(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#Events_DepositCapUpdated)
+- **Read By** - [`getPosition(uint256 cap)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
 </details>
 <details>
   <summary>_nonce</summary>
@@ -289,7 +289,7 @@ The Transmuter is a contract that allows redemption of synthetic debt assets cre
 - **Updated By**
   - [`createRedemption(uint256 syntheticDepositAmount)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
   - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
-- **Read By** - [`getPosition(uint256 cap)`](/docs/dev/alchemist/alchemist-contract.md#Events_DepositCapUpdated)
+- **Read By** - [`getPosition(uint256 cap)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
 </details>
 
 ## Functions
