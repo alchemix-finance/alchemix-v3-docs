@@ -22,7 +22,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "keenanlukeom", // Usually your GitHub org/user name.
+  organizationName: "alchemix-finance", // Usually your GitHub org/user name.
   projectName: "alchemix-v3-docs", // Usually your repo name.
 
   onBrokenLinks: "throw",
@@ -60,7 +60,7 @@ const config = {
         routeBasePath: "user",
         sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
         editUrl:
-          "https://github.com/keenanlukeom/alchemix-v3-docs/edit/main/docs/user/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/user/",
       },
     ],
 
@@ -73,7 +73,7 @@ const config = {
         routeBasePath: "dev", // served at /dev
         sidebarPath: require.resolve("./sidebars/sidebarsDev.js"),
         editUrl:
-          "https://github.com/keenanlukeom/alchemix-v3-docs/edit/main/docs/dev/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/dev/",
       },
     ],
 
@@ -86,7 +86,7 @@ const config = {
         routeBasePath: "governance",
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
         editUrl:
-          "https://github.com/keenanlukeom/alchemix-v3-docs/edit/main/docs/governance/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/governance/",
       },
     ],
 
@@ -99,7 +99,7 @@ const config = {
         routeBasePath: "projects",
         sidebarPath: require.resolve("./sidebars/sidebarsProjects.js"),
         editUrl:
-          "https://github.com/keenanlukeom/alchemix-v3-docs/edit/main/docs/projects/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/projects/",
       },
     ],
 
@@ -125,7 +125,7 @@ const config = {
         content:
           "🚧 <strong>Public BETA:</strong> These docs are in active development. Expect gaps and changes. " +
           '<a href="https://discord.gg/E9eGjttFCB">Get support</a> · ' +
-          '<a href="https://github.com/KeenanLukeOM/alchemix-v3-docs/issues/new">Report an issue</a>',
+          '<a href="https://github.com/alchemix-finance/alchemix-v3-docs/issues/new">Report an issue</a>',
         backgroundColor: "#FFF4E5",
         textColor: "#3D2C00",
         isCloseable: false,
@@ -141,7 +141,7 @@ const config = {
         logo: {
           alt: "Alchemix Logo",
           src: "img/alchemix-full.svg",
-          href: "/alchemix-v3-docs/user/",
+          href: "/user",
         },
         items: [
           {
@@ -173,7 +173,7 @@ const config = {
             label: "Integrations",
           },
           {
-            href: "https://github.com/KeenanLukeOM/alchemix-v3-docs",
+            href: "https://github.com/alchemix-finance/alchemix-v3-docs",
             label: "GitHub",
             position: "right",
           },
@@ -187,19 +187,19 @@ const config = {
             items: [
               {
                 label: "User",
-                to: "/alchemix-v3-docs/user",
+                to: "/user",
               },
               {
                 label: "Developer",
-                to: "/alchemix-v3-docs/dev",
+                to: "/dev",
               },
               {
                 label: "Governance",
-                to: "/alchemix-v3-docs/governance/intro",
+                to: "/governance/intro",
               },
               {
                 label: "Integrations",
-                to: "/alchemix-v3-docs/projects",
+                to: "/projects",
               },
             ],
           },
