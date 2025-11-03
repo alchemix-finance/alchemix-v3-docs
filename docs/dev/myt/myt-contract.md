@@ -429,8 +429,8 @@ For more specific operations tailored to individual strategies, see the contract
   	Assets are allocated using an internal call to `_allocate()` which is overrideen and defined in derived strategy contract implementations. If `killSwitch` is enabled, the simply exits with a change of 0.
     - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
     - `@param assets` - the amount of tokens the vault is requesting to allocated to the strategy.
-    - `@param selector` - TODO unused and not intherited. Do we need?
-    - `@param sender` - TODO unused and not inherited. Do we need?
+    - `@param selector` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
+    - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
   -	**Visibility Specifier** - external
   -	**State Mutability Specifier** - nonpayable
   -	**Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
@@ -569,7 +569,7 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="ReadingState_getCap">
   <summary>getCap()</summary>
 
-  - **Description** - Returns the `params.cap` variable. TODO - not used?
+  - **Description** - Returns the `params.cap` variable, which describes the max allocation to a specific strategy in a specific risk class
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view  
   - **Returns** - `uint256 cap`
@@ -579,7 +579,7 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="ReadingState_getGlobalCap">
   <summary>getGlobalCap()</summary>
 
-  - **Description** - Returns the `params.globalCap` variable. TODO - not used??
+  - **Description** - Returns the `params.globalCap` variable. 
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view  
   - **Returns** - `uint256 globalCap` 
