@@ -130,7 +130,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - A value in seconds set to 1 day.
 - **Type** - uint256
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Updated By** - none. Constant varible.
 - **Read By** - `MIN_SNAPSHOT_INTERVAL()` - returns a uint representing seconds
 </details>
@@ -180,7 +180,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - The list of params passed at deployment-time describing the strategy. Some can be edited. For more information see the StrategyParams type above.
 - **Type** - StrategyParams
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
   - [`getIdData()`](/dev/myt/myt-contract#ReadingState_getIdData)
   - [`getCap()`](/dev/myt/myt-contract#ReadingState_getCap)
   - [`getGlobalCap()`](/dev/myt/myt-contract#ReadingState_getGlobalCap)
@@ -195,9 +195,9 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - The last time the `snapshotYield()` function was successfully run.
 - **Type** - uint256
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Read By** - `lastSnapshotTime()`
 </details>
 <details>
@@ -206,9 +206,9 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - The last recorded price-per-share of the underlying strategy. Each time `snapshotYield()` is called, the strategy implementation (derivation of this base contract) `_computeBaseRatePerSecond()` is called which calculates the base yield rate, in addition to getting the new price-per-share value for the strategy. That is then recorded as the lastIndex. This value is used to help calculate total yield earned since that last snapshot.
 - **Type** - uint256
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Read By** - `lastIndex()`
 </details>
 <details>
@@ -217,9 +217,9 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - The last recorded estimated non-compounding APR of the underlying strategy. Scaled by 1e18. (1e18 = 100%, 5e17 = 50%, etc.)
 - **Type** - uint256
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Read By** - `estApr()`
 </details>
 <details>
@@ -228,9 +228,9 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - The last recorded estimated compounding APY for the underlying strategy. Scaled by 1e18. (1e18 = 100%, 5e17 = 50%, etc.)
 - **Type** - uint256
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserOperations_snapshotYield)
+  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
 - **Read By** - `estApy()`
 </details>
 <details>
@@ -319,7 +319,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Emits** - none
 - **Reverts** - With `"emergency"` if `killSwitch == true`
 </details>
-<details id="UserOperations_snapshotYield">
+<details id="UserActions_snapshotYield">
   <summary>snapshotYield()</summary>
 
 - **Description** - Recomputes the strategies estimated rates for base yield and incentives yield and returns an aggregate estimated apy scaled by 1e18. (1e18 = 100%)<br/><br/>
@@ -402,18 +402,18 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="VaultActions_allocate">
   <summary>allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
 
-- **Description** - Allocates `assets` from the vault into the underlying strategy, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
-  Assets are allocated using an internal call to `_allocate()` which is overrideen and defined in derived strategy contract implementations. If `killSwitch` is enabled, the simply exits with a change of 0.
-  - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
-  - `@param assets` - the amount of tokens the vault is requesting to allocated to the strategy.
-  - `@param selector` - TODO unused and not intherited. Do we need?
-  - `@param sender` - TODO unused and not inherited. Do we need?
-- **Visibility Specifier** - external
-- **State Mutability Specifier** - nonpayable
-- **Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
-- **Emits**
-  - [`Allocate(uint256 amountAllocated, address this)`](/dev/myt/myt-contract#Events_Allocate)
-- **Reverts** - none
+  - **Description** - Allocates `assets` from the vault into the underlying strategy, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
+  	Assets are allocated using an internal call to `_allocate()` which is overrideen and defined in derived strategy contract implementations. If `killSwitch` is enabled, the simply exits with a change of 0.
+    - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
+    - `@param assets` - the amount of tokens the vault is requesting to allocated to the strategy.
+    - `@param selector` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
+    - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
+  -	**Visibility Specifier** - external
+  -	**State Mutability Specifier** - nonpayable
+  -	**Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
+  -	**Emits**
+    - [`Allocate(uint256 amountAllocated, address this)`](/dev/myt/myt-contract#Events_Allocate)
+  - **Reverts** - none
 </details>
 <details id="VaultActions_deallocate">
   <summary>deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
@@ -429,7 +429,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
 - **Emits**
   - [`Deallocate(uint256 amountDeallocated, address this)`](/dev/myt/myt-contract#Events_Deallocate)
-  - [`MYTLog(string message, uint256 value)`] - emit old allocation, amount deallocated, and resulting new allocation for transparency.
+  - [`MYTLog(string message, uint256 value)`](/dev/myt/myt-contract#Events_MYTLog) - emit old allocation, amount deallocated, and resulting new allocation for transparency.
 - **Reverts** - none
 </details>
 
@@ -517,7 +517,7 @@ For more specific operations tailored to individual strategies, see the contract
   <summary>_lerp(uint256 oldVal, uint256 newVal, uint256 alpha)</summary>
 
 - **Description** - A smoothing function to blend `oldVal` and `newVal` using a weighted average, in order to calculate a new yield rate without sharp differences.<br/><br/>
-  Uses a factor `alpha` to determine how much of the previous value to retain vs. how much of the new value to apply. This is currently set to 70% (7e17) in [`snapshotYield()`](/dev/myt/myt-contract#UserOperations_snapshotYield), the only caller of this function.
+  Uses a factor `alpha` to determine how much of the previous value to retain vs. how much of the new value to apply. This is currently set to 70% (7e17) in [`snapshotYield()`](/dev/myt/myt-contract#UserActions_snapshotYield), the only caller of this function.
   This means newly calculated results will use approximately 70% of `oldVal` and 30% of `newVal`, in order to prevent sudden jumps in estimated APR and APY.
   - `@param oldVal` — previous recorded value (scaled by 1e18)
   - `@param newVal` — new calculated value (scaled by 1e18)
@@ -546,22 +546,22 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="ReadingState_getCap">
   <summary>getCap()</summary>
 
-- **Description** - Returns the `params.cap` variable. TODO - not used?
-- **Visibility Specifier** - external
-- **State Mutability Specifier** - view
-- **Returns** - `uint256 cap`
-- **Emits** - none
-- **Reverts** - none
+  - **Description** - Returns the `params.cap` variable, which describes the max allocation to a specific strategy in a specific risk class
+  - **Visibility Specifier** - external  
+  - **State Mutability Specifier** - view  
+  - **Returns** - `uint256 cap`
+  - **Emits** - none  
+  - **Reverts** - none  
 </details>
 <details id="ReadingState_getGlobalCap">
   <summary>getGlobalCap()</summary>
 
-- **Description** - Returns the `params.globalCap` variable. TODO - not used??
-- **Visibility Specifier** - external
-- **State Mutability Specifier** - view
-- **Returns** - `uint256 globalCap`
-- **Emits** - none
-- **Reverts** - none
+  - **Description** - Returns the `params.globalCap` variable. 
+  - **Visibility Specifier** - external  
+  - **State Mutability Specifier** - view  
+  - **Returns** - `uint256 globalCap` 
+  - **Emits** - none  
+  - **Reverts** - none  
 </details>
 <details id="ReadingState_ids">
   <summary>ids()</summary>

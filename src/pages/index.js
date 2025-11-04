@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "@docusaurus/router";
 
 export default function Home() {
-  return <Redirect to="/alchemix-v3-docs/user" />;
+  return <Redirect to="/user" />;
 }
 
 // Previous landing structure below.
