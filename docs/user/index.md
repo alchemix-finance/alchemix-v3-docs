@@ -24,7 +24,7 @@ Alchemix is your unified platform for saving, earning, borrowing, and fixed-term
 
 **How it works**
 
-Deposit ETH or USDC into a vault to receive Meta-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by Alchemix and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
+Deposit ETH or USDC into a vault to receive Mixed-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by Alchemix and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
 
 ### Key Points
 
@@ -55,7 +55,7 @@ Typical uses include financing a purchase, leveraging/looping yield, or bridging
 
 ## 3. Lock In Fixed Returns with the Transmuter
 
-The Transmuter lets users deposit alAssets and, after a fixed term, redeem an equivalent amount of the underlying asset—via Meta-Yield Tokens (MYT), which act as an intermediary claim.
+The Transmuter lets users deposit alAssets and, after a fixed term, redeem an equivalent amount of the underlying asset—via Mixed-Yield Tokens (MYT), which act as an intermediary claim.
 
 - **Predictable returns** – redemption price and date are known upfront.
 - **Peg stability** – arbitrage incentives help to keep alAssets near parity.

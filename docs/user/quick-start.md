@@ -23,7 +23,7 @@ Connect a wallet on the target chain and keep a small balance of the native gas 
 
 ![](/img/quick-start-01.png)
 
-Open Vaults, select Meta-ETH or Meta-USDC on your chain, and deposit. The vault will mint MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
+Open Vaults, select Mixed-ETH or Mixed-USDC on your chain, and deposit. The vault will mint MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
 
 ### Step 2 – Borrow at 20% LTV
 

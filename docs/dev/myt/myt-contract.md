@@ -11,7 +11,7 @@ import mytstrategy from '@site/static/img/mytstrategy-01.png';
 The Alchemix V3 protocol introduces a modular system for yield generation centered around Morpho V2 Vaults. The core of this system
 is a set of strategies that function as adapters for the Morpho Vault, managing user-deposited assets such as WETH and USDC. These
 strategies are designed to allocate capital across a diverse range of third-party, yield-bearing DeFi protocols. Users deposit their assets
-into the Morpho Vault and receive Meta Yield Tokens (MYT), which represent a share of the vault’s underlying assets. The value of an MYT
+into the Morpho Vault and receive Mixed-Yield Tokens (MYT), which represent a share of the vault’s underlying assets. The value of an MYT
 share is designed to increase over time as the strategies accrue yield. The allocation of capital is managed by an Alchemix admin or
 operator via the AlchemistAllocator contract to optimize returns and manage risk.
 
