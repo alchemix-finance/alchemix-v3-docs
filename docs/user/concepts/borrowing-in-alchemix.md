@@ -5,6 +5,7 @@ sidebar_label: Borrowing In Alchemix
 ---
 
 import borrowing from '@site/static/img/borrowing-01.png';
+import borrowingScreen01 from '@site/static/img/borrowing-in-alchemix-01.png';
 
 <!-- TODO -->
 
@@ -14,7 +15,7 @@ After converting ETH or USDC into the Mixed-Yield Token, the next step is borrow
 
 ## How borrowing works
 
-![](/img/borrowing-in-alchemix-01.png)
+<img src={borrowingScreen01} alt="Borrowing DAPP Screenshot" class="banner-spacing" />
 
 1. Navigate to the Borrow panel in your vault.
 

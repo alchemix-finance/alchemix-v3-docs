@@ -63,3 +63,11 @@
 .banner-spacing + h3 {
   margin-top: 0;
 }
+
+.screenshot-spacing {
+  width: 100%;
+  height: auto;
+  display: block;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
