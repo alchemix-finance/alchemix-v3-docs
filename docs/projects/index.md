@@ -8,7 +8,7 @@ import integrations from '@site/static/img/integrations-01.png';
 
 <img src={integrations} alt="Why Integrate Alchemix?" fetchpriority="high" class="banner-spacing" />
 
-Alchemix V3 turns a single deposit of ETH or USDC into two complementary positions. First, the funds are wrapped into a Mixed-Yield Token (MYT) that earns yield across a diversified set of strategies curated by the Alchemix DAO. That same collateral unlocks a credit line, allowing users to mint synthetic alAssets, alETH or alUSD, worth up to ninety percent of the deposit.
+Alchemix V3 turns a single deposit of ETH or USDC into two complementary positions. First, the funds are wrapped into a Mix-Yield Token (MYT) that earns yield across a diversified set of strategies curated by the Alchemix DAO. That same collateral unlocks a credit line, allowing users to mint synthetic alAssets, alETH or alUSD, worth up to ninety percent of the deposit.
 
 The redesigned Transmuted accepts these alAssets and, on a fixed schedule, returns MYT one-for-one. This mechanism keeps alAssets close to price parity with their underlying assets and created predictable, bond-like yield opportunities for anyone who accumulated alAssets below face value.
 
@@ -25,7 +25,7 @@ The redesigned Transmuted accepts these alAssets and, on a fixed schedule, retur
 | Feature                    | Purpose                                                                                             |
 | -------------------------- | --------------------------------------------------------------------------------------------------- |
 | Alchemist Vault (ERC-4626) | Aggregated yield for each base asset on every supported chain                                       |
-| Mixed-Yield Token (MYT)    | Tokenised basket of yield strategies, which can be unwrapped for the underlying assets at any time  |
+| Mix-Yield Token (MYT)      | Tokenised basket of yield strategies, which can be unwrapped for the underlying assets at any time  |
 | Transmuter                 | Fixed-duration redemptions that stabilise alAsset prices and create predictable return opportunties |
 | Self-repaying CDP          | Debt is automatically retired by vault yield and scheduled redemptions                              |
 

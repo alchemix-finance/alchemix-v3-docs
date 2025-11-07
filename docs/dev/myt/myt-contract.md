@@ -11,7 +11,7 @@ import mytstrategy from '@site/static/img/mytstrategy-01.png';
 The Alchemix V3 protocol introduces a modular system for yield generation centered around Morpho V2 Vaults. The core of this system
 is a set of strategies that function as adapters for the Morpho Vault, managing user-deposited assets such as WETH and USDC. These
 strategies are designed to allocate capital across a diverse range of third-party, yield-bearing DeFi protocols. Users deposit their assets
-into the Morpho Vault and receive Mixed-Yield Tokens (MYT), which represent a share of the vault’s underlying assets. The value of an MYT
+into the Morpho Vault and receive Mix-Yield Tokens (MYT), which represent a share of the vault’s underlying assets. The value of an MYT
 share is designed to increase over time as the strategies accrue yield. The allocation of capital is managed by an Alchemix admin or
 operator via the AlchemistAllocator contract to optimize returns and manage risk.
 
@@ -402,18 +402,18 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="VaultActions_allocate">
   <summary>allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
 
-  - **Description** - Allocates `assets` from the vault into the underlying strategy, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
-  	Assets are allocated using an internal call to `_allocate()` which is overrideen and defined in derived strategy contract implementations. If `killSwitch` is enabled, the simply exits with a change of 0.
-    - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
-    - `@param assets` - the amount of tokens the vault is requesting to allocated to the strategy.
-    - `@param selector` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
-    - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
-  -	**Visibility Specifier** - external
-  -	**State Mutability Specifier** - nonpayable
-  -	**Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
-  -	**Emits**
-    - [`Allocate(uint256 amountAllocated, address this)`](/dev/myt/myt-contract#Events_Allocate)
-  - **Reverts** - none
+- **Description** - Allocates `assets` from the vault into the underlying strategy, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
+  Assets are allocated using an internal call to `_allocate()` which is overrideen and defined in derived strategy contract implementations. If `killSwitch` is enabled, the simply exits with a change of 0.
+  - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
+  - `@param assets` - the amount of tokens the vault is requesting to allocated to the strategy.
+  - `@param selector` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
+  - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
+- **Visibility Specifier** - external
+- **State Mutability Specifier** - nonpayable
+- **Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
+- **Emits**
+  - [`Allocate(uint256 amountAllocated, address this)`](/dev/myt/myt-contract#Events_Allocate)
+- **Reverts** - none
 </details>
 <details id="VaultActions_deallocate">
   <summary>deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
@@ -542,26 +542,28 @@ For more specific operations tailored to individual strategies, see the contract
 - **Returns** - `uint256 estimatedYield` - last snapshotted yield value (1e18 = 100%)
 - **Emits** - none
 - **Reverts** - none
+
 </details>
 <details id="ReadingState_getCap">
   <summary>getCap()</summary>
 
-  - **Description** - Returns the `params.cap` variable, which describes the max allocation to a specific strategy in a specific risk class
-  - **Visibility Specifier** - external  
-  - **State Mutability Specifier** - view  
-  - **Returns** - `uint256 cap`
-  - **Emits** - none  
-  - **Reverts** - none  
+- **Description** - Returns the `params.cap` variable, which describes the max allocation to a specific strategy in a specific risk class
+- **Visibility Specifier** - external
+- **State Mutability Specifier** - view
+- **Returns** - `uint256 cap`
+- **Emits** - none
+- **Reverts** - none
 </details>
+
 <details id="ReadingState_getGlobalCap">
   <summary>getGlobalCap()</summary>
 
-  - **Description** - Returns the `params.globalCap` variable. 
-  - **Visibility Specifier** - external  
-  - **State Mutability Specifier** - view  
-  - **Returns** - `uint256 globalCap` 
-  - **Emits** - none  
-  - **Reverts** - none  
+- **Description** - Returns the `params.globalCap` variable.
+- **Visibility Specifier** - external
+- **State Mutability Specifier** - view
+- **Returns** - `uint256 globalCap`
+- **Emits** - none
+- **Reverts** - none
 </details>
 <details id="ReadingState_ids">
   <summary>ids()</summary>
@@ -582,7 +584,9 @@ For more specific operations tailored to individual strategies, see the contract
 - **Returns** - `bytes memory abiEncodedValue`
 - **Emits** - none
 - **Reverts** - none
+
 </details>
+
 <details id="ReadingState_realAssets">
   <summary>realAssets()</summary>
 

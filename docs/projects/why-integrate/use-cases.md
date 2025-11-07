@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## DAOs & Treasuries
 
-Treasury managers can park idle ETH or USDC in the Mixed-Yield Token (MYT) to earn a diversified return while assets remain fully on-chain. When liquidity is required, the same collateral mints alAssets that can be swapped for operating capital, vault yield then repays the debt. Any surplus alAssets can enter the Transmuter to secure a predictable, fixed-rate gain.
+Treasury managers can park idle ETH or USDC in the Mix-Yield Token (MYT) to earn a diversified return while assets remain fully on-chain. When liquidity is required, the same collateral mints alAssets that can be swapped for operating capital, vault yield then repays the debt. Any surplus alAssets can enter the Transmuter to secure a predictable, fixed-rate gain.
 
 Example flow:
 

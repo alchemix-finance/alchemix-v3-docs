@@ -2,4 +2,4 @@
 sidebar_position: 1
 ---
 
-# The Mixed-Yield Token
+# The Mix-Yield Token
