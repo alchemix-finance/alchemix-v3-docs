@@ -29,7 +29,7 @@ The Repay tab accepts three asset types: alAssets, MYT, or the underlying token.
 | Option                   | When to use                          | Notes                                                                   |
 | ------------------------ | ------------------------------------ | ----------------------------------------------------------------------- |
 | alAsset (alUSD or alETH) | Standard debt                        | Repays non-earmarked debt only.                                         |
-| MYT (Mixed-Yield Token)  | Earmarked debt and/oor standard debt | Required for any debt already earmarked for a redemption cycle.         |
+| MYT (Mix-Yield Token)    | Earmarked debt and/oor standard debt | Required for any debt already earmarked for a redemption cycle.         |
 | Underlying (ETH or USDC) | Convenience                          | Interface swaps to MYT behind the scenes before applying the repayment. |
 
 The asset-selector dropdown (left side of the entry box) will only list what is valid for the current vault state.

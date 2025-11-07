@@ -1,16 +1,16 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Mixed-Yield Token
+sidebar_label: Mix-Yield Token
 ---
 
 import MYT from '@site/static/img/MYT-banner.png';
 
-<img src={MYT} alt="Mixed-Yield Token" class="banner-spacing" />
+<img src={MYT} alt="Mix-Yield Token" class="banner-spacing" />
 
-Mixed-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols.
+Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols.
 
-[Explore technical documentation for MYT →](../../dev/myt/mixed-yield-token)
+[Explore technical documentation for MYT →](../../dev/myt/mix-yield-token)
 
 ## What is MYT?
 
