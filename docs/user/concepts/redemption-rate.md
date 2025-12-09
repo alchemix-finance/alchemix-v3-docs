@@ -35,26 +35,34 @@ The redemption rate tells borrowers what share of total system debt redemptions 
 ### Formula
 
 ```mermaid
-graph LR
+%%{init: {
+  'themeVariables': { 'fontFamily': 'Montserrat', 'edgeLabelBackground':'#1b1b1d',     'tertiaryColor': '#1b1b1d' },
+  'flowchart': {
+      'curve': 'monotoneX',
+      'nodeSpacing': 100,
+      'rankSpacing': 80
+  }
+}}%%
+flowchart LR
+    %% Font Weights
+    classDef default font-weight:bold;
+
     %% Inputs
-    A[Transmuter Balance]
-    B[Transmutation Time]
-    C[Total System Debt]
-
-    %% The Engine
+    A(Transmuter Balance)
+    B(Transmutation Time)
+    C(Total System Debt)
     D(Annual Redemptions)
-
-    %% The Result
     E{{Redemption Rate}}
 
     %% Connections
-    A --> D
-    B --> D
-    D --> E
-    C --> E
+    A --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| D
+    B --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| D
+    D --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| E
+    C --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| E
 
-    %% Styling (Matches your Example)
+    %% Styling
     style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
+    linkStyle 0,1,2,3 stroke:#ccc,stroke-width:2px,color:#ccc
 ```
 
 #### Understanding the inputs
@@ -71,26 +79,31 @@ The redemption rate formula calculates how much of the total system debt can be 
 If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
 
 ```mermaid
-graph LR
-%% Nodes
-A[Transmuter Balance<br/><b>1,000 alETH</b>]
-B[Transmutation Time<br/><b>0.25 Years</b>]
-C[Total System Debt<br/><b>1,500 alETH</b>]
-
-    %% Intermediate Calculation
-    D(Annualized Capacity<br/>1,000 / 0.25 = <b>4,000</b>)
-
-    %% Final Calculation
-    E{{Redemption Rate<br/>4,000 / 1,500 = ~267%}}
+%%{init: {
+  'themeVariables': { 'fontFamily': 'Montserrat', 'edgeLabelBackground':'#1b1b1d',     'tertiaryColor': '#1b1b1d' },
+  'flowchart': {
+      'curve': 'monotoneX',
+      'nodeSpacing': 100,
+      'rankSpacing': 80
+  }
+}}%%
+flowchart LR
+    %% Nodes
+    A(Transmuter Balance<br/><b>1,000 alETH</b>)
+    B(Transmutation Time<br/><b>0.25 Years</b>)
+    C(Total System Debt<br/><b>1,500 alETH</b>)
+    D(Annualized Redemptions<br/>1,000 / 0.25 = <b>4,000 alETH</b>)
+    E{{Redemption Rate<br/>4,000 / 1,500 = <b>~267%</b>}}
 
     %% Logic
-    A --> D
-    B --> D
-    D --> E
-    C --> E
+    A --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| D
+    B --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| D
+    D --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| E
+    C --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| E
 
     %% Styling
     style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
+    linkStyle 0,1,2,3 stroke:#ccc,stroke-width:2px,color:#ccc
 ```
 
 At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, term length, and debt levels remain unchanged.
@@ -103,7 +116,18 @@ Throughout that waiting period your full deposit continues to earn yield, giving
 
 **Example**
 
-TODO
+```mermaid
+graph TD
+    subgraph Standard["Standard Protocol (Yield Loss)"]
+        A1[User Queues Repayment] --> B1[Collateral Sold Immediately]
+        B1 -->|Yield Stops 🛑| C1[Funds sit idle in queue]
+        C1 --> D1[Debt Repaid]
+    end
+
+    style Alchemix fill:#e6fffa,stroke:#00b894,stroke-width:2px
+```
+
+TODO Testing mermaid styling
 
 \[\[\[Will utilize rate formula to push an ex. Say 1000USDC]]]
 
@@ -125,9 +149,14 @@ TODO
 
 - **Live And Historic Graphics** – view past and present data directly in the dapp.
 
-````
+```
+
+```
 
 ```
 
 ```
-````
+
+```
+
+```
