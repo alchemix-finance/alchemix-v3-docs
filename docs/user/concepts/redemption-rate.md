@@ -34,21 +34,64 @@ The redemption rate tells borrowers what share of total system debt redemptions 
 
 ### Formula
 
-Redemption rate (%) =
+```mermaid
+graph LR
+    %% Inputs
+    A[Transmuter Balance]
+    B[Transmutation Time]
+    C[Total System Debt]
 
-Total alAssets in the Transmuter × (1 year ÷ Transmutation time) ÷ Total system debt × 100
+    %% The Engine
+    D(Annual Redemptions)
+
+    %% The Result
+    E{{Redemption Rate}}
+
+    %% Connections
+    A --> D
+    B --> D
+    D --> E
+    C --> E
+
+    %% Styling (Matches your Example)
+    style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
+```
+
+#### Understanding the inputs
+
+The redemption rate formula calculates how much of the total system debt can be cleared in one year, based on current conditions.
+
+- **The Inputs:** We take the current **Transmuter Balance** and the **Transmutation Time** (how long it takes for one batch of assets to be exchanged).
+- **The Frequency:** We calculate how many times the Transmuter can cycle its balance in a single year (EG; a 0.25-year duration means 4 cycles per year).
+- **The Volume:** By multiplying the balance by the frequency of redemptions, we get the **Projected Annual Redemptions**, the total value the system is on track to repay over the next 12 months.
+- **The Rate:** Finally, we compare that projected volume against the **Total System Debt** to determine the percentage rate.
 
 #### Example
 
-If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt.
+If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
 
-Redemption rate
+```mermaid
+graph LR
+%% Nodes
+A[Transmuter Balance<br/><b>1,000 alETH</b>]
+B[Transmutation Time<br/><b>0.25 Years</b>]
+C[Total System Debt<br/><b>1,500 alETH</b>]
 
-\= 1 000 × (1 ÷ 0.25) ÷ 1 500 × 100
+    %% Intermediate Calculation
+    D(Annualized Capacity<br/>1,000 / 0.25 = <b>4,000</b>)
 
-\= 1 000 × 4 ÷ 1 500 × 100
+    %% Final Calculation
+    E{{Redemption Rate<br/>4,000 / 1,500 = ~267%}}
 
-≈ 267 %
+    %% Logic
+    A --> D
+    B --> D
+    D --> E
+    C --> E
+
+    %% Styling
+    style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
+```
 
 At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, term length, and debt levels remain unchanged.
 
@@ -81,3 +124,10 @@ TODO
 - **Transmuter Mechanics** – how earmarking and redemption batches work.
 
 - **Live And Historic Graphics** – view past and present data directly in the dapp.
+
+````
+
+```
+
+```
+````
