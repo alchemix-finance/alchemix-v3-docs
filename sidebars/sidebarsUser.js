@@ -52,7 +52,7 @@ module.exports = {
       type: "category",
       label: "Tutorials",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: [
         "tutorials/use-passive-myt",
         "tutorials/deposit-and-borrow",
