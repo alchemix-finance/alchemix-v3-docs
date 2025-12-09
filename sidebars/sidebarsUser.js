@@ -23,14 +23,29 @@ module.exports = {
       className: "sidebarBold",
       collapsed: false,
       items: [
-        "concepts/myt-and-yield",
-        "concepts/borrowing-in-alchemix",
-        "concepts/self-repaying-loans",
-        "concepts/redemption-rate",
-        "concepts/alAssets",
-        "concepts/transmuter",
-        "concepts/fees",
-        "concepts/liquidations",
+        {
+          type: "category",
+          label: "Assets", // Grouping Asset types
+          items: ["concepts/alAssets", "concepts/myt-and-yield"],
+        },
+        {
+          type: "category",
+          label: "Borrowing & Loans", // Grouping Loan mechanics
+          items: [
+            "concepts/self-repaying-loans",
+            "concepts/borrowing-in-alchemix",
+            "concepts/liquidations",
+          ],
+        },
+        {
+          type: "category",
+          label: "System Mechanics", // Grouping backend logic
+          items: [
+            "concepts/transmuter",
+            "concepts/redemption-rate",
+            "concepts/fees",
+          ],
+        },
       ],
     },
     {
