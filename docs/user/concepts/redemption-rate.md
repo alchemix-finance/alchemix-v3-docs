@@ -88,7 +88,7 @@ flowchart LR
     A(Transmuter Balance<br/><b>1,000 <span style='color:#aaa'>alETH</span></b>)
     B(Transmutation Time<br/><b>0.25 <span style='color:#aaa'>Years</span></b>)
     C(Total System Debt<br/><b>1,500 <span style='color:#aaa'>alETH</span></b>)
-    D(<b>Annualized Redemptions</b><br/>1,000 alETH / 0.25 Years<br/>= <b>4,000 <span style='color:#aaa'>alETH</span></b>)
+    D(<b>Annualized Redemptions</b><br/>1,000 alETH/year / 0.25 Years<br/>= <b>4,000 <span style='color:#aaa'>alETH</span></b>)
     E{{<b>Redemption Rate</b><br/>4,000 alETH / 1,500 alETH<br/>= <b>~267%</b>}}
 
     %% Logic
