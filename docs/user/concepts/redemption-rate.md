@@ -24,14 +24,6 @@ Redemptions convert earmarked collateral into the asset required to repay debt. 
 
 The redemption rate tells borrowers what share of total system debt redemptions will repay in one year through the Transmuter. A higher rate means loans clear more quickly.
 
-### What drives this number
-
-| On-chain variable  | Effect on the rate           | Rationale                                                                                                                                          |
-| ------------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Queued alAssets    | ↑ Larger queue → higher rate | More alUSD or alETH waiting in the Transmuter funds more repayments. Arbitrage deposits enlarge this queue when the market price drifts below peg. |
-| Total system debt  | ↓ More debt → lower rate     | A bigger denominator dilutes the impact of a fixed queue.                                                                                          |
-| Transmutation time | ↑ Shorter term → higher rate | Each unit of queued alAsset cycles more often over a year.                                                                                         |
-
 ### Formula
 
 ```mermaid
@@ -40,7 +32,7 @@ The redemption rate tells borrowers what share of total system debt redemptions 
   'flowchart': {
       'curve': 'monotoneX',
       'nodeSpacing': 100,
-      'rankSpacing': 80
+      'rankSpacing': 120
   }
 }}%%
 flowchart LR
@@ -55,14 +47,18 @@ flowchart LR
     E{{Redemption Rate}}
 
     %% Connections
-    A --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| D
-    B --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| D
-    D --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| E
-    C --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| E
+    A e1@--> D
+    B e2@--> D
+    D e3@--> E
+    C e4@--> E
 
     %% Styling
     style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
     linkStyle 0,1,2,3 stroke:#ccc,stroke-width:2px,color:#ccc
+    e1@{ animation: slow }
+    e2@{ animation: slow }
+    e3@{ animation: fast }
+    e4@{ animation: slow }
 ```
 
 #### Understanding the inputs
@@ -80,33 +76,45 @@ If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.2
 
 ```mermaid
 %%{init: {
-  'themeVariables': { 'fontFamily': 'Montserrat', 'edgeLabelBackground':'#1b1b1d',     'tertiaryColor': '#1b1b1d' },
+  'themeVariables': { 'fontFamily': 'Montserrat'},
   'flowchart': {
       'curve': 'monotoneX',
       'nodeSpacing': 100,
-      'rankSpacing': 80
+      'rankSpacing': 120
   }
 }}%%
 flowchart LR
     %% Nodes
-    A(Transmuter Balance<br/><b>1,000 alETH</b>)
-    B(Transmutation Time<br/><b>0.25 Years</b>)
-    C(Total System Debt<br/><b>1,500 alETH</b>)
-    D(Annualized Redemptions<br/>1,000 / 0.25 = <b>4,000 alETH</b>)
-    E{{Redemption Rate<br/>4,000 / 1,500 = <b>~267%</b>}}
+    A(Transmuter Balance<br/><b>1,000 <span style='color:#aaa'>alETH</span></b>)
+    B(Transmutation Time<br/><b>0.25 <span style='color:#aaa'>Years</span></b>)
+    C(Total System Debt<br/><b>1,500 <span style='color:#aaa'>alETH</span></b>)
+    D(<b>Annualized Redemptions</b><br/>1,000 alETH / 0.25 Years<br/>= <b>4,000 <span style='color:#aaa'>alETH</span></b>)
+    E{{<b>Redemption Rate</b><br/>4,000 alETH / 1,500 alETH<br/>= <b>~267%</b>}}
 
     %% Logic
-    A --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| D
-    B --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| D
-    D --> |&nbsp;&nbsp;Numerator&nbsp;&nbsp;| E
-    C --> |&nbsp;&nbsp;Denominator&nbsp;&nbsp;| E
+    A e1@--> D
+    B e2@--> D
+    D e3@==> E
+    C e4@--> E
 
-    %% Styling
+    %% Styling / Ani
     style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
     linkStyle 0,1,2,3 stroke:#ccc,stroke-width:2px,color:#ccc
+    e1@{ animation: slow }
+    e2@{ animation: slow }
+    e3@{ animation: fast }
+    e4@{ animation: slow }
 ```
 
 At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, term length, and debt levels remain unchanged.
+
+### What drives this number
+
+| On-chain variable  | Effect on the rate           | Rationale                                                                                                                                          |
+| ------------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Queued alAssets    | ↑ Larger queue → higher rate | More alUSD or alETH waiting in the Transmuter funds more repayments. Arbitrage deposits enlarge this queue when the market price drifts below peg. |
+| Total system debt  | ↓ More debt → lower rate     | A bigger denominator dilutes the impact of a fixed queue.                                                                                          |
+| Transmutation time | ↑ Shorter term → higher rate | Each unit of queued alAsset cycles more often over a year.                                                                                         |
 
 ## Temporal Advantage
 

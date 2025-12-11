@@ -25,12 +25,12 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Assets", // Grouping Asset types
+          label: "Assets",
           items: ["concepts/alAssets", "concepts/myt-and-yield"],
         },
         {
           type: "category",
-          label: "Borrowing & Loans", // Grouping Loan mechanics
+          label: "Borrowing & Loans",
           items: [
             "concepts/self-repaying-loans",
             "concepts/borrowing-in-alchemix",
@@ -39,7 +39,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "System Mechanics", // Grouping backend logic
+          label: "System Mechanics",
           items: [
             "concepts/transmuter",
             "concepts/redemption-rate",
