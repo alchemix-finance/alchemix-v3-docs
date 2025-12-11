@@ -19,7 +19,7 @@ alAssets (alUSD, alETH) are synthetic tokens that mirror the value of their unde
 Because the protocol always values 1 alAsset at 1 unit of its underlying, but the market price can drift below parity, borrowing and redemption create a predictable risk-to-reward profile.
 
 :::note Not an Algorithmic Stablecoin
-alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The peg is maintained via the Transmuter's 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./concepts/transmuter.md).
+alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The peg is maintained via the Transmuter's 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
 :::
 
 ## Borrowing, Selling, and the Market Discount

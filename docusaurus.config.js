@@ -39,14 +39,34 @@ const config = {
   markdown: {
     mermaid: true,
   },
-  themes: ["@docusaurus/theme-mermaid"],
+  themes: [
+    "@docusaurus/theme-mermaid",
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        docsRouteBasePath: ["user", "dev", "governance", "projects"],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      },
+    ],
+  ],
 
   presets: [
     [
       "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
+        docs: {
+          id: "default",
+          path: "docs/user",
+          routeBasePath: "user",
+          sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
+          editUrl:
+            "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
+        },
         blog: false,
         theme: {
           customCss: "./src/css/custom.css",
@@ -56,28 +76,13 @@ const config = {
   ],
 
   plugins: [
-    // — USER docs @ /user
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "user",
-        path: "docs/user",
-        routeBasePath: "user",
-        sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
-        editUrl:
-          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
-      },
-    ],
-
     // — DEV docs @ /dev
     [
       "@docusaurus/plugin-content-docs",
       {
         id: "dev",
-        path: "docs/dev", // your devdocs folder
-        routeBasePath: "dev", // served at /dev
+        path: "docs/dev",
+        routeBasePath: "dev",
         sidebarPath: require.resolve("./sidebars/sidebarsDev.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/dev/",
@@ -168,7 +173,6 @@ const config = {
           {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
-            docsPluginId: "user",
             position: "left",
             label: "Users",
           },
