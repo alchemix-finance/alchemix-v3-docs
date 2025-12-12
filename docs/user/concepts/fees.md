@@ -5,6 +5,8 @@ sidebar_label: Fees
 ---
 
 import fees from '@site/static/img/fees-01.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <!-- TODO -->
 
@@ -31,6 +33,19 @@ The protocol can apply a separate fee to each redemption claimed by a Transmuter
 ## MYT Performance Fee
 
 Each vault skims a small share of gross yield before crediting the remainder to depositors. This percentage funds strategy maintenance and ongoing protocol development. Rates can differ by chain or base asset and are displayed in the vault interface.
+
+## Fee Structure
+
+<Tabs>
+  <TabItem value="mainnet" label="Ethereum Mainnet" default>
+    On Mainnet, the repayment fee is **XYZ%** of the yield generated.
+  </TabItem>
+  <TabItem value="l2" label="Optimism / Arbitrum">
+    On L2s, the repayment fee is slightly different at **XYZ%** due to faster processing times.
+  </TabItem>
+</Tabs>
+
+TODO
 
 ## Current Fee Schedule
 

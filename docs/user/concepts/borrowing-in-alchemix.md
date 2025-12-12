@@ -13,19 +13,25 @@ import borrowingScreen01 from '@site/static/img/borrowing-in-alchemix-01.png';
 
 After converting ETH or USDC into the Mix-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral’s face value.
 
-## How borrowing works
+:::tip You are in control
+While Alchemix loans repay themselves over time via yield, you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
+:::
+
+## How Borrowing Works
 
 <img src={borrowingScreen01} alt="Borrowing DAPP Screenshot" class="banner-spacing" />
 
-1. Navigate to the Borrow panel in your vault.
+<b>1.</b> Navigate to the Borrow panel in your vault.
 
-2. Choose an amount of alAsset to mint. The “max” function will give the maximum value allowable within the bound of 90% LTV.
+<b>2.</b> Choose an amount of alAsset to mint. The “max” function will give the maximum value allowable within the bound of 90% LTV.
 
-   **Note:** If a yield strategy loses money, you could be liquidated. The LTV at which a liquidation will occur is 95% LTV. Choose your LTV with this in mind.
+:::danger Liquidation Risk
+If a yield strategy loses money, you could be liquidated. The LTV at which a liquidation will occur is 95% LTV. Choose your LTV with this in mind. <br/><br/>[Learn more about Liquidations →](./liquidations.md)
+:::
 
-3. Sign the transaction. Alchemix will mint the requested alAsset directly to your wallet.
+<b>3.</b> Sign the transaction. Alchemix will mint the requested alAsset directly to your wallet.
 
-4. Use the alAsset in any way you like—swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
+<b>4.</b> Use the alAsset in any way you like—swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
 
 ## What repays the debt
 

@@ -36,12 +36,37 @@ const config = {
     locales: ["en"],
   },
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: [
+    "@docusaurus/theme-mermaid",
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        docsRouteBasePath: ["user", "dev", "governance", "projects"],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      },
+    ],
+  ],
+
   presets: [
     [
       "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
+        docs: {
+          id: "default",
+          path: "docs/user",
+          routeBasePath: "user",
+          sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
+          editUrl:
+            "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
+        },
         blog: false,
         theme: {
           customCss: "./src/css/custom.css",
@@ -51,29 +76,18 @@ const config = {
   ],
 
   plugins: [
-    // — USER docs @ /user
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "user",
-        path: "docs/user",
-        routeBasePath: "user",
-        sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
-        editUrl:
-          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/user/",
-      },
-    ],
-
     // — DEV docs @ /dev
     [
       "@docusaurus/plugin-content-docs",
       {
         id: "dev",
-        path: "docs/dev", // your devdocs folder
-        routeBasePath: "dev", // served at /dev
+        path: "docs/dev",
+        routeBasePath: "dev",
         sidebarPath: require.resolve("./sidebars/sidebarsDev.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/dev/",
+        showLastUpdateAuthor: true,
+        showLastUpdateTime: true,
       },
     ],
 
@@ -87,6 +101,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/governance/",
+        showLastUpdateAuthor: true,
+        showLastUpdateTime: true,
       },
     ],
 
@@ -100,6 +116,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsProjects.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/projects/",
+        showLastUpdateAuthor: true,
+        showLastUpdateTime: true,
       },
     ],
 
@@ -130,6 +148,14 @@ const config = {
         textColor: "#3D2C00",
         isCloseable: false,
       },
+      //   announcementBar: {
+      //   id: "v3_launch2",
+      //   content:
+      //     '🎉 <b>Alchemix V3 is live! </b><a target="_blank" rel="noopener noreferrer" href="https://app.alchemix.fi">Launch App</a>',
+      //   backgroundColor: "#f5c09a",
+      //   textColor: "#1b1b1d",
+      //   isCloseable: true,
+      // },
       image: "img/social-card.png",
       colorMode: {
         defaultMode: "dark", // start in dark
@@ -147,7 +173,6 @@ const config = {
           {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
-            docsPluginId: "user",
             position: "left",
             label: "Users",
           },

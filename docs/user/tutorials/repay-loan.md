@@ -34,6 +34,10 @@ The Repay tab accepts three asset types: alAssets, MYT, or the underlying token.
 
 The asset-selector dropdown (left side of the entry box) will only list what is valid for the current vault state.
 
+:::tip Pro Tip: Repaying with alAssets
+You can often buy alUSD or alETH on secondary markets (like Curve) for slightly less than $1.00. Using these discounted tokens to repay your loan allows you to clear your debt cheaper than 1:1!
+:::
+
 ## Step 2 – Enter the amount
 
 Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.

@@ -5,6 +5,7 @@ sidebar_label: Introduction
 
 import AlchemixStats from "@site/src/components/AlchemixStats";
 import Hero from '@site/static/img/landing-01.png';
+import DocCardList from '@theme/DocCardList';
 
 <img src={Hero} alt="Alchemix v3" class="banner-spacing" />
 
@@ -66,6 +67,10 @@ The Transmuter lets users deposit alAssets and, after a fixed term, redeem an eq
 Under normal conditions, the interface unwraps that MYT to the underlying token for you. If liquidity is momentarily tight **or has unexpected slippage**, the contract may return the MYT itself. You can either hold it until unwrapping is available or unwrap manually once the queue clears.
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
+
+:::info V3 vs V2
+This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://docs.alchemix.fi/).
+:::
 
 ## Next Steps
 
