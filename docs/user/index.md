@@ -6,6 +6,7 @@ sidebar_label: Introduction
 import AlchemixStats from "@site/src/components/AlchemixStats";
 import Hero from '@site/static/img/landing-01.png';
 import DocCardList from '@theme/DocCardList';
+import VisualizerFrame from '@site/src/components/VisualizerFrame';
 
 <img src={Hero} alt="Alchemix v3" class="banner-spacing" />
 
@@ -53,6 +54,11 @@ Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthet
 Typical uses include financing a purchase, leveraging/looping yield, or bridging short-term opportunities without disrupting long-term holdings.
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
+
+<VisualizerFrame 
+  url="https://v3-flow-visualizer.vercel.app/" 
+  title="V3 Flow Visualizer" 
+/>
 
 ## 3. Lock In Fixed Returns with the Transmuter
 
