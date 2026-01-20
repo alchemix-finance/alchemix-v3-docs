@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 2
 hide_title: true
 sidebar_label: Contract Roles
 ---
@@ -13,6 +13,8 @@ This section is meant to describe all roles with access to call private function
 ### Role 1: Admin (Alchemist and Transmuter)
 
 **Addresses with this role:** 0x…
+
+<!-- TODO -->
 
 An Admin can call all private functions including contract upgrades.
 

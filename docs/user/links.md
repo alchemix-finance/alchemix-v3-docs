@@ -23,3 +23,4 @@ This documentation is the most complete learning resource, but it may lag behind
 | Dune Dashboard                               | Live protocol metrics and analytics                   |
 | Gov Dashboard                                | Live protocol parameters                              |
 | Financial Reports                            | All financial reports                                 |
+| Brand Assets                                 | Assets for use in marketing, community projects, etc. |

@@ -5,7 +5,8 @@ module.exports = {
     {
       type: "category",
       label: "Architecture",
-      collapsed: false,
+      collapsed: true,
+      className: "sidebarBold",
       items: [
         "architecture/overview",
         "architecture/redemptions",
@@ -15,18 +16,20 @@ module.exports = {
     {
       type: "category",
       label: "Smart Contracts",
-      collapsed: false,
+      collapsed: true,
+      className: "sidebarBold",
       items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
     },
     {
       type: "category",
       label: "Core Modules",
-      collapsed: false,
+      collapsed: true,
+      className: "sidebarBold",
       items: [
         {
           type: "category",
           label: "Alchemist",
-          collapsed: false,
+          collapsed: true,
           items: [
             "alchemist/alchemist-contract",
             {
@@ -37,13 +40,13 @@ module.exports = {
                 "alchemist/alchemist-token-vault-contract",
                 "alchemist/alchemist-eth-vault-contract",
               ],
-            }
+            },
           ],
         },
         {
           type: "category",
           label: "MYT",
-          collapsed: false,
+          collapsed: true,
           items: [
             "myt/myt-contract",
             {
@@ -60,17 +63,16 @@ module.exports = {
         {
           type: "category",
           label: "Transmuter",
-          collapsed: false,
-          items: [
-            "transmuter/transmuter-contract"
-          ],
+          collapsed: true,
+          items: ["transmuter/transmuter-contract"],
         },
       ],
     },
     {
       type: "category",
       label: "Integrating Alchemix",
-      collapsed: false,
+      collapsed: true,
+      className: "sidebarBold",
       items: [
         "integration/using-alassets",
         "integration/integrate-myt",

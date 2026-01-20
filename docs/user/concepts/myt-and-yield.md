@@ -10,7 +10,7 @@ import MYT from '@site/static/img/MYT-banner.png';
 
 Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols.
 
-[Explore technical documentation for MYT →](../../dev/myt/mix-yield-token)
+[Explore technical documentation for MYT →](../../dev/myt/myt-contract)
 
 ## What is MYT?
 

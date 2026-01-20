@@ -72,7 +72,7 @@ The DAO may be forced to sell assets, including ALCX, if needed to cover protoco
 
 ## Governance & Operational Controls
 
-See Contract Roles
+See [Contract Roles](../../governance/guides/contract-roles).
 
 ## Alchemix on Layer 2
 
@@ -91,7 +91,7 @@ In this system, Ethereum assets are unique in that in addition to bridge limits 
 
 The AlchemixDAO owns the bridge contracts and thus has the ability to set the DVNs and rate limits on each chain. This approach means that no single messaging provider can compromise the system, and the DAO can swap out DVNs as needed if there are any issues without the system going offline.
 
-More context on the bridging system can be found in AIP-120.
+More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
 
 ### ALCX Token and alAssets
 

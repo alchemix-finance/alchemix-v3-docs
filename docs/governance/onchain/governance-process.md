@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 1
 hide_title: true
 sidebar_label: Governance Process
 ---

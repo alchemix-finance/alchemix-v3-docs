@@ -29,11 +29,7 @@ module.exports = {
       label: "Support",
       className: "sidebarBold",
       collapsed: false,
-      items: [
-        "support/brand-assets",
-        "support/co-marketing",
-        "support/security",
-      ],
+      items: ["support/co-marketing", "support/security"],
     },
 
     //   Contact & Onboarding
