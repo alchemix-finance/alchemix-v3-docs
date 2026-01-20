@@ -9,13 +9,18 @@ const sidebarsGovernance = {
       className: "sidebarBold",
       collapsed: false,
       items: [
-        "onchain/how-to-vote",
-        "onchain/vqalcx",
+        // TODO
+        // "onchain/how-to-vote",
+        // "onchain/vqalcx",
         "onchain/onchain-governance-infrastructure",
-        "onchain/governance-process",
-        "onchain/financial-reports",
-        "onchain/role-gated-contract-functions",
       ],
+    },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebarBold",
+      collapsed: false,
+      items: ["guides/contract-roles", "onchain/governance-process"],
     },
   ],
 };

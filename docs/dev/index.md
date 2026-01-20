@@ -11,7 +11,7 @@ import devdocs from '@site/static/img/devdocs-01.png';
 
 This section of the docs will contain contract descriptions and architecture describing how Alchemix contracts work and interact on a technical level. These docs are in active development. Expect gaps and changes.
 
-# Quick Start Guide
+### Quick Start Guide
 
 1. **Deposit to Earn & Borrow**
 
@@ -25,11 +25,11 @@ This section of the docs will contain contract descriptions and architecture des
 
    Your chosen yield strategy will earn interest on the full initial deposit. When the chosen strategy earns yield, your share of the yield is used to repay your debt over time automatically. Manage your loan as needed, with the flexibility to withdraw principal, borrow more, repay, or self-liquidate at any time.
 
-# Learn more
+### Learn more
 
 - Guides
 - How to
 
-# Alchemix Stats Fetch Test
+### Alchemix Stats Fetch Test
 
 <AlchemixStats />

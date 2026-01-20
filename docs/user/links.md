@@ -22,4 +22,4 @@ This documentation is the most complete learning resource, but it may lag behind
 | Dev Docs                                     | All development resources for the Alchemix ecosystem. |
 | Dune Dashboard                               | Live protocol metrics and analytics                   |
 | Gov Dashboard                                | Live protocol parameters                              |
-| Etc etc etc                                  | Etc etc etc                                           |
+| Financial Reports                            | All financial reports                                 |
