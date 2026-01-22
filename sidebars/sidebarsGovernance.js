@@ -20,7 +20,11 @@ const sidebarsGovernance = {
       label: "Guides",
       className: "sidebarBold",
       collapsed: true,
-      items: ["onchain/governance-process", "guides/contract-roles"],
+      items: [
+        "onchain/governance-process",
+        "guides/contract-roles",
+        "guides/myt-strategies",
+      ],
     },
   ],
 };
