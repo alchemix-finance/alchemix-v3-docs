@@ -12,7 +12,7 @@ This section is meant to describe all roles with access to call private function
 
 ### Role 1: Admin (Alchemist and Transmuter)
 
-**Addresses with this role:** 0x…
+**Addresses with this role:** 0x9e2b6378Ee8Ad2A4A95fe481d63cAba8Fb0EbBf9
 
 <!-- TODO -->
 
@@ -20,7 +20,7 @@ An Admin can call all private functions including contract upgrades.
 
 ### Role 2: Guardian (Alchemist)
 
-**Addresses with this role:** 0x…
+**Addresses with this role:** 0x9e2b6378Ee8Ad2A4A95fe481d63cAba8Fb0EbBf9
 
 | Function      | What it Does                                                                                                              | Link                        |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------ | :-------------------------- |
@@ -29,7 +29,7 @@ An Admin can call all private functions including contract upgrades.
 
 ### Role 3: Owner (Mix Yield Token)
 
-**Addresses with this role:** 0x…
+**Addresses with this role:** 0x9e2b6378Ee8Ad2A4A95fe481d63cAba8Fb0EbBf9
 
 | Function         | What it Does                                                                                             | Link                                             |
 | :--------------- | :------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
@@ -37,7 +37,7 @@ An Admin can call all private functions including contract upgrades.
 
 ### Role 3: Curator (Mix Yield Token Access Control)
 
-**Addresses with this role:** 0x…
+**Addresses with this role:** 0x9e2b6378Ee8Ad2A4A95fe481d63cAba8Fb0EbBf9
 
 | Function      | What it Does                                                                                                | Link                                             |
 | :------------ | :---------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
