@@ -18,12 +18,14 @@ All core smart contracts for Alchemix V3 have undergone rigorous testing and com
 
 <!-- TODO links and dates-->
 
-- **Spearbit / Cantina** — [Insert Date]
-  - Focus: Core Alchemist and Transmuter logic.
-  - [View Report](https://github.com/alchemix-finance/audits)
-- **Nethermind** — [Insert Date]
-  - Focus: V3 System Architecture and cross-chain bridging logic.
-  - [View Report](https://github.com/alchemix-finance/audits)
+- **aleph_v** — December 15th, 2025
+  - Focus: Earmarking and transmutation accounting system including debt decay logic.
+  - [View Report](https://hackmd.io/@geistermeister/SkSZiU9ybe)
+- **Spearbit/Cantina** — May 15th, 2025
+  - Focus: Security review of Alchemix V3 mechanics, specifically protocol fees, liquidation logic, and debt-redemption accounting..
+  - [View Report](https://cantina.xyz/portfolio/f638950d-a8ad-4df8-a6ec-8b067e416d7b)
+- **Immunefi** — TBD
+- **Nethermind** — TBD
 
 ### Continuous MYT Strategy Audits
 
@@ -50,7 +52,7 @@ We believe in a "trust but verify" model and encourage the global security commu
 To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 utilizes a robust timelock system.
 
 - **Upgradeability:** Critical contracts are upgradeable only via the DAO.
-- **Timelock Delay:** [Insert X hours/days] — This delay provides users and third-party monitors time to exit or react before any code changes are executed.
+- **Timelock Delay:** hours/days — This delay provides users and third-party monitors time to exit or react before any code changes are executed.
 <!-- TODO date -->
 - **Guardian Role:** A dedicated Guardian address can pause deposits and loans in an emergency but **cannot** unpause them or access funds, serving as a circuit breaker during volatility.
 
