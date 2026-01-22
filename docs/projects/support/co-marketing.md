@@ -37,5 +37,5 @@ Alchemix V3 is committed to fostering strong partnerships through proactive co-m
 
 ### Resources
 
-- For branding assets, please refer to our [Marketing Material](https://docs.alchemix.fi/resources/marketing-material)
+- For branding assets, please refer to our [Marketing Material](../../user/links.md)
 - To reach out to out Business Development team, please fill in [this form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/edit).

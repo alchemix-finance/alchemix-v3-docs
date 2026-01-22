@@ -72,7 +72,9 @@ Absolutely! Alchemix allows you the flexibility to exit or repay your loan at an
 
 <summary>What is the redemption rate?</summary>
 
-TODO
+Redemptions in Alchemix v3 deleverage your position by using collateral to repay debt without the cost of traditional interest rates. The Redemption Rate projects how quickly this occurs by comparing annualized Transmuter volume against total system debt, with a higher rate indicating faster loan clearance.
+
+A key benefit is Temporal Advantage, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
 
 [Learn more about the redemption rate →](./concepts/redemption-rate.md)
 
@@ -155,7 +157,9 @@ Never. Earmarked collateral continues to earn you yield until the moment it is r
 
 <summary>Who controls the system?</summary>
 
-TODO
+Alchemix V3 is composed of several key counterparties. MYT Depositors, Borrowers, Liquidity Providers, and Transmuter Users. Each of these manage specific risks including strategy losses, liquidation at high LTVs, and potential redemption fees.
+
+The system is secured by cross-chain bridge controls using multiple decentralized verification networks (DVNs) and utilizes fundamental oracles to insulate users from market price volatility.
 
 [Learn more about security and permissions →](./newguides/risk-considerations.md)
 
