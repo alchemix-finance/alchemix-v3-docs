@@ -10,7 +10,7 @@ module.exports = {
       type: "category",
       label: "Why Integrate",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: ["why-integrate/use-cases"],
     },
 
@@ -19,7 +19,7 @@ module.exports = {
       type: "category",
       label: "How to Integrate",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: ["how-to/friendly-fork"],
     },
 
@@ -28,7 +28,7 @@ module.exports = {
       type: "category",
       label: "Support",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: ["support/co-marketing", "support/security"],
     },
 
@@ -37,7 +37,7 @@ module.exports = {
       type: "category",
       label: "Contact & Onboarding",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: [
         "contact/apply-to-partner", // Apply to Partner
       ],

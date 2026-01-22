@@ -7,7 +7,7 @@ const sidebarsGovernance = {
       type: "category",
       label: "Key Concepts",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: [
         // TODO
         // "onchain/how-to-vote",
@@ -19,7 +19,7 @@ const sidebarsGovernance = {
       type: "category",
       label: "Guides",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: ["onchain/governance-process", "guides/contract-roles"],
     },
   ],
