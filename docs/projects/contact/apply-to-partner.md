@@ -1,8 +1,12 @@
 ---
 sidebar_position: 1
+hide_title: true
+sidebar_label: Apply to Partner
 ---
 
-# Apply to Partner
+import applyPartner from '@site/static/img/apply-partner-01.png';
+
+<img src={applyPartner} alt="Apply to Partner" class="banner-spacing" />
 
 We're always open to exploring new partnerships with projects, protocols, and builders in the ecosystem. If you're interested in collaborating with the Alchemix team or integrating with Alchemix V3, we'd love to hear from you.
 

@@ -1,8 +1,12 @@
 ---
 sidebar_position: 5
+hide_title: true
+sidebar_label: Friendly Fork Initiative
 ---
 
-# Friendly Fork Initiative
+import friendlyFork from '@site/static/img/friendly-fork-01.png';
+
+<img src={friendlyFork} alt="Friendly Fork Initiative" class="banner-spacing" />
 
 <!-- TODO -->
 

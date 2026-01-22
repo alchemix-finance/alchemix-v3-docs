@@ -1,8 +1,12 @@
 ﻿---
 sidebar_position: 1
+hide_title: true
+sidebar_label: Use Cases
 ---
 
-# Use Cases
+import useCases from '@site/static/img/use-cases-01.png';
+
+<img src={useCases} alt="Use Cases" class="banner-spacing" />
 
 ## DAOs & Treasuries
 

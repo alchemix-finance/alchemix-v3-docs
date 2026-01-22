@@ -4,9 +4,9 @@ hide_title: true
 sidebar_label: MYT Launch Strategies
 ---
 
-import contractRoles from '@site/static/img/contract-roles-01.png';
+import mytStrategies from '@site/static/img/myt-strategies-01.png';
 
-<img src={contractRoles} alt="Contract Roles" class="banner-spacing" />
+<img src={mytStrategies} alt="MYT Launch Strategies" class="banner-spacing" />
 
 Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Low, Med, and High. The general approach to classification is based on the table below.
 

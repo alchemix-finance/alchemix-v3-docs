@@ -1,8 +1,12 @@
 ---
 sidebar_position: 2
+hide_title: true
+sidebar_label: Security & Audits
 ---
 
-# Security & Audits
+import securityAudits from '@site/static/img/security-audits-01.png';
+
+<img src={securityAudits} alt="Security & Audits" class="banner-spacing" />
 
 Security is the core pillar of Alchemix V3. Our approach to safeguarding the protocol combines exhaustive initial audits, a permanent partnership for continuous strategy review, and a high-incentive bug bounty program.
 
