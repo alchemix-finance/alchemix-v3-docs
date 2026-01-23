@@ -36,5 +36,5 @@ We believe in rewarding the liquidity and activity that drives the protocol forw
 
 ### Resources
 
-- For branding assets, please refer to our [Marketing Material](../../user/links.md)
+- For branding assets, please refer to our [Marketing Material](../../user/links)
 - To reach out to out Business Development team, please fill in [this form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/edit).

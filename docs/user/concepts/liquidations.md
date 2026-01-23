@@ -50,8 +50,3 @@ The colored bar in the vault UI gives an at-a-glance view of three numbers:
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 
 Users are encouraged to study the makeup of the MYT, as well as the risk categories. The DAO sets a maximum % of the MYT that may be allocated to high and medium risk categories. This allows users to set LTVs below liquidation thresholds based on those makeups.
-
-TODO
-
-The current settings are as follows:  
-etc

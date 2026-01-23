@@ -12,15 +12,15 @@ import linksResources from '@site/static/img/links-resources-01.png';
 
 This documentation is the most complete learning resource, but it may lag behind day-to-day activity. Use the channels below to stay current and connect with the community.
 
-| Resource                                     | Purpose                                               |
-| -------------------------------------------- | ----------------------------------------------------- |
-| [**X (Twitter)**](https://x.com/AlchemixFi)  | Official announcements and real-time updates.         |
-| [**Discord**](https://discord.gg/E9eGjttFCB) | Community chat, support and contributor coordination. |
-| Newsletter                                   | Roundup of releases, governance and ecosystem news.   |
-| Snapshot                                     | Governance voting hub.                                |
-| Github                                       | Parent Alchemix Github account.                       |
-| Dev Docs                                     | All development resources for the Alchemix ecosystem. |
-| Dune Dashboard                               | Live protocol metrics and analytics                   |
-| Gov Dashboard                                | Live protocol parameters                              |
-| Financial Reports                            | All financial reports                                 |
-| Brand Assets                                 | Assets for use in marketing, community projects, etc. |
+| Resource                                                     | Purpose                                                   |
+| ------------------------------------------------------------ | --------------------------------------------------------- |
+| [**X (Twitter)**](https://x.com/AlchemixFi)                  | Official announcements and real-time updates.             |
+| [**Discord**](https://discord.gg/E9eGjttFCB)                 | Community chat, support and contributor coordination.     |
+| [**Newsletter**](https://alchemixfi.substack.com/)           | Roundup of releases, governance and ecosystem news.       |
+| [**Snapshot**](https://snapshot.box/#/s:alchemixstakers.eth) | Governance voting hub.                                    |
+| [**Github**](https://github.com/alchemix-finance)            | Parent Alchemix Github account.                           |
+| [**Developer Docs**](../dev)                                 | All development resources for the Alchemix ecosystem.     |
+| Dune Dashboard                                               | Live protocol metrics and analytics, TBD                  |
+| Gov Dashboard                                                | Live protocol parameters, TBD                             |
+| Financial Reports                                            | All financial reports, TBD                                |
+| Brand Assets                                                 | Assets for use in marketing, community projects, etc. TBD |

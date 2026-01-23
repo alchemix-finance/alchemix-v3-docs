@@ -15,7 +15,6 @@ import redemption from '@site/static/img/redemption-rate-01.png';
 Redemptions convert earmarked collateral into the asset required to repay debt. Two ideas matter:
 
 - **Redemption rate** – how fast the system deleverages your position.
-
   - **Note:** Because debt and collateral are like kind, deleveraging does not lose the user any money (besides the redemption fee). This is different than many systems that charge interest rates that can at times be higher than the yield you are earning.
 
 - **Temporal advantage** – the bonus yield you earn while waiting for an earmarked redemption to settle.
@@ -122,49 +121,8 @@ Earmarking in Alchemix v3 differs from typical redemption systems. In many proto
 
 Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal advantage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 
-**Example**
-
-```mermaid
-graph TD
-    subgraph Standard["Standard Protocol (Yield Loss)"]
-        A1[User Queues Repayment] --> B1[Collateral Sold Immediately]
-        B1 -->|Yield Stops 🛑| C1[Funds sit idle in queue]
-        C1 --> D1[Debt Repaid]
-    end
-
-    style Alchemix fill:#e6fffa,stroke:#00b894,stroke-width:2px
-```
-
-TODO Testing mermaid styling
-
-\[\[\[Will utilize rate formula to push an ex. Say 1000USDC]]]
-
-**Key Takeaways**
-
-TODO
-
-\[\[\[To contextualize with rate formula]]]
-
-|     |     |
-| --- | --- |
-|     |     |
-|     |     |
-|     |     |
-
 ## Further Reading
 
-- **Transmuter Mechanics** – how earmarking and redemption batches work.
+- [**Transmuter Mechanics**](./transmuter.md) – How earmarking and redemption batches work.
 
-- **Live And Historic Graphics** – view past and present data directly in the dapp.
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
+- [**Live And Historic Graphics**](https://alchemix.fi/) – View past and present data directly in the dapp.
