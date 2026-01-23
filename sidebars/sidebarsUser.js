@@ -70,6 +70,7 @@ module.exports = {
         "newguides/risk-considerations",
       ],
     },
+    "v3-migration",
     "faq",
   ],
 };

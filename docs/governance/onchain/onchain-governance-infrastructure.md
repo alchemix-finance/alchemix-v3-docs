@@ -18,6 +18,8 @@ Alchemix v3 is built around the below principles:
 
 A large portion of DeFi still relies on multisignature wallets that can upgrade contracts at will. Even in instances of non-upgradeable contracts, these wallets often take on full ownership of having power and bias over user funds. This is typically a better choice than immutable code due to the sheer number of dependencies that DeFi protocols often have, but DeFi can do better.
 
+## Governance Flowchart
+
 Alchemix v3 has been designed with onchain governance specifically in mind, under the fundamental philosophy of the design flowchart below:
 
 - Anything that can be immutable, should be immutable

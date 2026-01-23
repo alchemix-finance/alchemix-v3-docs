@@ -8,11 +8,12 @@ import governance from '@site/static/img/governance-01.png';
 
 <img src={governance} alt="On-chain Governance" class="banner-spacing" />
 
-### NOTE: Transition Phase
+:::note Transition Phase
 
 On-chain governance for Alchemix v3 is currently expected shortly after launch. Until that upgrade is complete, all mentions of the DAO will be handled by the Alchemix multisig as existing in the current v2 deployment.
 
 The material below describes the future fully on-chain framework so that contributors, token-holders, and auditors know what is coming. When governance goes live, this notice will be removed and the specification will be updated with final contract addresses, quorum context and voting timelines.
+:::
 
 ## Why On-chain?
 
