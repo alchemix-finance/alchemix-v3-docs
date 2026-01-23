@@ -7,14 +7,23 @@ const sidebarsGovernance = {
       type: "category",
       label: "Key Concepts",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: [
-        "onchain/how-to-vote",
-        "onchain/vqalcx",
+        // TODO
+        // "onchain/how-to-vote",
+        // "onchain/vqalcx",
         "onchain/onchain-governance-infrastructure",
+      ],
+    },
+    {
+      type: "category",
+      label: "Guides",
+      className: "sidebarBold",
+      collapsed: true,
+      items: [
         "onchain/governance-process",
-        "onchain/financial-reports",
-        "onchain/role-gated-contract-functions",
+        "guides/contract-roles",
+        "guides/myt-strategies",
       ],
     },
   ],

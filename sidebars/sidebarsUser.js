@@ -21,7 +21,7 @@ module.exports = {
       type: "category",
       label: "Key Concepts",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "category",
@@ -64,12 +64,13 @@ module.exports = {
       type: "category",
       label: "Guides",
       className: "sidebarBold",
-      collapsed: false,
+      collapsed: true,
       items: [
         "newguides/how-peg-is-maintained",
         "newguides/risk-considerations",
       ],
     },
+    "v3-migration",
     "faq",
   ],
 };

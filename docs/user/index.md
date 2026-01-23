@@ -55,10 +55,10 @@ Typical uses include financing a purchase, leveraging/looping yield, or bridging
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
 
-<VisualizerFrame 
-  url="https://v3-flow-visualizer.vercel.app/" 
-  title="V3 Flow Visualizer" 
-/>
+<!-- <VisualizerFrame
+  url="https://v3-flow-visualizer.vercel.app/"
+  title="V3 Flow Visualizer"
+/> -->
 
 ## 3. Lock In Fixed Returns with the Transmuter
 
@@ -85,6 +85,6 @@ This documentation covers **Alchemix V3**. If you are looking for information re
 3. Follow along with our [Tutorials](./tutorials/use-passive-myt.md).
 4. Learn more with our [Key Concepts](./concepts/myt-and-yield.md).
 
-## Alchemix Stats Fetch Test
+<!-- ## Alchemix Stats Fetch Test
 
-<AlchemixStats />
+<AlchemixStats /> -->

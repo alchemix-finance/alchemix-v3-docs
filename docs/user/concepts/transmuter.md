@@ -49,6 +49,12 @@ Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its e
 | At maturity             | Receive 10,416 USDC (via MYT)              |
 | Profit                  | 416 USDC = 4.16% in 3 mo = \~16.6% APR     |
 
+:::warning Transmuter Deposit Caps
+The Transmuter has a maximum deposit cap based on the total alAssets minted on its specific chain. If a Transmuter is full, you may need to bridge alAssets to another chain to deposit.
+
+**Always verify available Transmuter capacity on your target chain before purchasing alAssets.**
+:::
+
 ## Edge-Case Handling
 
 | Scenario                             | Result                                                                                                                | Your Options                                                                                                   |

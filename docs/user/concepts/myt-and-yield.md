@@ -10,7 +10,7 @@ import MYT from '@site/static/img/MYT-banner.png';
 
 Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols.
 
-[Explore technical documentation for MYT →](../../dev/myt/mix-yield-token)
+[Explore technical documentation for MYT →](../../dev/myt/myt-contract)
 
 ## What is MYT?
 
@@ -19,6 +19,14 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 - **DAO-managed allocation.** The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.
 
 - **Built on Morpho V2.** The core vault logic uses Morpho’s v2 vaults layer to optimise on-chain execution and safety.
+
+## Why Use MYT?
+
+|                 |                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| Passive income  | Each deposit gives you diversified yield without manual re-staking.                      |
+| Risk management | DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure. |
+| Flexibility     | Choose the chain and bundle that suit your goals, redeem at any time.                    |
 
 ## Per-Chain Variants
 
@@ -37,11 +45,3 @@ You can view the current strategy breakdowns directly in the UI →
 4. Redeem at any time for your principal plus any accumulated yield.
 
 There are no lock-ups, and yield compounds continuously.
-
-## Why Use MYT?
-
-|                 |                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------- |
-| Passive income  | Each deposit gives you diversified yield without manual re-staking.                      |
-| Risk management | DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure. |
-| Flexibility     | Choose the chain and bundle that suit your goals, redeem at any time.                    |

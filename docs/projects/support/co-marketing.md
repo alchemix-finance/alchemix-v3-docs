@@ -1,41 +1,40 @@
 ---
 sidebar_position: 1
+hide_title: true
+sidebar_label: Co-Marketing & BD Support
 ---
 
-# Co-Marketing & BD Support
+import coMarketing from '@site/static/img/comarketing-01.png';
 
-<!-- TODO -->
+<img src={coMarketing} alt="Co-Marketing & BD Support" class="banner-spacing" />
 
-## Co-Marketing & Business Development Support
+Alchemix V3 is built on a foundation of positive-sum collaboration. When you integrate with the Alchemix stack you become a strategic partner in a growing synthetic-asset economy. We provide the technical and social infrastructure to ensure your integration reaches the right audience and scales effectively.
 
-Alchemix V3 is committed to fostering strong partnerships through proactive co-marketing and business development support. Our goal is to amplify aligned ecosystem growth, drive user adoption, and promote shared success with our partners. Below is an overview of the support available:
+### Partnership Onboarding & Enablement
 
-### 🤝 Partnership Onboarding & Enablement
+We treat onboarding as a high-touch process to ensure technical success and strategic alignment from day one.
 
-- **Dedicated Point of Contact:** Each partner is assigned a BD/partnerships lead for streamlined communication and support.
-- **Technical Support Coordination:** A direct line of communication to the Alchemix development team can be established and development support is provided on a case by case basis.
-- **Launch Planning:** We collaborate on coordinated product or feature announcements and launch campaigns.
+- **Direct Technical Conduit:** Partners gain a direct line of communication to Alchemix core contributors for implementation support, troubleshooting, and custom strategy alignment.
+- **Strategic Launch:** Each partner is paired with a BD lead to coordinate launch strategy, ensuring the integration is timed for maximum ecosystem impact.
+- **The Network:** We provide warm introductions to other Alchemix-aligned protocols, DAOs, and yield providers to help you build deeper integrations across the DeFi ecosystem.
 
-### 📣 Co-Marketing Opportunities
+### Co-Marketing & Ecosystem Amplification
 
-- **Joint Announcements:** Shared blog posts, Twitter/X threads, and newsletter features across Alchemix and partner channels.
-- **AMAs & Community Events:** Co-hosted Twitter Spaces & Discord Firesides.
-- **Social Amplification:** Cross-posting and engagement from Alchemix’s social media channels to increase reach and visibility.
-- **Branding Assets:** Access to Alchemix logos, branding guidelines, and co-branded graphics for mutual promotion.
+The Alchemix DAO maintains one of the most engaged and technically-literate communities in DeFi. We leverage this social capital to drive meaningful eyes to your project.
 
-### 📈 Business Development Support
+- **Joint Narrative Building:** We collaborate through in-depth threads, blog posts, and newsletters that explain the _why_.
+- **High-Impact Community Events:** Partners are invited to our weekly Fireside chats and co-hosted Twitter/X Spaces to present their value proposition directly to the Alchemix community.
+- **Co-Branding Kit:** Access to high-resolution V3 assets and marketing templates to ensure a professional, cohesive look.
 
-- **Ecosystem Introductions:** We facilitate warm intros to other aligned protocols and DAOs within the Alchemix and DeFi ecosystem.
-- **Product Feedback Loop:** BD and product teams will work closely to incorporate partner needs and explore new strategic use cases.
-- **Liquidity & Incentives:** Where appropriate, we may collaborate on co-incentive programs or liquidity campaigns to drive adoption.
+### Growth & Incentives
 
-### 🗓 Ongoing Collaboration
+We believe in rewarding the liquidity and activity that drives the protocol forward.
 
-- **Quarterly Check-Ins:** Regular syncs to track performance, discuss roadmap alignment, and explore evolving opportunities.
-- **Event Collaboration:** Support for joint presence at industry events, conferences, and hackathons.
-- **Content Creation:** Support in the form of guest blog posts, explainer videos, or case studies that highlight the partnership in action.
+- **Incentive Collaboration:** Where there is strategic overlap, the Alchemix DAO can collaborate on co-incentive programs or liquidity mining campaigns to bootstrap initial adoption.
+- **Continuous Feedback Loop:** Our BD and product teams stay in sync with our partners, ensuring the Alchemix V3 roadmap continues to support long-term needs.
+- **Ecosystem Case Studies:** We highlight successful integrations through dedicated case studies and "Partner Spotlight" features, documenting the real-world value created by the collaboration.
 
 ### Resources
 
-- For branding assets, please refer to our [Marketing Material](https://docs.alchemix.fi/resources/marketing-material)
+- For branding assets, please refer to our [Marketing Material](../../user/links)
 - To reach out to out Business Development team, please fill in [this form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/edit).
