@@ -1,7 +1,7 @@
 ---
 sidebar_position: 5
 hide_title: true
-sidebar_label: alAssets
+title: alAssets
 ---
 
 import alAssets from '@site/static/img/alAssets-01.png';

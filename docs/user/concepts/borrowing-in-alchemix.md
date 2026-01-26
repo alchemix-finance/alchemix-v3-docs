@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 hide_title: true
-sidebar_label: Borrowing In Alchemix
+title: Borrowing In Alchemix
 ---
 
 import borrowing from '@site/static/img/borrowing-01.png';

@@ -1,6 +1,6 @@
 ---
 hide_title: true
-sidebar_label: FAQ
+title: FAQ
 ---
 
 import faq from '@site/static/img/faq-01.png';

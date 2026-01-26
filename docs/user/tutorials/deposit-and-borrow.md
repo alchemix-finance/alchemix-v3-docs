@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Deposit & Borrow
+title: Deposit & Borrow
 ---
 
 import depositBorrow from '@site/static/img/deposit-borrow-01.png';

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Governance Process
+title: Governance Process
 ---
 
 import governanceProcess from '@site/static/img/governance-process-01.png';

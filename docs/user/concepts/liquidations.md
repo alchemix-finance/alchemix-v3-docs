@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 hide_title: true
-sidebar_label: Liquidations
+title: Liquidations
 ---
 
 import liquidations from '@site/static/img/liquidations-01.png';

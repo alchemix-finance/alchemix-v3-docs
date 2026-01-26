@@ -1,7 +1,7 @@
 ﻿---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Use Cases
+title: Use Cases
 ---
 
 import useCases from '@site/static/img/use-cases-01.png';

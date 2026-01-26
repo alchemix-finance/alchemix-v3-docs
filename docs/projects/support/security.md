@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 hide_title: true
-sidebar_label: Security & Audits
+title: Security & Audits
 ---
 
 import securityAudits from '@site/static/img/security-audits-01.png';

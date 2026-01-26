@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 hide_title: true
-sidebar_label: Redeem alAssets
+title: Redeem alAssets
 ---
 
 import redeemAlassets from '@site/static/img/redeem-alassets-banner-01.png';

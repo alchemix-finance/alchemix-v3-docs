@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 hide_title: true
-sidebar_label: Contract Roles
+title: Contract Roles
 ---
 
 import contractRoles from '@site/static/img/contract-roles-01.png';

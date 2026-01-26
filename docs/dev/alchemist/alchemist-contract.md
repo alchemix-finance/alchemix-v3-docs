@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: AlchemistV3
+title: AlchemistV3
 ---
 
 import alchemist from '@site/static/img/alchemist-01.png';

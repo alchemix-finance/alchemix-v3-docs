@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Mix-Yield Token
+title: Mix-Yield Token
 ---
 
 import MYT from '@site/static/img/MYT-banner.png';

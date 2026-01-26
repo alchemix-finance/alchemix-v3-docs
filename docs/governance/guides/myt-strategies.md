@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 hide_title: true
-sidebar_label: MYT Launch Strategies
+title: MYT Launch Strategies
 ---
 
 import mytStrategies from '@site/static/img/myt-strategies-01.png';

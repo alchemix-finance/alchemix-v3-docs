@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Co-Marketing & BD Support
+title: Co-Marketing & BD Support
 ---
 
 import coMarketing from '@site/static/img/comarketing-01.png';

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Apply to Partner
+title: Apply to Partner
 ---
 
 import applyPartner from '@site/static/img/apply-partner-01.png';

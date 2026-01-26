@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 hide_title: true
-sidebar_label: Self-Repaying Loans
+title: Self-Repaying Loans
 ---
 
 import self from '@site/static/img/self-repaying-01.png';

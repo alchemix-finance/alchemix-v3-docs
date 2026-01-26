@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Links & Resources
+title: Links & Resources
 ---
 
 import linksResources from '@site/static/img/links-resources-01.png';

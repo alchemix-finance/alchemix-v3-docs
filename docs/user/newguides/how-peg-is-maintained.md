@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 hide_title: true
-sidebar_label: How Peg Is Maintained
+title: How Peg Is Maintained
 ---
 
 import pegMaintained from '@site/static/img/peg-maintained-01.png';
