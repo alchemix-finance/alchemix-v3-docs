@@ -10,7 +10,7 @@ import VisualizerFrame from '@site/src/components/VisualizerFrame';
 
 <img src={Hero} alt="Alchemix v3" class="banner-spacing" />
 
-### QUICK START:
+### Introduction:
 
 Alchemix is your unified platform for saving, earning, borrowing, and fixed-term fixed-yield opportunities—all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol allows you to:
 
