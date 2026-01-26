@@ -8,7 +8,7 @@ import MYT from '@site/static/img/MYT-banner.png';
 
 <img src={MYT} alt="Mix-Yield Token" class="banner-spacing" />
 
-Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that Alchemix allocates across multiple protocols.
+Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that the Alchemix DAO allocates across multiple protocols.
 
 [Explore technical documentation for MYT →](../../dev/myt/myt-contract)
 
@@ -32,7 +32,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 There is one ETH-denominated and one USDC-denominated MYT on every supported chain. Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
 
-You can view the current strategy breakdowns directly in the UI →
+You can view the current strategy breakdowns [directly in the UI →](https://alchemix.fi/)
 
 ## Depositing and Earning
 

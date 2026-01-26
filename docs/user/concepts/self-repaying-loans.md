@@ -20,14 +20,14 @@ Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or a
 
 Because repayment comes from these predictable flows, the loan never accrues variable interest. The balance of your debt only moves in one direction, down, unless you choose to mint additional alAssets.
 
-| Parameter         | Value or behaviour                                                                                                                           |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Collateral        | ETH → alETH, USDC → alUSD                                                                                                                    |
-| Maximum LTV       | 90%                                                                                                                                          |
-| Interest rate     | 0% (balance declines, never compounding)                                                                                                     |
-| Repayment sources | MYT yield, scheduled transmuter redemptions, manual repayments                                                                               |
-| Early repayment   | Send alAssets back at any time                                                                                                               |
-| Liquidation       | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. Learn more → |
+| Parameter         | Value or behaviour                                                                                                                                                |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Collateral        | ETH → alETH, USDC → alUSD                                                                                                                                         |
+| Maximum LTV       | 90%                                                                                                                                                               |
+| Interest rate     | 0% (balance declines, never compounding)                                                                                                                          |
+| Repayment sources | MYT yield, scheduled transmuter redemptions, manual repayments                                                                                                    |
+| Early repayment   | Send alAssets back at any time                                                                                                                                    |
+| Liquidation       | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](./liquidations.md) |
 
 ### User touch-points
 

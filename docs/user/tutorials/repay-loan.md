@@ -24,6 +24,15 @@ Making even a small repayment secures more control over how and when you use you
 
 The Repay tab accepts three asset types: alAssets, MYT, or the underlying token. You can use whichever is most convenient or cheapest at the moment.
 
+## Earmarked vs non-earmarked debt
+
+| Debt type     | How to identify                   | Repayment asset | Effect                                     |
+| ------------- | --------------------------------- | --------------- | ------------------------------------------ |
+| Non-earmarked | “Earmarked” counter = 0 in the UI | alAsset         | Reduces debt immediately.                  |
+| Earmarked     | “Earmarked” shows a token amount  | MYT             | Repays the reserved slice. The MYT you use |
+
+Repaying earmarked debt before maturity can keep your health factor higher.
+
 ## Step 1 – Choose what to repay with
 
 | Option                   | When to use                          | Notes                                                                   |
@@ -49,17 +58,6 @@ Type the number of tokens you want to use to repay debt. The “Max” function 
 - Click the cart icon to collect other Alchemix transactions, such as deposits, withdrawals, or other repayments.
 
 Confirm the transaction in your wallet.
-
-## Earmarked vs non-earmarked debt
-
-Lil section (table?) on how earmarked and regular debt is paid. Maybe this? Redundant? VVV
-
-| Debt type     | How to identify                   | Repayment asset | Effect                                     |
-| ------------- | --------------------------------- | --------------- | ------------------------------------------ |
-| Non-earmarked | “Earmarked” counter = 0 in the UI | alAsset         | Reduces debt immediately.                  |
-| Earmarked     | “Earmarked” shows a token amount  | MYT             | Repays the reserved slice. The MYT you use |
-
-Repaying earmarked debt before maturity can keep your health factor higher.
 
 ## Tips
 

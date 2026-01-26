@@ -165,7 +165,7 @@ Never. Earmarked collateral continues to earn you yield until the moment it is r
 
 <summary>Who controls the system?</summary>
 
-Alchemix V3 is composed of several key counterparties. MYT Depositors, Borrowers, Liquidity Providers, and Transmuter Users. Each of these manage specific risks including strategy losses, liquidation at high LTVs, and potential redemption fees.
+Alchemix V3 is composed of several key counterparties. MYT Depositors, Borrowers, Liquidity Providers, and Transmuter Users. Each of these manage specific risks including strategy losses, liquidation at high LTVs, and potential redemption fees. Overall, these systems are governed by the Alchemix DAO.
 
 The system is secured by cross-chain bridge controls using multiple decentralized verification networks (DVNs) and utilizes fundamental oracles to insulate users from market price volatility.
 

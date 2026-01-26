@@ -60,7 +60,7 @@ Go to the Dashboard and scroll to Open Earn Positions.
 
 | Function      | When to use                | Effect                                                                                                                                       |
 | ------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Close         | Term ended                 | Receive underlying (or MYT if liquidity is tight).                                                                                           |
+| Close         | Term ended                 | Receive underlying value in MYT.                                                                                                             |
 | Close (early) | Need funds before maturity | Receives a reduced amount, UI shows the penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
 
 If the contract returns MYT due to temporary liquidity limits, you can unwrap it manually or wait until the queue clears.

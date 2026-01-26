@@ -32,7 +32,7 @@ Buy alAsset → Deposit to Transmuter → Supply burns → Price↑ 1.00
 
 Borrowing becomes less attractive while the redemption queue is large, so the system naturally flips between expansion and contraction until equilibrium is reached.
 
-## Secondary Influences
+<!-- ## Secondary Influences
 
 TODO
 
@@ -45,7 +45,7 @@ Activity Direction Why it matters
 |                          | Price ↓ |                                                        |
 |                          |         |                                                        |
 
-These effects rarely move the peg by much on their own, but they can speed up or slow down reversion during volatile periods.
+These effects rarely move the peg by much on their own, but they can speed up or slow down reversion during volatile periods. -->
 
 ## Key Points to Remember
 

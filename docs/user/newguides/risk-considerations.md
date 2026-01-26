@@ -30,7 +30,7 @@ If the MYT suffers a loss then the LTV of a borrower's position may increase bey
 
 Users can mitigate liquidation risk by using a conservative LTV based on the risk levels of the strategies that make up each MYT. The High and Medium risk strategies in each MYT are limited to 10% and 25% of the MYT, respectively. If the liquidation LTV is 95% then the user can take a 60% LTV. In this scenario, even if all of the High and Medium risk strategies suffer 100% losses, the user will still have a 92% LTV and therefore not be subject to liquidation.
 
-It is worth noting that [MYT notes](../concepts/myt-and-yield.md#myt-launch-strategies) low risk strategies are only priced by fundamental oracles. This means only the underlying value of the strategy matters - not the dex or market price of the strategy token. Therefore, liquidation with these strategies can only occur if the contract loses value due to an exploit or other form of loss, NOT due to dex pricing, dex manipulation, or oracle manipulation. This means that liquidation risk due to LOW risk assets is significantly lower than HIGH and MEDIUM risk assets.
+It is worth noting that [MYT notes](../../governance/guides/myt-strategies#pricing-approach) low risk strategies are only priced by fundamental oracles. This means only the underlying value of the strategy matters - not the dex or market price of the strategy token. Therefore, liquidation with these strategies can only occur if the contract loses value due to an exploit or other form of loss, NOT due to dex pricing, dex manipulation, or oracle manipulation. This means that liquidation risk due to LOW risk assets is significantly lower than HIGH and MEDIUM risk assets.
 
 ## Redemption Rate
 

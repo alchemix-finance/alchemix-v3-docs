@@ -13,7 +13,7 @@ import transmuter from '@site/static/img/transmuter-01.png';
 The Transmuter lets you redeem alAssets (alUSD, alETH) 1:1 for their underlying asset after a known waiting period. Purchase below face value, and receive the full value on the maturity date.
 
 :::tip Instant vs. Guaranteed Liquidity
-The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as yield flows in.
+The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as redemptions mature.
 
 - **Want it now?** Use external liquidity pools (Curve, Balancer) which are instant but may have slight price slippage.
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
