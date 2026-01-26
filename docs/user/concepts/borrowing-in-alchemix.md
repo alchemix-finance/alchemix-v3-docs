@@ -41,14 +41,14 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 
 ## Key Information
 
-| Parameter               | Value or behavior                                                                                                                            |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Maximum LTV             | 90% of collateral value.                                                                                                                     |
-| Interest Rate           | Zero. Debt balance only declines; it never accrues new interest.                                                                             |
-| Repayment sources       | Vault yield, transmuter redemptions, manual repayments.                                                                                      |
-| Early repayment options | Use alAssets to repay the debt at any time.                                                                                                  |
-| Position NFT            | Your position is represented by an NFT available in your wallet after the transaction confirms.                                              |
-| Liquidation             | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. Learn more → |
+| Parameter               | Value or behavior                                                                                                                                                 |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maximum LTV             | 90% of collateral value.                                                                                                                                          |
+| Interest Rate           | Zero. Debt balance only declines; it never accrues new interest.                                                                                                  |
+| Repayment sources       | Vault yield, transmuter redemptions, manual repayments.                                                                                                           |
+| Early repayment options | Use alAssets to repay the debt at any time.                                                                                                                       |
+| Position NFT            | Your position is represented by an NFT available in your wallet after the transaction confirms.                                                                   |
+| Liquidation             | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](./liquidations.md) |
 
 ### Why borrow instead of selling?
 

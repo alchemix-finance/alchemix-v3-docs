@@ -12,7 +12,7 @@ import VisualizerFrame from '@site/src/components/VisualizerFrame';
 
 ### Introduction:
 
-Alchemix is your unified platform for saving, earning, borrowing, and fixed-term fixed-yield opportunities—all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol allows you to:
+Alchemix is your unified platform for saving, borrowing, and earning fixed-term fixed-yield opportunities all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol allows you to:
 
 - **Save and grow –** deposit ETH or USDC and let our vault invest and earn yield across diversified strategies.
 
@@ -26,7 +26,7 @@ Alchemix is your unified platform for saving, earning, borrowing, and fixed-term
 
 **How it works**
 
-Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by Alchemix and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
+Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by the Alchemix DAO and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
 
 ### Key Points
 
@@ -44,12 +44,12 @@ Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthet
 
 ### Key Points
 
-|                  |                                                                                                                                                                                                                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Borrowable asset | alETH or alUSD                                                                                                                                                                                                                                                                 |
-| Maximum LTV      | 90% of deposited collateral                                                                                                                                                                                                                                                    |
-| Liquidations     | Liquidations only apply if the MYT value drops below your loan value **plus a buffer**. This occurs if a strategy returns a negative yield or, for example, a strategy gets hacked. Your ETH or USD is deposited into the MYT and the MYT becomes your collateral. Learn more. |
-| Early Repayment  | Optional at any time                                                                                                                                                                                                                                                           |
+|                  |                                                                                                                                                                                                                                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Borrowable asset | alETH or alUSD                                                                                                                                                                                                                                                                                               |
+| Maximum LTV      | 90% of deposited collateral                                                                                                                                                                                                                                                                                  |
+| Liquidations     | Liquidations only apply if the MYT value drops below your loan value **plus a buffer**. This occurs if a strategy returns a negative yield or, for example, a strategy gets hacked. Your ETH or USD is deposited into the MYT and the MYT becomes your collateral. [Learn more.](./concepts/liquidations.md) |
+| Early Repayment  | Optional at any time                                                                                                                                                                                                                                                                                         |
 
 Typical uses include financing a purchase, leveraging/looping yield, or bridging short-term opportunities without disrupting long-term holdings.
 

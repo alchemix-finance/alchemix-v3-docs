@@ -48,11 +48,12 @@ A small predictable discount is healthy; large discrepancies invite arbitrage.
 
 ## Mechanisms that close the discount
 
-| Mechanism              | How it helps                                                                                                  |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Transmuter             | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets at maturity. |
-| Repayment arbitrage    | Borrowers can buy alAssets cheaply to repay debt below face value.                                            |
-| Liquidity provisioning | Farming rewards encourage holding alAssets, soaking up sell pressure.                                         |
+| Mechanism           | How it helps                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets at maturity. |
+| Repayment arbitrage | Borrowers can buy alAssets cheaply to repay debt below face value.                                            |
+
+<!-- | Liquidity provisioning | Farming rewards encourage holding alAssets, soaking up sell pressure.                                         | -->
 
 Together these forces pull market price toward 1.00 and keep borrowing capital-efficient.
 
