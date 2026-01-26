@@ -8,9 +8,9 @@ import repayLoans from '@site/static/img/repay-loans-01.png';
 
 <img src={repayLoans} alt="Repay Loans" class="banner-spacing" />
 
-## Why Repay?
-
 Paying down or closing a loan does more than remove debt. It directly improves every metric that governs how much flexibility you still have inside the vault.
+
+## Why Repay?
 
 - **Lower LTV, higher health factor** – each repayment moves your loan health toward green and raises the liquidation buffer.
 
