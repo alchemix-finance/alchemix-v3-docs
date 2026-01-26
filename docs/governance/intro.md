@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: On-chain Governance
+title: On-chain Governance
 ---
 
 import governance from '@site/static/img/governance-01.png';

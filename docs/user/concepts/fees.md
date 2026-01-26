@@ -1,7 +1,7 @@
 ---
 sidebar_position: 7
 hide_title: true
-sidebar_label: Fees
+title: Fees
 ---
 
 import fees from '@site/static/img/fees-01.png';

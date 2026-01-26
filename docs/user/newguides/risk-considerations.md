@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 hide_title: true
-sidebar_label: Protocol Trust & Risk Mitigation
+title: Protocol Trust & Risk Mitigation
 ---
 
 import riskConsiderations from '@site/static/img/risk-considerations-01.png';

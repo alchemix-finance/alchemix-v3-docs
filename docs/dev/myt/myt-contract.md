@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 hide_title: true
-sidebar_label: MYTStrategy
+title: MYTStrategy
 ---
 
 import mytstrategy from '@site/static/img/mytstrategy-01.png';

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Welcome
+title: Welcome
 ---
 
 import integrations from '@site/static/img/integrations-01.png';

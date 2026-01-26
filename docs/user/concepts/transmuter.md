@@ -1,7 +1,7 @@
 ---
 sidebar_position: 6
 hide_title: true
-sidebar_label: Transmuter
+title: Transmuter
 ---
 
 import transmuter from '@site/static/img/transmuter-01.png';

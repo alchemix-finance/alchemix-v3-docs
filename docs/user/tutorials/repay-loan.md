@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 hide_title: true
-sidebar_label: Repay Loans
+title: Repay Loans
 ---
 
 import repayLoans from '@site/static/img/repay-loans-01.png';

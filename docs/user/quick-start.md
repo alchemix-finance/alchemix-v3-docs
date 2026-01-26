@@ -1,6 +1,6 @@
 ---
 hide_title: true
-sidebar_label: Quick Start
+title: Quick Start
 ---
 
 import quickStartBanner from '@site/static/img/quick-start-banner-01.png';

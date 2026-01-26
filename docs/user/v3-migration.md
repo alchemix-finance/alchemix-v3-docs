@@ -1,6 +1,6 @@
 ---
 hide_title: true
-sidebar_label: V3 Migration & Mana Program
+title: V3 Migration & Mana Program
 ---
 
 import v3Migration from '@site/static/img/migration-mana-01.png';

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 5
 hide_title: true
-sidebar_label: Passive MYT Yield
+title: Passive MYT Yield
 ---
 
 import mytYield from '@site/static/img/myt-yield-01.png';

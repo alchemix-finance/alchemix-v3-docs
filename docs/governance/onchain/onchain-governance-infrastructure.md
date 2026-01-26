@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 hide_title: true
-sidebar_label: The Future of Onchain Governance
+title: The Future of Onchain Governance
 ---
 
 import futureGov from '@site/static/img/future-of-gov-01.png';

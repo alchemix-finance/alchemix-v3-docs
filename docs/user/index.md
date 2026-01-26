@@ -1,6 +1,6 @@
 ---
 hide_title: true
-sidebar_label: Introduction
+title: Introduction
 ---
 
 import AlchemixStats from "@site/src/components/AlchemixStats";

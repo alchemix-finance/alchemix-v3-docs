@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 hide_title: true
-sidebar_label: Developer Docs
+title: Developer Docs
 ---
 
 import AlchemixStats from "@site/src/components/AlchemixStats";
