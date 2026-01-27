@@ -8,6 +8,8 @@ import useCases from '@site/static/img/use-cases-01.png';
 
 <img src={useCases} alt="Use Cases" class="banner-spacing" />
 
+This section containes a variety of potential use-cases for collaboration with Alchemix v3.
+
 ## DAOs & Treasuries
 
 Treasury managers can park idle ETH or USDC in the Mix-Yield Token (MYT) to earn a diversified return while assets remain fully on-chain. When liquidity is required, the same collateral facilitates a credit line of alAssets that can be swapped for operating capital. This allows the DAO to maintain its core exposure while the Alchemist system manages debt.
