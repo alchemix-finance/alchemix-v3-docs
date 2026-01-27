@@ -14,7 +14,7 @@ Paying down or closing a loan does more than remove debt. It directly improves e
 
 - **Lower LTV, higher health factor** – each repayment moves your loan health toward green and raises the liquidation buffer.
 
-- **Collateral freedom** – collateral earmarked for the next redemption cycle is released proportionally, so you can withdraw it or redeploy it elsewhere.
+- **Collateral freedom** – collateral earmarked for the next redemption cycle is released proportionally, so you can withdraw it or redeploy it elsewhere.then
 
 - **Room for withdrawals** – if you need to pull principal out of the vault, reducing debt first keeps your LTV from spiking and prevents an accidental liquidation trigger.
 

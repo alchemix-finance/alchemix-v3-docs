@@ -6,8 +6,10 @@ title: FAQ
 import faq from '@site/static/img/faq-01.png';
 
 <img src={faq} alt="FAQ" class="banner-spacing" />
-\
-Use this page as a quick lookup for the questions we hear most often. It explains core ideas, such as borrowing limits, earmarked debt, the redemption rate, and how they show up in the interface. If you need deeper detail, each answer links back to the full guide or tutorial that covers the topic in depth.
+
+Use this page as a quick lookup for the questions we hear most often. It explains core ideas, such as borrowing limits, earmarked debt, the redemption rate, and how they show up in the interface.
+
+If you need deeper detail, each answer links back to the full guide or tutorial that covers the topic in depth.
 
 <details>
 

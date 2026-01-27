@@ -8,7 +8,9 @@ import mytStrategies from '@site/static/img/myt-strategies-01.png';
 
 <img src={mytStrategies} alt="MYT Launch Strategies" class="banner-spacing" />
 
-Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Low, Med, and High. The general approach to classification is based on the table below.
+Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Low, Med, and High.
+
+The general approach to classification is based on the table below.
 
 | Classification Level | Wrap/Unwrap Approach | Pricing Approach | Duration Risk                | Other Factors |
 | :------------------- | :------------------- | :--------------- | :--------------------------- | :------------ |

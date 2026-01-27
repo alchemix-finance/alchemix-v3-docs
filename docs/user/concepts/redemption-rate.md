@@ -12,7 +12,9 @@ import redemption from '@site/static/img/redemption-rate-01.png';
 
 <img src={redemption} alt="Redemption Rate" class="banner-spacing" />
 
-Redemptions convert earmarked collateral into the asset required to repay debt. Two ideas matter:
+Redemptions convert earmarked collateral into the asset required to repay debt.
+
+Two ideas matter:
 
 - **Redemption rate** – how fast the system deleverages your position.
   - **Note:** Because debt and collateral are like kind, deleveraging does not lose the user any money (besides the redemption fee). This is different than many systems that charge interest rates that can at times be higher than the yield you are earning.
