@@ -1,41 +1,29 @@
-# Website
+# Alchemix V3 Docs
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Documentation site for Alchemix V3, built with [Docusaurus](https://docusaurus.io/).
 
-### Installation
-
-```
-$ yarn
-```
-
-### Local Development
+## Installation
 
 ```
-$ yarn start
+pnpm install
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-### Build
+## Local Development
 
 ```
-$ yarn build
+pnpm start
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+Starts a local development server and opens a browser window. Most changes are reflected live without restarting the server.
 
-### Deployment
-
-Using SSH:
+## Build
 
 ```
-$ USE_SSH=true yarn deploy
+pnpm build
 ```
 
-Not using SSH:
+Generates static content into the `build` directory.
 
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
+## Deployment
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+The site is deployed on [Vercel](https://vercel.com/). Pushes to `main` trigger automatic deployments.
