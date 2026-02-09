@@ -29,7 +29,7 @@ Integrating with Alchemix V3 provides a unique "triple-threat" of capital effici
 | Feature                    | Purpose                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Alchemist Vault (ERC-4626) | The core borrowing engine. Deposit collateral to mint alAssets.                                       |
-| Mix-Yield Token (MYT)      | Tokenised basket of yield strategies, which can be unwrapped for the underlying assets at any time.   |
+| Mix-Yield Token (MYT)      | Tokenized basket of yield strategies, which can be unwrapped for the underlying assets at any time.   |
 | Transmuter                 | Fixed-duration redemptions that stabilise alAsset prices and create predictable return opportunities. |
 | Self-repaying CDP          | Debt is automatically retired by vault yield and scheduled redemptions.                               |
 

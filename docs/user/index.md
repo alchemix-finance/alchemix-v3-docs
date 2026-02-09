@@ -68,7 +68,7 @@ The Transmuter lets users deposit alAssets and, after a fixed term, redeem an eq
 - **Peg stability** – arbitrage incentives help to keep alAssets near parity.
 - **Protection for LPs** – stable asset prices and redemption opportunities help offset impermanent loss.
 
-**Example**: If alUSD trades at 0.98 USDC and the current redemption period is three months, purchasing alUSD and redeeming it yields an annualised return of roughly 8%.
+**Example**: If alUSD trades at 0.98 USDC and the current redemption period is three months, purchasing alUSD and redeeming it yields an annualized return of roughly 8%.
 
 Under normal conditions, the interface unwraps that MYT to the underlying token for you. If liquidity is momentarily tight **or has unexpected slippage**, the contract may return the MYT itself. You can either hold it until unwrapping is available or unwrap manually once the queue clears.
 
