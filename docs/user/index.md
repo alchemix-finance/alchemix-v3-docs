@@ -75,7 +75,7 @@ Under normal conditions, the interface unwraps that MYT to the underlying token 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
 
 :::info V3 vs V2
-This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://docs.alchemix.fi/).
+This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://v2-docs.alchemix.fi/).
 :::
 
 ## Next Steps

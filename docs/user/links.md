@@ -15,7 +15,7 @@ This documentation is the most complete learning resource, but it may lag behind
 | Resource                                                     | Purpose                                                   |
 | ------------------------------------------------------------ | --------------------------------------------------------- |
 | [**X (Twitter)**](https://x.com/AlchemixFi)                  | Official announcements and real-time updates.             |
-| [**Discord**](https://discord.gg/E9eGjttFCB)                 | Community chat, support and contributor coordination.     |
+| [**Discord**](https://discord.gg/alchemix)                   | Community chat, support and contributor coordination.     |
 | [**Newsletter**](https://alchemixfi.substack.com/)           | Roundup of releases, governance and ecosystem news.       |
 | [**Snapshot**](https://snapshot.box/#/s:alchemixstakers.eth) | Governance voting hub.                                    |
 | [**Github**](https://github.com/alchemix-finance)            | Parent Alchemix Github account.                           |

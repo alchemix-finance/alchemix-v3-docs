@@ -144,7 +144,7 @@ const config = {
         id: "beta-2025-audit",
         content:
           "🚧 <strong>Public BETA:</strong> These docs are in active development. Expect gaps and changes. " +
-          '<a href="https://discord.gg/E9eGjttFCB">Get support</a> · ' +
+          '<a href="https://discord.gg/alchemix">Get support</a> · ' +
           '<a href="https://github.com/alchemix-finance/alchemix-v3-docs/issues/new">Report an issue</a>',
         backgroundColor: "#FFF4E5",
         textColor: "#3D2C00",
@@ -239,7 +239,7 @@ const config = {
               },
               {
                 label: "Discord",
-                href: "https://discord.gg/E9eGjttFCB",
+                href: "https://discord.gg/alchemix",
               },
               {
                 label: "X (Prev. Twitter)",
