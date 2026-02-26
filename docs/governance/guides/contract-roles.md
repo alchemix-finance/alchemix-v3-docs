@@ -44,7 +44,7 @@ An Admin can call all private functions including contract upgrades.
 | Managing Risk | The primary risk manager. Sets adapters, caps, fees, and interest rate limits. Most actions are timelocked. | https://docs.morpho.org/learn/concepts/vault-v2/ |
 
 :::note
-This role has a “middleman” contract by Alchemix that further restricts what those assigned to this role can do beyond the Morpho default, specifically:
+This role has a “middleman” contract by Alchemix that further restricts what those assigned to this role can do compared to the base open-source configuration, specifically:
 
 - **Curator** - can do everything except set adapters
 - **Curator Proxy** - can only set adapters
@@ -57,7 +57,7 @@ This role has a “middleman” contract by Alchemix that further restricts what
 | Allocating and Deallocating Funds from MYT | The active portfolio manager. Allocates funds to enabled adapters and manages the liquidityAdapter. | https://docs.morpho.org/learn/concepts/vault-v2/ |
 
 :::note
-This role has a “middleman” contract by Alchemix that further restricts what those assigned to this role can do beyond the Morpho default, specifically:
+This role has a “middleman” contract by Alchemix that further restricts what those assigned to this role can do compared to the base open-source configuration, specifically:
 
 - **Allocator** - can do everything including set the liquidityAdapter and the liquidityData
 - **Allocator Proxy** - can only allocate and deallocate funds
@@ -70,5 +70,5 @@ This role has a “middleman” contract by Alchemix that further restricts what
 | Deallocate Funds, Decrease Caps, Revoke Pending Timelocked Actions | The safety-focused role that can reactively reduce risk by deallocating funds, decreasing caps, or revoking pending timelocked actions. | https://docs.morpho.org/learn/concepts/vault-v2/ |
 
 :::note
-This role has a “middleman” contract by Alchemix that further restricts what those assigned to this role can do beyond the Morpho default, specifically, the Sentinel can do everything except revoke pending timelocked actions.
+This role has a “middleman” contract by Alchemix that further restricts what those assigned to this role can do compared to the base open-source configuration, specifically, the Sentinel can do everything except revoke pending timelocked actions.
 :::
