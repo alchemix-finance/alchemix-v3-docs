@@ -12,36 +12,20 @@ module.exports = {
       id: "quick-start",
       label: "Quick Start",
     },
-
     {
       type: "category",
       label: "Key Concepts",
       className: "sidebarBold",
       collapsed: true,
       items: [
-        {
-          type: "category",
-          label: "Assets",
-          items: ["concepts/alAssets", "concepts/myt-and-yield"],
-        },
-        {
-          type: "category",
-          label: "Borrowing & Loans",
-          items: [
-            "concepts/self-repaying-loans",
-            "concepts/borrowing-in-alchemix",
-            "concepts/liquidations",
-          ],
-        },
-        {
-          type: "category",
-          label: "System Mechanics",
-          items: [
-            "concepts/transmuter",
-            "concepts/redemption-rate",
-            "concepts/fees",
-          ],
-        },
+        "concepts/alAssets",
+        "concepts/myt-and-yield",
+        "concepts/self-repaying-loans",
+        "concepts/borrowing-in-alchemix",
+        "concepts/liquidations",
+        "concepts/transmuter",
+        "concepts/redemption-rate",
+        "concepts/fees",
       ],
     },
     {
@@ -54,14 +38,6 @@ module.exports = {
         "tutorials/deposit-and-borrow",
         "tutorials/repay-loan",
         "tutorials/redeem-alassets",
-      ],
-    },
-    {
-      type: "category",
-      label: "Guides",
-      className: "sidebarBold",
-      collapsed: true,
-      items: [
         "newguides/how-peg-is-maintained",
         "newguides/risk-considerations",
       ],
@@ -69,19 +45,27 @@ module.exports = {
     "v3-migration",
     "faq",
     {
-      type: "doc",
-      id: "links",
-      label: "Links & Resources",
-    },
-    {
-      type: "doc",
-      id: "financial-reports",
-      label: "Financial Reports",
-    },
-    {
-      type: "doc",
-      id: "marketing-material",
-      label: "Marketing Material",
+      type: "category",
+      label: "Resources",
+      className: "sidebarBold",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "links",
+          label: "Links & Resources",
+        },
+        {
+          type: "doc",
+          id: "financial-reports",
+          label: "Financial Reports",
+        },
+        {
+          type: "doc",
+          id: "marketing-material",
+          label: "Marketing Material",
+        },
+      ],
     },
   ],
 };
