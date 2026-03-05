@@ -66,7 +66,7 @@ When a redemption cycle begins, the protocol gradually reserves (earmarks) a por
   Is it possible to exit or repay my loan before it is fully repaid?
 </summary>
 
-Absolutely! Alchemix allows you the flexibility to exit or repay your loan at any time, even before it is fully self-repaid. We offer a self-liquidation feature that can only be triggered by the depositor that enables you to repay outstanding loans by using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties at all with Alchemix.
+Yes. Alchemix allows you to exit or repay your loan at any time, even before it is fully self-repaid. We offer a self-liquidation feature that can only be triggered by the depositor that enables you to repay outstanding loans by using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties at all with Alchemix.
 
 </details>
 

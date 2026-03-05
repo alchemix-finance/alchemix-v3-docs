@@ -12,6 +12,10 @@ import liquidations from '@site/static/img/liquidations-01.png';
 
 Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account punishment. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close. The back-stop only activates if the Mix-Yield Token itself loses backing.
 
+:::tip Liquidations in Alchemix are rare
+Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.
+:::
+
 ## When liquidation does not occur
 
 | Event                              | Effect on your loan                                               |
@@ -49,4 +53,4 @@ The colored bar in the vault UI gives an at-a-glance view of three numbers:
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 
-Users are encouraged to study the makeup of the MYT, as well as the risk categories. The DAO sets a maximum % of the MYT that may be allocated to high and medium risk categories. This allows users to set LTVs below liquidation thresholds based on those makeups.
+Review the MYT strategy breakdown and risk categories before choosing your LTV. The DAO sets a maximum percentage of the MYT that may be allocated to high and medium risk categories, which gives you a basis for calculating a safe LTV below the liquidation threshold.

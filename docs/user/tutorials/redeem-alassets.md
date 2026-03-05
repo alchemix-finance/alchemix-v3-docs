@@ -20,6 +20,10 @@ While your position sits in the queue Alchemix earmarks matching collateral at 1
 
 ## Step 2 – Pick a term
 
+:::tip Prices and yields vary by chain
+APRs and alAsset spot prices differ across networks. Always verify the values shown in the Earn panel on your target chain before purchasing alAssets to deposit.
+:::
+
 Each panel displays:
 
 - Maturity Date
@@ -70,5 +74,3 @@ If the contract returns MYT due to temporary liquidity limits, you can unwrap it
 - Fixed-rate terms pay the displayed return only at maturity.
 
 - Early closure invokes the penalty shown in the UI.
-
-- Term yields and alAsset prices may differ by chain, always confirm panel values before depositing.

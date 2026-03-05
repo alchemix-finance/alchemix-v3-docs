@@ -14,7 +14,7 @@ Paying down or closing a loan does more than remove debt. It directly improves e
 
 - **Lower LTV, higher health factor** – each repayment moves your loan health toward green and raises the liquidation buffer.
 
-- **Collateral freedom** – collateral earmarked for the next redemption cycle is released proportionally, so you can withdraw it or redeploy it elsewhere.then
+- **Collateral freedom** – collateral earmarked for the next redemption cycle is released proportionally, so you can withdraw it or redeploy it elsewhere.
 
 - **Room for withdrawals** – if you need to pull principal out of the vault, reducing debt first keeps your LTV from spiking and prevents an accidental liquidation trigger.
 
@@ -29,7 +29,7 @@ The Repay tab accepts three asset types: alAssets, MYT, or the underlying token.
 | Debt type     | How to identify                   | Repayment asset | Effect                                     |
 | ------------- | --------------------------------- | --------------- | ------------------------------------------ |
 | Non-earmarked | “Earmarked” counter = 0 in the UI | alAsset         | Reduces debt immediately.                  |
-| Earmarked     | “Earmarked” shows a token amount  | MYT             | Repays the reserved slice. The MYT you use |
+| Earmarked     | “Earmarked” shows a token amount  | MYT             | Repays the reserved slice and frees the earmarked collateral. |
 
 Repaying earmarked debt before maturity can keep your health factor higher.
 
@@ -38,7 +38,7 @@ Repaying earmarked debt before maturity can keep your health factor higher.
 | Option                   | When to use                          | Notes                                                                   |
 | ------------------------ | ------------------------------------ | ----------------------------------------------------------------------- |
 | alAsset (alUSD or alETH) | Standard debt                        | Repays non-earmarked debt only.                                         |
-| MYT (Mix-Yield Token)    | Earmarked debt and/oor standard debt | Required for any debt already earmarked for a redemption cycle.         |
+| MYT (Mix-Yield Token)    | Earmarked debt and/or standard debt  | Required for any debt already earmarked for a redemption cycle.         |
 | Underlying (ETH or USDC) | Convenience                          | Interface swaps to MYT behind the scenes before applying the repayment. |
 
 The asset-selector dropdown (left side of the entry box) will only list what is valid for the current vault state.

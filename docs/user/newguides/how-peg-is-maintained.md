@@ -53,4 +53,4 @@ These effects rarely move the peg by much on their own, but they can speed up or
 
 - Transmuter deposits contract supply and earn fixed yield, pulling price back.
 
-- Seconary influences add stabilizing pressure.
+- Secondary influences add stabilizing pressure.

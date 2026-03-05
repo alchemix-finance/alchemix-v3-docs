@@ -29,7 +29,7 @@ Because repayment comes from these predictable flows, the loan never accrues var
 | Early repayment   | Send alAssets back at any time                                                                                                                                    |
 | Liquidation       | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](./liquidations.md) |
 
-### User touch-points
+### Managing Your Position
 
 For most borrowers, the position is low-maintenance. Deposit, mint, and check back when you need more liquidity. Active users can raise or lower their LTV, loop alAssets back into the vault for leverage, or time repayments around redemptions.
 

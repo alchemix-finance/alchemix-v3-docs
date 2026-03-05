@@ -22,6 +22,10 @@ The protocol allows you to:
 
 [Explore the Quick Start guide →](./quick-start.md)
 
+:::info V3 vs V2
+This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://v2-docs.alchemix.fi/).
+:::
+
 ## 1. Grow Savings with Vaults
 
 **How it works**
@@ -74,14 +78,10 @@ Under normal conditions, the interface unwraps that MYT to the underlying token 
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
 
-:::info V3 vs V2
-This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://v2-docs.alchemix.fi/).
-:::
-
 ## Next Steps
 
 1. Visit [https://alchemix.fi/](https://alchemix.fi).
-2. Stay informed with our [Guides](./newguides/risk-considerations.md).
+2. Stay informed with our [Tutorials](./tutorials/use-passive-myt.md).
 3. Follow along with our [Tutorials](./tutorials/use-passive-myt.md).
 4. Learn more with our [Key Concepts](./concepts/myt-and-yield.md).
 

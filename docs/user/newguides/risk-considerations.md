@@ -52,9 +52,9 @@ A liquidity provider / alUSD holder that does not have an Alchemix position in a
 
 If the balance of the pool moves favorably for the LPer over time, they can earn yield as well as a net positive slippage from the difference between their exit and entry position. If the balance of the pool moves unfavorably, then the net negative slippage would be subtracted from the yield earned during their liquidity provision over time.
 
-A user can hedge alAsset exposure exposure by using the Transmuter, or by being a depositor within Alchemix. If the alAsset pool shifts less favorably for the depositor/LPer, they can withdraw alUSD instead of stablecoins for a bonus positive slippage and repay their debt.
+A user can hedge alAsset exposure by using the Transmuter, or by being a depositor within Alchemix. If the alAsset pool shifts less favorably for the depositor/LPer, they can withdraw alUSD instead of stablecoins for a bonus positive slippage and repay their debt.
 
-:::note
+:::note alAsset Depeg Scenarios
 There are scenarios where alAssets may temporarily depeg or depeg for a longer period of time. LPers should understand future outcomes in both scenarios - see sections below for MYT losses. LPers especially should understand what conditions may result in temporary alAsset depegs vs more long-term depegs so they can re-evalute their positions accordingly.
 :::
 
@@ -99,7 +99,11 @@ The ALCX token can only be minted on Mainnet, thus it entirely follows the syste
 
 alAssets (alETH and alUSD) can be minted by the Alchemist on each chain and burned by both the Alchemist and Transmuter (repaying debt and redeeming alAssets). Thus, any alAsset on any chain can be bridged to any other chain in order to repay debt or use the transmuter, within the limitations described in [The Alchemix Bridge](risk-considerations#the-alchemix-bridge).
 
-This also means that while alAssets can always be bridged from any chain to any L2 chain, there is no guarantee that alAssets can be bridged back to Mainnet. This could result in alAssets having a lower price on L2 chains than on Mainnet. This system helps create more unified liquidity on L2 chains while ensuring that the primary Mainnet Alchemix deployment is insulated from any security incidents that occur on L2 chains.
+This also means that while alAssets can always be bridged from any chain to any L2 chain, the amount bridgeable back to Mainnet is constrained by rate limits. This system helps create more unified liquidity on L2 chains while ensuring that the primary Mainnet Alchemix deployment is insulated from any security incidents that occur on L2 chains.
+
+:::warning Bridging alAssets back to Mainnet is not guaranteed
+Bridge capacity back to Mainnet is rate-limited. If that capacity is saturated, alAssets may become stranded on L2 and trade at a discount relative to Mainnet prices. Verify available bridge capacity before building a large cross-chain position.
+:::
 
 ### Transmuter and Alchemist
 

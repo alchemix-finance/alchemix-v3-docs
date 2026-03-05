@@ -60,7 +60,7 @@ The Transmuter has a maximum deposit cap based on the total alAssets minted on i
 | Scenario                             | Result                                                                                                                | Your Options                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | Bad debt in Alchemist (exploit, etc) | Redemption pays pro-rata (EG: 0.97:1) until debt is restored.                                                         | Claim now and take a haircut, or leave unclaimed. Once debt clears, you may redeem full 1:1.                   |
-| MYT unwrap slippage                  | In some scenarios MYT may not be able to be immediately unwrapped for the underlying. (EG: UI detects high slippage). | Withdraw MYT from tramsmuter to begin earning yield from it, manually unwrap later facilitated directly by UI. |
+| MYT unwrap slippage                  | In some scenarios MYT may not be able to be immediately unwrapped for the underlying. (EG: UI detects high slippage). | Withdraw MYT from transmuter to begin earning yield from it, manually unwrap later facilitated directly by UI. |
 
 There is no variable interest and no price-based liquidation affecting Transmuter positions.
 

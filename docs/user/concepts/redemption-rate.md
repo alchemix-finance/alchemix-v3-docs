@@ -127,4 +127,4 @@ Throughout that waiting period your full deposit continues to earn yield, giving
 
 - [**Transmuter Mechanics**](./transmuter.md) – How earmarking and redemption batches work.
 
-- [**Live And Historic Graphics**](https://alchemix.fi/) – View past and present data directly in the dapp.
+- [**Live Charts**](https://alchemix.fi/) – View past and present data directly in the dapp.

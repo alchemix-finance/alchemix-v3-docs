@@ -18,7 +18,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 - **DAO-managed allocation.** The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.
 
-- **Powered by open-source infrastructure.** The core Alchemix vault logic utilizes Morpho's open-source v2 vaults layer to optimise on-chain execution and safety.
+- **Powered by open-source infrastructure.** The core Alchemix vault logic utilizes Morpho's open-source v2 vaults layer to optimize on-chain execution and safety.
 
 ## Why Use MYT?
 

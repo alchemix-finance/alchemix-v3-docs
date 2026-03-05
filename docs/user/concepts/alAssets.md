@@ -26,7 +26,7 @@ alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alA
 
 ## Borrowing, Selling, and the Market Discount
 
-When you borrow, the protocol mints alAssets at face value. 1 alAsset offsets exactly 1 unit of debt inside Alchemix. If you sell those tokens on an exchange, you may receive less than 1.00 because alAssets can trade at a market discount (the gap between their external price and their internal 1:1 accounting value). For borrowers this discount is an upfront cost; for traders its a source of fixed return.
+When you borrow, the protocol mints alAssets at face value. 1 alAsset offsets exactly 1 unit of debt inside Alchemix. If you sell those tokens on an exchange, you may receive less than 1.00 because alAssets can trade at a market discount (the gap between their external price and their internal 1:1 accounting value). For borrowers this discount is an upfront cost; for traders it's a source of fixed return.
 
 | Action        | Inside Alchemix            | On the open market                 |
 | ------------- | -------------------------- | ---------------------------------- |

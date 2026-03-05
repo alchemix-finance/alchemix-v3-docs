@@ -7,6 +7,10 @@ import v3Migration from '@site/static/img/migration-mana-01.png';
 
 <img src={v3Migration} alt="V3 Migration & Mana Program" class="banner-spacing" />
 
+:::warning Migration Delayed
+The V2 to V3 migration originally planned for February 6th, 2026 has been delayed pending completion of ongoing security audits. No new date has been confirmed. This page will be updated when a new timeline is available.
+:::
+
 To ensure a seamless transition to the capital-efficient architecture of Alchemix V3, the protocol is undergoing a comprehensive migration process. This transition consolidates liquidity, enables the 90% LTV framework, and initializes the Mix-Yield Token (MYT) system.
 
 ## The Great V2 to V3 Migration

@@ -29,9 +29,13 @@ Open Vaults, select Mix-ETH or Mix-USDC on your chain, and deposit. The vault wi
 
 ![](/img/quick-start-02.png)
 
+:::tip Check the alAsset market price first
+alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.98 USDC, selling 200 alUSD yields ~196 USDC, which is a ~4 USDC upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
+:::
+
 On the same vault page stay on Deposit / Borrow. Enter a small borrow near 20% LTV, then mint alETH or alUSD, respectively.
 
-If you need spendable funds, swap the alAsset to USDC. Ensure you check the alAsset market price first. If it is below 1.00, the gap is your up-front cost. The borrower fee shown in the UI will apply when redemptions occur.
+If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in the UI will apply when redemptions occur.
 
 ## What happens next
 
@@ -50,7 +54,7 @@ You now hold MYT that keeps earning, plus 200 alUSD you can swap or deploy. As r
 ## Safety checks
 
 - **Strategy mix:** open the vault details to see current MYT weight and ceilings for higher-risk buckets.
-- **Health bar:** note the Liquidation LTV market. This is the live liquidation threshold. Ensure you keep a wide buffer to reduce the need for active position management.
+- **Health bar:** note the Liquidation LTV marker. This is the live liquidation threshold. Ensure you keep a wide buffer to reduce the need for active position management.
 
 ## How to unwind
 
@@ -58,7 +62,7 @@ Repay any remaining alAssets, then withdraw your collateral from the vault. If y
 
 ## Next steps
 
-This is only the basics! Next, dive into some of these core concepts:
+Next, explore the concepts behind what you just did:
 
 [Learn more about MYT →](./concepts/myt-and-yield.md)
 
