@@ -22,5 +22,5 @@ This documentation is the most complete learning resource, but it may lag behind
 | [**Developer Docs**](../dev)                                 | All development resources for the Alchemix ecosystem.     |
 | Dune Dashboard                                               | Live protocol metrics and analytics, TBD                  |
 | Gov Dashboard                                                | Live protocol parameters, TBD                             |
-| Financial Reports                                            | All financial reports, TBD                                |
-| Brand Assets                                                 | Assets for use in marketing, community projects, etc. TBD |
+| [**Financial Reports**](financial-reports)                   | Quarterly financial reports, 2022–present.                |
+| [**Marketing Material**](marketing-material)                 | Logos and brand assets for use in marketing and community projects. |

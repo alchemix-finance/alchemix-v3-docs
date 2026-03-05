@@ -12,11 +12,7 @@ module.exports = {
       id: "quick-start",
       label: "Quick Start",
     },
-    {
-      type: "doc",
-      id: "links",
-      label: "Links & Resources",
-    },
+
     {
       type: "category",
       label: "Key Concepts",
@@ -72,5 +68,20 @@ module.exports = {
     },
     "v3-migration",
     "faq",
+    {
+      type: "doc",
+      id: "links",
+      label: "Links & Resources",
+    },
+    {
+      type: "doc",
+      id: "financial-reports",
+      label: "Financial Reports",
+    },
+    {
+      type: "doc",
+      id: "marketing-material",
+      label: "Marketing Material",
+    },
   ],
 };
