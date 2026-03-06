@@ -103,27 +103,3 @@ Our logos are for use in promotional and marketing materials. Please consult the
   </div>
 
 </div>
-
-### Brand Book
-
-:::info Legacy Content
-The brand book below was produced for Alchemix V2. A V3 brand guide is forthcoming. Use this as a general reference, but expect some assets and guidelines to be superseded.
-:::
-
-An overview of how to use the Alchemix brand in your material.
-
-<table>
-  <thead>
-    <tr>
-      <th>Document</th>
-      <th colSpan="2">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Alchemix Brand Book</td>
-      <td><a class="button button--primary button--sm" href="/.gitbook/assets/AlchemixBrandBook_01.pdf" download="AlchemixBrandBook_01.pdf">Download</a></td>
-      <td><a class="button button--secondary button--sm" href="/.gitbook/assets/AlchemixBrandBook_01.pdf" target="_blank" rel="noopener noreferrer">View</a></td>
-    </tr>
-  </tbody>
-</table>
