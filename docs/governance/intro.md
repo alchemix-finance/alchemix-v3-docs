@@ -4,9 +4,9 @@ hide_title: true
 title: On-chain Governance
 ---
 
-import governance from '@site/static/img/governance-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={governance} alt="On-chain Governance" class="banner-spacing" />
+<PageBanner title="On-chain Governance" />
 
 :::note Transition Phase
 

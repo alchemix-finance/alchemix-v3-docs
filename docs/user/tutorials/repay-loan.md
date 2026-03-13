@@ -4,13 +4,14 @@ hide_title: true
 title: Repay Loans
 ---
 
-import repayLoans from '@site/static/img/repay-loans-01.png';
+import PageBanner from "@site/src/components/PageBanner";
+import FramedImage from "@site/src/components/FramedImage";
 
-<img src={repayLoans} alt="Repay Loans" class="banner-spacing" />
+<PageBanner title="Repay Loans" />
 
 Paying down or closing a loan does more than remove debt. It directly improves every metric that governs how much flexibility you still have inside the vault.
 
-## Why Repay?
+## Why repay?
 
 - **Lower LTV, higher health factor** – each repayment moves your loan health toward green and raises the liquidation buffer.
 
@@ -20,7 +21,7 @@ Paying down or closing a loan does more than remove debt. It directly improves e
 
 Making even a small repayment secures more control over how and when you use your collateral.
 
-![](/img/repay-loan-01.png)
+<FramedImage src="/img/repay-loan-01.png" alt="Repay loan panel" />
 
 The Repay tab accepts three asset types: alAssets, MYT, or the underlying token. You can use whichever is most convenient or cheapest at the moment.
 
@@ -43,7 +44,7 @@ Repaying earmarked debt before maturity can keep your health factor higher.
 
 The asset-selector dropdown (left side of the entry box) will only list what is valid for the current vault state.
 
-:::tip Pro Tip: Repaying with alAssets
+:::tip Pro tip: repaying with alAssets
 You can often buy alUSD or alETH on secondary markets (like Curve) for slightly less than $1.00. Using these discounted tokens to repay your loan allows you to clear your debt cheaper than 1:1!
 :::
 

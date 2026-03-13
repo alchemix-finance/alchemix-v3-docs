@@ -4,9 +4,9 @@ hide_title: true
 title: Transmuter
 ---
 
-import transmuter from '@site/static/img/transmuter-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={transmuter} alt="Transmuter" class="banner-spacing" />
+<PageBanner title="Transmuter" />
 
 The Transmuter is a contract that allows redemption of synthetic debt assets created by associated AlchemistV3 contracts for the underlying assets that back them at a 1 to 1 ratio. Deposits of synthetic debt assets into the Transmuter create demand for underlying assets from AlchemistV3 instances, which are obligated to service that demand across a pre-set time period. This creates fixed-duration fixed-rate terms. Each Transmuter takes one synthetic debt asset (alAsset) and can be associated with multiple AlchemistV3 instances, however only one AlchemistV3 instance is used for redemptions.
 

@@ -4,9 +4,9 @@ hide_title: true
 title: Welcome
 ---
 
-import integrations from '@site/static/img/integrations-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={integrations} alt="Why Integrate Alchemix?" fetchpriority="high" class="banner-spacing" />
+<PageBanner title="Why Integrate Alchemix?" />
 
 Alchemix V3 transforms a single deposit of ETH or USDC into two complementary, capital-efficient positions. First, funds are wrapped into a **Mix-Yield Token (MYT)**, which earns yield across a diversified set of strategies curated and risk-managed by the Alchemix DAO. This same collateral simultaneously unlocks a flexible credit line, allowing users to mint synthetic **alAssets (alETH or alUSD)** worth up to 90% of the initial deposit.
 

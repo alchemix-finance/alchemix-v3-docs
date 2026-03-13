@@ -4,9 +4,9 @@ hide_title: true
 title: MYT Launch Strategies
 ---
 
-import mytStrategies from '@site/static/img/myt-strategies-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={mytStrategies} alt="MYT Launch Strategies" class="banner-spacing" />
+<PageBanner title="MYT Launch Strategies" />
 
 Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Low, Med, and High.
 

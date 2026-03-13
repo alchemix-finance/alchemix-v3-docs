@@ -3,12 +3,12 @@ hide_title: true
 title: Introduction
 ---
 
-import AlchemixStats from "@site/src/components/AlchemixStats";
-import Hero from '@site/static/img/landing-01.png';
+import AlchemixStat from "@site/src/components/AlchemixStat";
+import PageBanner from "@site/src/components/PageBanner";
 import DocCardList from '@theme/DocCardList';
 import VisualizerFrame from '@site/src/components/VisualizerFrame';
 
-<img src={Hero} alt="Alchemix v3" class="banner-spacing" />
+<PageBanner title="Alchemix V3" />
 
 Alchemix is your unified platform for saving, borrowing, and earning fixed-term fixed-yield opportunities all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design.
 
@@ -20,19 +20,21 @@ The protocol allows you to:
 
 - **Earn fixed-rate yield –** lock in predictable returns through fixed-term redemptions of alETH or alUSD.
 
+Today the protocol secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
+
 [Explore the Quick Start guide →](./quick-start.md)
 
 :::info V3 vs V2
 This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://v2-docs.alchemix.fi/).
 :::
 
-## 1. Grow Savings with Vaults
+## 1. Grow savings with vaults
 
 **How it works**
 
 Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by the Alchemix DAO and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
 
-### Key Points
+### Key points
 
 |             |                                              |
 | ----------- | -------------------------------------------- |
@@ -42,11 +44,11 @@ Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT rep
 
 [Learn more about Vaults and MYT →](./concepts/myt-and-yield.md)
 
-## 2. Access Credit with Self-Repaying Loans
+## 2. Access credit with self-repaying loans
 
 Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthetic counterpart of your deposit and let your future yield repay the balance.
 
-### Key Points
+### Key points
 
 |                  |                                                                                                                                                                                                                                                                                                              |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -59,12 +61,8 @@ Typical uses include financing a purchase, leveraging/looping yield, or bridging
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
 
-<!-- <VisualizerFrame
-  url="https://v3-flow-visualizer.vercel.app/"
-  title="V3 Flow Visualizer"
-/> -->
 
-## 3. Lock In Fixed Returns with the Transmuter
+## 3. Lock in fixed returns with the Transmuter
 
 The Transmuter lets users deposit alAssets and, after a fixed term, redeem an equivalent amount of the underlying asset—via Mix-Yield Tokens (MYT), which act as an intermediary claim.
 
@@ -78,13 +76,9 @@ Under normal conditions, the interface unwraps that MYT to the underlying token 
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
 
-## Next Steps
+## Next steps
 
 1. Visit [https://alchemix.fi/](https://alchemix.fi).
-2. Stay informed with our [Tutorials](./tutorials/use-passive-myt.md).
-3. Follow along with our [Tutorials](./tutorials/use-passive-myt.md).
-4. Learn more with our [Key Concepts](./concepts/myt-and-yield.md).
-
-<!-- ## Alchemix Stats Fetch Test
-
-<AlchemixStats /> -->
+2. Read the [FAQ →](./faq.md).
+3. Follow along with our [Tutorials →](./tutorials/use-passive-myt.md).
+4. Learn more with our [Key Concepts →](./concepts/myt-and-yield.md).

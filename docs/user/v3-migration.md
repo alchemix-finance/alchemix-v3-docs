@@ -1,23 +1,23 @@
 ---
 hide_title: true
-title: V3 Migration & Mana Program
+title: V3 Migration
 ---
 
-import v3Migration from '@site/static/img/migration-mana-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={v3Migration} alt="V3 Migration & Mana Program" class="banner-spacing" />
+<PageBanner title="V3 Migration" />
 
-:::warning Migration Delayed
+:::warning Migration delayed
 The V2 to V3 migration originally planned for February 6th, 2026 has been delayed pending completion of ongoing security audits. No new date has been confirmed. This page will be updated when a new timeline is available.
 :::
 
 To ensure a seamless transition to the capital-efficient architecture of Alchemix V3, the protocol is undergoing a comprehensive migration process. This transition consolidates liquidity, enables the 90% LTV framework, and initializes the Mix-Yield Token (MYT) system.
 
-## The Great V2 to V3 Migration
+## The great V2 to V3 migration
 
 Alchemix V2 and V3 operate on fundamentally different architectural logic. To prevent debt cannibalization and ensure all users benefit from the upgraded Transmuter and MYT vaults, V2 positions must be migrated into the V3 ecosystem.
 
-### Migration Mechanics
+### Migration mechanics
 
 The migration is conducted via a coordinated protocol upgrade (governance-approved under AIP-123). The process follows a strict operational sequence:
 
@@ -27,24 +27,24 @@ The migration is conducted via a coordinated protocol upgrade (governance-approv
 4.  **Positions:** The Alchemix multisig recreates every user position within the V3 architecture. Users are credited with the exact fundamental deposit value and debt recorded during the snapshot.
 5.  **Initialization:** New V3 position NFTs are distributed to the respective owner wallets, and the protocol is formally launched.
 
-### Key Parameters
+### Key parameters
 
-- **Target Migration Date:** February 6th, 2026.
+- **Target Migration Date:** TBD — pending completion of security audits.
 - **Estimated Duration:** Approximately one week.
 - **Slippage Protection:** The Alchemix DAO treasury covers conversion slippage up to 0.25%.
 - **Dust Threshold:** Positions valued at less than $0.01 USD at the time of the snapshot will not be migrated.
 
-:::info User Action Required
+:::info User action required
 **For most users, no action is required.** If you wish to migrate to V3, simply maintain your existing V2 deposits. If you prefer not to participate in the automated migration, you must wind down your positions and withdraw assets prior to **February 6th, 2026**.
 :::
 
 ---
 
-## The Migration Mana Program
+## The migration Mana program
 
 **Mana** is a loyalty-reward system designed to incentivize a coordinated migration and reward long-term participation within the Alchemix ecosystem.
 
-### Earning Logic
+### Earning logic
 
 Mana is awarded proportionally based on historical and current participation across Alchemix vaults and Liquidity Provider (LP) positions.
 
@@ -57,11 +57,11 @@ Mana is awarded proportionally based on historical and current participation acr
 - **Look-back Period:** Retroactive rewards date back to January 15th, 2025.
 - **Minimum Threshold:** A minimum of **1.337 Mana** is required to be eligible for reward distribution.
 
-### Reward Distribution: rALCX
+### Reward distribution: rALCX
 
 At the conclusion of the earning period, a fixed pool of **10,000 rALCX** will be distributed proportionally based on each participant's total Mana relative to the global total.
 
-#### rALCX Vesting Schedule
+#### rALCX vesting schedule
 
 To ensure long-term alignment, rALCX follows a six-month linear vesting schedule:
 
@@ -70,7 +70,7 @@ To ensure long-term alignment, rALCX follows a six-month linear vesting schedule
 
 ---
 
-## Eligible Strategies & Pools
+## Eligible strategies & pools
 
 ### Ethereum
 
@@ -144,14 +144,14 @@ To ensure long-term alignment, rALCX follows a six-month linear vesting schedule
 
 - Lynex UniV2 ALCX-USDC 0xaC73C5f3d110Bb051100cfD8Afa4aC4339f239E7
 
-### Concentrated Liquidity Pools
+### Concentrated liquidity pools
 
 - Velodrome CL alETH-alUSD 0x844BdA8C554D3F14C2C068314b294A5b0Ed2E0dF
 - Ramses CL alETH-alUSD 0xb69d60d0690733c0cc4db1c1aedeeaa308f30328
 
 ---
 
-### Resources
+## Learn more
 
 - [V2 dApp Migration Countdown](https://alchemix.fi)
 - [AIP-123 Governance Proposal](https://snapshot.org/#/alchemixstakers.eth)

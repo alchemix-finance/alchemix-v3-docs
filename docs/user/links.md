@@ -4,9 +4,9 @@ hide_title: true
 title: Links & Resources
 ---
 
-import linksResources from '@site/static/img/links-resources-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={linksResources} alt="Links & Resources" class="banner-spacing" />
+<PageBanner title="Links & Resources" />
 
 <!-- TODO -->
 

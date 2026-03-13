@@ -1,12 +1,12 @@
 ---
 sidebar_position: 4
 hide_title: true
-title: Protocol Trust & Risk Mitigation
+title: Risk Considerations
 ---
 
-import riskConsiderations from '@site/static/img/risk-considerations-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={riskConsiderations} alt="Risk Considerations" class="banner-spacing" />
+<PageBanner title="Risk Considerations" />
 
 This section breaks down who controls what in the Alchemix V3 stack, the various risks and counterparties that makeup the Alchemix System, and how different failure scenarios are handled.
 
@@ -14,17 +14,17 @@ This section breaks down who controls what in the Alchemix V3 stack, the various
 
 Users of any DeFi protocol are encouraged to Know Your Counterparty (the real KYC!). Simply put, users should understand what other types of users make up the system they are opting into and where they fit in that system. Alchemix has a few primary counterparties:
 
-### MYT Depositors
+### MYT depositors
 
 MYT Depositors provide collateral to and are thus exposed to the yield strategies that make up the MYT. If the MYT suffers a loss, that loss is distributed to all MYT Depositors. MYT Depositors are encouraged to monitor which yield strategies make up the MYT they are holding to ensure the exposure is in line with their own strategy.
 
-### Alchemist Borrowers
+### Alchemist borrowers
 
 Borrowers supply MYT to the Alchemists in order to take alAsset loans. Unless a depositor also wishes to act as a liquidity provider, they will typically swap their alAsset to another asset soon after taking the loan. Therefore, they are not exposed to the price of alAssets over time.
 
 The primary risks a borrower takes are liquidation risk and redemption risk.
 
-## Liquidation Risk
+## Liquidation risk
 
 If the MYT suffers a loss then the LTV of a borrower's position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation, which will use collateral to repay debt, and pay the liquidator, until the user’s position is down to the target LTV.
 
@@ -32,11 +32,11 @@ Users can mitigate liquidation risk by using a conservative LTV based on the ris
 
 It is worth noting that [MYT notes](../../governance/guides/myt-strategies#pricing-approach) low risk strategies are only priced by fundamental oracles. This means only the underlying value of the strategy matters - not the dex or market price of the strategy token. Therefore, liquidation with these strategies can only occur if the contract loses value due to an exploit or other form of loss, NOT due to dex pricing, dex manipulation, or oracle manipulation. This means that liquidation risk due to LOW risk assets is significantly lower than HIGH and MEDIUM risk assets.
 
-## Redemption Rate
+## Redemption rate
 
 All borrowers will experience redemptions based on the amount of claims that occur in the transmuter. Borrowers should understand the [redemption rate](../concepts/redemption-rate), which effectively will deleverage the user over time while also charging redemption fees. Users can only face losses in one of two ways - from redemption fees, and from selling alAssets. The yield the users earn in the system is expected to offset these losses, but users should be aware of extreme conditions where low alAsset prices and high redemption rates could create situations where loans may be less profitable or even unprofitable. The good news is that Alchemix is designed to be a slow moving system especially at lower LTVs, so users who do not wish to constantly monitor positions can take loans at more conservative LTVs.
 
-## Liquidity Providers
+## Liquidity providers
 
 alAsset liquidity providers are exposed to price fluctuations of alAssets. They create the liquidity for users to sell their alAssets for other tokens. alAssets can only be redeemed for underlying collateral in three ways:
 
@@ -54,11 +54,11 @@ If the balance of the pool moves favorably for the LPer over time, they can earn
 
 A user can hedge alAsset exposure by using the Transmuter, or by being a depositor within Alchemix. If the alAsset pool shifts less favorably for the depositor/LPer, they can withdraw alUSD instead of stablecoins for a bonus positive slippage and repay their debt.
 
-:::note alAsset Depeg Scenarios
+:::note alAsset depeg scenarios
 There are scenarios where alAssets may temporarily depeg or depeg for a longer period of time. LPers should understand future outcomes in both scenarios - see sections below for MYT losses. LPers especially should understand what conditions may result in temporary alAsset depegs vs more long-term depegs so they can re-evalute their positions accordingly.
 :::
 
-### Transmuter Users
+### Transmuter users
 
 Transmuter users will deposit alAssets with a promised timeline at which they can claim MYT tokens in exchange for burning their alAssets. The value of the MYT is priced based on the combination of all strategies in the MYT. Some strategies may be less liquid or have duration-based exits. This means that while the transmuter user may be able to claim 1 ETH/USDC worth of MYT per 1 alETH/alUSD they deposit, the 1 ETH or 1 USDC may not be immediately available to be unwrapped from the MYT itself.
 
@@ -66,13 +66,19 @@ Additionally, all Transmuter users are exposed to the global collateralization o
 
 Lastly, exiting the transmuter prior to completion of the transmuter timeline will result in a fee on any untransmuted assets, meaning transmuter funds are always accessible but not without restrictions.
 
-### DAO and ALCX Holders
+### DAO and ALCX holders
 
 The DAO may be forced to sell assets, including ALCX, if needed to cover protocol losses in some scenarios.
 
-## Governance & Operational Controls
+## Governance & operational controls
 
 See [Contract Roles](../../governance/guides/contract-roles).
+
+## Security & audits
+
+All core Alchemix V3 contracts have been audited by top-tier security firms, and a bug bounty program is active on Immunefi with a maximum payout of $300,000. New MYT strategies are reviewed by Nethermind before being whitelisted.
+
+[Full audit reports, bounty details, and security practices →](./security.md)
 
 ## Alchemix on Layer 2
 
@@ -93,7 +99,7 @@ The AlchemixDAO owns the bridge contracts and thus has the ability to set the DV
 
 More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
 
-### ALCX Token and alAssets
+### ALCX token and alAssets
 
 The ALCX token can only be minted on Mainnet, thus it entirely follows the system outlined above.
 
@@ -109,14 +115,14 @@ Bridge capacity back to Mainnet is rate-limited. If that capacity is saturated, 
 
 The Alchemist behaves the same on L2 as on Mainnet. The Transmuter (on all chains), however, has a maximum deposit cap that is dictated by the total alAssets minted by the Alchemist on that chain. Thus, there may be scenarios where alAssets purchased on one chain need to be bridged to another chain in order to be deposited to the transmuter. Users should always verify there is adequate space in the Transmuter they intend to use prior to purchasing alAssets.
 
-## MYT Losses & Delayed Unwrapping
+## MYT losses & delayed unwrapping
 
 The sections below apply to users with Alchemix loans. For users simply holding the MYT, there are two primary risks:
 
 1. Some strategies may have a time delay on when withdrawal is possible, and the DAO is ultimately responsible for ensuring there is underlying asset available to withdraw from the MYT. Thus, users should recognize that there are scenarios where the underlying value of the MYT may not be immediately accessible (ie, users may not always be able to immediately withdraw USDC or ETH from the respective MYTs).
 2. If an MYT suffers a loss, MYT users will suffer the same loss pro-rata (ie, if a strategy that makes up 10% of the MYT suffers a 50% loss, then all MYT users will experience a 5% loss.)
 
-### MYT Arbitrage - Large Depeg of Fundamental Oracles
+### MYT arbitrage – large depeg of fundamental oracles
 
 Alchemix uses fundamental oracles wherever possible. This means that prices are determined by the underlying assets for each strategy, rather than the market price of the strategy token. As noted in the Transmuter section above, transmuter users receive MYT tokens, not underlying, from the transmuter. If the MYT is composed of assets that are not immediately withdrawable, users may require reduced alAsset prices in order to consider transmutation worthwhile.
 
@@ -140,13 +146,13 @@ Next, someone with a lot of stETH decides they can’t wait 30 days for their ET
 - stETH is still worth 1 ETH fundamentally, and thus as the dex price recovers, the price of the alAsset will also recover
 - The alAsset may still suffer some weakness in market pricing while the stETH withdrawal queue is at 30 days. Borrowers may not wish to take new loans, and transmuter users will need to consider this additional unwrap time when purchasing alETH to transmute to MYT.
 
-### MYT Loss - Price Reported Correctly
+### MYT loss – price reported correctly
 
 In some cases, a strategy may suffer a loss (due to an exploit or another reason) which means the MYT is truly fundamentally worth less than it was previously. In this scenario, the system checks users LTVs and makes users eligible for liquidation when they exceed the liquidation LTV set in the system.
 
 If the losses are too severe or too rapid, liquidations may not properly trigger. In this scenario, users may end up with bad debt (user debt is worth more than user collateral). If this results in global bad debt (global debt is worth more than global user collateral), then the transmuter will enter an emergency mode. In this mode, any claim made MYT assets through the transmuter will distribute pro-rata to the bad debt. Ie, if the Alchemist is 90% collateralized, then transmuter claims will only distribute 0.9 ETH worth of MYT for each 1 alETH transmuted. Users have the choice to trigger the claim, or wait until the Alchemist is re-collateralized to claim at 1:1.
 
-### MYT Loss - Price Reported Incorrectly
+### MYT loss – price reported incorrectly
 
 Incorrect pricing is the least expected risk in the Alchemist, but not outside the realm of possibility. If a strategy is reporting an invalid price that is higher than the actual value of the strategy (ie, the strategy suffers a loss but the loss is not reported to the MYT), then Guardians will need to step in and pause deposits and new loans in the Alchemist to ensure additional collateral is not added to the Alchemist.
 

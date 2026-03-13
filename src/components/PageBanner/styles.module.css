@@ -1,0 +1,90 @@
+/* ─────────────────────────────────────────────────────────
+   Corner geometry — adjust these variables to tune the look
+   ───────────────────────────────────────────────────────── */
+.banner {
+  --cx:  1.8%;   /* horizontal inset from banner edge to corner dot  */
+  --cy:  11.6%;  /* = --cx × (1920÷297) → equal pixel overhang both axes */
+  --dot: 5px;    /* corner dot diameter                              */
+  --lc:  rgba(245, 192, 154, 0.28); /* line colour                  */
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 297;
+  background-color: transparent; /* page shows outside the fill box */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  overflow: hidden; /* clip lines at banner boundary */
+}
+
+/* ── Fill — bounded exactly by corner positions ── */
+.bg {
+  position: absolute;
+  top:    var(--cy);
+  bottom: var(--cy);
+  left:   var(--cx);
+  right:  var(--cx);
+  background-color: #1b181d;
+  z-index: 0;
+}
+
+/* ── Horizontal lines — run full banner width ──
+   The section outside the fill box is the "bleed" overhang. */
+.lineH {
+  position: absolute;
+  height: 1px;
+  left:  0;
+  right: 0;
+  background: var(--lc);
+  z-index: 1;
+  pointer-events: none;
+}
+.lineTop    { top:    calc(var(--cy) - 0.5px); }
+.lineBottom { bottom: calc(var(--cy) - 0.5px); }
+
+/* ── Vertical lines — run full banner height ── */
+.lineV {
+  position: absolute;
+  width: 1px;
+  top:    0;
+  bottom: 0;
+  background: var(--lc);
+  z-index: 1;
+  pointer-events: none;
+}
+.lineLeft  { left:  calc(var(--cx) - 0.5px); }
+.lineRight { right: calc(var(--cx) - 0.5px); }
+
+/* ── Corner dots — solid, centred on line intersections ── */
+.corner {
+  position: absolute;
+  width:  var(--dot);
+  height: var(--dot);
+  background-color: #f5c09a;
+  border-radius: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+
+.tl { top: var(--cy);              left: var(--cx); }
+.tr { top: var(--cy);              left: calc(100% - var(--cx)); }
+.bl { top: calc(100% - var(--cy)); left: var(--cx); }
+.br { top: calc(100% - var(--cy)); left: calc(100% - var(--cx)); }
+
+/* ── Title ── */
+.title {
+  font-family: "Beaufort Pro", "Cinzel", Georgia, serif;
+  font-weight: 300;
+  font-style: normal;
+  font-synthesis: none;
+  font-size: clamp(1rem, 2.6vw, 3.5rem);
+  letter-spacing: 0.04em;
+  line-height: 1.11;
+  color: #f5c09a;
+  text-align: center;
+  padding: 0 6%;
+  position: relative;
+  z-index: 3;
+}

@@ -5,9 +5,9 @@ title: Developer Docs
 ---
 
 import AlchemixStats from "@site/src/components/AlchemixStats";
-import devdocs from '@site/static/img/devdocs-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={devdocs} alt="Developer Docs" class="banner-spacing" />
+<PageBanner title="Developer Docs" />
 
 This section of the docs contains contract descriptions and architecture describing how Alchemix contracts work and interact on a technical level. These docs are in active development. Expect gaps and changes.
 

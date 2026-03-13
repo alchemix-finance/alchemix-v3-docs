@@ -4,9 +4,9 @@ hide_title: true
 title: Co-Marketing & BD Support
 ---
 
-import coMarketing from '@site/static/img/comarketing-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={coMarketing} alt="Co-Marketing & BD Support" class="banner-spacing" />
+<PageBanner title="Co-Marketing & BD Support" />
 
 Alchemix V3 is built on a foundation of positive-sum collaboration. When you integrate with the Alchemix stack you become a strategic partner in a growing synthetic-asset economy. We provide the technical and social infrastructure to ensure your integration reaches the right audience and scales effectively.
 

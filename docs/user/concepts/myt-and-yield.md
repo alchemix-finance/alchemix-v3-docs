@@ -4,9 +4,9 @@ hide_title: true
 title: Mix-Yield Token
 ---
 
-import MYT from '@site/static/img/MYT-banner.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={MYT} alt="Mix-Yield Token" class="banner-spacing" />
+<PageBanner title="Mix-Yield Token" />
 
 Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strategies without needing to manage positions yourself. Each token represents a share of assets that the Alchemix DAO allocates across multiple protocols.
 
@@ -14,13 +14,13 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 ## What is MYT?
 
-- **Tokenized basket.** MYT is a customized vault token utilizing Morpho V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
+- **Tokenized basket** – MYT is a customized vault token utilizing Morpho V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
 
-- **DAO-managed allocation.** The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.
+- **DAO-managed allocation** – The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.
 
-- **Powered by open-source infrastructure.** The core Alchemix vault logic utilizes Morpho's open-source v2 vaults layer to optimize on-chain execution and safety.
+- **Powered by open-source infrastructure** – The core Alchemix vault logic utilizes Morpho's open-source v2 vaults layer to optimize on-chain execution and safety.
 
-## Why Use MYT?
+## Why use MYT?
 
 |                 |                                                                                          |
 | --------------- | ---------------------------------------------------------------------------------------- |
@@ -28,13 +28,13 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 | Risk management | DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure. |
 | Flexibility     | Choose the chain and bundle that suit your goals, redeem at any time.                    |
 
-## Per-Chain Variants
+## Per-chain variants
 
 There is one ETH-denominated and one USDC-denominated MYT on every supported chain. Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
 
 You can view the current strategy breakdowns [directly in the UI →](https://alchemix.fi/)
 
-## Depositing and Earning
+## Depositing and earning
 
 1. Select the MYT that matches your base asset and preferred chain.
 

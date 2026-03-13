@@ -3,9 +3,9 @@ title: Financial Reports
 hide_title: true
 ---
 
-import financialReports from '@site/static/img/financial-reports-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={financialReports} alt="Financial Reports" class="banner-spacing" />
+<PageBanner title="Financial Reports" />
 
 Each quarter, Alchemix publishes a financial report covering the full state of the protocol. Reports include treasury contents and revenue, protocol metrics across all supported networks, alAsset liquidity and peg data, yield harvest activity, deposit and user statistics, ALCX governance token metrics, grant activity, and governance summaries. Archive available from Q1 2022.
 

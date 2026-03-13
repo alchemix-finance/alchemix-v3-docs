@@ -4,9 +4,9 @@ hide_title: true
 title: Apply to Partner
 ---
 
-import applyPartner from '@site/static/img/apply-partner-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={applyPartner} alt="Apply to Partner" class="banner-spacing" />
+<PageBanner title="Apply to Partner" />
 
 We're always open to exploring new partnerships with projects, protocols, and builders in the ecosystem. If you're interested in collaborating with the Alchemix team or integrating with Alchemix V3, we'd love to hear from you.
 

@@ -14,18 +14,26 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Key Concepts",
+      label: "What Is Alchemix",
       className: "sidebarBold",
       collapsed: true,
       items: [
         "concepts/alAssets",
         "concepts/myt-and-yield",
         "concepts/self-repaying-loans",
-        "concepts/borrowing-in-alchemix",
+      ],
+    },
+    {
+      type: "category",
+      label: "How It Works",
+      className: "sidebarBold",
+      collapsed: true,
+      items: [
         "concepts/liquidations",
         "concepts/transmuter",
         "concepts/redemption-rate",
         "concepts/fees",
+        "concepts/how-peg-is-maintained",
       ],
     },
     {
@@ -36,14 +44,24 @@ module.exports = {
       items: [
         "tutorials/use-passive-myt",
         "tutorials/deposit-and-borrow",
+        "tutorials/borrowing-in-alchemix",
         "tutorials/repay-loan",
         "tutorials/redeem-alassets",
-        "newguides/how-peg-is-maintained",
-        "newguides/risk-considerations",
+        "v3-migration",
       ],
     },
-    "v3-migration",
+    {
+      type: "category",
+      label: "Trust & Safety",
+      className: "sidebarBold",
+      collapsed: true,
+      items: [
+        "safety/risk-considerations",
+        "safety/security",
+      ],
+    },
     "faq",
+    "glossary",
     {
       type: "category",
       label: "Resources",

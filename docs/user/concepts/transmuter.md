@@ -4,39 +4,59 @@ hide_title: true
 title: Transmuter
 ---
 
-import transmuter from '@site/static/img/transmuter-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
 <!-- TODO -->
 
-<img src={transmuter} alt="Transmuter" class="banner-spacing" />
+<PageBanner title="Transmuter" />
 
 The Transmuter lets you redeem alAssets (alUSD, alETH) 1:1 for their underlying asset after a known waiting period. Purchase below face value, and receive the full value on the maturity date.
 
-:::tip Instant vs. Guaranteed Liquidity
+:::tip Instant vs. guaranteed liquidity
 The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as redemptions mature.
 
 - **Want it now?** Use external liquidity pools (Curve, Balancer) which are instant but may have slight price slippage.
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
   :::
 
-## How Transmutations Flow
+## How transmutations flow
 
-| Flow     | Context                                                                                                                                                                        |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Deposit  | Send alUSD or alETH to the Transmuter contract.                                                                                                                                |
-| Queue    | Each deposit matures after the Transmutation Time set by the DAO. You can exit early, but an early-withdrawal fee applies and you give up a portion of the fixed-rate outcome. |
-| Earmark  | The protocol reserves an equal value of MYT from borrower collateral to guarantee your claim.                                                                                  |
-| Maturity | You receive 1 asset-worth of MYT from borrowers for every 1 alAsset.                                                                                                           |
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'Montserrat',
+    'primaryColor': '#141618',
+    'primaryBorderColor': '#4a3828',
+    'primaryTextColor': '#e8ddd4',
+    'lineColor': '#c8a07a',
+    'edgeLabelBackground': '#0d0e10',
+    'tertiaryColor': '#141618'
+  },
+  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 80, 'rankSpacing': 100 }
+}}%%
+flowchart LR
+    A(Deposit) e1@--> B(Queue) e2@--> C(Earmark) e3@--> D{{Maturity}}
+    style D fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    e1@{ animation: slow }
+    e2@{ animation: slow }
+    e3@{ animation: fast }
+```
+
+- **Deposit** – Send alUSD or alETH to the Transmuter contract.
+- **Queue** – Each deposit matures after the Transmutation Time set by the DAO. You can exit early, but an early-withdrawal fee applies and you give up a portion of the fixed-rate outcome.
+- **Earmark** – The protocol reserves an equal value of MYT from borrower collateral to guarantee your claim.
+- **Maturity** – You receive 1 asset-worth of MYT from borrowers for every 1 alAsset deposited.
 
 All redeemed alAssets are burned, contracting their supply.
 
-## Why Discounts Exist
+## Why discounts exist
 
 Borrowers often sell newly minted alAssets for working capital, pushing market price slightly below par. The spread between that market price and the Transmuter’s guaranteed 1:1 accounting creates a fixed-rate opportunity for buyers.
 
 Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its external market price.
 
-### Fixed-Rate Yield Example
+### Fixed-rate yield example
 
 **Market**: alUSD = 0.96USDC
 
@@ -49,13 +69,13 @@ Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its e
 | At maturity             | Receive 10,416 USDC (via MYT)              |
 | Profit                  | 416 USDC = 4.16% in 3 mo = \~16.6% APR     |
 
-:::warning Transmuter Deposit Caps
+:::warning Transmuter deposit caps
 The Transmuter has a maximum deposit cap based on the total alAssets minted on its specific chain. If a Transmuter is full, you may need to bridge alAssets to another chain to deposit.
 
 **Always verify available Transmuter capacity on your target chain before purchasing alAssets.**
 :::
 
-## Edge-Case Handling
+## Edge-case handling
 
 | Scenario                             | Result                                                                                                                | Your Options                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -64,12 +84,12 @@ The Transmuter has a maximum deposit cap based on the total alAssets minted on i
 
 There is no variable interest and no price-based liquidation affecting Transmuter positions.
 
-## Strategic Uses
+## Strategic uses
 
-- **Arbitrage & peg maintenance** - capture fixed yield while pulling alAssets back to parity.
+- **Arbitrage & peg maintenance** – capture fixed yield while pulling alAssets back to parity.
 
-- **LP protection** - LPs can move alAssets from liquidity pools into the Transmuter to erase impermanent loss if the peg widens.
+- **LP protection** – LPs can move alAssets from liquidity pools into the Transmuter to erase impermanent loss if the peg widens.
 
-- **Treasury management** - DAOs can park stable reserves for a known return without rate risk.
+- **Treasury management** – DAOs can park stable reserves for a known return without rate risk.
 
-- **Diversified yield stacking** - pair Transmuter returns with base vault yield for stacked APR.
+- **Diversified yield stacking** – pair Transmuter returns with base vault yield for stacked APR.

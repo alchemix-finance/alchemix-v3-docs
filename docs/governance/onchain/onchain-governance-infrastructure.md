@@ -4,9 +4,9 @@ hide_title: true
 title: The Future of Onchain Governance
 ---
 
-import futureGov from '@site/static/img/future-of-gov-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={futureGov} alt="The Future of Onchain Governance" class="banner-spacing" />
+<PageBanner title="The Future of Onchain Governance" />
 
 Alchemix v3 is built around the below principles:
 

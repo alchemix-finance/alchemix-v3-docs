@@ -4,9 +4,9 @@ hide_title: true
 title: Friendly Fork Initiative
 ---
 
-import friendlyFork from '@site/static/img/friendly-fork-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={friendlyFork} alt="Friendly Fork Initiative" class="banner-spacing" />
+<PageBanner title="Friendly Fork Initiative" />
 
 Alchemix V3 is published under a Business Source License (BUSL) 1.1. While the codebase is source-available, any commercial or production-use deployment requires a formal license agreement with the Alchemix Association.
 

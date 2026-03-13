@@ -3,9 +3,9 @@ title: Marketing Material
 hide_title: true
 ---
 
-import marketingMaterial from '@site/static/img/marketing-material-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={marketingMaterial} alt="Marketing Material" class="banner-spacing" />
+<PageBanner title="Marketing Material" />
 
 Our logos are for use in promotional and marketing materials. Please consult the brand book before use, and reach out to **@metalface** in the [official Discord](https://discord.gg/alchemix) with any questions.
 

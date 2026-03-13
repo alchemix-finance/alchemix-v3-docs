@@ -3,9 +3,9 @@ hide_title: true
 title: FAQ
 ---
 
-import faq from '@site/static/img/faq-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={faq} alt="FAQ" class="banner-spacing" />
+<PageBanner title="FAQ" />
 
 Use this page as a quick lookup for the questions we hear most often. It explains core ideas, such as borrowing limits, earmarked debt, the redemption rate, and how they show up in the interface.
 
@@ -24,7 +24,7 @@ An alAsset is the synthetic token you borrow from Alchemix.
 
 They track their underlying asset but can trade below, or in rare circumstances above, 1:1 on the open market.
 
-[Learn more about alAssets →](./concepts/alAssets)
+[Learn more about alAssets →](./concepts/alAssets.md)
 
 </details>
 
@@ -34,7 +34,7 @@ They track their underlying asset but can trade below, or in rare circumstances 
 
 You can borrow up to 90% loan-to-value (LTV) of your deposited collateral. The exact limit is shown on each vault page.
 
-[Learn more about LTV →](./concepts/alAssets#ltv-sensitivity)
+[Learn more about LTV →](./concepts/alAssets.md#ltv-sensitivity)
 
 </details>
 
@@ -76,7 +76,7 @@ Yes. Alchemix allows you to exit or repay your loan at any time, even before it 
 
 Redemptions in Alchemix v3 deleverage your position by using collateral to repay debt without the cost of traditional interest rates. The Redemption Rate projects how quickly this occurs by comparing annualized Transmuter volume against total system debt, with a higher rate indicating faster loan clearance.
 
-A key benefit is Temporal Advantage, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
+A key benefit is Temporal Leverage, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
 
 [Learn more about the redemption rate →](./concepts/redemption-rate.md)
 
@@ -120,7 +120,7 @@ Most of the time, the cost and reward cancel out, so the net effect is similar t
 
 Yes, but an early exit applies a penalty that reduces your return. The pop-up shows the exact amount before you confirm.
 
-[Learn more about early exits →](./tutorials/redeem-alassets#manage-or-close-a-position)
+[Learn more about early exits →](./tutorials/redeem-alassets.md#manage-or-close-a-position)
 
 </details>
 
@@ -157,9 +157,9 @@ Loss handling is different for each participant:
 
 <summary>Do I ever lose yield if a portion of my debt is earmarked?</summary>
 
-Never. Earmarked collateral continues to earn you yield until the moment it is redeemed. This delayed settlement creates the temporal advantage, extra yield you would not receive in most other lending platforms.
+Never. Earmarked collateral continues to earn you yield until the moment it is redeemed. This delayed settlement creates the temporal leverage, extra yield you would not receive in most other lending platforms.
 
-[Learn more about Temporal Advantage →](./concepts/redemption-rate#temporal-advantage)
+[Learn more about Temporal Leverage →](./concepts/redemption-rate#temporal-leverage)
 
 </details>
 
@@ -171,7 +171,7 @@ Alchemix V3 is composed of several key counterparties. MYT Depositors, Borrowers
 
 The system is secured by cross-chain bridge controls using multiple decentralized verification networks (DVNs) and utilizes fundamental oracles to insulate users from market price volatility.
 
-[Learn more about security and permissions →](./newguides/risk-considerations.md)
+[Learn more about security and permissions →](./safety/risk-considerations.md)
 
 </details>
 

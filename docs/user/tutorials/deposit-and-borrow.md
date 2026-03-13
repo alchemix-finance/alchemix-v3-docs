@@ -4,9 +4,10 @@ hide_title: true
 title: Deposit & Borrow
 ---
 
-import depositBorrow from '@site/static/img/deposit-borrow-01.png';
+import PageBanner from "@site/src/components/PageBanner";
+import FramedImage from "@site/src/components/FramedImage";
 
-<img src={depositBorrow} alt="Deposit & Borrow" class="banner-spacing" />
+<PageBanner title="Deposit & Borrow" />
 
 A single vault deposit gives you immediate, auto-compounded yield through the Mix-Yield Token (MYT).
 
@@ -28,7 +29,7 @@ The instructions that follow are focused on the process of depositing assets and
 
 ## Step 1 – Open the Vaults page
 
-![](/img/deposit-and-borrow-01.png)
+<FramedImage src="/img/deposit-and-borrow-01.png" alt="Vaults page" />
 
 - From any screen choose Vaults in the top navigation, or;
 
@@ -36,7 +37,7 @@ The instructions that follow are focused on the process of depositing assets and
 
 ## Step 2 – Find the vault you want
 
-![](/img/deposit-and-borrow-02.png)
+<FramedImage src="/img/deposit-and-borrow-02.png" alt="Find a vault" />
 
 - Use the icon filters (chain and asset) or the Sort by dropdown to narrow the list.
 
@@ -44,7 +45,7 @@ The instructions that follow are focused on the process of depositing assets and
 
 ## Step 3 – Choose Deposit/Borrow
 
-![](/img/deposit-and-borrow-03.png)
+<FramedImage src="/img/deposit-and-borrow-03.png" alt="Deposit and borrow panel" />
 
 The lower-left panel has three tabs:
 

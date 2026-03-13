@@ -4,9 +4,9 @@ hide_title: true
 title: Contract Roles
 ---
 
-import contractRoles from '@site/static/img/contract-roles-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={contractRoles} alt="Contract Roles" class="banner-spacing" />
+<PageBanner title="Contract Roles" />
 
 This section is meant to describe all roles with access to call private functions in the Alchemix contracts.
 

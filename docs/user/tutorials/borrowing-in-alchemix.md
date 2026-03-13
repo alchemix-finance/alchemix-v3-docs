@@ -4,42 +4,42 @@ hide_title: true
 title: Borrowing In Alchemix
 ---
 
-import borrowing from '@site/static/img/borrowing-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 import borrowingScreen01 from '@site/static/img/borrowing-in-alchemix-01.png';
 
 <!-- TODO -->
 
-<img src={borrowing} alt="Borrowing" class="banner-spacing" />
+<PageBanner title="Borrowing In Alchemix" />
 
-After converting ETH or USDC into the Mix-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral’s face value.
+After converting ETH or USDC into the Mix-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral's face value.
 
 :::tip You are in control
 While Alchemix loans repay themselves over time via yield, you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
 :::
 
-## How Borrowing Works
+## How borrowing works
 
 <img src={borrowingScreen01} alt="Borrowing DAPP Screenshot" class="banner-spacing" />
 
-<b>1.</b> Navigate to the Borrow panel in your vault.
+1. Navigate to the Borrow panel in your vault.
 
-<b>2.</b> Choose an amount of alAsset to mint. The “max” function will give the maximum value allowable within the bound of 90% LTV.
+2. Choose an amount of alAsset to mint. The "max" function will give the maximum value allowable within the bound of 90% LTV.
 
 :::danger Liquidation Risk
-If a yield strategy loses money, you could be liquidated. The LTV at which a liquidation will occur is 95% LTV. Choose your LTV with this in mind. <br/><br/>[Learn more about Liquidations →](./liquidations.md)
+If a yield strategy loses money, you could be liquidated. The LTV at which a liquidation will occur is 95% LTV. Choose your LTV with this in mind. <br/><br/>[Learn more about Liquidations →](../concepts/liquidations.md)
 :::
 
-<b>3.</b> Sign the transaction. Alchemix will mint the requested alAsset directly to your wallet.
+3. Sign the transaction. Alchemix will mint the requested alAsset directly to your wallet.
 
-<b>4.</b> Use the alAsset in any way you like—swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
+4. Use the alAsset in any way you like—swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
 
 ## What repays the debt
 
-Your collateral continues to earn yield in your vault. The DAO sets a period length for redemptions. When a Transmuter user completes a redemption, a slice of depositors’ MYT collateral is liquidated to fund the redemption, repaying debt equal to the redeemed amount in the process. Given enough time and redemptions, this will eventually clear a vault user’s entire debt.
+Your collateral continues to earn yield in your vault. The DAO sets a period length for redemptions. When a Transmuter user completes a redemption, a slice of depositors' MYT collateral is liquidated to fund the redemption, repaying debt equal to the redeemed amount in the process. Given enough time and redemptions, this will eventually clear a vault user's entire debt.
 
-[Learn more about redemptions →](./redemption-rate.md)
+[Learn more about redemptions →](../concepts/redemption-rate.md)
 
-## Key Information
+## Key information
 
 | Parameter               | Value or behavior                                                                                                                                                 |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,7 +48,7 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 | Repayment sources       | Vault yield, transmuter redemptions, manual repayments.                                                                                                           |
 | Early repayment options | Use alAssets to repay the debt at any time.                                                                                                                       |
 | Position NFT            | Your position is represented by an NFT available in your wallet after the transaction confirms.                                                                   |
-| Liquidation             | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](./liquidations.md) |
+| Liquidation             | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](../concepts/liquidations.md) |
 
 ### Why borrow instead of selling?
 

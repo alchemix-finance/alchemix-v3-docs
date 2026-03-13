@@ -4,13 +4,13 @@ hide_title: true
 title: Redemption Rate
 ---
 
-import redemption from '@site/static/img/redemption-rate-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
 <!-- TODO -->
 
 <!-- # Redemption Rate -->
 
-<img src={redemption} alt="Redemption Rate" class="banner-spacing" />
+<PageBanner title="Redemption Rate" />
 
 Redemptions convert earmarked collateral into the asset required to repay debt.
 
@@ -19,9 +19,9 @@ Two ideas matter:
 - **Redemption rate** – how fast the system deleverages your position.
   - **Note:** Because debt and collateral are like kind, deleveraging does not lose the user any money (besides the redemption fee). This is different than many systems that charge interest rates that can at times be higher than the yield you are earning.
 
-- **Temporal advantage** – the bonus yield you earn while waiting for an earmarked redemption to settle.
+- **Temporal leverage** – the bonus yield you earn while waiting for an earmarked redemption to settle.
 
-## The Redemption Rate
+## The redemption rate
 
 The redemption rate tells borrowers what share of total system debt redemptions will repay in one year through the Transmuter. A higher rate means loans clear more quickly.
 
@@ -29,11 +29,20 @@ The redemption rate tells borrowers what share of total system debt redemptions 
 
 ```mermaid
 %%{init: {
-  'themeVariables': { 'fontFamily': 'Montserrat', 'edgeLabelBackground':'#1b1b1d',     'tertiaryColor': '#1b1b1d' },
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'Montserrat',
+    'primaryColor': '#141618',
+    'primaryBorderColor': '#4a3828',
+    'primaryTextColor': '#e8ddd4',
+    'lineColor': '#c8a07a',
+    'edgeLabelBackground': '#0d0e10',
+    'tertiaryColor': '#141618'
+  },
   'flowchart': {
-      'curve': 'monotoneX',
-      'nodeSpacing': 100,
-      'rankSpacing': 120
+    'curve': 'monotoneX',
+    'nodeSpacing': 100,
+    'rankSpacing': 120
   }
 }}%%
 flowchart LR
@@ -54,8 +63,8 @@ flowchart LR
     C e4@--> E
 
     %% Styling
-    style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
-    linkStyle 0,1,2,3 stroke:#ccc,stroke-width:2px,color:#ccc
+    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3 stroke:#c8a07a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }
@@ -77,19 +86,28 @@ If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.2
 
 ```mermaid
 %%{init: {
-  'themeVariables': { 'fontFamily': 'Montserrat'},
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'Montserrat',
+    'primaryColor': '#141618',
+    'primaryBorderColor': '#4a3828',
+    'primaryTextColor': '#e8ddd4',
+    'lineColor': '#c8a07a',
+    'edgeLabelBackground': '#0d0e10',
+    'tertiaryColor': '#141618'
+  },
   'flowchart': {
-      'curve': 'monotoneX',
-      'nodeSpacing': 100,
-      'rankSpacing': 120
+    'curve': 'monotoneX',
+    'nodeSpacing': 100,
+    'rankSpacing': 120
   }
 }}%%
 flowchart LR
     %% Nodes
-    A(Transmuter Balance<br/><b>1,000 <span style='color:#aaa'>alETH</span></b>)
-    B(Transmutation Time<br/><b>0.25 <span style='color:#aaa'>Years</span></b>)
-    C(Total System Debt<br/><b>1,500 <span style='color:#aaa'>alETH</span></b>)
-    D(<b>Annualized Redemptions</b><br/>1,000 alETH/year / 0.25 Years<br/>= <b>4,000 <span style='color:#aaa'>alETH</span></b>)
+    A(Transmuter Balance<br/><b>1,000 <span style='color:#9a8878'>alETH</span></b>)
+    B(Transmutation Time<br/><b>0.25 <span style='color:#9a8878'>Years</span></b>)
+    C(Total System Debt<br/><b>1,500 <span style='color:#9a8878'>alETH</span></b>)
+    D(<b>Annualized Redemptions</b><br/>1,000 alETH/year / 0.25 Years<br/>= <b>4,000 <span style='color:#9a8878'>alETH</span></b>)
     E{{<b>Redemption Rate</b><br/>4,000 alETH / 1,500 alETH<br/>= <b>~267%</b>}}
 
     %% Logic
@@ -99,8 +117,8 @@ flowchart LR
     C e4@--> E
 
     %% Styling / Ani
-    style E fill:#f5c09a,stroke:#333,stroke-width:2px,color:#333
-    linkStyle 0,1,2,3 stroke:#ccc,stroke-width:2px,color:#ccc
+    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3 stroke:#c8a07a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }
@@ -117,13 +135,13 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 | Total system debt  | ↓ More debt → lower rate     | A bigger denominator dilutes the impact of a fixed queue.                                                                                          |
 | Transmutation time | ↑ Shorter term → higher rate | Each unit of queued alAsset cycles more often over a year.                                                                                         |
 
-## Temporal Advantage
+## Temporal leverage
 
 Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until a Transmuter position actually matures. The transfer out of the vault happens at that maturity moment, when the claim must be settled.
 
-Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal advantage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
+Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 
-## Further Reading
+## Learn more
 
 - [**Transmuter Mechanics**](./transmuter.md) – How earmarking and redemption batches work.
 

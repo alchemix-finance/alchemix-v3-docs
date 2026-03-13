@@ -4,9 +4,9 @@ hide_title: true
 title: Governance Process
 ---
 
-import governanceProcess from '@site/static/img/governance-process-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={governanceProcess} alt="Governance Process" class="banner-spacing" />
+<PageBanner title="Governance Process" />
 
 The Alchemix DAO is run through a developer multisig, signaling through the Snapshot app.
 

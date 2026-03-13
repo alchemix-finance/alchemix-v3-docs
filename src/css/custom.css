@@ -1,8 +1,80 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Alchemix V3 Docs — Global Styles
+ * Built on Infima / Docusaurus classic theme.
  */
+
+/* ─── Fonts ───────────────────────────────────────────── */
+
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauLigh.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauLigI.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauReg.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauRegI.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauMed.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauMedI.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauBold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauBolI.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauHeav.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Beaufort Pro";
+  src: url("../fonts/beaufort/BeauHeaI.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: "Montserrat";
@@ -22,12 +94,12 @@
 /* ─── Light theme ─────────────────────────────────────── */
 :root {
   --ifm-color-primary: #f5c09a;
-  --ifm-color-primary-dark: #f5c09a;
-  --ifm-color-primary-darker: #f5c09a;
-  --ifm-color-primary-darkest: #f5c09a;
-  --ifm-color-primary-light: #f5c09a;
-  --ifm-color-primary-lighter: #f5c09a;
-  --ifm-color-primary-lightest: #f5c09a;
+  --ifm-color-primary-dark: #f0a876;
+  --ifm-color-primary-darker: #eb9256;
+  --ifm-color-primary-darkest: #d9711e;
+  --ifm-color-primary-light: #f8d0b3;
+  --ifm-color-primary-lighter: #fbdfc8;
+  --ifm-color-primary-lightest: #fef2e8;
 
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
@@ -36,23 +108,391 @@
 /* ─── Dark theme ──────────────────────────────────────── */
 [data-theme="dark"] {
   --ifm-color-primary: #f5c09a;
-  --ifm-color-primary-dark: #f5c09a;
-  --ifm-color-primary-darker: #f5c09a;
-  --ifm-color-primary-darkest: #f5c09a;
-  --ifm-color-primary-light: #f5c09a;
-  --ifm-color-primary-lighter: #f5c09a;
-  --ifm-color-primary-lightest: #f5c09a;
+  --ifm-color-primary-dark: #f0a876;
+  --ifm-color-primary-darker: #eb9256;
+  --ifm-color-primary-darkest: #d9711e;
+  --ifm-color-primary-light: #f8d0b3;
+  --ifm-color-primary-lighter: #fbdfc8;
+  --ifm-color-primary-lightest: #fef2e8;
 
+  /* Backgrounds */
+  --ifm-background-color: #0d0e10;
+  --ifm-background-surface-color: #141618;
+  --ifm-navbar-background-color: rgba(13, 14, 16, 0.82);
+  --ifm-footer-background-color: #0a0b0d;
+  --ifm-card-background-color: #141618;
+  --ifm-toc-background-color: transparent;
+  --ifm-dropdown-background-color: #1a1c1f;
+
+  /* Borders */
+  --ifm-color-emphasis-200: rgba(245, 192, 154, 0.1);
+  --ifm-color-emphasis-300: rgba(245, 192, 154, 0.15);
+
+  /* Code */
+  --docusaurus-highlighted-code-line-bg: rgba(245, 192, 154, 0.06);
+
+  /* Search */
   --ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="rgba(255, 255, 255, 0.5)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
-
-  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.078);
 }
 
+/* ─── Page background with subtle ambient depth ───────── */
+html[data-theme="dark"] {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% -5%, rgba(18, 42, 36, 0.55) 0%, transparent 70%),
+    #0d0e10;
+  background-attachment: fixed;
+}
+
+[data-theme="dark"] body {
+  background: transparent;
+}
+
+/* ─── Announcement bar ────────────────────────────────── */
+div[class*="announcementBar"] {
+  border-bottom: 1px solid rgba(245, 192, 154, 0.15);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+
+div[class*="announcementBar"] a {
+  color: #f5c09a;
+  text-decoration: underline;
+  text-decoration-color: rgba(245, 192, 154, 0.4);
+  text-underline-offset: 3px;
+}
+
+div[class*="announcementBar"] a:hover {
+  text-decoration-color: #f5c09a;
+}
+
+/* ─── Navbar ──────────────────────────────────────────── */
+.navbar {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(245, 192, 154, 0.1);
+  box-shadow: none;
+}
+
+.navbar__link {
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  transition: color 0.15s ease;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: #f5c09a;
+}
+
+.navbar__brand:hover {
+  opacity: 0.85;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────── */
+.theme-doc-sidebar-container {
+  border-right: 1px solid rgba(245, 192, 154, 0.08) !important;
+}
+
+[data-theme="dark"] .theme-doc-sidebar-container {
+  background-color: #0f1012;
+}
+
+.menu__link {
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.menu__link:hover {
+  color: #f5c09a;
+  background-color: rgba(245, 192, 154, 0.06);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  color: #f5c09a !important;
+  background-color: rgba(245, 192, 154, 0.09);
+  border-left: 2px solid #f5c09a;
+  padding-left: calc(var(--ifm-menu-link-padding-horizontal) - 2px);
+  font-weight: 600;
+}
+
+.menu__caret:before {
+  border-color: rgba(245, 192, 154, 0.5);
+}
+
+.menu__list-item-collapsible:hover {
+  background-color: rgba(245, 192, 154, 0.04);
+}
+
+/* Bold sidebar section headers */
 .menu__list-item.sidebarBold > .menu__link,
 .menu__list-item.sidebarBold > .menu__list-item-collapsible > .menu__link {
   font-weight: 700;
 }
 
+/* ─── Table of contents (right rail) ─────────────────── */
+.table-of-contents__link {
+  color: var(--ifm-color-secondary);
+  transition: color 0.15s ease;
+}
+
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: #f5c09a;
+  font-weight: 600;
+}
+
+.table-of-contents__left-border {
+  border-left: 2px solid rgba(245, 192, 154, 0.15);
+}
+
+/* ─── Typography ──────────────────────────────────────── */
+h1 {
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+h2 {
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+h3, h4 {
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+/* ─── Buttons ─────────────────────────────────────────── */
+[data-theme="dark"] .button--primary {
+  background-color: transparent;
+  border: 1px solid rgba(245, 192, 154, 0.45);
+  color: #f5c09a;
+}
+
+[data-theme="dark"] .button--primary:hover {
+  background-color: rgba(245, 192, 154, 0.08);
+  border-color: #f5c09a;
+  color: #f5c09a;
+  text-decoration: none;
+}
+
+/* ─── Links ───────────────────────────────────────────── */
+a {
+  text-decoration: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.markdown a {
+  text-decoration: underline;
+  text-decoration-color: rgba(245, 192, 154, 0.35);
+  text-underline-offset: 3px;
+}
+
+.markdown a:hover {
+  text-decoration-color: #f5c09a;
+}
+
+/* ─── Admonitions ─────────────────────────────────────── */
+
+/* Note / Info — primary brand palette */
+.alert--info {
+  --ifm-alert-background-color: rgba(245, 192, 154, 0.06);
+  --ifm-alert-border-color: rgba(245, 192, 154, 0.35);
+  --ifm-alert-color: inherit;
+}
+
+[data-theme="dark"] .alert--info {
+  background-color: rgba(245, 192, 154, 0.06);
+  border-left-color: rgba(245, 192, 154, 0.45);
+}
+
+.alert--info .admonition-icon svg {
+  fill: #f5c09a;
+  stroke: none;
+}
+
+/* Tip — muted teal */
+.alert--success {
+  --ifm-alert-background-color: rgba(52, 168, 138, 0.07);
+  --ifm-alert-border-color: rgba(52, 168, 138, 0.35);
+}
+
+/* Warning — amber */
+.alert--warning {
+  --ifm-alert-background-color: rgba(240, 180, 50, 0.07);
+  --ifm-alert-border-color: rgba(240, 180, 50, 0.35);
+}
+
+/* Danger — red */
+.alert--danger {
+  --ifm-alert-background-color: rgba(220, 70, 70, 0.07);
+  --ifm-alert-border-color: rgba(220, 70, 70, 0.35);
+}
+
+.admonition {
+  border-radius: 8px;
+  border-left-width: 3px;
+}
+
+/* ─── Code blocks ─────────────────────────────────────── */
+.prism-code {
+  border: 1px solid rgba(245, 192, 154, 0.1);
+  border-radius: 8px !important;
+}
+
+div[class*="codeBlockContainer"] {
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Inline code */
+code {
+  background-color: rgba(245, 192, 154, 0.08) !important;
+  border: 1px solid rgba(245, 192, 154, 0.14);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-size: 0.875em;
+}
+
+/* Don't double-style code inside code blocks */
+.prism-code code {
+  background-color: transparent !important;
+  border: none;
+  padding: 0;
+}
+
+/* ─── Doc content ─────────────────────────────────────── */
+.docMainContainer,
+article {
+  max-width: 860px;
+}
+
+/* ─── Pagination nav ──────────────────────────────────── */
+.pagination-nav__link {
+  border: 1px solid rgba(245, 192, 154, 0.12);
+  border-radius: 8px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: rgba(245, 192, 154, 0.5);
+  background-color: rgba(245, 192, 154, 0.04);
+}
+
+.pagination-nav__sublabel {
+  opacity: 0.55;
+}
+
+/* ─── Footer ──────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid rgba(245, 192, 154, 0.08);
+}
+
+[data-theme="dark"] .footer {
+  background-color: #0a0b0d;
+}
+
+.footer__link-item:hover {
+  color: #f5c09a;
+}
+
+.footer__title {
+  color: #f5c09a;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── Breadcrumbs ─────────────────────────────────────── */
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: #f5c09a;
+  background: rgba(245, 192, 154, 0.08);
+}
+
+/* ─── Badges / tags ───────────────────────────────────── */
+.badge {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 192, 154, 0.25);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 192, 154, 0.45);
+}
+
+/* ─── Search ──────────────────────────────────────────── */
+.navbar__search-input {
+  font-family: "Montserrat", sans-serif !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #fff !important;
+  border: 1px solid rgba(245, 192, 154, 0.15) !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease;
+}
+
+.navbar__search-input:focus {
+  border-color: #f5c09a !important;
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.15) !important;
+  outline: none;
+}
+
+.navbar__search-suggestions {
+  background-color: #141618 !important;
+  border: 1px solid rgba(245, 192, 154, 0.15) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+  margin-top: 8px;
+}
+
+.navbar__search-suggestion--active {
+  background-color: rgba(245, 192, 154, 0.08) !important;
+  color: #f5c09a !important;
+  border-left: 2px solid #f5c09a;
+}
+
+.navbar__search-suggestion--suggestion mark {
+  color: #f5c09a !important;
+  background: rgba(245, 192, 154, 0.12) !important;
+  font-weight: bold !important;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.navbar__search-suggestion--header {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  color: rgba(245, 192, 154, 0.5) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Mermaid diagrams ────────────────────────────────── */
+.docusaurus-mermaid-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+/* ─── Image helpers ───────────────────────────────────── */
 .banner-spacing {
   width: 100%;
   height: auto;
@@ -74,62 +514,4 @@
   display: block;
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
-}
-
-.docusaurus-mermaid-container {
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0;
-}
-
-/* Search input bar */
-.navbar__search-input {
-  font-family: "Montserrat", sans-serif !important;
-  background-color: #2a2a2a !important;
-  color: #fff !important;
-  border: 1px solid #444 !important;
-  border-radius: 6px !important;
-  transition: all 0.2s ease;
-}
-
-/* Glowing effect on focus */
-.navbar__search-input:focus {
-  border-color: #f5c09a !important;
-  box-shadow: 0 0 8px rgba(245, 192, 154, 0.4) !important;
-  outline: none;
-}
-
-/* Results container styling */
-.navbar__search-suggestions {
-  background-color: #1b1b1d !important;
-  border: 1px solid #333 !important;
-  border-radius: 8px !important;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8) !important;
-  margin-top: 8px;
-}
-
-/* Active/hover state */
-.navbar__search-suggestion--active {
-  background-color: #2a2a2a !important;
-  color: #f5c09a !important;
-  border-left: 3px solid #f5c09a;
-}
-
-/* Highlighted keyword */
-.navbar__search-suggestion--suggestion mark {
-  color: #f5c09a !important;
-  background: rgba(245, 192, 154, 0.1) !important;
-  font-weight: bold !important;
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
-/* Search headers */
-.navbar__search-suggestion--header {
-  background-color: #111 !important;
-  color: #888 !important;
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 1px;
 }

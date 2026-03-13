@@ -4,9 +4,10 @@ hide_title: true
 title: Passive MYT Yield
 ---
 
-import mytYield from '@site/static/img/myt-yield-01.png';
+import PageBanner from "@site/src/components/PageBanner";
+import FramedImage from "@site/src/components/FramedImage";
 
-<img src={mytYield} alt="Passive MYT Yield" class="banner-spacing" />
+<PageBanner title="Passive MYT Yield" />
 
 The Mix-Yield Token turns a single deposit of ETH or USDC into an auto-compounding position. Once minted, every MYT represents a growing claim on the underlying asset. No extra clicks are required to harvest or reinvest.
 
@@ -18,19 +19,19 @@ The Mix-Yield Token turns a single deposit of ETH or USDC into an auto-compoundi
 
 ## Step 1 – Open the Vaults page
 
-![](/img/use-passive-myt-01.png)
+<FramedImage src="/img/use-passive-myt-01.png" alt="Vaults page" />
 
 From any page choose Vaults in the top navigation, or click the empty tile with a plus sign on the Dashboard.
 
 ## Step 2 – Select the MYT vault
 
-![](/img/use-passive-myt-02.png)
+<FramedImage src="/img/use-passive-myt-02.png" alt="Select MYT vault" />
 
 Use the chain and asset filters to narrow down the list, then click on the vault card that matches your base asset.
 
 ## Step 3 – Enter a deposit amount
 
-![](/img/use-passive-myt-03.png)
+<FramedImage src="/img/use-passive-myt-03.png" alt="Enter deposit amount" />
 
 The lower left panel opens on Deposit / Borrow.
 
@@ -42,7 +43,7 @@ Press Deposit. Your wallet will show the network, gas estimate, and the amount o
 
 ## Step 5 – Track yield and strategy mix
 
-![](/img/use-passive-myt-04.png)
+<FramedImage src="/img/use-passive-myt-04.png" alt="Track yield and strategy mix" />
 
 Back on the Dashboard your new position appears as a vault position. Clicking into it will show a variety of information, including:
 

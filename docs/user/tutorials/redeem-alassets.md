@@ -4,9 +4,10 @@ hide_title: true
 title: Redeem alAssets
 ---
 
-import redeemAlassets from '@site/static/img/redeem-alassets-banner-01.png';
+import PageBanner from "@site/src/components/PageBanner";
+import FramedImage from "@site/src/components/FramedImage";
 
-<img src={redeemAlassets} alt="Redeem alAssets" class="banner-spacing" />
+<PageBanner title="Redeem alAssets" />
 
 The Earn page lists every fixed-rate term available on your current network. By depositing alAssets, or letting the interface swap ETH or USDC into their alAsset form, you lock in a known return that settles on the term’s maturity date.
 
@@ -14,7 +15,7 @@ While your position sits in the queue Alchemix earmarks matching collateral at 1
 
 ## Step 1 – Open the Earn page
 
-![](/img/redeem-alassets-01.png)
+<FramedImage src="/img/redeem-alassets-01.png" alt="Earn page" />
 
 **Earn page** – each panel shows a fixed-rate term you can enter.
 
@@ -60,7 +61,7 @@ Approve the transaction in your wallet.
 
 Go to the Dashboard and scroll to Open Earn Positions.
 
-![](/img/redeem-alassets-02.png)
+<FramedImage src="/img/redeem-alassets-02.png" alt="Open Earn Positions" />
 
 | Function      | When to use                | Effect                                                                                                                                       |
 | ------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |

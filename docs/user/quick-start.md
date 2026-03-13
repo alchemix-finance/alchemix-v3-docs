@@ -3,11 +3,18 @@ hide_title: true
 title: Quick Start
 ---
 
-import quickStartBanner from '@site/static/img/quick-start-banner-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={quickStartBanner} alt="Quick Start" class="banner-spacing" />
+<PageBanner title="Quick Start" />
 
-This page gives you a low-risk way to see Alchemix at work. It will walk through a small deposit, a modest borrow, and what to expect as redemptions reduce your balance.
+This page walks through the core borrowing path. A small deposit, a modest borrow, and what to expect as redemptions reduce your balance over time.
+
+If you already know what you're looking for, jump straight to the relevant tutorial:
+
+- [Passive MYT Yield →](./tutorials/use-passive-myt.md) — deposit ETH or USDC and earn auto-compounding yield without borrowing.
+- [Redeem alAssets →](./tutorials/redeem-alassets.md) — buy alAssets below peg and earn fixed-rate returns through the Transmuter.
+
+Otherwise, continue below.
 
 ## What you will do
 
@@ -33,7 +40,7 @@ Open Vaults, select Mix-ETH or Mix-USDC on your chain, and deposit. The vault wi
 alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.98 USDC, selling 200 alUSD yields ~196 USDC, which is a ~4 USDC upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
 :::
 
-On the same vault page stay on Deposit / Borrow. Enter a small borrow near 20% LTV, then mint alETH or alUSD, respectively.
+On the same vault page stay on Deposit / Borrow. Enter a small borrow near 20% LTV, then mint [alETH or alUSD](./concepts/alAssets.md), respectively.
 
 If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in the UI will apply when redemptions occur.
 
@@ -62,10 +69,15 @@ Repay any remaining alAssets, then withdraw your collateral from the vault. If y
 
 ## Next steps
 
-Next, explore the concepts behind what you just did:
+Explore the concepts behind what you just did:
 
-[Learn more about MYT →](./concepts/myt-and-yield.md)
+- [Mix-Yield Token →](./concepts/myt-and-yield.md)
+- [Redemption Rate →](./concepts/redemption-rate.md)
+- [Liquidations →](./concepts/liquidations.md)
+- [The Transmuter →](./concepts/transmuter.md)
 
-[Learn more about Redemptions →](./concepts/redemption-rate.md)
+Or go deeper with the step-by-step tutorials:
 
-[Learn more about Liquidations →](./concepts/liquidations.md)
+- [Deposit & Borrow →](./tutorials/deposit-and-borrow.md)
+- [Repay Loans →](./tutorials/repay-loan.md)
+- [Redeem alAssets →](./tutorials/redeem-alassets.md)

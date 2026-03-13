@@ -4,9 +4,9 @@ hide_title: true
 title: Use Cases
 ---
 
-import useCases from '@site/static/img/use-cases-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
-<img src={useCases} alt="Use Cases" class="banner-spacing" />
+<PageBanner title="Use Cases" />
 
 This section containes a variety of potential use-cases for collaboration with Alchemix v3.
 

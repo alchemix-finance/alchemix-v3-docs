@@ -4,11 +4,11 @@ hide_title: true
 title: Liquidations
 ---
 
-import liquidations from '@site/static/img/liquidations-01.png';
+import PageBanner from "@site/src/components/PageBanner";
 
 <!-- TODO -->
 
-<img src={liquidations} alt="Liquidations" class="banner-spacing" />
+<PageBanner title="Liquidations" />
 
 Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account punishment. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close. The back-stop only activates if the Mix-Yield Token itself loses backing.
 

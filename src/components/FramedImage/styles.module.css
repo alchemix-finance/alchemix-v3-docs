@@ -1,0 +1,74 @@
+/* ─────────────────────────────────────────────────────────
+   Fixed-pixel inset so the corner overhang is equal on all
+   four sides regardless of the image aspect ratio.
+   ───────────────────────────────────────────────────────── */
+.frame {
+  --inset: 14px; /* equal overhang on all sides              */
+  --dot:   5px;  /* corner dot diameter — same as PageBanner */
+  --lc:    rgba(245, 192, 154, 0.28); /* line colour         */
+
+  position: relative;
+  width: 100%;
+  padding: var(--inset);
+  margin: 1.25rem 0;
+  overflow: hidden;
+}
+
+/* ── Dark fill — sits behind the image, bounded by corner positions ── */
+.bg {
+  position: absolute;
+  inset: var(--inset);
+  background-color: #1b181d;
+  z-index: 0;
+}
+
+/* ── Image fills the inner box ── */
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Horizontal lines — run full frame width ── */
+.lineH {
+  position: absolute;
+  height: 1px;
+  left:  0;
+  right: 0;
+  background: var(--lc);
+  z-index: 2;
+  pointer-events: none;
+}
+.lineTop    { top:    calc(var(--inset) - 0.5px); }
+.lineBottom { bottom: calc(var(--inset) - 0.5px); }
+
+/* ── Vertical lines — run full frame height ── */
+.lineV {
+  position: absolute;
+  width: 1px;
+  top:    0;
+  bottom: 0;
+  background: var(--lc);
+  z-index: 2;
+  pointer-events: none;
+}
+.lineLeft  { left:  calc(var(--inset) - 0.5px); }
+.lineRight { right: calc(var(--inset) - 0.5px); }
+
+/* ── Corner dots — centred on line intersections ── */
+.corner {
+  position: absolute;
+  width:  var(--dot);
+  height: var(--dot);
+  background-color: #f5c09a;
+  border-radius: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+}
+
+.tl { top: var(--inset);              left: var(--inset); }
+.tr { top: var(--inset);              left: calc(100% - var(--inset)); }
+.bl { top: calc(100% - var(--inset)); left: var(--inset); }
+.br { top: calc(100% - var(--inset)); left: calc(100% - var(--inset)); }
