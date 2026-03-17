@@ -20,7 +20,7 @@ This documentation is the most complete learning resource, but it may lag behind
 | [**Snapshot**](https://snapshot.box/#/s:alchemixstakers.eth) | Governance voting hub.                                    |
 | [**Github**](https://github.com/alchemix-finance)            | Parent Alchemix Github account.                           |
 | [**Developer Docs**](../dev)                                 | All development resources for the Alchemix ecosystem.     |
-| Dune Dashboard                                               | Live protocol metrics and analytics, TBD                  |
-| Gov Dashboard                                                | Live protocol parameters, TBD                             |
+| Dune Dashboard                                               | Live protocol metrics and analytics — Coming soon         |
+| Gov Dashboard                                                | Live protocol parameters — Coming soon                    |
 | [**Financial Reports**](financial-reports)                   | Quarterly financial reports, 2022–present.                |
 | [**Marketing Material**](marketing-material)                 | Logos and brand assets for use in marketing and community projects. |

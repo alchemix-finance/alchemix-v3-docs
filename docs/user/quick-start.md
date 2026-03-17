@@ -4,23 +4,21 @@ title: Quick Start
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
+import VisualizerFrame from "@site/src/components/VisualizerFrame";
+import FramedImage from "@site/src/components/FramedImage";
 
 <PageBanner title="Quick Start" />
 
 This page walks through the core borrowing path. A small deposit, a modest borrow, and what to expect as redemptions reduce your balance over time.
 
-If you already know what you're looking for, jump straight to the relevant tutorial:
-
-- [Passive MYT Yield →](./tutorials/use-passive-myt.md) — deposit ETH or USDC and earn auto-compounding yield without borrowing.
-- [Redeem alAssets →](./tutorials/redeem-alassets.md) — buy alAssets below peg and earn fixed-rate returns through the Transmuter.
-
-Otherwise, continue below.
-
-## What you will do
-
 - Deposit ETH or USDC to mint MYT and start earning yield.
 - Borrow at about 20% LTV to mint alAssets, then swap them to USDC if you want working capital.
 - Watch scheduled redemptions reduce your debt while your full collateral keeps earning until maturity.
+
+If you already know what you're looking for, jump straight to the relevant tutorial:
+
+- [Earn yield without borrowing →](./tutorials/use-passive-myt.md)
+- [Buy alAssets below peg for fixed returns →](./tutorials/redeem-alassets.md)
 
 ### Prerequisites
 
@@ -28,13 +26,13 @@ Connect a wallet on the target chain and keep a small balance of the native gas 
 
 ### Step 1 – Deposit to MYT
 
-![](/img/quick-start-01.png)
+<FramedImage src="/img/quick-start-01.png" alt="Deposit to MYT" />
 
 Open Vaults, select Mix-ETH or Mix-USDC on your chain, and deposit. The vault will mint MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
 
 ### Step 2 – Borrow at 20% LTV
 
-![](/img/quick-start-02.png)
+<FramedImage src="/img/quick-start-02.png" alt="Borrow at 20% LTV" />
 
 :::tip Check the alAsset market price first
 alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.98 USDC, selling 200 alUSD yields ~196 USDC, which is a ~4 USDC upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
@@ -44,30 +42,19 @@ On the same vault page stay on Deposit / Borrow. Enter a small borrow near 20% L
 
 If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in the UI will apply when redemptions occur.
 
-## What happens next
+:::caution Before you confirm
 
-Redemptions run on fixed terms set by the DAO. When a batch matures, the system uses earmarked collateral to repay part of your debt. Between batches, the entire collateral balance continues compounding. The result is gradual deleveraging without variable interest.
+- **Strategy mix:** open the vault details to see the current MYT weight and ceilings for higher-risk buckets.
+- **Health bar:** note the Liquidation LTV marker. Keep a wide buffer to reduce the need for active position management.
+  :::
 
-### Example
+### Step 3 – Let it run
 
-**Deposit**: 1,000 USDC  
-**Borrow**: 200 alUSD (20% LTV)  
-**alUSD market price**: 0.99 USDC  
-**Up-front cost from the price gap**: about 2 USDC on a full sale of the 200 alUSD  
-**Borrower fee**: shown in dapp. Applies only when redemptions settle.
+The timeline below shows how this plays out in practice. At a modest 20% LTV, vault yield consistently outpaces the collateral drawn out by each redemption cycle, so your collateral base grows while your debt quietly disappears. No repayments, no interest, no action required.
 
-You now hold MYT that keeps earning, plus 200 alUSD you can swap or deploy. As redemptions arrive, your debt steps down until it nears zero. Collateral remains in place and continues compounding, provided the yield rate remains above the redemption rate divided by 5. (Only the 20% LTV borrowed will be redeemed at the specified rate).
+<VisualizerFrame url="/diagrams/position-timeline.html" title="Position Timeline" />
 
-## Safety checks
-
-- **Strategy mix:** open the vault details to see current MYT weight and ceilings for higher-risk buckets.
-- **Health bar:** note the Liquidation LTV marker. This is the live liquidation threshold. Ensure you keep a wide buffer to reduce the need for active position management.
-
-## How to unwind
-
-Repay any remaining alAssets, then withdraw your collateral from the vault. If you swapped your alAssets to USDC, you can swap back to alAssets to repay and withdraw.
-
-## Next steps
+### Next steps
 
 Explore the concepts behind what you just did:
 

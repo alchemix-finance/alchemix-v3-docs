@@ -16,7 +16,7 @@ Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account pu
 Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.
 :::
 
-## When liquidation does not occur
+### When liquidation does not occur
 
 | Event                              | Effect on your loan                                               |
 | ---------------------------------- | ----------------------------------------------------------------- |
@@ -24,24 +24,52 @@ Price volatility alone cannot trigger a liquidation. Only a loss in the underlyi
 | alAsset drifting below peg on DEXs | None, protocol still values alAssets at face value for repayment. |
 | Hitting the 90% LTV borrowing cap  | Borrowing stops, the position stays open and keeps earning yield. |
 
-## What can trigger liquidation
+### What can trigger liquidation
 
 | Event                                                 | Detection Method                                                 |
 | ----------------------------------------------------- | ---------------------------------------------------------------- |
 | Strategy loss, exploit, or severe slippage inside MYT | Oracle shows MYT NAV is less than system debt.                   |
 | Position exceeds liquidation threshold (95% LTV)      | Oracle shows collateral value vs. debt ratio breaching threshold |
 
-## How the process works
+### How the process works
 
-- **Max LTV** – If a position exceeds the max LTV (currently set at 95%), it is eligible for liquidations.
+When a position crosses 95% LTV, the protocol checks whether triggering an early redemption alone is enough to bring it back to 85%. If yes, only the redemption runs. If not, it runs the redemption first, then uses collateral to cover the rest.
 
-- **Partial liquidation only** – The protocol liquidates only the amount required to adjust the user’s position back to the defined target LTV, currently set at 85%.
+{/* TODO: diagram — decision flowchart for liquidation paths needs a better shape
+```mermaid
+%%{init: {
+  ‘theme’: ‘base’,
+  ‘themeVariables’: {
+    ‘fontFamily’: ‘Montserrat’,
+    ‘primaryColor’: ‘#141618’,
+    ‘primaryBorderColor’: ‘#4a3828’,
+    ‘primaryTextColor’: ‘#e8ddd4’,
+    ‘lineColor’: ‘#c8a07a’,
+    ‘edgeLabelBackground’: ‘transparent’,
+    ‘tertiaryColor’: ‘#141618’,
+    ‘fontSize’: ‘18px’
+  },
+  ‘flowchart’: { ‘curve’: ‘monotoneX’, ‘nodeSpacing’: 60, ‘rankSpacing’: 90 }
+}}%%
+flowchart LR
+    classDef default font-weight:bold;
 
-- **Multi-step liquidations** – If a position can be made healthy by simply triggering a redemption early, then that is all that will happen and the liquidator will receive a small fee. Otherwise, the early redemption will occur and then the user’s collateral will be used to repay debt, along with a fee paid to the liquidator, down to the target LTV.
+    A(LTV exceeds 95%) --> B(Redemption check)
+    B -->|enough| C(Early redemption only)
+    B -.->|not enough| D(Early redemption<br/>+ collateral)
+    C --> E{{Restored to 85% LTV}}
+    D --> E
 
-- **Liquidator Fee Vault** – Should the user’s collateral not be sufficient on its own to pay a liquidator, there is a separate fee vault that may be funded by any entity (including the DAO) that may be drawn from to pay liquidators.
+    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3,4 stroke:#c8a07a,stroke-width:2px
+```
+*/}
 
-## Reading the health bar
+- **Partial liquidation** — only the minimum needed to reach 85% LTV is liquidated. The rest of the position is untouched.
+
+- **Liquidator fee** — paid on both paths. If the position’s collateral isn’t enough to cover it, a separate fee vault (fundable by the DAO or any entity) covers the difference.
+
+### Reading the health bar
 
 The colored bar in the vault UI gives an at-a-glance view of three numbers:
 

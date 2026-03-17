@@ -492,6 +492,61 @@ article {
   margin: 2rem 0;
 }
 
+/* Remove grey background boxes from edge labels (Yes/No etc.) */
+.docusaurus-mermaid-container .edgeLabel rect,
+.docusaurus-mermaid-container .edgeLabel .label-container {
+  fill: transparent !important;
+  stroke: none !important;
+}
+.docusaurus-mermaid-container .edgeLabel div,
+.docusaurus-mermaid-container .edgeLabel span,
+.docusaurus-mermaid-container .edgeLabel p {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #e8ddd4 !important;
+  text-shadow:
+    0 0 6px #0d0e10,
+    0 0 10px #0d0e10,
+    0 0 14px #0d0e10 !important;
+}
+
+/* ─── Key-points definition list ─────────────────────── */
+dl.key-points {
+  margin: 1.25rem 0;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 8px;
+  background-color: #141618;
+  overflow: hidden;
+}
+
+dl.key-points dt {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 154, 0.6);
+  padding: 1rem 1.25rem 0.2rem;
+  margin: 0;
+}
+
+dl.key-points dd {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e8e8ea;
+  line-height: 1.55;
+  margin: 0;
+  padding: 0 1.25rem 1rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.08);
+}
+
+dl.key-points dd:last-child {
+  border-bottom: none;
+}
+
+dl.key-points dd a {
+  color: #f5c09a;
+}
+
 /* ─── Image helpers ───────────────────────────────────── */
 .banner-spacing {
   width: 100%;

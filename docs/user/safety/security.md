@@ -8,13 +8,13 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Security & Audits" />
 
-Security is the core pillar of Alchemix V3. Our approach to safeguarding the protocol combines exhaustive initial audits, a permanent partnership for continuous strategy review, and a high-incentive bug bounty program.
+Alchemix V3 is designed with security at every layer. The approach combines exhaustive initial audits, a permanent partnership for continuous strategy review, and a high-incentive bug bounty program.
 
-## Audit coverage & reports
+### Audit coverage & reports
 
 All core smart contracts for Alchemix V3 have undergone rigorous testing and comprehensive audits by top-tier security firms.
 
-### Core protocol audits
+#### Core protocol audits
 
 <!-- TODO links and dates-->
 
@@ -31,11 +31,11 @@ All core smart contracts for Alchemix V3 have undergone rigorous testing and com
   - Focus: Security review of Alchemix V3 mechanics, specifically protocol fees, liquidation logic, and debt-redemption accounting..
   - [View Report](https://cantina.xyz/portfolio/f638950d-a8ad-4df8-a6ec-8b067e416d7b)
 
-### Continuous MYT strategy audits
+#### Continuous MYT strategy audits
 
 To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must undergo a dedicated audit by Nethermind before being whitelisted. This ensures that the risk profile of the MYT remains consistent even as the underlying strategy landscape evolves.
 
-## Internal security practices
+### Internal security practices
 
 Beyond external reviews, Alchemix V3 is protected by a multi-layered internal defense strategy:
 
@@ -43,7 +43,7 @@ Beyond external reviews, Alchemix V3 is protected by a multi-layered internal de
 - **Simulation & Fuzzing:** Continuous mainnet-fork testing and fuzzing via Foundry to stress-test the protocol against real-world market volatility and edge cases.
 - **Multi-Stage Code Reviews:** Every line of code is reviewed by multiple internal contributors before moving to external audit.
 
-## Bug bounties
+### Bug bounties
 
 We believe in a "trust but verify" model and encourage the global security community to stress-test our code. Our program is hosted on **Immunefi**, the leading platform for DeFi security.
 
@@ -51,18 +51,18 @@ We believe in a "trust but verify" model and encourage the global security commu
 - **Scope:** All core Alchemist, Transmuter, and MYT contracts.
 - **Link:** [View Alchemix on Immunefi](https://immunefi.com/bounty/alchemix/)
 
-## Governance & timelocks
+### Governance & timelocks
 
 To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 utilizes a robust timelock system.
 
 - **Upgradeability:** Critical contracts are upgradeable only via the DAO.
-- **Timelock Delay:** hours/days — This delay provides users and third-party monitors time to exit or react before any code changes are executed.
+- **Timelock Delay:** Set by governance — This delay provides users and third-party monitors time to exit or react before any code changes are executed.
 <!-- TODO date -->
 - **Guardian Role:** A dedicated Guardian address can pause deposits and loans in an emergency but **cannot** unpause them or access funds, serving as a circuit breaker during volatility.
 
 ---
 
-## Learn more
+### Learn more
 
 - [GitHub - Alchemix V3 Contracts](https://github.com/alchemix-finance/alchemix-v3-contracts)
 - [Audit Archive Summary](https://github.com/alchemix-finance/audits)
