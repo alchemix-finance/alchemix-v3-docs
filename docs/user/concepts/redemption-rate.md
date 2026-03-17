@@ -8,8 +8,6 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <!-- TODO -->
 
-<!-- # Redemption Rate -->
-
 <PageBanner title="Redemption Rate" />
 
 Redemptions convert earmarked collateral into the asset required to repay debt.
@@ -21,11 +19,11 @@ Two ideas matter:
 
 - **Temporal leverage** – the bonus yield you earn while waiting for an earmarked redemption to settle.
 
-## The redemption rate
+### The redemption rate
 
 The redemption rate tells borrowers what share of total system debt redemptions will repay in one year through the Transmuter. A higher rate means loans clear more quickly.
 
-### Formula
+#### Formula
 
 ```mermaid
 %%{init: {
@@ -37,7 +35,8 @@ The redemption rate tells borrowers what share of total system debt redemptions 
     'primaryTextColor': '#e8ddd4',
     'lineColor': '#c8a07a',
     'edgeLabelBackground': '#0d0e10',
-    'tertiaryColor': '#141618'
+    'tertiaryColor': '#141618',
+    'fontSize': '18px'
   },
   'flowchart': {
     'curve': 'monotoneX',
@@ -71,7 +70,7 @@ flowchart LR
     e4@{ animation: slow }
 ```
 
-#### Understanding the inputs
+##### Understanding the inputs
 
 The redemption rate formula calculates how much of the total system debt can be cleared in one year, based on current conditions.
 
@@ -80,7 +79,7 @@ The redemption rate formula calculates how much of the total system debt can be 
 - **The Volume:** By multiplying the balance by the frequency of redemptions, we get the **Projected Annual Redemptions**, the total value the system is on track to repay over the next 12 months.
 - **The Rate:** Finally, we compare that projected volume against the **Total System Debt** to determine the percentage rate.
 
-#### Example
+##### Example
 
 If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
 
@@ -94,7 +93,8 @@ If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.2
     'primaryTextColor': '#e8ddd4',
     'lineColor': '#c8a07a',
     'edgeLabelBackground': '#0d0e10',
-    'tertiaryColor': '#141618'
+    'tertiaryColor': '#141618',
+    'fontSize': '18px'
   },
   'flowchart': {
     'curve': 'monotoneX',
@@ -103,6 +103,7 @@ If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.2
   }
 }}%%
 flowchart LR
+    classDef default font-weight:bold;
     %% Nodes
     A(Transmuter Balance<br/><b>1,000 <span style='color:#9a8878'>alETH</span></b>)
     B(Transmutation Time<br/><b>0.25 <span style='color:#9a8878'>Years</span></b>)
@@ -127,7 +128,7 @@ flowchart LR
 
 At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, term length, and debt levels remain unchanged.
 
-### What drives this number
+#### What drives this number
 
 | On-chain variable  | Effect on the rate           | Rationale                                                                                                                                          |
 | ------------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -135,13 +136,39 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 | Total system debt  | ↓ More debt → lower rate     | A bigger denominator dilutes the impact of a fixed queue.                                                                                          |
 | Transmutation time | ↑ Shorter term → higher rate | Each unit of queued alAsset cycles more often over a year.                                                                                         |
 
-## Temporal leverage
+### Temporal leverage
 
 Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until a Transmuter position actually matures. The transfer out of the vault happens at that maturity moment, when the claim must be settled.
 
 Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 
-## Learn more
+```mermaid
+%%{init: {
+  ‘theme’: ‘base’,
+  ‘themeVariables’: {
+    ‘fontFamily’: ‘Montserrat’,
+    ‘primaryColor’: ‘#141618’,
+    ‘primaryBorderColor’: ‘#4a3828’,
+    ‘primaryTextColor’: ‘#e8ddd4’,
+    ‘lineColor’: ‘#c8a07a’,
+    ‘edgeLabelBackground’: ‘#0d0e10’,
+    ‘tertiaryColor’: ‘#141618’,
+    ‘fontSize’: ‘18px’
+  },
+  ‘flowchart’: { ‘curve’: ‘monotoneX’, ‘nodeSpacing’: 100, ‘rankSpacing’: 80 }
+}}%%
+flowchart LR
+    classDef default font-weight:bold;
+
+    A(Earmark<br/><b>T₀</b>) e1@--> B(Waiting period<br/><span style=’color:#9a8878’>Collateral still earning yield</span>) e2@--> C{{Settlement<br/><b>T₁</b>}}
+
+    style C fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1 stroke:#c8a07a,stroke-width:2px
+    e1@{ animation: slow }
+    e2@{ animation: fast }
+```
+
+### Learn more
 
 - [**Transmuter Mechanics**](./transmuter.md) – How earmarking and redemption batches work.
 

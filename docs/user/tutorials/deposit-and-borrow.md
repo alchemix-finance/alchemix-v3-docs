@@ -21,13 +21,13 @@ The instructions that follow are focused on the process of depositing assets and
 
 [If you only want MYT yield, visit the Passive MYT Yield tutorial →](./use-passive-myt.md)
 
-## Prerequisites
+### Prerequisites
 
 - Connect your wallet and switch to the chain that holds the assets you plan to deposit.
 
 * Confirm you have ETH for gas on that chain.
 
-## Step 1 – Open the Vaults page
+### Step 1 – Open the Vaults page
 
 <FramedImage src="/img/deposit-and-borrow-01.png" alt="Vaults page" />
 
@@ -35,7 +35,7 @@ The instructions that follow are focused on the process of depositing assets and
 
 - On the Dashboard (pictured above) click the empty tile with a plus icon next to your existing positions.
 
-## Step 2 – Find the vault you want
+### Step 2 – Find the vault you want
 
 <FramedImage src="/img/deposit-and-borrow-02.png" alt="Find a vault" />
 
@@ -43,7 +43,7 @@ The instructions that follow are focused on the process of depositing assets and
 
 - Click a vault card to open its detail page.
 
-## Step 3 – Choose Deposit/Borrow
+### Step 3 – Choose Deposit/Borrow
 
 <FramedImage src="/img/deposit-and-borrow-03.png" alt="Deposit and borrow panel" />
 
@@ -57,7 +57,7 @@ The lower-left panel has three tabs:
 
 Stay on Deposit / Borrow.
 
-## Step 4 – Enter amounts
+### Step 4 – Enter amounts
 
 Type the deposit size in the left box, then set the alAsset amount you plan to borrow. As you adjust the fields, keep an eye on three on-screen guides:
 
@@ -69,17 +69,17 @@ Type the deposit size in the left box, then set the alAsset amount you plan to b
 
 Enter the amount of the vault’s deposit asset you want to add, and the amount of alAsset you wish to borrow.
 
-## Step 5 – Queue or send
+### Step 5 – Queue or send
 
 - Click Deposit or Borrow to submit a single action, or;
 
 - Click the cart icon to bundle both actions. Bundling sends one on-chain transaction instead of two to complete both actions.
 
-## Step 6 – Review and confirm
+### Step 6 – Review and confirm
 
 Your wallet pops up the transaction details. Check network, gas estimate, and amounts, then approve.
 
-## Step 7 – Track your position
+### Step 7 – Track your position
 
 Back on the Dashboard you will see:
 

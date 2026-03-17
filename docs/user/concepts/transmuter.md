@@ -19,7 +19,7 @@ The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over t
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
   :::
 
-## How transmutations flow
+### How transmutations flow
 
 ```mermaid
 %%{init: {
@@ -31,13 +31,23 @@ The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over t
     'primaryTextColor': '#e8ddd4',
     'lineColor': '#c8a07a',
     'edgeLabelBackground': '#0d0e10',
-    'tertiaryColor': '#141618'
+    'tertiaryColor': '#141618',
+    'fontSize': '18px'
   },
-  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 80, 'rankSpacing': 100 }
+  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 60, 'rankSpacing': 120 }
 }}%%
 flowchart LR
-    A(Deposit) e1@--> B(Queue) e2@--> C(Earmark) e3@--> D{{Maturity}}
+    classDef default font-weight:bold;
+
+    A(Deposit<br/><span style='color:#9a8878'>alUSD or alETH</span>)
+    B(Queue<br/><span style='color:#9a8878'>Locked for Transmutation Time</span>)
+    C(Earmark<br/><span style='color:#9a8878'>MYT reserved from collateral</span>)
+    D{{Maturity<br/>alAssets burned · 1:1 paid out}}
+
+    A e1@--> B e2@--> C e3@--> D
+
     style D fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2 stroke:#c8a07a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }
@@ -50,13 +60,13 @@ flowchart LR
 
 All redeemed alAssets are burned, contracting their supply.
 
-## Why discounts exist
+### Why discounts exist
 
 Borrowers often sell newly minted alAssets for working capital, pushing market price slightly below par. The spread between that market price and the Transmuter’s guaranteed 1:1 accounting creates a fixed-rate opportunity for buyers.
 
 Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its external market price.
 
-### Fixed-rate yield example
+#### Fixed-rate yield example
 
 **Market**: alUSD = 0.96USDC
 
@@ -75,7 +85,7 @@ The Transmuter has a maximum deposit cap based on the total alAssets minted on i
 **Always verify available Transmuter capacity on your target chain before purchasing alAssets.**
 :::
 
-## Edge-case handling
+### Edge-case handling
 
 | Scenario                             | Result                                                                                                                | Your Options                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -84,7 +94,7 @@ The Transmuter has a maximum deposit cap based on the total alAssets minted on i
 
 There is no variable interest and no price-based liquidation affecting Transmuter positions.
 
-## Strategic uses
+### Strategic uses
 
 - **Arbitrage & peg maintenance** – capture fixed yield while pulling alAssets back to parity.
 

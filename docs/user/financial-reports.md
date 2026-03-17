@@ -9,7 +9,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 Each quarter, Alchemix publishes a financial report covering the full state of the protocol. Reports include treasury contents and revenue, protocol metrics across all supported networks, alAsset liquidity and peg data, yield harvest activity, deposit and user statistics, ALCX governance token metrics, grant activity, and governance summaries. Archive available from Q1 2022.
 
-## 2025
+### 2025
 
 <table>
   <thead>
@@ -42,7 +42,7 @@ Each quarter, Alchemix publishes a financial report covering the full state of t
   </tbody>
 </table>
 
-## 2024
+### 2024
 
 <table>
   <thead>
@@ -75,7 +75,7 @@ Each quarter, Alchemix publishes a financial report covering the full state of t
   </tbody>
 </table>
 
-## 2023
+### 2023
 
 <table>
   <thead>
@@ -108,7 +108,7 @@ Each quarter, Alchemix publishes a financial report covering the full state of t
   </tbody>
 </table>
 
-## 2022
+### 2022
 
 <table>
   <thead>

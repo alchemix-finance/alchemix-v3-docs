@@ -24,6 +24,36 @@ Because repayment comes from these predictable flows, the loan never accrues var
 While Alchemix loans repay themselves over time via yield, you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
 :::
 
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'Montserrat',
+    'primaryColor': '#141618',
+    'primaryBorderColor': '#4a3828',
+    'primaryTextColor': '#e8ddd4',
+    'lineColor': '#c8a07a',
+    'edgeLabelBackground': '#0d0e10',
+    'tertiaryColor': '#141618',
+    'fontSize': '18px'
+  },
+  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 80, 'rankSpacing': 90 }
+}}%%
+flowchart LR
+    classDef default font-weight:bold;
+
+    A(Deposit ETH or USDC) --> B(Collateral wrapped as MYT)
+    B --> C(Vault yield accrues continuously)
+    B --> D(Transmuter redemptions mature on schedule)
+    C e1@--> E{{Loan balance decreases}}
+    D e2@--> E
+
+    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3,4 stroke:#c8a07a,stroke-width:2px
+    e1@{ animation: slow }
+    e2@{ animation: slow }
+```
+
 | Parameter           | Value or behaviour                                                                                                                                                |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Collateral          | ETH → alETH, USDC → alUSD                                                                                                                                         |
@@ -34,7 +64,7 @@ While Alchemix loans repay themselves over time via yield, you are never locked 
 | Position NFT        | Your position is represented by an NFT available in your wallet after the transaction confirms                                                                    |
 | Liquidation         | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](./liquidations.md) |
 
-## What can self-repaying loans be used for?
+### What can self-repaying loans be used for?
 
 - **Large purchases** – Access liquidity today without selling your position. No interest rate and no price-based liquidations means you don't need to watch the loan closely.
 
@@ -46,11 +76,11 @@ While Alchemix loans repay themselves over time via yield, you are never locked 
 
 - **F.I.R.E-style loans** – Schedule periodic draws while your principal continues earning.
 
-## Managing your position
+### Managing your position
 
 For most borrowers, the position is low-maintenance. Deposit, mint, and check back when you need more liquidity. Active users can raise or lower their LTV, loop alAssets back into the vault for leverage, or time repayments around redemptions.
 
-## Learn more
+### Learn more
 
 [alAssets — synthetic tokens explained →](./alAssets.md)
 
