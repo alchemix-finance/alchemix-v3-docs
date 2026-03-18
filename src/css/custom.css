@@ -168,10 +168,22 @@ div[class*="announcementBar"] a:hover {
 
 /* ─── Navbar ──────────────────────────────────────────── */
 .navbar {
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(245, 192, 154, 0.1);
   box-shadow: none;
+}
+
+/* backdrop-filter on ::before instead of .navbar directly — applying it to
+   the element itself would make .navbar a containing block for its
+   position:fixed child .navbar-sidebar, collapsing the mobile drawer to
+   navbar height and hiding the menu items. */
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .navbar__link {
