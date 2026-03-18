@@ -27,9 +27,9 @@ The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over t
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -39,15 +39,15 @@ The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over t
 flowchart LR
     classDef default font-weight:bold;
 
-    A(Deposit<br/><span style='color:#9a8878'>alUSD or alETH</span>)
-    B(Queue<br/><span style='color:#9a8878'>Locked for Transmutation Time</span>)
-    C(Earmark<br/><span style='color:#9a8878'>MYT reserved from collateral</span>)
+    A(Deposit<br/><span style='color:#8a8f99'>alUSD or alETH</span>)
+    B(Queue<br/><span style='color:#8a8f99'>Locked for Transmutation Time</span>)
+    C(Earmark<br/><span style='color:#8a8f99'>MYT reserved from collateral</span>)
     D{{Maturity<br/>alAssets burned · 1:1 paid out}}
 
     A e1@--> B e2@--> C e3@--> D
 
-    style D fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2 stroke:#c8a07a,stroke-width:2px
+    style D fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2 stroke:#f5c09a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }

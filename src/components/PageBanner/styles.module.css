@@ -4,8 +4,8 @@
 .banner {
   --cx:  1.8%;   /* horizontal inset from banner edge to corner dot  */
   --cy:  11.6%;  /* = --cx × (1920÷297) → equal pixel overhang both axes */
-  --dot: 5px;    /* corner dot diameter                              */
-  --lc:  rgba(245, 192, 154, 0.28); /* line colour                  */
+  --dot: 4px;    /* corner dot diameter — even value keeps translate() on whole pixels */
+  --lc:  rgba(255, 255, 255, 0.30); /* line colour                  */
 
   position: relative;
   width: 100%;
@@ -34,44 +34,43 @@
    The section outside the fill box is the "bleed" overhang. */
 .lineH {
   position: absolute;
-  height: 1px;
+  height: 2px;
   left:  0;
   right: 0;
   background: var(--lc);
   z-index: 1;
   pointer-events: none;
 }
-.lineTop    { top:    calc(var(--cy) - 0.5px); }
-.lineBottom { bottom: calc(var(--cy) - 0.5px); }
+.lineTop    { top:    calc(var(--cy) - 1px); }
+.lineBottom { bottom: calc(var(--cy) - 1px); }
 
 /* ── Vertical lines — run full banner height ── */
 .lineV {
   position: absolute;
-  width: 1px;
+  width: 2px;
   top:    0;
   bottom: 0;
   background: var(--lc);
   z-index: 1;
   pointer-events: none;
 }
-.lineLeft  { left:  calc(var(--cx) - 0.5px); }
-.lineRight { right: calc(var(--cx) - 0.5px); }
+.lineLeft  { left:  calc(var(--cx) - 1px); }
+.lineRight { right: calc(var(--cx) - 1px); }
 
 /* ── Corner dots — solid, centred on line intersections ── */
 .corner {
   position: absolute;
   width:  var(--dot);
   height: var(--dot);
-  background-color: #f5c09a;
+  background-color: #a0a0a0;
   border-radius: 50%;
   z-index: 2;
-  transform: translate(-50%, -50%);
 }
 
-.tl { top: var(--cy);              left: var(--cx); }
-.tr { top: var(--cy);              left: calc(100% - var(--cx)); }
-.bl { top: calc(100% - var(--cy)); left: var(--cx); }
-.br { top: calc(100% - var(--cy)); left: calc(100% - var(--cx)); }
+.tl { top: calc(var(--cy) - var(--dot) / 2); left: calc(var(--cx) - var(--dot) / 2); }
+.tr { top: calc(var(--cy) - var(--dot) / 2); left: calc(100% - var(--cx) - var(--dot) / 2); }
+.bl { top: calc(100% - var(--cy) - var(--dot) / 2); left: calc(var(--cx) - var(--dot) / 2); }
+.br { top: calc(100% - var(--cy) - var(--dot) / 2); left: calc(100% - var(--cx) - var(--dot) / 2); }
 
 /* ── Title ── */
 .title {

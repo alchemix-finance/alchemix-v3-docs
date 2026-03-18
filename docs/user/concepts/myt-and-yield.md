@@ -5,6 +5,7 @@ title: Mix-Yield Token
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
+import FeatureCards from "@site/src/components/FeatureCards";
 
 <PageBanner title="Mix-Yield Token" />
 
@@ -22,11 +23,20 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 ### Why use MYT?
 
-|                 |                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------- |
-| Passive income  | Each deposit gives you diversified yield without manual re-staking.                      |
-| Risk management | DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure. |
-| Flexibility     | Choose the chain and bundle that suit your goals, redeem at any time.                    |
+<FeatureCards items={[
+  {
+    title: "Passive income",
+    body: "Each deposit gives you diversified yield without manual re-staking.",
+  },
+  {
+    title: "Risk management",
+    body: "DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure.",
+  },
+  {
+    title: "Flexibility",
+    body: "Choose the chain and bundle that suit your goals, redeem at any time.",
+  },
+]} />
 
 ### Per-chain variants
 
@@ -52,9 +62,9 @@ There are no lock-ups, and yield compounds continuously.
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': 'transparent',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -64,13 +74,13 @@ There are no lock-ups, and yield compounds continuously.
 flowchart LR
     classDef default font-weight:bold;
     A(Deposit<br/>ETH / USDC) e1@--> B(MYT<br/>minted)
-    B e2@--> C(Yield strategies<br/><span style='color:#9a8878'>Strategy A · Strategy B · Strategy C</span>)
+    B e2@--> C(Yield strategies<br/><span style='color:#8a8f99'>Strategy A · Strategy B · Strategy C</span>)
     C e3@--> D(Yield<br/>accrues)
     D e4@--> E{{MYT redemption<br/>value grows}}
     E e5@-.->|redeem anytime| A
-    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2,3 stroke:#c8a07a,stroke-width:2px
-    linkStyle 4 stroke:#c8a07a,stroke-width:1.5px,stroke-dasharray:6
+    style E fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3 stroke:#f5c09a,stroke-width:2px
+    linkStyle 4 stroke:#f5c09a,stroke-width:1.5px,stroke-dasharray:6
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }

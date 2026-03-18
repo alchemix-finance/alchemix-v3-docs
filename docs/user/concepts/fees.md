@@ -20,31 +20,31 @@ Alchemix V3 maintains a transparent and predictable cost structure. All fees are
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
   },
-  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 70, 'rankSpacing': 80 }
+  'flowchart': { 'curve': 'linear', 'nodeSpacing': 70, 'rankSpacing': 80 }
 }}%%
 flowchart TD
     classDef default font-weight:bold;
-    classDef fee fill:#2a1f14,stroke:#c8a07a,stroke-width:2px,color:#f5c09a;
-    classDef free fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d;
+    classDef fee fill:#1a1c1f,stroke:#f5c09a,stroke-width:2px,color:#f5c09a;
+    classDef free fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d;
 
     A(Using Alchemix) --> B(Deposit ETH / USDC)
     A --> C(Deposit alAssets to Transmuter)
 
-    B --> D(MYT vault earns yield) --> E(<b>15%</b> performance fee<br/><span style='color:#9a8878'>on gross yield</span>):::fee
-    B --> F(Take a loan) --> G(Transmuter redemption<br/>repays your debt) --> H(<b>0.50%</b> borrower<br/><span style='color:#9a8878'>redemption fee</span>):::fee
+    B --> D(MYT vault earns yield) --> E(<b>15%</b> performance fee<br/><span style='color:#8a8f99'>on gross yield</span>):::fee
+    B --> F(Take a loan) --> G(Transmuter redemption<br/>repays your debt) --> H(<b>0.50%</b> borrower<br/><span style='color:#8a8f99'>redemption fee</span>):::fee
 
     C --> I(Exit early or wait?)
     I -->|Wait full term| J(<b>0.00%</b> — full<br/>redemption value):::free
-    I -.->|Exit early| K(<b>1.00%</b> early<br/><span style='color:#9a8878'>transmutation fee</span>):::fee
+    I -.->|Exit early| K(<b>1.00%</b> early<br/><span style='color:#8a8f99'>transmutation fee</span>):::fee
 
-    linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#c8a07a,stroke-width:2px
+    linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#f5c09a,stroke-width:2px
 ```
 
 ### Borrower redemption fee

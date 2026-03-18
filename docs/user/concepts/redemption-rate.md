@@ -31,9 +31,9 @@ The redemption rate tells borrowers what share of total system debt redemptions 
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -62,8 +62,8 @@ flowchart LR
     C e4@--> E
 
     %% Styling
-    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2,3 stroke:#c8a07a,stroke-width:2px
+    style E fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3 stroke:#f5c09a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }
@@ -89,9 +89,9 @@ If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.2
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -105,10 +105,10 @@ If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.2
 flowchart LR
     classDef default font-weight:bold;
     %% Nodes
-    A(Transmuter Balance<br/><b>1,000 <span style='color:#9a8878'>alETH</span></b>)
-    B(Transmutation Time<br/><b>0.25 <span style='color:#9a8878'>Years</span></b>)
-    C(Total System Debt<br/><b>1,500 <span style='color:#9a8878'>alETH</span></b>)
-    D(<b>Annualized Redemptions</b><br/>1,000 alETH/year / 0.25 Years<br/>= <b>4,000 <span style='color:#9a8878'>alETH</span></b>)
+    A(Transmuter Balance<br/><b>1,000 <span style='color:#8a8f99'>alETH</span></b>)
+    B(Transmutation Time<br/><b>0.25 <span style='color:#8a8f99'>Years</span></b>)
+    C(Total System Debt<br/><b>1,500 <span style='color:#8a8f99'>alETH</span></b>)
+    D(<b>Annualized Redemptions</b><br/>1,000 alETH/year / 0.25 Years<br/>= <b>4,000 <span style='color:#8a8f99'>alETH</span></b>)
     E{{<b>Redemption Rate</b><br/>4,000 alETH / 1,500 alETH<br/>= <b>~267%</b>}}
 
     %% Logic
@@ -118,8 +118,8 @@ flowchart LR
     C e4@--> E
 
     %% Styling / Ani
-    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2,3 stroke:#c8a07a,stroke-width:2px
+    style E fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3 stroke:#f5c09a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }
@@ -148,9 +148,9 @@ Throughout that waiting period your full deposit continues to earn yield, giving
   ‘themeVariables’: {
     ‘fontFamily’: ‘Montserrat’,
     ‘primaryColor’: ‘#141618’,
-    ‘primaryBorderColor’: ‘#4a3828’,
-    ‘primaryTextColor’: ‘#e8ddd4’,
-    ‘lineColor’: ‘#c8a07a’,
+    ‘primaryBorderColor’: ‘rgba(245,192,154,0.25)’,
+    ‘primaryTextColor’: ‘#e8e8ea’,
+    ‘lineColor’: ‘#f5c09a’,
     ‘edgeLabelBackground’: ‘#0d0e10’,
     ‘tertiaryColor’: ‘#141618’,
     ‘fontSize’: ‘18px’
@@ -160,10 +160,10 @@ Throughout that waiting period your full deposit continues to earn yield, giving
 flowchart LR
     classDef default font-weight:bold;
 
-    A(Earmark<br/><b>T₀</b>) e1@--> B(Waiting period<br/><span style=’color:#9a8878’>Collateral still earning yield</span>) e2@--> C{{Settlement<br/><b>T₁</b>}}
+    A(Earmark<br/><b>T₀</b>) e1@--> B(Waiting period<br/><span style=’color:#8a8f99’>Collateral still earning yield</span>) e2@--> C{{Settlement<br/><b>T₁</b>}}
 
-    style C fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1 stroke:#c8a07a,stroke-width:2px
+    style C fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1 stroke:#f5c09a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: fast }
 ```

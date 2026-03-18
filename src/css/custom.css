@@ -138,7 +138,11 @@
 /* ─── Page background with subtle ambient depth ───────── */
 html[data-theme="dark"] {
   background:
-    radial-gradient(ellipse 80% 40% at 50% -5%, rgba(18, 42, 36, 0.55) 0%, transparent 70%),
+    radial-gradient(
+      ellipse 80% 40% at 50% -5%,
+      rgba(18, 42, 36, 0.55) 0%,
+      transparent 70%
+    ),
     #0d0e10;
   background-attachment: fixed;
 }
@@ -172,12 +176,8 @@ div[class*="announcementBar"] a:hover {
   box-shadow: none;
 }
 
-/* backdrop-filter on ::before instead of .navbar directly — applying it to
-   the element itself would make .navbar a containing block for its
-   position:fixed child .navbar-sidebar, collapsing the mobile drawer to
-   navbar height and hiding the menu items. */
 .navbar::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   backdrop-filter: blur(14px);
@@ -214,7 +214,9 @@ div[class*="announcementBar"] a:hover {
 .menu__link {
   border-radius: 6px;
   font-size: 0.875rem;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .menu__link:hover {
@@ -271,7 +273,8 @@ h2 {
   font-weight: 700;
 }
 
-h3, h4 {
+h3,
+h4 {
   letter-spacing: -0.015em;
   font-weight: 700;
 }
@@ -293,7 +296,9 @@ h3, h4 {
 /* ─── Links ───────────────────────────────────────────── */
 a {
   text-decoration: none;
-  transition: color 0.15s ease, opacity 0.15s ease;
+  transition:
+    color 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .markdown a {
@@ -308,39 +313,29 @@ a {
 
 /* ─── Admonitions ─────────────────────────────────────── */
 
-/* Note / Info — primary brand palette */
-.alert--info {
+/* All callout types unified to copper brand style */
+.alert--secondary,
+.alert--info,
+.alert--success,
+.alert--warning,
+.alert--danger {
   --ifm-alert-background-color: rgba(245, 192, 154, 0.06);
-  --ifm-alert-border-color: rgba(245, 192, 154, 0.35);
+  --ifm-alert-border-color: #f5c09a;
   --ifm-alert-color: inherit;
 }
 
-[data-theme="dark"] .alert--info {
+[data-theme="dark"] .alert--secondary,
+[data-theme="dark"] .alert--info,
+[data-theme="dark"] .alert--success,
+[data-theme="dark"] .alert--warning,
+[data-theme="dark"] .alert--danger {
   background-color: rgba(245, 192, 154, 0.06);
-  border-left-color: rgba(245, 192, 154, 0.45);
+  border-left-color: #f5c09a;
 }
 
-.alert--info .admonition-icon svg {
+.admonition .admonition-icon svg {
   fill: #f5c09a;
   stroke: none;
-}
-
-/* Tip — muted teal */
-.alert--success {
-  --ifm-alert-background-color: rgba(52, 168, 138, 0.07);
-  --ifm-alert-border-color: rgba(52, 168, 138, 0.35);
-}
-
-/* Warning — amber */
-.alert--warning {
-  --ifm-alert-background-color: rgba(240, 180, 50, 0.07);
-  --ifm-alert-border-color: rgba(240, 180, 50, 0.35);
-}
-
-/* Danger — red */
-.alert--danger {
-  --ifm-alert-background-color: rgba(220, 70, 70, 0.07);
-  --ifm-alert-border-color: rgba(220, 70, 70, 0.35);
 }
 
 .admonition {
@@ -381,11 +376,48 @@ article {
   max-width: 860px;
 }
 
+/* ─── Tables ──────────────────────────────────────────── */
+.markdown table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.25rem 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.markdown th,
+.markdown td {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.65rem 1rem;
+  text-align: left;
+}
+
+.markdown th {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.markdown tr:nth-child(even) td {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Hide thead rows where all header cells are empty (headerless Markdown tables) */
+.markdown thead:has(th:empty) {
+  display: none;
+}
+
 /* ─── Pagination nav ──────────────────────────────────── */
 .pagination-nav__link {
   border: 1px solid rgba(245, 192, 154, 0.12);
   border-radius: 8px;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .pagination-nav__link:hover {
@@ -504,6 +536,11 @@ article {
   margin: 2rem 0;
 }
 
+/* Straight arrow routing — prevents over-curved flowchart edges */
+.docusaurus-mermaid-container svg .flowchart-link {
+  stroke-dasharray: none;
+}
+
 /* Remove grey background boxes from edge labels (Yes/No etc.) */
 .docusaurus-mermaid-container .edgeLabel rect,
 .docusaurus-mermaid-container .edgeLabel .label-container {
@@ -515,7 +552,7 @@ article {
 .docusaurus-mermaid-container .edgeLabel p {
   background: transparent !important;
   background-color: transparent !important;
-  color: #e8ddd4 !important;
+  color: #e8e8ea !important;
   text-shadow:
     0 0 6px #0d0e10,
     0 0 10px #0d0e10,
