@@ -5,6 +5,7 @@ title: Liquidations
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
+import StatStrip from "@site/src/components/StatStrip";
 
 <!-- TODO -->
 
@@ -18,18 +19,18 @@ Price volatility alone cannot trigger a liquidation. Only a loss in the underlyi
 
 ### When liquidation does not occur
 
-| Event                              | Effect on your loan                                               |
-| ---------------------------------- | ----------------------------------------------------------------- |
-| ETH or USDC price volatility       | None, debt and collateral move together.                          |
-| alAsset drifting below peg on DEXs | None, protocol still values alAssets at face value for repayment. |
-| Hitting the 90% LTV borrowing cap  | Borrowing stops, the position stays open and keeps earning yield. |
+<StatStrip items={[
+  { label: "ETH or USDC price volatility",       value: "None, debt and collateral move together." },
+  { label: "alAsset drifting below peg on DEXs", value: "None, protocol still values alAssets at face value for repayment." },
+  { label: "Hitting the 90% LTV borrowing cap",  value: "Borrowing stops, the position stays open and keeps earning yield." },
+]} />
 
 ### What can trigger liquidation
 
-| Event                                                 | Detection Method                                                 |
-| ----------------------------------------------------- | ---------------------------------------------------------------- |
-| Strategy loss, exploit, or severe slippage inside MYT | Oracle shows MYT NAV is less than system debt.                   |
-| Position exceeds liquidation threshold (95% LTV)      | Oracle shows collateral value vs. debt ratio breaching threshold |
+<StatStrip items={[
+  { label: "Strategy loss, exploit, or severe slippage inside MYT", value: "Oracle shows MYT NAV is less than system debt." },
+  { label: "Position exceeds liquidation threshold (95% LTV)",      value: "Oracle shows collateral value vs. debt ratio breaching threshold." },
+]} />
 
 ### How the process works
 
@@ -42,9 +43,9 @@ When a position crosses 95% LTV, the protocol checks whether triggering an early
   ‘themeVariables’: {
     ‘fontFamily’: ‘Montserrat’,
     ‘primaryColor’: ‘#141618’,
-    ‘primaryBorderColor’: ‘#4a3828’,
-    ‘primaryTextColor’: ‘#e8ddd4’,
-    ‘lineColor’: ‘#c8a07a’,
+    ‘primaryBorderColor’: ‘rgba(245,192,154,0.25)’,
+    ‘primaryTextColor’: ‘#e8e8ea’,
+    ‘lineColor’: ‘#f5c09a’,
     ‘edgeLabelBackground’: ‘transparent’,
     ‘tertiaryColor’: ‘#141618’,
     ‘fontSize’: ‘18px’
@@ -60,8 +61,8 @@ flowchart LR
     C --> E{{Restored to 85% LTV}}
     D --> E
 
-    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2,3,4 stroke:#c8a07a,stroke-width:2px
+    style E fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3,4 stroke:#f5c09a,stroke-width:2px
 ```
 */}
 

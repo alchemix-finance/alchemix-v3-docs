@@ -16,17 +16,17 @@
     --surface-3:    #1f2124;
     --border:       rgba(245,192,154,0.12);
     --border-mid:   rgba(245,192,154,0.22);
-    --text:         #e8ddd4;
-    --text-dim:     #9a8878;
+    --text:       #e8e8ea;
+    --text-dim:   #8a8f99;
     --accent:       #f5c09a;
     --accent-dim:   rgba(245,192,154,0.12);
     --high-color:   #d4952a;
     --high-dim:     rgba(212,149,42,0.12);
     --low-color:    #5ba88a;
     --low-dim:      rgba(91,168,138,0.12);
-    --collateral:   #c8a07a;
+    --collateral:   #4ade80;
     --debt:         #dc6060;
-    --equity:       #5ba88a;
+    --equity:       #60a5fa;
     --font-body:    'Montserrat', system-ui, sans-serif;
     --font-mono:    'Fira Code', monospace;
   }
@@ -57,23 +57,23 @@
     padding-bottom: 1.5rem;
   }
   .header-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.65rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: #ffffff;
     margin-bottom: 0.5rem;
   }
   .header h1 {
     font-size: clamp(1.5rem, 3vw, 2.2rem);
-    font-weight: 700;
+    font-weight: 400;
     color: var(--accent);
     letter-spacing: -0.02em;
     line-height: 1.2;
   }
   .header p {
     margin-top: 0.6rem;
-    color: var(--text-dim);
+    color: #ffffff;
     max-width: 620px;
     font-size: 0.9rem;
   }
@@ -96,7 +96,7 @@
   }
   .setup-card-label {
     font-size: 0.65rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-bottom: 0.75rem;
@@ -114,7 +114,7 @@
   }
   .setup-row:last-child { border-bottom: none; }
   .setup-row .key { color: var(--text-dim); }
-  .setup-row .val { font-weight: 600; font-family: var(--font-mono); }
+  .setup-row .val { font-weight: 600; font-family: var(--font-body); }
   .setup-card.high .setup-row .val { color: var(--high-color); }
   .setup-card.low  .setup-row .val { color: var(--low-color); }
 
@@ -123,7 +123,7 @@
     max-width: 900px;
     margin: 0 auto 1rem;
     font-size: 0.7rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-dim);
@@ -147,7 +147,7 @@
   .timeline-col-header {
     padding: 0.75rem 1.25rem;
     font-size: 0.68rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-weight: 600;
@@ -172,7 +172,7 @@
   .quarter:last-child { border-bottom: none; }
   .quarter-label {
     font-size: 0.65rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.1em;
     color: var(--text-dim);
     margin-bottom: 0.65rem;
@@ -184,11 +184,11 @@
   .bar-row { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
   .bar-label {
     font-size: 0.6rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-dim);
-    width: 60px;
+    width: 70px;
     flex-shrink: 0;
   }
   .bar-track {
@@ -209,7 +209,7 @@
   .bar-fill.equity     { background: var(--equity); }
   .bar-value {
     font-size: 0.68rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-dim);
     width: 52px;
     text-align: right;
@@ -225,7 +225,7 @@
   }
   .ltv-badge {
     font-size: 0.68rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     padding: 0.15rem 0.5rem;
     border-radius: 4px;
     font-weight: 600;
@@ -234,7 +234,7 @@
   .timeline-col.low  .ltv-badge { background: var(--low-dim);  color: var(--low-color); }
   .delta-tag {
     font-size: 0.6rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-dim);
   }
 
@@ -256,7 +256,7 @@
   .callout.low  { border-left: 3px solid var(--low-color); }
   .callout-title {
     font-size: 0.65rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-bottom: 0.8rem;
@@ -292,7 +292,7 @@
   }
   .summary-title {
     font-size: 0.65rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent);
@@ -313,7 +313,7 @@
   }
   .summary-cell .sc-label {
     font-size: 0.6rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-dim);
@@ -323,13 +323,13 @@
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--high-color);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
   }
   .summary-cell .sc-low {
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--low-color);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
   }
   .summary-cell .sc-sub {
     font-size: 0.65rem;
@@ -346,7 +346,7 @@
     flex-wrap: wrap;
     font-size: 0.72rem;
     color: var(--text-dim);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     padding-left: 0.25rem;
   }
   .legend-item { display: flex; align-items: center; gap: 0.4rem; }
@@ -358,7 +358,7 @@
     margin: 1.5rem auto 0;
     font-size: 0.72rem;
     color: var(--text-dim);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     border-top: 1px solid var(--border);
     padding-top: 1rem;
   }

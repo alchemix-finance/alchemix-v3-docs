@@ -5,6 +5,7 @@ title: Self-Repaying Loans
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
+import StatStrip from "@site/src/components/StatStrip";
 
 <!-- TODO -->
 
@@ -30,9 +31,9 @@ While Alchemix loans repay themselves over time via yield, you are never locked 
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -48,21 +49,21 @@ flowchart LR
     C e1@--> E{{Loan balance decreases}}
     D e2@--> E
 
-    style E fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2,3,4 stroke:#c8a07a,stroke-width:2px
+    style E fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3,4 stroke:#f5c09a,stroke-width:2px
     e1@{ animation: slow }
     e2@{ animation: slow }
 ```
 
-| Parameter           | Value or behaviour                                                                                                                                                |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Collateral          | ETH → alETH, USDC → alUSD                                                                                                                                         |
-| Maximum LTV         | 90%                                                                                                                                                               |
-| Interest rate       | 0% (balance declines, never compounding)                                                                                                                          |
-| Repayment sources   | MYT yield, scheduled transmuter redemptions, manual repayments                                                                                                    |
-| Early repayment     | Send alAssets back at any time                                                                                                                                    |
-| Position NFT        | Your position is represented by an NFT available in your wallet after the transaction confirms                                                                    |
-| Liquidation         | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](./liquidations.md) |
+<StatStrip items={[
+  { label: "Collateral",        value: "ETH → alETH, USDC → alUSD" },
+  { label: "Maximum LTV",       value: "90%" },
+  { label: "Interest rate",     value: "0% (balance declines, never compounding)" },
+  { label: "Repayment sources", value: "MYT yield, scheduled transmuter redemptions, manual repayments" },
+  { label: "Early repayment",   value: "Send alAssets back at any time" },
+  { label: "Position NFT",      value: "Your position is represented by an NFT available in your wallet after the transaction confirms" },
+  { label: "Liquidation",       value: "Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more" },
+]} />
 
 ### What can self-repaying loans be used for?
 

@@ -24,9 +24,9 @@ When vault yield and redemption terms look attractive, borrowing spikes. Newly m
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -37,9 +37,9 @@ flowchart LR
     classDef default font-weight:bold;
     A(Borrow) e1@--> B(Mint alAsset) e2@--> C(Sell alAsset) e3@--> D{{Price < 1.00}}
     D e4@-.->|contraction corrects| A
-    style D fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2 stroke:#c8a07a,stroke-width:2px
-    linkStyle 3 stroke:#c8a07a,stroke-width:1.5px,stroke-dasharray:6
+    style D fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2 stroke:#f5c09a,stroke-width:2px
+    linkStyle 3 stroke:#f5c09a,stroke-width:1.5px,stroke-dasharray:6
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }
@@ -56,9 +56,9 @@ A wider discount plus a fixed-term Transmuter deposit produces a bond-like APR. 
   'themeVariables': {
     'fontFamily': 'Montserrat',
     'primaryColor': '#141618',
-    'primaryBorderColor': '#4a3828',
-    'primaryTextColor': '#e8ddd4',
-    'lineColor': '#c8a07a',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
     'edgeLabelBackground': '#0d0e10',
     'tertiaryColor': '#141618',
     'fontSize': '18px'
@@ -69,9 +69,9 @@ flowchart LR
     classDef default font-weight:bold;
     A(Buy alAsset at discount) e1@--> B(Deposit to Transmuter) e2@--> C(alAssets burned) e3@--> D{{Price recovers to 1.00}}
     D e4@-.->|expansion resumes| A
-    style D fill:#f5c09a,stroke:#4a3828,stroke-width:2px,color:#1b1b1d
-    linkStyle 0,1,2 stroke:#c8a07a,stroke-width:2px
-    linkStyle 3 stroke:#c8a07a,stroke-width:1.5px,stroke-dasharray:6
+    style D fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2 stroke:#f5c09a,stroke-width:2px
+    linkStyle 3 stroke:#f5c09a,stroke-width:1.5px,stroke-dasharray:6
     e1@{ animation: slow }
     e2@{ animation: slow }
     e3@{ animation: fast }

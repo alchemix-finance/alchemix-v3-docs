@@ -16,8 +16,8 @@
     --surface-3:  #1f2226;
     --border:     rgba(245,192,154,0.10);
     --border-mid: rgba(245,192,154,0.20);
-    --text:       #e8ddd4;
-    --text-dim:   #9a8878;
+    --text:       #e8e8ea;
+    --text-dim:   #8a8f99;
     --accent:     #f5c09a;
     --accent-dim: rgba(245,192,154,0.10);
     --warn:       #e0a050;
@@ -56,23 +56,23 @@
     padding-bottom: 1.25rem;
   }
   .page-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.62rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: #ffffff;
     margin-bottom: 0.4rem;
   }
   .page-header h1 {
     font-size: clamp(1.4rem, 3vw, 2rem);
-    font-weight: 700;
+    font-weight: 400;
     color: var(--accent);
     letter-spacing: -0.02em;
     line-height: 1.2;
   }
   .page-header p {
     margin-top: 0.5rem;
-    color: var(--text-dim);
+    color: #ffffff;
     font-size: 0.88rem;
     max-width: 580px;
   }
@@ -83,7 +83,7 @@
     margin: 0 auto 2.5rem;
   }
   .section-title {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.65rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -122,7 +122,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.6rem;
     font-weight: 700;
     color: var(--accent);
@@ -146,7 +146,7 @@
     color: var(--accent);
   }
   .timeline-step-tag {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.6rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -180,7 +180,7 @@
   }
   .mana-tier-label {
     font-size: 0.62rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
@@ -191,7 +191,7 @@
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--text);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     margin-bottom: 0.5rem;
   }
   .mana-detail {
@@ -216,7 +216,7 @@
   }
   .mana-meta-label {
     font-size: 0.6rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-dim);
@@ -226,7 +226,7 @@
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--accent);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
   }
   .mana-meta-sub {
     font-size: 0.7rem;
@@ -246,7 +246,7 @@
   }
   .vesting-track-label {
     font-size: 0.65rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-dim);
@@ -270,7 +270,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.6rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-dim);
     margin-top: 0.3rem;
     padding: 0 0.1rem;
@@ -289,7 +289,7 @@
   }
   .milestone-month {
     font-size: 0.6rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-dim);
     margin-bottom: 0.2rem;
     letter-spacing: 0.08em;
@@ -297,7 +297,7 @@
   .milestone-pct {
     font-size: 0.88rem;
     font-weight: 700;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--accent);
   }
   .milestone:last-child .milestone-pct { color: var(--green); }
@@ -317,7 +317,7 @@
   .vesting-callout.warn { border-left: 3px solid var(--red); }
   .vcl {
     font-size: 0.62rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 600;
