@@ -5,7 +5,6 @@ title: Self-Repaying Loans
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
-import StatStrip from "@site/src/components/StatStrip";
 
 <!-- TODO -->
 
@@ -55,15 +54,15 @@ flowchart LR
     e2@{ animation: slow }
 ```
 
-<StatStrip items={[
-  { label: "Collateral",        value: "ETH → alETH, USDC → alUSD" },
-  { label: "Maximum LTV",       value: "90%" },
-  { label: "Interest rate",     value: "0% (balance declines, never compounding)" },
-  { label: "Repayment sources", value: "MYT yield, scheduled transmuter redemptions, manual repayments" },
-  { label: "Early repayment",   value: "Send alAssets back at any time" },
-  { label: "Position NFT",      value: "Your position is represented by an NFT available in your wallet after the transaction confirms" },
-  { label: "Liquidation",       value: "Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more" },
-]} />
+| | |
+| --- | --- |
+| **Collateral** | ETH → alETH, USDC → alUSD |
+| **Maximum LTV** | 90% |
+| **Interest rate** | 0% (balance declines, never compounding) |
+| **Repayment sources** | MYT yield, scheduled transmuter redemptions, manual repayments |
+| **Early repayment** | Send alAssets back at any time |
+| **Position NFT** | Your position is represented by an NFT available in your wallet after the transaction confirms |
+| **Liquidation** | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more |
 
 ### What can self-repaying loans be used for?
 

@@ -333,6 +333,12 @@ a {
   border-left-color: #f5c09a;
 }
 
+/* Prevent type-specific colour bleed-through on admonition headings */
+.alert--success  { --ifm-color-success: #f5c09a; }
+.alert--info     { --ifm-color-info:    #f5c09a; }
+.alert--warning  { --ifm-color-warning: #f5c09a; }
+.alert--danger   { --ifm-color-danger:  #f5c09a; }
+
 .admonition .admonition-icon svg {
   fill: #f5c09a;
   stroke: none;
