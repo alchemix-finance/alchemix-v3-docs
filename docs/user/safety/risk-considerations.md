@@ -5,7 +5,6 @@ title: Risk Considerations
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
-import VisualizerFrame from "@site/src/components/VisualizerFrame";
 
 <PageBanner title="Risk Considerations" />
 
@@ -87,30 +86,31 @@ All core Alchemix V3 contracts have been audited by top-tier security firms, and
 
 #### The Alchemix Bridge
 
-<VisualizerFrame url="/diagrams/bridge-architecture.html" title="Bridge Architecture" />
+**DVN coverage by chain**
 
-The Alchemix Bridge is a custom implementation of the LayerZero OFT standard for cross-chain messaging. The system relies on DVNs, which are essentially 3rd party messaging services. For any bridge transaction to complete through the Alchemix Bridge, at least 2 of the 3 whitelisted DVNs must attest to the validity of the transaction. The DVNs currently in use are:
+| Chain | LayerZero | Wormhole | Bware | Nethermind | Active DVNs |
+| --- | --- | --- | --- | --- | --- |
+| **Optimism** | ✓ | ✓ | ✓ | — | LayerZero, Wormhole, Bware |
+| **Arbitrum** | ✓ | ✓ | ✓ | — | LayerZero, Wormhole, Bware |
+| **Linea** | ✓ | — | ✓ | ✓ | LayerZero, Bware, Nethermind |
+| **Metis** | ✓ | — | ✓ | ✓ | LayerZero, Bware, Nethermind |
 
-- **LayerZero** (All Chains)
-- **Wormhole** (All chains except Metis and Linea)
-- **Bware** (All chains)
-- **Nethermind** (Metis and Linea only)
+**Security properties**
 
-Currently, alUSD, alETH, and ALCX are bridgeable through the Alchemix bridge. Each combination of asset/chain has a rate limit of maximum assets that can be bridged in or out of the chain in a 24h period.
+- **2-of-3 DVN multisig** — No single messaging provider can approve a bridge transaction unilaterally. An attacker must compromise at least 2 independent DVNs simultaneously to forge a message.
+- **DAO-controlled DVN list** — AlchemixDAO owns all bridge contracts and can swap out DVNs without taking the system offline. Compromised or misbehaving validators can be replaced via governance.
+- **Ethereum supply ceiling** — The circulating supply on Ethereum is capped at what was minted there. L2 bridges cannot inflate the token supply; bridged supply can never exceed the Ethereum-side ceiling.
+- **Rate limits & bridge capacity** — Each asset/chain pair has a 24-hour rate limit. If Mainnet inbound capacity is saturated, alAssets may become stranded on L2 and trade at a discount. Verify capacity before large cross-chain positions.
 
-In this system, Ethereum assets are unique in that in addition to bridge limits in/out, the amount of any asset existing on Ethereum cannot exceed the amount of that asset that was minted on Ethereum by the Alchemix protocol. Put another way, the assets bridged into Ethereum cannot exceed the assets bridged out of Ethereum.
+**Bridgeable assets**
 
-The AlchemixDAO owns the bridge contracts and thus has the ability to set the DVNs and rate limits on each chain. This approach means that no single messaging provider can compromise the system, and the DAO can swap out DVNs as needed if there are any issues without the system going offline.
+| Asset | Minting chains | Notes |
+| --- | --- | --- |
+| **ALCX** | Ethereum only | Minted exclusively on Mainnet; L2 supply is purely bridge-derived |
+| **alUSD** | All chains | Can be minted or burned (Alchemist/Transmuter) on each chain |
+| **alETH** | All chains | Can be minted or burned (Alchemist/Transmuter) on each chain |
 
-More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
-
-#### ALCX token and alAssets
-
-The ALCX token can only be minted on Mainnet, thus it entirely follows the system outlined above.
-
-alAssets (alETH and alUSD) can be minted by the Alchemist on each chain and burned by both the Alchemist and Transmuter (repaying debt and redeeming alAssets). Thus, any alAsset on any chain can be bridged to any other chain in order to repay debt or use the transmuter, within the limitations described in [The Alchemix Bridge](risk-considerations#the-alchemix-bridge).
-
-This also means that while alAssets can always be bridged from any chain to any L2 chain, the amount bridgeable back to Mainnet is constrained by rate limits. This system helps create more unified liquidity on L2 chains while ensuring that the primary Mainnet Alchemix deployment is insulated from any security incidents that occur on L2 chains.
+The Alchemix Bridge is a custom implementation of the LayerZero OFT standard for cross-chain messaging. Any alAsset can be bridged to any chain to repay debt or use the Transmuter, subject to the rate limits above. More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
 
 :::warning Bridging alAssets back to Mainnet is not guaranteed
 Bridge capacity back to Mainnet is rate-limited. If that capacity is saturated, alAssets may become stranded on L2 and trade at a discount relative to Mainnet prices. Verify available bridge capacity before building a large cross-chain position.

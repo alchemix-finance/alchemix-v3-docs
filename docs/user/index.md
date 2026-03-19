@@ -34,6 +34,8 @@ Alchemix started with the self-repaying loan in 2021. V3 builds on that with thr
 
 [Explore the Quick Start guide →](./quick-start.md)
 
+<br />
+
 ### 1. Save and grow
 
 Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen and rebalanced by the Alchemix DAO.
@@ -45,6 +47,8 @@ Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT rep
 ]} />
 
 [Learn more about Vaults and MYT →](./concepts/myt-and-yield.md)
+
+<br />
 
 ### 2. Borrow up to 90% LTV
 
@@ -59,6 +63,7 @@ Mint alETH or alUSD against your deposit and use it however you like: large purc
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
 
+<br />
 
 ### 3. Earn fixed-rate yield
 
@@ -71,6 +76,8 @@ Buy alETH or alUSD below face value, deposit into the Transmuter, and receive th
 ]} />
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
+
+<br />
 
 ### Next steps
 
