@@ -12,72 +12,69 @@ import FeatureCards from '@site/src/components/FeatureCards';
 
 <PageBanner title="Alchemix V3" />
 
-Alchemix started with the self-repaying loan in 2021. V3 builds on that with three products: a yield vault, a borrowing system, and a fixed-rate redemption market. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
+Alchemix is your unified platform for saving, borrowing, and earning fixed-term fixed-yield opportunities all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
 
 <FeatureCards items={[
-  {
-    title: "Save and grow",
-    body: "Deposit ETH or USDC and earn yield across a mix of strategies chosen and rebalanced by the DAO. No lock-ups, withdraw at any time.",
-    href: "./concepts/myt-and-yield",
-  },
-  {
-    title: "Borrow up to 90% LTV",
-    body: "Borrow against your deposit while it keeps earning yield. Scheduled redemptions chip away at your debt over time. No interest, no price-based liquidations.",
-    href: "./concepts/self-repaying-loans",
-  },
-  {
-    title: "Earn fixed-rate yield",
-    body: "Deposit alETH or alUSD into the Transmuter and redeem the underlying asset after a fixed term. The rate is locked when you deposit.",
-    href: "./concepts/transmuter",
-  },
+{
+title: "Earn Competitive Risk-Adjusted Yield",
+body: "Deposit ETH or USDC and earn yield across a mix of strategies chosen and rebalanced by the DAO. No lock-ups, withdraw at any time.",
+href: "./concepts/myt-and-yield",
+},
+{
+title: "Borrow up to 90%, Interest Free",
+body: "Borrow against your deposit while it keeps earning yield. Scheduled redemptions chip away at your debt over time. No interest, no price-based liquidations.",
+href: "./concepts/self-repaying-loans",
+},
+{
+title: "Unlock Fixed Yield Opportunities",
+body: "Deposit alETH or alUSD into the Transmuter and redeem the underlying asset after a fixed term. The rate is locked when you deposit.",
+href: "./concepts/transmuter",
+},
 ]} />
 
 [Explore the Quick Start guide →](./quick-start.md)
 
 <br />
 
-### 1. Save and grow
+### 1. Grow savings with vaults
 
-Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen and rebalanced by the Alchemix DAO.
+Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by the Alchemix DAO and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
 
 <StatStrip items={[
-  { label: "Management",  value: "DAO-selected and rebalanced, no active management needed" },
-  { label: "Chains",      value: "One ETH and one USDC vault on every supported chain" },
-  { label: "Lock-up",     value: "None, withdraw at any time" },
+{ label: "Asset types", value: "ETH, USDC" },
+{ label: "Strategy", value: "Diversified, tuned for risk-adjusted returns" },
+{ label: "Lock-up", value: "None, withdraw at any time" },
 ]} />
 
 [Learn more about Vaults and MYT →](./concepts/myt-and-yield.md)
 
 <br />
 
-### 2. Borrow up to 90% LTV
+### 2. Access credit with self-repaying loans
 
-Mint alETH or alUSD against your deposit and use it however you like: large purchases, yield looping, liquidity provision. Vault yield and scheduled redemptions chip away at the balance over time. The debt repays itself.
+Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthetic counterpart of your deposit and let your future yield repay the balance.
 
 <StatStrip items={[
-  { label: "Interest rate",   value: "0%, the balance only ever goes down" },
-  { label: "Maximum LTV",     value: "90% of collateral" },
-  { label: "Liquidations",    value: "Strategy loss only, not price swings" },
-  { label: "Early repayment", value: "Optional at any time" },
+{ label: "Borrowable asset", value: "alETH or alUSD" },
+{ label: "Maximum LTV", value: "90% of collateral" },
+{ label: "Liquidations", value: "Strategy loss only, not price swings" },
+{ label: "Early repayment", value: "Optional at any time" },
 ]} />
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
-
 <br />
 
-### 3. Earn fixed-rate yield
+### 3. Lock in fixed returns with the Transmuter
 
-Buy alETH or alUSD below face value, deposit into the Transmuter, and receive the full underlying asset at maturity. If alUSD trades at 0.98 USDC with a three-month term, the annualized return is roughly 8%. No rate risk, no price-based liquidations.
+Deposit alETH or alUSD and, after a fixed term, redeem an equivalent amount of the underlying asset. The rate is locked at deposit. If alUSD trades at 0.98 USDC with a three-month term, the annualized return is roughly 8%.
 
 <StatStrip items={[
-  { label: "Deposit asset",   value: "alETH or alUSD" },
-  { label: "Returns",         value: "Fixed rate, locked at time of deposit" },
-  { label: "Exchange rate",   value: "1:1 guaranteed at maturity, no slippage" },
+{ label: "Deposit asset", value: "alETH or alUSD" },
+{ label: "Returns", value: "Fixed rate, locked at time of deposit" },
+{ label: "Peg stability", value: "Arbitrage keeps alAssets near parity" },
 ]} />
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
-
-<br />
 
 ### Next steps
 
