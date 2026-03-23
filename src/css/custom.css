@@ -322,6 +322,7 @@ a {
   --ifm-alert-background-color: rgba(245, 192, 154, 0.06);
   --ifm-alert-border-color: #f5c09a;
   --ifm-alert-color: inherit;
+  --ifm-alert-foreground-color: inherit;
 }
 
 [data-theme="dark"] .alert--secondary,
@@ -334,13 +335,14 @@ a {
 }
 
 /* Prevent type-specific colour bleed-through on admonition headings */
-.alert--success  { --ifm-color-success: #f5c09a; }
-.alert--info     { --ifm-color-info:    #f5c09a; }
-.alert--warning  { --ifm-color-warning: #f5c09a; }
-.alert--danger   { --ifm-color-danger:  #f5c09a; }
+.alert--secondary { --ifm-color-secondary: #f5c09a; }
+.alert--success   { --ifm-color-success:   #f5c09a; }
+.alert--info      { --ifm-color-info:      #f5c09a; }
+.alert--warning   { --ifm-color-warning:   #f5c09a; }
+.alert--danger    { --ifm-color-danger:    #f5c09a; }
 
-.admonition .admonition-icon svg {
-  fill: #f5c09a;
+.theme-admonition svg {
+  fill: #f5c09a !important;
   stroke: none;
 }
 
