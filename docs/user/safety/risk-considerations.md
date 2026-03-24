@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 hide_title: true
 title: Risk Considerations
 ---

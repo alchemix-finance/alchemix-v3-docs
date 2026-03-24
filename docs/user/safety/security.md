@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
 hide_title: true
 title: Security & Audits
 ---
@@ -56,7 +56,6 @@ To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 utilizes
 <!-- TODO date -->
 - **Guardian Role:** A dedicated Guardian address can pause deposits and loans in an emergency but **cannot** unpause them or access funds, serving as a circuit breaker during volatility.
 
----
 
 ### Learn more
 

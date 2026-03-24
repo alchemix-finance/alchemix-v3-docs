@@ -279,6 +279,15 @@ h4 {
   font-weight: 700;
 }
 
+/* Universal breathing room between doc sections */
+.markdown h2 {
+  margin-top: 3.5rem;
+}
+
+.markdown h3 {
+  margin-top: 3rem;
+}
+
 /* ─── Buttons ─────────────────────────────────────────── */
 [data-theme="dark"] .button--primary {
   background-color: transparent;
@@ -322,7 +331,7 @@ a {
   --ifm-alert-background-color: rgba(245, 192, 154, 0.06);
   --ifm-alert-border-color: #f5c09a;
   --ifm-alert-color: inherit;
-  --ifm-alert-foreground-color: inherit;
+  --ifm-alert-foreground-color: #e8e8ea;
 }
 
 [data-theme="dark"] .alert--secondary,

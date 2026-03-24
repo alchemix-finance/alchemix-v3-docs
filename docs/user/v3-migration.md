@@ -4,7 +4,7 @@ title: V3 Migration
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
-import VisualizerFrame from "@site/src/components/VisualizerFrame";
+import MigrationOverview from "@site/src/components/MigrationOverview";
 
 <PageBanner title="V3 Migration" />
 
@@ -14,7 +14,7 @@ The V2 to V3 migration originally planned for February 6th, 2026 has been delaye
 
 Alchemix V3 runs on a different architecture than V2. The migration moves all existing positions into the new system, consolidating liquidity, activating the 90% LTV framework, and launching the Mix-Yield Token (MYT).
 
-<VisualizerFrame url="/diagrams/migration.html" title="V3 Migration Overview" />
+<MigrationOverview />
 
 ### The great V2 to V3 migration
 
@@ -41,7 +41,6 @@ The migration is conducted via a coordinated protocol upgrade (governance-approv
 **For most users, no action is required.** If you wish to migrate to V3, simply maintain your existing V2 deposits. If you prefer not to participate in the automated migration, you must wind down your positions and withdraw assets prior to **February 6th, 2026**.
 :::
 
----
 
 ### The migration Mana program
 
@@ -71,7 +70,6 @@ To ensure long-term alignment, rALCX follows a six-month linear vesting schedule
 - **Full Term:** After 6 months, 100% of rewards can be claimed as ALCX with no penalty.
 - **Early Exit:** Users may claim their currently vested balance at any time, but doing so **forfeits all remaining unvested rewards.**
 
----
 
 ### Eligible strategies & pools
 
@@ -152,7 +150,6 @@ To ensure long-term alignment, rALCX follows a six-month linear vesting schedule
 - Velodrome CL alETH-alUSD 0x844BdA8C554D3F14C2C068314b294A5b0Ed2E0dF
 - Ramses CL alETH-alUSD 0xb69d60d0690733c0cc4db1c1aedeeaa308f30328
 
----
 
 ### Learn more
 
