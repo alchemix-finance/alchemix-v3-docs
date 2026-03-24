@@ -5,8 +5,6 @@ title: Introduction
 
 import AlchemixStat from "@site/src/components/AlchemixStat";
 import PageBanner from "@site/src/components/PageBanner";
-import DocCardList from '@theme/DocCardList';
-import VisualizerFrame from '@site/src/components/VisualizerFrame';
 import StatStrip from '@site/src/components/StatStrip';
 import FeatureCards from '@site/src/components/FeatureCards';
 
@@ -34,7 +32,6 @@ href: "./concepts/transmuter",
 
 [Explore the Quick Start guide →](./quick-start.md)
 
-<br />
 
 ### 1. Grow savings with vaults
 
@@ -48,7 +45,6 @@ Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT rep
 
 [Learn more about Vaults and MYT →](./concepts/myt-and-yield.md)
 
-<br />
 
 ### 2. Access credit with self-repaying loans
 
@@ -62,7 +58,6 @@ Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthet
 ]} />
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
-<br />
 
 ### 3. Lock in fixed returns with the Transmuter
 
@@ -76,7 +71,6 @@ Deposit alETH or alUSD and, after a fixed term, redeem an equivalent amount of t
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
 
-<br />
 
 ### Next steps
 

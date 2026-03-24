@@ -5,7 +5,7 @@ title: alAssets
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
-import VisualizerFrame from "@site/src/components/VisualizerFrame";
+import LtvSensitivity from "@site/src/components/LtvSensitivity";
 
 <!-- TODO -->
 
@@ -68,7 +68,7 @@ Inside Alchemix, high LTV positions erode more collateral per redemption cycle t
 
 The visualizer below shows only the internal Alchemix view. Returns on capital deployed outside the protocol are not included, and those returns are often the primary reason to borrow at higher leverage.
 
-<VisualizerFrame url="/diagrams/ltv-sensitivity.html" title="LTV Sensitivity" />
+<LtvSensitivity />
 
 ### Learn more
 

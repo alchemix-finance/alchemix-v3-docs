@@ -4,8 +4,8 @@ title: Quick Start
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
-import VisualizerFrame from "@site/src/components/VisualizerFrame";
 import FramedImage from "@site/src/components/FramedImage";
+import PositionTimeline from "@site/src/components/PositionTimeline";
 
 <PageBanner title="Quick Start" />
 
@@ -52,7 +52,7 @@ If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in
 
 The timeline below shows how this plays out in practice. At a modest 20% LTV, vault yield consistently outpaces the collateral drawn out by each redemption cycle, so your collateral base grows while your debt quietly disappears. No repayments, no interest, no action required.
 
-<VisualizerFrame url="/diagrams/position-timeline.html" title="Position Timeline" />
+<PositionTimeline />
 
 ### Next steps
 

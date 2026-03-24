@@ -1,0 +1,416 @@
+/* ── Container ──────────────────────────────────────────── */
+.wrap {
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 8px;
+  background-color: #141618;
+  overflow: hidden;
+  margin: 1.25rem 0;
+  padding: 1.5rem 1.25rem 1.25rem;
+}
+
+/* ── Assumptions ─────────────────────────────────────────── */
+.assumptions {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.20);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.assumptionsMain {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.10);
+}
+
+.assumption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.assumptionLabel {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.assumptionVal {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.illustrativeNote {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #8a8f99;
+  text-align: right;
+}
+
+.assumptionsFooter {
+  padding: 0.6rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.contextItem {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ffffff;
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.contextItem strong {
+  font-weight: 600;
+}
+
+.separator {
+  color: rgba(245, 192, 154, 0.20);
+}
+
+/* ── Section title ───────────────────────────────────────── */
+.sectionTitle {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.9rem;
+}
+
+/* ── Timeline ────────────────────────────────────────────── */
+.timelineOuter {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timelineSpine {
+  position: absolute;
+  left: 19px;
+  top: 28px;
+  bottom: 28px;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    #f5c09a 0%,
+    rgba(245, 192, 154, 0.3) 70%,
+    rgba(245, 192, 154, 0.08) 100%
+  );
+}
+
+.timelineRow {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.timelineRow:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Node ────────────────────────────────────────────────── */
+.timelineNode {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1a1c1f;
+  border: 2px solid #f5c09a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  position: relative;
+}
+
+.nodeLabel {
+  font-size: 0.52rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  line-height: 1;
+}
+
+.nodeVal {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #f5c09a;
+  line-height: 1.2;
+}
+
+.final {
+  border-color: #4ade80;
+  background: #111e18;
+}
+
+.final .nodeVal {
+  color: #4ade80;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.timelineCard {
+  flex: 1;
+  min-width: 0;
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.20);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tcHeader {
+  padding: 0.75rem 1.15rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.10);
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.tcTitle {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #f5c09a;
+}
+
+.tcEvent {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #8a8f99;
+  background: #1a1c1f;
+  border: 1px solid rgba(245, 192, 154, 0.10);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+}
+
+/* ── Bars ────────────────────────────────────────────────── */
+.tcBars {
+  padding: 0.9rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.46rem;
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.barLbl {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  width: 72px;
+  flex-shrink: 0;
+}
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.col {
+  background: #4ade80;
+}
+
+.dbt {
+  background: #dc6060;
+}
+
+.eqt {
+  background: #60a5fa;
+}
+
+.barVal {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8a8f99;
+  width: 54px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Card footer ─────────────────────────────────────────── */
+.tcFooter {
+  padding: 0.55rem 1.15rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(245, 192, 154, 0.10);
+}
+
+.ltvBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(245, 192, 154, 0.08);
+  color: #f5c09a;
+}
+
+.ltvLow {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+}
+
+.tcNote {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #8a8f99;
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.tcNote strong {
+  color: #e8e8ea;
+  font-weight: 600;
+}
+
+/* ── Summary row ─────────────────────────────────────────── */
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(245, 192, 154, 0.10);
+  border: 1px solid rgba(245, 192, 154, 0.20);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.sumCell {
+  background: #141618;
+  padding: 1rem 1.15rem;
+  min-width: 0;
+}
+
+.sumLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.3rem;
+}
+
+.sumVal {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f5c09a;
+}
+
+.sumSub {
+  font-size: 0.73rem;
+  font-weight: 500;
+  color: #8a8f99;
+  margin-top: 0.15rem;
+}
+
+/* ── Takeaway ────────────────────────────────────────────── */
+.takeaway {
+  background: rgba(245, 192, 154, 0.06);
+  border: 1px solid rgba(245, 192, 154, 0.20);
+  border-left: 3px solid #f5c09a;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.takeawayLabel {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f5c09a;
+  margin-bottom: 0.4rem;
+}
+
+.takeaway p {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #8a8f99;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+  margin: 0;
+}
+
+.takeaway p strong {
+  color: #e8e8ea;
+  font-weight: 600;
+}
+
+/* ── Legend ───────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #8a8f99;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(245, 192, 154, 0.10);
+  align-items: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legendNote {
+  margin-left: auto;
+  font-size: 0.65rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .summaryRow {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineSpine {
+    display: none;
+  }
+
+  .illustrativeNote {
+    display: none;
+  }
+}

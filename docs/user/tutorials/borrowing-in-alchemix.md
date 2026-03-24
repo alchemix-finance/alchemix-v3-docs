@@ -14,7 +14,7 @@ import FramedImage from "@site/src/components/FramedImage";
 After converting ETH or USDC into the Mix-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral's face value.
 
 :::tip You are in control
-While Alchemix loans repay themselves over time via yield, you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
+You can manually repay part or all of your debt at any time to unlock your collateral. [Learn more about self-repaying loans →](../concepts/self-repaying-loans.md)
 :::
 
 ### How borrowing works

@@ -1,0 +1,357 @@
+/* ── Container ──────────────────────────────────────────── */
+.wrap {
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 8px;
+  background-color: #141618;
+  overflow: hidden;
+  margin: 1.25rem 0;
+  padding: 1.5rem 1.25rem 1.25rem;
+}
+
+/* ── Color variants ──────────────────────────────────────── */
+.high { --vc: #d4952a; --vc-dim: rgba(212, 149, 42, 0.12); }
+.low  { --vc: #5ba88a; --vc-dim: rgba(91, 168, 138, 0.12); }
+
+/* ── Section title ───────────────────────────────────────── */
+.sectionTitle {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.9rem;
+}
+
+/* ── Setup cards ─────────────────────────────────────────── */
+.setupGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(245, 192, 154, 0.12);
+  border: 1px solid rgba(245, 192, 154, 0.22);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.setupCard {
+  background: #141618;
+  padding: 1.25rem 1.5rem;
+}
+
+.setupCardLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--vc);
+}
+
+.setupRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.12);
+  font-size: 0.85rem;
+}
+
+.setupRow:last-child {
+  border-bottom: none;
+}
+
+.setupKey {
+  color: #8a8f99;
+}
+
+.setupVal {
+  font-weight: 600;
+  color: var(--vc);
+}
+
+/* ── Timeline columns ────────────────────────────────────── */
+.timelineWrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.timelineCol {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.22);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.timelineColHeader {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.22);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--vc);
+  background: var(--vc-dim);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--vc);
+}
+
+/* ── Quarter rows ────────────────────────────────────────── */
+.quarter {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.12);
+}
+
+.quarter:last-child {
+  border-bottom: none;
+}
+
+.quarterLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #8a8f99;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+}
+
+/* ── Bar charts ──────────────────────────────────────────── */
+.barGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.barLabel {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.col {
+  background: #4ade80;
+}
+
+.dbt {
+  background: #dc6060;
+}
+
+.eqt {
+  background: #60a5fa;
+}
+
+.barValue {
+  font-size: 0.68rem;
+  color: #8a8f99;
+  width: 52px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Quarter footer ──────────────────────────────────────── */
+.quarterFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.7rem;
+}
+
+.ltvBadge {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  background: var(--vc-dim);
+  color: var(--vc);
+}
+
+.deltaTag {
+  font-size: 0.6rem;
+  color: #8a8f99;
+}
+
+/* ── Callout boxes ───────────────────────────────────────── */
+.calloutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.callout {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.22);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  border-left: 3px solid var(--vc);
+}
+
+.calloutTitle {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  color: var(--vc);
+}
+
+.callout ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.callout ul li {
+  padding: 0.35rem 0 0.35rem 1rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.12);
+  font-size: 0.83rem;
+  color: #e8e8ea;
+  position: relative;
+}
+
+.callout ul li:last-child {
+  border-bottom: none;
+}
+
+.callout ul li::before {
+  content: "\2192";
+  position: absolute;
+  left: 0;
+  color: #8a8f99;
+  font-size: 0.75rem;
+}
+
+/* ── Summary ─────────────────────────────────────────────── */
+.summary {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.22);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.summaryTitle {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f5c09a;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(245, 192, 154, 0.12);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.summaryCell {
+  background: #1a1c1f;
+  padding: 0.9rem 1rem;
+}
+
+.scLabel {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.35rem;
+}
+
+.scHigh {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #d4952a;
+}
+
+.scLow {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #5ba88a;
+}
+
+.scSub {
+  font-size: 0.65rem;
+  color: #8a8f99;
+  margin-top: 0.15rem;
+}
+
+/* ── Legend ───────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.72rem;
+  color: #8a8f99;
+  align-items: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Assumptions ─────────────────────────────────────────── */
+.assumptions {
+  font-size: 0.72rem;
+  color: #8a8f99;
+  border-top: 1px solid rgba(245, 192, 154, 0.10);
+  padding-top: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .setupGrid,
+  .timelineWrap,
+  .calloutGrid,
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
