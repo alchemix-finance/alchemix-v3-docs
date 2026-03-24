@@ -4,19 +4,19 @@
 .banner {
   --cx:  1.8%;   /* horizontal inset from banner edge to corner dot  */
   --cy:  11.6%;  /* = --cx × (1920÷297) → equal pixel overhang both axes */
-  --dot: 4px;    /* corner dot diameter — even value keeps translate() on whole pixels */
-  --lc:  rgba(255, 255, 255, 0.30); /* line colour                  */
+  --dot: 3px;    /* corner dot diameter */
+  --lc:  #878787; /* line colour */
 
   position: relative;
   width: 100%;
   aspect-ratio: 1920 / 297;
-  background-color: transparent; /* page shows outside the fill box */
+  background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
-  overflow: hidden; /* clip lines at banner boundary */
+  overflow: hidden;
 }
 
 /* ── Fill — bounded exactly by corner positions ── */
@@ -26,51 +26,54 @@
   bottom: var(--cy);
   left:   var(--cx);
   right:  var(--cx);
-  background-color: #1b181d;
+  background: radial-gradient(ellipse at bottom left, #33332E, #141412);
+  opacity: 0.3;
   z-index: 0;
 }
 
-/* ── Horizontal lines — run full banner width ──
-   The section outside the fill box is the "bleed" overhang. */
+/* ── Horizontal lines ── */
 .lineH {
   position: absolute;
-  height: 2px;
-  left:  0;
-  right: 0;
+  height: 1px;
+  left:  calc(var(--cx) - 12px);
+  right: calc(var(--cx) - 12px);
   background: var(--lc);
   z-index: 1;
   pointer-events: none;
+  transform: scaleY(0.5);
 }
-.lineTop    { top:    calc(var(--cy) - 1px); }
-.lineBottom { bottom: calc(var(--cy) - 1px); }
+.lineTop    { top:    calc(var(--cy) - 0.5px); }
+.lineBottom { bottom: calc(var(--cy) - 0.5px); }
 
-/* ── Vertical lines — run full banner height ── */
+/* ── Vertical lines ── */
 .lineV {
   position: absolute;
-  width: 2px;
-  top:    0;
-  bottom: 0;
+  width: 1px;
+  top:    calc(var(--cy) - 12px);
+  bottom: calc(var(--cy) - 12px);
   background: var(--lc);
   z-index: 1;
   pointer-events: none;
+  transform: scaleX(0.5);
 }
-.lineLeft  { left:  calc(var(--cx) - 1px); }
-.lineRight { right: calc(var(--cx) - 1px); }
+.lineLeft  { left:  calc(var(--cx) - 0.5px); }
+.lineRight { right: calc(var(--cx) - 0.5px); }
 
 /* ── Corner dots — solid, centred on line intersections ── */
 .corner {
   position: absolute;
   width:  var(--dot);
   height: var(--dot);
-  background-color: #a0a0a0;
+  background-color: #888;
   border-radius: 50%;
   z-index: 2;
+  transform: translate(-50%, -50%);
 }
 
-.tl { top: calc(var(--cy) - var(--dot) / 2); left: calc(var(--cx) - var(--dot) / 2); }
-.tr { top: calc(var(--cy) - var(--dot) / 2); left: calc(100% - var(--cx) - var(--dot) / 2); }
-.bl { top: calc(100% - var(--cy) - var(--dot) / 2); left: calc(var(--cx) - var(--dot) / 2); }
-.br { top: calc(100% - var(--cy) - var(--dot) / 2); left: calc(100% - var(--cx) - var(--dot) / 2); }
+.tl { top: var(--cy); left: var(--cx); }
+.tr { top: var(--cy); left: calc(100% - var(--cx)); }
+.bl { top: calc(100% - var(--cy)); left: var(--cx); }
+.br { top: calc(100% - var(--cy)); left: calc(100% - var(--cx)); }
 
 /* ── Title ── */
 .title {

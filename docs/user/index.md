@@ -76,6 +76,8 @@ Deposit alETH or alUSD and, after a fixed term, redeem an equivalent amount of t
 
 [Learn more about the Transmuter and Redemptions →](./concepts/transmuter.md)
 
+<br />
+
 ### Next steps
 
 1. Visit [https://alchemix.fi/](https://alchemix.fi).
