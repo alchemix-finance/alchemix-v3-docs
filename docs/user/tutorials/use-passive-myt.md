@@ -1,64 +1,57 @@
 ---
 sidebar_position: 5
 hide_title: true
-title: Passive MYT Yield
+title: Mixed Yield
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
 
-<PageBanner title="Passive MYT Yield" />
+<PageBanner title="Mixed Yield" />
 
-The Mix-Yield Token turns a single deposit of ETH or USDC into an auto-compounding position. Once minted, every MYT represents a growing claim on the underlying asset. No extra clicks are required to harvest or reinvest.
+The Mixed Yield page is a dedicated space for depositing into Mix-Yield Token vaults. Each MYT pools capital across multiple yield strategies and compounds automatically, with no manual harvesting required.
 
 ### Prerequisites
 
 - Connect your wallet and switch to the chain that holds the assets you plan to deposit.
+- Confirm you have ETH for gas on that chain.
 
-* Confirm you have ETH for gas on that chain.
+### Step 1 – Open Mixed Yield
 
-### Step 1 – Open the Vaults page
+<FramedImage src="/img/use-passive-myt-01.png" alt="Mixed Yield page" />
 
-<FramedImage src="/img/use-passive-myt-01.png" alt="Vaults page" />
+Click Mixed Yield in the top navigation.
 
-From any page choose Vaults in the top navigation, or click the empty tile with a plus sign on the Dashboard.
+### Step 2 – Find your MYT
 
-### Step 2 – Select the MYT vault
+<FramedImage src="/img/use-passive-myt-02.png" alt="Mixed Yield list" />
 
-<FramedImage src="/img/use-passive-myt-02.png" alt="Select MYT vault" />
+Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click a vault card to open its detail page.
 
-Use the chain and asset filters to narrow down the list, then click on the vault card that matches your base asset.
+### Step 3 – Review strategy allocation
 
-### Step 3 – Enter a deposit amount
+The left panel shows the strategy allocation chart and APR history. Each strategy is listed with its risk level and current allocation percentage. The right panel shows overall APR, TVL, and your current deposit balance under YOUR DEPOSIT.
+
+### Step 4 – Enter a deposit amount
 
 <FramedImage src="/img/use-passive-myt-03.png" alt="Enter deposit amount" />
 
-The lower left panel opens on Deposit / Borrow.
+On the right panel, stay on the Deposit tab. Select your asset from the dropdown and type the deposit amount.
 
-Type the amount of ETH or USDC you want to deposit and leave the borrow field blank.
+### Step 5 – Confirm the transaction
 
-### Step 4 – Confirm the transaction
+Click Deposit. Your wallet shows the network, gas estimate, and amounts. Approve the transaction.
 
-Press Deposit. Your wallet will show the network, gas estimate, and the amount of MYT to be minted. Approve the transaction.
+### Step 6 – Track your deposit
 
-### Step 5 – Track yield and strategy mix
+<FramedImage src="/img/use-passive-myt-04.png" alt="Active MYT deposit" />
 
-<FramedImage src="/img/use-passive-myt-04.png" alt="Track yield and strategy mix" />
+Your balance appears under YOUR DEPOSIT on the right panel. As yield accrues the redemption value of each MYT increases automatically. You can withdraw at any time and the vault returns the underlying plus all earnings to date.
 
-Back on the Dashboard your new position appears as a vault position. Clicking into it will show a variety of information, including:
+To borrow against your deposit, click Go to Vault at the bottom of the panel.
 
-- **Vault balance** – The dollar value of your current deposit, noted as “Deposit”.
+### Why use Mixed Yield instead of managing strategies directly?
 
-- **APY** – The current vault yield denominated in APY.
-
-- **Strategy info** – The current breakdown of strategies currently employed by the MYT basket, including a historical APY graph.
-
-As yield accrues, the redemption value of each MYT increases automatically. You can withdraw at any time, the vault will return the underlying plus all earnings to date.
-
-### Why hold MYT instead of managing strategies yourself?
-
-- **Diversified yield** – Employ a wider variety of diversified strategies through one token, curated and rebalanced by the DAO.
-
-- **Auto-compounding** – Continuous compounding with no manual restaking.
-
-- **Transparency** – Transparent, on-chain view of strategy weights and historic performance.
+- **Diversified yield** – capital is spread across multiple strategies, curated and rebalanced by the DAO.
+- **Auto-compounding** – yield compounds continuously with no manual restaking.
+- **Transparency** – strategy weights, risk levels, and historical performance are visible on-chain.

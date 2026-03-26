@@ -9,84 +9,56 @@ import FramedImage from "@site/src/components/FramedImage";
 
 <PageBanner title="Deposit & Borrow" />
 
-A single vault deposit gives you immediate, auto-compounded yield through the Mix-Yield Token (MYT).
+A vault deposit puts your ETH or USDC to work through the Mix-Yield Token (MYT). From there you can borrow alAssets against your deposit and let vault yield pay down the debt over time.
 
-From there you can:
+- **Stop after the deposit** – keep earning passive yield, no management required.
+- **Continue to the borrow step** – mint alAssets and access self-repaying loans.
 
-- **Stop after the deposit** – keep earning passive yield, zero management required.
-
-- **Continue to the borrow step** – mint alAssets and tap into self-repaying loans.
-
-The instructions that follow are focused on the process of depositing assets and borrowing alAssets subsequently.
-
-[If you only want MYT yield, visit the Passive MYT Yield tutorial →](./use-passive-myt.md)
+[If you only want MYT yield without borrowing, visit the Mixed Yield tutorial →](./use-passive-myt.md)
 
 ### Prerequisites
 
 - Connect your wallet and switch to the chain that holds the assets you plan to deposit.
-
-* Confirm you have ETH for gas on that chain.
+- Confirm you have ETH for gas on that chain.
 
 ### Step 1 – Open the Vaults page
 
 <FramedImage src="/img/deposit-and-borrow-01.png" alt="Vaults page" />
 
-- From any screen choose Vaults in the top navigation, or;
+Click Vaults in the top navigation.
 
-- On the Dashboard (pictured above) click the empty tile with a plus icon next to your existing positions.
+### Step 2 – Find the vault
 
-### Step 2 – Find the vault you want
+<FramedImage src="/img/deposit-and-borrow-02.png" alt="Vault list" />
 
-<FramedImage src="/img/deposit-and-borrow-02.png" alt="Find a vault" />
+Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click a vault card to open its detail page.
 
-- Use the icon filters (chain and asset) or the Sort by dropdown to narrow the list.
+### Step 3 – Review position stats
 
-- Click a vault card to open its detail page.
+<FramedImage src="/img/deposit-and-borrow-03.png" alt="Vault detail page" />
 
-### Step 3 – Choose Deposit/Borrow
+The top of the detail page shows your current position: APR, Deposit, Debt, Health Factor, Earmarked, Redemption Rate, Borrowable, and LTV. The health bar below shows your Deposit, Debt, and Earmarked values relative to the MAX LTV and liquidation LTV markers.
 
-<FramedImage src="/img/deposit-and-borrow-03.png" alt="Deposit and borrow panel" />
+:::caution Before you enter amounts
+Alchemix does not use price-based liquidations. The liquidation risk here comes from a yield strategy losing value, which can reduce your collateral below the liquidation threshold. Keeping LTV low reduces your exposure to that scenario.
 
-The lower-left panel has three tabs:
+- **Health Factor** – watch this as you adjust your borrow amount. A lower Health Factor means less buffer against a strategy drawdown.
+- **LTV bar** – shows your current position relative to the MAX LTV and liquidation markers. A strategy drawdown will affect higher LTV positions more.
+- **Strategy mix** – check the Strategy Info tab on the right for the current allocation across strategies and their risk levels.
+:::
 
-1. Deposit / Borrow (default)
+### Step 4 – Enter a deposit amount
 
-2. Withdraw
+On the Deposit/Borrow tab, select your asset from the dropdown and type the deposit amount in the top input field.
 
-3. Repay
+### Step 5 – Enter a borrow amount
 
-Stay on Deposit / Borrow.
+Type the alAsset amount to borrow in the bottom input field. Leave it blank to deposit without borrowing.
 
-### Step 4 – Enter amounts
+### Step 6 – Confirm
 
-Type the deposit size in the left box, then set the alAsset amount you plan to borrow. As you adjust the fields, keep an eye on three on-screen guides:
-
-- **LTV meter** – in the main context window, a colored bar shows your live and maximum loan-to-value. The hard cap (90%) or current cap is marked by a red line. To avoid liquidations, keep your LTV below the indicated liquidation level, the further the better.
-
-- **Strategy mix** – under Strategy Info, you can view the pie-chart of active strategies and their respective risk profiles.
-
-- **Strategy ceilings** – in the same window, you’ll see the DAO-set maximum share percentage for each strategy that makes up the MYT vault. Therefore, there is a maximum allowed % of high risk strategies in each bucket.
-
-Enter the amount of the vault’s deposit asset you want to add, and the amount of alAsset you wish to borrow.
-
-### Step 5 – Queue or send
-
-- Click Deposit or Borrow to submit a single action, or;
-
-- Click the cart icon to bundle both actions. Bundling sends one on-chain transaction instead of two to complete both actions.
-
-### Step 6 – Review and confirm
-
-Your wallet pops up the transaction details. Check network, gas estimate, and amounts, then approve.
+Click Deposit & Borrow. Both actions are submitted as a single transaction. Your wallet shows the network, gas estimate, and amounts. Approve the transaction.
 
 ### Step 7 – Track your position
 
-Back on the Dashboard you will see:
-
-- Current collateral
-
-- Outstanding debt
-
-- Loan-to-value ratio
-
-- Redemption queue status (if any)
+Your stats update once the transaction confirms. Use the Strategy Info tab for strategy allocation, the Visualizer tab to model future position states, and the Position History tab to review past activity.
