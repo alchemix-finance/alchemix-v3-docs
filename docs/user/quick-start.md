@@ -17,14 +17,14 @@ This page walks through the core borrowing path. A small deposit, a modest borro
 
 If you already know what you're looking for, jump straight to the relevant tutorial:
 
-- [Earn yield without borrowing →](./tutorials/use-passive-myt.md)
+- [Earn yield with Mixed Yield →](./tutorials/use-passive-myt.md)
 - [Buy alAssets below peg for fixed returns →](./tutorials/redeem-alassets.md)
 
 ### Prerequisites
 
 Connect a wallet on the target chain and keep a small balance of the native gas token. Hold ETH or USDC for your deposit.
 
-### Step 1 – Deposit to MYT
+### Step 1 – Deposit to the MYT
 
 <FramedImage src="/img/quick-start-01.png" alt="Deposit to MYT" />
 
@@ -35,10 +35,10 @@ Open Vaults, select Mix-ETH or Mix-USDC on your chain, and deposit. The vault wi
 <FramedImage src="/img/quick-start-02.png" alt="Borrow at 20% LTV" />
 
 :::tip Check the alAsset market price first
-alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.98 USDC, selling 200 alUSD yields ~196 USDC, which is a ~4 USDC upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
+alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
 :::
 
-On the same vault page stay on Deposit / Borrow. Enter a small borrow near 20% LTV, then mint [alETH or alUSD](./concepts/alAssets.md), respectively.
+On the same vault page stay on Deposit / Borrow. Enter a borrow near 20% LTV, then mint [alETH or alUSD](./concepts/alAssets.md), respectively.
 
 If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in the UI will apply when redemptions occur.
 
@@ -50,7 +50,7 @@ If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in
 
 ### Step 3 – Let it run
 
-The timeline below shows how this plays out in practice. At a modest 20% LTV, vault yield consistently outpaces the collateral drawn out by each redemption cycle, so your collateral base grows while your debt quietly disappears. No repayments, no interest, no action required.
+The timeline below shows how this plays out in practice. Redemptions outpace yield in the first quarter, then yield overtakes — debt drops 57% in a year while collateral finishes above its starting value. No repayments, no interest, no action required.
 
 <PositionTimeline />
 

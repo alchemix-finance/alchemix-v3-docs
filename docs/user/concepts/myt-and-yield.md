@@ -13,7 +13,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 [Explore technical documentation for MYT →](../../dev/myt/myt-contract)
 
-### What is MYT?
+### What is the MYT?
 
 - **Tokenized basket** – MYT is a customized vault token utilizing Morpho V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
 
@@ -21,7 +21,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 - **Powered by open-source infrastructure** – The core Alchemix vault logic utilizes Morpho's open-source v2 vaults layer to optimize on-chain execution and safety.
 
-### Why use MYT?
+### Why use the MYT?
 
 <FeatureCards items={[
   {

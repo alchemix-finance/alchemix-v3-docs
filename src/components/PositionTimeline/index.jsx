@@ -5,8 +5,8 @@ const ASSUMPTIONS = [
   { label: "Initial deposit", value: "$1,000 USDC" },
   { label: "Borrow", value: "200 alUSD" },
   { label: "Starting LTV", value: "20%" },
-  { label: "Vault APY", value: "12%" },
-  { label: "Redemption rate", value: "40% annual" },
+  { label: "Vault APY", value: "15%" },
+  { label: "Redemption rate", value: "60% annual" },
 ];
 
 const CONTEXT = [
@@ -20,7 +20,7 @@ const CONTEXT = [
   },
 ];
 
-/* Bar widths normalised to $1,110 max across all quarters */
+/* Bar widths normalised to $1,050 max across all quarters */
 const TIMELINE = [
   {
     nodeLabel: "Start",
@@ -28,13 +28,13 @@ const TIMELINE = [
     final: false,
     title: "Day 1: Loan opened",
     events: ["200 alUSD minted", "MYT earning yield"],
-    bars: { col: [90.1, "$1,000"], dbt: [18.0, "$200"], eqt: [72.1, "$800"] },
+    bars: { col: [95.2, "$1,000"], dbt: [19.0, "$200"], eqt: [76.2, "$800"] },
     ltv: "20.0%",
     ltvLow: false,
     note: (
       <>
-        You receive 200 alUSD. Swap it to USDC if you want working capital.
-        The full $1,000 is earning in the MYT vault from day one.
+        You receive 200 alUSD. Swap it to USDC if you want working capital. The
+        full $1,000 is earning in the MYT vault from day one.
       </>
     ),
   },
@@ -43,15 +43,15 @@ const TIMELINE = [
     nodeVal: "3mo",
     final: false,
     title: "First redemption cycle",
-    events: ["+$30 yield", "\u2212$20 redeemed"],
-    bars: { col: [91.0, "$1,010"], dbt: [16.2, "$180"], eqt: [74.8, "$830"] },
-    ltv: "17.8%",
+    events: ["+$35.56 yield", "\u2212$38.50 redeemed"],
+    bars: { col: [94.9, "$996"], dbt: [15.4, "$162"], eqt: [79.4, "$834"] },
+    ltv: "16.2%",
     ltvLow: false,
     note: (
       <>
-        Debt steps down on its own.{" "}
-        <strong>Yield is already outpacing the redemption</strong>; collateral
-        is up while the debt shrinks. Nothing for the borrower to do.
+        Redemptions outpaced yield this quarter and collateral dipped $4. But{" "}
+        <strong>debt fell $38 while collateral only dropped $4</strong>. The
+        asymmetry is already working.
       </>
     ),
   },
@@ -60,18 +60,19 @@ const TIMELINE = [
     nodeVal: "6mo",
     final: false,
     title: "Second redemption cycle",
-    events: ["+$30.30 yield", "\u2212$18 redeemed"],
+    events: ["+$35.41 yield", "\u2212$31.10 redeemed"],
     bars: {
-      col: [92.1, "$1,022"],
-      dbt: [14.6, "$162"],
-      eqt: [77.5, "$860"],
+      col: [95.2, "$1,000"],
+      dbt: [12.4, "$130"],
+      eqt: [82.9, "$870"],
     },
-    ltv: "15.9%",
+    ltv: "13.0%",
     ltvLow: false,
     note: (
       <>
-        Debt is down 19% from the start. Each cycle takes a smaller bite since
-        redemptions are based on the remaining balance, not the original.
+        Yield flips ahead of redemptions.{" "}
+        <strong>Debt is down 35% without a single payment.</strong> Collateral
+        has recovered to its starting value.
       </>
     ),
   },
@@ -80,18 +81,18 @@ const TIMELINE = [
     nodeVal: "9mo",
     final: false,
     title: "Third redemption cycle",
-    events: ["+$30.67 yield", "\u2212$16.20 redeemed"],
+    events: ["+$35.56 yield", "\u2212$25.07 redeemed"],
     bars: {
-      col: [93.4, "$1,037"],
-      dbt: [13.1, "$146"],
-      eqt: [80.3, "$891"],
+      col: [96.2, "$1,010"],
+      dbt: [10.0, "$105"],
+      eqt: [86.2, "$905"],
     },
-    ltv: "14.1%",
+    ltv: "10.4%",
     ltvLow: false,
     note: (
       <>
-        Debt is down 27% and you haven't made a single payment. Collateral is
-        still growing past what you put in.
+        Yield is pulling further ahead. Collateral is above where it started
+        while <strong>debt is nearly halved</strong>.
       </>
     ),
   },
@@ -100,28 +101,36 @@ const TIMELINE = [
     nodeVal: "Q4",
     final: true,
     title: "End of year one",
-    events: ["+$31.10 yield", "\u2212$14.58 redeemed"],
+    events: ["+$35.91 yield", "\u2212$20.24 redeemed"],
     bars: {
-      col: [94.9, "$1,053"],
-      dbt: [11.8, "$131"],
-      eqt: [83.1, "$922"],
+      col: [97.6, "$1,025"],
+      dbt: [8.1, "$85"],
+      eqt: [89.5, "$940"],
     },
-    ltv: "12.5%",
+    ltv: "8.3%",
     ltvLow: true,
     note: (
       <>
-        <strong>Debt down 34%</strong> without a single payment.{" "}
-        <strong>Collateral up $53 from where you started.</strong> Equity up
-        $122. Re-borrow whenever you want more capital.
+        <strong>Debt down 57%</strong> without a single payment.{" "}
+        <strong>Collateral 2.5% above day one.</strong> Equity up $140.
+        Re-borrow whenever you want more capital.
       </>
     ),
   },
 ];
 
 const SUMMARY = [
-  { label: "Debt cleared", value: "\u221234%", sub: "$200 → $131 without repayment" },
-  { label: "Collateral change", value: "+$53", sub: "Grew above original deposit" },
-  { label: "Equity gain", value: "+$122", sub: "$800 → $922 (+15.3%)" },
+  {
+    label: "Debt cleared",
+    value: "\u221257.5%",
+    sub: "$200 → $85 without repayment",
+  },
+  {
+    label: "Collateral",
+    value: "+2.5%",
+    sub: "$1,000 → $1,025. Yield exceeded redemptions",
+  },
+  { label: "Equity gain", value: "+$140", sub: "$800 → $940 (+17.5%)" },
 ];
 
 const BAR_LABELS = { col: "Collateral", dbt: "Debt", eqt: "Equity" };
@@ -238,41 +247,38 @@ export default function PositionTimeline() {
       <div className={styles.takeaway}>
         <div className={styles.takeawayLabel}>Key insight</div>
         <p>
-          At 12% APY, the vault earns faster than redemptions draw out, so{" "}
+          In Q1 redemptions slightly outpace yield while collateral dips just $4.
+          From Q2 onwards yield overtakes redemptions as debt shrinks, and
+          collateral climbs back above its starting value.{" "}
           <strong>
-            collateral keeps growing even as the debt falls
-          </strong>
-          . You borrow upfront, the position handles itself, and you end the
-          year with more collateral than you started with. When the debt gets
-          low, borrow again.
+            Debt drops 57% while collateral finishes 2.5% above day one.
+          </strong>{" "}
+          The asymmetry is the core of self-repaying loans. And throughout all
+          of it,{" "}
+          <strong>
+            the $200 you borrowed on day one has been yours to use.
+          </strong>{" "}
+          This capital cost you nothing net, because your deposit is worth
+          more than when you started.
         </p>
       </div>
 
       {/* ── Legend ── */}
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <div
-            className={styles.legendDot}
-            style={{ background: "#4ade80" }}
-          />
+          <div className={styles.legendDot} style={{ background: "#4ade80" }} />
           Collateral (MYT value)
         </div>
         <div className={styles.legendItem}>
-          <div
-            className={styles.legendDot}
-            style={{ background: "#dc6060" }}
-          />
+          <div className={styles.legendDot} style={{ background: "#dc6060" }} />
           Outstanding debt (alUSD)
         </div>
         <div className={styles.legendItem}>
-          <div
-            className={styles.legendDot}
-            style={{ background: "#60a5fa" }}
-          />
+          <div className={styles.legendDot} style={{ background: "#60a5fa" }} />
           Equity (collateral &minus; debt)
         </div>
         <span className={styles.legendNote}>
-          12% vault APY &middot; 40% annual redemption rate &middot;
+          15% vault APY &middot; 60% annual redemption rate &middot;
           illustrative only
         </span>
       </div>

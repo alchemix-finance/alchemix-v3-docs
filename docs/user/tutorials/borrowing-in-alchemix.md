@@ -7,8 +7,6 @@ title: Borrowing In Alchemix
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
 
-<!-- TODO -->
-
 <PageBanner title="Borrowing In Alchemix" />
 
 After converting ETH or USDC into the Mix-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral's face value.
@@ -21,9 +19,9 @@ You can manually repay part or all of your debt at any time to unlock your colla
 
 <FramedImage src="/img/borrowing-in-alchemix-01.png" alt="Borrowing DAPP Screenshot" />
 
-1. Navigate to the Borrow panel in your vault.
+1. Open your vault detail page and select the Deposit / Borrow tab.
 
-2. Choose an amount of alAsset to mint. The "max" function will give the maximum value allowable within the bound of 90% LTV.
+2. In the borrow input, choose an amount of alAsset to mint. The "max" function fills the maximum borrowable amount within the current LTV limit.
 
 :::danger Liquidation Risk
 If a yield strategy loses money, you could be liquidated. The LTV at which a liquidation will occur is 95% LTV. Choose your LTV with this in mind. <br/><br/>[Learn more about Liquidations →](../concepts/liquidations.md)
