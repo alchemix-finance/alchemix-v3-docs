@@ -18,6 +18,10 @@ const CONTEXT = [
     bold: "Borrower fee",
     text: "0.50% applied only at each redemption settlement, shown in dApp",
   },
+  {
+    bold: "Redemption timing",
+    text: "Redemptions settle continuously. Quarterly figures show the cumulative position at each checkpoint.",
+  },
 ];
 
 /* Bar widths normalised to $1,050 max across all quarters */
@@ -42,7 +46,7 @@ const TIMELINE = [
     nodeLabel: "Q1",
     nodeVal: "3mo",
     final: false,
-    title: "First redemption cycle",
+    title: "Position at 3 months",
     events: ["+$35.56 yield", "\u2212$38.50 redeemed"],
     bars: { col: [94.9, "$996"], dbt: [15.4, "$162"], eqt: [79.4, "$834"] },
     ltv: "16.2%",
@@ -59,7 +63,7 @@ const TIMELINE = [
     nodeLabel: "Q2",
     nodeVal: "6mo",
     final: false,
-    title: "Second redemption cycle",
+    title: "Position at 6 months",
     events: ["+$35.41 yield", "\u2212$31.10 redeemed"],
     bars: {
       col: [95.2, "$1,000"],
@@ -80,7 +84,7 @@ const TIMELINE = [
     nodeLabel: "Q3",
     nodeVal: "9mo",
     final: false,
-    title: "Third redemption cycle",
+    title: "Position at 9 months",
     events: ["+$35.56 yield", "\u2212$25.07 redeemed"],
     bars: {
       col: [96.2, "$1,010"],
