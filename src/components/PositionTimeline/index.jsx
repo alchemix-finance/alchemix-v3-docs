@@ -123,14 +123,14 @@ const SUMMARY = [
   {
     label: "Debt cleared",
     value: "\u221257.5%",
-    sub: "$200 → $85 without repayment",
+    sub: "$200 → $85 without repayment. Redemptions settled the balance automatically.",
   },
   {
     label: "Collateral",
     value: "+2.5%",
-    sub: "$1,000 → $1,025. Yield exceeded redemptions",
+    sub: "$1,000 → $1,025. Borrowing did not erode the deposit, it finished above where it started.",
   },
-  { label: "Equity gain", value: "+$140", sub: "$800 → $940 (+17.5%)" },
+  { label: "Equity gain", value: "+$140", sub: "$800 → $940 (+17.5%). Vault yield covered the redemption cost, while the base MYT return was not sacrificed." },
 ];
 
 const BAR_LABELS = { col: "Collateral", dbt: "Debt", eqt: "Equity" };
