@@ -46,7 +46,9 @@ Click Deposit. Your wallet shows the network, gas estimate, and amounts. Approve
 
 <FramedImage src="/img/use-passive-myt-04.png" alt="Active MYT deposit" />
 
-Your balance appears under YOUR DEPOSIT on the right panel. As yield accrues the redemption value of each MYT increases automatically. You can withdraw at any time and the vault returns the underlying plus all earnings to date.
+Return to the dashboard and find your position in the Mixed Yield Positions table. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
+
+When you are on a specific vault's detail page, the YOUR DEPOSIT accordion on the right panel shows the balance for that vault. You can withdraw at any time and the vault returns the underlying plus all earnings to date.
 
 To borrow against your deposit, click Go to Vault at the bottom of the panel.
 
