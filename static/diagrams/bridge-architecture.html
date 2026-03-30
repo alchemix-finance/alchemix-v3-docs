@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bridge Architecture: Alchemix V3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:         #0d0e10;
+    --surface:    #141618;
+    --surface-2:  #1a1c1f;
+    --surface-3:  #1f2226;
+    --border:     rgba(245,192,154,0.10);
+    --border-mid: rgba(245,192,154,0.22);
+    --text:       #e8e8ea;
+    --text-dim:   #8a8f99;
+    --accent:     #f5c09a;
+    --accent-dim: rgba(245,192,154,0.10);
+    --green:      #5ba88a;
+    --green-dim:  rgba(91,168,138,0.10);
+    --warn:       #e08050;
+    --warn-dim:   rgba(224,128,80,0.10);
+    --font-body:  'Montserrat', system-ui, sans-serif;
+    --font-mono:  'Fira Code', monospace;
+  }
+
+  /* ── Scrollbar ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(245,192,154,0.25); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(245,192,154,0.45); }
+  * { scrollbar-width: thin; scrollbar-color: rgba(245,192,154,0.25) transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .page-header {
+    max-width: 960px;
+    margin: 0 auto 2rem;
+    border-bottom: 1px solid var(--border-mid);
+    padding-bottom: 1.25rem;
+  }
+  .page-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+  }
+  .page-header h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .page-header p {
+    margin-top: 0.5rem;
+    color: #ffffff;
+    font-size: 0.88rem;
+    max-width: 600px;
+  }
+
+  /* ── Section ─────────────────────────────────────── */
+  .section {
+    max-width: 960px;
+    margin: 0 auto 2.5rem;
+  }
+  .section-title {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Diagram shell ───────────────────────────────── */
+  .diagram-outer {
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .diagram-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .diagram-toolbar-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .zoom-controls { display: flex; gap: 0.4rem; }
+  .zoom-btn {
+    background: none;
+    border: 1px solid var(--border-mid);
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .zoom-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .diagram-viewport {
+    overflow: auto;
+    padding: 2rem 1.5rem;
+    min-height: 380px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .diagram-viewport .mermaid {
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+  }
+  .diagram-caption {
+    padding: 0.7rem 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ── DVN coverage table ──────────────────────────── */
+  .coverage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  .coverage-table th {
+    background: var(--surface-2);
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-mid);
+  }
+  .coverage-table td {
+    padding: 0.55rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .coverage-table tr:last-child td { border-bottom: none; }
+  .coverage-table tr:hover td { background: var(--accent-dim); }
+  .check { color: var(--green); font-weight: 700; }
+  .minus { color: var(--text-dim); }
+  .chain-name { font-weight: 600; color: var(--accent); }
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* ── Security model callouts ─────────────────────── */
+  .callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .callout-card {
+    background: var(--surface);
+    padding: 1.1rem 1.25rem;
+    min-width: 0;
+  }
+  .callout-card.accent { border-left: 3px solid var(--accent); }
+  .callout-card.green  { border-left: 3px solid var(--green); }
+  .callout-card.warn   { border-left: 3px solid var(--warn); }
+  .cc-label {
+    font-size: 0.62rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .callout-card.accent .cc-label { color: var(--accent); }
+  .callout-card.green  .cc-label { color: var(--green); }
+  .callout-card.warn   .cc-label { color: var(--warn); }
+  .cc-body { font-size: 0.8rem; color: var(--text-dim); line-height: 1.55; overflow-wrap: break-word; }
+  .cc-body strong { color: var(--text); }
+
+  @media (max-width: 600px) {
+    .callout-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-label">Alchemix V3 · Safety</div>
+  <h1>Bridge Architecture</h1>
+  <p>Cross-chain security model for the Alchemix Bridge: Ethereum ↔ L2 via LayerZero OFT with DVN multi-attestation.</p>
+</div>
+
+<!-- ── DVN Coverage Table ────────────────────────── -->
+<div class="section">
+  <div class="section-title">DVN coverage by chain</div>
+  <div class="table-wrap">
+    <table class="coverage-table">
+      <thead>
+        <tr>
+          <th>Chain</th>
+          <th>LayerZero</th>
+          <th>Wormhole</th>
+          <th>Bware</th>
+          <th>Nethermind</th>
+          <th>Active DVNs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="chain-name">Optimism</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td class="minus">—</td>
+          <td>LayerZero, Wormhole, Bware</td>
+        </tr>
+        <tr>
+          <td class="chain-name">Arbitrum</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td class="minus">—</td>
+          <td>LayerZero, Wormhole, Bware</td>
+        </tr>
+        <tr>
+          <td class="chain-name">Linea</td>
+          <td class="check">✓</td>
+          <td class="minus">—</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td>LayerZero, Bware, Nethermind</td>
+        </tr>
+        <tr>
+          <td class="chain-name">Metis</td>
+          <td class="check">✓</td>
+          <td class="minus">—</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+          <td>LayerZero, Bware, Nethermind</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Security Properties ───────────────────────── -->
+<div class="section">
+  <div class="section-title">Security properties</div>
+  <div class="callout-grid">
+    <div class="callout-card accent">
+      <div class="cc-label">2-of-3 DVN Multisig</div>
+      <p class="cc-body">No single messaging provider can approve a bridge transaction unilaterally. An attacker must compromise <strong>at least 2 independent DVNs</strong> simultaneously to forge a message.</p>
+    </div>
+    <div class="callout-card green">
+      <div class="cc-label">DAO-controlled DVN list</div>
+      <p class="cc-body">AlchemixDAO owns all bridge contracts and can <strong>swap out DVNs</strong> without taking the system offline. Compromised or misbehaving validators can be replaced via governance.</p>
+    </div>
+    <div class="callout-card accent">
+      <div class="cc-label">Ethereum supply ceiling</div>
+      <p class="cc-body">The circulating supply on Ethereum is capped at what was minted there. L2 bridges <strong>cannot inflate the token supply</strong>; bridged supply can never exceed the Ethereum-side ceiling.</p>
+    </div>
+    <div class="callout-card warn">
+      <div class="cc-label">Rate limits &amp; bridge capacity</div>
+      <p class="cc-body">Each asset/chain pair has a <strong>24-hour rate limit</strong>. If Mainnet inbound capacity is saturated, alAssets may become <strong>stranded on L2</strong> and trade at a discount. Verify capacity before large cross-chain positions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Bridgeable Assets ─────────────────────────── -->
+<div class="section">
+  <div class="section-title">Bridgeable assets</div>
+  <div class="table-wrap">
+    <table class="coverage-table">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Minting chains</th>
+          <th>Bridgeable</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="chain-name">ALCX</td>
+          <td>Ethereum only</td>
+          <td class="check">✓</td>
+          <td>Minted exclusively on Mainnet; L2 supply is purely bridge-derived</td>
+        </tr>
+        <tr>
+          <td class="chain-name">alUSD</td>
+          <td>All chains</td>
+          <td class="check">✓</td>
+          <td>Can be minted or burned (Alchemist/Transmuter) on each chain</td>
+        </tr>
+        <tr>
+          <td class="chain-name">alETH</td>
+          <td>All chains</td>
+          <td class="check">✓</td>
+          <td>Can be minted or burned (Alchemist/Transmuter) on each chain</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      fontFamily: 'Montserrat',
+      primaryColor: '#141618',
+      primaryBorderColor: 'rgba(245,192,154,0.25)',
+      primaryTextColor: '#e8e8ea',
+      lineColor: '#f5c09a',
+      edgeLabelBackground: '#0d0e10',
+      tertiaryColor: '#1a1c1f',
+      clusterBkg: '#1a1c1f',
+      clusterBorder: 'rgba(245,192,154,0.25)'
+    }
+  });
+
+  let currentScale = 1;
+  function zoom(factor) {
+    currentScale *= factor;
+    currentScale = Math.min(Math.max(currentScale, 0.3), 3);
+    document.getElementById('diagram').style.transform = `scale(${currentScale})`;
+  }
+  function resetZoom() {
+    currentScale = 1;
+    document.getElementById('diagram').style.transform = 'scale(1)';
+  }
+</script>
+</body>
+</html>

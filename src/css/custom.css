@@ -138,7 +138,11 @@
 /* ─── Page background with subtle ambient depth ───────── */
 html[data-theme="dark"] {
   background:
-    radial-gradient(ellipse 80% 40% at 50% -5%, rgba(18, 42, 36, 0.55) 0%, transparent 70%),
+    radial-gradient(
+      ellipse 80% 40% at 50% -5%,
+      rgba(18, 42, 36, 0.55) 0%,
+      transparent 70%
+    ),
     #0d0e10;
   background-attachment: fixed;
 }
@@ -168,10 +172,18 @@ div[class*="announcementBar"] a:hover {
 
 /* ─── Navbar ──────────────────────────────────────────── */
 .navbar {
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(245, 192, 154, 0.1);
   box-shadow: none;
+}
+
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .navbar__link {
@@ -202,7 +214,9 @@ div[class*="announcementBar"] a:hover {
 .menu__link {
   border-radius: 6px;
   font-size: 0.875rem;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .menu__link:hover {
@@ -259,9 +273,20 @@ h2 {
   font-weight: 700;
 }
 
-h3, h4 {
+h3,
+h4 {
   letter-spacing: -0.015em;
   font-weight: 700;
+  color: #f5c09a;
+}
+
+/* Universal breathing room between doc sections */
+.markdown h2 {
+  margin-top: 3.5rem;
+}
+
+.markdown h3 {
+  margin-top: 3rem;
 }
 
 /* ─── Buttons ─────────────────────────────────────────── */
@@ -281,7 +306,9 @@ h3, h4 {
 /* ─── Links ───────────────────────────────────────────── */
 a {
   text-decoration: none;
-  transition: color 0.15s ease, opacity 0.15s ease;
+  transition:
+    color 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .markdown a {
@@ -296,39 +323,37 @@ a {
 
 /* ─── Admonitions ─────────────────────────────────────── */
 
-/* Note / Info — primary brand palette */
-.alert--info {
-  --ifm-alert-background-color: rgba(245, 192, 154, 0.06);
-  --ifm-alert-border-color: rgba(245, 192, 154, 0.35);
-  --ifm-alert-color: inherit;
-}
-
-[data-theme="dark"] .alert--info {
-  background-color: rgba(245, 192, 154, 0.06);
-  border-left-color: rgba(245, 192, 154, 0.45);
-}
-
-.alert--info .admonition-icon svg {
-  fill: #f5c09a;
-  stroke: none;
-}
-
-/* Tip — muted teal */
-.alert--success {
-  --ifm-alert-background-color: rgba(52, 168, 138, 0.07);
-  --ifm-alert-border-color: rgba(52, 168, 138, 0.35);
-}
-
-/* Warning — amber */
-.alert--warning {
-  --ifm-alert-background-color: rgba(240, 180, 50, 0.07);
-  --ifm-alert-border-color: rgba(240, 180, 50, 0.35);
-}
-
-/* Danger — red */
+/* All callout types unified to copper brand style */
+.alert--secondary,
+.alert--info,
+.alert--success,
+.alert--warning,
 .alert--danger {
-  --ifm-alert-background-color: rgba(220, 70, 70, 0.07);
-  --ifm-alert-border-color: rgba(220, 70, 70, 0.35);
+  --ifm-alert-background-color: rgba(245, 192, 154, 0.06);
+  --ifm-alert-border-color: #f5c09a;
+  --ifm-alert-color: inherit;
+  --ifm-alert-foreground-color: #e8e8ea;
+}
+
+[data-theme="dark"] .alert--secondary,
+[data-theme="dark"] .alert--info,
+[data-theme="dark"] .alert--success,
+[data-theme="dark"] .alert--warning,
+[data-theme="dark"] .alert--danger {
+  background-color: rgba(245, 192, 154, 0.06);
+  border-left-color: #f5c09a;
+}
+
+/* Prevent type-specific colour bleed-through on admonition headings */
+.alert--secondary { --ifm-color-secondary: #f5c09a; }
+.alert--success   { --ifm-color-success:   #f5c09a; }
+.alert--info      { --ifm-color-info:      #f5c09a; }
+.alert--warning   { --ifm-color-warning:   #f5c09a; }
+.alert--danger    { --ifm-color-danger:    #f5c09a; }
+
+.theme-admonition svg {
+  fill: #f5c09a !important;
+  stroke: none;
 }
 
 .admonition {
@@ -369,11 +394,48 @@ article {
   max-width: 860px;
 }
 
+/* ─── Tables ──────────────────────────────────────────── */
+.markdown table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.25rem 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.markdown th,
+.markdown td {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.65rem 1rem;
+  text-align: left;
+}
+
+.markdown th {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.markdown tr:nth-child(even) td {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Hide thead rows where all header cells are empty (headerless Markdown tables) */
+.markdown thead:has(th:empty) {
+  display: none;
+}
+
 /* ─── Pagination nav ──────────────────────────────────── */
 .pagination-nav__link {
   border: 1px solid rgba(245, 192, 154, 0.12);
   border-radius: 8px;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .pagination-nav__link:hover {
@@ -490,6 +552,66 @@ article {
   display: flex;
   justify-content: center;
   margin: 2rem 0;
+}
+
+/* Straight arrow routing — prevents over-curved flowchart edges */
+.docusaurus-mermaid-container svg .flowchart-link {
+  stroke-dasharray: none;
+}
+
+/* Remove grey background boxes from edge labels (Yes/No etc.) */
+.docusaurus-mermaid-container .edgeLabel rect,
+.docusaurus-mermaid-container .edgeLabel .label-container {
+  fill: transparent !important;
+  stroke: none !important;
+}
+.docusaurus-mermaid-container .edgeLabel div,
+.docusaurus-mermaid-container .edgeLabel span,
+.docusaurus-mermaid-container .edgeLabel p {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #e8e8ea !important;
+  text-shadow:
+    0 0 6px #0d0e10,
+    0 0 10px #0d0e10,
+    0 0 14px #0d0e10 !important;
+}
+
+/* ─── Key-points definition list ─────────────────────── */
+dl.key-points {
+  margin: 1.25rem 0;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 8px;
+  background-color: #141618;
+  overflow: hidden;
+}
+
+dl.key-points dt {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 154, 0.6);
+  padding: 1rem 1.25rem 0.2rem;
+  margin: 0;
+}
+
+dl.key-points dd {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e8e8ea;
+  line-height: 1.55;
+  margin: 0;
+  padding: 0 1.25rem 1rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.08);
+}
+
+dl.key-points dd:last-child {
+  border-bottom: none;
+}
+
+dl.key-points dd a {
+  color: #f5c09a;
 }
 
 /* ─── Image helpers ───────────────────────────────────── */

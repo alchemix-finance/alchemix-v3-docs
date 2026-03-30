@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Concept Map: Alchemix V3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:         #0d0e10;
+    --surface:    #141618;
+    --surface-2:  #1a1c1f;
+    --border:     rgba(245,192,154,0.12);
+    --border-mid: rgba(245,192,154,0.22);
+    --text:       #e8e8ea;
+    --text-dim:   #8a8f99;
+    --accent:     #f5c09a;
+    --accent-dim: rgba(245,192,154,0.08);
+    --font-body:  'Montserrat', system-ui, sans-serif;
+    --font-mono:  'Fira Code', monospace;
+  }
+
+  /* ── Scrollbar ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(245,192,154,0.25); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(245,192,154,0.45); }
+  * { scrollbar-width: thin; scrollbar-color: rgba(245,192,154,0.25) transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  .header {
+    max-width: 960px;
+    margin: 0 auto 2rem;
+    border-bottom: 1px solid var(--border-mid);
+    padding-bottom: 1.25rem;
+  }
+  .header-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+  }
+  .header h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .header p {
+    margin-top: 0.5rem;
+    color: #ffffff;
+    font-size: 0.88rem;
+    max-width: 580px;
+  }
+
+  /* ── Diagram shell ───────────────────────────────── */
+  .diagram-outer {
+    max-width: 960px;
+    margin: 0 auto 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .diagram-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .diagram-toolbar-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .zoom-controls { display: flex; gap: 0.4rem; }
+  .zoom-btn {
+    background: none;
+    border: 1px solid var(--border-mid);
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .zoom-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .diagram-viewport {
+    overflow: auto;
+    padding: 1.5rem;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .diagram-viewport .mermaid {
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+  }
+  .diagram-caption {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ── Legend cards ────────────────────────────────── */
+  .legend-section {
+    max-width: 960px;
+    margin: 0 auto 2rem;
+  }
+  .section-title {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.85rem;
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .legend-card {
+    background: var(--surface);
+    padding: 0.9rem 1.1rem;
+    min-width: 0;
+  }
+  .legend-card-name {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+    overflow-wrap: break-word;
+  }
+  .legend-card-def {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    overflow-wrap: break-word;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-right: 0.35rem;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  @media (max-width: 600px) {
+    .legend-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Alchemix V3 · Reference</div>
+  <h1>Concept Map</h1>
+  <p>The key components of the protocol and how they connect.</p>
+</div>
+
+<!-- ── Diagram ───────────────────────────────────────── -->
+<div class="diagram-outer">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar-label">Protocol flow</span>
+  </div>
+  <div class="diagram-viewport">
+    <div class="mermaid">
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'Montserrat',
+    'primaryColor': '#141618',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
+    'edgeLabelBackground': '#0d0e10',
+    'tertiaryColor': '#141618',
+    'fontSize': '18px'
+  },
+  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 60, 'rankSpacing': 90 }
+}}%%
+flowchart LR
+    classDef default font-weight:bold;
+
+    A(Deposit<br/>ETH / USDC) --> B(Mix-Yield Token<br/><span style='color:#8a8f99'>yield accrues</span>)
+    B -->|collateral| C(Alchemist)
+    C -->|mints| D(alAsset)
+    D -->|deposit| E(Transmuter)
+    E -->|burns 1:1| F{{Self-Repaying<br/>Loan}}
+    B -->|yield| F
+    F -.->|reduces debt| D
+
+    style F fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
+    linkStyle 0,1,2,3,4,5 stroke:#f5c09a,stroke-width:2px
+    linkStyle 6 stroke:#f5c09a,stroke-width:1.5px,stroke-dasharray:6
+    </div>
+  </div>
+  <div class="diagram-caption">
+    How a deposit flows through the protocol to become a self-repaying loan. The dashed arrow shows debt reducing over time.
+  </div>
+</div>
+
+<!-- ── Legend ────────────────────────────────────────── -->
+<div class="legend-section">
+  <div class="section-title">Term definitions</div>
+  <div class="legend-grid">
+
+    <div class="legend-card">
+      <div class="legend-card-name">alAsset</div>
+      <div class="legend-card-def">Synthetic debt token (alUSD, alETH). Minted when you borrow; 1 alAsset = 1 unit of debt inside the protocol.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Alchemist</div>
+      <div class="legend-card-def">Core smart contract. Accepts MYT collateral, issues alAsset loans, enforces LTV limits, and coordinates earmarking.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Mix-Yield Token (MYT)</div>
+      <div class="legend-card-def">ERC-20 collateral token representing a diversified yield strategy portfolio. Its value grows as strategies earn.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Transmuter</div>
+      <div class="legend-card-def">Accepts alAsset deposits and redeems them 1:1 for MYT after a fixed term. It's how the peg stays anchored.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">LTV Ratio</div>
+      <div class="legend-card-def">Loan-to-value: debt ÷ collateral. Max borrow at 90%; liquidation triggered at 95%.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Fundamental Oracle</div>
+      <div class="legend-card-def">Values MYT by its underlying redemption value, not market price, so DEX swings can't trigger liquidations.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Earmarked Debt</div>
+      <div class="legend-card-def">Portion of a loan reserved during a redemption cycle. Collateral keeps earning until the moment of settlement.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Temporal Leverage</div>
+      <div class="legend-card-def">Extra yield earned because earmarked collateral keeps compounding between earmark (T₀) and settlement (T₁).</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Redemption Rate</div>
+      <div class="legend-card-def">Annualised measure of debt paydown via Transmuter. = Annualised Transmuter volume ÷ Total system debt.</div>
+    </div>
+
+    <div class="legend-card">
+      <div class="legend-card-name">Self-Repaying Loan</div>
+      <div class="legend-card-def">A loan that repays itself. Vault yield and Transmuter redemptions chip away at the balance over time. No interest; the debt only ever goes down.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      fontFamily: 'Montserrat',
+      primaryColor: '#141618',
+      primaryBorderColor: 'rgba(245,192,154,0.25)',
+      primaryTextColor: '#e8e8ea',
+      lineColor: '#f5c09a',
+      edgeLabelBackground: '#0d0e10',
+      tertiaryColor: '#141618'
+    }
+  });
+</script>
+</body>
+</html>

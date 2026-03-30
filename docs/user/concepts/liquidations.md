@@ -5,6 +5,8 @@ title: Liquidations
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
+import StatStrip from "@site/src/components/StatStrip";
+import HealthBar from "@site/src/components/HealthBar";
 
 <!-- TODO -->
 
@@ -16,40 +18,28 @@ Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account pu
 Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.
 :::
 
-## When liquidation does not occur
+### When liquidation does not occur
 
-| Event                              | Effect on your loan                                               |
-| ---------------------------------- | ----------------------------------------------------------------- |
-| ETH or USDC price volatility       | None, debt and collateral move together.                          |
-| alAsset drifting below peg on DEXs | None, protocol still values alAssets at face value for repayment. |
-| Hitting the 90% LTV borrowing cap  | Borrowing stops, the position stays open and keeps earning yield. |
+<StatStrip items={[
+  { label: "ETH or USDC price volatility",       value: "None, debt and collateral move together." },
+  { label: "alAsset drifting below peg on DEXs", value: "None, protocol still values alAssets at face value for repayment." },
+  { label: "Hitting the 90% LTV borrowing cap",  value: "Borrowing stops, the position stays open and keeps earning yield." },
+]} />
 
-## What can trigger liquidation
+### What can trigger liquidation
 
-| Event                                                 | Detection Method                                                 |
-| ----------------------------------------------------- | ---------------------------------------------------------------- |
-| Strategy loss, exploit, or severe slippage inside MYT | Oracle shows MYT NAV is less than system debt.                   |
-| Position exceeds liquidation threshold (95% LTV)      | Oracle shows collateral value vs. debt ratio breaching threshold |
+<StatStrip items={[
+  { label: "Strategy loss, exploit, or severe slippage inside MYT", value: "Oracle shows MYT NAV is less than system debt." },
+  { label: "Position exceeds liquidation threshold (95% LTV)",      value: "Oracle shows collateral value vs. debt ratio breaching threshold." },
+]} />
 
-## How the process works
+### Reading the health bar
 
-- **Max LTV** – If a position exceeds the max LTV (currently set at 95%), it is eligible for liquidations.
+The colored bar in the vault UI gives an at-a-glance view of your position. Keep your current LTV well below the liquidation marker. If MYT ever records a loss, the Liq marker slides left to reflect reduced backing.
 
-- **Partial liquidation only** – The protocol liquidates only the amount required to adjust the user’s position back to the defined target LTV, currently set at 85%.
+<HealthBar currentLtv={62} maxLtv={90} liqLtv={95} />
 
-- **Multi-step liquidations** – If a position can be made healthy by simply triggering a redemption early, then that is all that will happen and the liquidator will receive a small fee. Otherwise, the early redemption will occur and then the user’s collateral will be used to repay debt, along with a fee paid to the liquidator, down to the target LTV.
-
-- **Liquidator Fee Vault** – Should the user’s collateral not be sufficient on its own to pay a liquidator, there is a separate fee vault that may be funded by any entity (including the DAO) that may be drawn from to pay liquidators.
-
-## Reading the health bar
-
-The colored bar in the vault UI gives an at-a-glance view of three numbers:
-
-- **Current LTV** – your live leverage, updated in real time.
-
-- **Max LTV** – the borrowing ceiling on the vault. You cannot mint alAssets beyond this green marker.
-
-- **Liq LTV** – the red marker shows the liquidation threshold right now. If MYT ever records a loss, the marker slides left to reflect the reduced backing. If your current LTV remains below this marker, you will not be liquidated.
+Only the minimum needed to reach 85% LTV is liquidated — the rest of your position is untouched. A liquidator fee is paid on both paths; if collateral can’t cover it, a separate fee vault (fundable by the DAO or any entity) covers the difference.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 

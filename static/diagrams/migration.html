@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>V3 Migration: Alchemix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:         #0d0e10;
+    --surface:    #141618;
+    --surface-2:  #1a1c1f;
+    --surface-3:  #1f2226;
+    --border:     rgba(245,192,154,0.10);
+    --border-mid: rgba(245,192,154,0.20);
+    --text:       #e8e8ea;
+    --text-dim:   #8a8f99;
+    --accent:     #f5c09a;
+    --accent-dim: rgba(245,192,154,0.10);
+    --warn:       #e0a050;
+    --warn-dim:   rgba(224,160,80,0.10);
+    --green:      #5ba88a;
+    --green-dim:  rgba(91,168,138,0.10);
+    --red:        #dc5f5f;
+    --red-dim:    rgba(220,95,95,0.10);
+    --font-body:  'Montserrat', system-ui, sans-serif;
+    --font-mono:  'Fira Code', monospace;
+  }
+
+  /* ── Scrollbar ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(245,192,154,0.25); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(245,192,154,0.45); }
+  * { scrollbar-width: thin; scrollbar-color: rgba(245,192,154,0.25) transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  .page-header {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+    border-bottom: 1px solid var(--border-mid);
+    padding-bottom: 1.25rem;
+  }
+  .page-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+  }
+  .page-header h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .page-header p {
+    margin-top: 0.5rem;
+    color: #ffffff;
+    font-size: 0.88rem;
+    max-width: 580px;
+  }
+
+  /* ── Section ─────────────────────────────────────── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+  }
+  .section-title {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Migration Timeline ──────────────────────────── */
+  .timeline {
+    position: relative;
+    padding-left: 2.5rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), rgba(245,192,154,0.1));
+  }
+  .timeline-step {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .timeline-step:last-child { margin-bottom: 0; }
+  .timeline-marker {
+    position: absolute;
+    left: -2.5rem;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    z-index: 1;
+  }
+  .timeline-card {
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .timeline-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
+  .timeline-step-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--accent);
+  }
+  .timeline-step-tag {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+  }
+  .timeline-card p {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+  }
+  .timeline-card p strong { color: var(--text); }
+
+  /* ── Mana Earning ────────────────────────────────── */
+  .mana-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .mana-tier {
+    background: var(--surface);
+    padding: 1.1rem 1.2rem;
+    min-width: 0;
+  }
+  .mana-tier-label {
+    font-size: 0.62rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .mana-rate {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    font-family: var(--font-body);
+    margin-bottom: 0.5rem;
+  }
+  .mana-detail {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .mana-detail strong { color: var(--text); }
+
+  .mana-meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border-mid);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mana-meta-cell {
+    background: var(--surface-2);
+    padding: 0.8rem 1.1rem;
+  }
+  .mana-meta-label {
+    font-size: 0.6rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+  }
+  .mana-meta-val {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: var(--font-body);
+  }
+  .mana-meta-sub {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 0.1rem;
+  }
+
+  /* ── rALCX Vesting ───────────────────────────────── */
+  .vesting-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .vesting-track-section {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  .vesting-track-label {
+    font-size: 0.65rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+  }
+  .vesting-bar-outer {
+    position: relative;
+    height: 28px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: visible;
+    border: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+  .vesting-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(245,192,154,0.3) 0%, var(--accent) 100%);
+    border-radius: 5px;
+  }
+  .vesting-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    font-family: var(--font-body);
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+    padding: 0 0.1rem;
+  }
+  .vesting-milestones {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border-mid);
+  }
+  .milestone {
+    background: var(--surface-2);
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+  }
+  .milestone-month {
+    font-size: 0.6rem;
+    font-family: var(--font-body);
+    color: var(--text-dim);
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.08em;
+  }
+  .milestone-pct {
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: var(--font-body);
+    color: var(--accent);
+  }
+  .milestone:last-child .milestone-pct { color: var(--green); }
+
+  .vesting-callouts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border-mid);
+  }
+  .vesting-callout {
+    padding: 0.9rem 1.2rem;
+    background: var(--surface);
+  }
+  .vesting-callout.good { border-left: 3px solid var(--green); }
+  .vesting-callout.warn { border-left: 3px solid var(--red); }
+  .vcl {
+    font-size: 0.62rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  .vesting-callout.good .vcl { color: var(--green); }
+  .vesting-callout.warn .vcl { color: var(--red); }
+  .vcp { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
+  .vcp strong { color: var(--text); }
+
+  @media (max-width: 600px) {
+    .mana-grid { grid-template-columns: 1fr; }
+    .mana-meta-row { grid-template-columns: 1fr; }
+    .vesting-milestones { grid-template-columns: repeat(3, 1fr); }
+    .vesting-callouts { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .timeline { padding-left: 2rem; }
+    .timeline-marker { left: -2rem; width: 20px; height: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="page-header">
+  <div class="page-label">Alchemix V3 · Reference</div>
+  <h1>V3 Migration</h1>
+  <p>Migration steps, Mana earning, and rALCX vesting in one place.</p>
+</div>
+
+<!-- ── Section 1: Migration Timeline ─────────────── -->
+<div class="section">
+  <div class="section-title">Migration sequence · AIP-123</div>
+  <div class="timeline">
+
+    <div class="timeline-step">
+      <div class="timeline-marker">01</div>
+      <div class="timeline-card">
+        <div class="timeline-card-header">
+          <span class="timeline-step-name">Freeze</span>
+          <span class="timeline-step-tag">Protocol pause</span>
+        </div>
+        <p>V2 contracts are paused and all functions disabled, freezing every position in place.</p>
+      </div>
+    </div>
+
+    <div class="timeline-step">
+      <div class="timeline-marker">02</div>
+      <div class="timeline-card">
+        <div class="timeline-card-header">
+          <span class="timeline-step-name">Snapshot</span>
+          <span class="timeline-step-tag">State capture</span>
+        </div>
+        <p>Every user's collateral and debt balance is recorded from the frozen contracts.</p>
+      </div>
+    </div>
+
+    <div class="timeline-step">
+      <div class="timeline-marker">03</div>
+      <div class="timeline-card">
+        <div class="timeline-card-header">
+          <span class="timeline-step-name">Asset Conversion</span>
+          <span class="timeline-step-tag">Collateral move</span>
+        </div>
+        <p>Collateral is converted to <strong>USDC</strong> and <strong>wETH</strong>. The DAO treasury covers up to <strong>0.25%</strong> slippage.</p>
+      </div>
+    </div>
+
+    <div class="timeline-step">
+      <div class="timeline-marker">04</div>
+      <div class="timeline-card">
+        <div class="timeline-card-header">
+          <span class="timeline-step-name">Positions</span>
+          <span class="timeline-step-tag">V3 recreation</span>
+        </div>
+        <p>The Alchemix multisig recreates each position in V3, matching the exact collateral and debt from the snapshot. Positions under <strong>$0.01</strong> are skipped.</p>
+      </div>
+    </div>
+
+    <div class="timeline-step">
+      <div class="timeline-marker">05</div>
+      <div class="timeline-card">
+        <div class="timeline-card-header">
+          <span class="timeline-step-name">Initialization</span>
+          <span class="timeline-step-tag">V3 launch</span>
+        </div>
+        <p>Position NFTs are sent to each owner's wallet. V3 is live.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Section 2: Mana Earning ────────────────────── -->
+<div class="section">
+  <div class="section-title">Mana earning · look-back from January 15, 2025</div>
+  <div class="mana-grid">
+    <div class="mana-tier">
+      <div class="mana-tier-label">V2 Vault Deposits</div>
+      <div class="mana-rate">1 / $100 / day</div>
+      <div class="mana-detail">
+        Earn 1 Mana for every $100 of vault deposit value per day.<br/><br/>
+        <strong>Requirement:</strong> Must complete the V2 → V3 migration to qualify.
+      </div>
+    </div>
+    <div class="mana-tier">
+      <div class="mana-tier-label">Standard LP Pools</div>
+      <div class="mana-rate">Retroactive</div>
+      <div class="mana-detail">
+        Based on average LP balance from <strong>Jan 15, 2025</strong> compared to current snapshot.<br/><br/>
+        <strong>Eligibility:</strong> Retroactive, based on on-chain history.
+      </div>
+    </div>
+    <div class="mana-tier">
+      <div class="mana-tier-label">CL Pools</div>
+      <div class="mana-rate">1,000 flat</div>
+      <div class="mana-detail">
+        One-time <strong>1,000 Mana</strong> bonus for any eligible concentrated liquidity pool position.<br/><br/>
+        <strong>Eligibility:</strong> Any eligible CL pool history.
+      </div>
+    </div>
+  </div>
+  <div class="mana-meta-row">
+    <div class="mana-meta-cell">
+      <div class="mana-meta-label">Minimum threshold</div>
+      <div class="mana-meta-val">1.337 Mana</div>
+      <div class="mana-meta-sub">Required for any reward distribution</div>
+    </div>
+    <div class="mana-meta-cell">
+      <div class="mana-meta-label">Total reward pool</div>
+      <div class="mana-meta-val">10,000 rALCX</div>
+      <div class="mana-meta-sub">Distributed proportional to total Mana</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Section 3: rALCX Vesting ───────────────────── -->
+<div class="section">
+  <div class="section-title">rALCX vesting · 6-month linear schedule</div>
+  <div class="vesting-wrap">
+    <div class="vesting-track-section">
+      <div class="vesting-track-label">Claimable ALCX over time</div>
+      <div class="vesting-bar-outer">
+        <div class="vesting-bar-fill" style="width:100%"></div>
+      </div>
+      <div class="vesting-ticks">
+        <span>Month 0</span>
+        <span>Month 1</span>
+        <span>Month 2</span>
+        <span>Month 3</span>
+        <span>Month 4</span>
+        <span>Month 5</span>
+        <span>Month 6 ✓</span>
+      </div>
+    </div>
+    <div class="vesting-milestones">
+      <div class="milestone">
+        <div class="milestone-month">Mo 1</div>
+        <div class="milestone-pct">16.7%</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-month">Mo 2</div>
+        <div class="milestone-pct">33.3%</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-month">Mo 3</div>
+        <div class="milestone-pct">50.0%</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-month">Mo 4</div>
+        <div class="milestone-pct">66.7%</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-month">Mo 5</div>
+        <div class="milestone-pct">83.3%</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-month">Mo 6</div>
+        <div class="milestone-pct">100%</div>
+      </div>
+    </div>
+    <div class="vesting-callouts">
+      <div class="vesting-callout good">
+        <div class="vcl">Wait full term</div>
+        <p class="vcp">After <strong>6 months</strong>, 100% of rALCX rewards can be claimed as ALCX with no penalty of any kind.</p>
+      </div>
+      <div class="vesting-callout warn">
+        <div class="vcl">Early exit penalty</div>
+        <p class="vcp">Claiming before 6 months pays out only the <strong>currently vested balance</strong>. All <strong>remaining unvested rewards are forfeited</strong> permanently.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

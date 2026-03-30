@@ -1,0 +1,117 @@
+# Alchemix Documentation
+
+> Alchemix is a DeFi protocol offering self-repaying loans. Deposit ETH or USDC, borrow up to 90% LTV at 0% interest, and yield automatically repays the debt. No price-based liquidations. Live on Ethereum, Optimism, and Arbitrum.
+> Generated: 2026-03-30
+
+---
+
+## User Documentation
+
+### Getting Started
+- [Quick Start](https://docs.alchemix.fi/user/quick-start): Deposit, borrow, and manage a self-repaying loan step by step
+- [V3 Migration](https://docs.alchemix.fi/user/v3-migration): How to migrate from Alchemix V2 to V3
+- [FAQ](https://docs.alchemix.fi/user/faq): Common questions about borrowing, repayment, earmarking, and fees
+
+### Core Concepts
+- [Self-Repaying Loans](https://docs.alchemix.fi/user/concepts/self-repaying-loans): How loans work — 0% interest, 90% LTV, automatic repayment via yield
+- [Mix-Yield Token (MYT)](https://docs.alchemix.fi/user/concepts/myt-and-yield): DAO-curated yield basket used as collateral
+- [Transmuter](https://docs.alchemix.fi/user/concepts/transmuter): Fixed-rate yield via 1:1 alAsset redemption over a set term
+- [alAssets](https://docs.alchemix.fi/user/concepts/alAssets): Synthetic debt tokens (alUSD, alETH) — minting, market price, peg mechanics
+- [Redemption Rate](https://docs.alchemix.fi/user/concepts/redemption-rate): How fast the system deleverages positions, temporal leverage explained
+- [Liquidations](https://docs.alchemix.fi/user/concepts/liquidations): When and how liquidation can occur (no price-based liquidation)
+- [Fees](https://docs.alchemix.fi/user/concepts/fees): Protocol fee structure (redemption, yield, transmuter fees)
+- [How the Peg is Maintained](https://docs.alchemix.fi/user/concepts/how-peg-is-maintained): Mechanisms keeping alAsset prices near 1:1
+- [Glossary](https://docs.alchemix.fi/user/glossary): Key terms defined
+
+### Tutorials
+- [Deposit and Borrow](https://docs.alchemix.fi/user/tutorials/deposit-and-borrow): Step-by-step borrowing guide
+- [Borrowing in Alchemix](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix): Detailed borrowing walkthrough
+- [Repay Loan](https://docs.alchemix.fi/user/tutorials/repay-loan): How to repay early or manage debt
+- [Redeem alAssets](https://docs.alchemix.fi/user/tutorials/redeem-alassets): Using the Transmuter for fixed-rate yield
+- [Use Passive MYT](https://docs.alchemix.fi/user/tutorials/use-passive-myt): Earning yield without borrowing
+
+### Safety
+- [Risk Considerations](https://docs.alchemix.fi/user/safety/risk-considerations): Understanding protocol risks
+- [Security](https://docs.alchemix.fi/user/safety/security): Audits and security practices
+
+### Reference
+- [Links](https://docs.alchemix.fi/user/links): Official links and resources
+- [Financial Reports](https://docs.alchemix.fi/user/financial-reports): Protocol financial data
+- [Marketing Material](https://docs.alchemix.fi/user/marketing-material): Brand assets and marketing resources
+
+---
+
+## Developer Documentation
+
+### Architecture
+- [Overview](https://docs.alchemix.fi/dev/architecture/overview): System architecture and component relationships
+- [Redemptions](https://docs.alchemix.fi/dev/architecture/redemptions): How redemptions flow through the system
+- [Security Model](https://docs.alchemix.fi/dev/architecture/security-model): Protocol security architecture
+
+### Alchemist (Core Lending)
+- [Alchemist Contract](https://docs.alchemix.fi/dev/alchemist/alchemist-contract): Core lending contract reference
+- [CDP Mechanics](https://docs.alchemix.fi/dev/alchemist/cdp-mechanics): Collateralized debt position internals
+- [Earmarking](https://docs.alchemix.fi/dev/alchemist/earmarking): How collateral is earmarked for redemptions
+- [Abstract Fee Vault Contract](https://docs.alchemix.fi/dev/alchemist/abstract-fee-vault-contract): Fee vault implementation
+- [Alchemist ETH Vault Contract](https://docs.alchemix.fi/dev/alchemist/alchemist-eth-vault-contract): ETH-specific vault
+- [Alchemist Token Vault Contract](https://docs.alchemix.fi/dev/alchemist/alchemist-token-vault-contract): ERC-20 token vault
+
+### MYT (Mix-Yield Token)
+- [Mix-Yield Token Overview](https://docs.alchemix.fi/dev/myt/mix-yield-token): MYT design and mechanics
+- [MYT Contract](https://docs.alchemix.fi/dev/myt/myt-contract): Core MYT vault contract reference
+- [Alchemist Allocator Contract](https://docs.alchemix.fi/dev/myt/alchemist-allocator-contract): Strategy allocation logic
+- [Alchemist Curator Contract](https://docs.alchemix.fi/dev/myt/alchemist-curator-contract): Curator role and permissions
+- [Alchemist Strategy Classifier Contract](https://docs.alchemix.fi/dev/myt/alchemist-strategy-classifier-contract): Strategy risk classification
+- [Permissioned Proxy Contract](https://docs.alchemix.fi/dev/myt/permissioned-proxy-contract): Proxy permissions
+
+### Transmuter
+- [Transmuter Overview](https://docs.alchemix.fi/dev/transmuter/overview): Transmuter design and mechanics
+- [Redemption Mechanics](https://docs.alchemix.fi/dev/transmuter/redemption-mechanics): How redemptions are processed
+- [Transmuter Contract](https://docs.alchemix.fi/dev/transmuter/transmuter-contract): Contract reference
+
+### Integration Guides
+- [Integrate Alchemist](https://docs.alchemix.fi/dev/integration/integrate-alchemist): How to integrate the core lending contract
+- [Integrate Transmuter](https://docs.alchemix.fi/dev/integration/integrate-transmuter): Transmuter integration guide
+- [Integrate MYT](https://docs.alchemix.fi/dev/integration/integrate-myt): MYT vault integration guide
+- [Using alAssets](https://docs.alchemix.fi/dev/integration/using-alassets): Building with alUSD and alETH
+- [Grants Program](https://docs.alchemix.fi/dev/integration/grants-program): Funding for builders
+
+### Contract Addresses
+- [Ethereum](https://docs.alchemix.fi/dev/contracts/ethereum): Mainnet contract addresses
+- [Optimism](https://docs.alchemix.fi/dev/contracts/optimism): OP Mainnet contract addresses
+- [Arbitrum](https://docs.alchemix.fi/dev/contracts/arbitrum): Arbitrum One contract addresses
+
+### Reference
+- [Developer FAQ](https://docs.alchemix.fi/dev/faq): Common integration and contract questions
+
+---
+
+## Governance
+
+- [Governance Overview](https://docs.alchemix.fi/governance/intro): How the Alchemix DAO works
+- [Governance Process](https://docs.alchemix.fi/governance/onchain/governance-process): Proposal lifecycle
+- [How to Vote](https://docs.alchemix.fi/governance/onchain/how-to-vote): Voting guide
+- [vqALCX](https://docs.alchemix.fi/governance/onchain/vqalcx): Vote-escrowed governance token
+- [On-Chain Infrastructure](https://docs.alchemix.fi/governance/onchain/onchain-governance-infrastructure): Governance contracts
+- [Contract Roles](https://docs.alchemix.fi/governance/guides/contract-roles): Permission model
+- [MYT Strategies](https://docs.alchemix.fi/governance/guides/myt-strategies): How the DAO manages yield strategies
+
+---
+
+## For Projects / Integrators
+
+- [Why Integrate](https://docs.alchemix.fi/projects/why-integrate/use-cases): Use cases for integrating Alchemix
+- [Feature Comparison](https://docs.alchemix.fi/projects/why-integrate/feature-comparison): Alchemix vs other lending protocols
+- [Getting Started](https://docs.alchemix.fi/projects/how-to/getting-started): Integration quick start
+- [Friendly Fork](https://docs.alchemix.fi/projects/how-to/friendly-fork): How to fork Alchemix
+- [Apply to Partner](https://docs.alchemix.fi/projects/contact/apply-to-partner): Partnership enquiries
+- [Co-Marketing](https://docs.alchemix.fi/projects/support/co-marketing): Joint marketing opportunities
+- [Brand Assets](https://docs.alchemix.fi/projects/support/brand-assets): Logos and brand guidelines
+- [Security (Projects)](https://docs.alchemix.fi/projects/support/security): Security resources for partners
+- [Projects FAQ](https://docs.alchemix.fi/projects/faq): Common integration questions
+
+---
+
+## Machine-Readable Resources
+
+- [Full Documentation (Markdown)](https://docs.alchemix.fi/llms-full.txt): All docs concatenated for AI ingestion
