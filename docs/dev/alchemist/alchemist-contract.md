@@ -725,6 +725,74 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Updated By** - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
 </details>
 
+<details>
+  <summary>_survivalAccumulator</summary>
+ 
+- **Description** - A global accumulator tracking the fraction of earmarked debt that survived redemptions. Used during account sync to compute how much of an account's earmarked debt persists after redemptions within each earmark epoch.
+- **Type** - uint256
+- **Used By**
+  - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
+  - [`_computeUnrealizedAccount(Account account, uint256 earmarkWeightCurrent, uint256 redemptionWeightCurrent, uint256 survivalAccumulatorCurrent)`](/dev/alchemist/alchemist-contract#InternalOperations_computeUnrealizedAccount)
+  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
+- **Updated By**
+  - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+  - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
+</details>
+<details>
+  <summary>_totalRedeemedDebt</summary>
+ 
+- **Description** - Global running total of debt redeemed via Transmuter redemptions. Used alongside `_totalRedeemedSharesOut` during account sync to compute each account's proportional collateral debit.
+- **Type** - uint256
+- **Used By**
+  - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
+  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
+- **Updated By**
+  - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+</details>
+<details>
+  <summary>_totalRedeemedSharesOut</summary>
+ 
+- **Description** - Global running total of MYT shares paid out for redemptions (collateral redeemed + fee collateral). Used alongside `_totalRedeemedDebt` during account sync to compute each account's proportional collateral debit.
+- **Type** - uint256
+- **Used By**
+  - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
+  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
+- **Updated By**
+  - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+</details>
+<details>
+  <summary>_mytSharesDeposited</summary>
+ 
+- **Description** - Total yield tokens deposited across all accounts. Used to differentiate between tokens deposited into a CDP and balance of the contract. Also used for deposit cap enforcement and global free collateral calculations.
+- **Type** - uint256
+- **Used By**
+  - [`deposit(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_deposit)
+  - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
+  - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+  - [`_getTotalUnderlyingValue()`](/dev/alchemist/alchemist-contract#InternalOperations_getTotalUnderlyingValue)
+  - [`_subCollateralBalance(uint256 amountInYieldTokens, uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_subCollateralBalance)
+  - [`_getTotalLockedUnderlyingValue()`](/dev/alchemist/alchemist-contract#InternalOperations_getTotalLockedUnderlyingValue)
+- **Updated By**
+  - [`deposit(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_deposit)
+  - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+  - [`_subCollateralBalance(uint256 amountInYieldTokens, uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_subCollateralBalance)
+- **Read By**
+  - `getTotalDeposited()`
+</details>
+<details>
+  <summary>_pendingCoverShares</summary>
+ 
+- **Description** - MYT shares of transmuter balance increase not yet applied as cover in `_earmark()`. When the transmuter's balance increases (from repayments or other sources), those shares are held here until consumed by earmarking.
+- **Type** - uint256
+- **Used By**
+  - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
+  - [`_simulateUnrealizedEarmark()`](/dev/alchemist/alchemist-contract#InternalOperations_simulateUnrealizedEarmark)
+  - [`setTransmuterTokenBalance(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_setTransmuterTokenBalance)
+- **Updated By**
+  - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
+  - [`setTransmuterTokenBalance(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_setTransmuterTokenBalance)
+</details>
+
 #### Mappings
 
 <details>
@@ -1516,6 +1584,146 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - view
 - **Returns** - `uint256 feeInYield` - repayment fee denominated in yield tokens
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_maxRepaymentFeeInYield">
+  <summary>_maxRepaymentFeeInYield(uint256 accountId)</summary>
+ 
+- **Description** - Returns the maximum yield-denominated fee that can be removed from an account's collateral while keeping the account strictly healthy (above the collateralization lower bound).
+  - `@param accountId` - the tokenId of the account to compute the max repayment fee for
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - max repayment fee in yield tokens
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_payWithFeeVault">
+  <summary>_payWithFeeVault(uint256 amountInUnderlying)</summary>
+ 
+- **Description** - Pays the liquidator fee in underlying tokens using the fee vault. Falls back gracefully if the fee vault has insufficient balance or is not set.
+  - `@param amountInUnderlying` - the amount of underlying tokens to pay
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256` - actual amount paid based on the vault balance
+- **Emits**
+  - [`FeeShortfall(address indexed liquidator, uint256 requested, uint256 paid)`](/dev/alchemist/alchemist-contract#Events_FeeShortfall)
+- **Reverts** - none
+</details>
+<details id="InternalOperations_isAccountHealthy">
+  <summary>_isAccountHealthy(uint256 accountId, bool refresh)</summary>
+ 
+- **Description** - Checks if the account is healthy. An account is healthy if its collateralization ratio is greater than the collateralization lower bound, or if it has no debt.
+  - `@param accountId` - the tokenId of the account to check
+  - `@param refresh` - whether to refresh the account's collateral value by including unrealized debt
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `bool` - true if the account is healthy, false otherwise
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_totalCollateralValue">
+  <summary>_totalCollateralValue(uint256 tokenId, bool includeUnrealizedDebt)</summary>
+ 
+- **Description** - Calculate the total collateral value of the account in debt tokens. When `includeUnrealizedDebt` is true, simulates unrealized debt to get an up-to-date collateral figure.
+  - `@param tokenId` - the id of the account owner
+  - `@param includeUnrealizedDebt` - whether to include unrealized debt adjustments in the calculation
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - the total collateral value of the account in debt tokens
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_computeUnrealizedAccount">
+  <summary>_computeUnrealizedAccount(Account account, uint256 earmarkWeightCurrent, uint256 redemptionWeightCurrent, uint256 survivalAccumulatorCurrent)</summary>
+ 
+- **Description** - Computes the account debt/earmark state at a given global weight snapshot. Determines how much debt has been earmarked and redeemed since the account's last sync by comparing its stored checkpoints against the provided current weights.
+  - `@param account` - the account storage reference
+  - `@param earmarkWeightCurrent` - the current global earmark weight to compute against
+  - `@param redemptionWeightCurrent` - the current global redemption weight to compute against
+  - `@param survivalAccumulatorCurrent` - the current global survival accumulator to compute against
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - a tuple (uint256, uint256, uint256) containing the following:
+  - newDebt - the debt after applying earmark and redemption
+  - newEarmarked - the earmarked portion after applying survival and new earmarks
+  - redeemedDebt - realized redeemed debt for this step
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_poke">
+  <summary>_poke(uint256 tokenId)</summary>
+ 
+- **Description** - Internal helper that applies global earmarking and syncs the specified account's state.
+  - `@param tokenId` - the tokenId of the account to poke
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - nonpayable
+- **Returns** - none
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_capDebtCredit">
+  <summary>_capDebtCredit(uint256 requested, uint256 accountDebt)</summary>
+ 
+- **Description** - Caps a debt-denominated credit against account debt and global debt.
+  - `@param requested` - the requested credit amount
+  - `@param accountDebt` - the account's current debt
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - the capped credit amount
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_clearableDebt">
+  <summary>_clearableDebt(uint256 accountDebt)</summary>
+ 
+- **Description** - Returns debt that can be safely cleared against global debt accounting.
+  - `@param accountDebt` - the account's current debt
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - the clearable debt amount
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_simulateUnrealizedEarmark">
+  <summary>_simulateUnrealizedEarmark()</summary>
+ 
+- **Description** - Simulates one uncommitted earmark window using current on-chain state without modifying storage. Used by `_calculateUnrealizedDebt` and `getUnrealizedCumulativeEarmarked` to provide view-only projections.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - a tuple (uint256, uint256) containing the following:
+  - earmarkWeightCopy - simulated earmark packed weight after the window
+  - effectiveEarmarked - the additional earmarked debt from this simulated window
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_isProtocolInBadDebt">
+  <summary>_isProtocolInBadDebt()</summary>
+ 
+- **Description** - Returns true if issued synthetics exceed global backing. Backing mirrors Transmuter claim math: locked collateral in Alchemist plus MYT shares currently held by Transmuter.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `bool` - true if protocol is in bad debt
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_requiredLockedShares">
+  <summary>_requiredLockedShares()</summary>
+ 
+- **Description** - Calculates the amount of MYT shares that must remain locked based on total debt and the minimum collateralization ratio.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - the required locked shares
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_getTotalLockedUnderlyingValue">
+  <summary>_getTotalLockedUnderlyingValue()</summary>
+ 
+- **Description** - Calculates the total value locked in the system from collateralization requirements, denominated in underlying tokens. Caps the result by actual shares held in the Alchemist.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - total locked underlying value
 - **Emits** - none
 - **Reverts** - none
 </details>
