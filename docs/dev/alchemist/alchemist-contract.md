@@ -62,16 +62,20 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Type** - Address
 - **Used By**
   - [`setDepositCap(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setDepositCap)
-  - [`getTotalDeposited()`](/dev/alchemist/alchemist-contract#ReadingState_getTotalDeposited)
   - [`deposit(uint256 amount, address recipient, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_deposit)
   - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
   - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+  - [`selfLiquidate(uint256 accountId, address recipient)`](/dev/alchemist/alchemist-contract#UserActions_selfLiquidate)
   - [`convertYieldTokensToUnderlying(uint256 amount)`](/dev/alchemist/alchemist-contract#ReadingState_convertYieldTokensToUnderlying)
   - [`convertUnderlyingTokensToYield(uint256 amount)`](/dev/alchemist/alchemist-contract#ReadingState_convertUnderlyingTokensToYield)
   - [`_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)`](/dev/alchemist/alchemist-contract#InternalOperations_forceRepay)
   - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
-  - [`_getTotalUnderlyingValue()`](/dev/alchemist/alchemist-contract#ReadingState_getTotalUnderlyingValue)
+  - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
+  - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
+  - [`_isProtocolInBadDebt()`](/dev/alchemist/alchemist-contract#InternalOperations_isProtocolInBadDebt)
+  - [`_simulateUnrealizedEarmark()`](/dev/alchemist/alchemist-contract#InternalOperations_simulateUnrealizedEarmark)
+  - [`_getTotalUnderlyingValue()`](/dev/alchemist/alchemist-contract#InternalOperations_getTotalUnderlyingValue)
 - **Updated By**
   - NONE - immutable variable
 - **Read By** - `myt()`
@@ -79,11 +83,10 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 <details>
   <summary>tokenAdapter</summary>
 
-- **Description** - token adapter used to get price for yield tokens.
+- **Description** - token adapter used to get price for yield tokens. Currently unused.
 - **Type** - Address
 - **Used By**
-  - [`convertYieldTokensToUnderlying(uint256 amount)`](/dev/alchemist/alchemist-contract#ReadingState_convertYieldTokensToUnderlying)
-  - [`convertUnderlyingTokensToYield(uin256 amount)`](/dev/alchemist/alchemist-contract#ReadingState_convertUnderlyingTokensToYield)
+  - NONE
 - **Updated By**
   - [`setTokenAdapter(address value)`](/dev/alchemist/alchemist-contract#AdminActions_setTokenAdapter)
 - **Read By**
@@ -99,13 +102,13 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   - [`burn(uint256 amount, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_burn)
   - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [Transmuter Actions](/dev/alchemist/alchemist-contract#transmuter-actions)
-  - [`deposit(uint256 amount, address recipient, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_deposit)
-  - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
-  - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
+  - [`selfLiquidate(uint256 accountId, address recipient)`](/dev/alchemist/alchemist-contract#UserActions_selfLiquidate)
+  - [`_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)`](/dev/alchemist/alchemist-contract#InternalOperations_forceRepay)
+  - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
   - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
-  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
+  - [`_isProtocolInBadDebt()`](/dev/alchemist/alchemist-contract#InternalOperations_isProtocolInBadDebt)
+  - [`_simulateUnrealizedEarmark()`](/dev/alchemist/alchemist-contract#InternalOperations_simulateUnrealizedEarmark)
 - **Updated By**
   - NONE - set on initialization
 - **Read By**
@@ -120,6 +123,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Used By**
   - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+  - [`_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)`](/dev/alchemist/alchemist-contract#InternalOperations_forceRepay)
 - **Updated By**
   - [`setProtocolFeeReceiver(address reciever)`](/dev/alchemist/alchemist-contract#AdminActions_setProtocolFeeReceiver)
 - **Read By**
@@ -150,10 +154,14 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Type** - uint256
 - **Used By**
   - [`setCollateralizationLowerBound(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setCollateralizationLowerBound)
+  - [`setGlobalMinimumCollateralization(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setGlobalMinimumCollateralization)
+  - [`setLiquidationTargetCollateralization(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setLiquidationTargetCollateralization)
   - [`getMaxBorrowable(uint256 tokenId)`](/dev/alchemist/alchemist-contract#ReadingState_getMaxBorrowable)
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
+  - [`getMaxWithdrawable(uint256 tokenId)`](/dev/alchemist/alchemist-contract#ReadingState_getMaxWithdrawable)
+  - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
   - [`_addDebt(uint256 tokenId, uint256 amount)`](/dev/alchemist/alchemist-contract#InternalOperations_addDebt)
   - [`_isUnderCollateralized(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_isUnderCollateralized)
+  - [`_requiredLockedShares()`](/dev/alchemist/alchemist-contract#InternalOperations_requiredLockedShares)
 - **Updated By**
   - [`setMinimumCollateralization(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setMinimumCollateralization)
 - **Read By**
@@ -166,6 +174,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - represents the minimum allowed global collateralization ratio for the Alchemist. A threshold that if crossed will result in fully liquidating accounts to cover. Only accounts that are already eligible for standard (partial) liquidation can be fully liquidated as a result of the globalMinimumCollateralization.
 - **Type** - uint256
 - **Used By**
+  - [`setMinimumCollateralization(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setMinimumCollateralization)
   - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
 - **Updated By**
   - [`setGlobalMinimumCollateralization(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setGlobalMinimumCollateralization)
@@ -180,7 +189,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   If `collateral / debt` falls below this value, the account becomes eligible for liquidation. In LTV terms: `liquidation LTV = 1 / collateralizationLowerBound`.
 - **Type** - uint256
 - **Used By**
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
+  - [`_isAccountHealthy(uint256 accountId, bool refresh)`](/dev/alchemist/alchemist-contract#InternalOperations_isAccountHealthy)
+  - [`_maxRepaymentFeeInYield(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_maxRepaymentFeeInYield)
 - **Updated By**
   - [`setCollateralizationLowerBound(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setCollateralizationLowerBound)
 - **Read By**
@@ -190,7 +200,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 <details>
   <summary>liquidationTargetCollateralization</summary>
 
-- **Description** - The target collateralization ratio to restore accounts to after liquidation. Must be >= minimumCollateralization.
+- **Description** - The target collateralization ratio to restore accounts to after liquidation. Must be `>= minimumCollateralization`.
 - **Type** - uint256
 - **Used By**
   - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
@@ -207,9 +217,9 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - the fee percentage (expressed in BPS) on users paid to the protocol. The fee is taken from collateral during redepmtions, or from collateral when users pay down their non-earmarked debt
 - **Type** - uint256
 - **Used By**
-  - [`burn(uint256 amount, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_burn)
   - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+  - [`_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)`](/dev/alchemist/alchemist-contract#InternalOperations_forceRepay)
 - **Updated By**
   - [`setProtocolFee(uint256 fee)`](/dev/alchemist/alchemist-contract#AdminActions_setProtocolFee)
 - **Read By**
@@ -222,7 +232,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - fee percentage (expressed in BPS) paid to liquidators on liquidation. The fee amount (what this percentage is applied to) is denominated in debt token, which is then converted to yieldToken and taken from yieldToken. Also can be taken from underlying if feeBonus > 0.
 - **Type** - uint256
 - **Used By**
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
+  - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
 - **Updated By**
   - [`setLiquidatorFee(uint256 fee)`](/dev/alchemist/alchemist-contract#AdminActions_setLiquidatorFee)
 - **Read By**
@@ -235,7 +245,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - fee percentage (expressed in BPS) paid to liquidators on repayment. The fee amount (which this percentage is applied to) is denominated in yieldToken.
 - **Type** - uint256
 - **Used By**
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
+  - [`_calculateRepaymentFee(uint256 repaidAmountInYield)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateRepaymentFee)
 - **Updated By**
   - [`setRepaymentFee(uint256 fee)`](/dev/alchemist/alchemist-contract#AdminActions_setRepaymentFee)
 - **Read By**
@@ -252,15 +262,12 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 
 - **Description** - Constant equaling 10_000. Used for any explicit decimal representation. Treats 100% as 10,000; meaning 10% would be expressed as 1000 BPS.
 - **Type** - uint256
-- **Updated By**
-  - [`setProtocolFee(uint256 fee)`](/dev/alchemist/alchemist-contract#AdminActions_setProtocolFee)
-  - [`setLiquidatorFee(uint256 fee)`](/dev/alchemist/alchemist-contract#AdminActions_setLiquidatorFee)
-  - [`setRepaymentFee(uint256 fee)`](/dev/alchemist/alchemist-contract#AdminActions_setRepaymentFee)
-  - [`burn(uint256 amount, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_burn)
+- **Used By**
   - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
-  - [`calculateLiquidation(uint256 collateral, uint256 debt, uint256 targetCollateralization, uint256 alchemistCurrentCollateralization, uint256 alchemistMinimumCollateralization, uint256 feeBps)`](/dev/alchemist/alchemist-contract#ReadingState_calculateLiquidation)
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
+  - [`calculateLiquidation(...)`](/dev/alchemist/alchemist-contract#ReadingState_calculateLiquidation)
+  - [`_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)`](/dev/alchemist/alchemist-contract#InternalOperations_forceRepay)
+  - [`_calculateRepaymentFee(uint256 repaidAmountInYield)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateRepaymentFee)
 - **Updated By** - NONE - immutable variable
 </details>
 <details>
@@ -268,25 +275,26 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 
 - **Description** - A multiplier that is used to be able to do fixed point math, since solidity does not natively handle decimals. Like ERC20 tokens which typically use 18 decimals, it expresses 1 as 1e18. Anything less is a fraction of 1.
 - **Type** - uint256
-- **Updated By**
+- **Used By**
   - `setMinimumCollateralization(uint256 value)`
   - [`setCollateralizationLowerBound(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setCollateralizationLowerBound)
+  - [`setLiquidationTargetCollateralization(uint256 value)`](/dev/alchemist/alchemist-contract#AdminActions_setLiquidationTargetCollateralization)
   - [`getMaxBorrowable(uint256 tokenId)`](/dev/alchemist/alchemist-contract#ReadingState_getMaxBorrowable)
+  - [`getMaxWithdrawable(uint256 tokenId)`](/dev/alchemist/alchemist-contract#ReadingState_getMaxWithdrawable)
   - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
   - [`calculateLiquidation(uint256 collateral, uint256 debt, uint256 targetCollateralization, uint256 alchemistCurrentCollateralization, uint256 alchemistMinimumCollateralization, uint256 feeBps)`](/dev/alchemist/alchemist-contract#ReadingState_calculateLiquidation)
-  - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
   - [`_addDebt(uint256 tokenId, uint256 amount)`](/dev/alchemist/alchemist-contract#InternalOperations_addDebt)
-  - [`_subDebt(uint256 tokenId, uint256 amount)`](/dev/alchemist/alchemist-contract#InternalOperations_subDebt)
   - [`_isUnderCollateralized(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_isUnderCollateralized)
+  - [`_isAccountHealthy(uint256 accountId, bool refresh)`](/dev/alchemist/alchemist-contract#InternalOperations_isAccountHealthy)
   - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
-  - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
-  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
+  - [`_maxRepaymentFeeInYield(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_maxRepaymentFeeInYield)
+  - [`_requiredLockedShares()`](/dev/alchemist/alchemist-contract#InternalOperations_requiredLockedShares)
 - **Updated By** - NONE - immutable variable
 </details>
 <details>
   <summary>ONE_Q128</summary>
 
-- **Description** - Constant equaling `uint256(1) << 128`. Used as the neutral element (1.0) for Q128.128 fixed-point arithmetic in earmarking and redemption weight calculations.
+- **Description** - Constant equaling `uint256(1) << 128`. Represents 1.0 in Q128.128 fixed-point format. Multiplying a weight or ratio by this value leaves it unchanged. Used in earmarking and redemption weight calculations.
 - **Type** - uint256
 - **Updated By** - NONE - immutable variable
 </details>
@@ -310,18 +318,18 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - user deposits denominated in yieldTokens.
 - **Type** - uint256
 - **Used By**
-  - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`] (/dev/alchemist/alchemist-contract#UserActions_withdraw)
+  - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
   - [`selfLiquidate(uint256 accountId, address recipient)`](/dev/alchemist/alchemist-contract#UserActions_selfLiquidate)
   - [`_subCollateralBalance(uint256 amountInYieldTokens, uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_subCollateralBalance)
   - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
   - [`_liquidate(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_liquidate)
   - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
-  - [`_maxRepaymentFeeInYield(uint256 accountId)`](/dev/alchemist/achemist-contract#InternalOperations_maxRepaymentFeeInYield)
+  - [`_maxRepaymentFeeInYield(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_maxRepaymentFeeInYield)
   - [`_totalCollateralValue(uint256 tokenId, bool includeUnrealizedDebt)`](/dev/alchemist/alchemist-contract#InternalOperations_totalCollateralValue)
   - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
 - **Updated By**
   - [`deposit(uint256 amount, address recipient, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_deposit) 
-  - [`withdraw(uint256 amount, address recipient, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
+  - [`withdraw(uint256 amount, address recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_withdraw)
   - [`_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)`](/dev/alchemist/alchemist-contract#InternalOperations_forceRepay) 
   - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
   - [`_subCollateralBalance(uint256 amountInYieldTokens, uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_subCollateralBalance)
@@ -371,8 +379,9 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Type** - uint256
 - **Used By**
   - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
-  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
-- **Updated By** - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
+  - [`_computeUnrealizedAccount(Account account, uint256 earmarkWeightCurrent, uint256 redemptionWeightCurrent, uint256 survivalAccumulatorCurrent)`](/dev/alchemist/alchemist-contract#InternalOperations_computeUnrealizedAccount)
+- **Updated By**
+  - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
 </details>
 <details>
   <summary>lastAccruedRedemptionWeight</summary>
@@ -381,9 +390,9 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Type** - uint256
 - **Used By**
   - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
-  - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
+  - [`_computeUnrealizedAccount(Account account, uint256 earmarkWeightCurrent, uint256 redemptionWeightCurrent, uint256 survivalAccumulatorCurrent)`](/dev/alchemist/alchemist-contract#InternalOperations_computeUnrealizedAccount)
 - **Updated By**
-- [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
+  - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
 </details>
 <details>
   <summary>lastMintBlock</summary>
@@ -445,7 +454,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>mintAllowances</summary>
 
 - **Description** - allowances for minting alAssets, per version. Indexing by allowances version allows for easy efficient clearing of the entire map if needed.
-- **Type** - mapping(uint256 => mapping(address => uint256))
+- **Type** - `mapping(uint256 => mapping(address => uint256))`
 - **Updated By**
   - [`_approveMint(uint256 ownerTokenId, address spender, uint256 amount)`](/dev/alchemist/alchemist-contract#InternalOperations_approveMint)
   - [`_decreaseMintAllowance(uint256 ownerTokenId, address spender, uint256 amount)`](/dev/alchemist/alchemist-contract#InternalOperations_decreaseMintAllowance)
@@ -523,7 +532,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - An external vault used to hold funds that can be used to pay liquidators in the event that Alchemist funds cannot cover the costs of liquidation. This would occur if (1) the account does not have enough funds to cover the liquidation, or (2) the entire Alchemist is undercollateralized.
 - **Type** - address
 - **Used By**
-  - [`_`doliquidation(uint256 accountId, uint256 collateralInUnderlying, uint256 repaidAmountInYield)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
+  - [`_doLiquidation(uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_doLiquidation)
+  - [`_payWithFeeVault(uint256 amountInUnderlying)`](/dev/alchemist/alchemist-contract#InternalOperations_payWithFeeVault)
 - **Updated By**
   - [`setAlchemistFeeVault(address value)`](/dev/alchemist/alchemist-contract#AdminActions_setAlchemistFeeVault)
 - **Read By**
@@ -577,7 +587,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   - [`_subDebt(uint256 tokenId, uint256 amount)`](/dev/alchemist/alchemist-contract#InternalOperations_subDebt)
   - [`_simulateUnrealizedEarmark()`](/dev/alchemist/alchemist-contract#InternalOperations_simulateUnrealizedEarmark)
 - **Updated By**
-  - [repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
+  - [`repay(uint256 amount, uint256 recipientTokenId)`](/dev/alchemist/alchemist-contract#UserActions_repay)
   - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
   - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
   - [`_subEarmarkedDebt(uint256 amountInDebtTokens, uint256 accountId)`](/dev/alchemist/alchemist-contract#InternalOperations_subEarmarkedDebt)
@@ -617,7 +627,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
   - [`_simulateUnrealizedEarmark()`](/dev/alchemist/alchemist-contract#InternalOperations_simulateUnrealizedEarmark)
 - **Updated By**
-  - [`setTransmuterTokenBalance(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_setLastTransmuterTokenBalance)
+  - [`setTransmuterTokenBalance(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_setTransmuterTokenBalance)
+  - [`_earmark()`](/dev/alchemist/alchemist-contract#InternalOperations_earmark)
 - **Read By** - `lastTransmuterTokenBalance()`
 </details>
 <details>
@@ -643,6 +654,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Type** - uint256
 - **Used By**
   - [`burn(uint256 amount, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_burn)
+  - [`_isProtocolInBadDebt()`](/dev/alchemist/alchemist-contract#InternalOperations_isProtocolInBadDebt)
 - **Updated By**
   - [`burn(uint256 amount, uint256 recipientId)`](/dev/alchemist/alchemist-contract#UserActions_burn)
   - [`reduceSyntheticsIssued(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_reduceSyntheticsIssued)
@@ -686,7 +698,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>guardians</summary>
 
 - **Description** - A mapping of addresses to true or false values, where true indicates that the address is enabled as having the guardian role (able to execute functions guarded by the `OnlyAdminOrGuardian` modifier), and false marks the address as not having the guardian role.
-- **Type** - mapping(address => bool)
+- **Type** - `mapping(address => bool)`
 - **Used By**
   - [`Guardian Actions`](/dev/alchemist/alchemist-contract#guardian-actions)
 - **Updated By**
@@ -719,10 +731,10 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - A global cumulative scaling factor that increases whenever earmarked debt is redeemed. Accounts use the difference between this value and their account-specific lastAccruedRedemptionWeight to determine how much of their earmarked debt has been reconciled by redemptions.
 - **Type** - uint256
 - **Used By**
-  - [`_validate(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_validate)
   - [`_sync(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_sync)
   - [`_calculateUnrealizedDebt(uint256 tokenId)`](/dev/alchemist/alchemist-contract#InternalOperations_calculateUnrealizedDebt)
-- **Updated By** - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
+- **Updated By** 
+  - [`redeem(uint256 amount)`](/dev/alchemist/alchemist-contract#TransmuterActions_redeem)
 </details>
 
 <details>
@@ -799,7 +811,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>_accounts</summary>
 
 - **Description** - tracks user accounts and balances.
-- **Type** - mapping(uint256 => Account)
+- **Type** - `mapping(uint256 => Account)`
 - **Used By**
   - [`mintAllowance(uint256 ownerTokenId, address spender)`](/dev/alchemist/alchemist-contract#ReadingState_mintAllowance)
   - [`deposit(uint256 amount, uint256 recipient, uint256 tokenId)`](/dev/alchemist/alchemist-contract#UserActions_deposit)
@@ -833,7 +845,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>_earmarkEpochStartRedemptionWeight</summary>
 
 - **Description** - Redemption weight snapshot at the start of each earmark epoch. Used during account sync to determine survival ratios across epoch boundaries.
-- **Type** - mapping(uint256 => uint256)
+- **Type** - `mapping(uint256 => uint256)`
 - **Used By**
   - [`_computeUnrealizedAccount(Account account, uint256 earmarkWeightCurrent, uint256 redemptionWeightCurrent, uint256 survivalAccumulatorCurrent)`](/dev/alchemist/alchemist-contract#InternalOperations_computeUnrealizedAccount)
 - **Updated By** 
@@ -843,7 +855,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>_earmarkEpochStartSurvivalAccumulator</summary>
 
 - **Description** - Survival accumulator snapshot at the start of each earmark epoch. Used during account sync to determine how much earmarked debt persisted across epoch boundaries.
-- **Type** - mapping(uint256 => uint256)
+- **Type** - `mapping(uint256 => uint256)`
 - **Used By**
   - [`_computeUnrealizedAccount(Account account, uint256 earmarkWeightCurrent, uint256 redemptionWeightCurrent, uint256 survivalAccumulatorCurrent)`](/dev/alchemist/alchemist-contract#InternalOperations_computeUnrealizedAccount)
 - **Updated By**
@@ -929,7 +941,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>burn(uint256 amount, uint256 recipientId)</summary>
 
 - **Description** - Burn debt tokens (alAssets) from the caller to repay the unearmarked portion of the position’s debt.<br/><br/>
-  First syncs global/account state and makes sure it would not be burning debt that is locked for the transmuter, then burns the caller’s tokens. Charges a protocol fee in yield tokens against the account’s collateral.<br/><br/>
+  First syncs global/account state and makes sure it would not be burning debt that is locked for the transmuter, then burns the caller’s tokens.<br/><br/>
   Difference between `repay()` and `burn()`:<br/>
   `repay()` takes an amount of yieldTokens and can reconcile earmarked debt in addition to unearmarked debt. It does not actually reduce debtToken supply, it only reconciles accounts and collects funds that will be alter used to burn debt.<br/>
   `burn()` takes debt tokens and can only reconcile unearmarked debt of accounts. It actually removes debtTokens from circulation.
@@ -951,7 +963,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   `burn()` takes debt tokens and can only reconcile unearmarked debt of accounts. It removes debtTokens from circulation.
   - `@param amount` - the amount of yield tokens the caller provides as repayment
   - `@param recipientTokenId` - the tokenId of the account for which debt is being repaid
-- **Visibility Specifier** - public
+- **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
 - **Returns** - uint256 yieldTokensUsedToRepay
 - **Emits**
@@ -1141,7 +1153,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`DepositCapUpdated(uint256 value)`](/dev/alchemist/alchemist-contract#Events_DepositCapUpdated)
-- **Reverts** - none
+- **Reverts**
+  - `value < current` myt balance of the contract
 </details>
 <details id="AdminActions_setProtocolFeeReceiver">
   <summary>setProtocolFeeReceiver(address value)</summary>
@@ -1153,7 +1166,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`ProtocolFeeReceiverUpdated(address value)`](/dev/alchemist/alchemist-contract#Events_ProtocolFeeReceiverUpdated)
-- **Reverts** - none
+- **Reverts**
+  - value == zero address
 </details>
 <details id="AdminActions_setProtocolFee">
   <summary>setProtocolFee(uint256 fee)</summary>
@@ -1165,7 +1179,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`ProtocolFeeUpdated(uint256 value)`](/dev/alchemist/alchemist-contract#Events_ProtocolFeeUpdated)
-- **Reverts** - none
+- **Reverts**
+  - fee > BPS (10_000 or 100%)
 </details>
 <details id="AdminActions_setLiquidatorFee">
   <summary>setLiquidatorFee(uint256 fee)</summary>
@@ -1177,7 +1192,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`LiquidatorFeeUpdated(uint256 fee)`](/dev/alchemist/alchemist-contract#Events_LiquidatorFeeUpdated)
-- **Reverts** - none
+- **Reverts**
+  - fee > BPS (10_000 or 100%)
 </details>
 <details id="AdminActions_setRepaymentFee">
   <summary>setRepaymentFee(uint256 fee)</summary>
@@ -1189,7 +1205,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`RepaymentFeeUpdated(uint256 fee)`](/dev/alchemist/alchemist-contract#Events_RepaymentFeeUpdated)
-- **Reverts** - none
+- **Reverts**
+  - fee > BPS (10_000 or 100%)
 </details>
 <details id="AdminActions_setTokenAdapter">
   <summary>setTokenAdapter(address value)</summary>
@@ -1201,7 +1218,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`TokenAdapterUpdated(address value)`](/dev/alchemist/alchemist-contract#Events_TokenAdapterUpdated)
-- **Reverts** - none
+- **Reverts**
+  - value == zero address
 </details>
 <details id="AdminActions_setGuardian">
   <summary>setGuardian(address guardian, bool isActive)</summary>
@@ -1214,19 +1232,21 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`GuardianSet(address guardian, bool isActive)`](/dev/alchemist/alchemist-contract#Events_GuardianSet)
-- **Reverts** - none
+- **Reverts**
+  - guardian == zero address
 </details>
 <details id="AdminActions_setMinimumCollateralization">
   <summary>setMinimumCollateralization(uint256 value)</summary>
 
 - **Description** - Sets the minimumCollateralization variable.
-  - `@param value` - the value to use for the new minimumCollateralization variable. Must be >= 1e18. (1)
+  - `@param value` - the value to use for the new minimumCollateralization variable. Must be `>= 1e18`. (1)
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
 - **Emits**
   - [`MinimumCollateralizationUpdated(uint256 value)`](/dev/alchemist/alchemist-contract#Events_MinimumCollateralizationUpdated)
-- **Reverts** - none
+- **Reverts**
+  - `value < 1e18` (Would allow debt to exceed collateral if allowed. 1e18 is 100% collateralization, or 100% LTV)
 </details>
 <details id="AdminActions_setGlobalMinimumCollateralization">
   <summary>setGlobalMinimumCollateralization(uint256 value)</summary>
@@ -1238,7 +1258,8 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`GlobalMinimumCollateralizationUpdated(uint256 value)`](/dev/alchemist/alchemist-contract#Events_GlobalMinimumCollateralizationUpdated)
-- **Reverts** - none
+- **Reverts**
+  - `value < minimumCollateralization` (The system cannot be in worse shape than individual borrowers)
 </details>
 <details id="AdminActions_setCollateralizationLowerBound">
   <summary>setCollateralizationLowerBound(uint256 value)</summary>
@@ -1250,19 +1271,25 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Returns** - none
 - **Emits**
   - [`CollateralizationLowerBoundUpdated(uint256 value)`](/dev/alchemist/alchemist-contract#Events_CollateralizationLowerBoundUpdated)
-- **Reverts** - none
+- **Reverts**
+  - `value >= minimumCollateralization` (Liquidation eligibility must be below the minimum collateralization threshold)
+  - `value < 1e18` (Would allow debt to exceed collateral if allowed. 1e18 is 100% collateralization, or 100% LTV)
 </details>
 <details id="AdminActions_setLiquidationTargetCollateralization">
   <summary>setLiquidationTargetCollateralization(uint256 value)</summary>
 
 - **Description** - Sets the liquidationTargetCollateralization variable.
-  - `@param value` - the uint256 to use as the new value. Must be > 1e18, >= minimumCollateralization, > collateralizationLowerBound, and <= 2e18.
+  - `@param value` - the uint256 to use as the new value. Must be `> 1e18`, `>= minimumCollateralization`, `> collateralizationLowerBound`, and `<= 2e18`.
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
 - **Emits**
   - [`LiquidationTargetCollateralizationUpdated(uint256 value)`](/dev/alchemist/alchemist-contract#Events_LiquidationTargetCollateralizationUpdated)
-- **Reverts** - none
+- **Reverts**
+  - `value <= 1e18` (must be above 100% collateralization / below 100% LTV)
+  - `value < minimumCollateralization`
+  - `value <= collateralizationLowerBound`
+  - `value > 2e18` (must be at or below 200% collateralization / at or above 50% LTV)
 </details>
 
 ### Transmuter Actions
@@ -1309,6 +1336,18 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 
 > Functions that are cannot be called by other contracts or EOAs. Used only as helpers for performing internal logic.
 
+<details id="InternalOperations_checkArgument">
+  <summary>_checkArgument(bool expression)</summary>
+
+- **Description** - Guard for function arguments. Reverts if `expression` evaluates false.
+  - `@param expression` - boolean to assert
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - pure
+- **Returns** - none
+- **Emits** - none
+- **Reverts** 
+  - [`IllegalArgument()`](/dev/alchemist/alchemist-contract#Error_IllegalArgument) — assertion failed
+</details>
 <details id="InternalOperations_sync">
   <summary>_sync(uint256 tokenId)</summary>
 
@@ -1325,7 +1364,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>_earmark()</summary>
 
 - **Description** - Advance global earmarking for this block.<br/><br/>
-  Computes the new earmark amount since the last run, subtracts Transmuter’s newly accrued yield, then increases `_earmarkWeight` and `cumulativeEarmarked`. Finally stamps `lastEarmarkBlock`.
+  Computes the new earmark amount since the last run, applies pending cover from the Transmuter's newly accrued yield, then increases `_earmarkWeight` and `cumulativeEarmarked`. Finally stamps `lastEarmarkBlock`.
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
@@ -1370,12 +1409,10 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - **Description** - Performs isolated liquidation logic. Occurring after `_liquidate()` handles syncing/earmarking, and once an account is already determined to be below the collateralization lower bound.<br/><br/>
   Calculates liquidation terms using account and global ratios, converts debt-denominated amounts to tokens, reduces account debt, and seizes collateral in yield tokens. It then transfers amount seized minus fees to the Transmuter, and pays the liquidator fees using user collateral, or from this Alchemist’s `alchemistFeeVault`.
   - `@param accountId` - the tokenId of the account being liquidated
-  - `@param collateralInUnderlying` - the account’s collateral value expressed in underlying units (used for liquidation math)
-  - `@param repaidAmountInYield` - the amount of debt paid off in yield token during earmarking settlement prior to this liquidation
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - nonpayable
 - **Returns**
-  - `amountLiquidated` — the amount of yield tokens seized in \_doLiquidation, plus the amount seized prior to this function call for earmarking repayment (forwarded to this function as `repaidAmountInYield`)
+  - `amountLiquidated` — the amount of yield tokens seized during liquidation
   - `feeInYield` — base fee paid to the liquidator in yield tokens, coming from user collateral
   - `feeInUnderlying` — additional fee paid to the liquidator in underlying tokens, coming from the fee vault
 - **Emits** - none
@@ -1439,7 +1476,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 
 </details>
 <details id="InternalOperations_forceRepay">
-  <summary>_forceRepay(uint256 accountId, uint256 amount)</summary>
+  <summary>_forceRepay(uint256 accountId, uint256 amount, bool skipPoke)</summary>
 
 - **Description** - Repays earmarked debt using the account’s collateral (denominated in yieldToken).<br/><br/>
   Earmarks and syncs to update global/account state, then reduces account debt through repayment. First consumes earmarked debt, then deducts the repayment from collateral. (yieldToken)<br/>
@@ -1842,7 +1879,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 <details id="ReadingState_convertYieldTokensToUnderlying">
   <summary>convertYieldTokensToUnderlying(uint256 amount)</summary>
 
-- **Description** - Convert yield tokens to underlying tokens using the adapter price and the yield token’s decimals. Returns the underlying-denominated amount
+- **Description** - Convert yield tokens to underlying tokens using the MYT vault's share-to-asset conversion. Returns the underlying-denominated amount
   - `@param amount` - yieldToken amount
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - view
@@ -1866,7 +1903,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>convertYieldTokensToDebt(uint256 amount)</summary>
 
 - **Description** - A multi-step conversion starting with an amount in yieldToken, converting to underlyingToken, and then finally from underlyingToken to debtToken.<br/><br/>
-  First converts yield to underlying with the adapter price/decimals, then normalizes underlying to debt units with `underlyingConversionFactor`.
+  First converts yield to underlying via the MYT vault's share-to-asset conversion, then normalizes underlying to debt units with `underlyingConversionFactor`.
   - `@param amount` - yieldToken amount
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - view
@@ -1888,7 +1925,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 <details id="ReadingState_convertUnderlyingTokensToYield">
   <summary>convertUnderlyingTokensToYield(uint256 amount)</summary>
 
-- **Description** - Convert underlying tokens to yield tokens using the adapter price and the yield token’s decimals. Returns 0 if adapter price is unavailable.
+- **Description** - Convert underlying tokens to yield tokens using the MYT vault's asset-to-share conversion.
   - `@param amount` - underlyingToken amount
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - view
@@ -1900,7 +1937,7 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
   <summary>convertDebtTokensToYield(uint256 amount)</summary>
 
 - **Description** - A multi-step conversion starting with an amount in debtToken, converting to underlyingToken, and then finally from underlyingToken to yieldToken.<br/><br/>
-  First normalizes debt to underlying with `underlyingConversionFactor`, then converts underlying to yield using the adapter price/decimals.
+  First normalizes debt to underlying with `underlyingConversionFactor`, then converts underlying to yield via the MYT vault's asset-to-share conversion.
   - `@param amount` - debtToken amount
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - view
@@ -1943,6 +1980,10 @@ The Alchemist is the vault contract responsible for accepting deposits and issui
 - <span id="Error_CannotMintOnRepayBlock"><strong><code>CannotMintOnRepayBlock()</code></strong> - An error which is used to indicate that a user is trying to mint on the same block they are repaying</span>
 - <span id="Error_GlobalCollateralizationTooLow"><strong><code>GlobalCollateralizationTooLow(uint256, uint256)</code></strong> - An error which is used to indicate that the global collateralization ratio is too low</span>
 - <span id="Error_AccountNotHealthy"><strong><code>AccountNotHealthy()</code></strong> - An error which is used to indicate that an account is not healthy</span>
+- <span id="Error_IllegalArgument"><strong><code>IllegalArgument()</code></strong> - An error which is used to indicate that a function argument is not valid.</span>
+- <span id="Error_IllegalState"><strong><code>IllegalState()</code></strong> - An error which is used to indicate that the contract is in an illegal state for the requested operation.</span>
+- <span id="Error_Unauthorized"><strong><code>Unauthorized()</code></strong> - An error which is used to indicate that the caller is not authorized to perform the requested action.</span>
+- <span id="Error_MissingInputData"><strong><code>MissingInputData()</code></strong> - An error which is used to indicate that required input data is missing.</span>
 
 ## Events
 
