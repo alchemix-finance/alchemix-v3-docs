@@ -92,8 +92,21 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - A true/false value indicating whether or not there are additional incentives on top of the base functioning of the strategy
 - **Type** - bool
 - **Used By**
-  - [`snapshotYield()`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Updated By** - `setAdditionalIncentives(bool newValue)`
+  - None in the base contract. May be consumed by derived strategy implementations.
+- **Updated By**
+  - `setAdditionalIncentives(bool newValue)`
+</details>
+<details>
+  <summary>slippageBPS</summary>
+
+- **Description** - The slippage tolerance for this strategy expressed in BPS. Used during swaps and adjusted withdrawals to account for price impact, protocol fees, and rounding. Validated on deployment to be below 5000 (50%).
+- **Type** - uint256
+- **Used By**
+  - Strategy-specific derived implementations (swap and withdrawal logic)
+- **Updated By**
+  - [`setSlippageBPS(uint256 newSlippageBPS)`](/dev/myt/myt-contract#OwnerActions_setSlippageBPS)
+- **Read By** - via `params()` tuple
+- **Notified By** - [`SlippageBPSUpdated(uint256 newSlippageBPS)`](/dev/myt/myt-contract#Events_SlippageBPSUpdated)
 </details>
 
 ### Public State
@@ -108,8 +121,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - Set to 365 days. Used in yield calculations.
 - **Type** - uint256
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-  - [`_approxAPY`](/dev/myt/myt-contract#InternalOperations_approxAPY)
+  - None in the base contract. Available for use by derived strategy implementations.
 - **Updated By** - none. Contant variable
 - **Read By** - `SECONDS_PER_YEAR()` - will return a uint256 value representing seconds
 </details>
@@ -119,20 +131,19 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - A multiplier that is used to be able to do fixed point math, since solidity does not natively handle decimals. Like ERC20 tokens which typically use 18 decimals, it expresses 1 as 1e18. Anything less is a fraction of 1.
 - **Type** - uint256
 - **Used By**
-  - [`_approxAPY`](/dev/myt/myt-contract#InternalOperations_approxAPY)
-  - [`_lerp`](/dev/myt/myt-contract#InternalOperations_lerp)
+  - None in the base contract. Available for use by derived strategy implementations.
 - **Updated By** - none. Constant varible.
 - **Read By** - `FIXED_POINT_SCALAR()`
 </details>
 <details>
-  <summary>MIN_SNAPSHOT_INTERVAL</summary>
+  <summary>FORCE_DEALLOCATE_SELECTOR</summary>
 
-- **Description** - A value in seconds set to 1 day.
-- **Type** - uint256
+- **Description** - A bytes4 constant set to 0xe4d38cd8. When passed as the `selector` param to [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate), swap-based and unwrap-based withdrawal routes are bypassed, allowing only the direct withdrawal path.
+- **Type** - bytes4
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Updated By** - none. Constant varible.
-- **Read By** - `MIN_SNAPSHOT_INTERVAL()` - returns a uint representing seconds
+  - [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate)
+- **Updated By** - none. Constant variable.
+- **Read By** - `FORCE_DEALLOCATE_SELECTOR()`
 </details>
 
 #### Immutable State
@@ -143,31 +154,24 @@ For more specific operations tailored to individual strategies, see the contract
   <summary>MYT</summary>
 
 - **Description** - A Morpho VaultV2 contract which manages and allocates to individual strategies through adapters such as this one.
-- **Type** - IVault2
+- **Type** - IVaultV2
 - **Used By**
   - [Vault Actions](/dev/myt/myt-contract#VaultActions)
+  - [`withdrawToVault()`](/dev/myt/myt-contract#OwnerActions_withdrawToVault)
+  - [`allocation()`](/dev/myt/myt-contract#ReadingState_allocation)
+  - [`_isProtectedToken(address token)`](/dev/myt/myt-contract#InternalOperations_isProtectedToken)
 - **Updated By** - none
 - **Read By** - `MYT()` - will return the address of the Vault2 contract, since MYT is a contract type.
-</details>
-<details>
-  <summary>receiptToken</summary>
-
-- **Description** - The address of the erc20 token contract for the reciept token users get for depositing into the MYT contract.
-- **Type** - address
-- **Used By**
-  - [`deallocateDex(bytes calldata quote, bool prevSettler)`](/dev/myt/myt-contract#UserActions_deallocateDex)
-  - [`setPermit2Address(address newAddress)`](/dev/myt/myt-contract#OwnerActions_setPermit2Address)
-- **Updated By** - none
-- **Read By** - `receiptToken()`
 </details>
 <details id="Variables_adapterId">
   <summary>adapterId</summary>
 
-- **Description** - A hash of the protocol serving as an id for reporting on allocations/deallocations to the strategy.
+- **Description** - A hash of the string "this" and this contract's address, serving as a unique id for reporting on allocations/deallocations to the strategy.
 - **Type** - bytes32
 - **Used By**
   - [`allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_allocate)
   - [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate)
+  - [allocation()](/dev/myt/myt-contract#ReadingState_allocation)
 - **Updated By** - none
 - **Read By** - `ids()` - returns an array of size 1, where the first index contains this id.
 </details>
@@ -180,99 +184,51 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - The list of params passed at deployment-time describing the strategy. Some can be edited. For more information see the StrategyParams type above.
 - **Type** - StrategyParams
 - **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
+  - [`getEstimatedYield()`](/dev/myt/myt-contract#ReadingState_getEstimatedYield)
   - [`getIdData()`](/dev/myt/myt-contract#ReadingState_getIdData)
   - [`getCap()`](/dev/myt/myt-contract#ReadingState_getCap)
   - [`getGlobalCap()`](/dev/myt/myt-contract#ReadingState_getGlobalCap)
 - **Updated By**
   - `setRiskClass()`
   - `setAdditionalIncentives()`
-- **Read By** - `params()` - returns a tuple containing all StrategyParam property values in the order listed in the Struct definition above.
+  - [`setSlippageBPS(uint256 newSlippageBPS)`](/dev/myt/myt-contract#OwnerActions_setSlippageBPS)
+- **Read By**
+  - `params()` - returns a tuple containing all StrategyParam property values in the order listed in the Struct definition above.
 </details>
 <details>
-  <summary>lastSnapshotTime</summary>
+  <summary>killSwitch</summary>
 
-- **Description** - The last time the `snapshotYield()` function was successfully run.
-- **Type** - uint256
-- **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Read By** - `lastSnapshotTime()`
-</details>
-<details>
-  <summary>lastIndex</summary>
-
-- **Description** - The last recorded price-per-share of the underlying strategy. Each time `snapshotYield()` is called, the strategy implementation (derivation of this base contract) `_computeBaseRatePerSecond()` is called which calculates the base yield rate, in addition to getting the new price-per-share value for the strategy. That is then recorded as the lastIndex. This value is used to help calculate total yield earned since that last snapshot.
-- **Type** - uint256
-- **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Read By** - `lastIndex()`
-</details>
-<details>
-  <summary>estApr</summary>
-
-- **Description** - The last recorded estimated non-compounding APR of the underlying strategy. Scaled by 1e18. (1e18 = 100%, 5e17 = 50%, etc.)
-- **Type** - uint256
-- **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Read By** - `estApr()`
-</details>
-<details>
-  <summary>estApy</summary>
-
-- **Description** - The last recorded estimated compounding APY for the underlying strategy. Scaled by 1e18. (1e18 = 100%, 5e17 = 50%, etc.)
-- **Type** - uint256
-- **Used By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Updated By**
-  - [`snapshotYield`](/dev/myt/myt-contract#UserActions_snapshotYield)
-- **Read By** - `estApy()`
-</details>
-<details>
-  <summary>killswitch</summary>
-
-- **Description** - A true/false toggle that freezes all fund-moving actions. Vault allocate/deallocate simply exit with no operations done, and operator-initiated moves revert. Nothing is auto-unstaked or withdrawn. It’s a circuit breaker, not an unwinder.
+- **Description** - A true/false toggle that acts as a circuit breaker. When enabled, allocations revert and reward claims are blocked. Deallocations are not affected. Nothing is auto-unstaked or withdrawn
 - **Type** - bool
 - **Used By**
-  - [`allocate`](/dev/myt/myt-contract#VaultActions_allocate)
-  - [`deallocate`](/dev/myt/myt-contract#VaultActions_deallocate)
-  - [`deallocateDex`](/dev/myt/myt-contract#VaultActions_deallocateDex)
-  - [`claimWithdrawalQueue`](/dev/myt/myt-contract#UserActions_claimWithdrawalQueue)
-  - [`claimRewards`](/dev/myt/myt-contract#UserActions_claimRewards)
+  - [`allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_allocate)
+  - [`claimRewards(address token, bytes memory quote, uint256 minAmountOut)`](/dev/myt/myt-contract#UserActions_claimRewards)
 - **Updated By**
-  - `setKillswitch(bool value)`
-- **Read By** - `killswitch()`
+  - `setKillSwitch(bool value)`
+- **Read By** - `killSwitch()`
 </details>
 <details>
   <summary>whitelistedAllocators</summary>
 
 - **Description** - A mapping of addresses which are allowed to call functions that move funds.
-- **Type** - mapping(address => bool)
+- **Type** - `mapping(address => bool)`
 - **Used By**
-  - [`deallocateDex`](/dev/myt/myt-contract#UserActions_deallocateDex)
-  - [`claimWithdrawalQueue`](/dev/myt/myt-contract#UserActions_claimWithdrawalQueue)
+  - [`claimWithdrawalQueue(uint256 positionId)`](/dev/myt/myt-contract#UserActions_claimWithdrawalQueue)
 - **Updated By**
   - `setWhitelistedAllocator(address to, bool val)`
-- **Read By** - `whitelistedAllocators(address)` - returns a true/false value indicating whether or not the address passed is a whitelisted allocator
+- **Read By** 
+  - `whitelistedAllocators(address)` - returns a true/false value indicating whether or not the address passed is a whitelisted allocator
 </details>
 <details>
-  <summary>permit2Address</summary>
+  <summary>allowanceHolder</summary>
 
-- **Description** - The address of the Permit2 router contract to be used. Permit2 is a universal approval and transfer router that standardizes those processes through one contract.  
-  Instead of granting separate approvals to each DEX or contract, the strategy grants a single allowance to Permit2, which then validates signed off-chain transfer authorizations.
+- **Description** - The address of the 0x AllowanceHolder contract. The strategy approves this contract once, so it can handle swaps for whichever DEX routes swap through. Used during allocations and deallocations when the strategy needs to convert between the vault's base asset and the token required by the underlying protocol.
 - **Type** - address
 - **Used By**
-  - `constructor(address _myt, StrategyParams memory _params, address _permit2address, address_receiptToken)`
-  - [`setPermit2Address(address newAddress)`](/dev/myt/myt-contract#OwnerActions_setPermit2Address)
-  - [`isValidSignature(bytes32 _hash, bytes memory _signature)`](/dev/myt/myt-contract#UserActions_isValidSignature)
+  - [`dexSwap(address to, address from, uint256 amount, uint256 minAmountOut, bytes memory callData)`](/dev/myt/myt-contract#InternalOperations_dexSwap)
 - **Updated By**
-  - [`setPermit2Address(address newAddress)`](/dev/myt/myt-contract#OwnerActions_setPermit2Address)
-- **Read By** - `permit2Address()`
+  - [`setAllowanceHolder(address _new)`](/dev/myt/myt-contract#OwnerActions_setAllowanceHolder)
+- **Read By** - `allowanceHolder()`
 </details>
 
 ## Functions
@@ -281,72 +237,84 @@ For more specific operations tailored to individual strategies, see the contract
 
 > Actions that are performed by any external callers. In some cases this may be necessitate elevated permissions or restrict user access, but these are one-offs rather than patterns of actors decsribed by traditional only\_ modifiers.
 
-<details id="UserActions_deallocateDex">
-  <summary>deallocateDex(bytes calldata quote, bool prevSettler)</summary>
-
-- **Description** - Executes a deallocation through the 0x DEX Settler contract, allowing whitelistedAllocators to move or sell assets directly from the strategy. This bypasses standard withdrawal queue logic and is typically used in emergency or rebalancing scenarios.
-  - `@param quote` - ABI-encoded calldata for a verified 0x swap quote, representing the DEX trade to perform.
-  - `@param prevSettler` - Boolean flag indicating whether to use the previous Settler contract (`true`) or the current one (`false`).
-- **Visibility Specifier** - external
-- **State Mutability Specifier** - nonpayable
-- **Returns** - `uint256 ret` - The amount of receipt tokens deallocated through the DEX trade. (the amount that balance of receipt tokens has increase by)
-- **Emits**
-  - [`DeallocateDex(uint256 amountDeallocated)`](/dev/myt/myt-contract#Events_DeallocateDex)
-- **Reverts** - With `"emergency"` if `killswitch == true` - With `"PD"` if `msg.sender` is not an active whitelistedAllocator - With `"SF"` if the Settler call fails
-- If the 0x swap parameters or slippage creates an invalid swap quote
-</details>
 <details id="UserActions_claimWithdrawalQueue">
   <summary>claimWithdrawalQueue(uint256 positionId)</summary>
 
 - **Description** - Handles claiming withdrawals from strategies that implement a withdrawal queue system.<br/><br/>
-  First checks that the caller is a whitelistedAllocator and that the strategy is not in emergency mode, then delegates to the internal function `_claimWithdrawalQueue()` which is overrideen and defined in derived strategy implementations.
+  First checks that the caller is a whitelistedAllocator, then delegates to the internal function `_claimWithdrawalQueue()` which is overridden and defined in derived strategy implementations.
   - `@param positionId` - The ID of the position to claim for from the underlying protocol.
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - nonpayable
 - **Returns** - `uint256 ret` - The amount of assets claimed from the withdrawal queue (returned by the strategy-specific implementation).
 - **Emits** - none
 - **Reverts** - With `"PD"` if `msg.sender` is not whitelisted
-- With `"emergency"` if `killSwitch == true`
-</details>
-<details id="UserActions_claimRewards">
-  <summary>claimRewards()</summary>
-
-- **Description** - Claims any pending reward tokens from the underlying strategy’s protocol<br/><br/>
-  First verifies that the strategy is not in emergency mode then delegates to the internal `_claimRewards()` implementation, which must be overrideen in derived contracts to define protocol-specific claiming logic.
-- **Visibility Specifier** - public
-- **State Mutability Specifier** - nonpayable
-- **Returns** - `uint256` - The amount of reward tokens claimed, as defined by the derived implementation.
-- **Emits** - none
-- **Reverts** - With `"emergency"` if `killSwitch == true`
-</details>
-<details id="UserActions_snapshotYield">
-  <summary>snapshotYield()</summary>
-
-- **Description** - Recomputes the strategies estimated rates for base yield and incentives yield and returns an aggregate estimated apy scaled by 1e18. (1e18 = 100%)<br/><br/>
-  First ensures that the `MINIMUM_SNAPSHOT_INTERVAL` has passed since the last call to prevent griefing, then calls internal functions `_computeBaseRatePerSecond()` and `_computeRewardsRatePerSecond()`, both of which are implemented in derived contracts, to calculate the most up-to-date current rates. Then those rates are combined and projected out a year. A smoothign rate of .7 is then applied, and passed with the newly calculated rates to the internal `_lerp()` function to calculate estimated rates from the new snapshot and the previously snaphshotted rate.
-- **Visibility Specifier** - public
-- **State Mutability Specifier** - nonpayable
-- **Returns** - `uint256 estApy`
-- **Emits**
-  - [`YieldUpdated(uint256 estApy)`](/dev/myt/myt-contract#Events_YieldUpdated)
-- **Reverts** - none
 </details>
 
 ### Owner Actions
 
 > Actions guarded by the onlyOwner modifier, which restricts access to the owner set at deployment time
 
-<details id="OwnerActions_setPermit2Address">
-  <summary>setPermit2Address(address newAddress)</summary>
+<details id="OwnerActions_claimRewards">
+  <summary>claimRewards(address token, bytes memory quote, uint256 minAmountOut)</summary>
 
-- **Description** - Updates the [`permit2Address`](/dev/myt/myt-contract#Variables_permit2Address) used for token transfer approvals through the Permit2 router contract.<br/><br/>
-  First revokes existing token approvals from the old Permit2 address, grants maximum allowance to the new Permit2 address for the MYT `receiptToken`, and then updates the stored `permit2Address` value.
-  - `@param newAddress` - the new Permit2 router contract address
+- **Description** - Claims pending reward tokens from the underlying strategy's protocol and converts them to the vault's base asset.<br/><br/>
+  First verifies that the strategy is not in emergency mode, then delegates to the internal `_claimRewards()` implementation, which must be overridden in derived contracts to define protocol-specific claiming and conversion logic.
+  - `@param token` - the address of the reward token to claim
+  - `@param quote` - encoded swap calldata for converting the reward token to the vault's base asset
+  - `@param minAmountOut` - minimum acceptable output from the conversion
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256` - The amount of reward tokens claimed, as defined by the derived implementation.
 - **Emits** - none
-- **Reverts**
-- With `"Zero address"` if `newAddress` is the zero address
+- **Reverts** - With `"emergency"` if `killSwitch == true`
+</details>
+<details id="OwnerActions_setAllowanceHolder">
+  <summary>setAllowanceHolder(address _new)</summary>
+
+- **Description** - Updates the 0x AllowanceHolder contract address used for DEX swap approvals.
+  - `@param _new` - the new AllowanceHolder contract address
+- **Visibility Specifier** - public
+- **State Mutability Specifier** - nonpayable
+- **Returns** - none
+- **Emits** - none
+- **Reverts** - _new == zero address
+</details>
+<details id="OwnerActions_setSlippageBPS">
+  <summary>setSlippageBPS(uint256 newSlippageBPS)</summary>
+
+- **Description** - Updates the slippage tolerance for this strategy, expressed in BPS.
+  - `@param newSlippageBPS` - the new slippage value. Must be below 9999.
+- **Visibility Specifier** - public
+- **State Mutability Specifier** - nonpayable
+- **Returns** - none
+- **Emits**
+  - [`SlippageBPSUpdated(uint256 newSlippageBPS)`](/dev/myt/myt-contract#Events_SlippageBPSUpdated)
+- **Reverts** - newSlippageBPS >= 9999 (99.9%)
+</details>
+<details id="OwnerActions_withdrawToVault">
+  <summary>withdrawToVault()</summary>
+
+- **Description** - Transfers any leftover base asset balance held by this strategy contract back to the vault. Useful for sweeping idle funds that aren't actively allocated to the underlying protocol.
+- **Visibility Specifier** - public
+- **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256` - the amount of assets transferred back to the vault
+- **Emits**
+  - [`WithdrawToVault(uint256 amount)`](/dev/myt/myt-contract#Events_WithdrawToVault)
+- **Reverts** - none
+</details>
+<details id="OwnerActions_rescueTokens">
+  <summary>rescueTokens(address token, address to, uint256 amount)</summary>
+
+- **Description** - Rescues arbitrary ERC20 tokens that were sent to this contract by mistake. Cannot be used to withdraw protected tokens (such as the vault's base asset). Protected tokens are defined by the internal `_isProtectedToken()` function, which can be extended by derived contracts to include protocol-specific tokens like receipt tokens or staking tokens.
+  - `@param token` - the address of the token to rescue
+  - `@param to` - the address to send the rescued tokens to
+  - `@param amount` - the amount of tokens to rescue
+- **Visibility Specifier** - external
+- **State Mutability Specifier** - nonpayable
+- **Returns** - none
+- **Emits**
+  - [`TokensRescued(address token, address to, uint256 amount)`](/dev/myt/myt-contract#Events_TokensRescued)
+- **Reverts** - to == zero address - token is a protected token - amount exceeds the contract's balance of that token
 </details>
 <details id="OwnerActions_setRiskClass">
   <summary>setRiskClass(RiskClass newClass)</summary>
@@ -385,7 +353,7 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="OwnerActions_setKillSwitch">
   <summary>setKillSwitch(bool val)</summary>
 
-- **Description** - Toggles the emergency stop (`killSwitch`) for this strategy. When enabled many operations such as allocations, deallocations, and reward claims are halted to prevent further activity.
+- **Description** - Toggles the emergency stop (`killSwitch`) for this strategy. When enabled, allocations and reward claims are halted to prevent further activity.
   - `@param val` - true to activate emergency mode, false to resume normal operation
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - nonpayable
@@ -403,9 +371,9 @@ For more specific operations tailored to individual strategies, see the contract
   <summary>allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
 
 - **Description** - Allocates `assets` from the vault into the underlying strategy, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
-  Assets are allocated using an internal call to `_allocate()` which is overrideen and defined in derived strategy contract implementations. If `killSwitch` is enabled, the simply exits with a change of 0.
-  - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
-  - `@param assets` - the amount of tokens the vault is requesting to allocated to the strategy.
+  Decodes `data` as a `VaultAdapterParams` struct to determine the action type. If the action is `direct`, calls the single-param `_allocate(assets)`. If the action is `swap`, calls `_allocate(assets, swapCalldata)` with the encoded swap data. Both `_allocate` variants are overridden and defined in derived strategy implementations. Reverts if `killSwitch` is enabled or if `assets` is 0.
+  - `@param data` - ABI-encoded `VaultAdapterParams` struct containing the action type and optional swap parameters.
+  - `@param assets` - the amount of tokens the vault is requesting to allocate to the strategy.
   - `@param selector` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
   - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
 - **Visibility Specifier** - external
@@ -413,24 +381,29 @@ For more specific operations tailored to individual strategies, see the contract
 - **Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
 - **Emits**
   - [`Allocate(uint256 amountAllocated, address this)`](/dev/myt/myt-contract#Events_Allocate)
-- **Reverts** - none
+- **Reverts**
+  - [`StrategyAllocationPaused(address)`](/dev/myt/myt-contract#Errors_StrategyAllocationPaused) — killSwitch is enabled
+  - [`InvalidAmount(uint256, uint256)`](/dev/myt/myt-contract#Errors_InvalidAmount) — assets is 0
+  - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — unrecognized action type
 </details>
 <details id="VaultActions_deallocate">
   <summary>deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
 
 - **Description** - Deallocates `assets` from the underlying strategy back to the vault, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
-  Assets are withdrawn using an internal call to `_deallocate()` which is overridden and defined in derived strategy contract implementations. If `killSwitch` is enabled, the function exits early with a change of 0.
-  - `@param data` - a bytes-encoded representation of the old (current) allocation. Later decoded into an uint256.
+  Decodes `data` as a `VaultAdapterParams` struct to determine the action type. If `direct`, calls `_deallocate(assets)`. If `swap` (and the selector is not `FORCE_DEALLOCATE_SELECTOR`), calls `_deallocate(assets, swapCalldata)`. If `unwrapAndSwap` (and the selector is not `FORCE_DEALLOCATE_SELECTOR`), calls `_deallocate(assets, swapCalldata, minIntermediateOut)`. All `_deallocate` variants are overridden and defined in derived strategy implementations. Does not check `killSwitch`. Reverts if `assets` is 0.
+  - `@param data` - ABI-encoded `VaultAdapterParams` struct containing the action type and optional swap parameters.
   - `@param assets` - the amount of tokens the vault is requesting to deallocate from the strategy.
-  - `@param selector` - TODO unused and not inherited. Do we need?
-  - `@param sender` - TODO unused and not inherited. Do we need?
+  - `@param selector` - A bytes4 value passed by the vault. When equal to [`FORCE_DEALLOCATE_SELECTOR`](/dev/myt/myt-contract#Constants_FORCE_DEALLOCATE_SELECTOR), swap-based and unwrap-based routes are bypassed.
+  - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
 - **Returns** - (bytes32[] memory strategyIds, int256 change) - A tuple where the first value is an array of size 1 containing the [`adapterId`](/dev/myt/myt-contract#Variables_adapterId), and the second value is a signed 256 bit integer containing the difference between the new allocation and the old allocation
 - **Emits**
   - [`Deallocate(uint256 amountDeallocated, address this)`](/dev/myt/myt-contract#Events_Deallocate)
-  - [`MYTLog(string message, uint256 value)`](/dev/myt/myt-contract#Events_MYTLog) - emit old allocation, amount deallocated, and resulting new allocation for transparency.
-- **Reverts** - none
+- **Reverts**
+  - [`InvalidAmount(uint256, uint256)`](/dev/myt/myt-contract#Errors_InvalidAmount) — assets is 0
+  - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — unrecognized action type, or swap/unwrapAndSwap used with FORCE_DEALLOCATE_SELECTOR
+  - With `"inconsistent totalValue"` if `_totalValue()` after deallocation is less than `assets`
 </details>
 
 ### Internal Operations
@@ -438,29 +411,139 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="InternalOperations_allocate">
   <summary>_allocate(uint256 amount)</summary>
 
-- **Description** - An empty virtual function defining internal logic for how to allocate to a strategy. Must be overridden by derived contracts.
+- **Description** - Virtual function defining internal logic for how to allocate to a strategy. The base implementation reverts with `ActionNotSupported()`. Must be overridden by derived contracts that support direct allocation.
   - `@param amount` - The amount of assets to allocate into the underlying protocol.
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - nonpayable
 - **Returns** - `uint256 depositReturn` - The amount of assets successfully allocated by the protocol.
 - **Emits** - none
-- **Reverts** - implementation-dependent
+- **Reverts**
+  - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — base implementation always reverts. Derived contracts override with protocol-specific logic.
+</details>
+<details id="InternalOperations_allocateSwap">
+  <summary>_allocate(uint256 amount, bytes memory callData)</summary>
+
+- **Description** - Virtual function defining internal logic for how to allocate to a strategy using a DEX swap. The base implementation reverts with `ActionNotSupported()`. Must be overridden by derived contracts that support swap-based allocation.
+  - `@param amount` - The amount of assets to allocate into the underlying protocol.
+  - `@param callData` - Encoded swap calldata for the DEX trade.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256 depositReturn` - The amount of assets successfully allocated by the protocol.
+- **Emits** - none
+- **Reverts** - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — base implementation always reverts. Derived contracts override with protocol-specific logic.
 </details>
 <details id="InternalOperations_deallocate">
   <summary>_deallocate(uint256 amount)</summary>
 
-- **Description** - An empty virtual function defining internal logic for how to deallocate from a strategy. Must be overridden by derived contracts.
+- **Description** - Virtual function defining internal logic for how to deallocate from a strategy. The base implementation reverts with `ActionNotSupported()`. Must be overridden by derived contracts that support direct deallocation.
   - `@param amount` - The amount of assets to deallocate or withdraw from the underlying protocol.
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - nonpayable
 - **Returns** - `uint256 withdrawReturn` - The amount of assets successfully withdrawn from the protocol.
 - **Emits** - none
-- **Reverts** - implmentation-dependent
+- **Reverts**
+  - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — base implementation always reverts. Derived contracts override with protocol-specific logic.
+</details>
+<details id="InternalOperations_deallocateSwap">
+  <summary>_deallocate(uint256 amount, bytes memory callData)</summary>
+
+- **Description** - Virtual function defining internal logic for how to deallocate from a strategy using a DEX swap. The base implementation reverts with `ActionNotSupported()`. Must be overridden by derived contracts that support swap-based deallocation.
+  - `@param amount` - The amount of assets to deallocate from the underlying protocol.
+  - `@param callData` - Encoded swap calldata for the DEX trade.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256 withdrawReturn` - The amount of assets successfully withdrawn from the protocol.
+- **Emits** - none
+- **Reverts** - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — base implementation always reverts. Derived contracts override with protocol-specific logic.
+</details>
+<details id="InternalOperations_deallocateUnwrapAndSwap">
+  <summary>_deallocate(uint256 amount, bytes memory callData, uint256 minIntermediateOutAmount)</summary>
+
+- **Description** - Virtual function defining internal logic for how to deallocate from a strategy by first unwrapping a protocol-specific token, then swapping the intermediate token to the vault's base asset via a DEX. The base implementation reverts with `ActionNotSupported()`. Must be overridden by derived contracts that support this two-step withdrawal path.
+  - `@param amount` - The amount of the vault's base asset expected to be returned.
+  - `@param callData` - Encoded swap calldata for the DEX trade.
+  - `@param minIntermediateOutAmount` - Minimum acceptable output from the unwrap step before the swap.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256 withdrawReturn` - The amount of assets successfully withdrawn from the protocol.
+- **Emits** - none
+- **Reverts** - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — base implementation always reverts. Derived contracts override with protocol-specific logic.
+</details>
+<details id="InternalOperations_dexSwap">
+  <summary>dexSwap(address to, address from, uint256 amount, uint256 minAmountOut, bytes memory callData)</summary>
+
+- **Description** - Internal helper that executes a token swap through the 0x AllowanceHolder. Approves the AllowanceHolder to spend the `from` token, executes the swap via the provided calldata, then revokes the approval. Verifies that the output meets the minimum threshold.
+  - `@param to` - the address of the token being received
+  - `@param from` - the address of the token being sold
+  - `@param amount` - the amount of `from` token to approve for the swap
+  - `@param minAmountOut` - minimum acceptable amount of `to` token to receive
+  - `@param callData` - encoded calldata for the 0x swap
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - nonpayable
+- **Returns** - `uint256` - the amount of `to` token received from the swap
+- **Emits** - none
+- **Reverts**
+  - [`CounterfeitSettler(address)`](/dev/myt/myt-contract#Errors_CounterfeitSettler) — the swap call to AllowanceHolder failed
+  - [`InvalidAmount(uint256, uint256)`](/dev/myt/myt-contract#Errors_InvalidAmount) — amount received is less than `minAmountOut`
+</details>
+<details id="InternalOperations_ensureIdleBalance">
+  <summary>_ensureIdleBalance(address asset, uint256 amount)</summary>
+
+- **Description** - Internal helper that checks if this strategy contract holds at least `amount` of the given `asset` as idle balance. Used to verify funds are available before transfers.
+  - `@param asset` - the token address to check the balance of
+  - `@param amount` - the minimum required balance
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - none
+- **Emits** - none
+- **Reverts** - [`InsufficientBalance(uint256, uint256)`](/dev/myt/myt-contract#Errors_InsufficientBalance) — balance is less than `amount`
+</details>
+<details id="InternalOperations_isProtectedToken">
+  <summary>_isProtectedToken(address token)</summary>
+
+- **Description** - Virtual function that returns whether a token is protected from being rescued via `rescueTokens()`. In the base contract, the vault's base asset is protected. Derived contracts can override this to add protocol-specific tokens like receipt tokens, aTokens, or staking tokens.
+  - `@param token` - the token address to check
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `bool` - true if the token is protected
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_totalValue">
+  <summary>_totalValue()</summary>
+
+- **Description** - Virtual function that returns the total underlying value of this strategy's position, denominated in the vault's base asset (e.g. USDC or WETH). Returns 0 by default. Must be overridden by derived contracts.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - total underlying value of the strategy
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_idleAssets">
+  <summary>_idleAssets()</summary>
+
+- **Description** - Virtual function that returns the amount of idle (unallocated) assets held by this strategy contract. Returns 0 by default. Must be overridden by derived contracts.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - amount of idle assets
+- **Emits** - none
+- **Reverts** - none
+</details>
+<details id="InternalOperations_previewAdjustedWithdraw">
+  <summary>_previewAdjustedWithdraw(uint256 amount)</summary>
+
+- **Description** - Virtual function that estimates the correct amount that can be fully withdrawn from the strategy, accounting for losses due to slippage, protocol fees, and rounding differences. Returns 0 by default. Must be overridden by derived contracts.
+  - `@param amount` - the desired withdrawal amount
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - the adjusted withdrawal amount
+- **Emits** - none
+- **Reverts** - none
 </details>
 <details id="InternalOperations_claimWithdrawalQueue">
   <summary>_claimWithdrawalQueue(uint256 positionId)</summary>
 
-- **Description** - An empty virtual function defining internal logic for how to claim or withdraw from strategies that utilize a withdrawal queue. Must be overridden by derived contracts.
+- **Description** - Virtual function defining internal logic for how to claim or withdraw from strategies that utilize a withdrawal queue. Returns 0 by default. Overridden by derived contracts that interact with protocols using withdrawal queues.
   - `@param positionId` - The ID of position to claim or withdraw for from the underlying protocol.
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - nonpayable
@@ -469,64 +552,17 @@ For more specific operations tailored to individual strategies, see the contract
 - **Reverts** - implementation-dependent
 </details>
 <details id="InternalOperations_claimRewards">
-  <summary>_claimRewards()</summary>
+  <summary>_claimRewards(address token, bytes memory quote, uint256 minAmountOut)</summary>
 
-- **Description** - An empty virtual function defining internal logic for how to claim from a strategy. Must be overridden by derived contracts.
+- **Description** - Virtual function defining internal logic for how to claim reward tokens from the underlying protocol and convert them to the vault's base asset. Returns 0 by default. Overridden by derived contracts to define protocol-specific claiming and conversion logic.
+  - `@param token` - the address of the reward token to claim
+  - `@param quote` - encoded swap calldata for converting the reward token
+  - `@param minAmountOut` - minimum acceptable output from the conversion
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - nonpayable
-- **Returns** - `uint256 rewardAmount` - The amount of reward tokens claimed from the protocol.
+- **Returns** - `uint256 rewardAmount` - The amount of reward tokens claimed and converted.
 - **Emits** - none
 - **Reverts** - implementation-dependent
-</details>
-
-<details id="InternalOperations_computeBaseRatePerSecond">
-  <summary>_computeBaseRatePerSecond()</summary>
-
-- **Description** - An empty virtual function defining internal logic for how to compute base per-second yield rate from the underlying protocol. Must be overridden by derived contracts.
-- **Visibility Specifier** - internal
-- **State Mutability Specifier** - nonpayable
-- **Returns** - `(uint256 ratePerSec, uint256 newIndex)` - a tupe where:
-  - The first value `ratePerSec` is the rate of yield per second scaled to 1e18. (1e18 = 100% per second, 1e16 = 1% per second, etc.)
-  - The second value `newIndex` is the most up-to-date price-per-share value of the MYT shares
-- **Emits** - none
-- **Reverts** - implementation-dependent
-</details>
-<details id="InternalOperations_computeRewardsRatePerSecond">
-  <summary>_computeRewardsRatePerSecond()</summary>
-
-- **Description** - An empty virtual function defining internal logic for how to compute incentive/reward per-second yield rate from the underlying protocol. Must be overridden by derived contracts.
-- **Visibility Specifier** - internal
-- **State Mutability Specifier** - nonpayable
-- **Returns** - `uint256 ratePerSec` - the rate of yield per second scaled to 1e18. (1e18 = 100% per second, 1e16 = 1% per second, etc.)
-- **Emits** - none
-- **Reverts** - implementation-dependent
-</details>
-<details id="InternalOperations_approxAPY">
-  <summary>_approxAPY(uint256 ratePerSecWad)</summary>
-
-- **Description** - Approximates the APY from a given per-second WAD-scaled (1e18) rate.<br/><br/>  
-  First multiplies the per-second rate by the number of seconds in a year to estimate APR. Then approxiamtes compounding using a formula of `APR^2 / (2 × SECONDS_PER_YEAR)`
-  - `@param ratePerSecWad` — per-second yield rate (1e18 = 100% per second)
-- **Visibility Specifier** - internal
-- **State Mutability Specifier** - pure
-- **Returns** - `uint256 approxApyPercentage` - a percentage scaled by 1e18 (1e18 = 100% per year)
-- **Emits** - none
-- **Reverts** - none
-</details>
-<details id="InternalOperations_lerp">
-  <summary>_lerp(uint256 oldVal, uint256 newVal, uint256 alpha)</summary>
-
-- **Description** - A smoothing function to blend `oldVal` and `newVal` using a weighted average, in order to calculate a new yield rate without sharp differences.<br/><br/>
-  Uses a factor `alpha` to determine how much of the previous value to retain vs. how much of the new value to apply. This is currently set to 70% (7e17) in [`snapshotYield()`](/dev/myt/myt-contract#UserActions_snapshotYield), the only caller of this function.
-  This means newly calculated results will use approximately 70% of `oldVal` and 30% of `newVal`, in order to prevent sudden jumps in estimated APR and APY.
-  - `@param oldVal` — previous recorded value (scaled by 1e18)
-  - `@param newVal` — new calculated value (scaled by 1e18)
-  - `@param alpha` — smoothing factor between 0 and 1e18 (7e17 = 70%)
-- **Visibility Specifier** - internal
-- **State Mutability Specifier** - pure
-- **Returns** - `uint256 smoothedYieldRate`
-- **Emits** - none
-- **Reverts** - none
 </details>
 
 ### Reading State
@@ -590,37 +626,55 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="ReadingState_realAssets">
   <summary>realAssets()</summary>
 
-- **Description** - An empty virtual function defining internal logic for getting the actual amount of underlying assets currently held or represented by this strategy. Must be overridden by derived contracts.
+- **Description** - Returns the total underlying value of this strategy's position by calling the internal `_totalValue()`. Since `_totalValue()` is virtual, the result depends on the derived contract's implementation.
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - view
 - **Returns** - `uint256 assets`
 - **Emits** - none
 - **Reverts** - implementation-dependent
 </details>
-<details id="ReadingState_isValidSignature">
-  <summary>isValidSignature(bytes32 _hash, bytes memory _signature)</summary>
+<details id="ReadingState_previewAdjustedWithdraw">
+  <summary>previewAdjustedWithdraw(uint256 amount)</summary>
 
-- **Description** - Definistion for ERC721 interface for Permit2 signature verification. It allows callers to confirm that this strategy contract has validly authorized a specific operation for [`permit2Address`](/dev/myt/myt-contract#Variables_permit2Address) via signature.
-  - `@param _hash`
-  - `@param _signature`
+- **Description** - Returns an estimate of the correct amount that can be fully withdrawn from the strategy, accounting for losses due to slippage, protocol fees, and rounding differences. Delegates to the internal `_previewAdjustedWithdraw()` which is overridden in derived contracts.
+  - `@param amount` - the desired withdrawal amount
+- **Visibility Specifier** - external
+- **State Mutability Specifier** - view
+- **Returns** - `uint256` - the adjusted withdrawal amount
+- **Emits** - none
+- **Reverts** - [`InvalidAmount(uint256, uint256)`](/dev/myt/myt-contract#Errors_InvalidAmount) — amount is 0
+</details>
+<details id="ReadingState_allocation">
+  <summary>allocation()</summary>
+
+- **Description** - Returns the vault's current allocation tracking for this adapter. Queries the MYT vault using this strategy's `adapterId`.
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - view
-- **Returns** - `bytes4 isValid` - The ERC721 defined value of 0x1626ba7e to indicated a signature is valid. Any other return value indicates an invalid signature.
+- **Returns** - `uint256` - the vault's recorded allocation for this strategy
 - **Emits** - none
 - **Reverts** - none
 </details>
 
 ## Errors
 
-- <span id="Errors_CounterfeitSettler"><strong><code>CounterfeitSettler(address)</code></strong> - TODO not used anywhere?</span>
+- <span id="Errors_CounterfeitSettler"><strong><code>CounterfeitSettler(address)</code></strong> - An error which is used to indicate that a swap call to the AllowanceHolder contract failed.</span>
+- <span id="Errors_StrategyAllocationPaused"><strong><code>StrategyAllocationPaused(address strategy)</code></strong> - An error which is used to indicate that allocation was attempted while the strategy's killSwitch is enabled.</span>
+- <span id="Errors_ActionNotSupported"><strong><code>ActionNotSupported()</code></strong> - An error which is used to indicate that the requested action type is not supported by this strategy, or that a base virtual function has not been overridden by a derived contract.</span>
+- <span id="Errors_InvalidAmount"><strong><code>InvalidAmount(uint256 min, uint256 received)</code></strong> - An error which is used to indicate that an amount provided was below the required minimum. Used for zero-amount checks and swap output validation.</span>
+- <span id="Errors_InsufficientBalance"><strong><code>InsufficientBalance(uint256 required, uint256 available)</code></strong> - An error which is used to indicate that the strategy contract does not hold enough of a token to fulfill the requested operation.</span>
 
 ## Events
 
 - <span id="Events_Allocate"><strong><code>Allocate(uint256 indexed amount, address indexed strategy)</code></strong> - emitted when funds have been allocated to the strategy described by this adapter.</span>
 - <span id="Events_Deallocate"><strong><code>Deallocate(uint256 indexed amount, address indexed strategy)</code></strong> - emmitted when funds have been de-alloacted or removed from the strategy described by this adapter.</span>
-- <span id="Events_DeallocateDex"><strong><code>DeallocateDex(uint256 indexed amount)</code></strong> - emitted when funds have been deallocated via DEX swap.</span>
-- <span id="Events_YieldUpdated"><strong><code>YieldUpdated(uint256 indexed yield)</code></strong> - emitted after taking a yield snapshot.</span>
+- <span id="Events_DeallocateDex"><strong><code>DeallocateDex(uint256 indexed amount)</code></strong> - Defined in the interface but not currently emitted by any function in the base contract. Emitted when funds have been deallocated via DEX swap.</span>
+- <span id="Events_YieldUpdated"><strong><code>YieldUpdated(uint256 indexed yield)</code></strong> - Defined in the interface but not currently emitted by any function in the base contract. Emitted after taking a yield snapshot.</span>
 - <span id="Events_RiskClassUpdated"><strong><code>RiskClassUpdated(RiskClass indexed class)</code></strong> - emitted when updating the params.riskClass to recalify the strategies risk level.</span>
 - <span id="Events_IncentivesUpdated"><strong><code>IncentivesUpdated(bool indexed enabled)</code></strong> - emitted when the additionalIncentives flag is set.</span>
 - <span id="Events_Emergency"><strong><code>Emergency(bool indexed isEmergency)</code></strong> - emitted after enabling the killswitch on this strategy.</span>
-- <span id="Events_MYTLog"><strong><code>MYTLog(string message, uint256 value)</code></strong> - debug logging used to output a message and value from the contract.</span>
+- <span id="Events_SlippageBPSUpdated"><strong><code>SlippageBPSUpdated(uint256 indexed newSlippageBPS)</code></strong> - Emitted when the slippage tolerance is updated.</span>
+- <span id="Events_MinAllocationOutBpsUpdated"><strong><code>MinAllocationOutBpsUpdated(uint256 indexed newMinAllocationOutBps)</code></strong> - Emitted when the minimum allocation output BPS is updated.</span>
+- <span id="Events_StrategyAllocationLoss"><strong><code>StrategyAllocationLoss(string message, uint256 amountRequested, uint256 actualAmountAllocated)</code></strong> - Emitted when the amount actually allocated to the underlying protocol is less than what was requested, typically due to rounding or protocol fees.</span>
+- <span id="Events_WithdrawToVault"><strong><code>WithdrawToVault(uint256 indexed amount)</code></strong> - Emitted when leftover idle assets are transferred back to the vault.</span>
+- <span id="Events_RewardsClaimed"><strong><code>RewardsClaimed(address indexed token, uint256 indexed amount)</code></strong> - Emitted when reward tokens are claimed from the underlying protocol.</span>
+- <span id="Events_TokensRescued"><strong><code>TokensRescued(address indexed token, address indexed to, uint256 amount)</code></strong> - Emitted when mistakenly sent ERC20 tokens are rescued from the strategy contract.</span>
