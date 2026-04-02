@@ -154,4 +154,5 @@ import PageBanner from "@site/src/components/PageBanner";
 
 * <span id="Events_AdminUpdated"><strong><code>AdminUpdated(address indexed admin)</code></strong> - emitted when the admin address is updated via `acceptAdminOwnership()`.</span>  
 * <span id="Events_OperatorUpdated"><strong><code>OperatorUpdated(address indexed operator)</code></strong> - emitted when an operator address is added or removed.</span>  
-* <span id="Events_AddedPermissionedCall"><strong><code>AddedPermissionedCall(bytes4 indexed sig)</code></strong> - emitted when a function selector's allowlist status is updated.</span>
+* <span id="Events_AddedPermissionedCall"><strong><code>AddedPermissionedCall(bytes4 indexed sig)</code></strong> - emitted when a function selector’s allowlist status is updated.</span>
+

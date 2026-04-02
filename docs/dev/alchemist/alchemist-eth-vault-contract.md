@@ -1,7 +1,7 @@
 ---
 sidebar_position: 6
 hide_title: true
-title: AlchemistEthVault
+title: AlchemistETHVault
 ---
 
 import PageBanner from "@site/src/components/PageBanner";

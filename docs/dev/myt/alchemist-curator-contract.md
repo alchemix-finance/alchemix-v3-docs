@@ -10,7 +10,8 @@ import PageBanner from "@site/src/components/PageBanner";
 
 ## Description
 
-AlchemistCurator is the governance and configuration contract for MYT vaults. It allows admins and operators to register or remove strategy adapters for a given MYT and to adjust their absolute and relative caps. In short, it defines which strategies exist within the MYT and how much capital each can hold.<br/><br/>
+AlchemistCurator is the governance and configuration contract for MYT vaults. It allows admins and operators to register or remove strategy adapters for a given MYT and to adjust their absolute and relative caps. In short, it defines which strategies exist within the MYT and how much capital each can hold.
+
 **Note:** AlchemistCurator inherits from PermissionedProxy, which provides it's access control system for operator roles, and the selector allowlist used to control which calls can be forwarded. The admin role is set using the same pending/accept admin system as the Alchemist and is inherited from PermissionedProxy. For details on the operator role and logic, see PermissionedProxy.
 
 ## Variables
@@ -96,8 +97,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_decreaseRelativeCap">
   <summary>decreaseRelativeCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Immediately decreases the relative cap for a given strategy on its MYT vault. The relative cap represents the strategy’s maximum allowed proportion of the vault’s total assets.<br/><br/>
-  	Gets the ID from the adapter address, and calls the internal `_decreaseRelativeCap(adapter, id, amount)` to immediately decrease the cap.  
+  - **Description** - Immediately decreases the relative cap for a given strategy on its MYT vault. The relative cap represents the strategy’s maximum allowed proportion of the vault’s total assets.
+    Gets the ID from the adapter address, and calls the internal `_decreaseRelativeCap(adapter, id, amount)` to immediately decrease the cap.  
     - `@param adapter` - The strategy adapter address.  
     - `@param amount` - The new percentage, expressed as an 18 decimal scaled number, (1e18 = 100%) to set as the relative cap. Must be lower than the previous relative cap.
   - **Visibility Specifier** - external  
@@ -125,8 +126,9 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_increaseRelativeCap">
   <summary>increaseRelativeCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Executes a previously submitted and timelocked relative cap increase for a given strategy on its MYT vault. Must be called after [`submitIncreaseRelativeCap()`](/dev/myt/alchemist-curator-contract#AdminActions_submitIncreaseRelativeCap) has been called and the vault's timelock period has elapsed.  
-    The relative cap defines the maximum percentage of the vault's total assets that the strategy can hold.<br/><br/>
+  - **Description** - Executes a previously submitted and timelocked relative cap increase for a given strategy on its MYT vault. Must be called after [`submitIncreaseRelativeCap()`](/dev/myt/alchemist-curator-contract#AdminActions_submitIncreaseRelativeCap) has been called and the vault’s timelock period has elapsed.
+
+    The relative cap defines the maximum percentage of the vault’s total assets that the strategy can hold.
     Gets the ID from the adapter address and calls the internal `_increaseRelativeCap(adapter, id, amount)` to execute the cap change.
     - `@param adapter` - The strategy adapter address.  
     - `@param amount` - The new percentage, expressed as an 18-decimal scaled number (1e18 = 100%), to set as the relative cap. Must be higher than the previous relative cap.  
@@ -141,7 +143,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_submitIncreaseAbsoluteCap">
   <summary>submitIncreaseAbsoluteCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Queues up an increase of a strategy’s absolute cap on the MYT vault via the vault’s timelock, to be executed at a later date.<br/><br/>
+  - **Description** - Queues up an increase of a strategy’s absolute cap on the MYT vault via the vault’s timelock, to be executed at a later date.
     Calls the internal `_submitIncreaseAbsoluteCap(adapter, id, amount)` to queue the change.
     - `@param adapter` - The strategy adapter address.
     - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.
@@ -155,7 +157,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_submitIncreaseRelativeCap">
   <summary>submitIncreaseRelativeCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Queues an increase of the strategy’s relative cap on the MYT vault through the vault’s timelock mechanism, to be executed at a later time. After the vault's timelock period elapses, the corresponding non-submit version of this function must be called to execute the change.<br/><br/>
+  - **Description** - Queues an increase of the strategy’s relative cap on the MYT vault through the vault’s timelock mechanism, to be executed at a later time. After the vault’s timelock period elapses, the corresponding non-submit version of this function must be called to execute the change.
     Calls the internal `_submitIncreaseRelativeCap(adapter, id, amount)` to enqueue the update.
     - `@param adapter` - The strategy adapter address.  
     - `@param amount` - The new percentage to set the relative cap to, expressed as a uint256 scaled by 1e18 (1e18 = 100%). Must be higher than the previous relative cap. 
@@ -202,8 +204,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="OperatorActions_submitSetStrategy">
   <summary>submitSetStrategy(address adapter, address myt)</summary>
 
-  - **Description** - Queues the addition of a MYT strategy adapter to a specific MYT vault via the vault’s timelock mechanism to be executed at a later time.<br/><br/>
-  	Validates that passed `adapter` and `myt` are valid addresses, delegates to the internal `_submitSetStrategy(adapter, myt)`, which encodes `IVaultV2.addAdapter(adapter)` and calls `vault.submit(data)`, which enqueues the strategy to be added after the timelock period.
+  - **Description** - Queues the addition of a MYT strategy adapter to a specific MYT vault via the vault’s timelock mechanism to be executed at a later time.
+    Validates that passed `adapter` and `myt` are valid addresses, delegates to the internal `_submitSetStrategy(adapter, myt)`, which encodes `IVaultV2.addAdapter(adapter)` and calls `vault.submit(data)`, which enqueues the strategy to be added after the timelock period.
     - `@param adapter` - The address of the strategy adapter to be registered.  
     - `@param myt` - The MYT vault address to add the adapter to.  
   - **Visibility Specifier** - external  

@@ -13,6 +13,7 @@ module.exports = {
         "architecture/security-model",
       ],
     },
+
     {
       type: "category",
       label: "Core Modules",
@@ -49,6 +50,7 @@ module.exports = {
           label: "MYT",
           collapsed: true,
           items: [
+            "myt/operator-cheatsheet",
             "myt/myt-contract",
             {
               type: "category",
@@ -57,16 +59,15 @@ module.exports = {
                 "myt/permissioned-proxy-contract",
                 "myt/alchemist-allocator-contract",
                 "myt/alchemist-curator-contract",
-                "myt/alchemist-strategy-classifier-contract"
+                "myt/alchemist-strategy-classifier-contract",
               ],
             },
           ],
         },
         {
-          type: "category",
+          type: "doc",
+          id: "transmuter/transmuter-contract",
           label: "Transmuter",
-          collapsed: true,
-          items: ["transmuter/transmuter-contract"],
         },
       ],
     },
@@ -77,6 +78,8 @@ module.exports = {
       className: "sidebarBold",
       items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
     },
+
+    // Integrating Alchemix
     // {
     //   type: "category",
     //   label: "Integrating Alchemix",
@@ -90,6 +93,6 @@ module.exports = {
     //     "integration/grants-program",
     //   ],
     // },
-    // "faq",
+    "faq",
   ],
 };

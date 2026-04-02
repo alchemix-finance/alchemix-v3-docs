@@ -10,7 +10,8 @@ import PageBanner from "@site/src/components/PageBanner";
 
 ## Description
 
-The AlchemistAllocator is a role-gated front controller for a specific Morpho V2 vault, allowing admins or operators to allocate and deallocate funds across the MYT's strategy adapters. Supports direct allocations, swap-based allocations via 0x, and unwrap-and-swap deallocations. Allocation calls enforce cap limits (absolute, relative, and risk-based) via the StrategyClassifier, while deallocations do not enforce caps.<br/><br/>
+The AlchemistAllocator is a role-gated front controller for a specific Morpho V2 vault, allowing admins or operators to allocate and deallocate funds across the MYT’s strategy adapters. Supports direct allocations, swap-based allocations via 0x, and unwrap-and-swap deallocations. Allocation calls enforce cap limits (absolute, relative, and risk-based) via the StrategyClassifier, while deallocations do not enforce caps.
+
 **Note:** AlchemistAllocator inherits from PermissionedProxy, which provides its access control system (admin and operator roles) and the selector allowlist used to control which calls can be forwarded. For details on these variables and functions, see PermissionedProxy.
 
 ## Variables
