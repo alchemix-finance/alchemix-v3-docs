@@ -93,6 +93,6 @@ module.exports = {
     //     "integration/grants-program",
     //   ],
     // },
-    "faq",
+    // "faq",
   ],
 };
