@@ -32,7 +32,7 @@ The fee vaults: [`AlchemistETHVault`](/alchemist/alchemist-eth-vault-contract.md
 
 ## Transmuter
 
-The [`Transmuter`](/transmuter/transmuter.md) handles redemptions of synthetic debt tokens back to underlying assets. Each Alchemist instance maps to one Transmuter instance. 
+The [`Transmuter`](/dev/transmuter/transmuter-contract) handles redemptions of synthetic debt tokens back to underlying assets. Each Alchemist instance maps to one Transmuter instance. 
 For a Transmuter mapped to an Alchemist which mints alETH, users may deposit alETH to create a time-locked position which linearly vests into a position of exactly the same amount of underlying (Mix-ETH) in a fixed pre-determined time period. 
 For a Transmuter mapped to an Alchemist which mints alUSD, users may deposit alUSD to create a time-locked position which linearly vests into a position of exactly the same amount of underlying (Mix-USDC) in a fixed pre-determined time period.
 When Transmuter positions are closed (claimed), the Transmuter pulls yield tokens from its corresponding Alchemist via the `redeem()` function on the Alchemist and converts them to pay out the user. 
