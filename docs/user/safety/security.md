@@ -18,14 +18,18 @@ All core smart contracts for Alchemix V3 have undergone rigorous testing and com
 
 <!-- TODO links and dates-->
 
+- **Y-Audit** — March 15th, 2026
+  - [View Report](/audits/v3-yearn.pdf)
+- **Nethermind** — February 1st, 2026
+  - [View Report](/audits/v3-nethermind.pdf)
 - **aleph_v** — December 15th, 2025
   - Focus: Earmarking and transmutation accounting system including debt decay logic.
   - [View Report](https://hackmd.io/@geistermeister/SkSZiU9ybe)
+- **Immunefi** — December 1st, 2025
+  - [View Report](https://drive.google.com/file/d/18LmIajwn6NOCbxKQJ49MVLyLSKb9gmD1/view)
 - **Spearbit/Cantina** — May 15th, 2025
   - Focus: Security review of Alchemix V3 mechanics, specifically protocol fees, liquidation logic, and debt-redemption accounting..
   - [View Report](https://cantina.xyz/portfolio/f638950d-a8ad-4df8-a6ec-8b067e416d7b)
-- **Immunefi** — TBD
-- **Nethermind** — TBD
 
 ### Continuous MYT strategy audits
 
