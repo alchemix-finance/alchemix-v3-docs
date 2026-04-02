@@ -65,7 +65,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_submitSetAllocator">
   <summary>submitSetAllocator(address myt, address allocator, bool v)</summary>
 
-  - **Description** - Queues a change to a vault's allocator permissions via the vault's timelock mechanism. Encodes `IVaultV2.setIsAllocator(allocator, v)` and submits it directly to the specified MYT vault.
+  - **Description** - Queues a change to a vault's allocator permissions via the vault's timelock mechanism. Encodes `IVaultV2.setIsAllocator(allocator, v)` and submits it directly to the specified MYT vault.<br/><br/>
+    Unlike other submit functions in this contract, there is no corresponding execution function here. Once the vault's timelock elapses, anyone can call `setIsAllocator` directly on the MYT vault to finalize the change.
     - `@param myt` - The MYT vault address to submit the allocator change to.
     - `@param allocator` - The address to set or unset as a vault allocator.
     - `@param v` - `true` to enable as an allocator, `false` to disable.
@@ -105,29 +106,31 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_increaseAbsoluteCap">
   <summary>increaseAbsoluteCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Delegates to the internal [`_increaseAbsoluteCap(adapter, id, amount)`](/dev/myt/alchemist-curator-contract#InternalOperations_increaseAbsoluteCap) to raise the absolute cap for a given strategy on its MYT vault.  
-    The absolute cap is the maximum quantity of underlying assets that may be allocated to the strategy.  
+  - **Description** - Executes a previously submitted and timelocked absolute cap increase for a given strategy on its MYT vault. Must be called after [`submitIncreaseAbsoluteCap()`](/dev/myt/alchemist-curator-contract#AdminActions_submitIncreaseAbsoluteCap) has been called and the vault's timelock period has elapsed.  
+    The absolute cap is the maximum quantity of underlying assets that may be allocated to the strategy. 
     - `@param adapter` - The strategy adapter address.  
     - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
-    - `AbsoluteCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.  
+    - `AbsoluteCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call. 
+    - Reverts if the corresponding `submitIncreaseAbsoluteCap` has not been called, or if the vault's timelock has not yet elapsed. 
   - **Emits**
     - [`IncreaseAbsoluteCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_IncreaseAbsoluteCap)
 </details>
 <details id="AdminActions_increaseRelativeCap">
   <summary>increaseRelativeCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Immediately raises the relative cap for a given strategy on its MYT vault.  
-    The relative cap defines the maximum percentage of the vault’s total assets that the strategy can hold.<br/><br/>
-    Gets the ID from the adapter address and calls the internal `_increaseRelativeCap(adapter, id, amount)` to raise the cap.  
+  - **Description** - Executes a previously submitted and timelocked relative cap increase for a given strategy on its MYT vault. Must be called after [`submitIncreaseRelativeCap()`](/dev/myt/alchemist-curator-contract#AdminActions_submitIncreaseRelativeCap) has been called and the vault's timelock period has elapsed.  
+    The relative cap defines the maximum percentage of the vault's total assets that the strategy can hold.<br/><br/>
+    Gets the ID from the adapter address and calls the internal `_increaseRelativeCap(adapter, id, amount)` to execute the cap change.
     - `@param adapter` - The strategy adapter address.  
     - `@param amount` - The new percentage, expressed as an 18-decimal scaled number (1e18 = 100%), to set as the relative cap. Must be higher than the previous relative cap.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
     - `RelativeCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.  
+    - Reverts if the corresponding `submitIncreaseRelativeCap` has not been called, or if the vault's timelock has not yet elapsed.
   - **Emits**
     - [`IncreaseRelativeCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_IncreaseRelativeCap)
 </details>
@@ -148,7 +151,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="AdminActions_submitIncreaseRelativeCap">
   <summary>submitIncreaseRelativeCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Queues an increase of the strategy’s relative cap on the MYT vault through the vault’s timelock mechanism, to be executed at a later time.<br/><br/>
+  - **Description** - Queues an increase of the strategy’s relative cap on the MYT vault through the vault’s timelock mechanism, to be executed at a later time. After the vault's timelock period elapses, the corresponding non-submit version of this function must be called to execute the change.<br/><br/>
     Calls the internal `_submitIncreaseRelativeCap(adapter, id, amount)` to enqueue the update.
     - `@param adapter` - The strategy adapter address.  
     - `@param amount` - The new percentage to set the relative cap to, expressed as a uint256 scaled by 1e18 (1e18 = 100%). Must be higher than the previous relative cap. 
@@ -167,28 +170,28 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="OperatorActions_setStrategy">
   <summary>setStrategy(address adapter, address myt)</summary>
 
-  - **Description** - Registers a MYT strategy adapter with the specified MYT vault.<br/><br/>  
-    First runs address validity checks, then offloads to the internal [`_addStrategy(adapter, myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_addStrategy) to register the MYT strategy with the vault as an active strategy.
+  - **Description** - First runs address validity checks, then offloads to the internal [`_addStrategy(adapter, myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_addStrategy) to execute the registration. Must be called after [`submitSetStrategy()`](/dev/myt/alchemist-curator-contract#OperatorActions_submitSetStrategy) has been called and the vault's timelock period has elapsed.
     - `@param adapter` - The address of the MYT strategy adapter to register.  
     - `@param myt` - The address of the MYT vault that the adapter belongs to.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
-    - With `"INVALID_ADDRESS"` if either `adapter` or `myt` is the zero address.  
+    - With `"INVALID_ADDRESS"` if either `adapter` or `myt` is the zero address.
+    - Reverts if the corresponding `submitSetStrategy` has not been called, or if the vault's timelock has not yet elapsed.
   - **Emits**  
     - [`StrategyAdded(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#Events_StrategyAdded) - emitted in the internal `_addStrategy()` call.
 </details>
 <details id="OperatorActions_removeStrategy">
   <summary>removeStrategy(address adapter, address myt)</summary>
 
-  - **Description** - Deregisters a MYT strategy adapter from the specified MYT vault.<br/><br/>  
-    First runs address validity checks, then offloads to the internal [`_removeStrategy(adapter, myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_removeStrategy) to deregister the MYT strategy from the vault as an active strategy.
+  - **Description** - First runs address validity checks, then offloads to the internal [`_removeStrategy(adapter, myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_removeStrategy) to execute the deregistration. Must be called after [`submitRemoveStrategy()`](/dev/myt/alchemist-curator-contract#OperatorActions_submitRemoveStrategy) has been called and the vault's timelock period has elapsed.
     - `@param adapter` - The address of the MYT strategy adapter to remove.  
     - `@param myt` - The address of the MYT vault that the adapter is currently linked to.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable 
   - **Reverts**  
-    - With `"INVALID_ADDRESS"` if either `adapter` or `myt` is the zero address.  
+    - With `"INVALID_ADDRESS"` if either `adapter` or `myt` is the zero address.
+    - Reverts if the corresponding `submitRemoveStrategy` has not been called, or if the vault's timelock has not yet elapsed.
   - **Emits**  
     - [`StrategyRemoved(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#Events_StrategyRemoved) - emitted in the internal `_removeStrategy()` call.
 </details>
@@ -330,7 +333,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 <details id="InternalOperations_submitIncreaseAbsoluteCap">
   <summary>_submitIncreaseAbsoluteCap(address adapter, bytes id, uint256 amount)</summary>
 
-  - **Description** - Internal helper that enqueues a cap increase on the MYT vault by encoding `IVaultV2.increaseAbsoluteCap(id, amount)` and delegating to the internal [`_vaultSubmit(data)`](/dev/myt/alchemist-curator-contract#InternalOperations_vaultSubmit).
+  - **Description** - Internal helper that enqueues a cap increase on the MYT vault by encoding `IVaultV2.increaseAbsoluteCap(id, amount)` and delegating to the internal [`_vaultSubmit(data)`](/dev/myt/alchemist-curator-contract#InternalOperations_vaultSubmit). After the vault's timelock period elapses, the corresponding non-submit version of this function must be called to execute the change.
     - `@param adapter` - The strategy adapter address.
     - `@param id` - The encoded MYT strategy ID.
     - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.
