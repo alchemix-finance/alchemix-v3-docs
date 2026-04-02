@@ -15,13 +15,16 @@ The base contract for holding vaults used to fulfill Alchemist obligations in th
 
   - **Description** - The address of the asset this vault is parameterized for. For ERC-20 vaults this is the token address. For the ETH vault this holds the WETH address.
   - **Type** - `address`
+  - **Used By**
+    - Derived contract implementations (withdraw and deposit logic)
+  - **Updated By** - none. Immutable, set once on deployment.
   - **Read By**
     - `token()`
 </details>
 <details>
   <summary>authorized</summary>
 
-  - **Description** - Allowlist of accounts permitted to withdraw from the vault, such as the Alchemist and owner.
+  - **Description** - Allowlist of accounts permitted to withdraw from the vault, such as the Alchemist and owner. The Alchemist and owner are both authorized on deployment.
   - **Type** - `mapping(address => bool)`
   - **Used By**
     - [`onlyAuthorized`](/dev/alchemist/abstract-fee-vault-contract#Modifiers_onlyAuthorized)
@@ -76,7 +79,7 @@ The base contract for holding vaults used to fulfill Alchemist obligations in th
   <summary>_checkNonZeroAmount(uint256 amount)</summary>
 
   - **Description** - Validates `amount > 0`.
-  - **Visibility Specifier** - internal (pure)
+  - **Visibility Specifier** - internal
   - **State Mutability Specifier** - pure
   - **Reverts**
     - `ZeroAmount()` - when the amount passed is 0.
@@ -107,7 +110,7 @@ The base contract for holding vaults used to fulfill Alchemist obligations in th
 
 * <span id="Events_Deposited"><strong><code>Deposited(address indexed from, uint256 amount)</code></strong> - emitted when funds are deposited into a child vault.</span>  
 * <span id="Events_Withdrawn"><strong><code>Withdrawn(address indexed to, uint256 amount)</code></strong> - emitted when funds are withdrawn by an authorized account.</span>  
-* <span id="Events_AuthorizationUpdated"><strong><code>AuthorizationUpdated(address indexed account, bool status)</code></strong> - emitted when an account’s authorization state changes.</span>
+* <span id="Events_AuthorizationUpdated"><strong><code>AuthorizationUpdated(address indexed account, bool status)</code></strong> - emitted when an account's authorization state changes.</span>
 
 ## Errors
 
