@@ -1,8 +1,12 @@
 ---
 sidebar_position: 7
+hide_title: true
+title: AlchemistStrategyClassifier
 ---
 
-# AlchemistStrategyClassifier
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AlchemistStrategyClassifier" />
 
 ## Description
 

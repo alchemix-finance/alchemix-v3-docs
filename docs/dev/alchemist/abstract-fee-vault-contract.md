@@ -1,8 +1,12 @@
 ---
 sidebar_position: 4
+hide_title: true
+title: AbstractFeeVault
 ---
 
-# AbstractFeeVault
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AbstractFeeVault" />
 
 ## Description
 

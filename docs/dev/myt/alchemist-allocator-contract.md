@@ -1,8 +1,12 @@
 ---
 sidebar_position: 4
+hide_title: true
+title: AlchemistAllocator
 ---
 
-# AlchemistAllocator
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AlchemistAllocator" />
 
 ## Description
 

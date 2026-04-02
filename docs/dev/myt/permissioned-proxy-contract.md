@@ -1,8 +1,12 @@
 ---
 sidebar_position: 6
+hide_title: true
+title: PermissionedProxy
 ---
 
-# PermissionedProxy
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="PermissionedProxy" />
 
 ## Description
 

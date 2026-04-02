@@ -1,8 +1,12 @@
 ---
 sidebar_position: 5
+hide_title: true
+title: AlchemistTokenVault
 ---
 
-# AlchemistTokenVault
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AlchemistTokenVault" />
 
 ## Description
 
