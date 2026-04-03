@@ -1,0 +1,75 @@
+/* Shared tokens with AllocationFlow */
+.wrap {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1.25rem 0;
+}
+
+.row {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.9rem 1.1rem;
+  align-items: flex-start;
+}
+
+.rowBorder {
+  border-bottom: 1px solid rgba(245, 192, 154, 0.10);
+}
+
+.rowRoot {
+  background: rgba(245, 192, 154, 0.04);
+}
+
+.roleCol {
+  flex-shrink: 0;
+  width: 9rem;
+  padding-top: 2px;
+}
+
+.roleBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f5c09a;
+}
+
+.detailCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.detail {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.detailLabel {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  flex-shrink: 0;
+}
+
+.detailValue {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #e8e8ea;
+}
+
+.detailCode {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ea;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}

@@ -1,0 +1,203 @@
+/* ── Wrap ─────────────────────────────────────────────────── */
+.wrap {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;
+  padding: 1.5rem 1.25rem;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Connector ───────────────────────────────────────────── */
+.connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 2rem;
+}
+
+.connectorLine {
+  width: 2px;
+  flex: 1;
+  background: rgba(245, 192, 154, 0.35);
+}
+
+.connectorArrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid rgba(245, 192, 154, 0.35);
+}
+
+/* ── Start node ──────────────────────────────────────────── */
+.startNode {
+  background: #1a1c1f;
+  border: 1.5px solid #f5c09a;
+  border-radius: 999px;
+  padding: 0.5rem 1.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f5c09a;
+  letter-spacing: 0.02em;
+}
+
+/* ── Done node ───────────────────────────────────────────── */
+.doneNode {
+  background: #111e18;
+  border: 1.5px solid #4ade80;
+  border-radius: 999px;
+  padding: 0.5rem 2.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Check card ──────────────────────────────────────────── */
+.checkCard {
+  width: 100%;
+  background: #1a1c1f;
+  border: 1px solid rgba(245, 192, 154, 0.20);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.checkHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.10);
+}
+
+.checkBadge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.checkLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e8e8ea;
+}
+
+/* ── Branches ────────────────────────────────────────────── */
+.yesBranch {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.08);
+}
+
+.noBranch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+}
+
+.yesTag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f5c09a;
+  background: rgba(245, 192, 154, 0.10);
+  border: 1px solid rgba(245, 192, 154, 0.25);
+  border-radius: 3px;
+  padding: 0.15rem 0.5rem;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.noTag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #8a8f99;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  padding: 0.15rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.noContinue {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #8a8f99;
+  font-style: italic;
+}
+
+.yesContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Action nodes ────────────────────────────────────────── */
+.actionNode {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.15);
+  border-radius: 5px;
+  padding: 0.35rem 0.7rem;
+}
+
+.actionCode {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e8ea;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.capSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+/* ── Allocate node ───────────────────────────────────────── */
+.allocateNode {
+  width: 100%;
+  background: rgba(245, 192, 154, 0.06);
+  border: 1.5px solid rgba(245, 192, 154, 0.35);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.allocateBadge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f5c09a;
+  flex-shrink: 0;
+}
+
+.allocateCode {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f5c09a;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}

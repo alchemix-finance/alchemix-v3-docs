@@ -1,8 +1,12 @@
 ---
 sidebar_position: 5
+hide_title: true
+title: AlchemistTokenVault
 ---
 
-# AlchemistTokenVault
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AlchemistTokenVault" />
 
 ## Description
 
@@ -23,7 +27,7 @@ Inherits from `AbstractFeeVault` for authorization and helpers.
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
-    - If `amount == 0`.
+    - `ZeroAmount()` - when `amount == 0`.
     - If the caller has insufficient allowance/balance.
   - **Emits**
     - [`Deposited(address indexed from, uint256 amount)`](/dev/alchemist/alchemist-token-vault-contract#Events_Deposited)
@@ -42,9 +46,9 @@ Inherits from `AbstractFeeVault` for authorization and helpers.
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
-    - If `recipient == address(0)`.
-    - If `amount == 0`.
-    - If the contract has insufficient balance.
+    - `ZeroAddress()` - when `recipient == address(0)`.
+    - `ZeroAmount()` - when `amount == 0`.
+    - Reverts via OpenZeppelin's `safeTransfer` if the contract has insufficient token balance.
   - **Emits**
     - [`Withdrawn(address indexed recipient, uint256 amount)`](/dev/alchemist/alchemist-token-vault-contract#Events_Withdrawn)
 </details>
@@ -56,8 +60,8 @@ Inherits from `AbstractFeeVault` for authorization and helpers.
 <details id="ReadingState_totalDeposits">
   <summary>totalDeposits()</summary>
 
-  - **Description** - Returns the vault’s current ERC-20 balance of contract token.
-  - **Visibility Specifier** - public (view)  
+  - **Description** - Returns the vault's current ERC-20 balance of contract token.
+  - **Visibility Specifier** - public
   - **State Mutability Specifier** - view
 </details>
 

@@ -1,14 +1,16 @@
 ---
 sidebar_position: 7
+hide_title: true
+title: AlchemistStrategyClassifier
 ---
 
-# AlchemistStrategyClassifier
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AlchemistStrategyClassifier" />
 
 ## Description
 
-This contract defines risk classes and their caps, and maps each strategy to a risk level. 
-
-> Note: This is currently not used, but will be referenced by the AlchemistAllocator in it's allocate/deallocate calls to resrict how much can be allocated/deallocated to/from a specific strategy to adhere to DAO defined boundaries around risk management.
+This contract defines risk classes and their caps, and maps each strategy to a risk level. Referenced by the AlchemistAllocator during allocation calls to enforce DAO-defined boundaries around risk management.
 
 ## Risk Class
 
@@ -25,7 +27,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details>
   <summary>localCap</summary>
 
-  - **Description** - Max combined allocation across all strategies of this risk class.
+  - **Description** - Max allocation for a single strategy in the risk class.
   - **Type** - `uint256`
   - **Used By**
     - `getIndividualCap()`
@@ -57,7 +59,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details>
   <summary>riskClasses</summary>
 
-  - **Description** - Mapping from riskLevel ID to a Risk Class.  
+  - **Description** - Mapping from riskLevel ID to a Risk Class. Initialized on deployment with three default risk levels (0 = Low, 1 = Medium, 2 = High), each with caps set to `type(uint256).max`.
   - **Type** - `mapping(uint8 => RiskClass)`
   - **Updated By**
     - [`setRiskClass(uint8 classId, uint256 globalCap, uint256 localCap)`](/dev/myt/alchemist-strategy-classifier-contract#RiskClassManagement_setRiskClass)
@@ -90,7 +92,8 @@ This contract defines risk classes and their caps, and maps each strategy to a r
     - `@param _newAdmin` - Address of the new pendingAdmin.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
-  - **Reverts** - none
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
   - **Emits** - none
 </details>
 <details id="AdminActions_acceptOwnership">
@@ -99,7 +102,8 @@ This contract defines risk classes and their caps, and maps each strategy to a r
   - **Description** - Can only be called by the current `pendingAdmin`. Used to accept the admin role.
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
-  - **Reverts** - none
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current `pendingAdmin`.
   - **Emits**
     - [`AdminChanged(address admin)`](/dev/myt/alchemist-strategy-classifier-contract#Events_AdminChanged)
 </details>
@@ -112,9 +116,10 @@ This contract defines risk classes and their caps, and maps each strategy to a r
     - `@param localCap` - Max allocation for a single strategy in this class.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
-  - **Reverts** - none
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
   - **Emits**
-    - [`RiskClassModified(uint8 classId, uint256 globalCap, uint256 localCap)`](/dev/myt/alchemist-strategy-classifier-contract#Events_RiskClassModified)
+    - [`RiskClassModified(uint256 classId, uint256 globalCap, uint256 localCap)`](/dev/myt/alchemist-strategy-classifier-contract#Events_RiskClassModified)
 </details>
 <details id="RiskClassManagement_assignStrategyRiskLevel">
   <summary>assignStrategyRiskLevel(uint256 strategyId, uint8 riskLevel)</summary>
@@ -124,7 +129,8 @@ This contract defines risk classes and their caps, and maps each strategy to a r
     - `@param riskLevel` - Risk level to assign.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
-  - **Reverts** - none
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
   - **Emits** - none
 </details>
 
@@ -135,7 +141,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details id="ReadingState_getIndividualCap">
   <summary>getIndividualCap(uint256 strategyId)</summary>
 
-  - **Description** - Returns the local cap for the strategy’s assigned risk class. The local cap is the max allocation for a single strategy in the risk class.
+  - **Description** - Returns the local cap for the strategy's assigned risk class. The local cap is the max allocation for a single strategy in the risk class.
     - `@param strategyId` - The strategy identifier.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view
@@ -143,7 +149,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details id="ReadingState_getGlobalCap">
   <summary>getGlobalCap(uint8 riskLevel)</summary>
 
-  - **Description** - Returns the global cap for the specified risk class. The global cap is the max combined allocations for strategies in a risk calss.
+  - **Description** - Returns the global cap for the specified risk class. The global cap is the max combined allocation for strategies in a risk class.
     - `@param riskLevel` - Risk class ID.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view
@@ -160,4 +166,4 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 ## Events
 
 * <span id="Events_AdminChanged"><strong><code>AdminChanged(address indexed admin)</code></strong> - emitted when `admin` is updated via `acceptOwnership`.</span>  
-* <span id="Events_RiskClassModified"><strong><code>RiskClassModified(uint8 indexed classId, uint256 globalCap, uint256 localCap)</code></strong> - emitted when a risk class’s caps are updated.</span>
+* <span id="Events_RiskClassModified"><strong><code>RiskClassModified(uint256 indexed class, uint256 indexed globalCap, uint256 indexed localCap)</code></strong> - emitted when a risk class's caps are updated.</span>

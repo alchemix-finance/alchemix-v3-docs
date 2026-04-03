@@ -1,0 +1,192 @@
+/* ── Wrap ─────────────────────────────────────────────────── */
+.wrap {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Shared line segment ─────────────────────────────────── */
+.seg {
+  width: 2px;
+  height: 0.75rem;
+  background: rgba(245, 192, 154, 0.40);
+  flex-shrink: 0;
+}
+
+/* ── Chips ───────────────────────────────────────────────── */
+.chip {
+  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.chip_myt {
+  background: rgba(245, 192, 154, 0.07);
+  border: 1.5px solid rgba(245, 192, 154, 0.35);
+  color: #f5c09a;
+}
+
+.chip_admin {
+  background: rgba(245, 192, 154, 0.13);
+  border: 1.5px solid #f5c09a;
+  color: #f5c09a;
+}
+
+.chip_role {
+  background: #1a1c1f;
+  border: 1.5px solid rgba(245, 192, 154, 0.30);
+  color: #e8e8ea;
+}
+
+.chip_contract {
+  background: #141618;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  color: #8a8f99;
+  font-weight: 600;
+}
+
+/* ── Edge label ──────────────────────────────────────────── */
+.edgeLabel {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #8a8f99;
+}
+
+/* ── Level 1: MYT row ────────────────────────────────────── */
+.mytRow {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* ── Merge connector ─────────────────────────────────────── */
+.mergeWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.mergeArms {
+  display: flex;
+  width: 100%;
+  height: 1.1rem;
+}
+
+.mergeLeft {
+  flex: 1;
+  border-right: 2px solid rgba(245, 192, 154, 0.40);
+  border-bottom: 2px solid rgba(245, 192, 154, 0.40);
+  border-bottom-right-radius: 5px;
+}
+
+.mergeRight {
+  flex: 1;
+  border-left: 2px solid rgba(245, 192, 154, 0.40);
+  border-bottom: 2px solid rgba(245, 192, 154, 0.40);
+  border-bottom-left-radius: 5px;
+}
+
+/* ── Lower section: adminSplit + columns share a width ───── */
+/*  .lower uses align-items: stretch so both children fill    */
+/*  to the width naturally set by .columns content.           */
+.lower {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ── Admin split connector ───────────────────────────────── */
+.adminSplit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.splitBar {
+  height: 2px;
+  width: 100%;
+  background: rgba(245, 192, 154, 0.40);
+}
+
+.splitLegs {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.splitLeg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* ── Down connector ──────────────────────────────────────── */
+.downWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* ── Two-column layout ───────────────────────────────────── */
+.columns {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Allocator tree (vertical trunk + two horizontal arms) ── */
+.treeWrap {
+  display: flex;
+  align-items: stretch;
+  margin-top: 0.2rem;
+}
+
+/* vertical line running the full height of the branches */
+.treeTrunk {
+  width: 2px;
+  background: rgba(245, 192, 154, 0.40);
+  margin-top: 0.1rem; /* aligns flush with first arm */
+  margin-bottom: 0.65rem; /* stops at centre of last arm */
+}
+
+.treeBranches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+}
+
+.treeBranch {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* short horizontal arm connecting trunk to chip */
+.treeArm {
+  width: 0.65rem;
+  height: 2px;
+  background: rgba(245, 192, 154, 0.40);
+  flex-shrink: 0;
+}

@@ -9,17 +9,11 @@ module.exports = {
       className: "sidebarBold",
       items: [
         "architecture/overview",
-        "architecture/redemptions",
+        // "architecture/redemptions",
         "architecture/security-model",
       ],
     },
-    {
-      type: "category",
-      label: "Smart Contracts",
-      collapsed: true,
-      className: "sidebarBold",
-      items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
-    },
+
     {
       type: "category",
       label: "Core Modules",
@@ -32,6 +26,14 @@ module.exports = {
           collapsed: true,
           items: [
             "alchemist/alchemist-contract",
+            {
+              type: "category",
+              label: "Utilities",
+              items: [
+                "alchemist/alchemist-router-contract",
+                "alchemist/alchemist-v3-position-contract",
+              ]
+            },
             {
               type: "category",
               label: "AlchemistFeeVault",
@@ -48,39 +50,49 @@ module.exports = {
           label: "MYT",
           collapsed: true,
           items: [
+            "myt/operator-cheatsheet",
             "myt/myt-contract",
             {
               type: "category",
-              label: "Operations",
+              label: "Utilities",
               items: [
                 "myt/permissioned-proxy-contract",
                 "myt/alchemist-allocator-contract",
                 "myt/alchemist-curator-contract",
+                "myt/alchemist-strategy-classifier-contract",
               ],
             },
           ],
         },
         {
-          type: "category",
+          type: "doc",
+          id: "transmuter/transmuter-contract",
           label: "Transmuter",
-          collapsed: true,
-          items: ["transmuter/transmuter-contract"],
         },
       ],
     },
-    {
-      type: "category",
-      label: "Integrating Alchemix",
-      collapsed: true,
-      className: "sidebarBold",
-      items: [
-        "integration/using-alassets",
-        "integration/integrate-myt",
-        "integration/integrate-transmuter",
-        "integration/integrate-alchemist",
-        "integration/grants-program",
-      ],
-    },
-    "faq",
+    // {
+    //   type: "category",
+    //   label: "Deployed Contracts",
+    //   collapsed: true,
+    //   className: "sidebarBold",
+    //   items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
+    // },
+
+    // Integrating Alchemix
+    // {
+    //   type: "category",
+    //   label: "Integrating Alchemix",
+    //   collapsed: true,
+    //   className: "sidebarBold",
+    //   items: [
+    //     "integration/using-alassets",
+    //     "integration/integrate-myt",
+    //     "integration/integrate-transmuter",
+    //     "integration/integrate-alchemist",
+    //     "integration/grants-program",
+    //   ],
+    // },
+    // "faq",
   ],
 };

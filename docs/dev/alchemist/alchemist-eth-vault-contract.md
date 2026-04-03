@@ -1,8 +1,12 @@
 ---
 sidebar_position: 6
+hide_title: true
+title: AlchemistETHVault
 ---
 
-# AlchemistETHVault
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="AlchemistETHVault" />
 
 ## Description
 
@@ -60,6 +64,7 @@ Inherits from `AbstractFeeVault` for authorization and helpers.
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
+    - `ZeroAddress()` - when `recipient == address(0)`.
     - `ZeroAmount()` - when `amount == 0`.  
     - `InsufficientBalance()` - when `amount > address(this).balance`.  
     - `TransferFailed()` - when the ETH transfer fails.  
@@ -72,7 +77,7 @@ Inherits from `AbstractFeeVault` for authorization and helpers.
 <details id="InternalOperations_deposit">
   <summary>_deposit(address depositor, uint256 amount)</summary>
 
-  - **Description** - Internal functions that emits `Deposited(depositor, amount)`.
+  - **Description** - Internal function that emits `Deposited(depositor, amount)`.
   - **Visibility Specifier** - internal  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts** - none  
@@ -96,3 +101,7 @@ Inherits from `AbstractFeeVault` for authorization and helpers.
 
 * <span id="Events_Deposited"><strong><code>Deposited(address indexed from, uint256 amount)</code></strong> - emitted after a successful ETH/WETH deposit.</span>  
 * <span id="Events_Withdrawn"><strong><code>Withdrawn(address indexed recipient, uint256 amount)</code></strong> - emitted after a successful authorized ETH withdrawal.</span>
+
+## Errors
+
+* <span id="Errors_TransferFailed"><strong><code>TransferFailed()</code></strong> - thrown when an ETH transfer to the recipient fails. Defined in this contract; all other errors (`Unauthorized`, `ZeroAddress`, `ZeroAmount`, `InsufficientBalance`) are inherited from AbstractFeeVault.</span>

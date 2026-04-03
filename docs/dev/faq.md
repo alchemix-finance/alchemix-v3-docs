@@ -1,8 +1,12 @@
 ---
 sidebar_position: 10
+hide_title: true
+title: FAQ
 ---
 
-# FAQ
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="FAQ" />
 
 <details>
 
@@ -143,6 +147,3 @@ Discord is the primary platform for engaging with the Alchemix team and the wide
 
 </details>
 
-<figure>
-  <img src="../../.gitbook/assets/header_02_test.png" alt=""></img>
-</figure>
