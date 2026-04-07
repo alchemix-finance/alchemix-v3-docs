@@ -6,6 +6,16 @@ title: MYT Operator Cheatsheet
 
 import PageBanner from "@site/src/components/PageBanner";
 
+<script dangerouslySetInnerHTML={{__html:`
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='iframe-resize'){
+    document.querySelectorAll('iframe').forEach(function(f){
+      try{if(f.contentWindow===e.source)f.style.height=(e.data.height+2)+'px';}catch(x){}
+    });
+  }
+});
+`}} />
+
 <PageBanner title="MYT Operator Cheatsheet" />
 
 Quick reference for admins, curators, allocators, and sentinels operating an MYT vault.

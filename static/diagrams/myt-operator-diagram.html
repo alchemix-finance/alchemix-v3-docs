@@ -220,6 +220,17 @@ body {
 </div>
 
 <script>
+function scaleToFit(){
+  var outer=document.getElementById('outer');
+  var contentW=outer.offsetWidth;
+  var viewW=document.documentElement.clientWidth;
+  var scale=viewW<contentW?viewW/contentW:1;
+  outer.style.transformOrigin='top left';
+  outer.style.transform=scale<1?'scale('+scale+')':'';
+  document.body.style.height=scale<1?(outer.scrollHeight*scale)+'px':'';
+  window.parent.postMessage({type:'iframe-resize',height:scale<1?Math.ceil(outer.scrollHeight*scale):outer.scrollHeight},'*');
+}
+window.addEventListener('resize',scaleToFit);
 window.onload=function(){setTimeout(function(){
 var outer=document.getElementById('outer'),or_=outer.getBoundingClientRect(),svg=document.getElementById('arrows'),H=outer.scrollHeight;
 svg.setAttribute('height',H);svg.style.height=H+'px';
@@ -269,7 +280,7 @@ mkpath('M'+ksGutterR+' '+allocUsdc.my+'H'+allocUsdc.r,RC,true,true);
 mkpath('M'+ksGutterR+' '+allocUsdcSwap.my+'H'+allocUsdcSwap.r,RC,true,true);
 lbl2(ksGutterR,ksUsdc.my+(allocUsdc.my-ksUsdc.my)*0.5,'must be','FALSE',RC);
 
-window.parent.postMessage({ type: 'iframe-resize', height: document.body.scrollHeight }, '*');
+scaleToFit();
 },100)};
 </script>
 </body>

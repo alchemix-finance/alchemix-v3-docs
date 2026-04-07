@@ -119,10 +119,11 @@ body{margin:0;padding:24px;color:var(--t1);font-family:var(--sans)}
 
 </div>
 <script>
-function notifyHeight() {
-  window.parent.postMessage({ type: 'iframe-resize', height: document.body.scrollHeight }, '*');
-}
-window.addEventListener('load', function() { setTimeout(notifyHeight, 100); });
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    window.parent.postMessage({ type: 'iframe-resize', height: document.body.scrollHeight }, '*');
+  }, 150);
+});
 </script>
 </body>
 </html>
