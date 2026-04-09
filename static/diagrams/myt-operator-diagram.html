@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --color-text-primary: #e8e8ea;
+  --color-text-secondary: #8a8f99;
+  --color-text-tertiary: #8a8f99;
+  --color-text-info: #85B7EB;
+  --color-background-primary: #0d0e10;
+  --color-background-secondary: #141618;
+  --color-background-tertiary: #1a1c1f;
+  --color-border-tertiary: rgba(245,192,154,0.12);
+  --color-border-secondary: rgba(245,192,154,0.22);
+  --border-radius-lg: 12px;
+}
+html, body { background: transparent; }
+body {
+  margin: 0;
+  padding: 16px 44px;
+  color: var(--color-text-primary);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.outer{position:relative;padding:0 68px;margin:0 auto}
+.main{display:flex;flex-direction:column;gap:4px;font-family:var(--font-sans)}
+.tl{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#f5c09a;padding:16px 4px 4px}
+.tl:first-child{padding-top:2px}
+.gr{display:flex;gap:3px}
+.h2>.hf{flex:1;min-width:0}
+.h4>.hq{flex:1;min-width:0}
+.bx{border-radius:7px;border:1px solid rgba(245,192,154,0.22);overflow:hidden}
+.ch{background:rgba(245,192,154,0.10);color:var(--color-text-primary);padding:7px 8px;font-weight:600;font-size:13px;text-align:center;border-bottom:1px solid rgba(245,192,154,0.20)}
+.ch .su{font-size:10px;font-weight:400;color:#cccfd4;margin-top:2px;opacity:1}
+.rb{background:#0d0e10;padding:5px 7px}
+.rp{display:inline-flex;font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px;margin-bottom:1px}
+.rp-o{background:rgba(200,190,255,0.15);color:#c8beff;border:1px solid rgba(200,190,255,0.30)}
+.rp-s{background:rgba(245,192,154,0.15);color:#f5c09a;border:1px solid rgba(245,192,154,0.35)}
+.rp-a{background:rgba(133,183,235,0.15);color:#85b7eb;border:1px solid rgba(133,183,235,0.30)}
+.rp-p{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.30)}
+.at{font-size:10px;color:#cccfd4;padding:1px 5px;background:#252830;border-radius:3px;display:inline-block;margin:1px 1px 0 0}
+.fb{background:#0d0e10;padding:6px 8px}
+.fl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-primary);margin-bottom:2px;margin-top:3px}
+.fl:first-child{margin-top:0}
+.fi{font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--color-text-primary);line-height:1.6;display:block}
+.fi a{color:#f5c09a;text-decoration:underline}
+.fi.indent{padding-left:14px}
+.cn{font-size:10px;color:var(--color-text-primary);margin-top:2px;line-height:1.4}
+.cn a{color:#f5c09a;text-decoration:underline}
+.nb{padding:6px 10px;font-size:10px;color:var(--color-text-primary);background:#0d0e10;border:1px solid rgba(245,192,154,0.18);border-radius:5px;line-height:1.4}
+.alloc-spacer{height:18px}
+.multi-note{font-size:9px;color:#cccfd4;margin-top:1px}
+#arrows{position:absolute;top:0;left:0;width:100%;pointer-events:none;overflow:visible}
+</style>
+</head>
+<body>
+<div class="outer" id="outer" style="min-width:680px">
+<div class="main">
+
+<div class="tl">MYT vaults (Morpho V2)</div>
+<div class="gr h2">
+  <div class="hf bx ch">ETH Mix Yield Token</div>
+  <div class="hf bx ch">USDC Mix Yield Token</div>
+</div>
+<div class="gr h4" style="gap:14px">
+  <div class="hq bx rb" id="eo"><div class="rp rp-o">owner</div><div><span class="at">DAO Multisig</span></div></div>
+  <div class="hq bx rb" id="es"><div class="rp rp-s" id="esp">sentinel</div><div><span class="at">Multisig</span><span class="at">Assoc.</span><span class="at">EOA</span></div></div>
+  <div class="hq bx rb" id="us"><div class="rp rp-s" id="usp">sentinel</div><div><span class="at">Multisig</span><span class="at">Assoc.</span><span class="at">EOA</span></div></div>
+  <div class="hq bx rb" id="uo"><div class="rp rp-o">owner</div><div><span class="at">DAO Multisig</span></div></div>
+</div>
+<div class="gr h4" style="gap:14px">
+  <div class="hq bx fb" id="eof">
+    <div class="fl">Owner functions</div>
+    <span class="fi">setCurator()</span>
+    <span class="fi" id="sis-eth">setIsSentinel()</span>
+    <span class="fi">setOwner()</span>
+  </div>
+  <div class="hq bx fb" id="esf">
+    <div class="fl">Sentinel functions</div>
+    <span class="fi">deallocate()</span>
+    <span class="fi">decreaseAbsCap()</span>
+    <span class="fi">decreaseRelCap()</span>
+    <span class="fi">revoke()</span>
+  </div>
+  <div class="hq bx fb" id="usf">
+    <div class="fl">Sentinel functions</div>
+    <span class="fi">deallocate()</span>
+    <span class="fi">decreaseAbsCap()</span>
+    <span class="fi">decreaseRelCap()</span>
+    <span class="fi">revoke()</span>
+  </div>
+  <div class="hq bx fb" id="uof">
+    <div class="fl">Owner functions</div>
+    <span class="fi">setCurator()</span>
+    <span class="fi" id="sis-usdc">setIsSentinel()</span>
+    <span class="fi">setOwner()</span>
+  </div>
+</div>
+
+<div class="tl" style="padding-top:14px">Curator contract (one per chain, shared)</div>
+<div class="gr">
+  <div class="bx ch" style="flex:1" id="cc">Curator Contract<div class="su">Shared by ETH + USDC MYTs · inherits PermissionedProxy</div></div>
+</div>
+<div class="gr h2">
+  <div class="hf bx rb" id="ca"><div class="rp rp-a">admin</div><div><span class="at">DAO Multisig</span></div></div>
+  <div class="hf bx rb"><div class="rp rp-p">operator</div><div><span class="at">DAO Multisig</span></div><div class="multi-note">Multiple allowed</div></div>
+</div>
+<div class="gr h2">
+  <div class="hf bx fb">
+    <div class="fl">Admin functions</div>
+    <span class="fi">submitSetAllocator()</span>
+    <span class="fi">submitIncreaseAbsCap()</span>
+    <span class="fi indent">increaseAbsoluteCap()</span>
+    <span class="fi">submitIncreaseRelCap()</span>
+    <span class="fi indent">increaseRelativeCap()</span>
+    <span class="fi">decreaseAbsoluteCap()</span>
+    <span class="fi">decreaseRelativeCap()</span>
+    <div class="fl">Role management</div>
+    <span class="fi">setOperator()</span>
+    <span class="fi">transferAdminOwnership()</span>
+  </div>
+  <div class="hf bx fb">
+    <div class="fl">Operator functions</div>
+    <span class="fi">submitSetStrategy()</span>
+    <span class="fi indent">setStrategy()</span>
+    <span class="fi">submitRemoveStrategy()</span>
+    <span class="fi indent">removeStrategy()</span>
+    <div class="fl" style="margin-top:6px">Via proxy (admin)</div>
+    <div class="cn"><a href="https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#curator-functions">Other Morpho curator functions</a> can be forwarded via proxy() after whitelisting. See documentation below for examples of proxy interactions.</div>
+  </div>
+</div>
+<div class="nb" style="margin-top:3px"><strong>Two-step:</strong> submit* queues on the vault timelock, then call the indented execution function. Timelock is currently <strong>0</strong> but submit is still required.</div>
+
+<div class="tl" style="padding-top:14px">Allocator contracts (one per MYT)</div>
+<div class="gr h2">
+  <div class="hf bx ch" id="ea">ETH Allocator Contract<div class="su">inherits PermissionedProxy</div></div>
+  <div class="hf bx ch" id="ua">USDC Allocator Contract<div class="su">inherits PermissionedProxy</div></div>
+</div>
+<div class="alloc-spacer"></div>
+<div class="gr h4">
+  <div class="hq bx rb"><div class="rp rp-p">operator</div><div><span class="at">DAO Multisig</span></div><div class="cn">All caps enforced</div><div class="multi-note">Multiple allowed</div></div>
+  <div class="hq bx rb"><div class="rp rp-a">admin</div><div><span class="at">DAO Multisig</span></div><div class="cn">Bypasses local risk cap</div></div>
+  <div class="hq bx rb"><div class="rp rp-a">admin</div><div><span class="at">DAO Multisig</span></div><div class="cn">Bypasses local risk cap</div></div>
+  <div class="hq bx rb"><div class="rp rp-p">operator</div><div><span class="at">DAO Multisig</span></div><div class="cn">All caps enforced</div><div class="multi-note">Multiple allowed</div></div>
+</div>
+<div class="gr h4">
+  <div class="hq bx fb" id="eth-alloc-fn">
+    <div class="fl">Allocation (admin + operator)</div>
+    <span class="fi" id="alloc-eth">allocate()</span>
+    <span class="fi" id="alloc-eth-swap">allocateWithSwap()</span>
+    <span class="fi">deallocate()</span>
+    <span class="fi">deallocateWithSwap()</span>
+    <span class="fi">deallocateWith...</span>
+  </div>
+  <div class="hq bx fb">
+    <div class="fl">Role management (admin)</div>
+    <span class="fi">setOperator()</span>
+    <span class="fi">transferAdmin()</span>
+    <div class="fl" style="margin-top:4px">Via proxy (admin)</div>
+    <span class="fi">setMaxRate()</span>
+    <span class="fi">setLiquidityAdapter...()</span>
+  </div>
+  <div class="hq bx fb">
+    <div class="fl">Role management (admin)</div>
+    <span class="fi">setOperator()</span>
+    <span class="fi">transferAdmin()</span>
+    <div class="fl" style="margin-top:4px">Via proxy (admin)</div>
+    <span class="fi">setMaxRate()</span>
+    <span class="fi">setLiquidityAdapter...()</span>
+  </div>
+  <div class="hq bx fb" id="usdc-alloc-fn">
+    <div class="fl">Allocation (admin + operator)</div>
+    <span class="fi" id="alloc-usdc">allocate()</span>
+    <span class="fi" id="alloc-usdc-swap">allocateWithSwap()</span>
+    <span class="fi">deallocate()</span>
+    <span class="fi">deallocateWithSwap()</span>
+    <span class="fi">deallocateWith...</span>
+  </div>
+</div>
+
+<div class="tl" style="padding-top:14px">MYT strategy contracts (adapters, one per strategy per MYT)</div>
+<div class="gr h2">
+  <div class="hf bx ch">ETH MYT Strategy<div class="su">Base adapter · one per yield source</div></div>
+  <div class="hf bx ch">USDC MYT Strategy<div class="su">Base adapter · one per yield source</div></div>
+</div>
+<div class="gr h2">
+  <div class="hf bx rb"><div class="rp rp-o">owner</div><div><span class="at">DAO Multisig</span></div></div>
+  <div class="hf bx rb"><div class="rp rp-o">owner</div><div><span class="at">DAO Multisig</span></div></div>
+</div>
+<div class="gr h2">
+  <div class="hf bx fb">
+    <div class="fl">Owner functions</div>
+    <span class="fi" id="ks-eth">setKillSwitch()</span>
+    <span class="fi">claimRewards()</span>
+    <span class="fi">setSlippageBPS()</span>
+    <span class="fi">setWhitelistedAllocator()</span>
+    <span class="fi">withdrawToVault()</span>
+    <span class="fi">rescueTokens()</span>
+    <span class="fi">setRiskClass()</span>
+    <span class="fi">setAllowanceHolder()</span>
+  </div>
+  <div class="hf bx fb">
+    <div class="fl">Owner functions</div>
+    <span class="fi" id="ks-usdc">setKillSwitch()</span>
+    <span class="fi">claimRewards()</span>
+    <span class="fi">setSlippageBPS()</span>
+    <span class="fi">setWhitelistedAllocator()</span>
+    <span class="fi">withdrawToVault()</span>
+    <span class="fi">rescueTokens()</span>
+    <span class="fi">setRiskClass()</span>
+    <span class="fi">setAllowanceHolder()</span>
+  </div>
+</div>
+
+</div>
+<svg id="arrows" xmlns="http://www.w3.org/2000/svg"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs></svg>
+</div>
+
+<script>
+function fitToView(){
+  var outer=document.getElementById('outer');
+  var viewW=document.documentElement.clientWidth;
+  var bodyPad=88;
+  var available=viewW-bodyPad;
+  var contentW=outer.scrollWidth;
+  if(available<contentW){
+    outer.style.zoom=available/contentW;
+  }else{
+    outer.style.zoom='';
+  }
+  window.parent.postMessage({type:'iframe-resize',height:document.body.scrollHeight},'*');
+}
+window.addEventListener('resize',fitToView);
+window.onload=function(){setTimeout(function(){
+var outer=document.getElementById('outer'),or_=outer.getBoundingClientRect(),svg=document.getElementById('arrows'),H=outer.scrollHeight;
+svg.setAttribute('height',H);svg.style.height=H+'px';
+function g(id){var e=document.getElementById(id);if(!e)return{t:0,b:0,l:0,r:0,mx:0,my:0,h:0};var r=e.getBoundingClientRect();return{t:r.top-or_.top,b:r.bottom-or_.top,l:r.left-or_.left,r:r.right-or_.left,mx:r.left+r.width/2-or_.left,my:r.top+r.height/2-or_.top,h:r.height}}
+var TC='#5DCAA5',BC='#85B7EB',SC='#FAC775',RC='#F09595';
+function mkpath(d,c,m,da){var p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke',c);p.setAttribute('stroke-width','1.5');if(m)p.setAttribute('marker-end','url(#ah)');if(da)p.setAttribute('stroke-dasharray','4 3');svg.appendChild(p)}
+function lbl(x,y,t,c){var tw=t.length*5+12;var bg=document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('x',x-tw/2);bg.setAttribute('y',y-9);bg.setAttribute('width',tw);bg.setAttribute('height',18);bg.setAttribute('rx','4');bg.setAttribute('fill','rgba(30,30,28,0.92)');bg.setAttribute('stroke',c);bg.setAttribute('stroke-width','0.5');svg.appendChild(bg);var tx=document.createElementNS('http://www.w3.org/2000/svg','text');tx.setAttribute('x',x);tx.setAttribute('y',y);tx.setAttribute('text-anchor','middle');tx.setAttribute('dominant-baseline','central');tx.setAttribute('fill',c);tx.setAttribute('font-size','9');tx.setAttribute('font-family','monospace');tx.setAttribute('font-weight','500');tx.textContent=t;svg.appendChild(tx)}
+function lbl2(x,y,l1,l2,c){var tw=Math.max(l1.length,l2.length)*5+12;var bg=document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('x',x-tw/2);bg.setAttribute('y',y-15);bg.setAttribute('width',tw);bg.setAttribute('height',30);bg.setAttribute('rx','4');bg.setAttribute('fill','rgba(30,30,28,0.92)');bg.setAttribute('stroke',c);bg.setAttribute('stroke-width','0.5');svg.appendChild(bg);var t1=document.createElementNS('http://www.w3.org/2000/svg','text');t1.setAttribute('x',x);t1.setAttribute('y',y-5);t1.setAttribute('text-anchor','middle');t1.setAttribute('dominant-baseline','central');t1.setAttribute('fill',c);t1.setAttribute('font-size','9');t1.setAttribute('font-family','monospace');t1.setAttribute('font-weight','500');t1.textContent=l1;svg.appendChild(t1);var t2=document.createElementNS('http://www.w3.org/2000/svg','text');t2.setAttribute('x',x);t2.setAttribute('y',y+7);t2.setAttribute('text-anchor','middle');t2.setAttribute('dominant-baseline','central');t2.setAttribute('fill',c);t2.setAttribute('font-size','9');t2.setAttribute('font-family','monospace');t2.setAttribute('font-weight','500');t2.textContent=l2;svg.appendChild(t2)}
+
+var eo=g('eo'),uo=g('uo'),esp=g('esp'),usp=g('usp'),eof=g('eof'),esf=g('esf'),usf=g('usf'),uof=g('uof');
+var cc=g('cc'),ca=g('ca'),ea=g('ea'),ua=g('ua');
+var sisEth=g('sis-eth'),sisUsdc=g('sis-usdc');
+var ksEth=g('ks-eth'),ksUsdc=g('ks-usdc');
+var allocEth=g('alloc-eth'),allocEthSwap=g('alloc-eth-swap');
+var allocUsdc=g('alloc-usdc'),allocUsdcSwap=g('alloc-usdc-swap');
+var GL=34,GR=or_.width-34;
+
+// setCurator arrows
+mkpath('M'+eo.l+' '+eo.my+'H'+GL+'V'+cc.my+'H'+cc.l,TC,true);
+lbl(GL,eo.my+(cc.my-eo.my)*0.5,'setCurator()',TC);
+mkpath('M'+uo.r+' '+uo.my+'H'+GR+'V'+cc.my+'H'+cc.r,TC,true);
+lbl(GR,uo.my+(cc.my-uo.my)*0.5,'setCurator()',TC);
+
+// setIsSentinel arrows
+var es=g('es'),us=g('us');
+var ethGapX=(eof.r+esf.l)/2;
+mkpath('M'+(sisEth.r+2)+' '+sisEth.my+'H'+ethGapX+'V'+esp.my+'H'+es.l,SC,true,true);
+var usdcGapX=(usf.r+uof.l)/2;
+mkpath('M'+(sisUsdc.l-2)+' '+sisUsdc.my+'H'+usdcGapX+'V'+usp.my+'H'+us.r,SC,true,true);
+
+// submitSetAllocator fork
+var trunkX=GL-14,ethAllocY=ea.my,underY=ea.b+10;
+mkpath('M'+ca.l+' '+ca.my+'H'+trunkX+'V'+underY,BC,false);
+mkpath('M'+trunkX+' '+ethAllocY+'H'+ea.l,BC,true);
+mkpath('M'+trunkX+' '+underY+'H'+ua.mx+'V'+ua.b,BC,true);
+lbl(trunkX,ca.my+(ethAllocY-ca.my)*0.45,'submitSetAllocator()',BC);
+
+// killSwitch → allocate() AND allocateWithSwap()
+var ksGutterL=GL-6,ksGutterR=GR+6;
+var ethAllocMid=(allocEth.my+allocEthSwap.my)/2;
+mkpath('M'+(ksEth.l-2)+' '+ksEth.my+'H'+ksGutterL+'V'+ethAllocMid,RC,false,true);
+mkpath('M'+ksGutterL+' '+allocEth.my+'H'+allocEth.l,RC,true,true);
+mkpath('M'+ksGutterL+' '+allocEthSwap.my+'H'+allocEthSwap.l,RC,true,true);
+lbl2(ksGutterL,ksEth.my+(allocEth.my-ksEth.my)*0.5,'must be','FALSE',RC);
+var usdcAllocMid=(allocUsdc.my+allocUsdcSwap.my)/2;
+mkpath('M'+(ksUsdc.r+2)+' '+ksUsdc.my+'H'+ksGutterR+'V'+usdcAllocMid,RC,false,true);
+mkpath('M'+ksGutterR+' '+allocUsdc.my+'H'+allocUsdc.r,RC,true,true);
+mkpath('M'+ksGutterR+' '+allocUsdcSwap.my+'H'+allocUsdcSwap.r,RC,true,true);
+lbl2(ksGutterR,ksUsdc.my+(allocUsdc.my-ksUsdc.my)*0.5,'must be','FALSE',RC);
+
+fitToView();
+},100)};
+</script>
+</body>
+</html>
