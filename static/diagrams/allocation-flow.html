@@ -14,32 +14,32 @@
   --mono: 'Fira Code',monospace;
   --sans: 'Montserrat',system-ui,sans-serif;
 }
-html,body{background:transparent;overflow:hidden}
+html,body{background:transparent}
 body{margin:0;padding:24px;color:var(--t1);font-family:var(--sans)}
 .flow{max-width:640px;margin:0 auto}
 .start-pill{border:.5px solid var(--amber);border-radius:20px;padding:10px 28px;text-align:center;font-size:14px;font-weight:500;color:var(--amber);background:var(--amber-bg);width:fit-content;margin:0 auto}
 .connector{display:flex;justify-content:center;padding:6px 0}
 .connector .line{width:1.5px;height:28px;background:var(--t3)}
 .arrow-down{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--t3);margin:0 auto}
-.check-box{border:1px solid rgba(245,192,154,0.18);border-radius:10px;padding:16px 20px;background:var(--bg2)}
+.check-box{border:1px solid rgba(245,192,154,0.22);border-radius:10px;padding:16px 20px;background:#0d0e10}
 .check-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.check-badge{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--t2)}
+.check-badge{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:#cccfd4}
 .check-title{font-size:15px;font-weight:600;color:var(--t1)}
 .yes-row{margin-bottom:10px}
 .yes-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--green-bg);color:var(--green);border:1px solid rgba(74,222,128,0.25);margin-bottom:6px}
-.no-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid rgba(255,255,255,0.08)}
-.code-row{background:var(--bg3);border:1px solid rgba(245,192,154,0.12);border-radius:6px;padding:8px 14px;font-family:var(--mono);font-size:13px;color:var(--t1);margin-bottom:6px;margin-left:12px}
+.no-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.04);color:#cccfd4;border:1px solid rgba(255,255,255,0.12)}
+.code-row{background:#0d0e10;border:1px solid rgba(245,192,154,0.22);border-radius:6px;padding:8px 14px;font-family:var(--mono);font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px;margin-left:12px}
 .code-row.indent{margin-left:36px}
-.footnote{font-size:11px;color:var(--t2);font-style:italic;margin:4px 0 10px 14px}
+.footnote{font-size:11px;color:var(--t1);margin:4px 0 10px 14px}
 .no-row{display:flex;align-items:center;gap:10px;margin-top:8px}
-.no-text{font-size:13px;color:var(--t2);font-style:italic}
+.no-text{font-size:13px;color:var(--t1)}
 .action-box{border:.5px solid var(--amber);border-radius:10px;padding:14px 20px;background:var(--amber-bg);display:flex;align-items:center;gap:12px}
 .action-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);flex-shrink:0}
-.action-code{font-family:var(--mono);font-size:13px;color:var(--t1);background:var(--bg2);border:.5px solid var(--b);border-radius:6px;padding:6px 12px}
+.action-code{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--t1);background:#0d0e10;border:1px solid rgba(245,192,154,0.22);border-radius:6px;padding:6px 12px}
 .done-pill{border:1.5px solid var(--green);border-radius:20px;padding:8px 32px;text-align:center;font-size:14px;font-weight:600;color:var(--green);width:fit-content;margin:0 auto}
-.txdata-note{background:var(--bg3);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--t2);line-height:1.6;margin:8px 0}
-.txdata-note code{font-family:var(--mono);font-size:10px;background:var(--bg2);padding:1px 4px;border-radius:3px}
-.txdata-note a{color:#85B7EB;text-decoration:none}
+.txdata-note{background:#0d0e10;border:1px solid rgba(245,192,154,0.18);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--t1);line-height:1.6;margin:8px 0}
+.txdata-note code{font-family:var(--mono);font-size:10px;font-weight:500;background:transparent;border:1px solid rgba(245,192,154,0.18);padding:1px 4px;border-radius:3px}
+.txdata-note a{color:#f5c09a;text-decoration:underline}
 .admin-ui{font-weight:500;color:var(--amber)}
 </style>
 </head>
@@ -107,15 +107,15 @@ body{margin:0;padding:24px;color:var(--t1);font-family:var(--sans)}
 
 <div class="action-box">
   <span class="action-label">Allocate</span>
-  <span style="color:var(--t2);font-size:12px">If direct route:</span>
+  <span style="color:#cccfd4;font-size:12px">If direct route:</span>
   <span class="action-code">allocate(strategy, amount)</span>
 </div>
 
-<div style="text-align:center;color:var(--t3);font-size:11px;padding:4px 0;letter-spacing:.05em">OR</div>
+<div style="text-align:center;color:var(--t1);font-size:11px;padding:4px 0;letter-spacing:.05em;font-weight:600">OR</div>
 
 <div class="action-box">
   <span class="action-label">Allocate</span>
-  <span style="color:var(--t2);font-size:12px">If swap route:</span>
+  <span style="color:#cccfd4;font-size:12px">If swap route:</span>
   <span class="action-code">allocateWithSwap(strategy, amount, txData)</span>
 </div>
 

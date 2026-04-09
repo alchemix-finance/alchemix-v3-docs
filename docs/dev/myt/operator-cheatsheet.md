@@ -43,7 +43,7 @@ Each layer has its own role system. Holding a role on one contract does **not** 
 
 > **Note:** The DAO Multisig is **not** set as a direct Allocator on either MYT vault. Allocator-level MYT functions like `setMaxRate()` must be called via the Allocator Contract's proxy mechanism (see [Proxy Forwarding](#proxy-forwarding)).
 
-<iframe src="/diagrams/myt-operator-diagram.html" width="100%" height="1300" scrolling="no" style={{border:'none',display:'block'}} onLoad={(e)=>setTimeout(()=>{try{e.target.style.height=e.target.contentWindow.document.body.scrollHeight+'px'}catch(x){}},300)} />
+<iframe src="/diagrams/myt-operator-diagram.html" width="100%" height="1100" scrolling="no" style={{border:'none',display:'block'}} onLoad={(e)=>setTimeout(()=>{try{e.target.style.height=e.target.contentWindow.document.body.scrollHeight+'px'}catch(x){}},300)} />
 
 ---
 
