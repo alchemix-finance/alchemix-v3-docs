@@ -2,19 +2,13 @@
 sidebar_position: 1
 hide_title: true
 title: MYT Operator Cheatsheet
+description: "Quick reference for operating an MYT vault. Covers contract roles, allocation and deallocation flows, proxy forwarding, and common troubleshooting."
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
+import IframeResizeListener from "@site/src/components/IframeResizeListener";
 
-<script dangerouslySetInnerHTML={{__html:`
-window.addEventListener('message',function(e){
-  if(e.data&&e.data.type==='iframe-resize'){
-    document.querySelectorAll('iframe').forEach(function(f){
-      try{if(f.contentWindow===e.source)f.style.height=(e.data.height+2)+'px';}catch(x){}
-    });
-  }
-});
-`}} />
+<IframeResizeListener />
 
 <PageBanner title="MYT Operator Cheatsheet" />
 
