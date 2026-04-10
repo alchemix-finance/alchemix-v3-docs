@@ -54,7 +54,7 @@ Each strategy configures which allocation and deallocation paths it supports. Us
 | wstETH | Yes | Yes | No | Yes | No |
 | sfrxETH | Yes | Yes | No | No | Yes |
 
-> Call `readRoutes(strategy)` to check which paths are configured before executing.
+> Check the documentation for which direct / swap paths are enabled for this strategy before executing.
 
 ---
 
@@ -132,7 +132,7 @@ allocator.proxy(abi.encodeWithSelector(bytes4(0xa69fc423), newMaxRate));
 | Reverts with `"PD"` on Curator Contract | Caller is not admin or operator on the Curator Contract | Curator Admin calls `setOperator(yourAddress, true)` |
 | `EffectiveCap` revert on allocation | Allocation would exceed absolute, relative, or risk cap | Raise caps via Curator Contract admin functions, or reduce allocation amount |
 | `StrategyAllocationPaused` on allocate | Strategy killSwitch is enabled | Strategy Owner calls `setKillSwitch(false)` on the MYT Strategy contract |
-| `ActionNotSupported` on allocate/deallocate | Using a route not configured for this strategy | Call `readRoutes(strategy)` to check which paths are enabled |
+| `ActionNotSupported` on allocate/deallocate | Using a route not configured for this strategy | Check the documentation for which direct / swap paths are enabled for this strategy |
 | Can't call `setMaxRate()` on MYT | Not a native Allocator Contract function | Use proxy forwarding: whitelist the selector, then call `proxy()` (see above) |
 | Can't call `setCurator()` or `setIsSentinel()` | Caller is not the MYT Owner | Must be called by the DAO Multisig as MYT Owner directly on the MYT |
 | Timelocked function won't execute | `submit()` was not called first | Call the corresponding `submit*` function first, then the execution function |
