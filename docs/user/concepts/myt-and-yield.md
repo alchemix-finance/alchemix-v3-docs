@@ -38,12 +38,6 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
   },
 ]} />
 
-### Per-chain variants
-
-There is one ETH-denominated and one USDC-denominated MYT on every supported chain. Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
-
-You can view the current strategy breakdowns [directly in the UI →](https://alchemix.fi/)
-
 ### Depositing and earning
 
 1. Select the MYT that matches your base asset and preferred chain.
@@ -87,3 +81,70 @@ flowchart LR
     e4@{ animation: fast }
     e5@{ animation: slow }
 ```
+
+
+### Per-chain variants
+
+There is one ETH-denominated and one USDC-denominated MYT on every supported chain. Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
+
+You can view the current strategy breakdowns [directly in the UI →](https://alchemix.fi/)
+
+<style>{`
+  .composition-tables table { table-layout: fixed; width: 100%; }
+  .composition-tables td, .composition-tables th { width: 25%; }
+`}</style>
+
+<div className="composition-tables">
+
+#### Mainnet USDC
+
+| Strategy | Risk | LiqAdapter | Max % |
+|---|---|---|---|
+| EulerUSD | Med | - | 25% |
+| TokeAutoUSD | Med | - | 25% |
+| Yearn yvUSD | Low | Yes | - |
+
+#### Mainnet wETH
+
+| Strategy | Risk | LiqAdapter | Max % |
+|---|---|---|---|
+| EulerwETH | Med | - | 25% |
+| TokeAutoETH | Low | Yes | - |
+| WstETH | Med | - | 25% |
+
+#### Arbitrum USDC
+
+| Strategy | Risk | LiqAdapter | Max % |
+|---|---|---|---|
+| AaveUSDC | Low | Yes | - |
+| EulerUSDC | Med | - | 25% |
+| FluidUSDC | Med | - | 25% |
+
+#### Arbitrum ETH
+
+| Strategy | Risk | LiqAdapter | Max % |
+|---|---|---|---|
+| AaveETH | Low | Yes | - |
+| EulerETH | Med | - | 25% |
+
+#### Optimism USDC
+
+| Strategy | Risk | LiqAdapter | Max % |
+|---|---|---|---|
+| AaveUSDC | Low | Yes | - |
+
+#### Optimism ETH
+
+| Strategy | Risk | LiqAdapter | Max % |
+|---|---|---|---|
+| WstETH | Med | - | 25% |
+
+#### Global Risk Caps
+
+| Risk Level | Max per Vault |
+|---|---|
+| Medium | 40% |
+| High | 10% |
+
+</div>
+
