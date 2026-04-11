@@ -108,8 +108,9 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
+| AAVE wETH | Low | Yes | - |
 | EulerwETH | Med | - | 25% |
-| TokeAutoETH | Low | Yes | - |
+| TokeAutoETH | Med | - | 25% |
 | WstETH | Med | - | 25% |
 
 #### Arbitrum USDC
@@ -137,6 +138,7 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
+| AaveETH | Low | Yes | - |
 | WstETH | Med | - | 25% |
 
 #### Global Risk Caps
