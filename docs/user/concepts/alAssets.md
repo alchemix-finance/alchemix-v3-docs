@@ -37,7 +37,7 @@ When you borrow, the protocol mints alAssets at face value. 1 alAsset offsets ex
 
 #### Example
 
-Deposit 1,000 USDC, mint 900 alUSD (90% LTV). If alUSD trades at 0.97 USDC, selling yields 873 USDC (a 27 USDC market discount) while your recorded debt inside the vault remains 900 USD.
+Deposit 1,000 USDC, mint 900 alUSD (90% LTV). If alUSD trades at 0.97 USDC, selling yields 873 USDC (a 27 USDC market discount) while your recorded debt inside the vault remains 900 USDC.
 
 ### Why alAssets trade below par
 

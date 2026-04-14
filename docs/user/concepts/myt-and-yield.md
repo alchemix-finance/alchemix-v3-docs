@@ -15,11 +15,11 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 ### What is the MYT?
 
-- **Tokenized basket** – MYT is a customized vault token utilizing Morpho V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
+- **Tokenized basket** – MYT is a customized vault token utilizing Morpho Vaults V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
 
 - **DAO-managed allocation** – The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.
 
-- **Powered by open-source infrastructure** – The core Alchemix vault logic utilizes Morpho's open-source v2 vaults layer to optimize on-chain execution and safety.
+- **Powered by open-source infrastructure** – The core Alchemix vault logic utilizes Morpho's open-source Vaults V2 layer to optimize on-chain execution and safety.
 
 ### Why use the MYT?
 
@@ -108,10 +108,9 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| AAVE wETH | Low | Yes | - |
 | EulerwETH | Med | - | 25% |
-| TokeAutoETH | Med | - | 25% |
-| WstETH | Med | - | 25% |
+| TokeAutoETH | Low | Yes | - |
+| wstETH | Med | - | 25% |
 
 #### Arbitrum USDC
 
@@ -138,8 +137,7 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| AaveETH | Low | Yes | - |
-| WstETH | Med | - | 25% |
+| wstETH | Med | - | 25% |
 
 #### Global Risk Caps
 

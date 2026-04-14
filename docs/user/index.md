@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 import StatStrip from '@site/src/components/StatStrip';
 import FeatureCards from '@site/src/components/FeatureCards';
 
-<PageBanner title="Alchemix V3" />
+<PageBanner title="Alchemix v3" />
 
 Alchemix is your unified platform for saving, borrowing, and earning fixed-term fixed-yield opportunities all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
 
@@ -16,17 +16,17 @@ Alchemix is your unified platform for saving, borrowing, and earning fixed-term 
 {
 title: "Earn Competitive Risk-Adjusted Yield",
 body: "Deposit ETH or USDC and earn yield across a mix of strategies chosen and rebalanced by the DAO. No lock-ups, withdraw at any time.",
-href: "./concepts/myt-and-yield",
+href: "/user/concepts/myt-and-yield",
 },
 {
 title: "Borrow up to 90%, Interest Free",
 body: "Borrow against your deposit while it keeps earning yield. Scheduled redemptions chip away at your debt over time. No interest, no price-based liquidations.",
-href: "./concepts/self-repaying-loans",
+href: "/user/concepts/self-repaying-loans",
 },
 {
 title: "Unlock Fixed Yield Opportunities",
 body: "Deposit alETH or alUSD into the Transmuter and redeem the underlying asset after a fixed term. The rate is locked when you deposit.",
-href: "./concepts/transmuter",
+href: "/user/concepts/transmuter",
 },
 ]} />
 
@@ -77,8 +77,8 @@ Deposit alETH or alUSD and, after a fixed term, redeem an equivalent amount of t
 1. Visit [https://alchemix.fi/](https://alchemix.fi).
 2. Read the [FAQ →](./faq.md).
 3. Follow along with our [Tutorials →](./tutorials/use-passive-myt.md).
-4. Learn more with our [Key Concepts →](./concepts/myt-and-yield.md).
+4. Learn about the [Mix-Yield Token →](./concepts/myt-and-yield.md).
 
-:::info V3 vs V2
-This documentation covers **Alchemix V3**. If you are looking for information regarding legacy V2 contracts, please visit the [Legacy Docs](https://v2-docs.alchemix.fi/).
+:::info v3 vs v2
+This documentation covers **Alchemix v3**. If you are looking for information regarding legacy v2 contracts, please visit the [Legacy Docs](https://v2-docs.alchemix.fi/).
 :::

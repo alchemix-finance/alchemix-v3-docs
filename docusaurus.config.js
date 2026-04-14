@@ -213,11 +213,11 @@ const config = {
             title: "Documentation",
             items: [
               {
-                label: "User",
+                label: "Users",
                 to: "/user",
               },
               {
-                label: "Developer",
+                label: "Developers",
                 to: "/dev",
               },
               {
