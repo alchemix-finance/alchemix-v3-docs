@@ -45,5 +45,5 @@ Caps for each level are as follows. These caps ensure that users can set their L
 | Classification Level | Max Individual Strategy | Max All Strategies |
 | :------------------- | :---------------------- | :----------------- |
 | Low                  | None                    | None               |
-| Med                  | 25%                     | 25%                |
+| Med                  | 25%                     | 40%                |
 | High                 | 10%                     | 10%                |
