@@ -17,7 +17,7 @@ Paying down or closing a loan does more than remove debt. It directly improves e
 
 - **Collateral freedom** – collateral earmarked for the next redemption cycle is released proportionally, so you can withdraw it or redeploy it elsewhere.
 
-- **Room for withdrawals** – if you need to pull principal out of the vault, reducing debt first keeps your LTV from spiking and prevents an accidental liquidation trigger.
+- **Room for withdrawals** – withdrawing collateral reduces your deposit and raises your LTV against the 90% LTV cap. Repaying first creates the headroom to pull principal out.
 
 Making even a small repayment secures more control over how and when you use your collateral.
 

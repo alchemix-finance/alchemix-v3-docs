@@ -46,6 +46,7 @@ module.exports = {
         "tutorials/deposit-and-borrow",
         "tutorials/borrowing-in-alchemix",
         "tutorials/repay-loan",
+        "tutorials/withdraw",
         "tutorials/redeem-alassets",
         "v3-migration",
       ],
