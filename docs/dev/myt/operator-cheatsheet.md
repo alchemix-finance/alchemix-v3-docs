@@ -95,7 +95,7 @@ For swap-based allocation and deallocation, you need to pass `txData` — encode
 
 > **The Alchemix Admin UI should be used to construct txData when available.**
 
-For a detailed walkthrough of the unwrap+swap path, see the [deallocateWithUnwrapAndSwap guide](https://github.com/alchemix-finance/v3/blob/y-monorepo/ALCHEMIST_ALLOCATOR_DEALLOCATE_WITH_UNWRAP_AND_SWAP.md).
+For a detailed walkthrough of the unwrap+swap path, see the [deallocateWithUnwrapAndSwap guide](https://github.com/alchemix-finance/v3/blob/master/ALCHEMIST_ALLOCATOR_RUNBOOK.md#deallocatewithunwrapandswap).
 
 ---
 
