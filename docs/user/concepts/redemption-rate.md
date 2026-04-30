@@ -25,6 +25,8 @@ The redemption rate tells borrowers what share of total system debt redemptions 
 
 #### Formula
 
+<div style={{minHeight: '309px'}}>
+
 ```mermaid
 %%{init: {
   'theme': 'base',
@@ -70,6 +72,8 @@ flowchart LR
     e4@{ animation: slow }
 ```
 
+</div>
+
 ##### Understanding the inputs
 
 The redemption rate formula calculates how much of the total system debt can be cleared in one year, based on current conditions.
@@ -82,6 +86,8 @@ The redemption rate formula calculates how much of the total system debt can be 
 ##### Example
 
 If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
+
+<div style={{minHeight: '365px'}}>
 
 ```mermaid
 %%{init: {
@@ -126,6 +132,8 @@ flowchart LR
     e4@{ animation: slow }
 ```
 
+</div>
+
 At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, term length, and debt levels remain unchanged.
 
 #### What drives this number
@@ -141,6 +149,8 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until a Transmuter position actually matures. The transfer out of the vault happens at that maturity moment, when the claim must be settled.
 
 Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
+
+<div style={{minHeight: '240px'}}>
 
 ```mermaid
 %%{init: {
@@ -167,6 +177,8 @@ flowchart LR
     e1@{ animation: slow }
     e2@{ animation: fast }
 ```
+
+</div>
 
 ### Learn more
 

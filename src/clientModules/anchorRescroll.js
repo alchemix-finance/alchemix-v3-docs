@@ -1,12 +1,13 @@
-// Re-scrolls to the hash target after async content (mermaid diagrams,
-// lazy-loaded components, images without dimensions) finishes rendering.
+// Re-scrolls to the hash target once mermaid diagrams finish rendering.
 //
-// Without this, clicking an anchor on a page with mermaid often lands the
-// user above their target because mermaid expands the page after scroll.
+// Without this, clicking an anchor on a page with mermaid lands the user
+// above their target because mermaid expands the page after the initial
+// browser scroll.
 //
-// Strategy: watch the DOM and only re-scroll once mutations have stopped
-// for 300ms. This avoids the visible "jumping" that comes from re-scrolling
-// on every mutation while content is still rendering.
+// Strategy: poll for SVGs inside every .docusaurus-mermaid-container.
+// Once they're all present (or we hit a 5s timeout), do a single scroll
+// to the hash target. We deliberately ignore other DOM mutations so we
+// don't fight with React hydration or other unrelated layout activity.
 
 export function onRouteDidUpdate({ location }) {
   if (typeof window === "undefined" || !location.hash) return;
@@ -15,33 +16,28 @@ export function onRouteDidUpdate({ location }) {
 
   function scrollToTarget() {
     const target = document.getElementById(id);
-    if (target) {
-      target.scrollIntoView({ behavior: "auto", block: "start" });
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: "auto" });
+  }
+
+  function allMermaidRendered() {
+    const containers = document.querySelectorAll(
+      ".docusaurus-mermaid-container"
+    );
+    if (containers.length === 0) return true;
+    return Array.from(containers).every((c) => c.querySelector("svg"));
+  }
+
+  // No mermaid on this page (or it's already rendered). Docusaurus's own
+  // anchor scroll is sufficient — do nothing.
+  if (allMermaidRendered()) return;
+
+  const start = Date.now();
+  const interval = setInterval(() => {
+    if (allMermaidRendered() || Date.now() - start > 5000) {
+      clearInterval(interval);
+      scrollToTarget();
     }
-  }
-
-  let settleTimer;
-  let scrolled = false;
-
-  function finalize() {
-    if (scrolled) return;
-    scrolled = true;
-    observer.disconnect();
-    clearTimeout(settleTimer);
-    clearTimeout(hardTimeout);
-    scrollToTarget();
-  }
-
-  const observer = new MutationObserver(() => {
-    clearTimeout(settleTimer);
-    settleTimer = setTimeout(finalize, 300);
-  });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-
-  // Hard timeout: if the page never settles, scroll anyway after 3s.
-  const hardTimeout = setTimeout(finalize, 3000);
+  }, 100);
 }
