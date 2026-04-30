@@ -25,7 +25,7 @@ The redemption rate tells borrowers what share of total system debt redemptions 
 
 #### Formula
 
-<div style={{minHeight: '309px'}}>
+<div style={{minHeight: '282px'}}>
 
 ```mermaid
 %%{init: {
@@ -150,7 +150,7 @@ Earmarking in Alchemix v3 differs from typical redemption systems. In many proto
 
 Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 
-<div style={{minHeight: '240px'}}>
+<div style={{minHeight: '118px'}}>
 
 ```mermaid
 %%{init: {
