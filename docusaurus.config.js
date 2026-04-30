@@ -77,6 +77,8 @@ const config = {
     ],
   ],
 
+  clientModules: [require.resolve("./src/clientModules/anchorRescroll.js")],
+
   plugins: [
     // — DEV docs @ /dev
     [
