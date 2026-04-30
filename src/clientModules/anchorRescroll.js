@@ -3,6 +3,10 @@
 //
 // Without this, clicking an anchor on a page with mermaid often lands the
 // user above their target because mermaid expands the page after scroll.
+//
+// Strategy: watch the DOM and only re-scroll once mutations have stopped
+// for 300ms. This avoids the visible "jumping" that comes from re-scrolling
+// on every mutation while content is still rendering.
 
 export function onRouteDidUpdate({ location }) {
   if (typeof window === "undefined" || !location.hash) return;
@@ -16,10 +20,21 @@ export function onRouteDidUpdate({ location }) {
     }
   }
 
-  let debounceTimer;
+  let settleTimer;
+  let scrolled = false;
+
+  function finalize() {
+    if (scrolled) return;
+    scrolled = true;
+    observer.disconnect();
+    clearTimeout(settleTimer);
+    clearTimeout(hardTimeout);
+    scrollToTarget();
+  }
+
   const observer = new MutationObserver(() => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(scrollToTarget, 100);
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(finalize, 300);
   });
 
   observer.observe(document.body, {
@@ -27,8 +42,6 @@ export function onRouteDidUpdate({ location }) {
     subtree: true,
   });
 
-  setTimeout(() => {
-    observer.disconnect();
-    clearTimeout(debounceTimer);
-  }, 5000);
+  // Hard timeout: if the page never settles, scroll anyway after 3s.
+  const hardTimeout = setTimeout(finalize, 3000);
 }
