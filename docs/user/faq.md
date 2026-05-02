@@ -181,7 +181,7 @@ The system is secured by cross-chain bridge controls using multiple decentralize
   Where can I see live data?
 </summary>
 
-Current redemption rate, queued alAssets, vault APRs, and historic term stats are displayed directly in the main dashboard and the Earn page.
+Current redemption rate, queued alAssets, vault APRs, and historic term stats are displayed directly in the main dashboard and the Fixed Yield page.
 
 [View live data →](https://alchemix.fi/)
 

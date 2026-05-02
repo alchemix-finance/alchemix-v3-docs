@@ -9,20 +9,20 @@ import FramedImage from "@site/src/components/FramedImage";
 
 <PageBanner title="Redeem alAssets" />
 
-The Earn page lists every fixed-rate term available on your current network. By depositing alAssets, or letting the interface swap ETH or USDC into their alAsset form, you lock in a known return that settles on the term’s maturity date.
+The Fixed Yield page lists every fixed-rate term available on your current network. By depositing alAssets, or letting the interface swap ETH or USDC into their alAsset form, you lock in a known return that settles on the term’s maturity date.
 
 While your position sits in the queue Alchemix earmarks matching collateral at 1:1 so your redemption is guaranteed once the term ends. Early exits are possible, but they forfeit part of the promised yield.
 
-### Step 1 – Open the Earn page
+### Step 1 – Open the Fixed Yield page
 
-<FramedImage src="/img/redeem-alassets-01.png" alt="Earn page" />
+<FramedImage src="/img/redeem-alassets-01.png" alt="Fixed Yield page" />
 
-**Earn page** – each panel shows a fixed-rate term you can enter.
+**Fixed Yield page** – each panel shows a fixed-rate term you can enter.
 
 ### Step 2 – Pick a term
 
 :::tip Prices and yields vary by chain
-APRs and alAsset spot prices differ across networks. Always verify the values shown in the Earn panel on your target chain before purchasing alAssets to deposit.
+APRs and alAsset spot prices differ across networks. Always verify the values shown in the Fixed Yield panel on your target chain before purchasing alAssets to deposit.
 :::
 
 Each panel displays:
@@ -59,9 +59,9 @@ Approve the transaction in your wallet.
 
 ### Manage or close a position
 
-Go to the Dashboard and scroll to Open Earn Positions.
+Go to the Dashboard and scroll to Open Fixed Yield Positions.
 
-<FramedImage src="/img/redeem-alassets-02.png" alt="Open Earn Positions" />
+<FramedImage src="/img/redeem-alassets-02.png" alt="Open Fixed Yield Positions" />
 
 | Function      | When to use                | Effect                                                                                                                                       |
 | ------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
