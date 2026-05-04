@@ -49,13 +49,9 @@ Type how much of the selected asset you want to commit. The panel instantly show
 
 - Estimated asset return at maturity
 
-### Step 5 – Submit or batch
+### Step 5 – Submit
 
-- Click deposit to send a single transaction, or;
-
-- Click the cart icon to add this deposit to a bundle you’ll submit later in a batch.
-
-Approve the transaction in your wallet.
+Click Deposit and approve the transaction in your wallet.
 
 ### Manage or close a position
 

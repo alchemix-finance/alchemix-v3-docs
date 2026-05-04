@@ -52,13 +52,9 @@ You can often buy alUSD or alETH on secondary markets (like Curve) for slightly 
 
 Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
 
-### Step 3 – Send or batch the transaction
+### Step 3 – Send the transaction
 
-- Click Repay to send a single repayment, or;
-
-- Click the cart icon to collect other Alchemix transactions, such as deposits, withdrawals, or other repayments.
-
-Confirm the transaction in your wallet.
+Click Repay and confirm the transaction in your wallet.
 
 ### Tips
 

@@ -92,8 +92,6 @@ Yes. Open the Repay tab in a vault and choose:
 - MYT to clear earmarked or normal debt.
 - ETH or USDC for convenience.
 
-Bundling with the cart icon lets you combine several actions in one transaction.
-
 </details>
 
 <details>
