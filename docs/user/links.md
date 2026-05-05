@@ -23,4 +23,5 @@ This documentation is the most complete learning resource, but it may lag behind
 | Dune Dashboard                                               | Live protocol metrics and analytics — Coming soon         |
 | Gov Dashboard                                                | Live protocol parameters — Coming soon                    |
 | [**Financial Reports**](financial-reports)                   | Quarterly financial reports, 2022–present.                |
+| [**Independent Research**](independent-research)             | Third-party analyst coverage and deep dives on Alchemix v3. |
 | [**Marketing Material**](marketing-material)                 | Logos and brand assets for use in marketing and community projects. |

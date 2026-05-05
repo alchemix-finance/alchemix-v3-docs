@@ -81,6 +81,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "independent-research",
+          label: "Independent Research",
+        },
+        {
+          type: "doc",
           id: "marketing-material",
           label: "Marketing Material",
         },
