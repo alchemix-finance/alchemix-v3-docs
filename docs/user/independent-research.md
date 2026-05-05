@@ -7,7 +7,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Independent Research" />
 
-Third-party deep dives and analyst coverage of Alchemix v3. These reports are not produced by Alchemix Labs. They are collected here as additional reading for users who want an outside perspective on the protocol.
+Third-party deep dives and analyst coverage of Alchemix v3. These reports are not produced by Alchemix. They are collected here as additional reading for users who want an outside perspective on the protocol.
 
 ### Alea Research
 
