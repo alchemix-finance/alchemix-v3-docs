@@ -31,15 +31,16 @@ All core smart contracts for Alchemix V3 have undergone rigorous testing and com
   - Focus: Security review of Alchemix V3 mechanics, specifically protocol fees, liquidation logic, and debt-redemption accounting..
   - [View Report](https://cantina.xyz/portfolio/f638950d-a8ad-4df8-a6ec-8b067e416d7b)
 
+#### Strategy audits
+
+- **Y-Audit** — April 15–17, 2026
+  - [Strategies report](/audits/v3-strategies-yaudit.pdf)
+- **Y-Audit** — April 23–24, 2026
+  - [Strategies follow-up report](/audits/v3-strategies-yaudit-followup.pdf)
+
 #### Continuous MYT strategy audits
 
 To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must undergo a dedicated audit by Nethermind before being whitelisted. This ensures that the risk profile of the MYT remains consistent even as the underlying strategy landscape evolves.
-
-Strategy-level reports published to date:
-
-- **Y-Audit** — April 2026
-  - [Strategies report](/audits/v3-strategies-yaudit.pdf)
-  - [Strategies follow-up report](/audits/v3-strategies-yaudit-followup.pdf)
 
 ### Internal security practices
 
