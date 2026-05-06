@@ -35,6 +35,12 @@ All core smart contracts for Alchemix V3 have undergone rigorous testing and com
 
 To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must undergo a dedicated audit by Nethermind before being whitelisted. This ensures that the risk profile of the MYT remains consistent even as the underlying strategy landscape evolves.
 
+Strategy-level reports published to date:
+
+- **Y-Audit** — April 2026
+  - [Strategies report](/audits/v3-strategies-yaudit.pdf)
+  - [Strategies follow-up report](/audits/v3-strategies-yaudit-followup.pdf)
+
 ### Internal security practices
 
 Beyond external reviews, Alchemix V3 is protected by a multi-layered internal defense strategy:
