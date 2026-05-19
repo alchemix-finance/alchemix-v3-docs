@@ -88,19 +88,22 @@ All core Alchemix V3 contracts have been audited by top-tier security firms, and
 
 **DVN coverage by chain**
 
-| Chain | LayerZero | Wormhole | Bware | Nethermind | Active DVNs |
-| --- | --- | --- | --- | --- | --- |
-| **Optimism** | ✓ | ✓ | ✓ | — | LayerZero, Wormhole, Bware |
-| **Arbitrum** | ✓ | ✓ | ✓ | — | LayerZero, Wormhole, Bware |
-| **Linea** | ✓ | — | ✓ | ✓ | LayerZero, Bware, Nethermind |
-| **Metis** | ✓ | — | ✓ | ✓ | LayerZero, Bware, Nethermind |
+| Chain | LayerZero | Nethermind | Deutsche Telekom | Active DVNs |
+| --- | --- | --- | --- | --- |
+| **Optimism** | ✓ | ✓ | ✓ | LayerZero, Nethermind, Deutsche Telekom |
+| **Arbitrum** | ✓ | ✓ | ✓ | LayerZero, Nethermind, Deutsche Telekom |
+| **Linea** | ✓ | ✓ | ✓ | LayerZero, Nethermind, Deutsche Telekom |
+| **Metis** | ✓ | ✓ | — | LayerZero, Nethermind |
 
 **Security properties**
 
-- **2-of-3 DVN multisig** — No single messaging provider can approve a bridge transaction unilaterally. An attacker must compromise at least 2 independent DVNs simultaneously to forge a message.
+- **3-of-3 DVN Multisig (Except Metis is 2-of-2)** — No single messaging provider can approve a bridge transaction unilaterally. An attacker must compromise at all independent DVNs simultaneously to forge a message.
 - **DAO-controlled DVN list** — AlchemixDAO owns all bridge contracts and can swap out DVNs without taking the system offline. Compromised or misbehaving validators can be replaced via governance.
-- **Ethereum supply ceiling** — The circulating supply on Ethereum is capped at what was minted there. L2 bridges cannot inflate the token supply; bridged supply can never exceed the Ethereum-side ceiling.
+- **Ethereum supply ceiling** — A lockbox is used on Mainnet Ethereum. The circulating supply on Ethereum is capped at what was minted there. L2 bridges cannot inflate the token supply; bridged supply can never exceed the Ethereum-side ceiling.
 - **Rate limits & bridge capacity** — Each asset/chain pair has a 24-hour rate limit. If Mainnet inbound capacity is saturated, alAssets may become stranded on L2 and trade at a discount. Verify capacity before large cross-chain positions.
+- **Pinned libraries** — Utilized libraries are pinned to versions that are known to be safe.
+- **xERC20 compatibility** — Our tokens are xERC20 compatible on L2s, which means we can set rate limits and pause bridging from our contracts directly. Rate limits are set per governance.
+- **xERC20 limits** — xERC20 limits are set and maintained by Alchemix DAO Multisig.
 
 **Bridgeable assets**
 
