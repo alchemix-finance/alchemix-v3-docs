@@ -1,13 +1,16 @@
 ---
 sidebar_position: 5
 hide_title: true
-title: Redeem alAssets
+title: Fixed Yield
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
+import VideoEmbed from "@site/src/components/VideoEmbed";
 
-<PageBanner title="Redeem alAssets" />
+<PageBanner title="Fixed Yield" />
+
+<VideoEmbed videoId="UbSS9UJ2Zf4" title="Earn Fixed Yield with the v3 Transmuter" />
 
 The Fixed Yield page lists every fixed-rate term available on your current network. By depositing alAssets, or letting the interface swap ETH or USDC into their alAsset form, you lock in a known return that settles on the term’s maturity date.
 

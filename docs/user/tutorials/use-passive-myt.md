@@ -1,13 +1,16 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 hide_title: true
 title: Mixed Yield
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
+import VideoEmbed from "@site/src/components/VideoEmbed";
 
 <PageBanner title="Mixed Yield" />
+
+<VideoEmbed videoId="RpVdpL9EZAY" title="Earn Passive Yield with Mix-Yield Tokens" />
 
 The Mixed Yield page is a dedicated space for depositing into Mix-Yield Token vaults. Each MYT pools capital across multiple yield strategies and compounds automatically, with no manual harvesting required.
 
@@ -26,17 +29,17 @@ Click Mixed Yield in the top navigation.
 
 <FramedImage src="/img/use-passive-myt-02.png" alt="Mixed Yield list" />
 
-Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click a vault card to open its detail page.
+Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
 
 ### Step 3 – Review strategy allocation
 
-The left panel shows the strategy allocation chart and APR history. Each strategy is listed with its risk level and current allocation percentage. The right panel shows overall APR, TVL, and your current deposit balance under YOUR DEPOSIT.
+The expanded card shows the MYT's current APR, total deposits across all users, and your own balance in the vault. The strategy breakdown sits on the right side, listing the strategies the vault is actively deployed in along with each strategy's risk level and allocation percentage.
 
 ### Step 4 – Enter a deposit amount
 
 <FramedImage src="/img/use-passive-myt-03.png" alt="Enter deposit amount" />
 
-On the right panel, stay on the Deposit tab. Select your asset from the dropdown and type the deposit amount.
+Stay on the Deposit tab inside the expanded card. Select your asset from the dropdown and type the deposit amount.
 
 ### Step 5 – Confirm the transaction
 
@@ -46,11 +49,9 @@ Click Deposit. Your wallet shows the network, gas estimate, and amounts. Approve
 
 <FramedImage src="/img/use-passive-myt-04.png" alt="Active MYT deposit" />
 
-Return to the dashboard and find your position in the Mixed Yield Positions table. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
+Return to the Dashboard and find your position under Open Mixed Yield Positions. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
 
-When you are on a specific vault's detail page, the YOUR DEPOSIT accordion on the right panel shows the balance for that vault. You can withdraw at any time and the vault returns the underlying plus all earnings to date.
-
-To borrow against your deposit, click Go to Vault at the bottom of the panel.
+To borrow against your deposit, head over to the Vaults page.
 
 ### Why use Mixed Yield instead of managing strategies directly?
 

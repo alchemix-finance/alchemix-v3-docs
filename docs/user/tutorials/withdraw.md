@@ -6,8 +6,11 @@ title: Withdraw
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
+import VideoEmbed from "@site/src/components/VideoEmbed";
 
 <PageBanner title="Withdraw" />
+
+<VideoEmbed videoId="JWfYe6PJYZ4" title="Withdrawing Collateral" />
 
 You can withdraw collateral from Alchemix at any time.
 

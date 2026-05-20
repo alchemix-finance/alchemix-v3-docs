@@ -43,7 +43,7 @@ module.exports = {
       collapsed: true,
       items: [
         "tutorials/use-passive-myt",
-        "tutorials/deposit-and-borrow",
+        // "tutorials/deposit-and-borrow", // hidden: superseded by "Take a Loan" (borrowing-in-alchemix)
         "tutorials/borrowing-in-alchemix",
         "tutorials/repay-loan",
         "tutorials/withdraw",

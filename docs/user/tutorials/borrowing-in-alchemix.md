@@ -1,35 +1,60 @@
 ---
 sidebar_position: 2
 hide_title: true
-title: Borrowing In Alchemix
+title: Take a Loan
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
+import VideoEmbed from "@site/src/components/VideoEmbed";
 
-<PageBanner title="Borrowing In Alchemix" />
+<PageBanner title="Take a Loan" />
 
-After converting ETH or USDC into the Mix-Yield Token, the next step is borrowing. The vault keeps your collateral and lets you mint synthetic assets—alETH or alUSD respectively—worth up to ninety percent of the collateral's face value.
+<VideoEmbed videoId="AGpP3SAmKLc" title="Take A Loan" />
+
+After depositing into a Mix-Yield Token, you can borrow alAssets against your position. The vault keeps your collateral earning yield and lets you mint synthetic assets (alETH or alUSD respectively) worth up to 90% of your collateral's face value.
 
 :::tip You are in control
 You can manually repay part or all of your debt at any time to unlock your collateral. [Learn more about self-repaying loans →](../concepts/self-repaying-loans.md)
 :::
 
-### How borrowing works
+### Prerequisites
 
-<FramedImage src="/img/borrowing-in-alchemix-01.png" alt="Borrowing DAPP Screenshot" />
+- Connect your wallet and switch to the chain that holds your MYT deposit.
+- Confirm you have ETH for gas on that chain.
+- If you don't have an MYT deposit yet, complete the [Mixed Yield tutorial →](./use-passive-myt.md) first.
 
-1. Open your vault detail page and select the Deposit / Borrow tab.
+### Step 1 – Open the vault
 
-2. In the borrow input, choose an amount of alAsset to mint. The "max" function fills the maximum borrowable amount within the current LTV limit.
+<FramedImage src="/img/borrowing-in-alchemix-01.png" alt="Vault detail page" />
 
-:::danger Liquidation Risk
-If a yield strategy loses money, you could be liquidated. The LTV at which a liquidation will occur is 95% LTV. Choose your LTV with this in mind. <br/><br/>[Learn more about Liquidations →](../concepts/liquidations.md)
+Click Vaults in the top navigation, then click the vault you want to borrow against.
+
+### Step 2 – Select the Borrow tab
+
+Open the Borrow tab on the vault page. If you don't already have a corresponding MYT deposit for this vault, you can use the Deposit/Borrow tab to deposit and borrow in one transaction.
+
+### Step 3 – Review position stats
+
+<FramedImage src="/img/borrowing-in-alchemix-02.png" alt="Vault position stats" />
+
+The top of the detail page shows your current position: APR, Deposit, Debt, Health Factor, Earmarked, Redemption Rate, Borrowable, and LTV. The health bar shows your position relative to the MAX LTV and liquidation LTV markers.
+
+:::caution Liquidation Risk
+Alchemix does not use price-based liquidations. Liquidation risk comes from a yield strategy losing value, which can reduce your collateral below the liquidation threshold (95% LTV). Keeping LTV low reduces your exposure. <br/><br/>[Learn more about Liquidations →](../concepts/liquidations.md)
 :::
 
-3. Sign the transaction. Alchemix will mint the requested alAsset directly to your wallet.
+### Step 4 – Enter a borrow amount
 
-4. Use the alAsset in any way you like—swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
+Type the alAsset amount you want to borrow, or click Max to borrow the maximum within the current LTV limit.
+
+### Step 5 – Confirm
+
+Approve the transaction in your wallet. Once it completes, the position stats update to reflect your new debt.
+
+### Step 6 – Track your position
+
+The position is visible on the vault detail page and from your Dashboard. Use the alAsset however you like. Swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
 
 ### What repays the debt
 

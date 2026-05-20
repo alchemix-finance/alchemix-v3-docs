@@ -13,6 +13,7 @@ A vault deposit puts your ETH or USDC to work through the Mix-Yield Token (MYT).
 
 - **Stop after the deposit** – keep earning passive yield, no management required.
 - **Continue to the borrow step** – mint alAssets and access self-repaying loans.
+- **Already have an MYT deposit?** – Use the dedicated **Borrow** tab on the vault page to mint alAssets against it without depositing more.
 
 [If you only want MYT yield without borrowing, visit the Mixed Yield tutorial →](./use-passive-myt.md)
 

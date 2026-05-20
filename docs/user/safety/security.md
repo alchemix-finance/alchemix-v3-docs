@@ -33,10 +33,10 @@ All core smart contracts for Alchemix V3 have undergone rigorous testing and com
 
 #### Strategy audits
 
-- **Y-Audit** — April 15–17, 2026
-  - [Strategies report](/audits/v3-strategies-yaudit.pdf)
-- **Y-Audit** — April 23–24, 2026
-  - [Strategies follow-up report](/audits/v3-strategies-yaudit-followup.pdf)
+Y-Audit conducted two strategy reviews in April 2026:
+
+- [Strategies report (April 15–17, 2026)](/audits/v3-strategies-yaudit.pdf)
+- [Strategies follow-up report (April 23–24, 2026)](/audits/v3-strategies-yaudit-followup.pdf)
 
 #### Continuous MYT strategy audits
 

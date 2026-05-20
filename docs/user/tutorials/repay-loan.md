@@ -1,13 +1,16 @@
 ---
 sidebar_position: 3
 hide_title: true
-title: Repay Loans
+title: Repay Your Loan
 ---
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
+import VideoEmbed from "@site/src/components/VideoEmbed";
 
-<PageBanner title="Repay Loans" />
+<PageBanner title="Repay Your Loan" />
+
+<VideoEmbed videoId="3KR4SG2q8Vw" title="Repay Your Loan" />
 
 Paying down or closing a loan does more than remove debt. It directly improves every metric that governs how much flexibility you still have inside the vault.
 
@@ -21,8 +24,6 @@ Paying down or closing a loan does more than remove debt. It directly improves e
 
 Making even a small repayment secures more control over how and when you use your collateral.
 
-<FramedImage src="/img/repay-loan-01.png" alt="Repay loan panel" />
-
 The Repay tab accepts three asset types: alAssets, MYT, or the underlying token. You can use whichever is most convenient or cheapest at the moment.
 
 ### Earmarked vs non-earmarked debt
@@ -34,7 +35,13 @@ The Repay tab accepts three asset types: alAssets, MYT, or the underlying token.
 
 Repaying earmarked debt before maturity can keep your health factor higher.
 
-### Step 1 – Choose what to repay with
+### Step 1 – Open the Repay tab
+
+<FramedImage src="/img/repay-loan-01.png" alt="Repay loan panel" />
+
+Go to the Dashboard, click Manage on your vault position, and select the Repay tab.
+
+### Step 2 – Choose what to repay with
 
 | Option                   | When to use                          | Notes                                                                   |
 | ------------------------ | ------------------------------------ | ----------------------------------------------------------------------- |
@@ -48,11 +55,11 @@ The asset-selector dropdown (left side of the entry box) will only list what is 
 You can often buy alUSD or alETH on secondary markets (like Curve) for slightly less than $1.00. Using these discounted tokens to repay your loan allows you to clear your debt cheaper than 1:1!
 :::
 
-### Step 2 – Enter the amount
+### Step 3 – Enter the amount
 
 Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
 
-### Step 3 – Send the transaction
+### Step 4 – Send the transaction
 
 Click Repay and confirm the transaction in your wallet.
 
