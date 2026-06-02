@@ -70,6 +70,6 @@ To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 utilizes
 
 ### Learn more
 
-- [GitHub - Alchemix V3 Contracts](https://github.com/alchemix-finance/alchemix-v3-contracts)
+- [Alchemix GitHub](https://github.com/alchemix-finance)
 - [Audit Archive Summary](https://github.com/alchemix-finance/audits)
 - [FAQ](../faq.md)
