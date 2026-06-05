@@ -75,6 +75,11 @@ module.exports = {
           label: "Links & Resources",
         },
         {
+          type: "link",
+          href: "/governance/onchain/alcx-token",
+          label: "ALCX Token",
+        },
+        {
           type: "doc",
           id: "financial-reports",
           label: "Financial Reports",

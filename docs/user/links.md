@@ -22,6 +22,7 @@ This documentation is the most complete learning resource, but it may lag behind
 | [**Developer Docs**](../dev)                                 | All development resources for the Alchemix ecosystem.     |
 | Dune Dashboard                                               | Live protocol metrics and analytics — Coming soon         |
 | Gov Dashboard                                                | Live protocol parameters — Coming soon                    |
+| [**ALCX Token**](/governance/onchain/alcx-token)             | Token utility, emissions schedule, distribution and contract addresses. |
 | [**Financial Reports**](financial-reports)                   | Quarterly financial reports, 2022–present.                |
 | [**Independent Research**](independent-research)             | Third-party analyst coverage and deep dives on Alchemix v3. |
 | [**Marketing Material**](marketing-material)                 | Logos and brand assets for use in marketing and community projects. |

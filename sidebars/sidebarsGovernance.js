@@ -9,6 +9,7 @@ const sidebarsGovernance = {
       className: "sidebarBold",
       collapsed: true,
       items: [
+        "onchain/alcx-token",
         // TODO
         // "onchain/how-to-vote",
         // "onchain/vqalcx",
