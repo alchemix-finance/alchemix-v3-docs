@@ -8,15 +8,15 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="MYT Launch Strategies" />
 
-Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Low, Med, and High.
+Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Conservative, Moderate, and Aggressive.
 
 The general approach to classification is based on the table below.
 
 | Classification Level | Wrap/Unwrap Approach | Pricing Approach | Duration Risk                | Other Factors |
 | :------------------- | :------------------- | :--------------- | :--------------------------- | :------------ |
-| **Low (1)**          | Contract             | Fundamental      | None or Utilization or Async | None          |
-| **Med (2)**          | Dex                  | External         | MultiWeek                    | Discretion    |
-| **High (3)**         | Dex                  | External         | MultiWeek                    | Discretion    |
+| **Conservative (1)** | Contract             | Fundamental      | None or Utilization or Async | None          |
+| **Moderate (2)**     | Dex                  | External         | MultiWeek                    | Discretion    |
+| **Aggressive (3)**   | Dex                  | External         | MultiWeek                    | Discretion    |
 
 The context for each column is as follows:
 
@@ -36,14 +36,14 @@ This is the risk that you may not be able to withdraw from the strategy immediat
 
 Can include factors such as the age of the strategy, confidence in the team, unique mechanisms, etc. This column can ONLY be used to classify a strategy as riskier than it otherwise would be, NOT to reduce a risk classification.
 
-Generally, a strategy is only classified as “Low” if it meets all three requirements of Contract wrap/unwraps, Fundamental pricing, and “No” or “Utilization duration” risk rating, with no other factors that would make it riskier.
+Generally, a strategy is only classified as “Conservative” if it meets all three requirements of Contract wrap/unwraps, Fundamental pricing, and “No” or “Utilization duration” risk rating, with no other factors that would make it riskier.
 
-As an example, if a strategy unwrap is “Contract”, pricing approach is “Fundamental”, and duration risk is “MultiWeek”, it would be classified as Medium. If the strategy is also newer and less proven, it could be bumped up to High.
+As an example, if a strategy unwrap is “Contract”, pricing approach is “Fundamental”, and duration risk is “MultiWeek”, it would be classified as Moderate. If the strategy is also newer and less proven, it could be bumped up to Aggressive.
 
-Caps for each level are as follows. These caps ensure that users can set their LTV to minimize liquidation risk due to High and/or Med risk strategies.
+Caps for each level are as follows. These caps ensure that users can set their LTV to minimize liquidation risk due to Aggressive and/or Moderate risk strategies.
 
 | Classification Level | Max Individual Strategy | Max All Strategies |
 | :------------------- | :---------------------- | :----------------- |
-| Low                  | None                    | None               |
-| Med                  | 25%                     | 40%                |
-| High                 | 10%                     | 10%                |
+| Conservative         | None                    | None               |
+| Moderate             | 25%                     | 40%                |
+| Aggressive           | 10%                     | 10%                |

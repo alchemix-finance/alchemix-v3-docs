@@ -43,4 +43,4 @@ Only the minimum needed to reach 85% LTV is liquidated — the rest of your posi
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 
-Review the MYT strategy breakdown and risk categories before choosing your LTV. The DAO sets a maximum percentage of the MYT that may be allocated to high and medium risk categories, which gives you a basis for calculating a safe LTV below the liquidation threshold.
+Review the MYT strategy breakdown and risk categories before choosing your LTV. The DAO sets a maximum percentage of the MYT that may be allocated to Aggressive and Moderate risk categories, which gives you a basis for calculating a safe LTV below the liquidation threshold.

@@ -100,51 +100,51 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| EulerUSD | Med | - | 25% |
-| TokeAutoUSD | Med | - | 25% |
-| Yearn yvUSD | Low | Yes | - |
+| EulerUSD | Moderate | - | 25% |
+| TokeAutoUSD | Moderate | - | 25% |
+| Yearn yvUSD | Conservative | Yes | - |
 
 #### Mainnet wETH
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| EulerwETH | Med | - | 25% |
-| TokeAutoETH | Low | Yes | - |
-| wstETH | Med | - | 25% |
+| EulerwETH | Moderate | - | 25% |
+| TokeAutoETH | Conservative | Yes | - |
+| wstETH | Moderate | - | 25% |
 
 #### Arbitrum USDC
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| AaveUSDC | Low | Yes | - |
-| EulerUSDC | Med | - | 25% |
-| FluidUSDC | Med | - | 25% |
+| AaveUSDC | Conservative | Yes | - |
+| EulerUSDC | Moderate | - | 25% |
+| FluidUSDC | Moderate | - | 25% |
 
 #### Arbitrum ETH
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| AaveETH | Low | Yes | - |
-| EulerETH | Med | - | 25% |
+| AaveETH | Conservative | Yes | - |
+| EulerETH | Moderate | - | 25% |
 
 #### Optimism USDC
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| AaveUSDC | Low | Yes | - |
+| AaveUSDC | Conservative | Yes | - |
 
 #### Optimism ETH
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
-| wstETH | Med | - | 25% |
+| wstETH | Moderate | - | 25% |
 
 #### Global Risk Caps
 
 | Risk Level | Max per Vault |
 |---|---|
-| Medium | 40% |
-| High | 10% |
+| Moderate | 40% |
+| Aggressive | 10% |
 
 </div>
 

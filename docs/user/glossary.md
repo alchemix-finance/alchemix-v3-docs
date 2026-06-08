@@ -29,7 +29,7 @@ A fixed slice of a borrower's outstanding loan that the protocol reserves during
 
 ### Fundamental oracle
 
-A price feed that values a yield-bearing token by its underlying redemption value rather than its open-market trading price. Alchemix uses fundamental oracles for low-risk MYT strategies so that DEX price swings cannot trigger liquidations.
+A price feed that values a yield-bearing token by its underlying redemption value rather than its open-market trading price. Alchemix uses fundamental oracles for Conservative MYT strategies so that DEX price swings cannot trigger liquidations.
 
 [Risk Considerations →](./safety/risk-considerations.md)
 
