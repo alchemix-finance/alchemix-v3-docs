@@ -18,17 +18,17 @@ Users of any DeFi protocol are encouraged to Know Your Counterparty (the real KY
 
 #### MYT depositors
 
-MYT Depositors provide collateral to and are thus exposed to the yield strategies that make up the MYT. If the MYT suffers a loss, that loss is distributed to all MYT Depositors. MYT Depositors are encouraged to monitor which yield strategies make up the MYT they are holding to ensure the exposure is in line with their own strategy.
+<Term id="myt">MYT</Term> Depositors provide collateral to and are thus exposed to the yield strategies that make up the MYT. If the MYT suffers a loss, that loss is distributed to all MYT Depositors. MYT Depositors are encouraged to monitor which yield strategies make up the MYT they are holding to ensure the exposure is in line with their own strategy.
 
 #### Alchemist borrowers
 
-Borrowers supply MYT to the Alchemists in order to take alAsset loans. Unless a depositor also wishes to act as a liquidity provider, they will typically swap their alAsset to another asset soon after taking the loan. Therefore, they are not exposed to the price of alAssets over time.
+Borrowers supply MYT to the Alchemists in order to take <Term id="alasset">alAsset</Term> loans. Unless a depositor also wishes to act as a liquidity provider, they will typically swap their alAsset to another asset soon after taking the loan. Therefore, they are not exposed to the price of alAssets over time.
 
 The primary risks a borrower takes are liquidation risk and redemption risk.
 
 ### Liquidation risk
 
-If the MYT suffers a loss then the LTV of a borrower's position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation, which will use collateral to repay debt, and pay the liquidator, until the user’s position is down to the target LTV.
+If the MYT suffers a loss then the <Term id="ltv">LTV</Term> of a borrower's position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation, which will use collateral to repay debt, and pay the liquidator, until the user’s position is down to the target LTV.
 
 Users can mitigate liquidation risk by using a conservative LTV based on the risk levels of the strategies that make up each MYT. The Aggressive and Moderate risk strategies in each MYT are limited to 10% and 40% of the MYT, respectively. If the liquidation LTV is 95% then the user can take a 45% LTV. In this scenario, even if all of the Aggressive and Moderate risk strategies suffer 100% losses, the user will still have a 90% LTV and therefore not be subject to liquidation.
 
@@ -78,7 +78,7 @@ See [Contract Roles](../../governance/guides/contract-roles).
 
 ### Security & audits
 
-All core Alchemix V3 contracts have been audited by top-tier security firms, and a bug bounty program is active on Immunefi with a maximum payout of $300,000. New MYT strategies are reviewed by Nethermind before being whitelisted.
+All core Alchemix V3 contracts have been audited by top-tier security firms, and a bug bounty program is active on Immunefi with a maximum payout of $300,000. New MYT strategies are reviewed by Nethermind before being whitelisted. Beyond audits, the protocol is monitored in real time by Hypernative, with automation that can pause the protocol if suspicious on-chain activity is detected.
 
 [Full audit reports, bounty details, and security practices →](./security.md)
 
@@ -97,7 +97,7 @@ All core Alchemix V3 contracts have been audited by top-tier security firms, and
 
 **Security properties**
 
-- **3-of-3 DVN Multisig (Except Metis is 2-of-2)** — No single messaging provider can approve a bridge transaction unilaterally. An attacker must compromise at all independent DVNs simultaneously to forge a message.
+- **2-of-3 DVN confirmation (Metis uses 2-of-2)** — No single messaging provider can approve a bridge transaction unilaterally. An attacker would need to compromise 2 of the 3 independent DVNs simultaneously to forge a message.
 - **DAO-controlled DVN list** — AlchemixDAO owns all bridge contracts and can swap out DVNs without taking the system offline. Compromised or misbehaving validators can be replaced via governance.
 - **Ethereum supply ceiling** — A lockbox is used on Mainnet Ethereum. The circulating supply on Ethereum is capped at what was minted there. L2 bridges cannot inflate the token supply; bridged supply can never exceed the Ethereum-side ceiling.
 - **Rate limits & bridge capacity** — Each asset/chain pair has a 24-hour rate limit. If Mainnet inbound capacity is saturated, alAssets may become stranded on L2 and trade at a discount. Verify capacity before large cross-chain positions.

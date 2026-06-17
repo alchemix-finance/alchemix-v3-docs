@@ -8,11 +8,11 @@ import MigrationOverview from "@site/src/components/MigrationOverview";
 
 <PageBanner title="V3 Migration" />
 
-:::warning Migration delayed
-The V2 to V3 migration originally planned for February 6th, 2026 has been delayed pending completion of ongoing security audits. No new date has been confirmed. This page will be updated when a new timeline is available.
+:::tip Migration complete
+The V2 to V3 migration completed in April 2026. All positions are live on V3 and the new UI is up. For reference, the migration covered **3 chains**, used **7 signers** across roughly **20,000 transactions**, and moved **6,413 positions**, about **$4.87M** in stablecoins and **12,107 ETH**. No user action is required. This page is retained as a record of how the migration worked.
 :::
 
-Alchemix V3 runs on a different architecture than V2. The migration moves all existing positions into the new system, consolidating liquidity, activating the 90% LTV framework, and launching the Mix-Yield Token (MYT).
+Alchemix V3 runs on a different architecture than V2. The migration moved all existing positions into the new system, consolidating liquidity, activating the 90% LTV framework, and launching the Mix-Yield Token (MYT).
 
 <MigrationOverview />
 
@@ -22,23 +22,23 @@ Alchemix V2 and V3 operate on fundamentally different architectural logic. To pr
 
 #### Migration mechanics
 
-The migration is conducted via a coordinated protocol upgrade (governance-approved under AIP-123). The process follows a strict operational sequence:
+The migration was conducted via a coordinated protocol upgrade (governance-approved under AIP-123). The process followed a strict operational sequence:
 
-1.  **Freeze:** V2 smart contracts are paused, disabling user-facing functions to lock the state of all positions.
-2.  **Snapshot:** A precise record of every user position (collateral and debt) is captured.
-3.  **Asset Conversion:** Collateral is securely moved and converted into the primary underlying assets (USDC and wETH).
-4.  **Positions:** The Alchemix multisig recreates every user position within the V3 architecture. Users are credited with the exact fundamental deposit value and debt recorded during the snapshot.
-5.  **Initialization:** New V3 position NFTs are distributed to the respective owner wallets, and the protocol is formally launched.
+1.  **Freeze:** V2 smart contracts were paused, disabling user-facing functions to lock the state of all positions.
+2.  **Snapshot:** A precise record of every user position (collateral and debt) was captured.
+3.  **Asset Conversion:** Collateral was securely moved and converted into the primary underlying assets (USDC and wETH).
+4.  **Positions:** The Alchemix multisig recreated every user position within the V3 architecture. Users were credited with the exact fundamental deposit value and debt recorded during the snapshot.
+5.  **Initialization:** New V3 position NFTs were distributed to the respective owner wallets, and the protocol was formally launched.
 
 #### Key parameters
 
-- **Target Migration Date:** TBD — pending completion of security audits.
-- **Estimated Duration:** Approximately one week.
-- **Slippage Protection:** The Alchemix DAO treasury covers conversion slippage up to 0.25%.
-- **Dust Threshold:** Positions valued at less than $0.01 USD at the time of the snapshot will not be migrated.
+- **Migration Date:** Completed April 2026.
+- **Duration:** Approximately one week.
+- **Slippage Protection:** The Alchemix DAO treasury covered conversion slippage up to 0.25%.
+- **Dust Threshold:** Positions valued at less than $0.01 USD at the time of the snapshot were not migrated.
 
-:::info User action required
-**For most users, no action is required.** If you wish to migrate to V3, simply maintain your existing V2 deposits. If you prefer not to participate in the automated migration, you must wind down your positions and withdraw assets prior to **February 6th, 2026**.
+:::info No action required
+The migration ran automatically and is now complete. Eligible V2 positions were recreated on V3 and are available in the [Alchemix app](https://alchemix.fi). If you held a V2 position through the snapshot, it has already been migrated.
 :::
 
 
@@ -153,6 +153,6 @@ To ensure long-term alignment, rALCX follows a six-month linear vesting schedule
 
 ### Learn more
 
-- [V2 dApp Migration Countdown](https://alchemix.fi)
+- [Alchemix v3 dApp](https://alchemix.fi)
 - [AIP-123 Governance Proposal](https://snapshot.org/#/alchemixstakers.eth)
 - [Mana Calculator & Tracking](https://alchemix.fi/mana)

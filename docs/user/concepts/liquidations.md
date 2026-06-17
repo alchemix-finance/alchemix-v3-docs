@@ -8,11 +8,9 @@ import PageBanner from "@site/src/components/PageBanner";
 import StatStrip from "@site/src/components/StatStrip";
 import HealthBar from "@site/src/components/HealthBar";
 
-<!-- TODO -->
-
 <PageBanner title="Liquidations" />
 
-Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account punishment. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close. The back-stop only activates if the Mix-Yield Token itself loses backing.
+Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account punishment. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close. The back-stop only activates if the <Term id="myt">Mix-Yield Token</Term> itself loses backing.
 
 :::tip Liquidations in Alchemix are rare
 Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.
@@ -39,7 +37,7 @@ The colored bar in the vault UI gives an at-a-glance view of your position. Keep
 
 <HealthBar currentLtv={62} maxLtv={90} liqLtv={95} />
 
-Only the minimum needed to reach 85% LTV is liquidated — the rest of your position is untouched. A liquidator fee is paid on both paths; if collateral can’t cover it, a separate fee vault (fundable by the DAO or any entity) covers the difference.
+Only the minimum needed to restore your position to a healthy LTV, at or below the 90% maximum, is liquidated. The rest of your position is untouched. A liquidator fee is paid on both paths. If collateral can’t cover it, a separate fee vault (fundable by the DAO or any entity) covers the difference.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 

@@ -67,4 +67,4 @@ Click Repay and confirm the transaction in your wallet.
 
 - If you plan to close a position entirely, repay any earmarked debt first (MYT) and then clear the remainder with your choice of asset.
 
-- Repaying earmarked debt with MYT can free up borrowable capacity sooner in a high redemption rate period.
+- Repaying earmarked debt with MYT can free up borrowable capacity sooner in a high <Term id="redemption-rate">redemption rate</Term> period.

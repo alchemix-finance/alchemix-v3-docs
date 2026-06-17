@@ -12,7 +12,7 @@ import PositionTimeline from "@site/src/components/PositionTimeline";
 This page walks through the core borrowing path. A small deposit, a modest borrow, and what to expect as redemptions reduce your balance over time.
 
 - Deposit ETH or USDC to mint MYT and start earning yield.
-- Borrow at about 20% LTV to mint alAssets, then swap them to USDC if you want working capital.
+- Borrow at about 20% LTV to mint alAssets, then swap them to USDC if you want working capital. (The protocol allows up to **90%** LTV; this guide uses ~20% as a conservative starting point.)
 - Watch scheduled redemptions reduce your debt while your full collateral keeps earning until maturity.
 
 If you already know what you're looking for, jump straight to the relevant tutorial:

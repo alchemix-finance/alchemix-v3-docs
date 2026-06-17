@@ -48,7 +48,6 @@ module.exports = {
         "tutorials/repay-loan",
         "tutorials/withdraw",
         "tutorials/redeem-alassets",
-        "v3-migration",
       ],
     },
     {
@@ -93,6 +92,11 @@ module.exports = {
           type: "doc",
           id: "marketing-material",
           label: "Marketing Material",
+        },
+        {
+          type: "doc",
+          id: "v3-migration",
+          label: "V3 Migration & Mana",
         },
       ],
     },

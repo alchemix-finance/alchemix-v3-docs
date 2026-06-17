@@ -40,6 +40,8 @@ The health bar shows your current position relative to the 90% MAX LTV cap. With
 
 [Learn how to repay →](./repay-loan.md)
 
+[Learn more about LTV and liquidations →](../concepts/liquidations.md)
+
 ### Step 4 – Enter an amount
 
 Type the amount you want to withdraw into the input field. The vault returns your underlying asset, including any yield the MYT has accrued.

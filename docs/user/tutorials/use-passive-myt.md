@@ -23,7 +23,7 @@ The Mixed Yield page is a dedicated space for depositing into Mix-Yield Token va
 
 <FramedImage src="/img/use-passive-myt-01.png" alt="Mixed Yield page" />
 
-Click Mixed Yield in the top navigation.
+Click Mixed Yield in the top navigation, or go directly to [alchemix.fi/mixed-yield](https://alchemix.fi/mixed-yield).
 
 ### Step 2 – Find your MYT
 

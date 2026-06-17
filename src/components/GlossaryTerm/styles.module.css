@@ -1,0 +1,80 @@
+.wrap {
+  position: relative;
+}
+
+/* The inline trigger reads as annotated body text, not a standard link: it
+   keeps the surrounding text colour and carries a subtle dotted copper
+   underline as the affordance. */
+.term {
+  color: inherit;
+  text-decoration: underline dotted rgba(245, 192, 154, 0.55);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  cursor: help;
+  transition: color 0.12s ease, text-decoration-color 0.12s ease;
+}
+
+.term:hover,
+.term:focus-visible {
+  color: #f5c09a;
+  text-decoration: underline dotted #f5c09a;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 2rem));
+  padding: 0.85rem 0.95rem;
+  background-color: #1a1c1f;
+  border: 1px solid rgba(245, 192, 154, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  white-space: normal;
+  text-align: left;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  cursor: default;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  color: #f5c09a;
+}
+
+.def {
+  color: rgba(232, 232, 234, 0.85);
+}
+
+.more {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #f5c09a;
+}
+
+.more:hover {
+  text-decoration: underline;
+}
+
+/* Touch / no-hover devices never show the popover: the term stays a plain,
+   tappable link to the glossary entry. */
+@media (hover: none), (pointer: coarse) {
+  .popover {
+    display: none;
+  }
+}
+
+@media print {
+  .popover {
+    display: none !important;
+  }
+}

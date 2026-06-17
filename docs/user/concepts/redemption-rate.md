@@ -6,8 +6,6 @@ title: Redemption Rate
 
 import PageBanner from "@site/src/components/PageBanner";
 
-<!-- TODO -->
-
 <PageBanner title="Redemption Rate" />
 
 Redemptions convert earmarked collateral into the asset required to repay debt.
@@ -21,7 +19,7 @@ Two ideas matter:
 
 ### The redemption rate
 
-The redemption rate tells borrowers what share of total system debt redemptions will repay in one year through the Transmuter. A higher rate means loans clear more quickly.
+The redemption rate tells borrowers what share of total system debt redemptions will repay in one year through the <Term id="transmuter">Transmuter</Term>. A higher rate means loans clear more quickly.
 
 #### Formula
 
@@ -85,7 +83,7 @@ The redemption rate formula calculates how much of the total system debt can be 
 
 ##### Example
 
-If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
+The numbers below are illustrative. Actual transmutation terms are governance-set and vary by asset and chain. If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
 
 <div style={{minHeight: '365px'}}>
 
@@ -154,23 +152,23 @@ Throughout that waiting period your full deposit continues to earn yield, giving
 
 ```mermaid
 %%{init: {
-  ‘theme’: ‘base’,
-  ‘themeVariables’: {
-    ‘fontFamily’: ‘Montserrat’,
-    ‘primaryColor’: ‘#141618’,
-    ‘primaryBorderColor’: ‘rgba(245,192,154,0.25)’,
-    ‘primaryTextColor’: ‘#e8e8ea’,
-    ‘lineColor’: ‘#f5c09a’,
-    ‘edgeLabelBackground’: ‘#0d0e10’,
-    ‘tertiaryColor’: ‘#141618’,
-    ‘fontSize’: ‘18px’
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'Montserrat',
+    'primaryColor': '#141618',
+    'primaryBorderColor': 'rgba(245,192,154,0.25)',
+    'primaryTextColor': '#e8e8ea',
+    'lineColor': '#f5c09a',
+    'edgeLabelBackground': '#0d0e10',
+    'tertiaryColor': '#141618',
+    'fontSize': '18px'
   },
-  ‘flowchart’: { ‘curve’: ‘monotoneX’, ‘nodeSpacing’: 100, ‘rankSpacing’: 80 }
+  'flowchart': { 'curve': 'monotoneX', 'nodeSpacing': 100, 'rankSpacing': 80 }
 }}%%
 flowchart LR
     classDef default font-weight:bold;
 
-    A(Earmark<br/><b>T₀</b>) e1@--> B(Waiting period<br/><span style=’color:#8a8f99’>Collateral still earning yield</span>) e2@--> C{{Settlement<br/><b>T₁</b>}}
+    A(Earmark<br/><b>T₀</b>) e1@--> B(Waiting period<br/><span style='color:#8a8f99'>Collateral still earning yield</span>) e2@--> C{{Settlement<br/><b>T₁</b>}}
 
     style C fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
     linkStyle 0,1 stroke:#f5c09a,stroke-width:2px

@@ -6,17 +6,15 @@ title: Self-Repaying Loans
 
 import PageBanner from "@site/src/components/PageBanner";
 
-<!-- TODO -->
-
 <PageBanner title="Self-Repaying Loans" />
 
 A self-repaying loan lets you unlock liquidity without immediately selling your core position.
 
-Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or alUSD, that mirrors the price of what you deposited. You may mint alAssets worth up to **90%** of your collateral's face value and deploy them however you like. Meanwhile, two built-in cash flows reduce the loan balance:
+Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or alUSD, that mirrors the price of what you deposited. You may mint <Term id="alasset">alAssets</Term> worth up to **90%** of your collateral's face value and deploy them however you like. Meanwhile, two built-in cash flows reduce the loan balance:
 
-- **Vault yield** – Your collateral is wrapped in the Mix-Yield Token, which earns yield continuously.
+- **Vault yield** – Your collateral is wrapped in the <Term id="myt">Mix-Yield Token</Term>, which earns yield continuously.
 
-- **Scheduled redemptions** – As Transmuter redemption positions mature, users will redeem their positions, which then triggers debt repayments using user collateral.
+- **Scheduled redemptions** – As <Term id="transmuter">Transmuter</Term> redemption positions mature, users will redeem their positions, which then triggers debt repayments using user collateral.
 
 Because repayment comes from these predictable flows, the loan never accrues variable interest. The balance of your debt only moves in one direction — down — unless you choose to mint additional alAssets.
 
@@ -78,7 +76,7 @@ flowchart LR
 
 ### Managing your position
 
-For most borrowers, the position is low-maintenance. Deposit, mint, and check back when you need more liquidity. Active users can raise or lower their LTV, loop alAssets back into the vault for leverage, or time repayments around redemptions.
+For most borrowers, the position is low-maintenance. Deposit, mint, and check back when you need more liquidity. Active users can raise or lower their <Term id="ltv">LTV</Term>, loop alAssets back into the vault for leverage, or time repayments around redemptions.
 
 ### Learn more
 

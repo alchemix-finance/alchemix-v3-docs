@@ -8,12 +8,11 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Links & Resources" />
 
-<!-- TODO -->
-
 This documentation is the most complete learning resource, but it may lag behind day-to-day activity. Use the channels below to stay current and connect with the community.
 
 | Resource                                                     | Purpose                                                   |
 | ------------------------------------------------------------ | --------------------------------------------------------- |
+| [**dApp**](https://alchemix.fi)                               | The Alchemix dApp: Vaults, [Mixed Yield](https://alchemix.fi/mixed-yield) and [Fixed Yield](https://alchemix.fi/fixed-yield). |
 | [**X (Twitter)**](https://x.com/AlchemixFi)                  | Official announcements and real-time updates.             |
 | [**Discord**](https://discord.gg/alchemix)                   | Community chat, support and contributor coordination.     |
 | [**Newsletter**](https://alchemixfi.substack.com/)           | Roundup of releases, governance and ecosystem news.       |

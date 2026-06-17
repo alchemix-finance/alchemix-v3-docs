@@ -20,7 +20,7 @@ While your position sits in the queue Alchemix earmarks matching collateral at 1
 
 <FramedImage src="/img/redeem-alassets-01.png" alt="Fixed Yield page" />
 
-**Fixed Yield page** – each panel shows a fixed-rate term you can enter.
+Select **Fixed Yield** from the top navigation, or go directly to [alchemix.fi/fixed-yield](https://alchemix.fi/fixed-yield). Each panel shows a fixed-rate term you can enter.
 
 ### Step 2 – Pick a term
 
@@ -29,6 +29,8 @@ APRs and alAsset spot prices differ across networks. Always verify the values sh
 :::
 
 Each panel displays:
+
+- Term length
 
 - Maturity Date
 
