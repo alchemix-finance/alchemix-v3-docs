@@ -20,10 +20,10 @@ Quick reference for admins, curators, allocators, and sentinels operating an MYT
 
 There are four contract layers:
 
-- **MYT Vault** (Morpho V2) — holds funds, enforces caps, manages roles
-- **Curator Contract** — manages strategy registration and cap configuration (one per chain, shared by both MYTs)
-- **Allocator Contract** — moves funds between the vault and strategy adapters (one per MYT)
-- **MYT Strategy** — individual yield strategy adapters (one per yield source per MYT)
+- **MYT Vault** (Morpho V2) – holds funds, enforces caps, manages roles
+- **Curator Contract** – manages strategy registration and cap configuration (one per chain, shared by both MYTs)
+- **Allocator Contract** – moves funds between the vault and strategy adapters (one per MYT)
+- **MYT Strategy** – individual yield strategy adapters (one per yield source per MYT)
 
 Each layer has its own role system. Holding a role on one contract does **not** grant access on another.
 
@@ -74,7 +74,7 @@ All amounts are `uint256`.
 
 The liquidity adapter is the default strategy the vault uses to service user deposits and withdrawals. It is set via `setLiquidityAdapterAndData()` (Allocator-level, via proxy).
 
-**Critical:** The liquidity adapter **must** be a strategy that supports direct (non-swap) deposit and withdrawal paths. Swap-only strategies (e.g., sfrxETH) cannot be set as the liquidity adapter, because user `withdraw()`/`redeem()` calls do not pass swap calldata. If no strategy on a given chain supports direct paths, leave the liquidity adapter unset — the vault will operate with idle assets only.
+**Critical:** The liquidity adapter **must** be a strategy that supports direct (non-swap) deposit and withdrawal paths. Swap-only strategies (e.g., sfrxETH) cannot be set as the liquidity adapter, because user `withdraw()`/`redeem()` calls do not pass swap calldata. If no strategy on a given chain supports direct paths, leave the liquidity adapter unset; the vault will operate with idle assets only.
 
 ---
 
@@ -86,11 +86,11 @@ The liquidity adapter is the default strategy the vault uses to service user dep
 
 ## Constructing 0x txData
 
-For swap-based allocation and deallocation, you need to pass `txData` — encoded calldata from the [0x Swap API](https://0x.org/docs/api).
+For swap-based allocation and deallocation, you need to pass `txData`, the encoded calldata from the [0x Swap API](https://0x.org/docs/api).
 
 1. Call the 0x API with: `sellToken`, `buyToken`, `sellAmount`, and `taker` = **strategy contract address** (not the allocator or multisig)
-2. The API returns encoded calldata — pass this directly as `txData`
-3. Quotes are time-sensitive — fetch and submit in the same session
+2. The API returns encoded calldata. Pass this directly as `txData`
+3. Quotes are time-sensitive, so fetch and submit in the same session
 4. For `deallocateWithUnwrapAndSwap()`: the swap is for the **intermediate** token (e.g., frxETH → WETH), not the held token (sfrxETH). Set `minIntermediateOut` to match the quote's `sellAmount`.
 
 > **The Alchemix Admin UI should be used to construct txData when available.**
@@ -105,8 +105,8 @@ The Curator and Allocator contracts inherit from `PermissionedProxy`, which allo
 
 **Allocator proxy candidates:**
 
-- `setMaxRate(uint256)` — [Morpho Vaults V2 docs](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#setmaxrate)
-- `setLiquidityAdapterAndData(address, bytes)` — [Morpho Vaults V2 docs](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#setliquidityadapteranddata)
+- `setMaxRate(uint256)` – [Morpho Vaults V2 docs](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#setmaxrate)
+- `setLiquidityAdapterAndData(address, bytes)` – [Morpho Vaults V2 docs](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#setliquidityadapteranddata)
 
 **Curator proxy:** Any [Morpho V2 curator function](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#curator-functions) not already wrapped by the AlchemistCurator contract can be forwarded via `proxy()` after whitelisting.
 

@@ -18,7 +18,7 @@ Alchemix V3 runs on a different architecture than V2. The migration moved all ex
 
 ### The great V2 to V3 migration
 
-Alchemix V2 and V3 operate on fundamentally different architectural logic. To prevent debt cannibalization and ensure all users benefit from the upgraded Transmuter and MYT vaults, V2 positions must be migrated into the V3 ecosystem.
+Alchemix V2 and V3 operate on fundamentally different architectural logic. To prevent debt cannibalization and ensure all users benefit from the upgraded Transmuter and MYT vaults, V2 positions were migrated into the V3 ecosystem.
 
 #### Migration mechanics
 
@@ -32,10 +32,10 @@ The migration was conducted via a coordinated protocol upgrade (governance-appro
 
 #### Key parameters
 
-- **Migration Date:** Completed April 2026.
+- **Migration date:** Completed April 2026.
 - **Duration:** Approximately one week.
-- **Slippage Protection:** The Alchemix DAO treasury covered conversion slippage up to 0.25%.
-- **Dust Threshold:** Positions valued at less than $0.01 USD at the time of the snapshot were not migrated.
+- **Slippage protection:** The Alchemix DAO treasury covered conversion slippage up to 0.25%.
+- **Dust threshold:** Positions valued at less than $0.01 USD at the time of the snapshot were not migrated.
 
 :::info No action required
 The migration ran automatically and is now complete. Eligible V2 positions were recreated on V3 and are available in the [Alchemix app](https://alchemix.fi). If you held a V2 position through the snapshot, it has already been migrated.
@@ -56,8 +56,8 @@ Mana is awarded proportionally based on historical and current participation acr
 | **Standard LP Pools** | Average balance Jan 15, 2025 compared to current snapshot | Retroactive, based on on-chain history.       |
 | **CL Pools**          | Flat 1,000 Mana bonus                                     | One-time reward for eligible CL pool history. |
 
-- **Look-back Period:** Retroactive rewards date back to January 15th, 2025.
-- **Minimum Threshold:** A minimum of **1.337 Mana** is required to be eligible for reward distribution.
+- **Look-back period:** Retroactive rewards date back to January 15th, 2025.
+- **Minimum threshold:** A minimum of **1.337 Mana** is required to be eligible for reward distribution.
 
 #### Reward distribution: rALCX
 
@@ -67,8 +67,8 @@ At the conclusion of the earning period, a fixed pool of **10,000 rALCX** will b
 
 To ensure long-term alignment, rALCX follows a six-month linear vesting schedule:
 
-- **Full Term:** After 6 months, 100% of rewards can be claimed as ALCX with no penalty.
-- **Early Exit:** Users may claim their currently vested balance at any time, but doing so **forfeits all remaining unvested rewards.**
+- **Full term:** After 6 months, 100% of rewards can be claimed as ALCX with no penalty.
+- **Early exit:** Users may claim their currently vested balance at any time, but doing so **forfeits all remaining unvested rewards.**
 
 
 ### Eligible strategies & pools

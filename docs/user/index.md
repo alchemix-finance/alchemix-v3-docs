@@ -10,7 +10,7 @@ import FeatureCards from '@site/src/components/FeatureCards';
 
 <PageBanner title="Alchemix v3" />
 
-Alchemix is your unified platform for saving, borrowing, and earning fixed-term fixed-yield opportunities all in one place. Built on years of iteration since launching the original <Term id="self-repaying-loan">self-repaying loan</Term> in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
+Alchemix is a protocol for saving, borrowing, and earning fixed-yield returns. Building on the <Term id="self-repaying-loan">self-repaying loan</Term> it introduced in 2021, v3 combines these three functions in one app. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
 
 <FeatureCards items={[
 {

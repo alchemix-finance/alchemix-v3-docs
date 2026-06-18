@@ -8,14 +8,14 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Transmuter" />
 
-The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH) 1:1 for their underlying asset after a known waiting period. Purchase below face value, and receive the full value on the maturity date.
+The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH) at a guaranteed 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of <Term id="myt">MYT</Term> that normally unwraps to the underlying asset immediately.
 
 :::tip Instant vs. guaranteed liquidity
 The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as redemptions mature.
 
 - **Want it now?** Use external liquidity pools (Curve, Balancer) which are instant but may have slight price slippage.
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
-  :::
+:::
 
 ### How transmutations flow
 

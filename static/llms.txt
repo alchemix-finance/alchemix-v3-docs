@@ -24,8 +24,7 @@
 - [Glossary](https://docs.alchemix.fi/user/glossary): Key terms defined
 
 ### Tutorials
-- [Deposit and Borrow](https://docs.alchemix.fi/user/tutorials/deposit-and-borrow): Step-by-step borrowing guide
-- [Borrowing in Alchemix](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix): Detailed borrowing walkthrough
+- [Take a Loan](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix): Step-by-step borrowing walkthrough
 - [Repay Loan](https://docs.alchemix.fi/user/tutorials/repay-loan): How to repay early or manage debt
 - [Redeem alAssets](https://docs.alchemix.fi/user/tutorials/redeem-alassets): Using the Transmuter for fixed-rate yield
 - [Use Passive MYT](https://docs.alchemix.fi/user/tutorials/use-passive-myt): Earning yield without borrowing
@@ -90,8 +89,6 @@
 
 - [Governance Overview](https://docs.alchemix.fi/governance/intro): How the Alchemix DAO works
 - [Governance Process](https://docs.alchemix.fi/governance/onchain/governance-process): Proposal lifecycle
-- [How to Vote](https://docs.alchemix.fi/governance/onchain/how-to-vote): Voting guide
-- [vqALCX](https://docs.alchemix.fi/governance/onchain/vqalcx): Vote-escrowed governance token
 - [On-Chain Infrastructure](https://docs.alchemix.fi/governance/onchain/onchain-governance-infrastructure): Governance contracts
 - [Contract Roles](https://docs.alchemix.fi/governance/guides/contract-roles): Permission model
 - [MYT Strategies](https://docs.alchemix.fi/governance/guides/myt-strategies): How the DAO manages yield strategies

@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 Alchemix V3 uses a layered approach to access control, emergency response, and risk management across its contracts. Each layer is designed to limit the blast radius of any single failure point, whether that's a compromised key, a bad strategy, or a systemic market event.
 
-## Access Control
+## Access control
 
 ### Alchemist
 
@@ -28,9 +28,9 @@ Individual MYTStrategy contracts use an `onlyOwner` pattern (via OpenZeppelin's 
 
 Cap increases and strategy additions/removals on the MYT vault go through the Morpho VaultV2 timelock system. The Curator must first submit a change, wait for the timelock period to elapse, then execute it in a second transaction. Cap decreases bypass the timelock since they only restrict exposure, never expand it.
 
-## Emergency Response
+## Emergency response
 
-### Alchemist Pausing
+### Alchemist pausing
 
 The Alchemist has two independent pause flags: `depositsPaused` and `loansPaused`. Both can be toggled by the admin or any active guardian. Pausing deposits prevents new collateral from entering the system. Pausing loans prevents new borrowing. Neither pause affects withdrawals, repayments, or liquidations. Users can always exit and positions can always be made healthy.
 
@@ -42,7 +42,7 @@ Each MYT strategy has a `killSwitch` that can be toggled by the strategy owner. 
 
 The Transmuter has no pause mechanism. Positions continue to vest regardless of market conditions. Claims can always be executed. The `pokeMatured` function allows anyone to free up deposit cap space from fully matured positions without requiring the position owner to act.
 
-## Risk Management
+## Risk management
 
 ### Collateralization
 
@@ -52,10 +52,10 @@ The Alchemist enforces multiple collateralization layers. The `minimumCollateral
 
 The AlchemistAllocator validates allocations against four layers of caps before any capital moves into a strategy: the vault's absolute cap (max assets per strategy), the vault's relative cap (max percentage of total vault assets), the global risk cap (max combined allocation across all strategies in a risk class), and the local risk cap (per-strategy limit, applied only to operators). Deallocations bypass cap validation entirely since removing funds can only reduce risk.
 
-### Bad Debt Handling
+### Bad debt handling
 
 The Transmuter accounts for bad debt when settling claims. If the Alchemist's total synthetic debt exceeds the underlying collateral value, the Transmuter scales down the vested payout proportionally via a `badDebtRatio` calculation. This prevents the Transmuter from paying out more than the system can back.
 
-### Fee Vaults
+### Fee vaults
 
 The AlchemistETHVault and AlchemistTokenVault escrow funds outside of the Alchemist that can be drawn on to cover obligations to liquidators and redeemers when the Alchemist's own balance is insufficient. Only authorized addresses (the Alchemist and the owner) can withdraw from these vaults.

@@ -15,11 +15,9 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 ### What is the MYT?
 
-- **Tokenized basket** – MYT is a customized vault token utilizing Morpho Vaults V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
+- **Open-source core** – MYT is a customized vault token built on Morpho Vaults V2 (ERC-4626). It holds deposits of ETH or USDC and routes them into several yield sources.
 
 - **DAO-managed allocation** – The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift. Allocation is currently executed by the Alchemix DAO Multisig and is transitioning to full on-chain DAO governance.
-
-- **Powered by open-source infrastructure** – The core Alchemix vault logic utilizes Morpho's open-source Vaults V2 layer to optimize on-chain execution and safety.
 
 ### Why use the MYT?
 
@@ -30,7 +28,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
   },
   {
     title: "Risk management",
-    body: "DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure.",
+    body: "DAO oversight and strategy diversification reduce single-protocol exposure.",
   },
   {
     title: "Flexibility",
@@ -107,6 +105,7 @@ The strategy labels below map to their underlying providers: `Euler*` = Euler v2
 | EulerUSD | Moderate | - | 25% |
 | TokeAutoUSD | Moderate | - | 25% |
 | Yearn yvUSD | Conservative | Yes | - |
+| SiUSD | Conservative | - | - |
 
 #### Mainnet wETH
 

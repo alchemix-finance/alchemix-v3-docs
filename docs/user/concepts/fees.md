@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Fees" />
 
-Alchemix V3 maintains a transparent and predictable cost structure. All fees are set by on-chain governance and are categorized into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and a performance fee on yield generation.
+All Alchemix v3 fees are set by on-chain governance and fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and a performance fee on yield generation.
 
 ```mermaid
 %%{init: {
@@ -38,7 +38,7 @@ flowchart TD
 
     C --> I(Exit early or wait?)
     I -->|Wait full term| J(<b>0.00%</b> — full<br/>redemption value):::free
-    I -.->|Exit early| K(<b>1.00%</b> early<br/><span style='color:#8a8f99'>transmutation fee</span>):::fee
+    I -.->|Exit early| K(<b>1.00%</b><br/><span style='color:#8a8f99'>Early Transmutation Fee</span>):::fee
 
     linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#f5c09a,stroke-width:2px
 ```
@@ -70,8 +70,8 @@ Each <Term id="myt">Mix-Yield Token (MYT)</Term> vault skims a share of the gros
 
 ### Current fee schedule
 
-| Chain        | Base Asset | Redemption Fee | Transmuter Fee | Early Exit Fee | MYT Yield Fee |
-| :----------- | :--------- | :------------- | :------------- | :------------- | :------------ |
+| Chain        | Base Asset | Redemption Fee | Transmuter Fee | Early Transmutation Fee | MYT Yield Fee |
+| :----------- | :--------- | :------------- | :------------- | :---------------------- | :------------ |
 | **Ethereum** | ETH        | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
 | **Ethereum** | USDC       | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
 | **Optimism** | ETH        | 0.50%          | 0.00%          | 1.00%          | 15.00%        |

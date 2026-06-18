@@ -40,7 +40,7 @@ Open the Borrow tab on the vault page. If you don't already have a corresponding
 
 The top of the detail page shows your current position: APR, Deposit, Debt, Health Factor, Earmarked, Redemption Rate, Borrowable, and LTV. The health bar shows your position relative to the MAX LTV and liquidation LTV markers.
 
-:::caution Liquidation Risk
+:::caution Liquidation risk
 Alchemix does not use price-based liquidations. Liquidation risk comes from a yield strategy losing value, which can reduce your collateral below the liquidation threshold (95% LTV). Keeping LTV low reduces your exposure. <br/><br/>[Learn more about Liquidations →](../concepts/liquidations.md)
 :::
 
@@ -83,4 +83,4 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 
 - **Leverage** – Loop alAssets back into the vault to amplify yield while the repayment mechanism remains self-managed.
 
-Borrowing in Alchemix turns yield-bearing collateral into an immediate source of flexible liquidity, without sacrificing future upside or introducing unpredictable financing costs.
+Borrowing lets you access liquidity from your collateral while it keeps earning yield.

@@ -10,7 +10,7 @@ import HealthBar from "@site/src/components/HealthBar";
 
 <PageBanner title="Liquidations" />
 
-Liquidations in Alchemix v3 are a system-wide safety valve, not a per-account punishment. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close. The back-stop only activates if the <Term id="myt">Mix-Yield Token</Term> itself loses backing.
+Liquidations in Alchemix v3 are a system-wide safety valve that activates only when the <Term id="myt">Mix-Yield Token</Term> loses backing. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close.
 
 :::tip Liquidations in Alchemix are rare
 Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.

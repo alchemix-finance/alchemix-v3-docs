@@ -157,7 +157,7 @@ Loss handling is different for each participant:
 
 Never. Earmarked collateral continues to earn you yield until the moment it is redeemed. This delayed settlement creates the temporal leverage, extra yield you would not receive in most other lending platforms.
 
-[Learn more about Temporal Leverage →](./concepts/redemption-rate#temporal-leverage)
+[Learn more about Temporal Leverage →](./concepts/redemption-rate.md#temporal-leverage)
 
 </details>
 

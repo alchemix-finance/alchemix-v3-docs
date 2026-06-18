@@ -76,14 +76,14 @@ flowchart LR
 
 The redemption rate formula calculates how much of the total system debt can be cleared in one year, based on current conditions.
 
-- **The Inputs:** We take the current **Transmuter Balance** and the **Transmutation Time** (how long it takes for one batch of assets to be exchanged).
-- **The Frequency:** We calculate how many times the Transmuter can cycle its balance in a single year (EG; a 0.25-year duration means 4 cycles per year).
-- **The Volume:** By multiplying the balance by the frequency of redemptions, we get the **Projected Annual Redemptions**, the total value the system is on track to repay over the next 12 months.
-- **The Rate:** Finally, we compare that projected volume against the **Total System Debt** to determine the percentage rate.
+- **The Inputs:** The formula takes the current **Transmuter Balance** and the **Transmutation Time** (how long it takes for one batch of assets to be exchanged).
+- **The Frequency:** Count how many times the Transmuter can cycle its balance in a single year (EG; a 0.25-year duration means 4 cycles per year).
+- **The Volume:** Multiplying the balance by the redemption frequency gives the **Projected Annual Redemptions**, the total value the system is on track to repay over the next 12 months.
+- **The Rate:** Finally, that projected volume is compared against the **Total System Debt** to determine the percentage rate.
 
 ##### Example
 
-The numbers below are illustrative. Actual transmutation terms are governance-set and vary by asset and chain. If 1000 alETH sit in the Transmuter, the transmutation term is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
+The numbers below are illustrative. Actual Transmutation Times are governance-set and vary by asset and chain. If 1000 alETH sit in the Transmuter, the Transmutation Time is three months (0.25 years), and the Alchemist reports 1500 alETH of debt:
 
 <div style={{minHeight: '365px'}}>
 
@@ -112,7 +112,7 @@ flowchart LR
     A(Transmuter Balance<br/><b>1,000 <span style='color:#8a8f99'>alETH</span></b>)
     B(Transmutation Time<br/><b>0.25 <span style='color:#8a8f99'>Years</span></b>)
     C(Total System Debt<br/><b>1,500 <span style='color:#8a8f99'>alETH</span></b>)
-    D(<b>Annualized Redemptions</b><br/>1,000 alETH/year / 0.25 Years<br/>= <b>4,000 <span style='color:#8a8f99'>alETH</span></b>)
+    D(<b>Annualized Redemptions</b><br/>1,000 alETH / 0.25 years<br/>= <b>4,000 <span style='color:#8a8f99'>alETH/year</span></b>)
     E{{<b>Redemption Rate</b><br/>4,000 alETH / 1,500 alETH<br/>= <b>~267%</b>}}
 
     %% Logic
@@ -132,7 +132,7 @@ flowchart LR
 
 </div>
 
-At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, term length, and debt levels remain unchanged.
+At that rate, the scheduled redemptions would repay roughly 2.67 times the current debt over a twelve-month horizon, meaning the average loan would clear well before a year has passed, assuming queue size, Transmutation Time, and debt levels remain unchanged.
 
 #### What drives this number
 
@@ -146,7 +146,7 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 
 Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until a Transmuter position actually matures. The transfer out of the vault happens at that maturity moment, when the claim must be settled.
 
-Throughout that waiting period your full deposit continues to earn yield, giving you an extra return we’ve coined “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
+Throughout that waiting period your full deposit continues to earn yield, giving you an extra return called “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 
 <div style={{minHeight: '118px'}}>
 

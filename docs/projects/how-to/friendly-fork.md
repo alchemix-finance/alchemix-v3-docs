@@ -34,7 +34,7 @@ Friendly forks are designed as a "win-win" economic partnership. Licensees agree
 
 While the technology is Alchemix, the brand must be sovereign to avoid user confusion:
 
-- **No Trademark Use:** Licensees **cannot** use Alchemix trademarks, including the names _Alchemix_, _alUSD_, _alETH_, _Transmuter_, or _Meta-Yield Token_. The fork must develop its own unique brand and asset names.
+- **No Trademark Use:** Licensees **cannot** use Alchemix trademarks, including the names _Alchemix_, _alUSD_, _alETH_, _Transmuter_, or _Mix-Yield Token_. The fork must develop its own unique brand and asset names.
 - **Required Attribution:** Documentation must clearly state the project is a "Licensed fork of Alchemix V3" and display the Alchemix Approved Logo in the user interface footer.
 
 ### 3. Security & Performance

@@ -8,11 +8,11 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Security & Audits" />
 
-Alchemix V3 is designed with security at every layer. The approach combines our most comprehensive audit suite to date, real-time automated threat monitoring, a permanent partnership for continuous strategy review, and a high-incentive bug bounty program.
+Alchemix V3 is designed with security at every layer. The approach combines an external audit suite, real-time automated threat monitoring, ongoing strategy review by Nethermind, and a bug bounty program.
 
 ### Audit coverage & reports
 
-All core smart contracts for Alchemix V3 have undergone rigorous testing and comprehensive audits by top-tier security firms, alongside an extensive in-house security suite (see [Internal security practices](#internal-security-practices)).
+All core smart contracts for Alchemix V3 have undergone testing and audits by external security firms, alongside an in-house security suite (see [Internal security practices](#internal-security-practices)).
 
 #### Core protocol audits
 
@@ -73,10 +73,10 @@ We encourage the stress-testing of our code. Our program is hosted on **Immunefi
 
 ### Governance & timelocks
 
-To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 utilizes a robust timelock system.
+To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 uses a timelock system.
 
 - **Upgradeability:** Critical contracts are upgradeable only via the DAO.
-- **Timelock Delay:** Set by governance — This delay provides users and third-party monitors time to exit or react before any code changes are executed.
+- **Timelock Delay:** Set by governance. This delay provides users and third-party monitors time to exit or react before any code changes are executed.
 - **Guardian Role:** A dedicated Guardian address can pause deposits and loans in an emergency but **cannot** unpause them or access funds, serving as a circuit breaker during volatility.
 
 

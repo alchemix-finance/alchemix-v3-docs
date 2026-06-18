@@ -10,9 +10,6 @@ const sidebarsGovernance = {
       collapsed: true,
       items: [
         "onchain/alcx-token",
-        // TODO
-        // "onchain/how-to-vote",
-        // "onchain/vqalcx",
         "onchain/onchain-governance-infrastructure",
       ],
     },

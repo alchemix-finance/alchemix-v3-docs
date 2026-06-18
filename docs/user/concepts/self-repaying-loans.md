@@ -16,7 +16,7 @@ Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or a
 
 - **Scheduled redemptions** – As <Term id="transmuter">Transmuter</Term> redemption positions mature, users will redeem their positions, which then triggers debt repayments using user collateral.
 
-Because repayment comes from these predictable flows, the loan never accrues variable interest. The balance of your debt only moves in one direction — down — unless you choose to mint additional alAssets.
+Because repayment comes from these predictable flows, the loan never accrues variable interest. The balance of your debt only moves in one direction (down) unless you choose to mint additional alAssets.
 
 :::tip You are in control
 While Alchemix loans repay themselves over time via yield, you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
@@ -80,8 +80,8 @@ For most borrowers, the position is low-maintenance. Deposit, mint, and check ba
 
 ### Learn more
 
-[alAssets — synthetic tokens explained →](./alAssets.md)
+[alAssets: synthetic tokens explained →](./alAssets.md)
 
-[The Transmuter — how redemptions work →](./transmuter.md)
+[The Transmuter: how redemptions work →](./transmuter.md)
 
-[Tutorial: Deposit and Borrow →](../tutorials/deposit-and-borrow.md)
+[Tutorial: Take a Loan →](../tutorials/borrowing-in-alchemix.md)

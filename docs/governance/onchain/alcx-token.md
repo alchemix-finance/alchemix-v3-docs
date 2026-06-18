@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="ALCX Token" />
 
-ALCX is an ERC-20 token that serves as both the **governance** and **incentive** token for the Alchemix protocol. It was launched without presales or external funding, allocating the majority of supply to the people who contribute to the protocol through work or liquidity provision.
+ALCX is the ERC-20 **governance** and **incentive** token for the Alchemix protocol. It was launched without presales or external funding, allocating the majority of supply to the people who contribute to the protocol through work or liquidity provision.
 
 The token does not have a hard cap, but it follows a carefully crafted emissions schedule that gradually reduced issuance over its first three years and now continues with a fixed long-tail emission. This page covers how ALCX is emitted, how it was distributed, and where to find the token contracts.
 
@@ -16,13 +16,13 @@ The token does not have a hard cap, but it follows a carefully crafted emissions
 
 ALCX gives holders governance rights over the direction of the protocol and the use of the treasury. Holders can create and vote on proposals covering vault strategies, MYT allocation and risk limits, protocol fees, collateral and LTV parameters, and protocol upgrades.
 
-As Alchemix transitions to fully on-chain governance, ALCX is staked into [vqALCX](./vqalcx.md) to represent voting power and earn protocol rewards. See [The Future of Onchain Governance](./onchain-governance-infrastructure.md) for the target end state.
+As Alchemix moves toward fully on-chain governance, ALCX will be staked into vqALCX to represent voting power and earn protocol rewards. See [The Future of Onchain Governance](./onchain-governance-infrastructure.md) for the target end state.
 
-## Emissions Schedule
+## Emissions schedule
 
 Emissions are the rate at which new ALCX tokens are minted. They are distributed to liquidity providers, the treasury, and contributors to the protocol.
 
-ALCX emissions (slow minting) gradually reduced issuance over three years, continuing with a long tail of fixed weekly emissions. Alchemix is now in the **long-tail period**, where **2,200 ALCX are minted per week** indefinitely — increasing total supply by **114,400 ALCX annually**.
+ALCX emissions (slow minting) gradually reduced issuance over three years, continuing with a long tail of fixed weekly emissions. Alchemix is now in the **long-tail period**, where **2,200 ALCX are minted per week** indefinitely, increasing total supply by **114,400 ALCX annually**.
 
 - During the first three years, the staking pools distributed approximately **22,344 ALCX** in their first week, with a **130 ALCX weekly decrease**. Calculations are approximate, as ALCX rewards are computed per block and network conditions, though negligible, may slightly affect the schedule.
 - At the three-year point, this represented roughly **4.5% annual inflation** of supply, which has gradually decreased over time as total supply grows against a fixed weekly emission.
@@ -46,7 +46,7 @@ An initial supply of **478,612 ALCX** was minted as a pre-mine. Alchemix calcula
 
 In short: **15%** pre-mine for the DAO, **5%** for bug bounties, and **80%** of tokens made available through LP staking.
 
-## Contract Addresses
+## Contract addresses
 
 | Network | Address |
 | --- | --- |

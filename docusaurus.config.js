@@ -134,6 +134,23 @@ const config = {
             from: "/",
             to: "/user",
           },
+          {
+          from: '/resources/audits-and-reports/financial-reports',
+          to: '/user/financial-reports',
+          },
+          // Pages removed in the 2026-06 docs pass → redirect old URLs so external/indexed links don't 404
+          {
+            from: "/user/tutorials/deposit-and-borrow",
+            to: "/user/tutorials/borrowing-in-alchemix",
+          },
+          {
+            from: "/governance/onchain/how-to-vote",
+            to: "/governance/onchain/governance-process",
+          },
+          {
+            from: "/governance/onchain/vqalcx",
+            to: "/governance/onchain/alcx-token",
+          },
         ],
       },
     ],

@@ -12,7 +12,7 @@ import VideoEmbed from "@site/src/components/VideoEmbed";
 
 <VideoEmbed videoId="3KR4SG2q8Vw" title="Repay Your Loan" />
 
-Paying down or closing a loan does more than remove debt. It directly improves every metric that governs how much flexibility you still have inside the vault.
+Paying down or closing a loan reduces your debt and improves the metrics that govern your flexibility inside the vault: LTV, health factor, and withdrawable collateral.
 
 ### Why repay?
 
