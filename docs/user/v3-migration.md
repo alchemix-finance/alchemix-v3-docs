@@ -44,11 +44,11 @@ The migration ran automatically and is now complete. Eligible V2 positions were 
 
 ### The migration Mana program
 
-**Mana** is a loyalty-reward system designed to incentivize a coordinated migration and reward long-term participation within the Alchemix ecosystem.
+**Mana** was a loyalty-reward system that incentivized a coordinated migration and rewarded long-term participation within the Alchemix ecosystem. The earning period has closed, and Mana can no longer be earned.
 
 #### Earning logic
 
-Mana is awarded proportionally based on historical and current participation across Alchemix vaults and Liquidity Provider (LP) positions.
+Mana was awarded proportionally based on historical and current participation across Alchemix vaults and Liquidity Provider (LP) positions.
 
 | Participation Type    | Earning Rate / Logic                                      | Eligibility Requirement                       |
 | :-------------------- | :-------------------------------------------------------- | :-------------------------------------------- |
@@ -61,7 +61,7 @@ Mana is awarded proportionally based on historical and current participation acr
 
 #### Reward distribution: rALCX
 
-At the conclusion of the earning period, a fixed pool of **10,000 rALCX** will be distributed proportionally based on each participant's total Mana relative to the global total.
+At the conclusion of the earning period, a fixed pool of **10,000 rALCX** is distributed proportionally based on each participant's total Mana relative to the global total.
 
 ##### rALCX vesting schedule
 
@@ -154,5 +154,5 @@ To ensure long-term alignment, rALCX follows a six-month linear vesting schedule
 ### Learn more
 
 - [Alchemix v3 dApp](https://alchemix.fi)
-- [AIP-123 Governance Proposal](https://snapshot.org/#/alchemixstakers.eth)
+- [AIP-123 Governance Proposal](https://alchemix.fi/governance/0xa3228100b34d6063dc03d35132c044a93ea1fbcce10a960bd43fb5a8454ec4b9)
 - [Mana Calculator & Tracking](https://alchemix.fi/mana)
