@@ -164,13 +164,13 @@ The standalone Alchemix mark, for avatars, favicons, and tight spaces where the 
 
   <div style={{background: '#141618', border: '1px solid rgba(245, 192, 154, 0.12)', borderRadius: '6px', padding: '1.5rem'}}>
     <div style={{fontFamily: '"Beaufort Pro", "Cinzel", Georgia, serif', fontSize: '2.4rem', fontWeight: 700, lineHeight: 1.1}}>Beaufort Pro</div>
-    <div style={{fontFamily: '"Beaufort Pro", "Cinzel", Georgia, serif', fontSize: '1.2rem', marginTop: '0.75rem'}}>Aa Bb Cc Dd &mdash; 0123456789</div>
+    <div style={{fontFamily: '"Beaufort Pro", "Cinzel", Georgia, serif', fontSize: '1.2rem', marginTop: '0.75rem'}}>Aa Bb Cc Dd &middot; 0123456789</div>
     <div style={{fontSize: '0.85rem', opacity: 0.7, marginTop: '1rem'}}>Display &amp; headings</div>
   </div>
 
   <div style={{background: '#141618', border: '1px solid rgba(245, 192, 154, 0.12)', borderRadius: '6px', padding: '1.5rem'}}>
     <div style={{fontFamily: '"Montserrat", sans-serif', fontSize: '2.4rem', fontWeight: 700, lineHeight: 1.1}}>Montserrat</div>
-    <div style={{fontFamily: '"Montserrat", sans-serif', fontSize: '1.2rem', marginTop: '0.75rem'}}>Aa Bb Cc Dd &mdash; 0123456789</div>
+    <div style={{fontFamily: '"Montserrat", sans-serif', fontSize: '1.2rem', marginTop: '0.75rem'}}>Aa Bb Cc Dd &middot; 0123456789</div>
     <div style={{fontSize: '0.85rem', opacity: 0.7, marginTop: '1rem'}}>Body &amp; UI</div>
   </div>
 

@@ -142,7 +142,3 @@ Discord is the primary platform for engaging with the Alchemix team and the wide
 [Join our Discord here.](https://discord.com/invite/alchemix)
 
 </details>
-
-<figure>
-  <img src="../../.gitbook/assets/header_02_test.png" alt=""></img>
-</figure>

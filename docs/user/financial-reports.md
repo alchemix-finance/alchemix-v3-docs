@@ -7,7 +7,25 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Financial Reports" />
 
-Each quarter, Alchemix publishes a financial report covering the full state of the protocol. Reports include treasury contents and revenue, protocol metrics across all supported networks, alAsset liquidity and peg data, yield harvest activity, deposit and user statistics, ALCX governance token metrics, grant activity, and governance summaries. Archive available from Q1 2022.
+Each quarter, Alchemix publishes a financial report covering the full state of the protocol. Reports include treasury contents and revenue, protocol metrics across all supported networks, alAsset liquidity and peg data, yield harvest activity, deposit and user statistics, ALCX governance token metrics, grant activity, and governance summaries, with an archive available from Q1 2022.
+
+### 2026
+
+<table>
+  <thead>
+    <tr>
+      <th>Quarter</th>
+      <th colSpan="2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Q1 2026</td>
+      <td><a class="button button--primary button--sm" href="/Alchemix_Q1_2026_Financial_Report.pdf" download>Download</a></td>
+      <td><a class="button button--secondary button--sm" href="/Alchemix_Q1_2026_Financial_Report.pdf" target="_blank" rel="noopener noreferrer">View</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ### 2025
 

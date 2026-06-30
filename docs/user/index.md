@@ -10,7 +10,7 @@ import FeatureCards from '@site/src/components/FeatureCards';
 
 <PageBanner title="Alchemix v3" />
 
-Alchemix is your unified platform for saving, borrowing, and earning fixed-term fixed-yield opportunities all in one place. Built on years of iteration since launching the original self-repaying loan in 2021, Alchemix v3 brings all three pillars together with a smarter, more flexible design. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
+Alchemix is a protocol for saving, borrowing, and earning fixed-yield returns. Building on the <Term id="self-repaying-loan">self-repaying loan</Term> it introduced in 2021, v3 combines these three functions in one app. The protocol currently secures <AlchemixStat name="tvl" /> in total value locked, with ALCX priced at <AlchemixStat name="alcxPrice" /> and alETH trading at <AlchemixStat name="alEthRatio" />.
 
 <FeatureCards items={[
 {
@@ -35,7 +35,7 @@ href: "/user/concepts/transmuter",
 
 ### 1. Grow savings with vaults
 
-Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT represents a share of a portfolio of yield strategies chosen by the Alchemix DAO and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
+Deposit ETH or USDC into a vault to receive <Term id="myt">Mix-Yield Tokens (MYT)</Term>. Each MYT represents a share of a portfolio of yield strategies chosen by the Alchemix DAO and is rebalanced over time. Yield accrues continuously and is reflected in the redemption value of MYT.
 
 <StatStrip items={[
 { label: "Asset types", value: "ETH, USDC" },

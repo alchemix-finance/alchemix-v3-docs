@@ -24,8 +24,8 @@ An Admin can call all private functions including contract upgrades.
 
 | Function      | What it Does                                                                                                              | Link                        |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------ | :-------------------------- |
-| pauseDeposits | Prevents users from depositing funds to the Alchemist. The guardian can only pause, not unpause.                          | `[pauseDeposits docs link]` |
-| pauseLoans    | Prevents users from minting alAssets from their Alchemist collateral positions. The guardian can only pause, not unpause. | `[pauseLoans docs link]`    |
+| pauseDeposits | Prevents users from depositing funds to the Alchemist. The guardian can only pause, not unpause.                          | [Alchemist contract](/dev/alchemist/alchemist-contract) |
+| pauseLoans    | Prevents users from minting alAssets from their Alchemist collateral positions. The guardian can only pause, not unpause. | [Alchemist contract](/dev/alchemist/alchemist-contract) |
 
 ### Role 3: Owner (Mix Yield Token)
 
@@ -35,7 +35,7 @@ An Admin can call all private functions including contract upgrades.
 | :--------------- | :------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
 | Appointing Roles | The owner can appoint the Curator and Sentinels and has no direct control over funds or risk parameters. | https://docs.morpho.org/learn/concepts/vault-v2/ |
 
-### Role 3: Curator (Mix Yield Token Access Control)
+### Role 4: Curator (Mix Yield Token Access Control)
 
 **Addresses with this role:** 0x9e2b6378Ee8Ad2A4A95fe481d63cAba8Fb0EbBf9
 
@@ -50,7 +50,7 @@ This role has a “middleman” contract by Alchemix that further restricts what
 - **Curator Proxy** - can only set adapters
   :::
 
-### Role 3: Allocator (Mix Yield Token Access Control)
+### Role 5: Allocator (Mix Yield Token Access Control)
 
 | Function                                   | What it Does                                                                                        | Link                                             |
 | :----------------------------------------- | :-------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
@@ -63,7 +63,7 @@ This role has a “middleman” contract by Alchemix that further restricts what
 - **Allocator Proxy** - can only allocate and deallocate funds
   :::
 
-### Role 4: Sentinel (Mix Yield Token Access Control)
+### Role 6: Sentinel (Mix Yield Token Access Control)
 
 | Function                                                           | What it Does                                                                                                                            | Link                                             |
 | :----------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |

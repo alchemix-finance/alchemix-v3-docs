@@ -76,7 +76,7 @@ Yes. Alchemix allows you to exit or repay your loan at any time, even before it 
 
 Redemptions in Alchemix v3 deleverage your position by using collateral to repay debt without the cost of traditional interest rates. The Redemption Rate projects how quickly this occurs by comparing annualized Transmuter volume against total system debt, with a higher rate indicating faster loan clearance.
 
-A key benefit is Temporal Leverage, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
+A key benefit is <Term id="temporal-leverage">Temporal Leverage</Term>, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
 
 [Learn more about the redemption rate →](./concepts/redemption-rate.md)
 
@@ -157,7 +157,7 @@ Loss handling is different for each participant:
 
 Never. Earmarked collateral continues to earn you yield until the moment it is redeemed. This delayed settlement creates the temporal leverage, extra yield you would not receive in most other lending platforms.
 
-[Learn more about Temporal Leverage →](./concepts/redemption-rate#temporal-leverage)
+[Learn more about Temporal Leverage →](./concepts/redemption-rate.md#temporal-leverage)
 
 </details>
 
@@ -167,9 +167,19 @@ Never. Earmarked collateral continues to earn you yield until the moment it is r
 
 Alchemix V3 is composed of several key counterparties. MYT Depositors, Borrowers, Liquidity Providers, and Transmuter Users. Each of these manage specific risks including strategy losses, liquidation at high LTVs, and potential redemption fees. Overall, these systems are governed by the Alchemix DAO.
 
-The system is secured by cross-chain bridge controls using multiple decentralized verification networks (DVNs) and utilizes fundamental oracles to insulate users from market price volatility.
+The system is secured by cross-chain bridge controls using multiple decentralized verification networks (DVNs) and utilizes <Term id="fundamental-oracle">fundamental oracles</Term> to insulate users from market price volatility.
 
 [Learn more about security and permissions →](./safety/risk-considerations.md)
+
+</details>
+
+<details>
+
+<summary>Is Alchemix audited?</summary>
+
+Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/Cantina, Nethermind, yAudit, Immunefi, and alpeh_v), alongside an extensive in-house security suite. A bug bounty of up to $300,000 is active on Immunefi, and the protocol is monitored in real time by Hypernative, which can auto-pause it if suspicious activity is detected.
+
+[Audit reports, bounty details, and security practices →](./safety/security.md)
 
 </details>
 

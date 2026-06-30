@@ -7,8 +7,6 @@ title: alAssets
 import PageBanner from "@site/src/components/PageBanner";
 import LtvSensitivity from "@site/src/components/LtvSensitivity";
 
-<!-- TODO -->
-
 <PageBanner title="alAssets" />
 
 alAssets (alUSD, alETH) are synthetic tokens that mirror the value of their underlying asset.
@@ -17,7 +15,7 @@ They serve two purposes:
 
 1. **Borrowing unit:** When you open a loan, new alAssets are minted to you.
 
-2. **Redemption instrument:** Anyone can deposit alAssets into the Transmuter to redeem 1 alAsset for the equivalent value of the MYT after a fixed term.
+2. **Redemption instrument:** Anyone can deposit alAssets into the <Term id="transmuter">Transmuter</Term> to redeem 1 alAsset for its underlying asset (alUSD → USDC, alETH → ETH) 1:1 after a fixed term.
 
 The protocol values 1 alAsset at 1 unit of its underlying, but market price can drift below that. Borrowing and redemption both create opportunities around that gap.
 
@@ -37,7 +35,7 @@ When you borrow, the protocol mints alAssets at face value. 1 alAsset offsets ex
 
 #### Example
 
-Deposit 1,000 USDC, mint 900 alUSD (90% LTV). If alUSD trades at 0.97 USDC, selling yields 873 USDC (a 27 USDC market discount) while your recorded debt inside the vault remains 900 USDC.
+Deposit 1,000 USDC, mint 900 alUSD (90% <Term id="ltv">LTV</Term>). If alUSD trades at 0.97 USDC, selling yields 873 USDC (a 27 USDC market discount) while your recorded debt inside the vault remains 900 USDC.
 
 ### Why alAssets trade below par
 
@@ -57,6 +55,12 @@ A small, predictable discount is healthy; large discrepancies invite arbitrage.
 | Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value.                      |
 
 Together these forces pull market price toward 1.00 and keep borrowing capital-efficient.
+
+### Using alAssets across DeFi
+
+Historically alAssets were used primarily inside the Alchemix ecosystem, because external protocols had no reliable way to price them. With dedicated **Chronicle Labs** oracles, one feed per alAsset, alAssets can now be verifiably priced by other protocols and used as productive collateral across DeFi.
+
+In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the peg for everyone.
 
 ### LTV sensitivity
 

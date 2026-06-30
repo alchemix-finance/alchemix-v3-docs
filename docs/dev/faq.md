@@ -14,7 +14,7 @@ import PageBanner from "@site/src/components/PageBanner";
   W<strong>ha</strong>t is Alchemix?
 </summary>
 
-Alchemix is a pioneering DeFi platform and community DAO that empowers users to unlock the potential of their assets through Self-Repaying, non-liquidating loans. Alchemix reimagines the traditional lending and borrowing experience, offering a secure and innovative way to balance spending and saving while mitigating liquidation risks.
+Alchemix is a DeFi protocol and DAO for self-repaying, non-liquidating loans. You deposit collateral, borrow a synthetic alAsset against it, and the yield on your deposit repays the debt over time. Because the debt is denominated in the same asset as your collateral, your position is not exposed to liquidation from price movement.
 
 </details>
 
@@ -22,7 +22,7 @@ Alchemix is a pioneering DeFi platform and community DAO that empowers users to 
 
 <summary>How does the Alchemix self-repaying loan mechanism work?</summary>
 
-Users can deposit supported assets into the platform and earn interest on their deposits. Through this process, users gain access to a credit-like facility that allows them to borrow up to 50% of the value of their assets. The interest earned on the total initial deposit automatically repays any outstanding debt, eliminating the need for monthly payments. Additionally, this innovative like-for-like asset borrowing mechanism ensures there is no risk of liquidation, providing users with peace of mind and a seamless DeFi experience.
+You deposit supported assets and earn yield on them. Against that deposit you can borrow up to 50% of its value. The yield earned on the full initial deposit repays the outstanding debt over time, so there are no monthly payments. Because you borrow a like-for-like synthetic asset, the position is not exposed to liquidation from price movement.
 
 </details>
 
@@ -48,7 +48,7 @@ When you deposit collateral on Alchemix, you can borrow up to 50% of the value o
   Is it possible to exit or repay my loan before it is fully repaid?
 </summary>
 
-Absolutely! Alchemix allows you the flexibility to exit or repay your loan at any time, even before it is fully self-repaid. We offer a self-liquidation feature that can only be triggered by the depositor that enables you to repay outstanding loans by using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties at all with Alchemix.
+Yes. You can exit or repay your loan at any time before it is fully self-repaid. The self-liquidation feature, which only the depositor can trigger, lets you repay outstanding loans using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties.
 
 </details>
 
@@ -70,7 +70,7 @@ Yes, Alchemix has undergone various audits, conducted by reputable auditing firm
 
 Alchemix v2 was audited by Runtime Verification as well as a[ Code4rena contest](https://code4rena.com/reports/2022-05-alchemix). Alchemix also has an ongoing[ bug bounty program through Immunifi](https://immunefi.com/bounty/alchemix/).
 
-See our [Audits here](https://alchemix-finance.gitbook.io/user-docs/resources/audits-and-reports)
+See the [Audits here](https://alchemix-finance.gitbook.io/user-docs/resources/audits-and-reports)
 
 </details>
 
@@ -78,7 +78,7 @@ See our [Audits here](https://alchemix-finance.gitbook.io/user-docs/resources/au
 
 <summary>Can I be liquidated?</summary>
 
-No, you cannot be liquidated by third parties on the Alchemix platform. Your debt is denominated in the same currency as the collateral, which means that the price fluctuations of the asset do not impact your vault position. Regardless of market volatility, your vault positions remain secure, and you can have peace of mind knowing that your assets are protected from liquidation.
+No, you cannot be liquidated by third parties on the Alchemix platform. Your debt is denominated in the same currency as the collateral, which means that the price fluctuations of the asset do not impact your vault position. Regardless of market volatility, your vault positions are protected from liquidation.
 
 </details>
 
@@ -141,9 +141,9 @@ New collateral and new chains are subject to governance approval and must also o
 
 <summary>How can I contact the Alchemix team for support or inquiries?</summary>
 
-Discord is the primary platform for engaging with the Alchemix team and the wider Alchemix community. Whether you have questions, comments, or suggestions about Alchemix, reaching out in the #support channel in our official Discord is the best way to receive prompt and helpful responses.
+Discord is the primary platform for engaging with the Alchemix team and the wider Alchemix community. Whether you have questions, comments, or suggestions about Alchemix, reaching out in the #support channel in the official Alchemix Discord is the best way to receive prompt and helpful responses.
 
-[Join our Discord here.](https://discord.com/invite/alchemix)
+[Join the Alchemix Discord here.](https://discord.com/invite/alchemix)
 
 </details>
 

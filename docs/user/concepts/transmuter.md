@@ -6,18 +6,16 @@ title: Transmuter
 
 import PageBanner from "@site/src/components/PageBanner";
 
-<!-- TODO -->
-
 <PageBanner title="Transmuter" />
 
-The Transmuter lets you redeem alAssets (alUSD, alETH) 1:1 for their underlying asset after a known waiting period. Purchase below face value, and receive the full value on the maturity date.
+The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH) at a guaranteed 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of <Term id="myt">MYT</Term> that normally unwraps to the underlying asset immediately.
 
 :::tip Instant vs. guaranteed liquidity
 The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as redemptions mature.
 
 - **Want it now?** Use external liquidity pools (Curve, Balancer) which are instant but may have slight price slippage.
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
-  :::
+:::
 
 ### How transmutations flow
 
@@ -54,8 +52,8 @@ flowchart LR
 ```
 
 - **Deposit** – Send alUSD or alETH to the Transmuter contract.
-- **Queue** – Each deposit matures after the Transmutation Time set by the DAO. You can exit early, but an early-withdrawal fee applies and you give up a portion of the fixed-rate outcome.
-- **Earmark** – The protocol reserves an equal value of MYT from borrower collateral to guarantee your claim.
+- **Queue** – Each deposit matures after the Transmutation Time, a governance-set duration that varies by asset and chain and is adjusted over time in response to market factors such as Transmuter capacity and demand. Always check the current term for your asset in the [dapp](https://alchemix.fi/fixed-yield) before depositing. You can exit early, but an early-withdrawal fee applies and you give up a portion of the fixed-rate outcome.
+- **Earmark** – The protocol reserves an equal value of <Term id="myt">MYT</Term> from borrower collateral to guarantee your claim.
 - **Maturity** – You receive 1 asset-worth of MYT from borrowers for every 1 alAsset deposited.
 
 All redeemed alAssets are burned, contracting their supply.
@@ -67,6 +65,8 @@ Borrowers often sell newly minted alAssets for working capital, pushing market p
 Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its external market price.
 
 #### Fixed-rate yield example
+
+The figures below are **illustrative only**. The live market price, transmutation term, and resulting APR vary by asset and chain and are set by governance. Always check the current terms in the [dapp](https://alchemix.fi/fixed-yield).
 
 **Market**: alUSD = 0.96USDC
 

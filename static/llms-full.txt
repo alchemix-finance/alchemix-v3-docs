@@ -151,7 +151,7 @@ Explore the concepts behind what you just did:
 
 Or go deeper with the step-by-step tutorials:
 
-- [Deposit & Borrow →](https://docs.alchemix.fi/user/tutorials/deposit-and-borrow)
+- [Take a Loan →](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix)
 - [Repay Loans →](https://docs.alchemix.fi/user/tutorials/repay-loan)
 - [Redeem alAssets →](https://docs.alchemix.fi/user/tutorials/redeem-alassets)
 
@@ -202,7 +202,7 @@ For most borrowers, the position is low-maintenance. Deposit, mint, and check ba
 
 [The Transmuter — how redemptions work →](https://docs.alchemix.fi/user/concepts/transmuter)
 
-[Tutorial: Deposit and Borrow →](.https://docs.alchemix.fi/user/tutorials/deposit-and-borrow)
+[Tutorial: Take a Loan →](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix)
 
 ---
 
@@ -5028,14 +5028,6 @@ If greater than 50% of the non-abstain vote is “For” and a quorum of 5k ALCX
 ### Step 5 - AIP Vote
 
 Official AIPs will have a quorum of 35k ALCX. If the quorum is met, then the multisig will be directed to execute the most popular voting option unless directed otherwise by the voting parameters.
-
----
-
-# How to Vote?
-
----
-
-# vqALCX
 
 ---
 

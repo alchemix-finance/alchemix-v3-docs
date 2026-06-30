@@ -16,15 +16,15 @@ Alchemix v3 is built around the below principles:
 
 - **Immutability** – code that holds value should, wherever possible, be fixed and tamper-proof.
 
-A large portion of DeFi still relies on multisignature wallets that can upgrade contracts at will. Even in instances of non-upgradeable contracts, these wallets often take on full ownership of having power and bias over user funds. This is typically a better choice than immutable code due to the sheer number of dependencies that DeFi protocols often have, but DeFi can do better.
+A large portion of DeFi still relies on multisignature wallets that can upgrade contracts at will. Even in instances of non-upgradeable contracts, these wallets often take on full ownership of having power and bias over user funds. This is typically a better choice than immutable code due to the sheer number of dependencies that DeFi protocols often have, though it still leaves a small group with power and bias over user funds.
 
-## Governance Flowchart
+## Governance design principles
 
-Alchemix v3 has been designed with onchain governance specifically in mind, under the fundamental philosophy of the design flowchart below:
+Alchemix v3 has been designed with onchain governance specifically in mind, under the following design philosophy:
 
 - Anything that can be immutable, should be immutable
 - Anything that cannot be immutable should be managed by Decentralized Autonomous Organization
-  - **Decentralized:** controlled by several local offices or authorities rather than one single one.
+  - **Decentralized:** controlled by several authorities instead of a single one.
   - **Autonomous:** having the freedom to govern itself or control its own affairs.
 - Anything non-fiduciary duties that cannot be done by the DAO shall allow the DAO to elect a centralized service provider to carry out the duty
 - Scenarios where fiduciary duties are required and cannot be done by the DAO represent flawed design and should be eliminated
@@ -33,4 +33,4 @@ When this design flow is followed, then protocol users are primarily trusting th
 
 This approach maximizes what DeFi is good at, without creating scenarios that are worse for users than the traditional finance system.
 
-The onchain governance system for AlchemixDAO is being built to on the Aragon OSX Dao Framework, with a new ALCX staking system that will administer the contracts.
+The on-chain governance system for the Alchemix DAO is being built on the Aragon OSx DAO framework, with a new ALCX staking system that administers the contracts.

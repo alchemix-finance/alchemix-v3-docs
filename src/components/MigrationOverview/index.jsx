@@ -90,15 +90,6 @@ const MANA_TIERS = [
   },
 ];
 
-const MILESTONES = [
-  { month: "Mo 1", pct: "16.7%" },
-  { month: "Mo 2", pct: "33.3%" },
-  { month: "Mo 3", pct: "50.0%" },
-  { month: "Mo 4", pct: "66.7%" },
-  { month: "Mo 5", pct: "83.3%" },
-  { month: "Mo 6", pct: "100%", final: true },
-];
-
 /* ── Component ───────────────────────────────────────────── */
 
 export default function MigrationOverview() {
@@ -149,69 +140,9 @@ export default function MigrationOverview() {
           </div>
           <div className={styles.manaMetaCell}>
             <div className={styles.manaMetaLabel}>Total reward pool</div>
-            <div className={styles.manaMetaVal}>10,000 rALCX</div>
+            <div className={styles.manaMetaVal}>10,000 ALCX</div>
             <div className={styles.manaMetaSub}>
               Distributed proportional to total Mana
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Section 3: rALCX Vesting ── */}
-      <div className={styles.section}>
-        <div className={styles.sectionTitle}>
-          rALCX vesting &middot; 6-month linear schedule
-        </div>
-        <div className={styles.vestingWrap}>
-          <div className={styles.vestingTrackSection}>
-            <div className={styles.vestingTrackLabel}>
-              Claimable ALCX over time
-            </div>
-            <div className={styles.vestingBarOuter}>
-              <div
-                className={styles.vestingBarFill}
-                style={{ width: "100%" }}
-              />
-            </div>
-            <div className={styles.vestingTicks}>
-              <span>Month 0</span>
-              <span>Month 1</span>
-              <span>Month 2</span>
-              <span>Month 3</span>
-              <span>Month 4</span>
-              <span>Month 5</span>
-              <span>Month 6 &#x2713;</span>
-            </div>
-          </div>
-          <div className={styles.vestingMilestones}>
-            {MILESTONES.map((m) => (
-              <div
-                key={m.month}
-                className={`${styles.milestone} ${
-                  m.final ? styles.milestoneFinal : ""
-                }`}
-              >
-                <div className={styles.milestoneMonth}>{m.month}</div>
-                <div className={styles.milestonePct}>{m.pct}</div>
-              </div>
-            ))}
-          </div>
-          <div className={styles.vestingCallouts}>
-            <div className={`${styles.vestingCallout} ${styles.good}`}>
-              <div className={styles.vcl}>Wait full term</div>
-              <p className={styles.vcp}>
-                After <strong>6 months</strong>, 100% of rALCX rewards can be
-                claimed as ALCX with no penalty of any kind.
-              </p>
-            </div>
-            <div className={`${styles.vestingCallout} ${styles.warn}`}>
-              <div className={styles.vcl}>Early exit penalty</div>
-              <p className={styles.vcp}>
-                Claiming before 6 months pays out only the{" "}
-                <strong>currently vested balance</strong>. All{" "}
-                <strong>remaining unvested rewards are forfeited</strong>{" "}
-                permanently.
-              </p>
             </div>
           </div>
         </div>

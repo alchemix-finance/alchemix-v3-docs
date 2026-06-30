@@ -66,8 +66,9 @@ const config = {
           sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
           editUrl:
             "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
+          // Disabled 2026-06-30 — see last-update-authors note above.
+          showLastUpdateAuthor: false,
+          showLastUpdateTime: false,
         },
         blog: false,
         theme: {
@@ -80,6 +81,18 @@ const config = {
   clientModules: [require.resolve("./src/clientModules/anchorRescroll.js")],
 
   plugins: [
+    // "Last updated by / on" footer DISABLED ENTIRELY (2026-06-30) to unblock
+    // the Vercel build. The new swizzle (src/theme/LastUpdated) + this plugin
+    // were the only code added between the last green deploy (49fa14e) and the
+    // first failing one (296d5ff); the four showLastUpdateAuthor/
+    // showLastUpdateTime flags below predate that (green at 49fa14e) but are
+    // also turned off here so the whole last-updated subsystem — including the
+    // per-doc `git log` shellout — is gone while debugging.
+    // To re-enable: flip the showLastUpdate* flags back to true, restore the
+    // swizzle (git checkout 296d5ff -- src/theme/LastUpdated/index.js), and
+    // uncomment the registration line below.
+    // require.resolve("./plugins/last-update-authors"),
+
     // — DEV docs @ /dev
     [
       "@docusaurus/plugin-content-docs",
@@ -90,8 +103,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsDev.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/dev/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
       },
     ],
 
@@ -105,8 +118,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/governance/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
       },
     ],
 
@@ -120,8 +133,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsProjects.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/projects/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
       },
     ],
 
@@ -133,6 +146,23 @@ const config = {
           {
             from: "/",
             to: "/user",
+          },
+          {
+          from: '/resources/audits-and-reports/financial-reports',
+          to: '/user/financial-reports',
+          },
+          // Pages removed in the 2026-06 docs pass → redirect old URLs so external/indexed links don't 404
+          {
+            from: "/user/tutorials/deposit-and-borrow",
+            to: "/user/tutorials/borrowing-in-alchemix",
+          },
+          {
+            from: "/governance/onchain/how-to-vote",
+            to: "/governance/onchain/governance-process",
+          },
+          {
+            from: "/governance/onchain/vqalcx",
+            to: "/governance/onchain/alcx-token",
           },
         ],
       },

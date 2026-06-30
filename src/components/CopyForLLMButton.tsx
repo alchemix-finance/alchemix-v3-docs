@@ -9,7 +9,7 @@ function getPageMarkdown(): string {
 
   // Remove interactive / non-content elements
   clone
-    .querySelectorAll("nav, .theme-doc-toc-mobile, .theme-doc-breadcrumbs, .copy-for-llm-btn")
+    .querySelectorAll("nav, .theme-doc-toc-mobile, .theme-doc-breadcrumbs, .copy-for-llm-btn, .glossary-popover")
     .forEach((el) => el.remove());
 
   const lines: string[] = [];

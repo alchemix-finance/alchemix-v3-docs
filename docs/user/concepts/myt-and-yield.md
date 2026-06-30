@@ -15,11 +15,9 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 ### What is the MYT?
 
-- **Tokenized basket** – MYT is a customized vault token utilizing Morpho Vaults V2's open-source infrastructure. It holds deposits of ETH or USDC and routes them into several yield sources.
+- **Open-source core** – MYT is a customized vault token built on Morpho Vaults V2 (ERC-4626). It holds deposits of ETH or USDC and routes them into several yield sources.
 
-- **DAO-managed allocation** – The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift.
-
-- **Powered by open-source infrastructure** – The core Alchemix vault logic utilizes Morpho's open-source Vaults V2 layer to optimize on-chain execution and safety.
+- **DAO-managed allocation** – The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift. Allocation is currently executed by the Alchemix DAO Multisig and is transitioning to full on-chain DAO governance.
 
 ### Why use the MYT?
 
@@ -30,7 +28,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
   },
   {
     title: "Risk management",
-    body: "DAO oversight, strategy diversification and rebalancing reduce single-protocol exposure.",
+    body: "DAO oversight and strategy diversification reduce single-protocol exposure.",
   },
   {
     title: "Flexibility",
@@ -48,7 +46,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 4. Redeem at any time for your principal plus any accumulated yield.
 
-There are no lock-ups, and yield compounds continuously.
+There are no lock-ups, and yield compounds continuously. You can also use your MYT as collateral in an Alchemix vault to [borrow up to 90% LTV](./self-repaying-loans.md) against it while it keeps earning underneath.
 
 ```mermaid
 %%{init: {
@@ -85,9 +83,13 @@ flowchart LR
 
 ### Per-chain variants
 
-There is one ETH-denominated and one USDC-denominated MYT on every supported chain. Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
+There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
 
-You can view the current strategy breakdowns [directly in the UI →](https://alchemix.fi/)
+:::info Compositions change, verify in the app
+The tables below are a point-in-time snapshot for reference. The DAO can revote strategy weights at any time, so always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
+:::
+
+The strategy labels below map to their underlying providers: `Euler*` = Euler v2, `TokeAuto*` = Auto Finance, `Aave*` = Aave, `Fluid*` = Fluid, `Yearn`/`yv*` = Yearn, `wstETH` = Lido.
 
 <style>{`
   .composition-tables table { table-layout: fixed; width: 100%; }
@@ -103,13 +105,14 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 | EulerUSD | Moderate | - | 25% |
 | TokeAutoUSD | Moderate | - | 25% |
 | Yearn yvUSD | Conservative | Yes | - |
+| SiUSD | Conservative | - | - |
 
 #### Mainnet wETH
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|
 | EulerwETH | Moderate | - | 25% |
-| TokeAutoETH | Conservative | Yes | - |
+| TokeAutoETH | Moderate | Yes | 25% |
 | wstETH | Moderate | - | 25% |
 
 #### Arbitrum USDC
@@ -141,10 +144,13 @@ You can view the current strategy breakdowns [directly in the UI →](https://al
 
 #### Global Risk Caps
 
-| Risk Level | Max per Vault |
-|---|---|
-| Moderate | 40% |
-| Aggressive | 10% |
+Each strategy's risk classification caps how much of an MYT it can occupy, both individually and across all strategies of that tier. See [MYT Launch Strategies](../../governance/guides/myt-strategies) for the full classification methodology.
+
+| Risk Level | Max Individual Strategy | Max All Strategies |
+|---|---|---|
+| Conservative | None | None |
+| Moderate | 25% | 40% |
+| Aggressive | 10% | 10% |
 
 </div>
 
