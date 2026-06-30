@@ -66,8 +66,9 @@ const config = {
           sidebarPath: require.resolve("./sidebars/sidebarsUser.js"),
           editUrl:
             "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
+          // Disabled 2026-06-30 — see last-update-authors note above.
+          showLastUpdateAuthor: false,
+          showLastUpdateTime: false,
         },
         blog: false,
         theme: {
@@ -80,9 +81,17 @@ const config = {
   clientModules: [require.resolve("./src/clientModules/anchorRescroll.js")],
 
   plugins: [
-    // Derives GitHub handles from git history for the "Last updated by" footer
-    // (consumed by the swizzled @theme/LastUpdated). No options needed.
-    require.resolve("./plugins/last-update-authors"),
+    // "Last updated by / on" footer DISABLED ENTIRELY (2026-06-30) to unblock
+    // the Vercel build. The new swizzle (src/theme/LastUpdated) + this plugin
+    // were the only code added between the last green deploy (49fa14e) and the
+    // first failing one (296d5ff); the four showLastUpdateAuthor/
+    // showLastUpdateTime flags below predate that (green at 49fa14e) but are
+    // also turned off here so the whole last-updated subsystem — including the
+    // per-doc `git log` shellout — is gone while debugging.
+    // To re-enable: flip the showLastUpdate* flags back to true, restore the
+    // swizzle (git checkout 296d5ff -- src/theme/LastUpdated/index.js), and
+    // uncomment the registration line below.
+    // require.resolve("./plugins/last-update-authors"),
 
     // — DEV docs @ /dev
     [
@@ -94,8 +103,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsDev.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/dev/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
       },
     ],
 
@@ -109,8 +118,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/governance/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
       },
     ],
 
@@ -124,8 +133,8 @@ const config = {
         sidebarPath: require.resolve("./sidebars/sidebarsProjects.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/projects/",
-        showLastUpdateAuthor: true,
-        showLastUpdateTime: true,
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
       },
     ],
 
