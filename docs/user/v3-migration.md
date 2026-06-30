@@ -59,16 +59,9 @@ Mana was awarded proportionally based on historical and current participation ac
 - **Look-back period:** Retroactive rewards date back to January 15th, 2025.
 - **Minimum threshold:** A minimum of **1.337 Mana** is required to be eligible for reward distribution.
 
-#### Reward distribution: rALCX
+#### Reward distribution
 
-At the conclusion of the earning period, a fixed pool of **10,000 rALCX** is distributed proportionally based on each participant's total Mana relative to the global total.
-
-##### rALCX vesting schedule
-
-To ensure long-term alignment, rALCX follows a six-month linear vesting schedule:
-
-- **Full term:** After 6 months, 100% of rewards can be claimed as ALCX with no penalty.
-- **Early exit:** Users may claim their currently vested balance at any time, but doing so **forfeits all remaining unvested rewards.**
+At the conclusion of the earning period, a fixed pool of **10,000 ALCX** is distributed proportionally based on each participant's total Mana relative to the global total.
 
 
 ### Eligible strategies & pools

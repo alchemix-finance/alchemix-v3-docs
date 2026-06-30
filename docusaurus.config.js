@@ -80,6 +80,10 @@ const config = {
   clientModules: [require.resolve("./src/clientModules/anchorRescroll.js")],
 
   plugins: [
+    // Derives GitHub handles from git history for the "Last updated by" footer
+    // (consumed by the swizzled @theme/LastUpdated). No options needed.
+    require.resolve("./plugins/last-update-authors"),
+
     // — DEV docs @ /dev
     [
       "@docusaurus/plugin-content-docs",
