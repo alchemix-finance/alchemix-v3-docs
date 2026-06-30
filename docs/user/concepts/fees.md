@@ -34,7 +34,7 @@ flowchart TD
     A --> C(Deposit alAssets to Transmuter)
 
     B --> D(MYT vault earns yield) --> E(<b>15%</b> performance fee<br/><span style='color:#8a8f99'>on gross yield</span>):::fee
-    B --> F(Take a loan) --> G(Transmuter redemption<br/>repays your debt) --> H(<b>0.50%</b> borrower<br/><span style='color:#8a8f99'>redemption fee</span>):::fee
+    B --> F(Take a loan) --> G(Transmuter redemption<br/>repays your debt) --> H(<b>0.25%</b> borrower<br/><span style='color:#8a8f99'>redemption fee</span>):::fee
 
     C --> I(Exit early or wait?)
     I -->|Wait full term| J(<b>0.00%</b> — full<br/>redemption value):::free
@@ -47,7 +47,9 @@ flowchart TD
 
 When the <Term id="transmuter">Transmuter</Term> converts queued alAssets into vault value, it credits that amount against outstanding loans. At that moment, a small fraction of the repaid debt is routed to the protocol treasury.
 
-- **Current Rate:** 0.50%
+The same fee applies whenever collateral is used to reconcile earmarked debt, not only through scheduled Transmuter redemptions. A force-repay (for example, during a self-liquidation) settles earmarked debt with collateral and is charged at this same rate, so the small protocol fees you see on those events are this borrower redemption fee.
+
+- **Current Rate:** 0.25%
 - **Effective Cost:** Because this is event-based rather than time-based, the cost depends on your starting <Term id="ltv">LTV</Term> and the duration of the transmutation.
 
 Effective APR ≈ Fee × (1 year ÷ Transmutation Time) × Starting LTV
@@ -72,12 +74,12 @@ Each <Term id="myt">Mix-Yield Token (MYT)</Term> vault skims a share of the gros
 
 | Chain        | Base Asset | Redemption Fee | Transmuter Fee | Early Transmutation Fee | MYT Yield Fee |
 | :----------- | :--------- | :------------- | :------------- | :---------------------- | :------------ |
-| **Ethereum** | ETH        | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
-| **Ethereum** | USDC       | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
-| **Optimism** | ETH        | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
-| **Optimism** | USDC       | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
-| **Arbitrum** | ETH        | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
-| **Arbitrum** | USDC       | 0.50%          | 0.00%          | 1.00%          | 15.00%        |
+| **Ethereum** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+| **Ethereum** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+| **Optimism** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+| **Optimism** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+| **Arbitrum** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+| **Arbitrum** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
 
 :::note Governance oversight
 All parameters are subject to Alchemix DAO oversight. Any updates to the fee schedule are executed on-chain and are visible within the Alchemix UI before taking effect.
