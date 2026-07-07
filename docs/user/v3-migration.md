@@ -148,4 +148,4 @@ At the conclusion of the earning period, a fixed pool of **10,000 ALCX** is dist
 
 - [Alchemix v3 dApp](https://alchemix.fi)
 - [AIP-123 Governance Proposal](https://alchemix.fi/governance/0xa3228100b34d6063dc03d35132c044a93ea1fbcce10a960bd43fb5a8454ec4b9)
-- [Mana Calculator & Tracking](https://alchemix.fi/mana)
+- [Mana announcement thread (X)](https://x.com/AlchemixFi/status/2014381213465940470) — the in-app Mana calculator was retired when the earning period closed

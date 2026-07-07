@@ -21,6 +21,10 @@
   margin-bottom: 0.75rem;
 }
 
+.trackPad {
+  padding: 1.25rem 0 1.75rem;
+}
+
 .track {
   position: relative;
   height: 28px;
@@ -93,9 +97,9 @@
 .markerMax .markerLabel { color: rgba(74, 222, 128, 0.7); }
 .markerMax .markerValue { color: #4ade80; }
 
-.markerLiq .markerLine { background: #ef4444; }
-.markerLiq .markerLabel { color: rgba(239, 68, 68, 0.7); }
-.markerLiq .markerValue { color: #ef4444; }
+.markerLiq .markerLine { background: #dc6060; }
+.markerLiq .markerLabel { color: rgba(220, 96, 96, 0.7); }
+.markerLiq .markerValue { color: #dc6060; }
 
 .markerCurrent .markerLine { background: #e8e8ea; width: 2px; }
 .markerCurrent .markerLabel { color: rgba(232, 232, 234, 0.7); }
@@ -250,6 +254,20 @@
 
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 680px) {
+  /* Max (90%) and Liq (95%) markers sit ~16px apart on narrow tracks —
+     drop the Liq label/value to a second row so they can't collide */
+  .trackPad {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .markerLiq .markerLabel {
+    bottom: calc(100% + 26px);
+  }
+
+  .markerLiq .markerValue {
+    top: calc(100% + 24px);
+  }
+
   .flow {
     flex-direction: column;
     gap: 0.35rem;

@@ -20,7 +20,7 @@ We treat onboarding as a high-touch process to ensure technical success and stra
 
 ### Co-Marketing & Ecosystem Amplification
 
-The Alchemix DAO maintains one of the most engaged and technically-literate communities in DeFi. We leverage this social capital to drive meaningful eyes to your project.
+The Alchemix DAO maintains one of the most engaged and technically literate communities in DeFi. We use that reach to put your project in front of the right audience.
 
 - **Joint Narrative Building:** We collaborate through in-depth threads, blog posts, and newsletters that explain the _why_.
 - **High-Impact Community Events:** Partners are invited to our weekly Fireside chats and co-hosted Twitter/X Spaces to present their value proposition directly to the Alchemix community.
@@ -37,4 +37,4 @@ We believe in rewarding the liquidity and activity that drives the protocol forw
 ### Resources
 
 - For branding assets, please refer to our [Marketing Material](../../user/marketing-material)
-- To reach out to out Business Development team, please fill in [this form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/edit).
+- To reach our Business Development team, please fill in [this form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/viewform).

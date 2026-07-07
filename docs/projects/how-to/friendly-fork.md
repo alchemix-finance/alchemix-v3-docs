@@ -19,7 +19,7 @@ The **Friendly Fork Initiative** provides a structured pathway for teams to depl
 - **Direct Technical Advisory:** Access to the Alchemix core team for architecture review and implementation guidance.
 - **Ecosystem Distribution:** Marketing support via Alchemix social channels and inclusion in the broader Alchemix ecosystem narrative.
 
-## Programme Requirements & Rules
+## Program Requirements & Rules
 
 To maintain the integrity of the protocol and the interests of the Alchemix DAO, all friendly forks must adhere to the following:
 
@@ -46,5 +46,5 @@ While the technology is Alchemix, the brand must be sovereign to avoid user conf
 
 If you are interested in becoming an official Friendly Fork partner, please follow these steps:
 
-1.  **Contact Us:** Reach out to our Partnerships Lead directly via Telegram: **@Ov3rkoalafied** (or [fill in our partner form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/edit)).
+1.  **Contact Us:** Reach out to our Partnerships Lead directly via Telegram: **@Ov3rkoalafied** (or [fill in our partner form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/viewform)).
 2.  **Drafting:** Upon initial approval, we will share the full **Source Code License Agreement** template to begin formalizing the Project scope and KPIs.

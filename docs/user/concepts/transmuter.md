@@ -68,7 +68,7 @@ Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its e
 
 The figures below are **illustrative only**. The live market price, transmutation term, and resulting APR vary by asset and chain and are set by governance. Always check the current terms in the [dapp](https://alchemix.fi/fixed-yield).
 
-**Market**: alUSD = 0.96USDC
+**Market**: alUSD = 0.96 USDC
 
 **Term**: 90 days
 
@@ -89,8 +89,8 @@ The Transmuter has a maximum deposit cap based on the total alAssets minted on i
 
 | Scenario                             | Result                                                                                                                | Your Options                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Bad debt in Alchemist (exploit, etc) | Redemption pays pro-rata (EG: 0.97:1) until debt is restored.                                                         | Claim now and take a haircut, or leave unclaimed. Once debt clears, you may redeem full 1:1.                   |
-| MYT unwrap slippage                  | In some scenarios MYT may not be able to be immediately unwrapped for the underlying. (EG: UI detects high slippage). | Withdraw MYT from transmuter to begin earning yield from it, manually unwrap later facilitated directly by UI. |
+| Bad debt in Alchemist (exploit, etc) | Redemption pays pro-rata (e.g., 0.97:1) until debt is restored.                                                         | Claim now and take a haircut, or leave unclaimed. Once debt clears, you may redeem full 1:1.                   |
+| MYT unwrap slippage                  | In some scenarios MYT may not be able to be immediately unwrapped for the underlying (e.g., the UI detects high slippage). | Withdraw MYT from the Transmuter to begin earning yield from it, then unwrap manually later, facilitated directly by the UI. |
 
 There is no variable interest and no price-based liquidation affecting Transmuter positions.
 

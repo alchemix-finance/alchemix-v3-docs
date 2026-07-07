@@ -19,7 +19,7 @@ export default function HealthBar({
       <div className={styles.barSection}>
         <div className={styles.barLabel}>Position health</div>
 
-        <div style={{ padding: "1.25rem 0 1.75rem" }}>
+        <div className={styles.trackPad}>
           <div className={styles.track}>
             <div
               className={`${styles.fill} ${fillClass}`}
@@ -68,7 +68,7 @@ export default function HealthBar({
             Max LTV — borrowing ceiling
           </div>
           <div className={styles.legendItem}>
-            <div className={styles.legendDot} style={{ background: "#ef4444" }} />
+            <div className={styles.legendDot} style={{ background: "#dc6060" }} />
             Liq LTV — liquidation threshold
           </div>
         </div>

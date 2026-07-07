@@ -14,7 +14,7 @@ The redesigned **Transmuter** accepts these alAssets and, on a fixed schedule, r
 
 ## Why integrate Alchemix?
 
-Integrating with Alchemix V3 provides a unique "triple-threat" of capital efficiency that traditional lending protocols cannot match. By utilizing **interest-free debt** and **industry-leading LTVs**, users can unlock liquidity without sacrificing their underlying yield. Because the protocol uses "like-kind" borrowing (EG, borrowing ETH against ETH), liquidation risk remains significantly lower than traditional cross-collateral looping, creating a superior risk-adjusted yield profile. Furthermore, the Transmuter offers a **fixed-yield arbitrage** opportunity, allowing integrators to capture a predictable spread. By building on V3, partners and users effectively piggyback off the protocol's growth and its battle-tested security framework.
+Integrating with Alchemix V3 provides a combination of capital efficiency that traditional lending protocols cannot match. With **interest-free debt** and **industry-leading LTVs**, users can unlock liquidity without sacrificing their underlying yield. Because the protocol uses like-kind borrowing (e.g., borrowing ETH against ETH), liquidation risk remains significantly lower than traditional cross-collateral looping, creating a superior risk-adjusted yield profile. The Transmuter adds a **fixed-yield arbitrage** opportunity on top, letting integrators capture a predictable spread. By building on V3, partners and users effectively piggyback off the protocol's growth and its battle-tested security framework.
 
 ## Where the platform fits
 
@@ -30,12 +30,12 @@ Integrating with Alchemix V3 provides a unique "triple-threat" of capital effici
 | -------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Alchemist Vault (ERC-4626) | The core borrowing engine. Deposit collateral to mint alAssets.                                       |
 | Mix-Yield Token (MYT)      | Tokenized basket of yield strategies, which can be unwrapped for the underlying assets at any time.   |
-| Transmuter                 | Fixed-duration redemptions that stabilise alAsset prices and create predictable return opportunities. |
+| Transmuter                 | Fixed-duration redemptions that stabilize alAsset prices and create predictable return opportunities. |
 | Self-repaying CDP          | Debt is automatically retired by vault yield and scheduled redemptions.                               |
 
-## Why integrate
+## What integrators gain
 
-Integrating with Alchemix V3 provides partners with a capital-efficient framework to unlock liquidity and offer superior value to their users. By building on top of the V3 stack, projects gain a single-token gateway to highly competitive ETH and USD yield. This allows integrators to offer "best-in-class" returns managed by a diversified set of DAO-curated strategies, without the overhead of building internal yield infrastructure.
+By building on top of the V3 stack, projects gain a single-token gateway to highly competitive ETH and USD yield. Integrators can offer returns managed by a diversified set of DAO-curated strategies without the overhead of building internal yield infrastructure.
 
 Beyond yield, integrating alAssets as collateral or within liquidity pools gives projects direct exposure to the growth of the Alchemix V3 economy. Partners benefit from increased Total Value Locked (TVL), simplified liquidity management due to the absence of impermanent loss on like-for-like pairs, and joint marketing opportunities across the Alchemix ecosystem. As V3 scales, integrators are positioned to capture the value flowing through one of DeFi's most sustainable synthetic-asset engines.
 

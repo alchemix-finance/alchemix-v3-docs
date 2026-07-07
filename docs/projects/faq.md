@@ -1,144 +1,115 @@
 ---
 sidebar_position: 10
+hide_title: true
+title: FAQ
 ---
 
-# FAQ
+import PageBanner from "@site/src/components/PageBanner";
+
+<PageBanner title="Integrator FAQ" />
+
+Answers to the questions we hear most from projects, protocols, and treasuries evaluating an Alchemix V3 integration. For end-user questions, see the [user FAQ](/user/faq).
 
 <details>
 
-<summary>
-  What is Alchemix?
-</summary>
+<summary>What is Alchemix V3, in one paragraph?</summary>
 
-Alchemix is a pioneering DeFi platform and community DAO that empowers users to unlock the potential of their assets through Self-Repaying, non-liquidating loans. Alchemix reimagines the traditional lending and borrowing experience, offering a secure and innovative way to balance spending and saving while mitigating liquidation risks.
+Alchemix V3 is a protocol for saving, borrowing, and earning fixed-yield returns. Users deposit ETH or USDC into a Mix-Yield Token (MYT), a DAO-curated basket of yield strategies, and can borrow synthetic alAssets (alETH or alUSD) against it at up to 90% LTV with 0% interest. Debt is repaid automatically by vault yield and scheduled Transmuter redemptions rather than monthly payments.
+
+[Learn more about how Alchemix works →](/user)
 
 </details>
 
 <details>
 
-<summary>How does the Alchemix self-repaying loan mechanism work?</summary>
+<summary>Which assets and chains does V3 support?</summary>
 
-Users can deposit supported assets into the platform and earn interest on their deposits. Through this process, users gain access to a credit-like facility that allows them to borrow up to 50% of the value of their assets. The interest earned on the total initial deposit automatically repays any outstanding debt, eliminating the need for monthly payments. Additionally, this innovative like-for-like asset borrowing mechanism ensures there is no risk of liquidation, providing users with peace of mind and a seamless DeFi experience.
+V3 accepts ETH and USDC deposits and issues alETH and alUSD against them. The protocol is live on Ethereum Mainnet, Optimism, and Arbitrum, with alAssets bridgeable across supported chains (including Linea and Metis) via the Alchemix Bridge, a custom implementation of the LayerZero OFT standard.
 
-</details>
-
-<details>
-
-<summary>What collateral types are supported by Alchemix?</summary>
-
-Alchemix currently supports a variety of collateral types, including ETH, DAI, USDC, USDT, and FRAX. These assets can be used as collateral for obtaining self-repaying loans on the platform. You can also deposit yield-bearing tokens.
+An up-to-date list of networks is always visible in the [app](https://alchemix.fi).
 
 </details>
 
 <details>
 
-<summary>How much can I borrow against my deposited collateral?</summary>
+<summary>How is V3 different from V2?</summary>
 
-When you deposit collateral on Alchemix, you can borrow up to 50% of the value of the corresponding synthetic alAsset. For example, if you deposit ETH, you can borrow alETH worth up to 50% of the value of your deposited ETH, even if the alETH to ETH ratio differs from 1:1.
+Three headline changes: the maximum LTV rose from 50% to 90%, collateral is now pooled in the Mix-Yield Token instead of single-strategy vaults, and the Transmuter moved to fixed-duration redemptions with known maturity dates. All V2 positions were migrated to V3 in April 2026.
 
-</details>
-
-<details>
-
-<summary>
-  Is it possible to exit or repay my loan before it is fully repaid?
-</summary>
-
-Absolutely! Alchemix allows you the flexibility to exit or repay your loan at any time, even before it is fully self-repaid. We offer a self-liquidation feature that can only be triggered by the depositor that enables you to repay outstanding loans by using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties at all with Alchemix.
+[Read the migration record →](/user/v3-migration)
 
 </details>
 
 <details>
 
-<summary>How long will it take for my loan to fully repay itself?</summary>
+<summary>Can users be liquidated?</summary>
 
-The repayment timeline for Alchemix loans depends on the variable nature of DeFi yields. Consequently, providing an exact timeframe for the loan to fully repay itself is challenging. However, a rough estimate can be made based on the Loan-to-Value (LTV) ratio and the interest rate. For example, a 50% LTV loan at 10% APR would take approximately 5 years to repay.
+Not by price movements. Debt is denominated in the same asset as the collateral (like-kind borrowing), so market volatility does not change a position's LTV. Liquidation is only possible if the MYT itself loses backing — for example through a strategy exploit — and a position crosses the liquidation threshold above the 90% borrowing cap.
 
-0xDefi has a tool to calculate how long your loan will take to repay [here](https://dyor.fi/alcx/calculator). This is a third-party tool, so please use it at your own risk.
-
-</details>
-
-<details>
-
-<summary>Is Alchemix audited?</summary>
-
-Yes, Alchemix has undergone various audits, conducted by reputable auditing firms, including Runtime Verification, Code4rena, and Immunefi.
-
-Alchemix v2 was audited by Runtime Verification as well as a[ Code4rena contest](https://code4rena.com/reports/2022-05-alchemix). Alchemix also has an ongoing[ bug bounty program through Immunifi](https://immunefi.com/bounty/alchemix/).
-
-See our [Audits here](https://alchemix-finance.gitbook.io/user-docs/resources/audits-and-reports)
+[Learn more about liquidations →](/user/concepts/liquidations)
 
 </details>
 
 <details>
 
-<summary>Can I be liquidated?</summary>
+<summary>What can integrators actually build on?</summary>
 
-No, you cannot be liquidated by third parties on the Alchemix platform. Your debt is denominated in the same currency as the collateral, which means that the price fluctuations of the asset do not impact your vault position. Regardless of market volatility, your vault positions remain secure, and you can have peace of mind knowing that your assets are protected from liquidation.
+The main integration surfaces are:
 
-</details>
+- **MYT** – an ERC-4626-based yield token that wallets, aggregators, and treasuries can hold or route deposits into.
+- **alAssets** – synthetic tokens with dedicated Chronicle Labs price feeds, usable as collateral or in liquidity pools on external protocols.
+- **The Transmuter** – fixed-term 1:1 redemptions that create predictable, bond-like yield for treasuries and structured products.
 
-<details>
-
-<summary>On what networks is Alchemix available?</summary>
-
-Alchemix is available on multiple networks, providing users with options for accessing its services. Currently, Alchemix can be accessed on Ethereum Mainnet, Optimism, and Arbitrum.
-
-An up-to-date list of available networks may be viewed on the network selector at the upper-left of the UI.
+[Explore the use cases →](/projects/why-integrate/use-cases)
 
 </details>
 
 <details>
 
-<summary>What can I do with my alAssets?</summary>
+<summary>How are alAssets priced by external protocols?</summary>
 
-The primary use case for your alAsset (e.g., alUSD, alETH) is to swap it for another asset. You can achieve this by utilizing decentralized exchanges, such as [curve.fi](https://curve.fi/), or popular swap aggregators like [Matcha](https://matcha.xyz/), [Zapper](https://zapper.xyz/), or [Paraswap](https://www.paraswap.io/). These platforms enable you to trade your alAssets for various other tokens, providing you with the flexibility to diversify your portfolios or acquire specific tokens based on your investment preferences.
+Each alAsset has a dedicated oracle feed provided by Chronicle Labs. This lets money markets and other protocols verifiably price alUSD and alETH, so they can be listed as productive collateral rather than only traded on DEXs.
 
-In addition to swapping, you can leverage your alAssets to provide liquidity on certain decentralized exchanges, such as Curve, Saddle, and Velodrome, and earn gauge rewards. You can earn yield directly with your alAssets, should you choose. Keep up to date with the latest opportunities at [https://alchemix-stats.com/earn](https://alchemix-stats.com/earn)
-
-</details>
-
-<details>
-
-<summary>How can I participate in the governance of Alchemix?</summary>
-
-Participating in the governance of Alchemix allows you to actively contribute to the decision-making process and shape the future direction of the protocol. To participate in governance, you need to use ALCX tokens to vote. You can also join discussions in the governance channels of the Alchemix Discord server.
+[Learn more about alAssets across DeFi →](/user/concepts/alAssets#using-alassets-across-defi)
 
 </details>
 
 <details>
 
-<summary>What is the Transmuter?</summary>
+<summary>Is Alchemix V3 audited?</summary>
 
-The Transmuter is an alAsset price stability module. Users can deposit alAssets, and over time, the Transmuter will gradually convert the alAsset to the corresponding underlying token on a 1:1 basis. [Read more here](https://alchemix-finance.gitbook.io/user-docs/alchemix-ecosystem/transmuter).
+Yes. The V3 codebase was reviewed by Spearbit/Cantina, Nethermind, yAudit, an Immunefi audit competition, and independent researcher alpeh_v, alongside an in-house testing suite. Every new MYT strategy is audited by Nethermind before whitelisting, the protocol is monitored in real time by Hypernative with auto-pause capability, and an Immunefi bug bounty of up to $300,000 is active.
 
-</details>
-
-<details>
-
-<summary>Can I borrow any token against my Alchemix Deposit?</summary>
-
-The short answer is no. When you deposit into an Alchemist contract in Alchemix, you can only borrow the corresponding synthetic alAsset against your deposit (e.g., alETH for ETH). However, you can take your alAsset and swap it in the market for whatever tokens you want.
+[Full audit reports and security practices →](/user/safety/security)
 
 </details>
 
 <details>
 
-<summary>
-  When will 'Token X' be available as collateral on Alchemix? When will you be
-  on 'Chain X'?
-</summary>
+<summary>Can we fork Alchemix V3?</summary>
 
-New collateral and new chains are subject to governance approval and must also overcome technical, financial, operational, and partnership hurdles. As a result, they do not have fixed timelines. Security and adherence to proper processes will always take precedence over meeting specific deadlines.
+The V3 codebase is source-available under the Business Source License (BUSL) 1.1, so production deployments require a license agreement. The Friendly Fork Initiative provides that path: approved teams receive a commercial license, chain exclusivity for their target ecosystem, and direct technical advisory in exchange for revenue share and alignment with the Alchemix DAO.
+
+[Read the Friendly Fork terms →](/projects/how-to/friendly-fork)
 
 </details>
 
 <details>
 
-<summary>How can I contact the Alchemix team for support or inquiries?</summary>
+<summary>What marketing support do partners get?</summary>
 
-Discord is the primary platform for engaging with the Alchemix team and the wider Alchemix community. Whether you have questions, comments, or suggestions about Alchemix, reaching out in the #support channel in our official Discord is the best way to receive prompt and helpful responses.
+Partners get a BD lead for launch coordination, co-authored announcements and threads, invitations to community events such as Fireside chats and X Spaces, and access to brand assets and templates.
 
-[Join our Discord here.](https://discord.com/invite/alchemix)
+[See co-marketing and BD support →](/projects/support/co-marketing)
+
+</details>
+
+<details>
+
+<summary>How do we start a conversation?</summary>
+
+Fill in the [partnership interest form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/viewform), or reach the team directly in the [Alchemix Discord](https://discord.gg/alchemix). For Friendly Fork inquiries you can also contact our Partnerships Lead on Telegram: **@Ov3rkoalafied**.
+
+[Apply to partner →](/projects/contact/apply-to-partner)
 
 </details>

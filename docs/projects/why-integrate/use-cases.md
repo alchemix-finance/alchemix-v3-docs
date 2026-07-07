@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Use Cases" />
 
-This section containes a variety of potential use-cases for collaboration with Alchemix v3.
+This section contains a variety of potential use-cases for collaboration with Alchemix v3.
 
 ## DAOs & Treasuries
 
@@ -21,7 +21,7 @@ Example flow:
 | Action                             | Result                                                                                                                                     |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Deposit 10,000 ETH → MYT           | Treasury earns blended yield, MYT appreciates relative to ETH.                                                                             |
-| Mint 2,000 alETH, swap to stables  | Low LTVs borrowing creates runway without selling core assets.                                                                             |
+| Mint 2,000 alETH, swap to stables  | Low-LTV borrowing creates runway without selling core assets.                                                                              |
 | Vault yield and redemptions accrue | Redemptions gradually reduce debt. If MYT yield remains higher than the redemption rate, the position will become debt free automatically. |
 | Repay debt with excess alETH       | Unused alETH can be used to further reduce exposure to collateral redemptions.                                                             |
 
@@ -47,4 +47,4 @@ Aggregators can route deposits into Alchemix vaults to capture strong, dependabl
 
 ## Yield Hunters
 
-Power users can stack three angles, looped leverage on risk-adjusted yield, fixed-rate gains by buying discounted alAssets for Transmuter redemption, and like-for-like liquidity pools that minimises impermanent loss. This creates a toolkit that delivers both predictable safe income and optional upside without variable-rate complications.
+Power users can stack three angles: looped leverage on risk-adjusted yield, fixed-rate gains by buying discounted alAssets for Transmuter redemption, and like-for-like liquidity pools that minimize impermanent loss. This creates a toolkit that delivers both predictable income and optional upside without variable-rate complications.

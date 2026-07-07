@@ -12,7 +12,7 @@ import VideoEmbed from "@site/src/components/VideoEmbed";
 
 <VideoEmbed videoId="AGpP3SAmKLc" title="Take A Loan" />
 
-After depositing into a Mix-Yield Token, you can borrow alAssets against your position. The vault keeps your collateral earning yield and lets you mint synthetic assets (alETH or alUSD respectively) worth up to 90% of your collateral's face value.
+After depositing into a Mix-Yield Token, you can borrow alAssets against your position. The vault keeps your collateral earning yield and lets you mint synthetic assets (alETH against ETH, alUSD against USDC) worth up to 90% of your collateral's face value.
 
 :::tip You are in control
 You can manually repay part or all of your debt at any time to unlock your collateral. [Learn more about self-repaying loans →](../concepts/self-repaying-loans.md)

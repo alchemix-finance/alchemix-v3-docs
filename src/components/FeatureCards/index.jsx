@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 
 export default function FeatureCards({ items = [] }) {
@@ -13,9 +14,13 @@ export default function FeatureCards({ items = [] }) {
           </>
         );
         return item.href ? (
-          <a key={i} className={`${styles.card} ${styles.cardLink}`} href={item.href}>
+          <Link
+            key={i}
+            className={`${styles.card} ${styles.cardLink}`}
+            to={item.href}
+          >
             {inner}
-          </a>
+          </Link>
         ) : (
           <div key={i} className={styles.card}>
             {inner}
