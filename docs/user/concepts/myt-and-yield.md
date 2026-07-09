@@ -107,7 +107,7 @@ The strategy labels below map to their underlying providers: `Euler*` = Euler v2
 | Yearn yvUSD | Conservative | Yes | - |
 | SiUSD | Conservative | - | - |
 
-#### Mainnet wETH
+#### Mainnet ETH
 
 | Strategy | Risk | LiqAdapter | Max % |
 |---|---|---|---|

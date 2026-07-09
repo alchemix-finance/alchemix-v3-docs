@@ -1,7 +1,7 @@
 # Alchemix Documentation
 
 > Alchemix is a DeFi protocol offering self-repaying loans. Deposit ETH or USDC, borrow up to 90% LTV at 0% interest, and yield automatically repays the debt. No price-based liquidations. Live on Ethereum, Optimism, and Arbitrum.
-> Generated: 2026-03-30
+> Generated: 2026-07-02
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Getting Started
 - [Quick Start](https://docs.alchemix.fi/user/quick-start): Deposit, borrow, and manage a self-repaying loan step by step
-- [V3 Migration](https://docs.alchemix.fi/user/v3-migration): How to migrate from Alchemix V2 to V3
+- [V3 Migration](https://docs.alchemix.fi/user/v3-migration): Record of the completed V2-to-V3 migration and Mana program
 - [FAQ](https://docs.alchemix.fi/user/faq): Common questions about borrowing, repayment, earmarking, and fees
 
 ### Core Concepts
@@ -27,6 +27,7 @@
 - [Take a Loan](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix): Step-by-step borrowing walkthrough
 - [Repay Loan](https://docs.alchemix.fi/user/tutorials/repay-loan): How to repay early or manage debt
 - [Redeem alAssets](https://docs.alchemix.fi/user/tutorials/redeem-alassets): Using the Transmuter for fixed-rate yield
+- [Withdraw](https://docs.alchemix.fi/user/tutorials/withdraw): Withdrawing collateral and managing LTV headroom
 - [Use Passive MYT](https://docs.alchemix.fi/user/tutorials/use-passive-myt): Earning yield without borrowing
 
 ### Safety
@@ -36,6 +37,7 @@
 ### Reference
 - [Links](https://docs.alchemix.fi/user/links): Official links and resources
 - [Financial Reports](https://docs.alchemix.fi/user/financial-reports): Protocol financial data
+- [Independent Research](https://docs.alchemix.fi/user/independent-research): Third-party analyst coverage of Alchemix v3
 - [Marketing Material](https://docs.alchemix.fi/user/marketing-material): Brand assets and marketing resources
 
 ---

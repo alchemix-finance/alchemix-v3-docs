@@ -71,13 +71,13 @@ module.exports = {
         },
       ],
     },
-    // {
-    //   type: "category",
-    //   label: "Deployed Contracts",
-    //   collapsed: true,
-    //   className: "sidebarBold",
-    //   items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
-    // },
+    {
+      type: "category",
+      label: "Deployed Contracts",
+      collapsed: true,
+      className: "sidebarBold",
+      items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
+    },
 
     // Integrating Alchemix
     // {

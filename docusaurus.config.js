@@ -15,7 +15,7 @@ const config = {
   favicon: "img/favicon.png",
 
   // Set the production url of your site here
-  url: "https://alchemix-v3-docs.vercel.app/",
+  url: "https://docs.alchemix.fi",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -101,8 +101,11 @@ const config = {
         path: "docs/dev",
         routeBasePath: "dev",
         sidebarPath: require.resolve("./sidebars/sidebarsDev.js"),
+        // Docusaurus appends the doc path relative to the site dir (e.g.
+        // "docs/dev/faq.md") to a string editUrl, so the base must NOT
+        // repeat the docs/<section>/ segment.
         editUrl:
-          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/dev/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
         showLastUpdateAuthor: false,
         showLastUpdateTime: false,
       },
@@ -117,7 +120,7 @@ const config = {
         routeBasePath: "governance",
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
         editUrl:
-          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/governance/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
         showLastUpdateAuthor: false,
         showLastUpdateTime: false,
       },
@@ -132,7 +135,7 @@ const config = {
         routeBasePath: "projects",
         sidebarPath: require.resolve("./sidebars/sidebarsProjects.js"),
         editUrl:
-          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/docs/projects/",
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
         showLastUpdateAuthor: false,
         showLastUpdateTime: false,
       },
@@ -180,7 +183,7 @@ const config = {
           '<a href="https://github.com/alchemix-finance/alchemix-v3-docs/issues/new">Report an issue</a>',
         backgroundColor: "#0d0e10",
         textColor: "#f5c09a",
-        isCloseable: false,
+        isCloseable: true,
       },
       //   announcementBar: {
       //   id: "v3_launch2",
@@ -266,7 +269,7 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Live dAPP",
+                label: "Alchemix App",
                 href: "https://alchemix.fi/",
               },
               {
@@ -274,7 +277,7 @@ const config = {
                 href: "https://discord.gg/alchemix",
               },
               {
-                label: "X (Prev. Twitter)",
+                label: "X (Twitter)",
                 href: "https://x.com/AlchemixFi",
               },
               {
@@ -296,11 +299,11 @@ const config = {
               },
               {
                 label: "DefiLlama",
-                href: "https://defillama.com/",
+                href: "https://defillama.com/protocol/alchemix",
               },
               {
                 label: "Snapshot",
-                href: "https://snapshot.org/",
+                href: "https://snapshot.org/#/alchemixstakers.eth",
               },
             ],
           },

@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 Every DeFi protocol involves tradeoffs. Here is what those look like in Alchemix.
 
-This section breaks down who controls what in the Alchemix V3 stack, the various risks and counterparties that makeup the Alchemix System, and how different failure scenarios are handled.
+This section breaks down who controls what in the Alchemix V3 stack, the various risks and counterparties that make up the Alchemix system, and how different failure scenarios are handled.
 
 ### Counterparties
 
@@ -57,7 +57,7 @@ If the balance of the pool moves favorably for the LPer over time, they can earn
 A user can hedge alAsset exposure by using the Transmuter, or by being a depositor within Alchemix. If the alAsset pool shifts less favorably for the depositor/LPer, they can withdraw alUSD instead of stablecoins for a bonus positive slippage and repay their debt.
 
 :::note alAsset depeg scenarios
-There are scenarios where alAssets may temporarily depeg or depeg for a longer period of time. LPers should understand future outcomes in both scenarios - see sections below for MYT losses. LPers especially should understand what conditions may result in temporary alAsset depegs vs more long-term depegs so they can re-evalute their positions accordingly.
+There are scenarios where alAssets may temporarily depeg or depeg for a longer period of time. LPers should understand future outcomes in both scenarios - see sections below for MYT losses. LPers especially should understand what conditions may result in temporary alAsset depegs vs more long-term depegs so they can re-evaluate their positions accordingly.
 :::
 
 #### Transmuter users
@@ -134,7 +134,7 @@ The sections below apply to users with Alchemix loans. For users simply holding 
 
 Alchemix uses fundamental oracles wherever possible. This means that prices are determined by the underlying assets for each strategy, rather than the market price of the strategy token. As noted in the Transmuter section above, transmuter users receive MYT tokens, not underlying, from the transmuter. If the MYT is composed of assets that are not immediately withdrawable, users may require reduced alAsset prices in order to consider transmutation worthwhile.
 
-If the assets that make up the MYT depeg significantly on the open market (DEXes and CEXes), then it could result in a more significant temporary depeg due to perceived arbitrage in the system - however, it is important to note that the system will not actually suffer any losses in this scenarios. The only losses/profits will be between users (LPers, arbitragers, transmuter users, borrowers) who elect to buy/sell alAssets during this period.
+If the assets that make up the MYT depeg significantly on the open market (DEXes and CEXes), then it could result in a more significant temporary depeg due to perceived arbitrage in the system - however, it is important to note that the system will not actually suffer any losses in this scenario. The only losses/profits will be between users (LPers, arbitrageurs, transmuter users, borrowers) who elect to buy/sell alAssets during this period.
 
 ##### Example
 
@@ -146,7 +146,7 @@ Next, someone with a lot of stETH decides they can’t wait 30 days for their ET
 - Users may wish to arbitrage Alchemix, as they believe the MYT is mispriced, however, they cannot deposit stETH directly to the MYT. Thus, they deposit ETH:
   - They now have a share of the MYT
   - However, the MYT is now comprised of both ETH and stETH, thus the perceived value has moved closer to the fundamental value of 1:1
-- The users who obtain MYT by depositing ETH can now take an alchemix loan of alETH. In their mind, they are collateralizing 0.8 ETH to mint 1 alETH, thus they will mint alETH and sell it, likely until alETh drops to 0.8 ETH or even lower
+- The users who obtain MYT by depositing ETH can now take an Alchemix loan of alETH. In their mind, they are collateralizing 0.8 ETH to mint 1 alETH, thus they will mint alETH and sell it, likely until alETH drops to 0.8 ETH or even lower
 - As of now these users have generated no profit - they need to exit the system to generate profit. The only approaches they can take are:
   - Repay their loan with MYT - not viable, as the only way to get MYT is to deposit ETH, and they sold their loan for much less than 1 ETH per 1 alETH!
   - Repay their loan with alETH - not useful, as they just sold alETH!
@@ -170,4 +170,4 @@ In this scenario borrowers essentially are in a state where they perhaps should 
 
 Transmuter users may want to withdraw from the transmuter and sell their alAssets, or wait for resolution. If they make a claim on the transmuter, they will receive 1 asset worth of MYT, but this is according to the incorrect pricing. Thus, regardless of whether the pricing has been updated or not, they will be receiving potentially less than one asset worth of MYT per 1 alAsset redeemed, and thus may wish to wait for proper recollateralization.
 
-Existing MYT depositors will suffer the loss, but arbitrageurs may seek to deposit ETH to the MYT in order to mint alAssets with mispriced collateral. Even so, depositing ETH to the MYT is risky as many other users will be seeking to withdraw from the MYT, so there is no guarantee the arbitrager can access their ETH after minting debt, especially because the Alchemist does not allow atomic (same block) deposit/withdraw txns as well as mint/repay debt txns.
+Existing MYT depositors will suffer the loss, but arbitrageurs may seek to deposit ETH to the MYT in order to mint alAssets with mispriced collateral. Even so, depositing ETH to the MYT is risky as many other users will be seeking to withdraw from the MYT, so there is no guarantee the arbitrageur can access their ETH after minting debt, especially because the Alchemist does not allow atomic (same block) deposit/withdraw txns as well as mint/repay debt txns.

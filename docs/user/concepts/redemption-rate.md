@@ -77,7 +77,7 @@ flowchart LR
 The redemption rate formula calculates how much of the total system debt can be cleared in one year, based on current conditions.
 
 - **The Inputs:** The formula takes the current **Transmuter Balance** and the **Transmutation Time** (how long it takes for one batch of assets to be exchanged).
-- **The Frequency:** Count how many times the Transmuter can cycle its balance in a single year (EG; a 0.25-year duration means 4 cycles per year).
+- **The Frequency:** Count how many times the Transmuter can cycle its balance in a single year (e.g., a 0.25-year duration means 4 cycles per year).
 - **The Volume:** Multiplying the balance by the redemption frequency gives the **Projected Annual Redemptions**, the total value the system is on track to repay over the next 12 months.
 - **The Rate:** Finally, that projected volume is compared against the **Total System Debt** to determine the percentage rate.
 

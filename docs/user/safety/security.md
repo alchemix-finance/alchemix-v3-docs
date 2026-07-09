@@ -83,5 +83,5 @@ To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 uses a t
 ### Learn more
 
 - [Alchemix GitHub](https://github.com/alchemix-finance)
-- [Audit Archive Summary](https://github.com/alchemix-finance/audits)
+- [Audit archive (v2 era)](https://v2-docs.alchemix.fi/resources/audits-and-reports)
 - [FAQ](../faq.md)

@@ -26,8 +26,10 @@
   bottom: var(--cy);
   left:   var(--cx);
   right:  var(--cx);
-  background: radial-gradient(ellipse at bottom left, #33332E, #141412);
-  opacity: 0.3;
+  background:
+    radial-gradient(ellipse at center, rgba(245, 192, 154, 0.04), transparent 70%),
+    radial-gradient(ellipse at bottom left, #33332e, #141412);
+  opacity: 0.5;
   z-index: 0;
 }
 
@@ -85,6 +87,7 @@
   letter-spacing: 0.04em;
   line-height: 1.11;
   color: #f5c09a;
+  text-shadow: 0 0 14px rgba(245, 192, 154, 0.12);
   text-align: center;
   padding: 0 6%;
   position: relative;

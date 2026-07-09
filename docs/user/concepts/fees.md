@@ -58,7 +58,7 @@ Effective APR ≈ Fee × (1 year ÷ Transmutation Time) × Starting LTV
 
 The Transmuter involves two distinct fee types depending on the user's action:
 
-1. **Redemption Fee:** An optional fee applied when a Transmuter depositor claims their underlying assets.
+1. **Transmuter Fee:** An optional fee applied when a Transmuter depositor claims their underlying assets.
    - **Current Rate:** 0.00%
 2. **Early Transmutation Fee:** A fee applied when a user chooses to withdraw their funds from the Transmuter queue before the transmutation process is complete. This ensures the system remains stable and penalizes short-term "queue hopping."
    - **Current Rate:** 1.00%

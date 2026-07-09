@@ -16,7 +16,7 @@ const CONTEXT = [
   },
   {
     bold: "Borrower fee",
-    text: "0.50% applied only at each redemption settlement, shown in dApp",
+    text: "0.25% applied only at each redemption settlement, shown in dApp",
   },
   {
     bold: "Redemption timing",

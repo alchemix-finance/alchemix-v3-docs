@@ -11,7 +11,7 @@ module.exports = {
       label: "Why Integrate",
       className: "sidebarBold",
       collapsed: true,
-      items: ["why-integrate/use-cases"],
+      items: ["why-integrate/use-cases", "why-integrate/feature-comparison"],
     },
 
     //  How to Integrate
@@ -20,7 +20,7 @@ module.exports = {
       label: "How to Integrate",
       className: "sidebarBold",
       collapsed: true,
-      items: ["how-to/friendly-fork"],
+      items: ["how-to/getting-started", "how-to/friendly-fork"],
     },
 
     //   Support
@@ -29,7 +29,11 @@ module.exports = {
       label: "Support",
       className: "sidebarBold",
       collapsed: true,
-      items: ["support/co-marketing", "support/security"],
+      items: [
+        "support/co-marketing",
+        "support/brand-assets",
+        "support/security",
+      ],
     },
 
     //   Contact & Onboarding
@@ -42,5 +46,7 @@ module.exports = {
         "contact/apply-to-partner", // Apply to Partner
       ],
     },
+
+    "faq",
   ],
 };

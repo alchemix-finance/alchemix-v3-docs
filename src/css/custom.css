@@ -170,6 +170,18 @@ div[class*="announcementBar"] a:hover {
   text-decoration-color: #f5c09a;
 }
 
+/* Close (×) button — light gray, brightens on hover */
+div[class*="announcementBar"] button[class*="closeButton"] {
+  color: #c9c9c9;
+  opacity: 1;
+}
+div[class*="announcementBar"] button[class*="closeButton"] svg {
+  fill: currentColor;
+}
+div[class*="announcementBar"] button[class*="closeButton"]:hover {
+  color: #ffffff;
+}
+
 /* ─── Navbar ──────────────────────────────────────────── */
 .navbar {
   border-bottom: 1px solid rgba(245, 192, 154, 0.1);
@@ -287,6 +299,30 @@ h4 {
 
 .markdown h3 {
   margin-top: 3rem;
+}
+
+/* ─── Heading anchor links ────────────────────────────── */
+/* Copper "#" that fades in on heading hover for easy deep-linking */
+.hash-link {
+  color: #f5c09a;
+  opacity: 0;
+  padding-left: 0.35rem;
+  transition: opacity 0.15s ease;
+  text-decoration: none;
+}
+
+.hash-link:hover {
+  text-decoration: none;
+}
+
+.markdown h1:hover .hash-link,
+.markdown h2:hover .hash-link,
+.markdown h3:hover .hash-link,
+.markdown h4:hover .hash-link,
+.markdown h5:hover .hash-link,
+.markdown h6:hover .hash-link,
+.hash-link:focus {
+  opacity: 0.7;
 }
 
 /* ─── Buttons ─────────────────────────────────────────── */
