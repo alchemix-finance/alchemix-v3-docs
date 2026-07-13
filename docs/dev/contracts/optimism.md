@@ -10,8 +10,6 @@ import PageBanner from "@site/src/components/PageBanner";
 
 Alchemix v3 contract addresses deployed on Optimism (chain ID 10). Each address links to Optimistic Etherscan. For what each contract does, see the [Core Modules](/dev/alchemist/alchemist-contract) section.
 
-For live role, fee-receiver, and strategy holder addresses, which are read directly from the contracts, see the [Alchemix Control Center](https://control.alchemix.fi/addresses).
-
 ## Mix ETH (alETH)
 
 | Contract               | Address                                                                                                                            |
