@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Fees" />
 
-All Alchemix v3 fees are set by on-chain governance and fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and a performance fee on yield generation.
+All Alchemix v3 fees are set by on-chain governance and fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and performance fees on yield generation.
 
 ```mermaid
 %%{init: {
@@ -69,17 +69,23 @@ Each <Term id="myt">Mix-Yield Token (MYT)</Term> vault skims a share of the gros
 
 - **Current Rate:** 15.00% (pending final DAO verification)
 
+### Ecosystem vault fee
+
+The Alchemix Ecosystem Vault is a curated vault that deploys deposited WETH across a mix of Alchemix v3 yield sources (liquidity pools, Mix-Yield Tokens, and Fixed-Yield Transmuter positions) to earn a blended yield. It takes a share of that yield before crediting the remainder to depositors. It currently runs as a single WETH vault on Ethereum.
+
+- **Current Rate:** 20.00% of yield
+
 
 ### Current fee schedule
 
 | Chain        | Base Asset | Redemption Fee | Transmuter Fee | Early Transmutation Fee | MYT Yield Fee |
 | :----------- | :--------- | :------------- | :------------- | :---------------------- | :------------ |
-| **Ethereum** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Ethereum** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Optimism** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Optimism** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Arbitrum** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Arbitrum** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+| **Ethereum** | ETH        | 0.25%          | 0.00%          | 1.00%                   | 15.00%        |
+| **Ethereum** | USDC       | 0.25%          | 0.00%          | 1.00%                   | 15.00%        |
+| **Optimism** | ETH        | 0.25%          | 0.00%          | 1.00%                   | 15.00%        |
+| **Optimism** | USDC       | 0.25%          | 0.00%          | 1.00%                   | 15.00%        |
+| **Arbitrum** | ETH        | 0.25%          | 0.00%          | 1.00%                   | 15.00%        |
+| **Arbitrum** | USDC       | 0.25%          | 0.00%          | 1.00%                   | 15.00%        |
 
 :::note Governance oversight
 All parameters are subject to Alchemix DAO oversight. Any updates to the fee schedule are executed on-chain and are visible within the Alchemix UI before taking effect.
