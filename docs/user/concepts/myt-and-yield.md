@@ -89,58 +89,83 @@ There is one ETH-denominated and one USDC-denominated MYT on every supported cha
 The tables below are a point-in-time snapshot for reference. The DAO can revote strategy weights at any time, so always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
 :::
 
-The strategy labels below map to their underlying providers: `Euler*` = Euler v2, `TokeAuto*` = Auto Finance, `Aave*` = Aave, `Fluid*` = Fluid, `Yearn`/`yv*` = Yearn, `wstETH` = Lido.
+The strategy labels below map to their underlying providers: `Euler*` = Euler v2, `TokeAuto*` = Auto Finance, `Aave*` = Aave, `Fluid*` = Fluid, `Yearn`/`yv*` = Yearn, `wstETH` = Lido, `weETH` = Ether.fi, `sfrxETH` = Frax, `SiUSD` = InfiniFi.
+
+The audit that covers each strategy is listed on the [Security & Audits](../safety/security#strategy-audit-coverage) page.
 
 <style>{`
   .composition-tables table { table-layout: fixed; width: 100%; }
-  .composition-tables td, .composition-tables th { width: 25%; }
+  .composition-tables td, .composition-tables th { width: 33.33%; }
 `}</style>
+
+<!--
+LiqAdapter column removed 2026-07-20, pending verification. Do not restore without a
+definition and confirmed values.
+
+Values as they stood when removed (originals from commit e16a577, 2026-04-10):
+
+  Mainnet USDC    EulerUSD -, TokeAutoUSD -, Yearn yvUSD Yes, SiUSD -
+  Mainnet ETH     Yearn yvWETH Yes*, TokeAutoETH Yes, wstETH -, weETH -*, sfrxETH -*
+  Arbitrum USDC   AaveUSDC Yes, EulerUSDC -, FluidUSDC -
+  Arbitrum ETH    AaveETH Yes, EulerETH -
+  Optimism USDC   AaveUSDC Yes
+  Optimism ETH    AaveETH Yes*, wstETH -
+
+  * = inferred from the pattern below, never confirmed by the team.
+
+In the original April data, "Yes" correlated perfectly with the Conservative tier across
+all 11 rows, which suggests it tracks the contract-based (non-DEX) unwind path that earns
+a Conservative classification.
+-->
 
 <div className="composition-tables">
 
 #### Mainnet USDC
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| EulerUSD | Moderate | - | 25% |
-| TokeAutoUSD | Moderate | - | 25% |
-| Yearn yvUSD | Conservative | Yes | - |
-| SiUSD | Conservative | - | - |
+| Strategy | Risk | Max % |
+|---|---|---|
+| EulerUSD | Moderate | 25% |
+| TokeAutoUSD | Moderate | 25% |
+| Yearn yvUSD | Conservative | - |
+| SiUSD | Moderate | 25% |
 
 #### Mainnet ETH
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| EulerwETH | Moderate | - | 25% |
-| TokeAutoETH | Moderate | Yes | 25% |
-| wstETH | Moderate | - | 25% |
+| Strategy | Risk | Max % |
+|---|---|---|
+| Yearn yvWETH | Conservative | - |
+| TokeAutoETH | Moderate | 25% |
+| wstETH | Moderate | 25% |
+| weETH | Moderate | 25% |
+| sfrxETH | Moderate | 25% |
 
 #### Arbitrum USDC
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| AaveUSDC | Conservative | Yes | - |
-| EulerUSDC | Moderate | - | 25% |
-| FluidUSDC | Moderate | - | 25% |
+| Strategy | Risk | Max % |
+|---|---|---|
+| AaveUSDC | Conservative | - |
+| EulerUSDC | Moderate | 25% |
+| FluidUSDC | Moderate | 25% |
 
 #### Arbitrum ETH
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| AaveETH | Conservative | Yes | - |
-| EulerETH | Moderate | - | 25% |
+| Strategy | Risk | Max % |
+|---|---|---|
+| AaveETH | Conservative | - |
+| EulerETH | Moderate | 25% |
 
 #### Optimism USDC
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| AaveUSDC | Conservative | Yes | - |
+| Strategy | Risk | Max % |
+|---|---|---|
+| AaveUSDC | Conservative | - |
 
 #### Optimism ETH
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| wstETH | Moderate | - | 25% |
+| Strategy | Risk | Max % |
+|---|---|---|
+| AaveETH | Conservative | - |
+| wstETH | Moderate | 25% |
 
 #### Global Risk Caps
 

@@ -10,6 +10,8 @@ import PageBanner from "@site/src/components/PageBanner";
 
 Strategies receive risk classifications, and risk classifications create caps on MYT makeup. The available classifications are Conservative, Moderate, and Aggressive.
 
+Every strategy is also independently audited before it is whitelisted into an MYT. The [strategy audit coverage table](/user/safety/security#strategy-audit-coverage) lists the report covering each live strategy.
+
 The general approach to classification is based on the table below.
 
 | Classification Level | Wrap/Unwrap Approach | Pricing Approach | Duration Risk                | Other Factors |
