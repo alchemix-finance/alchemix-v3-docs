@@ -45,6 +45,25 @@ MYT access control and strategy contracts received dedicated reviews:
   - [Strategies report (April 15–17, 2026)](/audits/v3-strategies-yaudit.pdf)
   - [Strategies follow-up report (April 23–24, 2026)](/audits/v3-strategies-yaudit-followup.pdf)
 
+#### Strategy audit coverage
+
+The table below maps every live MYT strategy to the audit that reviewed its adapter contract. Strategies that share an implementation are covered by the same report.
+
+| Strategy (provider)    | Live on                               | Reviewed by                             |
+| :--------------------- | :------------------------------------ | :-------------------------------------- |
+| Aave V3                | Arbitrum (USDC, ETH), Optimism (ETH, USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Euler                  | Mainnet (USDC), Arbitrum (USDC, ETH)  | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Fluid                  | Arbitrum (USDC)                       | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Auto Finance (Tokemak) | Mainnet (USDC, ETH)                   | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Yearn (yvWETH)         | Mainnet (ETH)                         | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Lido (wstETH)          | Mainnet (ETH), Optimism (ETH)         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Ether.fi (weETH)       | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Frax (sfrxETH)         | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| InfiniFi (siUSD)       | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Yearn (yvUSD)          | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+
+Every whitelisted strategy is audited before it goes live under the continuous program described below.
+
 #### Continuous MYT strategy audits
 
 To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must undergo a dedicated audit by Nethermind before being whitelisted. This ensures that the risk profile of the MYT remains consistent even as the underlying strategy landscape evolves.
