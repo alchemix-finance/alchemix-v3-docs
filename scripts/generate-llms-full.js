@@ -85,7 +85,7 @@ function cleanDoc(raw, glossary) {
 
   // Illustrative React components: note their presence rather than dropping silently
   s = s.replace(
-    /<(PositionTimeline|LtvSensitivity|HealthBar|MigrationOverview)[^>]*\/>\n?/g,
+    /<(VaultVisualizer|LtvSensitivity|HealthBar|MigrationOverview)[^>]*\/>\n?/g,
     "*(An interactive $1 illustration appears here in the web version.)*\n"
   );
 
