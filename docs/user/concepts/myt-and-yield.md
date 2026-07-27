@@ -83,99 +83,31 @@ flowchart LR
 
 ### Per-chain variants
 
-There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
+There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
 
 :::info Compositions change, verify in the app
-The tables below are a point-in-time snapshot for reference. The DAO can revote strategy weights at any time, so always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
+The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
 :::
 
-The strategy labels below map to their underlying providers: `Euler*` = Euler v2, `TokeAuto*` = Auto Finance, `Aave*` = Aave, `Fluid*` = Fluid, `Yearn`/`yv*` = Yearn, `wstETH` = Lido, `weETH` = Ether.fi, `sfrxETH` = Frax, `SiUSD` = InfiniFi.
+### How strategies are classified
 
-The audit that covers each strategy is listed on the [Security & Audits](../safety/security#strategy-audit-coverage) page.
+Each MYT is governed by risk classifications. Before a strategy can be added to an MYT it is independently audited and assigned one of three classifications:
 
-<style>{`
-  .composition-tables table { table-layout: fixed; width: 100%; }
-  .composition-tables td, .composition-tables th { width: 33.33%; }
-`}</style>
+- **Conservative** – enters and exits through the strategy contract directly, is priced by a fundamental oracle that measures backing against outstanding shares, and carries no meaningful withdrawal delay.
+- **Moderate** – depends on a DEX to enter or exit, or on an externally priced oracle, or can lock withdrawals for a period.
+- **Aggressive** – meets the Moderate criteria and carries an added risk factor, such as a newer or less proven strategy.
 
-<!--
-LiqAdapter column removed 2026-07-20, pending verification. Do not restore without a
-definition and confirmed values.
+Classification is driven by four inputs: how you enter and exit (contract or DEX), how the strategy is priced (fundamental or external oracle), withdrawal duration risk, and other factors such as the age of the strategy or confidence in the team. Other factors can only raise a classification, never lower it. See [MYT Launch Strategies](../../governance/guides/myt-strategies) for the full methodology.
 
-Values as they stood when removed (originals from commit e16a577, 2026-04-10):
+The audit covering each live strategy is listed on the [Security & Audits](../safety/security#strategy-audit-coverage) page.
 
-  Mainnet USDC    EulerUSD -, TokeAutoUSD -, Yearn yvUSD Yes, SiUSD -
-  Mainnet ETH     Yearn yvWETH Yes*, TokeAutoETH Yes, wstETH -, weETH -*, sfrxETH -*
-  Arbitrum USDC   AaveUSDC Yes, EulerUSDC -, FluidUSDC -
-  Arbitrum ETH    AaveETH Yes, EulerETH -
-  Optimism USDC   AaveUSDC Yes
-  Optimism ETH    AaveETH Yes*, wstETH -
+### Risk caps
 
-  * = inferred from the pattern below, never confirmed by the team.
+Each classification caps how much of an MYT a strategy can occupy, both on its own and across all strategies of that tier. These caps let you set an LTV that limits liquidation risk from higher-risk strategies.
 
-In the original April data, "Yes" correlated perfectly with the Conservative tier across
-all 11 rows, which suggests it tracks the contract-based (non-DEX) unwind path that earns
-a Conservative classification.
--->
-
-<div className="composition-tables">
-
-#### Mainnet USDC
-
-| Strategy | Risk | Max % |
-|---|---|---|
-| EulerUSD | Moderate | 25% |
-| TokeAutoUSD | Moderate | 25% |
-| Yearn yvUSD | Conservative | - |
-| SiUSD | Moderate | 25% |
-
-#### Mainnet ETH
-
-| Strategy | Risk | Max % |
-|---|---|---|
-| Yearn yvWETH | Conservative | - |
-| TokeAutoETH | Moderate | 25% |
-| wstETH | Moderate | 25% |
-| weETH | Moderate | 25% |
-| sfrxETH | Moderate | 25% |
-
-#### Arbitrum USDC
-
-| Strategy | Risk | Max % |
-|---|---|---|
-| AaveUSDC | Conservative | - |
-| EulerUSDC | Moderate | 25% |
-| FluidUSDC | Moderate | 25% |
-
-#### Arbitrum ETH
-
-| Strategy | Risk | Max % |
-|---|---|---|
-| AaveETH | Conservative | - |
-| EulerETH | Moderate | 25% |
-
-#### Optimism USDC
-
-| Strategy | Risk | Max % |
-|---|---|---|
-| AaveUSDC | Conservative | - |
-
-#### Optimism ETH
-
-| Strategy | Risk | Max % |
-|---|---|---|
-| AaveETH | Conservative | - |
-| wstETH | Moderate | 25% |
-
-#### Global Risk Caps
-
-Each strategy's risk classification caps how much of an MYT it can occupy, both individually and across all strategies of that tier. See [MYT Launch Strategies](../../governance/guides/myt-strategies) for the full classification methodology.
-
-| Risk Level | Max Individual Strategy | Max All Strategies |
+| Classification | Max Individual Strategy | Max All Strategies |
 |---|---|---|
 | Conservative | None | None |
 | Moderate | 25% | 40% |
 | Aggressive | 10% | 10% |
-
-</div>
 

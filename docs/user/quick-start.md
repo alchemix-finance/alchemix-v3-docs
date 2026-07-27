@@ -5,7 +5,7 @@ title: Quick Start
 
 import PageBanner from "@site/src/components/PageBanner";
 import FramedImage from "@site/src/components/FramedImage";
-import PositionTimeline from "@site/src/components/PositionTimeline";
+import VaultVisualizer from "@site/src/components/VaultVisualizer";
 
 <PageBanner title="Quick Start" />
 
@@ -13,7 +13,7 @@ This page walks through the core borrowing path. A small deposit, a modest borro
 
 - Deposit ETH or USDC to mint MYT and start earning yield.
 - Borrow at about 20% LTV to mint alAssets, then swap them to USDC if you want working capital. (The protocol allows up to **90%** LTV; this guide uses ~20% as a conservative starting point.)
-- Watch scheduled redemptions reduce your debt while your full collateral keeps earning until maturity.
+- Watch scheduled redemptions reduce your debt while your collateral keeps earning underneath.
 
 If you already know what you're looking for, jump straight to the relevant tutorial:
 
@@ -50,9 +50,9 @@ If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in
 
 ### Step 3 – Let it run
 
-The timeline below shows how this plays out in practice. Redemptions outpace yield in the first quarter, then yield overtakes. Debt drops 57% in a year while collateral finishes above its starting value. No repayments, no interest, no action required.
+The visualizer below projects how the position plays out. It tracks three lines over the term: your **Deposit** (collateral, earning yield), your **Debt** (paid down by scheduled redemptions), and your **Net Value** (deposit minus debt). Adjust the yield, redemption rate, alAsset price, and duration to see how the loan settles itself. No repayments, no interest, no action required.
 
-<PositionTimeline />
+<VaultVisualizer />
 
 ### Next steps
 

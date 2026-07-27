@@ -20,7 +20,7 @@ They serve two purposes:
 The protocol values 1 alAsset at 1 unit of its underlying, but market price can drift below that. Borrowing and redemption both create opportunities around that gap.
 
 :::note Not an algorithmic stablecoin
-alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
+alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
 :::
 
 ### Borrowing, selling, and the market discount
@@ -60,7 +60,9 @@ Together these forces pull market price toward 1.00 and keep borrowing capital-e
 
 Historically alAssets were used primarily inside the Alchemix ecosystem, because external protocols had no reliable way to price them. With dedicated **Chronicle Labs** oracles, one feed per alAsset, alAssets can now be verifiably priced by other protocols and used as productive collateral across DeFi.
 
-In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the peg for everyone.
+In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the soft peg for everyone.
+
+See where alAssets can be put to work, including external lending markets like the Euler alAsset market, on the [Alchemix ecosystem page →](https://alchemix.fi/ecosystem).
 
 ### LTV sensitivity
 
