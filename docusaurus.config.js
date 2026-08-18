@@ -27,6 +27,15 @@ const config = {
 
   onBrokenLinks: "throw",
 
+  customFields: {
+    // Where the Academy sends challenge and grading requests. Empty means
+    // same-origin, which is what production uses: /api/academy/* is proxied to
+    // the season engine by the rewrite in vercel.json, so the browser never
+    // leaves docs.alchemix.fi. Set an absolute origin only for local dev, when
+    // the docs and the engine run on different ports.
+    academyApiBase: process.env.ACADEMY_API_BASE ?? "",
+  },
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -47,7 +56,7 @@ const config = {
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
         hashed: true,
-        docsRouteBasePath: ["user", "dev", "governance", "projects"],
+        docsRouteBasePath: ["user", "dev", "governance", "projects", "academy"],
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
       },
@@ -119,6 +128,21 @@ const config = {
         path: "docs/governance",
         routeBasePath: "governance",
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
+        editUrl:
+          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
+        showLastUpdateAuthor: false,
+        showLastUpdateTime: false,
+      },
+    ],
+
+    // — ACADEMY @ /academy
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "academy",
+        path: "docs/academy",
+        routeBasePath: "academy",
+        sidebarPath: require.resolve("./sidebars/sidebarsAcademy.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
         showLastUpdateAuthor: false,
@@ -219,6 +243,13 @@ const config = {
             docsPluginId: "dev",
             position: "left",
             label: "Developers",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "academySidebar",
+            docsPluginId: "academy",
+            position: "left",
+            label: "Academy",
           },
           {
             type: "docSidebar",

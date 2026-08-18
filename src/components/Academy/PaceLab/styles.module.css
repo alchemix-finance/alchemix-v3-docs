@@ -1,0 +1,358 @@
+/* ── Shell ───────────────────────────────────────────────── */
+.wrap {
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;
+  background-color: #141618;
+  margin: 1.5rem 0;
+  overflow: hidden;
+}
+
+.stage {
+  padding: 1.5rem 1.35rem;
+}
+
+/* ── Stage tabs ──────────────────────────────────────────── */
+.stageBar {
+  display: flex;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.15);
+  background: rgba(245, 192, 154, 0.04);
+}
+
+.stageTab {
+  flex: 1;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #8a8f99;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.stageTab:hover {
+  color: #e8e8ea;
+}
+
+.stageTabOn {
+  color: #f5c09a;
+  border-bottom-color: #f5c09a;
+  background: rgba(245, 192, 154, 0.07);
+}
+
+.tick {
+  color: #5ba88a;
+}
+
+/* ── Copy ────────────────────────────────────────────────── */
+.lede {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #e8e8ea;
+  margin: 0 0 0.9rem;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #8a8f99;
+  margin: 0.75rem 0 0;
+}
+
+/* ── Prediction sliders ──────────────────────────────────── */
+.guessGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(245, 192, 154, 0.12);
+  border: 1px solid rgba(245, 192, 154, 0.22);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1.25rem 0;
+}
+
+.guess {
+  background: #141618;
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+.guessLabel,
+.controlLabel {
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #8a8f99;
+}
+
+.guessValue {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.35rem 0 0.6rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Range inputs ────────────────────────────────────────── */
+.range {
+  width: 100%;
+  accent-color: #f5c09a;
+  cursor: pointer;
+}
+
+.range:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ── Explore controls ────────────────────────────────────── */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.control {
+  border: 1px solid rgba(245, 192, 154, 0.16);
+  border-radius: 8px;
+  padding: 0.85rem 0.95rem 0.75rem;
+  background: rgba(245, 192, 154, 0.03);
+}
+
+.controlAccent {
+  border-color: rgba(245, 192, 154, 0.45);
+  background: rgba(245, 192, 154, 0.07);
+}
+
+.controlHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.controlValue {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #e8e8ea;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.verdictOn,
+.verdictOff,
+.verdictGap {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  min-height: 1rem;
+}
+
+.verdictOn {
+  color: #5ba88a;
+}
+
+.verdictOff {
+  color: #8a8f99;
+}
+
+/* ── Readout ─────────────────────────────────────────────── */
+.readout {
+  font-size: 0.95rem;
+  color: #e8e8ea;
+  padding: 0.7rem 0.95rem;
+  border-left: 2px solid #f5c09a;
+  background: rgba(245, 192, 154, 0.06);
+  border-radius: 0 6px 6px 0;
+  margin-top: 0.75rem;
+}
+
+.readout strong {
+  color: #f5c09a;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Reveal / result panels ──────────────────────────────── */
+.reveal,
+.passBox,
+.missBox,
+.errorBox {
+  margin-top: 1.25rem;
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+}
+
+.reveal {
+  border: 1px solid rgba(245, 192, 154, 0.28);
+  background: rgba(245, 192, 154, 0.06);
+}
+
+.passBox {
+  border: 1px solid rgba(91, 168, 138, 0.45);
+  background: rgba(91, 168, 138, 0.09);
+}
+
+.missBox {
+  border: 1px solid rgba(245, 192, 154, 0.3);
+  background: rgba(245, 192, 154, 0.05);
+  font-size: 0.9rem;
+  color: #e8e8ea;
+  line-height: 1.6;
+}
+
+.errorBox {
+  border: 1px solid rgba(212, 100, 90, 0.45);
+  background: rgba(212, 100, 90, 0.1);
+  font-size: 0.88rem;
+  color: #e8e8ea;
+}
+
+.revealHead {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f5c09a;
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+}
+
+.passBox .revealHead {
+  color: #5ba88a;
+}
+
+.revealBody {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #e8e8ea;
+  margin: 0 0 0.75rem;
+}
+
+.revealBody:last-of-type {
+  margin-bottom: 0;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.primary {
+  appearance: none;
+  border: 1px solid rgba(245, 192, 154, 0.5);
+  background: rgba(245, 192, 154, 0.12);
+  color: #f5c09a;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.6rem 1.15rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.primary:hover:not(:disabled) {
+  background: rgba(245, 192, 154, 0.2);
+  border-color: #f5c09a;
+}
+
+.primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ── Checkpoint ──────────────────────────────────────────── */
+.checkGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(245, 192, 154, 0.12);
+  border: 1px solid rgba(245, 192, 154, 0.22);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1.25rem 0;
+}
+
+.checkTarget {
+  background: #141618;
+  padding: 1.1rem 1.25rem;
+  text-align: center;
+}
+
+.bigNumber {
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0.3rem 0;
+  color: #e8e8ea;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Chart ───────────────────────────────────────────────── */
+.chartWrap {
+  margin: 1.25rem 0 0.25rem;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.grid {
+  stroke: rgba(245, 192, 154, 0.12);
+  stroke-width: 1;
+}
+
+.highlight {
+  stroke: rgba(245, 192, 154, 0.4);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.axisText {
+  fill: #8a8f99;
+  font-size: 11px;
+  font-family: inherit;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #8a8f99;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* ── Narrow screens ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .guessGrid,
+  .checkGrid,
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .stageTab {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+}
