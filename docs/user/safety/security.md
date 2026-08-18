@@ -53,7 +53,7 @@ The table below maps every live MYT strategy to the audit that reviewed its adap
 | :--------------------- | :------------------------------------ | :-------------------------------------- |
 | Aave V3                | Arbitrum (USDC, ETH), Optimism (ETH, USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Euler                  | Mainnet (USDC), Arbitrum (USDC, ETH)  | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
-| Fluid                  | Arbitrum (USDC)                       | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Fluid                  | Mainnet (USDC), Arbitrum (USDC)       | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Auto Finance (Tokemak) | Mainnet (USDC, ETH)                   | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Yearn (yvWETH)         | Mainnet (ETH)                         | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Lido (wstETH)          | Mainnet (ETH), Optimism (ETH)         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
