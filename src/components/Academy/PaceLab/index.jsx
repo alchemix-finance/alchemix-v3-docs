@@ -4,6 +4,7 @@ import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
 import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
+import useElementWidth from "../lib/useElementWidth";
 
 /**
  * Lesson 1: the pace of repayment.
@@ -315,7 +316,12 @@ function Control({ label, display, min, max, step, value, onChange, verdict, acc
         className={styles.range}
         aria-label={label}
       />
-      <div className={accent ? styles.verdictOn : styles.verdictOff}>{verdict ?? " "}</div>
+      {/* Explore passes null before a lever is touched, so the line stays reserved
+          and the cards do not jump as verdicts appear. The checkpoint passes
+          nothing at all, and should not carry an empty row. */}
+      {verdict !== undefined ? (
+        <div className={accent ? styles.verdictOn : styles.verdictOff}>{verdict ?? " "}</div>
+      ) : null}
     </div>
   );
 }
@@ -384,12 +390,20 @@ function Checkpoint({ base, lessonId, done, onPass }) {
   }
 
   if (error && !challenge) {
+    // A learner does not need the server's wording, which is written for an
+    // operator. Tell them what it means for them, and keep the detail secondary.
     return (
       <>
         <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-        <h1 className={styles.headline}>The checkpoint is unavailable.</h1>
-        <p className={styles.errorBox}>{error}</p>
-        <button type="button" className={styles.primary} onClick={load}>Try again</button>
+        <h1 className={styles.headline}>The checkpoint is not answering.</h1>
+        <p className={styles.sub}>
+          Everything you worked out in this lesson still stands. Only the graded
+          question needs the server, so try again in a moment.
+        </p>
+        <div className={styles.actions}>
+          <button type="button" className={styles.primary} onClick={load}>Try again</button>
+        </div>
+        <p className={styles.errorDetail}>{error}</p>
       </>
     );
   }
@@ -472,60 +486,91 @@ function Checkpoint({ base, lessonId, done, onPass }) {
 
 /* ── Chart ───────────────────────────────────────────────── */
 
-const W = 960;
-const H = 360;
-const M = { top: 30, right: 60, bottom: 46, left: 60 };
+/**
+ * The viewBox tracks the rendered width so one user unit is one pixel. A fixed
+ * viewBox would scale the axis labels down with everything else, which on a phone
+ * rendered them at about 4px.
+ */
+function chartGeometry(width) {
+  const narrow = width < 520;
+  const w = Math.max(width, 260);
+  // Taller proportion on a phone, where a 16:6 plot collapses to a sliver.
+  const h = narrow ? Math.round(w * 0.82) : Math.round(w * 0.4);
+
+  return {
+    w,
+    h,
+    narrow,
+    m: narrow
+      ? { top: 26, right: 12, bottom: 40, left: 38 }
+      : { top: 30, right: 60, bottom: 46, left: 60 },
+    // Every 6 months is unreadable once the plot is phone width.
+    tickEvery: narrow ? 12 : 6,
+  };
+}
 
 function Chart({ curves, horizon, markers = [], highlightMonth }) {
-  const plotW = W - M.left - M.right;
-  const plotH = H - M.top - M.bottom;
+  const [ref, width] = useElementWidth();
+  const { w, h, narrow, m, tickEvery } = chartGeometry(width);
 
-  const x = (month) => M.left + (month / horizon) * plotW;
-  const y = (pct) => M.top + (1 - pct / 100) * plotH;
+  const plotW = w - m.left - m.right;
+  const plotH = h - m.top - m.bottom;
+
+  const x = (month) => m.left + (month / horizon) * plotW;
+  const y = (pct) => m.top + (1 - pct / 100) * plotH;
 
   const path = (points) =>
     points.map((p, i) => `${i === 0 ? "M" : "L"}${x(p.month).toFixed(2)},${y(p.pct).toFixed(2)}`).join(" ");
 
+  const yTicks = narrow ? [0, 50, 100] : [0, 25, 50, 75, 100];
+  const xTicks = Array.from({ length: Math.floor(horizon / tickEvery) + 1 }, (_, i) => i * tickEvery);
+
   return (
-    <div>
-      <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart} role="img" aria-label="Debt remaining over time">
-        {[0, 25, 50, 75, 100].map((pct) => (
-          <g key={pct}>
-            <line x1={M.left} x2={W - M.right} y1={y(pct)} y2={y(pct)} className={styles.grid} />
-            <text x={M.left - 12} y={y(pct) + 4} className={styles.axisText} textAnchor="end">{pct}%</text>
-          </g>
-        ))}
+    <div ref={ref}>
+      {/* Nothing to draw until measured. Rendering at a guessed width first would
+          show the chart jumping into place on every load. */}
+      {width > 0 ? (
+        <svg viewBox={`0 0 ${w} ${h}`} className={styles.chart} role="img" aria-label="Debt remaining over time">
+          {yTicks.map((pct) => (
+            <g key={pct}>
+              <line x1={m.left} x2={w - m.right} y1={y(pct)} y2={y(pct)} className={styles.grid} />
+              <text x={m.left - 10} y={y(pct) + 4} className={styles.axisText} textAnchor="end">{pct}%</text>
+            </g>
+          ))}
 
-        {Array.from({ length: horizon / 6 + 1 }, (_, i) => i * 6).map((month) => (
-          <text key={month} x={x(month)} y={H - 20} className={styles.axisText} textAnchor="middle">{month}</text>
-        ))}
-        <text x={W - M.right} y={H - 4} className={styles.axisText} textAnchor="end">months</text>
+          {xTicks.map((month) => (
+            <text key={month} x={x(month)} y={h - 18} className={styles.axisText} textAnchor="middle">{month}</text>
+          ))}
+          <text x={w - m.right} y={h - 2} className={styles.axisText} textAnchor="end">months</text>
 
-        {highlightMonth != null ? (
-          <>
-            <line x1={x(highlightMonth)} x2={x(highlightMonth)} y1={M.top} y2={M.top + plotH} className={styles.highlight} />
-            <text x={x(highlightMonth)} y={M.top - 12} className={styles.axisText} textAnchor="middle">
-              {highlightMonth} months
-            </text>
-          </>
-        ) : null}
+          {highlightMonth != null ? (
+            <>
+              <line x1={x(highlightMonth)} x2={x(highlightMonth)} y1={m.top} y2={m.top + plotH} className={styles.highlight} />
+              <text x={x(highlightMonth)} y={m.top - 10} className={styles.axisText} textAnchor="middle">
+                {narrow ? `${highlightMonth} mo` : `${highlightMonth} months`}
+              </text>
+            </>
+          ) : null}
 
-        {curves.map((c) => (
-          <path
-            key={c.id}
-            d={path(c.points)}
-            fill="none"
-            stroke={c.color}
-            strokeWidth={c.width}
-            strokeDasharray={c.dashed ? "7 6" : undefined}
-            strokeLinecap="round"
-          />
-        ))}
+          {curves.map((c) => (
+            <path
+              key={c.id}
+              d={path(c.points)}
+              fill="none"
+              stroke={c.color}
+              strokeWidth={c.width}
+              strokeDasharray={c.dashed ? "7 6" : undefined}
+              strokeLinecap="round"
+            />
+          ))}
 
-        {markers.map((m, i) => (
-          <circle key={i} cx={x(m.month)} cy={y(m.pct)} r={5.5} fill="none" stroke={m.color} strokeWidth={2} />
-        ))}
-      </svg>
+          {markers.map((mk, i) => (
+            <circle key={i} cx={x(mk.month)} cy={y(mk.pct)} r={5.5} fill="none" stroke={mk.color} strokeWidth={2} />
+          ))}
+        </svg>
+      ) : (
+        <div className={styles.chartPlaceholder} />
+      )}
 
       <div className={styles.legend}>
         {curves.map((c) => (

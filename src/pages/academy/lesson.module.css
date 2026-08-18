@@ -6,6 +6,7 @@
   color: #8a8f99;
   text-decoration: none;
   min-width: 0;
+  min-height: 44px;
 }
 
 .back:hover {
@@ -54,6 +55,9 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 6px;
+  /* A stage is a touch control on a phone, so it carries the 44px target. */
+  min-height: 44px;
+  box-sizing: border-box;
 }
 
 .step:disabled {

@@ -96,9 +96,43 @@
   text-decoration: none;
 }
 
+/* Compact progress for phones. Hiding it entirely was wrong: progress is the
+   reason the track exists, so it shrinks to a count rather than disappearing. */
+.progressShort {
+  display: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #8a8f99;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 @media (max-width: 760px) {
-  .progressLabel,
-  .progressTrack {
+  .header {
+    gap: 0.875rem;
+  }
+
+  .progressLabel {
     display: none;
+  }
+
+  .progressShort {
+    display: inline;
+  }
+
+  .progressTrack {
+    width: 56px;
+  }
+
+  .brandText {
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 400px) {
+  .brandText {
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
   }
 }

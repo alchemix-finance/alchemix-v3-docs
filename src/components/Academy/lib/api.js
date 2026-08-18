@@ -49,6 +49,29 @@ export function hasCompletion(lessonId) {
   return Boolean(readCompletions()[lessonId]);
 }
 
+/**
+ * Pull a human-readable message out of an error body.
+ *
+ * The engine answers `{error: "some string"}`, but nothing guarantees the engine
+ * is what answered. A proxy, a gateway, or Vercel itself can return its own
+ * envelope, and Vercel's is `{error: {code, message}}` with an OBJECT there. The
+ * first version of this trusted `body.error` to be a string and passed it
+ * straight to `new Error`, which rendered as "[object Object]" in the lesson.
+ *
+ * That is not a hypothetical: a misconfigured rewrite produces exactly it.
+ */
+function messageFrom(body, status) {
+  const fallback = `The checkpoint could not be reached (${status}).`;
+  if (!body || typeof body !== "object") return fallback;
+
+  const { error } = body;
+  if (typeof error === "string" && error.trim()) return error;
+  if (error && typeof error === "object" && typeof error.message === "string" && error.message.trim()) {
+    return error.message;
+  }
+  return fallback;
+}
+
 async function request(url, init) {
   const res = await fetch(url, init);
   let body = null;
@@ -59,9 +82,21 @@ async function request(url, init) {
   }
 
   if (!res.ok) {
-    const message = body?.error ?? `Request failed (${res.status}).`;
-    throw Object.assign(new Error(message), { status: res.status, code: body?.code });
+    throw Object.assign(new Error(messageFrom(body, res.status)), {
+      status: res.status,
+      code: typeof body?.code === "string" ? body.code : undefined,
+    });
   }
+
+  // A 200 that is not JSON means something other than the engine answered, most
+  // likely a single-page-app fallback. Treat it as a failure rather than handing
+  // null to a caller that will dereference it.
+  if (body === null || typeof body !== "object") {
+    throw Object.assign(new Error("The checkpoint returned an unexpected response."), {
+      status: res.status,
+    });
+  }
+
   return body;
 }
 

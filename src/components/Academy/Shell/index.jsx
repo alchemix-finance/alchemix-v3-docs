@@ -49,6 +49,9 @@ export default function AcademyShell({ title, description, children, left, right
                 <span className={styles.progressLabel}>
                   {completed} of {TRACK.length} complete
                 </span>
+                <span className={styles.progressShort}>
+                  {completed}/{TRACK.length}
+                </span>
                 <span className={styles.progressTrack}>
                   <span
                     className={styles.progressFill}

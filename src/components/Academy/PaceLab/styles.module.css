@@ -82,9 +82,9 @@
 }
 
 .setupStats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem 2.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .statLabel {
@@ -172,8 +172,11 @@
   width: 100%;
   accent-color: #f5c09a;
   cursor: pointer;
-  /* keep the thumb a comfortable target */
-  height: 22px;
+  /* 44px of vertical target, per the touch minimum, without a 44px-tall track */
+  height: 44px;
+  margin: -0.6875rem 0;
+  background: transparent;
+  touch-action: pan-y;
 }
 
 .range:disabled {
@@ -251,6 +254,18 @@
   height: auto;
   display: block;
   overflow: visible;
+}
+
+/* Holds the chart's slot for the one frame before it is measured. */
+.chartPlaceholder {
+  width: 100%;
+  aspect-ratio: 5 / 2;
+}
+
+@media (max-width: 520px) {
+  .chartPlaceholder {
+    aspect-ratio: 1 / 0.82;
+  }
 }
 
 .grid {
@@ -460,4 +475,13 @@
   .guessGrid {
     gap: 1.75rem;
   }
+}
+
+/* Technical detail on a failed checkpoint. Present for anyone debugging, quiet
+   enough that a learner is not made to read it. */
+.errorDetail {
+  font-size: 0.75rem;
+  color: #6b7078;
+  margin: 0;
+  font-family: var(--ifm-font-family-monospace, monospace);
 }
