@@ -71,10 +71,11 @@ function Predict({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 1 · Predict</div>
-      <h1 className={styles.headline}>Two people. Same vault, same day, very different loans.</h1>
+      <h1 className={styles.headline}>Two positions open in the same vault on the same day.</h1>
       <p className={styles.sub}>
-        Neither of them repays anything by hand. Before you look at anything, say what
-        you think happens.
+        Ana and Ben deposit the same amount. Ben borrows four times what Ana does.
+        Neither repays anything by hand. Record what you expect before you run the
+        projection.
       </p>
 
       <div className={styles.setupGrid}>
@@ -99,10 +100,10 @@ function Predict({ onDone }) {
       {!revealed ? (
         <div className={styles.actions}>
           <button type="button" className={styles.primary} onClick={() => setRevealed(true)}>
-            Lock it in and run the projection
+            Commit and run the projection
             <ArrowIcon />
           </button>
-          <span className={styles.aside}>You can change your mind until you lock in.</span>
+          <span className={styles.aside}>You can adjust either answer until you commit.</span>
         </div>
       ) : null}
 
@@ -134,17 +135,18 @@ function Predict({ onDone }) {
           </div>
           <p className={styles.revealBody}>
             {guessedSame
-              ? "You called it. The two lines sit on top of each other, which is why only one is visible until you look for the dashes."
-              : `You put them ${Math.abs(ana - ben)} points apart. They are not apart at all. The two lines sit exactly on top of each other.`}{" "}
-            Ben borrowed four times what Ana did and cleared the same share of it in the
-            same time. Borrowing more did not make his loan take longer.
+              ? "Your two answers agree with each other, and so does the projection. The curves sit exactly on top of one another, which is why only the dashed line reveals there are two."
+              : `You separated the two answers by ${Math.abs(ana - ben)} points. The projection puts them in the same place, with the curves exactly on top of one another.`}{" "}
+            Ben borrowed four times what Ana did, and after {CHECK_MONTH} months the same
+            share of each loan remains. Borrowing more did not extend his loan.
           </p>
           <p className={styles.revealBody}>
-            That is worth sitting with, because it is the opposite of how a normal loan
-            behaves. Find out what does move it in the next stage.
+            A conventional loan behaves the other way around, because interest accrues on
+            the balance and a larger balance takes longer to clear. Alchemix debt carries
+            no interest, and it clears on a schedule set elsewhere in the protocol.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
-            So what does move it?
+            Find what sets the schedule
             <ArrowIcon />
           </button>
         </div>
@@ -231,9 +233,10 @@ function Explore({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
-      <h1 className={styles.headline}>Three levers. Two of them do nothing.</h1>
+      <h1 className={styles.headline}>Three inputs feed this projection, and one of them sets the pace.</h1>
       <p className={styles.sub}>
-        Same position as before. Move each one and watch the curve.
+        The position is the same as before. Move each input and watch what happens to
+        the curve.
       </p>
 
       <div className={styles.chartLive}>
@@ -257,21 +260,21 @@ function Explore({ onDone }) {
           display={fmt(debt)}
           min={1_000} max={9_000} step={500} value={debt}
           onChange={(v) => { setDebt(v); mark("debt"); }}
-          verdict={touched.debt ? "no effect" : null}
+          verdict={touched.debt ? "no change" : null}
         />
         <Control
           label="Vault yield"
           display={`${(yieldAnnual * 100).toFixed(0)}% a year`}
           min={0} max={0.2} step={0.01} value={yieldAnnual}
           onChange={(v) => { setYield(v); mark("yield"); }}
-          verdict={touched.yield ? "no effect" : null}
+          verdict={touched.yield ? "no change" : null}
         />
         <Control
           label="Redemption rate"
           display={`${(redemptionAnnual * 100).toFixed(0)}% a year`}
           min={0.2} max={2} step={0.05} value={redemptionAnnual}
           onChange={(v) => { setRedemption(v); mark("redemption"); }}
-          verdict={touched.redemption ? "this is the one" : null}
+          verdict={touched.redemption ? "sets the pace" : null}
           accent
         />
       </div>
@@ -280,15 +283,16 @@ function Explore({ onDone }) {
         <div className={styles.reveal}>
           <div className={styles.revealHead}>The redemption rate sets the pace.</div>
           <p className={styles.revealBody}>
-            How much you borrowed does not change how fast it clears. Neither does the
-            yield your collateral earns. Redemptions repay a share of total system debt
-            each year, and your loan is deleveraged at that rate whatever its size, which
-            is why Ana and Ben traced the same line.
+            How much you borrow does not change how quickly it clears, and neither does
+            the yield your collateral earns. Redemptions repay a share of total system
+            debt each year, and every position is deleveraged at that rate regardless of
+            its size. That is why Ana and Ben traced the same curve.
           </p>
           <p className={styles.revealBody}>
-            The rate is a property of the protocol. You do not set it and you cannot rush
-            it. What your own choices change is how much collateral is left working for
-            you while it happens, which is what lesson 3 is about.
+            The redemption rate is a property of the protocol, applied equally to
+            everyone in the market. You do not set it and you cannot accelerate it. What
+            your own choices do change is how much collateral keeps working for you while
+            redemptions run, which lesson 3 covers.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint
@@ -296,7 +300,7 @@ function Explore({ onDone }) {
           </button>
         </div>
       ) : (
-        <p className={styles.hint}>Move all three to continue. {tried} of 3 tried.</p>
+        <p className={styles.hint}>Move all three inputs to continue. {tried} of 3 so far.</p>
       )}
     </>
   );
@@ -384,7 +388,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
     return (
       <>
         <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-        <p className={styles.sub}>Setting your challenge...</p>
+        <p className={styles.sub}>Preparing your question...</p>
       </>
     );
   }
@@ -415,11 +419,11 @@ function Checkpoint({ base, lessonId, done, onPass }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-      <h1 className={styles.headline}>Find the rate.</h1>
+      <h1 className={styles.headline}>Work out the redemption rate.</h1>
       <p className={styles.sub}>{challenge.prompt}</p>
       <p className={styles.hint}>
-        These numbers are generated for you, so a friend's answer will not fit your
-        question.
+        Every learner is given different figures, so an answer shared with you will not
+        fit your version of the question.
       </p>
 
       <div className={styles.checkGrid}>
@@ -433,7 +437,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
           <div className={styles.bigNumber} style={{ color: onTarget ? "#5ba88a" : "#f5c09a" }}>
             {landing == null ? "-" : `${landing.toFixed(1)}%`}
           </div>
-          <div className={styles.checkFoot}>keep adjusting until it matches</div>
+          <div className={styles.checkFoot}>adjust until the two match</div>
         </div>
       </div>
 
@@ -462,8 +466,8 @@ function Checkpoint({ base, lessonId, done, onPass }) {
 
       {result && !result.passed ? (
         <div className={styles.missBox}>
-          Not yet. That rate leaves {result.actualPct}% outstanding, and the target is{" "}
-          {result.targetPct}% (within {result.tolerancePct} point). Adjust and submit again.
+          That rate leaves {result.actualPct}% outstanding. The target is {result.targetPct}%,
+          accepted within {result.tolerancePct} percentage point. Adjust the rate and submit again.
         </div>
       ) : null}
 
@@ -471,8 +475,8 @@ function Checkpoint({ base, lessonId, done, onPass }) {
         <div className={styles.passBox}>
           <div className={styles.passHead}>Lesson 1 complete.</div>
           <p className={styles.revealBody}>
-            You found the rate that produces the target, which means you can read the
-            mechanism rather than recite it. Your progress is saved in this browser.
+            You worked the mechanism rather than recalling it. Your progress is saved in
+            this browser.
           </p>
           <Link to="/academy" className={styles.primaryLink}>
             Back to the track

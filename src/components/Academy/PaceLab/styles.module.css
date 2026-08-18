@@ -475,6 +475,27 @@
   .guessGrid {
     gap: 1.75rem;
   }
+
+  /* Three figures across a phone-width card leaves about 85px each, and
+     "10,000" at the desktop size wrapped onto a second line. Tighten the
+     padding and the figure so each stat stays on one line. */
+  .setupCard {
+    padding: 1.25rem 1.125rem;
+  }
+
+  .setupStats {
+    gap: 0.625rem;
+  }
+
+  .statValue {
+    font-size: 1.125rem;
+    white-space: nowrap;
+  }
+
+  .statLabel {
+    font-size: 0.5625rem;
+    letter-spacing: 0.1em;
+  }
 }
 
 /* Technical detail on a failed checkpoint. Present for anyone debugging, quiet

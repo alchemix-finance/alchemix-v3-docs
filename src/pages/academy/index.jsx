@@ -32,10 +32,11 @@ export default function AcademyTrack() {
     >
       <section className={styles.intro}>
         <div className={styles.eyebrow}>Track one</div>
-        <h1 className={styles.headline}>Learn how a self-repaying loan actually behaves.</h1>
+        <h1 className={styles.headline}>Learn how Alchemix works by driving it yourself.</h1>
         <p className={styles.sub}>
-          Six lessons. Each one hands you a working model, asks what you think it does,
-          then shows you. No wallet, no sign-in, nothing to install.
+          Six lessons, each built around a working model of one mechanism. You are asked
+          what you expect it to do before you are shown. No wallet, no sign-in, and
+          nothing to install.
         </p>
       </section>
 
@@ -50,8 +51,8 @@ export default function AcademyTrack() {
           <div className={styles.microLabel}>On finishing the track</div>
           <div className={styles.rewardTitle}>A Discord role, and a place in the founding class</div>
           <p className={styles.rewardBody}>
-            The founding class role can only be earned before season one opens. After
-            that it is closed for good.
+            The founding class role is available only before season one opens. Once the
+            season begins it can no longer be earned.
           </p>
         </div>
         <div className={styles.rewardCard}>
@@ -61,8 +62,8 @@ export default function AcademyTrack() {
             <span className={styles.pointsOf}>of {TOTAL_POINTS} points</span>
           </div>
           <p className={styles.rewardBody}>
-            Points from lessons convert to season points when season one opens, so
-            graduates start ahead.
+            Lesson points convert to season points when season one opens, so graduates
+            begin the season with a balance already banked.
           </p>
         </div>
       </section>
