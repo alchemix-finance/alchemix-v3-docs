@@ -4,6 +4,8 @@ import Link from "@docusaurus/Link";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
+import { CAPS, blend } from "../lib/myt";
+import LocalNotice from "../LocalNotice";
 
 /**
  * Lesson 2: where the yield comes from.
@@ -21,9 +23,6 @@ import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/ap
  * the learner reasons about a proposed allocation, they do not set their own.
  */
 
-/** From docs/governance/guides/myt-strategies.md. Mirrored by the grader. */
-const CAPS = { moderate: 0.4, aggressive: 0.1 };
-
 const DEMO = { conservative: 4.5, moderate: 9.0, aggressive: 18.0 };
 
 export default function MixLab({ lessonId, stage, onStage, done, onComplete }) {
@@ -34,13 +33,6 @@ export default function MixLab({ lessonId, stage, onStage, done, onComplete }) {
   if (stage === "explore") return <Explore onDone={() => onStage("checkpoint")} />;
   return <Checkpoint base={base} lessonId={lessonId} done={done} onPass={onComplete} />;
 }
-
-const blend = (aprs, modPct, aggrPct) => {
-  const consPct = 100 - modPct - aggrPct;
-  return (
-    (aggrPct / 100) * aprs.aggressive + (modPct / 100) * aprs.moderate + (consPct / 100) * aprs.conservative
-  );
-};
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
@@ -245,7 +237,7 @@ function Explore({ onDone }) {
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
 
-      {atBest && sawBreach ? (
+      {atBest ? (
         <div className={styles.reveal}>
           <div className={styles.revealHead}>
             {best.toFixed(2)}% is the most this vault can yield legally.
@@ -254,6 +246,9 @@ function Explore({ onDone }) {
             Aggressive at its 10% ceiling, Moderate at its 40% ceiling, and the remaining
             50% in Conservative, which has no cap. Any higher number requires a
             composition the DAO does not permit.
+            {!sawBreach
+              ? " Push either slider past its ceiling to see the vault reject the mix."
+              : ""}
           </p>
           <p className={styles.revealBody}>
             This is what your collateral earns while your loan clears, and it is also what
@@ -268,9 +263,8 @@ function Explore({ onDone }) {
         </div>
       ) : (
         <p className={styles.hint}>
-          {sawBreach
-            ? "Now find the highest blended APR that stays inside every cap."
-            : "Try pushing a class past its cap, then find the best legal mix."}
+          Find the highest blended APR that stays inside every cap.
+          {!sawBreach ? " Push a slider past its ceiling to see what happens." : ""}
         </p>
       )}
     </>
@@ -363,6 +357,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
       <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
       <h1 className={styles.headline}>Find the best legal composition.</h1>
       <p className={styles.sub}>{challenge.prompt}</p>
+      <LocalNotice show={challenge.local} />
       <p className={styles.hint}>
         Every learner is given different figures, so an answer shared with you will not
         fit your version of the question.

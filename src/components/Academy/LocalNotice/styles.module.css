@@ -1,0 +1,18 @@
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  border: 1px dashed rgba(212, 149, 42, 0.5);
+  border-radius: 8px;
+  background: rgba(212, 149, 42, 0.07);
+  color: #d4952a;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  padding: 0.75rem 0.9375rem;
+  margin: -1rem 0 1.75rem;
+}
+
+.notice svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}

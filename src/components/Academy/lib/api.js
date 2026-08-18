@@ -7,6 +7,8 @@
  * CORS entirely. Running the two locally on different ports is the one case that
  * needs an absolute base, hence `customFields.academyApiBase`.
  */
+import { LOCAL_PREFIX, devFallbackEnabled, localChallenge, localGrade } from "./devGrader";
+
 export function apiBase(siteConfig) {
   return siteConfig?.customFields?.academyApiBase ?? "";
 }
@@ -100,16 +102,57 @@ async function request(url, init) {
   return body;
 }
 
+/**
+ * In development, a checkpoint falls back to grading in the browser when the
+ * engine is not running.
+ *
+ * Without this, every lesson page is broken for anyone who has not also started
+ * the season engine, which is an unreasonable thing to ask of someone editing
+ * prose. The fallback is compiled out of production builds, and the completions
+ * it issues carry a `local:` prefix that no signature can match, so a locally
+ * finished lesson is never worth a reward.
+ */
+async function withDevFallback(lessonId, run, fallback) {
+  try {
+    return await run();
+  } catch (e) {
+    if (!devFallbackEnabled()) throw e;
+    console.warn(
+      `[academy] the engine did not answer (${e.message}). Grading lesson ` +
+        `"${lessonId}" in the browser instead. This only happens in development, ` +
+        `and the completion it issues is not valid for a reward. ` +
+        `To use the real grader, run the season engine and set ACADEMY_API_BASE.`,
+    );
+    return fallback();
+  }
+}
+
 export function fetchChallenge(base, lessonId) {
-  return request(`${base}/api/academy/challenge?lesson=${encodeURIComponent(lessonId)}`, {
-    headers: { accept: "application/json" },
-  });
+  return withDevFallback(
+    lessonId,
+    () =>
+      request(`${base}/api/academy/challenge?lesson=${encodeURIComponent(lessonId)}`, {
+        headers: { accept: "application/json" },
+      }),
+    () => localChallenge(lessonId),
+  );
 }
 
 export function submitAnswer(base, { challenge, params, answer }) {
-  return request(`${base}/api/academy/grade`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ challenge, params, answer }),
-  });
+  // A locally issued challenge was never signed, so there is nothing for the
+  // server to verify. Grade it where it came from.
+  if (devFallbackEnabled() && String(challenge).startsWith(LOCAL_PREFIX)) {
+    return Promise.resolve(localGrade(params.lessonId, params, answer));
+  }
+
+  return withDevFallback(
+    params.lessonId,
+    () =>
+      request(`${base}/api/academy/grade`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ challenge, params, answer }),
+      }),
+    () => localGrade(params.lessonId, params, answer),
+  );
 }

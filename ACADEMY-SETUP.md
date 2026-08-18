@@ -45,9 +45,27 @@ Until then the lesson pages render and the interactive stages work. Only the
 checkpoint needs the API, and it reports the failure in place rather than
 breaking the page.
 
-## Running locally against the engine
+## Running locally
 
-The engine also defaults to port 3000, so give one of them another port.
+```bash
+pnpm start
+```
+
+That is all. Checkpoints grade in the browser when the season engine is not
+running, so every lesson page is fully usable for docs work without standing up a
+second repo. A dashed notice on the checkpoint says when that is happening, and
+the completion it records carries a `local:` prefix that no signature can match,
+so it is never worth a reward.
+
+This cannot happen in a deployed build. Every entry point is behind
+`process.env.NODE_ENV !== "production"`, which the build replaces with a literal.
+Verified both ways: a production build with no engine reachable refuses to grade
+and shows the failure, while `pnpm start` grades locally and marks it.
+
+### Against the real grader
+
+Only needed when changing grading itself. The engine also defaults to port 3000,
+so give one of them another port.
 
 ```bash
 # terminal 1, in the season engine repo

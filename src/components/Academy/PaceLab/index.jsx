@@ -5,6 +5,7 @@ import styles from "../lesson.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
 import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
 import useElementWidth from "../lib/useElementWidth";
+import LocalNotice from "../LocalNotice";
 
 /**
  * Lesson 1: the pace of repayment.
@@ -423,6 +424,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
       <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
       <h1 className={styles.headline}>Work out the redemption rate.</h1>
       <p className={styles.sub}>{challenge.prompt}</p>
+      <LocalNotice show={challenge.local} />
       <p className={styles.hint}>
         Every learner is given different figures, so an answer shared with you will not
         fit your version of the question.
