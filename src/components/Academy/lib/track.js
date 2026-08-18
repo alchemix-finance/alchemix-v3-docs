@@ -21,10 +21,11 @@ export const TRACK = [
   {
     n: 2,
     id: "l2-where-yield-comes-from",
+    slug: "/academy/where-yield-comes-from",
     title: "Where the yield comes from",
-    blurb: "Where your collateral works while the loan runs, and what the risk mix costs you.",
+    blurb: "Where your collateral works while the loan runs, and the ceilings the DAO puts on risk.",
     minutes: 8,
-    ready: false,
+    ready: true,
   },
   {
     n: 3,

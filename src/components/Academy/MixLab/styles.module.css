@@ -1,0 +1,222 @@
+/* ── Strategy cards ──────────────────────────────────────── */
+.strategyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+.strategy {
+  border: 1px solid rgba(245, 192, 154, 0.16);
+  border-left-width: 3px;
+  border-radius: 8px;
+  background: #141618;
+  padding: 1.125rem 1.25rem;
+}
+
+.cons { border-left-color: #5ba88a; }
+.mod { border-left-color: #f5c09a; }
+.aggr { border-left-color: #d4952a; }
+
+.strategyClass {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.5rem;
+}
+
+.strategyApr {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #e8e8ea;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.5rem;
+}
+
+.strategyNote {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #6b7078;
+}
+
+/* ── Cap reference ───────────────────────────────────────── */
+.capTable {
+  border: 1px solid rgba(245, 192, 154, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 0 1.25rem;
+}
+
+.capRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6875rem 1rem;
+  background: rgba(13, 14, 16, 0.5);
+  border-bottom: 1px solid rgba(245, 192, 154, 0.1);
+}
+
+.capRow:last-child {
+  border-bottom: 0;
+}
+
+.capName {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a8adb6;
+}
+
+.capValue {
+  font-size: 0.8125rem;
+  color: #e8e8ea;
+  text-align: right;
+}
+
+/* ── Composition bar ─────────────────────────────────────── */
+.bar {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(245, 192, 154, 0.08);
+  margin-bottom: 0.75rem;
+}
+
+.seg {
+  display: block;
+  height: 100%;
+  transition: width 0.15s ease;
+}
+
+.segCons { background: #5ba88a; }
+.segMod { background: #f5c09a; }
+.segAggr { background: #d4952a; }
+
+.barKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.125rem;
+  font-size: 0.75rem;
+  color: #8a8f99;
+  margin-bottom: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.barKey span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+}
+
+.dotCons,
+.dotMod,
+.dotAggr {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.dotCons { background: #5ba88a; }
+.dotMod { background: #f5c09a; }
+.dotAggr { background: #d4952a; }
+
+/* ── Blended result ──────────────────────────────────────── */
+.blendRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 8px;
+  background: #141618;
+  margin-bottom: 1.5rem;
+}
+
+.blendValue {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.25rem;
+}
+
+.legalOk,
+.legalBad {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 5px;
+}
+
+.legalOk {
+  color: #5ba88a;
+  background: rgba(91, 168, 138, 0.12);
+  border: 1px solid rgba(91, 168, 138, 0.35);
+}
+
+.legalBad {
+  color: #d4645a;
+  background: rgba(212, 100, 90, 0.12);
+  border: 1px solid rgba(212, 100, 90, 0.4);
+}
+
+/* ── Slider cap markers ──────────────────────────────────── */
+.controlOver {
+  border-color: rgba(212, 100, 90, 0.5);
+  background: rgba(212, 100, 90, 0.06);
+}
+
+.capNote,
+.capWarn {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin-top: 0.4375rem;
+  min-height: 1rem;
+}
+
+.capNote { color: #6b7078; }
+.capWarn { color: #d4645a; }
+
+@media (max-width: 700px) {
+  .strategyGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.625rem;
+  }
+
+  .strategy {
+    padding: 0.9375rem 1rem;
+  }
+
+  .strategyApr {
+    font-size: 1.375rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .blendRow {
+    align-items: flex-start;
+  }
+
+  .capRow {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .capValue {
+    text-align: left;
+  }
+}

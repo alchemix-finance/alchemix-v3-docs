@@ -1,0 +1,24 @@
+Your deposit is held as the Mix-Yield Token, a vault built on Morpho Vaults V2 that
+routes deposits into several yield sources at once. You hold one token; the DAO
+selects the strategies behind it, sets target weights, and rebalances as markets
+shift.
+
+Every strategy carries a classification, and the classification sets a ceiling:
+
+- **Conservative** – No cap. Reserved for strategies with contract wrap and unwrap,
+  fundamental pricing, and no duration risk.
+- **Moderate** – 25% for any single strategy, 40% across all of them.
+- **Aggressive** – 10% for any single strategy, and 10% across all of them.
+
+### Why the ceilings matter to a borrower
+
+The governance documentation states the purpose directly: the caps exist so that
+users can set an LTV that keeps liquidation risk low.
+
+That connection is worth holding onto. Alchemix positions are not closed by price
+movement, because debt and collateral are like-kind. What can move the liquidation
+threshold is a loss inside the vault itself. A composition that could hold far more
+risk would make a high LTV considerably more dangerous, so the ceilings on the vault
+are what make your borrowing headroom meaningful.
+
+Lesson 3 takes that thread and works out what it means for the LTV you choose.

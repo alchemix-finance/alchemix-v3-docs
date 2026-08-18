@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Link from "@docusaurus/Link";
-import styles from "./styles.module.css";
+import styles from "../lesson.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
 import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
 import useElementWidth from "../lib/useElementWidth";
@@ -347,7 +347,8 @@ function Checkpoint({ base, lessonId, done, onPass }) {
     fetchChallenge(base, lessonId)
       .then((c) => {
         setChallenge(c);
-        setRate(c.slider.min + (c.slider.max - c.slider.min) / 2);
+        const s = c.controls.slider;
+        setRate(s.min + (s.max - s.min) / 2);
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -357,7 +358,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
 
   const landing = useMemo(() => {
     if (!challenge) return null;
-    const { collateral, debt, yieldAnnual, months } = challenge.params;
+    const { collateral, debt, yieldAnnual, months } = challenge.params.fields;
     return debtRemainingPct({ collateral, debt, yieldAnnual, redemptionAnnual: rate, months });
   }, [challenge, rate]);
 
@@ -413,8 +414,9 @@ function Checkpoint({ base, lessonId, done, onPass }) {
   }
 
   const passed = result?.passed || done;
-  const tol = result?.tolerancePct ?? 1;
-  const onTarget = landing != null && Math.abs(landing - challenge.params.targetPct) <= tol;
+  const tol = result?.tolerance ?? 1;
+  const target = challenge.params.fields.targetPct;
+  const onTarget = landing != null && Math.abs(landing - target) <= tol;
 
   return (
     <>
@@ -429,8 +431,8 @@ function Checkpoint({ base, lessonId, done, onPass }) {
       <div className={styles.checkGrid}>
         <div className={styles.checkCard}>
           <div className={styles.microLabel}>Target</div>
-          <div className={styles.bigNumber}>{challenge.params.targetPct.toFixed(1)}%</div>
-          <div className={styles.checkFoot}>after {challenge.params.months} months</div>
+          <div className={styles.bigNumber}>{target.toFixed(1)}%</div>
+          <div className={styles.checkFoot}>after {challenge.params.fields.months} months</div>
         </div>
         <div className={styles.checkCard}>
           <div className={styles.microLabel}>Your rate lands at</div>
@@ -445,9 +447,9 @@ function Checkpoint({ base, lessonId, done, onPass }) {
         <Control
           label="Redemption rate"
           display={`${(rate * 100).toFixed(1)}% a year`}
-          min={challenge.slider.min}
-          max={challenge.slider.max}
-          step={challenge.slider.step}
+          min={challenge.controls.slider.min}
+          max={challenge.controls.slider.max}
+          step={challenge.controls.slider.step}
           value={rate}
           onChange={setRate}
           accent
@@ -466,8 +468,8 @@ function Checkpoint({ base, lessonId, done, onPass }) {
 
       {result && !result.passed ? (
         <div className={styles.missBox}>
-          That rate leaves {result.actualPct}% outstanding. The target is {result.targetPct}%,
-          accepted within {result.tolerancePct} percentage point. Adjust the rate and submit again.
+          That rate leaves {result.actual}% outstanding. The target is {result.target}%,
+          accepted within {result.tolerance} percentage point. Adjust the rate and submit again.
         </div>
       ) : null}
 
