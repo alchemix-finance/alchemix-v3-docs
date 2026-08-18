@@ -1,0 +1,104 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: #0d0e10;
+  color: #e8e8ea;
+  overflow-x: hidden;
+}
+
+/* Same radial warmth the PageBanner uses, so the academy still reads as Alchemix. */
+.glow {
+  position: absolute;
+  top: -260px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1400px, 140vw);
+  height: 700px;
+  background: radial-gradient(ellipse at center, rgba(245, 192, 154, 0.07), transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem clamp(1.25rem, 4.4vw, 4rem);
+  border-bottom: 1px solid rgba(245, 192, 154, 0.12);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.875rem;
+  text-decoration: none;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.brandText {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #f5c09a;
+  white-space: nowrap;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.progressLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  white-space: nowrap;
+}
+
+.progressTrack {
+  display: block;
+  width: 132px;
+  height: 3px;
+  background: rgba(245, 192, 154, 0.14);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  background: #5ba88a;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.exit {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #8a8f99;
+  text-decoration: none;
+}
+
+.exit:hover {
+  color: #f5c09a;
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .progressLabel,
+  .progressTrack {
+    display: none;
+  }
+}

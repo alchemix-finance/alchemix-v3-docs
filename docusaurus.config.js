@@ -56,7 +56,9 @@ const config = {
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
         hashed: true,
-        docsRouteBasePath: ["user", "dev", "governance", "projects", "academy"],
+        docsRouteBasePath: ["user", "dev", "governance", "projects"],
+        // The Academy is custom pages, not a docs instance, so it is indexed here.
+        indexPages: true,
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
       },
@@ -128,21 +130,6 @@ const config = {
         path: "docs/governance",
         routeBasePath: "governance",
         sidebarPath: require.resolve("./sidebars/sidebarsGovernance.js"),
-        editUrl:
-          "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
-        showLastUpdateAuthor: false,
-        showLastUpdateTime: false,
-      },
-    ],
-
-    // — ACADEMY @ /academy
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "academy",
-        path: "docs/academy",
-        routeBasePath: "academy",
-        sidebarPath: require.resolve("./sidebars/sidebarsAcademy.js"),
         editUrl:
           "https://github.com/alchemix-finance/alchemix-v3-docs/edit/main/",
         showLastUpdateAuthor: false,
@@ -245,9 +232,7 @@ const config = {
             label: "Developers",
           },
           {
-            type: "docSidebar",
-            sidebarId: "academySidebar",
-            docsPluginId: "academy",
+            to: "/academy",
             position: "left",
             label: "Academy",
           },

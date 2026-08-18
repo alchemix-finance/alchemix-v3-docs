@@ -1,100 +1,170 @@
-/* ── Shell ───────────────────────────────────────────────── */
-.wrap {
-  border: 1px solid rgba(245, 192, 154, 0.18);
-  border-radius: 10px;
-  background-color: #141618;
-  margin: 1.5rem 0;
-  overflow: hidden;
-}
-
-.stage {
-  padding: 1.5rem 1.35rem;
-}
-
-/* ── Stage tabs ──────────────────────────────────────────── */
-.stageBar {
-  display: flex;
-  border-bottom: 1px solid rgba(245, 192, 154, 0.15);
-  background: rgba(245, 192, 154, 0.04);
-}
-
-.stageTab {
-  flex: 1;
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: #8a8f99;
-  font-family: inherit;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+/* ── Lesson typography ───────────────────────────────────── */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  padding: 0.75rem 0.5rem;
-  cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease;
-  border-bottom: 2px solid transparent;
-}
-
-.stageTab:hover {
-  color: #e8e8ea;
-}
-
-.stageTabOn {
   color: #f5c09a;
-  border-bottom-color: #f5c09a;
-  background: rgba(245, 192, 154, 0.07);
+  margin-bottom: 1.125rem;
 }
 
-.tick {
-  color: #5ba88a;
-}
-
-/* ── Copy ────────────────────────────────────────────────── */
-.lede {
-  font-size: 0.95rem;
-  line-height: 1.65;
+.headline {
+  margin: 0 0 1.125rem;
+  font-size: clamp(1.8rem, 3.6vw, 2.625rem);
+  line-height: 1.14;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: #e8e8ea;
-  margin: 0 0 0.9rem;
+  max-width: 56rem;
+  text-wrap: balance;
+}
+
+.sub {
+  margin: 0 0 2rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #a8adb6;
+  max-width: 45rem;
+  text-wrap: pretty;
 }
 
 .hint {
-  font-size: 0.8rem;
-  color: #8a8f99;
-  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: #6b7078;
+  margin: -1.25rem 0 2rem;
 }
 
-/* ── Prediction sliders ──────────────────────────────────── */
-.guessGrid {
+.aside {
+  font-size: 0.8125rem;
+  color: #6b7078;
+}
+
+.microLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a8f99;
+}
+
+/* ── Setup cards ─────────────────────────────────────────── */
+.setupGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  background: rgba(245, 192, 154, 0.12);
+  background: rgba(245, 192, 154, 0.14);
   border: 1px solid rgba(245, 192, 154, 0.22);
   border-radius: 10px;
   overflow: hidden;
-  margin: 1.25rem 0;
+  margin-bottom: 2.125rem;
 }
 
-.guess {
+.setupCard {
   background: #141618;
-  padding: 1.1rem 1.25rem 1.25rem;
+  padding: 1.625rem 1.875rem;
 }
 
-.guessLabel,
-.controlLabel {
-  font-size: 0.63rem;
-  font-weight: 600;
-  letter-spacing: 0.13em;
+.setupName {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.setupDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.setupStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2.75rem;
+}
+
+.statLabel {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #8a8f99;
+  margin-bottom: 0.375rem;
+}
+
+.statValue {
+  font-size: 1.4375rem;
+  font-weight: 700;
+  color: #e8e8ea;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The question panel ──────────────────────────────────── */
+.panel {
+  position: relative;
+  border: 1px solid rgba(245, 192, 154, 0.32);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(245, 192, 154, 0.06), rgba(245, 192, 154, 0.02));
+  padding: 1.875rem 2rem 2.125rem;
+  margin-bottom: 1.875rem;
+}
+
+.corner {
+  position: absolute;
+  top: 0.5625rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(245, 192, 154, 0.5);
+}
+
+.cornerTl { left: 0.5625rem; }
+.cornerTr { right: 0.5625rem; }
+
+.question {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #e8e8ea;
+  margin-bottom: 1.625rem;
+  text-wrap: pretty;
+}
+
+.guessGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.75rem;
+}
+
+.guessHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .guessValue {
   font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0.35rem 0 0.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.guessScale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b7078;
 }
 
 /* ── Range inputs ────────────────────────────────────────── */
@@ -102,6 +172,8 @@
   width: 100%;
   accent-color: #f5c09a;
   cursor: pointer;
+  /* keep the thumb a comfortable target */
+  height: 22px;
 }
 
 .range:disabled {
@@ -109,18 +181,145 @@
   cursor: default;
 }
 
+/* ── Actions ─────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.375rem;
+  margin-bottom: 3rem;
+}
+
+.primary,
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  appearance: none;
+  border: 0;
+  background: #f5c09a;
+  color: #0d0e10;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.875rem 1.625rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  min-height: 44px;
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+}
+
+.primary:hover:not(:disabled),
+.primaryLink:hover {
+  background: #f8d0b3;
+  color: #0d0e10;
+  text-decoration: none;
+}
+
+.primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ── Chart ───────────────────────────────────────────────── */
+.chartLive,
+.chartDimmed {
+  margin-bottom: 1.5rem;
+  transition: opacity 0.5s ease;
+}
+
+.chartDimmed {
+  opacity: 0.24;
+  pointer-events: none;
+  border-top: 1px solid rgba(245, 192, 154, 0.12);
+  padding-top: 2.125rem;
+}
+
+.chartHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.grid {
+  stroke: rgba(245, 192, 154, 0.1);
+  stroke-width: 1;
+}
+
+.highlight {
+  stroke: rgba(245, 192, 154, 0.34);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.axisText {
+  fill: #6b7078;
+  font-size: 11px;
+  font-family: inherit;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: #8a8f99;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* ── Readout ─────────────────────────────────────────────── */
+.readout {
+  font-size: 1rem;
+  color: #e8e8ea;
+  padding: 0.8125rem 1.125rem;
+  border-left: 2px solid #f5c09a;
+  background: rgba(245, 192, 154, 0.06);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1.75rem;
+}
+
+.readout strong {
+  color: #f5c09a;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Explore controls ────────────────────────────────────── */
 .controls {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
-  margin-top: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.875rem;
+  margin-bottom: 1.75rem;
 }
 
 .control {
   border: 1px solid rgba(245, 192, 154, 0.16);
   border-radius: 8px;
-  padding: 0.85rem 0.95rem 0.75rem;
+  padding: 0.9375rem 1.0625rem 0.75rem;
   background: rgba(245, 192, 154, 0.03);
 }
 
@@ -134,11 +333,11 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 0.5rem;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.5rem;
 }
 
 .controlValue {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: #e8e8ea;
   font-variant-numeric: tabular-nums;
@@ -146,48 +345,27 @@
 }
 
 .verdictOn,
-.verdictOff,
-.verdictGap {
-  font-size: 0.68rem;
+.verdictOff {
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  margin-top: 0.5rem;
+  margin-top: 0.4375rem;
   min-height: 1rem;
+  white-space: pre;
 }
 
-.verdictOn {
-  color: #5ba88a;
-}
+.verdictOn { color: #5ba88a; }
+.verdictOff { color: #8a8f99; }
 
-.verdictOff {
-  color: #8a8f99;
-}
-
-/* ── Readout ─────────────────────────────────────────────── */
-.readout {
-  font-size: 0.95rem;
-  color: #e8e8ea;
-  padding: 0.7rem 0.95rem;
-  border-left: 2px solid #f5c09a;
-  background: rgba(245, 192, 154, 0.06);
-  border-radius: 0 6px 6px 0;
-  margin-top: 0.75rem;
-}
-
-.readout strong {
-  color: #f5c09a;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ── Reveal / result panels ──────────────────────────────── */
+/* ── Result panels ───────────────────────────────────────── */
 .reveal,
 .passBox,
 .missBox,
 .errorBox {
-  margin-top: 1.25rem;
   border-radius: 8px;
-  padding: 1.1rem 1.2rem;
+  padding: 1.375rem 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .reveal {
@@ -203,156 +381,83 @@
 .missBox {
   border: 1px solid rgba(245, 192, 154, 0.3);
   background: rgba(245, 192, 154, 0.05);
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
   color: #e8e8ea;
-  line-height: 1.6;
 }
 
 .errorBox {
   border: 1px solid rgba(212, 100, 90, 0.45);
   background: rgba(212, 100, 90, 0.1);
-  font-size: 0.88rem;
+  font-size: 0.9375rem;
   color: #e8e8ea;
 }
 
-.revealHead {
-  font-size: 1.05rem;
+.revealHead,
+.passHead {
+  font-size: 1.1875rem;
   font-weight: 700;
-  color: #f5c09a;
-  margin-bottom: 0.6rem;
-  line-height: 1.4;
+  letter-spacing: -0.015em;
+  margin-bottom: 0.75rem;
+  line-height: 1.45;
 }
 
-.passBox .revealHead {
-  color: #5ba88a;
-}
+.revealHead { color: #f5c09a; }
+.revealHead strong { color: #e8e8ea; }
+.passHead { color: #5ba88a; }
 
 .revealBody {
-  font-size: 0.9rem;
-  line-height: 1.65;
+  font-size: 0.9375rem;
+  line-height: 1.7;
   color: #e8e8ea;
-  margin: 0 0 0.75rem;
-}
-
-.revealBody:last-of-type {
-  margin-bottom: 0;
-}
-
-/* ── Buttons ─────────────────────────────────────────────── */
-.primary {
-  appearance: none;
-  border: 1px solid rgba(245, 192, 154, 0.5);
-  background: rgba(245, 192, 154, 0.12);
-  color: #f5c09a;
-  font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 0.6rem 1.15rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.primary:hover:not(:disabled) {
-  background: rgba(245, 192, 154, 0.2);
-  border-color: #f5c09a;
-}
-
-.primary:disabled {
-  opacity: 0.5;
-  cursor: default;
+  margin: 0 0 1rem;
+  max-width: 46rem;
 }
 
 /* ── Checkpoint ──────────────────────────────────────────── */
 .checkGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  background: rgba(245, 192, 154, 0.12);
+  background: rgba(245, 192, 154, 0.14);
   border: 1px solid rgba(245, 192, 154, 0.22);
   border-radius: 10px;
   overflow: hidden;
-  margin: 1.25rem 0;
+  margin-bottom: 1.75rem;
 }
 
-.checkTarget {
+.checkCard {
   background: #141618;
-  padding: 1.1rem 1.25rem;
+  padding: 1.375rem 1.5rem;
   text-align: center;
 }
 
 .bigNumber {
-  font-size: 2.1rem;
-  font-weight: 700;
+  font-size: 2.125rem;
+  font-weight: 800;
   line-height: 1.25;
-  margin: 0.3rem 0;
+  margin: 0.375rem 0;
   color: #e8e8ea;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
 }
 
-/* ── Chart ───────────────────────────────────────────────── */
-.chartWrap {
-  margin: 1.25rem 0 0.25rem;
+.checkFoot {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b7078;
 }
 
-.chart {
-  width: 100%;
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-
-.grid {
-  stroke: rgba(245, 192, 154, 0.12);
-  stroke-width: 1;
-}
-
-.highlight {
-  stroke: rgba(245, 192, 154, 0.4);
-  stroke-width: 1;
-  stroke-dasharray: 4 4;
-}
-
-.axisText {
-  fill: #8a8f99;
-  font-size: 11px;
-  font-family: inherit;
-}
-
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.1rem;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: #8a8f99;
-}
-
-.legendItem {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.swatch {
-  display: inline-block;
-  width: 18px;
-  height: 3px;
-  border-radius: 2px;
-}
-
-/* ── Narrow screens ──────────────────────────────────────── */
-@media (max-width: 640px) {
+@media (max-width: 700px) {
+  .setupGrid,
   .guessGrid,
-  .checkGrid,
-  .controls {
-    grid-template-columns: 1fr;
+  .checkGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .stageTab {
-    font-size: 0.62rem;
-    letter-spacing: 0.06em;
+  .guessGrid {
+    gap: 1.75rem;
   }
 }

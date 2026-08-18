@@ -1,0 +1,153 @@
+import React, { useEffect, useState } from "react";
+import Link from "@docusaurus/Link";
+import AcademyShell from "@site/src/components/Academy/Shell";
+import { readCompletions } from "@site/src/components/Academy/lib/api";
+import { TOTAL_POINTS, TRACK, trackState } from "@site/src/components/Academy/lib/track";
+import styles from "./track.module.css";
+
+/**
+ * The track map: the academy's front door.
+ *
+ * The state on this page is the point. One lesson is live and carries the only
+ * primary action on the screen; everything else is finished or waiting. A reader
+ * should never have to work out what to do next, which is exactly what a
+ * documentation sidebar makes them do.
+ */
+export default function AcademyTrack() {
+  // Read after mount, never during render. These pages are prerendered at build
+  // time, so localStorage does not exist when this component first runs.
+  const [completed, setCompleted] = useState([]);
+
+  useEffect(() => {
+    setCompleted(Object.keys(readCompletions()));
+  }, []);
+
+  const lessons = trackState(completed);
+  const doneCount = completed.length;
+
+  return (
+    <AcademyShell
+      title="Alchemix Academy"
+      description="Learn how Alchemix works by driving the mechanisms yourself. Six lessons, no wallet, no sign-in."
+    >
+      <section className={styles.intro}>
+        <div className={styles.eyebrow}>Track one</div>
+        <h1 className={styles.headline}>Learn how a self-repaying loan actually behaves.</h1>
+        <p className={styles.sub}>
+          Six lessons. Each one hands you a working model, asks what you think it does,
+          then shows you. No wallet, no sign-in, nothing to install.
+        </p>
+      </section>
+
+      <section className={styles.track}>
+        {lessons.map((lesson, i) => (
+          <TrackRow key={lesson.id} lesson={lesson} last={i === lessons.length - 1} />
+        ))}
+      </section>
+
+      <section className={styles.reward}>
+        <div className={styles.rewardCard}>
+          <div className={styles.microLabel}>On finishing the track</div>
+          <div className={styles.rewardTitle}>A Discord role, and a place in the founding class</div>
+          <p className={styles.rewardBody}>
+            The founding class role can only be earned before season one opens. After
+            that it is closed for good.
+          </p>
+        </div>
+        <div className={styles.rewardCard}>
+          <div className={styles.microLabel}>Banked for season one</div>
+          <div className={styles.pointsRow}>
+            <span className={styles.points}>{doneCount * 100}</span>
+            <span className={styles.pointsOf}>of {TOTAL_POINTS} points</span>
+          </div>
+          <p className={styles.rewardBody}>
+            Points from lessons convert to season points when season one opens, so
+            graduates start ahead.
+          </p>
+        </div>
+      </section>
+    </AcademyShell>
+  );
+}
+
+function TrackRow({ lesson, last }) {
+  const { state } = lesson;
+
+  return (
+    <div className={styles.row}>
+      <div className={styles.rail}>
+        <span className={`${styles.node} ${styles[`node_${state}`]}`}>
+          {state === "done" ? <CheckIcon /> : null}
+          {state === "current" ? <span className={styles.dot} /> : null}
+          {state === "locked" ? <LockIcon /> : null}
+        </span>
+        {!last ? <span className={`${styles.line} ${styles[`line_${state}`]}`} /> : null}
+      </div>
+
+      <div className={`${styles.body} ${last ? styles.bodyLast : ""}`}>
+        {state === "current" ? (
+          <CurrentCard lesson={lesson} />
+        ) : (
+          <div className={state === "locked" ? styles.muted : undefined}>
+            <div className={`${styles.microLabel} ${state === "done" ? styles.doneLabel : ""}`}>
+              Lesson {lesson.n}
+              {state === "done" ? " · Complete" : ""}
+            </div>
+            <div className={styles.rowTitle}>{lesson.title}</div>
+            <div className={styles.rowBlurb}>{lesson.blurb}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CurrentCard({ lesson }) {
+  return (
+    <div className={styles.card}>
+      <span className={`${styles.corner} ${styles.cornerTl}`} />
+      <span className={`${styles.corner} ${styles.cornerTr}`} />
+
+      <div className={`${styles.microLabel} ${styles.currentLabel}`}>
+        Lesson {lesson.n} · Up next
+      </div>
+      <div className={styles.cardTitle}>{lesson.title}</div>
+      <p className={styles.cardBlurb}>{lesson.blurb}</p>
+
+      <div className={styles.cardActions}>
+        <Link to={lesson.slug} className={styles.cta}>
+          Start lesson
+          <ArrowIcon />
+        </Link>
+        <span className={styles.minutes}>About {lesson.minutes} minutes</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Icons. Drawn, never emoji, so they scale and recolour. ── */
+
+function CheckIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5ba88a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 12.5 L9.5 18 L20 6.5" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6b7078" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2" />
+      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h13M13 6l6 6-6 6" />
+    </svg>
+  );
+}

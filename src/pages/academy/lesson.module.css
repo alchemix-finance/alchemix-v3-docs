@@ -1,0 +1,226 @@
+/* ── Header left: back out of the lesson ─────────────────── */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.125rem;
+  color: #8a8f99;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.back:hover {
+  color: #f5c09a;
+  text-decoration: none;
+}
+
+.backLesson {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 15px;
+  background: rgba(245, 192, 154, 0.2);
+  flex-shrink: 0;
+}
+
+.backTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e8e8ea;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Header right: the stage stepper, which replaces the TOC ── */
+.stepper {
+  display: flex;
+  align-items: center;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5625rem;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.step:disabled {
+  cursor: default;
+}
+
+.stepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3125rem;
+  height: 1.3125rem;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 192, 154, 0.2);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: #6b7078;
+  flex-shrink: 0;
+}
+
+.stepLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #6b7078;
+  white-space: nowrap;
+}
+
+.step_on .stepNum {
+  border-color: #f5c09a;
+  background: rgba(245, 192, 154, 0.18);
+  color: #f5c09a;
+}
+
+.step_on .stepLabel {
+  color: #f5c09a;
+}
+
+.step_seen .stepNum {
+  border-color: rgba(91, 168, 138, 0.5);
+  color: #5ba88a;
+}
+
+.step_seen .stepLabel {
+  color: #8a8f99;
+}
+
+.step_seen:hover .stepLabel {
+  color: #e8e8ea;
+}
+
+.rule {
+  width: 1.625rem;
+  height: 1px;
+  background: rgba(245, 192, 154, 0.18);
+  flex-shrink: 0;
+}
+
+/* ── Lesson body: one column, no sidebar ─────────────────── */
+.body {
+  position: relative;
+  z-index: 1;
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: clamp(2.25rem, 5vw, 3.625rem) clamp(1.25rem, 4.4vw, 3.5rem) 5rem;
+}
+
+/* ── Wrap-up ─────────────────────────────────────────────── */
+.wrap {
+  margin-top: 3.5rem;
+  border-top: 1px solid rgba(245, 192, 154, 0.14);
+  padding-top: 2.5rem;
+}
+
+.wrapHead {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #e8e8ea;
+}
+
+.prose {
+  max-width: 46rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #a8adb6;
+}
+
+.prose h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #f5c09a;
+  margin: 2rem 0 0.75rem;
+}
+
+.prose p {
+  margin: 0 0 1.125rem;
+}
+
+.prose strong {
+  color: #e8e8ea;
+  font-weight: 700;
+}
+
+.prose ul {
+  padding-left: 1.25rem;
+  margin: 0 0 1.125rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+/* ── Go deeper ───────────────────────────────────────────── */
+.deeper {
+  margin-top: 2.5rem;
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;
+  background: #141618;
+  padding: 1.5rem 1.625rem;
+  max-width: 46rem;
+}
+
+.deeperLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.875rem;
+}
+
+.deeperList {
+  margin: 0;
+  padding-left: 1.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #8a8f99;
+}
+
+.deeperList li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 1080px) {
+  .backTitle {
+    display: none;
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .stepLabel {
+    display: none;
+  }
+
+  .step {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .rule {
+    width: 0.875rem;
+  }
+}

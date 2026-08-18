@@ -6,11 +6,21 @@ Not published. Notes for whoever deploys this.
 
 | Path | Purpose |
 | --- | --- |
-| `docs/academy/` | Lesson pages, served at `/academy` |
-| `sidebars/sidebarsAcademy.js` | Sidebar for the academy docs instance |
-| `src/components/Academy/` | Lesson interactives and the API client |
-| `docusaurus.config.js` | A fourth docs plugin instance, a navbar entry, `customFields.academyApiBase`, and `academy` added to the search plugin's `docsRouteBasePath` |
+| `src/pages/academy/` | The course UI: track map and lesson pages, served at `/academy` |
+| `src/components/Academy/` | The academy shell, lesson interactives, lesson prose (MDX), and the API client |
+| `docusaurus.config.js` | A navbar link, `customFields.academyApiBase`, and `indexPages: true` on the search plugin |
+| `src/theme/Root.js` | The docs reading-progress bar is skipped on `/academy`, which renders its own progress |
 | `vercel.json.example` | The API proxy. Rename to `vercel.json` once the engine host is known. |
+
+The Academy is **not** a docs plugin instance. It renders its own shell with no
+navbar, sidebar, footer or table of contents, because inheriting the docs layout
+made a course read as documentation. Docusaurus still supplies the html document,
+the global stylesheet and the fonts, so type and palette match the rest of the
+site exactly.
+
+Lesson prose is still Markdown. It lives in
+`src/components/Academy/lessons/*.mdx` and is imported into the page, so writing a
+lesson does not mean editing JSX.
 
 No serverless functions were added to this repo, and the build stays fully
 static. The only runtime dependency is the rewrite below.
