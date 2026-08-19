@@ -6,7 +6,7 @@ import Wrap from "@site/src/components/Academy/lessons/paceOfRepayment.mdx";
 export default function PaceOfRepaymentLesson() {
   return (
     <LessonPage
-      lessonId="l1-pace-of-repayment"
+      lessonId="pace-of-repayment"
       description="Work out what decides how fast an Alchemix loan clears, and what has no effect on it."
       Lab={PaceLab}
       Wrap={Wrap}

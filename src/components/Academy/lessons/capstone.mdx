@@ -1,0 +1,24 @@
+Two constraints decide the size of a position, and they are not independent.
+
+**How much you must borrow** is set by the price you can sell at. Raising a given
+amount of spendable capital means borrowing that amount divided by the market
+price, which is lesson 4.
+
+**How much collateral that borrow needs behind it** is set by the loss you have to
+be able to absorb. The highest starting LTV that survives a loss is 95% of whatever
+backing remains, which is lesson 5.
+
+Put together, the smallest deposit that does both is:
+
+> Deposit = (capital ÷ price) ÷ (95% × (1 − loss))
+
+The part worth carrying away is how the two interact. A worse discount means
+borrowing more to raise the same capital, which raises the LTV, which needs more
+collateral to survive the same loss. Neither number can be chosen in isolation.
+
+### Where to go next
+
+The [tutorials](/user/quick-start) walk through doing this in the interface, step by
+step, with the same numbers you have been working with here. The
+[risk considerations](/user/safety/risk-considerations) page covers what this track
+did not: bridge risk, oracle behaviour, and the specific ways a strategy can fail.

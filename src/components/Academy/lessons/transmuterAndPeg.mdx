@@ -1,0 +1,28 @@
+An alAsset trading below face value is not a broken peg. Every alAsset in
+circulation is backed by at least one unit of collateral inside the Alchemist, and
+the Transmuter will exchange it for the underlying at exactly 1:1 after a fixed
+term. alAssets are synthetic debt tokens, and the soft peg is held by that exchange
+mechanism rather than by minting and burning against the market.
+
+So a discount is a price on waiting, and the shorter the wait the more the same
+discount is worth:
+
+> Annualised = (discount ÷ price) × (52 ÷ weeks)
+
+Buying at 0.97 is a 3.09% gain over the term. Collected in 20 weeks rather than a
+year, that is about 8.04% annualised.
+
+### Two buyers, one effect
+
+- **The saver** deposits alAssets into the Transmuter, waits out the term, and
+  redeems 1:1. Waiting the full term carries no exit fee. Leaving the queue early
+  carries an early transmutation fee, which exists to stop queue hopping.
+- **The borrower** buys the same discounted alAssets to clear their own debt, since
+  1 alAsset cancels 1 of debt regardless of what they paid for it.
+
+Both are buying when the price is low, and that buying is what closes the gap. The
+Transmuter is what makes it rational rather than speculative: the 1:1 exchange is
+guaranteed at the end of a known wait.
+
+If you want the liquidity immediately instead, external pools such as Curve and
+Balancer trade alAssets at market price with no waiting and some slippage.

@@ -1,17 +1,27 @@
 /**
  * The track, as data.
  *
- * One source of truth for both the track map and the lesson pages, so a lesson's
- * number, title and blurb cannot drift between the two places they appear.
+ * One source of truth for the track map and every lesson page, so a lesson's
+ * number, title and blurb cannot drift between the places they appear.
  *
  * `id` must match the lesson id the season engine grades against
  * (`src/lib/academy/lessons.ts` there). A mismatch means a completed lesson never
- * shows as complete.
+ * shows as complete. Ids are topic slugs rather than numbers, so the order can
+ * change without invalidating stored progress.
  */
 export const TRACK = [
   {
     n: 1,
-    id: "l1-pace-of-repayment",
+    id: "opening-a-position",
+    slug: "/academy/opening-a-position",
+    title: "What you actually get",
+    blurb: "What a deposit turns into, what borrowing mints, and why you cannot take it all back.",
+    minutes: 7,
+    ready: true,
+  },
+  {
+    n: 2,
+    id: "pace-of-repayment",
     slug: "/academy/pace-of-repayment",
     title: "The pace of repayment",
     blurb: "What sets the pace a loan clears at, and what has no effect on it.",
@@ -19,8 +29,8 @@ export const TRACK = [
     ready: true,
   },
   {
-    n: 2,
-    id: "l2-where-yield-comes-from",
+    n: 3,
+    id: "where-yield-comes-from",
     slug: "/academy/where-yield-comes-from",
     title: "Where the yield comes from",
     blurb: "Where your collateral works while the loan runs, and the ceilings the DAO puts on risk.",
@@ -28,36 +38,40 @@ export const TRACK = [
     ready: true,
   },
   {
-    n: 3,
-    id: "l3-ltv-and-redemption-pressure",
-    title: "LTV and redemption pressure",
-    blurb: "How your LTV changes your exposure to redemptions, with no price liquidation involved.",
-    minutes: 10,
-    ready: false,
-  },
-  {
     n: 4,
-    id: "l4-alassets-and-the-peg",
-    title: "alAssets and the peg",
-    blurb: "How the Transmuter closes the gap when an alAsset trades below face value.",
-    minutes: 9,
-    ready: false,
+    id: "cost-of-borrowing",
+    slug: "/academy/cost-of-borrowing",
+    title: "What borrowing costs",
+    blurb: "There is no interest rate, so working out what you pay instead, and when.",
+    minutes: 8,
+    ready: true,
   },
   {
     n: 5,
-    id: "l5-redemptions-and-earmarking",
-    title: "Redemptions and earmarking",
-    blurb: "Where your debt sits in the redemption queue, and why earmarked debt is repaid with MYT.",
+    id: "ltv-and-risk",
+    slug: "/academy/ltv-and-risk",
+    title: "LTV and what can go wrong",
+    blurb: "Why a price move cannot liquidate you, and what actually can.",
     minutes: 9,
-    ready: false,
+    ready: true,
   },
   {
     n: 6,
-    id: "l6-capstone",
+    id: "transmuter-and-peg",
+    slug: "/academy/transmuter-and-peg",
+    title: "The Transmuter and the peg",
+    blurb: "How a discount on an alAsset closes, and how to be the one who closes it.",
+    minutes: 9,
+    ready: true,
+  },
+  {
+    n: 7,
+    id: "capstone",
+    slug: "/academy/capstone",
     title: "Capstone",
-    blurb: "Take a position through a full cycle, from deposit to withdrawal.",
-    minutes: 15,
-    ready: false,
+    blurb: "One position, sized to raise what you need and survive what is coming.",
+    minutes: 10,
+    ready: true,
   },
 ];
 
@@ -70,9 +84,8 @@ export function lessonById(id) {
 /**
  * Resolve each lesson to one of three display states.
  *
- * "current" is the first unfinished lesson that is actually built. Only one
- * lesson is ever current, because the track map's whole job is to leave no doubt
- * about what to do next.
+ * "current" is the first unfinished lesson that is built. Only one lesson is ever
+ * current, because the track map's job is to leave no doubt about what to do next.
  */
 export function trackState(completedIds) {
   const done = new Set(completedIds);

@@ -6,7 +6,7 @@ import Wrap from "@site/src/components/Academy/lessons/whereYieldComesFrom.mdx";
 export default function WhereYieldComesFromLesson() {
   return (
     <LessonPage
-      lessonId="l2-where-yield-comes-from"
+      lessonId="where-yield-comes-from"
       description="See where your collateral works while a loan runs, and the ceilings the DAO puts on how much risk the vault may hold."
       Lab={MixLab}
       Wrap={Wrap}

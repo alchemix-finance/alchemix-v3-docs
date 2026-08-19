@@ -1,0 +1,30 @@
+Alchemix positions are not closed by price movement. alETH is backed by ETH and
+alUSD by USDC, so collateral and debt move together and the ratio between them does
+not change when the market does. A 40% drawdown in ETH leaves an ETH-denominated
+position exactly where it was.
+
+Two thresholds matter, and they do different jobs:
+
+- **90%, the borrowing cap** – Reaching it stops further borrowing. The position
+  stays open and keeps earning.
+- **95%, the liquidation threshold** – Crossing it triggers a liquidation. Only the
+  minimum needed to restore a healthy ratio is liquidated, and the rest of the
+  position is untouched.
+
+### What can actually move you towards it
+
+A loss inside the Mix-Yield Token. If a strategy is exploited or reports negative
+returns, the backing behind every position falls, and the liquidation marker slides
+towards you rather than you sliding towards it.
+
+If backing falls by a given amount, the same debt is left standing against less
+collateral. The highest starting LTV that survives is therefore the liquidation
+threshold applied to whatever backing remains:
+
+> Survivable LTV = 95% × (1 − loss)
+
+A 12% loss leaves 83.6%. A 20% loss leaves 76%.
+
+This is what the risk caps in lesson 3 are protecting. By limiting how much of the
+vault may sit in higher risk strategies, the DAO limits how large a loss is
+plausible, which is what makes a chosen LTV a reasoned decision rather than a guess.

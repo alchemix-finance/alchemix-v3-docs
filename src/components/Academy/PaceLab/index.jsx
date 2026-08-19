@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Link from "@docusaurus/Link";
+import { apiBase } from "../lib/api";
 import styles from "../lesson.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
-import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
 import useElementWidth from "../lib/useElementWidth";
-import LocalNotice from "../LocalNotice";
+import { Checkpoint } from "../kit";
 
 /**
- * Lesson 1: the pace of repayment.
+ * Lesson 2: the pace of repayment.
  *
  * Three stages. The learner commits to a prediction before seeing anything, then
  * explores freely, then answers a server-set challenge to complete the lesson.
@@ -37,7 +36,33 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
 
   if (stage === "predict") return <Predict onDone={() => onStage("explore")} />;
   if (stage === "explore") return <Explore onDone={() => onStage("checkpoint")} />;
-  return <Checkpoint base={base} lessonId={lessonId} done={done} onPass={onComplete} />;
+
+  return (
+    <Checkpoint
+      base={base}
+      lessonId={lessonId}
+      done={done}
+      onPass={onComplete}
+      headline="Work out the redemption rate."
+      unit="pct"
+      targetOf={(f) => f.targetPct}
+      computeOf={(f, v) =>
+        debtRemainingPct({
+          collateral: f.collateral,
+          debt: f.debt,
+          yieldAnnual: f.yieldAnnual,
+          redemptionAnnual: v,
+          months: f.months,
+        })
+      }
+      controlLabel="Redemption rate"
+      controlDisplay={(v) => `${(v * 100).toFixed(1)}% a year`}
+      targetFoot="debt still outstanding"
+      landingFoot="adjust until the two match"
+      passTitle="Lesson 2 complete."
+      passBody="You worked the mechanism rather than recalling it. The pace of repayment is set by the protocol, and now you can read it."
+    />
+  );
 }
 
 /* ── Stage 1: predict ────────────────────────────────────── */
@@ -328,167 +353,6 @@ function Control({ label, display, min, max, step, value, onChange, verdict, acc
         <div className={accent ? styles.verdictOn : styles.verdictOff}>{verdict ?? " "}</div>
       ) : null}
     </div>
-  );
-}
-
-/* ── Stage 3: checkpoint ─────────────────────────────────── */
-
-function Checkpoint({ base, lessonId, done, onPass }) {
-  const [challenge, setChallenge] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [rate, setRate] = useState(0.8);
-  const [result, setResult] = useState(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  const load = useCallback(() => {
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    fetchChallenge(base, lessonId)
-      .then((c) => {
-        setChallenge(c);
-        const s = c.controls.slider;
-        setRate(s.min + (s.max - s.min) / 2);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [base, lessonId]);
-
-  useEffect(load, [load]);
-
-  const landing = useMemo(() => {
-    if (!challenge) return null;
-    const { collateral, debt, yieldAnnual, months } = challenge.params.fields;
-    return debtRemainingPct({ collateral, debt, yieldAnnual, redemptionAnnual: rate, months });
-  }, [challenge, rate]);
-
-  async function onSubmit() {
-    setSubmitting(true);
-    setError(null);
-    try {
-      const res = await submitAnswer(base, {
-        challenge: challenge.challenge,
-        params: challenge.params,
-        answer: rate,
-      });
-      setResult(res);
-      if (res.passed && res.completion) {
-        saveCompletion(lessonId, res.completion);
-        onPass();
-      }
-    } catch (e) {
-      setError(e.message);
-      // An expired challenge is the common case, and it is recoverable.
-      if (e.code === "bad_challenge") load();
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <>
-        <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-        <p className={styles.sub}>Preparing your question...</p>
-      </>
-    );
-  }
-
-  if (error && !challenge) {
-    // A learner does not need the server's wording, which is written for an
-    // operator. Tell them what it means for them, and keep the detail secondary.
-    return (
-      <>
-        <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-        <h1 className={styles.headline}>The checkpoint is not answering.</h1>
-        <p className={styles.sub}>
-          Everything you worked out in this lesson still stands. Only the graded
-          question needs the server, so try again in a moment.
-        </p>
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={load}>Try again</button>
-        </div>
-        <p className={styles.errorDetail}>{error}</p>
-      </>
-    );
-  }
-
-  const passed = result?.passed || done;
-  const tol = result?.tolerance ?? 1;
-  const target = challenge.params.fields.targetPct;
-  const onTarget = landing != null && Math.abs(landing - target) <= tol;
-
-  return (
-    <>
-      <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-      <h1 className={styles.headline}>Work out the redemption rate.</h1>
-      <p className={styles.sub}>{challenge.prompt}</p>
-      <LocalNotice show={challenge.local} />
-      <p className={styles.hint}>
-        Every learner is given different figures, so an answer shared with you will not
-        fit your version of the question.
-      </p>
-
-      <div className={styles.checkGrid}>
-        <div className={styles.checkCard}>
-          <div className={styles.microLabel}>Target</div>
-          <div className={styles.bigNumber}>{target.toFixed(1)}%</div>
-          <div className={styles.checkFoot}>after {challenge.params.fields.months} months</div>
-        </div>
-        <div className={styles.checkCard}>
-          <div className={styles.microLabel}>Your rate lands at</div>
-          <div className={styles.bigNumber} style={{ color: onTarget ? "#5ba88a" : "#f5c09a" }}>
-            {landing == null ? "-" : `${landing.toFixed(1)}%`}
-          </div>
-          <div className={styles.checkFoot}>adjust until the two match</div>
-        </div>
-      </div>
-
-      <div className={styles.controls}>
-        <Control
-          label="Redemption rate"
-          display={`${(rate * 100).toFixed(1)}% a year`}
-          min={challenge.controls.slider.min}
-          max={challenge.controls.slider.max}
-          step={challenge.controls.slider.step}
-          value={rate}
-          onChange={setRate}
-          accent
-        />
-      </div>
-
-      {!passed ? (
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={onSubmit} disabled={submitting}>
-            {submitting ? "Checking..." : "Submit answer"}
-          </button>
-        </div>
-      ) : null}
-
-      {error && challenge ? <p className={styles.errorBox}>{error}</p> : null}
-
-      {result && !result.passed ? (
-        <div className={styles.missBox}>
-          That rate leaves {result.actual}% outstanding. The target is {result.target}%,
-          accepted within {result.tolerance} percentage point. Adjust the rate and submit again.
-        </div>
-      ) : null}
-
-      {passed ? (
-        <div className={styles.passBox}>
-          <div className={styles.passHead}>Lesson 1 complete.</div>
-          <p className={styles.revealBody}>
-            You worked the mechanism rather than recalling it. Your progress is saved in
-            this browser.
-          </p>
-          <Link to="/academy" className={styles.primaryLink}>
-            Back to the track
-            <ArrowIcon />
-          </Link>
-        </div>
-      ) : null}
-    </>
   );
 }
 

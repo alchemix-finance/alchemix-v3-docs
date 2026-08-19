@@ -1,0 +1,23 @@
+A deposit does not sit in the vault as the asset you put in. It is wrapped into the
+Mix-Yield Token, which starts earning from the moment it is minted, and your claim
+on the whole arrangement is represented by a position NFT held in your wallet.
+
+Borrowing against it mints new alAssets to you at face value. Inside Alchemix, 1
+alAsset always cancels exactly 1 unit of debt, whatever the open market thinks it
+is worth.
+
+### The cap works in both directions
+
+You may borrow up to **90%** of your collateral's face value. Reaching that ceiling
+stops further borrowing and nothing else: the position stays open, the collateral
+keeps earning, and nothing is sold.
+
+Read the other way, the same rule is your withdrawal limit. Any collateral not
+needed to hold the remaining debt under the cap is free to leave at any time. That
+is why a position with 10,000 deposited and 5,000 borrowed does not have 5,000
+available to withdraw. The 5,000 of debt needs about 5,556 of collateral standing
+behind it at the cap, leaving roughly 4,444.
+
+Both numbers are shown in the vault interface, so nothing here has to be worked out
+by hand. Knowing where they come from is what stops the smaller one being a
+surprise.

@@ -237,7 +237,7 @@ function Explore({ onDone }) {
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
 
-      {atBest ? (
+      {atBest || sawBreach ? (
         <div className={styles.reveal}>
           <div className={styles.revealHead}>
             {best.toFixed(2)}% is the most this vault can yield legally.
@@ -272,6 +272,13 @@ function Explore({ onDone }) {
 }
 
 /* ── Stage 3: checkpoint ─────────────────────────────────── */
+
+/**
+ * This lesson keeps its own checkpoint rather than using the shared one, because
+ * the answer is produced by two controls working against each other rather than a
+ * single slider. The allocator the learner already used in stage 2 is the natural
+ * control, so the checkpoint reuses that instead of a generic one.
+ */
 
 function Checkpoint({ base, lessonId, done, onPass }) {
   const [challenge, setChallenge] = useState(null);
