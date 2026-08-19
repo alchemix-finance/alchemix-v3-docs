@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="transmuter-and-peg"
-      description="Learn why an alAsset below face value is a price rather than a failure, and who closes the gap."
+      description="Learn why a discount on an alAsset is a price on waiting, and who closes the gap."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
