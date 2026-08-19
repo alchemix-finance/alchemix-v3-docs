@@ -219,8 +219,7 @@ function Try({ onDone }) {
       <Notes>
         <Note label="The price control">
           Drag it as far as you like. The bar does not move, because your debt moved with
-          your collateral. This is not a simplification in the lesson: it is how the
-          position behaves.
+          your collateral. That is how the real position behaves.
         </Note>
         <Note label="The loss control">
           This is a loss inside the strategies your deposit is invested in, from something

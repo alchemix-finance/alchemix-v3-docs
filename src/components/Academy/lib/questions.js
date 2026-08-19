@@ -59,7 +59,7 @@ export const QUESTIONS = {
       explain: [
         "Right. That is the point of the design: the deposit you borrowed against is the thing paying the loan down.",
         "It keeps earning. If it stopped, there would be nothing to pay the loan down with.",
-        "Nothing is sold. You keep your deposit, which is the reason to borrow rather than sell in the first place.",
+        "Nothing is sold. You keep your deposit, which is the point of borrowing against it in the first place.",
         "Your deposit is not lent to anyone. It stays yours and keeps earning in the vault.",
       ],
     },
@@ -78,7 +78,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Choosing to mint more alAssets is the only thing that raises what you owe.",
-        "Time alone lowers the balance rather than raising it. There is no interest accruing.",
+        "Time alone lowers the balance. No interest accrues, so nothing is pushing it up.",
         "A price move does not change what you owe. Your debt is recorded in alUSD or alETH, not in dollars of collateral.",
         "Yield works in your favour. It is part of what makes the position clear its balance.",
       ],
@@ -157,7 +157,7 @@ export const QUESTIONS = {
       options: [
         "Your debt and your collateral are the same kind of asset, so they move together",
         "The protocol pauses positions during volatile markets",
-        "Alchemix prices collateral from a fixed rate rather than the market",
+        "Alchemix uses a fixed price for collateral instead of the market price",
         "An insurance fund absorbs price losses on behalf of borrowers",
       ],
       correct: 0,
@@ -200,7 +200,7 @@ export const QUESTIONS = {
         "Right. It is a governance-set duration, adjusted over time, so check the current term in the app before you deposit.",
         "Deposit size does not change the term. Everyone in the queue waits the same governance-set duration.",
         "The market price does not set the term. Governance does.",
-        "Deposits do queue, but the wait is a set duration rather than an open-ended position in a line.",
+        "Deposits do queue, but the wait has a set length. Your place in line does not decide it.",
       ],
     },
     {
