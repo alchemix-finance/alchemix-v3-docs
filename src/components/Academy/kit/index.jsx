@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "@docusaurus/Link";
 import styles from "../lesson.module.css";
 import { fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
+import useElementWidth from "../lib/useElementWidth";
 import LocalNotice from "../LocalNotice";
 
 /**
@@ -205,6 +206,8 @@ export function Checkpoint({
   controlDisplay,
   targetFoot,
   landingFoot = "adjust until the two match",
+  /* Beginner lessons label this stage "Check", which is less forbidding. */
+  stageLabel = "Checkpoint",
   passTitle,
   passBody,
   children,
@@ -263,7 +266,7 @@ export function Checkpoint({
 
   if (loading) {
     return (
-      <Stage eyebrow="Stage 3 · Checkpoint">
+      <Stage eyebrow={`Stage 3 · ${stageLabel}`}>
         <Sub>Preparing your question...</Sub>
       </Stage>
     );
@@ -271,7 +274,7 @@ export function Checkpoint({
 
   if (error && !challenge) {
     return (
-      <Stage eyebrow="Stage 3 · Checkpoint" headline="The checkpoint is not answering.">
+      <Stage eyebrow={`Stage 3 · ${stageLabel}`} headline="The checkpoint is not answering.">
         <Sub>
           Everything you worked out in this lesson still stands. Only the graded question
           needs the server, so try again in a moment.
@@ -290,7 +293,7 @@ export function Checkpoint({
   const slider = challenge.controls?.slider ?? { min: 0, max: 100, step: 1 };
 
   return (
-    <Stage eyebrow="Stage 3 · Checkpoint" headline={headline}>
+    <Stage eyebrow={`Stage 3 · ${stageLabel}`} headline={headline}>
       <Sub>{challenge.prompt}</Sub>
       <LocalNotice show={challenge.local} />
       <Hint>
@@ -359,3 +362,318 @@ export function Checkpoint({
     </Stage>
   );
 }
+
+/* ── Beginner explainers ─────────────────────────────────── */
+
+/**
+ * A labelled fact.
+ *
+ * The beginner lessons carry more plain statement and less live model than the
+ * advanced ones, so they need somewhere to put a sentence that matters without
+ * dressing it up as a readout of something.
+ */
+export function Notes({ children }) {
+  return <div className={styles.notes}>{children}</div>;
+}
+
+export function Note({ label, children }) {
+  return (
+    <div className={styles.note}>
+      <span className={styles.noteLabel}>{label}</span>
+      <span>{children}</span>
+    </div>
+  );
+}
+
+/* ── Choice checkpoint ───────────────────────────────────── */
+
+const KEYS = ["A", "B", "C", "D", "E"];
+
+/**
+ * The graded stage, for lessons whose answer is a statement rather than a number.
+ *
+ * Every beginner lesson has to be provable without algebra. Asking which of four
+ * statements is true tests the same understanding as inverting a formula for it,
+ * and it tests it on someone who has never inverted a formula.
+ *
+ * The options arrive from the server in this learner's order, and the answer is
+ * submitted as the index of the one picked. Nothing about which option is right
+ * is decided here, which is what keeps grading server side.
+ *
+ * A miss explains the option that was picked and leaves the rest alone, so the
+ * learner has something to think about rather than a second guess to make.
+ */
+export function ChoiceCheckpoint({
+  base,
+  lessonId,
+  done,
+  onPass,
+  headline,
+  passTitle,
+  passBody,
+}) {
+  const [challenge, setChallenge] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [picked, setPicked] = useState(null);
+  const [result, setResult] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const load = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setPicked(null);
+    fetchChallenge(base, lessonId)
+      .then(setChallenge)
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
+  }, [base, lessonId]);
+
+  useEffect(load, [load]);
+
+  async function onSubmit() {
+    if (picked == null) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await submitAnswer(base, {
+        challenge: challenge.challenge,
+        params: challenge.params,
+        answer: picked,
+      });
+      setResult(res);
+      if (res.passed && res.completion) {
+        saveCompletion(lessonId, res.completion);
+        onPass();
+      }
+    } catch (e) {
+      setError(e.message);
+      if (e.code === "bad_challenge") load();
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <Stage eyebrow="Stage 3 · Check">
+        <Sub>Preparing your question...</Sub>
+      </Stage>
+    );
+  }
+
+  if (error && !challenge) {
+    return (
+      <Stage eyebrow="Stage 3 · Check" headline="The checkpoint is not answering.">
+        <Sub>
+          Everything you worked through in this lesson still stands. Only the graded
+          question needs the server, so try again in a moment.
+        </Sub>
+        <Actions>
+          <button type="button" className={styles.primary} onClick={load}>Try again</button>
+        </Actions>
+        <p className={styles.errorDetail}>{error}</p>
+      </Stage>
+    );
+  }
+
+  const passed = result?.passed || done;
+  const choices = challenge.controls?.choices ?? [];
+  // Only revealed once the answer is settled, so a miss does not hand it over.
+  const correct = passed && typeof result?.target === "number" ? result.target : null;
+  const settled = passed;
+
+  return (
+    <Stage eyebrow="Stage 3 · Check" headline={headline}>
+      <Sub>{challenge.prompt}</Sub>
+      <LocalNotice show={challenge.local} />
+      <Hint>
+        The options are ordered differently for every learner, so an answer shared with
+        you will not match your version.
+      </Hint>
+
+      <div className={styles.choices} role="radiogroup" aria-label="Answer options">
+        {choices.map((text, i) => {
+          const state =
+            correct === i ? styles.choiceRight
+            : result && !result.passed && picked === i ? styles.choiceWrong
+            : picked === i ? styles.choiceOn
+            : "";
+          return (
+            <button
+              key={text}
+              type="button"
+              role="radio"
+              aria-checked={picked === i}
+              className={`${styles.choice} ${state}`}
+              disabled={settled}
+              onClick={() => {
+                setPicked(i);
+                // A new selection is a new attempt, so the old verdict goes away.
+                if (result && !result.passed) setResult(null);
+              }}
+            >
+              <span className={styles.choiceKey}>{KEYS[i] ?? i + 1}</span>
+              <span>{text}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {!passed ? (
+        <Actions aside={picked == null ? "Pick an option to answer." : null}>
+          <button
+            type="button"
+            className={styles.primary}
+            onClick={onSubmit}
+            disabled={submitting || picked == null}
+          >
+            {submitting ? "Checking..." : "Submit answer"}
+          </button>
+        </Actions>
+      ) : null}
+
+      {error && challenge ? <p className={styles.errorDetail}>{error}</p> : null}
+
+      {result && !result.passed ? (
+        <div className={styles.missBox}>
+          {result.feedback ?? "Not that one. Read the options again and try another."}
+        </div>
+      ) : null}
+
+      {passed ? (
+        <div className={styles.passBox}>
+          <div className={styles.passHead}>{passTitle}</div>
+          {result?.feedback ? <Body>{result.feedback}</Body> : null}
+          <Body>{passBody}</Body>
+          <Link to="/academy" className={styles.primaryLink}>
+            Back to the track
+            <Arrow />
+          </Link>
+        </div>
+      ) : null}
+    </Stage>
+  );
+}
+
+/* ── Charts ──────────────────────────────────────────────── */
+
+/**
+ * A small line chart, sized to whatever width it is given.
+ *
+ * The beginner lessons show shapes rather than values: a balance going down, a
+ * balance going up, a bar filling towards a marker. So this takes series in the
+ * caller's own units and handles only the drawing.
+ *
+ * The viewBox tracks the measured width rather than a fixed number. A fixed
+ * viewBox on a phone squeezes the plot and leaves the labels overlapping, which
+ * is the sort of thing that makes a lesson feel broken rather than dense.
+ */
+export function LineChart({
+  series,
+  xMax,
+  yMax,
+  xLabel,
+  yTicks = 3,
+  xTicks = 4,
+  formatY = (v) => String(Math.round(v)),
+  formatX = (v) => String(Math.round(v)),
+  label = "Chart",
+  markLine,
+}) {
+  const [ref, width] = useElementWidth();
+
+  const narrow = width < 480;
+  const w = Math.max(width, 260);
+  const h = narrow ? 190 : 240;
+  const m = { top: 18, right: 14, bottom: 34, left: narrow ? 46 : 58 };
+
+  const plotW = Math.max(w - m.left - m.right, 10);
+  const plotH = Math.max(h - m.top - m.bottom, 10);
+
+  const x = (v) => m.left + (xMax > 0 ? v / xMax : 0) * plotW;
+  const y = (v) => m.top + (1 - (yMax > 0 ? v / yMax : 0)) * plotH;
+
+  const path = (points) =>
+    points
+      .map((p, i) => `${i === 0 ? "M" : "L"}${x(p.x).toFixed(2)},${y(p.y).toFixed(2)}`)
+      .join(" ");
+
+  const ys = Array.from({ length: yTicks + 1 }, (_, i) => (yMax / yTicks) * i);
+  const xs = Array.from({ length: xTicks + 1 }, (_, i) => (xMax / xTicks) * i);
+
+  return (
+    <div ref={ref}>
+      {/* Nothing to draw until measured. Rendering at a guessed width first would
+          show the chart jumping into place on every load. */}
+      {width > 0 ? (
+        <svg viewBox={`0 0 ${w} ${h}`} className={styles.chart} role="img" aria-label={label}>
+          {ys.map((v) => (
+            <g key={v}>
+              <line x1={m.left} x2={w - m.right} y1={y(v)} y2={y(v)} className={styles.grid} />
+              <text x={m.left - 8} y={y(v) + 4} className={styles.axisText} textAnchor="end">
+                {formatY(v)}
+              </text>
+            </g>
+          ))}
+
+          {xs.map((v) => (
+            <text key={v} x={x(v)} y={h - 16} className={styles.axisText} textAnchor="middle">
+              {formatX(v)}
+            </text>
+          ))}
+          {xLabel ? (
+            <text x={w - m.right} y={h - 2} className={styles.axisText} textAnchor="end">
+              {xLabel}
+            </text>
+          ) : null}
+
+          {markLine != null ? (
+            <line
+              x1={m.left}
+              x2={w - m.right}
+              y1={y(markLine)}
+              y2={y(markLine)}
+              className={styles.highlight}
+            />
+          ) : null}
+
+          {series.map((s) => (
+            <path
+              key={s.id}
+              d={path(s.points)}
+              fill="none"
+              stroke={s.color}
+              strokeWidth={s.width ?? 2.5}
+              strokeDasharray={s.dashed ? "7 6" : undefined}
+              strokeLinecap="round"
+            />
+          ))}
+        </svg>
+      ) : (
+        <div className={styles.chartPlaceholder} />
+      )}
+    </div>
+  );
+}
+
+export function Legend({ items }) {
+  return (
+    <div className={styles.legend}>
+      {items.map((i) => (
+        <span key={i.label} className={styles.legendItem}>
+          <span className={styles.swatch} style={{ background: i.color }} />
+          {i.label}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** The stage labels the beginner track uses. Plainer than the advanced three. */
+export const BEGINNER_STAGES = [
+  { id: "predict", label: "Learn" },
+  { id: "explore", label: "Try" },
+  { id: "checkpoint", label: "Check" },
+];

@@ -1,5 +1,5 @@
 /**
- * The track, as data.
+ * The tracks, as data.
  *
  * One source of truth for the track map and every lesson page, so a lesson's
  * number, title and blurb cannot drift between the places they appear.
@@ -8,77 +8,152 @@
  * (`src/lib/academy/lessons.ts` there). A mismatch means a completed lesson never
  * shows as complete. Ids are topic slugs rather than numbers, so the order can
  * change without invalidating stored progress.
+ *
+ * Two tracks, and the split between them is deliberate. The beginner track
+ * covers what a user does with the product and asks for at most one arithmetic
+ * step. The advanced track goes after the mechanism underneath: inverting a
+ * projection, optimising an allocation, pricing a discount. Both are worth
+ * teaching. Teaching them in one track is what made the first version
+ * overwhelming.
  */
-export const TRACK = [
+
+export const BEGINNER = [
   {
     n: 1,
-    id: "opening-a-position",
-    slug: "/academy/opening-a-position",
-    title: "What you actually get",
-    blurb: "What a deposit turns into, what borrowing mints, and why you cannot take it all back.",
-    minutes: 7,
+    id: "what-alchemix-does",
+    slug: "/academy/what-alchemix-does",
+    title: "What Alchemix does",
+    blurb: "Three things the protocol offers, and the one that surprises people.",
+    minutes: 5,
     ready: true,
   },
   {
     n: 2,
-    id: "pace-of-repayment",
-    slug: "/academy/pace-of-repayment",
-    title: "The pace of repayment",
-    blurb: "What sets the pace a loan clears at, and what has no effect on it.",
-    minutes: 8,
+    id: "your-deposit",
+    slug: "/academy/your-deposit",
+    title: "Your deposit and what it earns",
+    blurb: "Where your money goes when you deposit it, and who decides what it does.",
+    minutes: 6,
     ready: true,
   },
   {
     n: 3,
-    id: "where-yield-comes-from",
-    slug: "/academy/where-yield-comes-from",
-    title: "Where the yield comes from",
-    blurb: "Where your collateral works while the loan runs, and the ceilings the DAO puts on risk.",
-    minutes: 8,
+    id: "borrowing",
+    slug: "/academy/borrowing",
+    title: "Borrowing against your deposit",
+    blurb: "How much you can borrow, what you receive, and what it costs to hold.",
+    minutes: 6,
     ready: true,
   },
   {
     n: 4,
-    id: "cost-of-borrowing",
-    slug: "/academy/cost-of-borrowing",
-    title: "What borrowing costs",
-    blurb: "There is no interest rate, so working out what you pay instead, and when.",
-    minutes: 8,
+    id: "self-repaying",
+    slug: "/academy/self-repaying",
+    title: "The loan repays itself",
+    blurb: "Watch a balance go down on its own, and see what would push it back up.",
+    minutes: 7,
     ready: true,
   },
   {
     n: 5,
-    id: "ltv-and-risk",
-    slug: "/academy/ltv-and-risk",
-    title: "LTV and what can go wrong",
-    blurb: "Why a price move cannot liquidate you, and what actually can.",
-    minutes: 9,
+    id: "getting-money-back",
+    slug: "/academy/getting-money-back",
+    title: "Getting your money back",
+    blurb: "Two ways out, and why one of them gives you less than you expect.",
+    minutes: 7,
     ready: true,
   },
   {
     n: 6,
-    id: "transmuter-and-peg",
-    slug: "/academy/transmuter-and-peg",
-    title: "The Transmuter and the peg",
-    blurb: "How a discount on an alAsset closes, and how to be the one who closes it.",
-    minutes: 9,
+    id: "what-can-go-wrong",
+    slug: "/academy/what-can-go-wrong",
+    title: "What can go wrong",
+    blurb: "The risk that does not exist here, and the one that does.",
+    minutes: 7,
     ready: true,
   },
   {
     n: 7,
+    id: "the-transmuter",
+    slug: "/academy/the-transmuter",
+    title: "The Transmuter",
+    blurb: "Turn alAssets back into the real thing at 1:1, once you have waited.",
+    minutes: 6,
+    ready: true,
+  },
+];
+
+/**
+ * The advanced track.
+ *
+ * Built and graded, and held back from the track map until its copy has had the
+ * same tone pass the beginner track was written under. Listed here so the map
+ * can show what is coming next.
+ */
+export const ADVANCED = [
+  {
+    n: 1,
+    id: "pace-of-repayment",
+    slug: "/academy/pace-of-repayment",
+    title: "The pace of repayment",
+    blurb: "What sets the speed a loan clears at, and what has no effect on it.",
+    minutes: 8,
+    ready: false,
+  },
+  {
+    n: 2,
+    id: "where-yield-comes-from",
+    slug: "/academy/where-yield-comes-from",
+    title: "Inside the Mix-Yield Token",
+    blurb: "The strategy mix, and the ceilings the DAO puts on risk.",
+    minutes: 8,
+    ready: false,
+  },
+  {
+    n: 3,
+    id: "cost-of-borrowing",
+    slug: "/academy/cost-of-borrowing",
+    title: "What borrowing really costs",
+    blurb: "There is no interest rate, so working out what you pay instead, and when.",
+    minutes: 8,
+    ready: false,
+  },
+  {
+    n: 4,
+    id: "ltv-and-risk",
+    slug: "/academy/ltv-and-risk",
+    title: "Choosing an LTV",
+    blurb: "How far a position can fall before the threshold reaches it.",
+    minutes: 9,
+    ready: false,
+  },
+  {
+    n: 5,
+    id: "transmuter-and-peg",
+    slug: "/academy/transmuter-and-peg",
+    title: "The peg and the discount",
+    blurb: "How a discount on an alAsset closes, and how to be the one who closes it.",
+    minutes: 9,
+    ready: false,
+  },
+  {
+    n: 6,
     id: "capstone",
     slug: "/academy/capstone",
     title: "Capstone",
     blurb: "One position, sized to raise what you need and survive what is coming.",
     minutes: 10,
-    ready: true,
+    ready: false,
   },
 ];
 
-export const TOTAL_POINTS = TRACK.length * 100;
+/** The track graduation is measured against. */
+export const TRACK = BEGINNER;
+
+export const TOTAL_POINTS = BEGINNER.length * 100;
 
 export function lessonById(id) {
-  return TRACK.find((l) => l.id === id) ?? null;
+  return [...BEGINNER, ...ADVANCED].find((l) => l.id === id) ?? null;
 }
 
 /**
@@ -87,11 +162,11 @@ export function lessonById(id) {
  * "current" is the first unfinished lesson that is built. Only one lesson is ever
  * current, because the track map's job is to leave no doubt about what to do next.
  */
-export function trackState(completedIds) {
+export function trackState(completedIds, lessons = BEGINNER) {
   const done = new Set(completedIds);
   let currentTaken = false;
 
-  return TRACK.map((lesson) => {
+  return lessons.map((lesson) => {
     if (done.has(lesson.id)) return { ...lesson, state: "done" };
     if (!currentTaken && lesson.ready) {
       currentTaken = true;

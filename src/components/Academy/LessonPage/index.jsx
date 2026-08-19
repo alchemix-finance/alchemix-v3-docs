@@ -18,16 +18,27 @@ import styles from "./styles.module.css";
  * in one place rather than being copied per page.
  */
 
-const STAGES = [
+/**
+ * The advanced track's shape. The beginner lessons pass their own labels, which
+ * say what the learner is about to do in plainer words.
+ */
+const DEFAULT_STAGES = [
   { id: "predict", label: "Predict" },
   { id: "explore", label: "Explore" },
   { id: "checkpoint", label: "Checkpoint" },
 ];
 
-export default function LessonPage({ lessonId, description, Lab, Wrap, deeper = [] }) {
+export default function LessonPage({
+  lessonId,
+  description,
+  Lab,
+  Wrap,
+  deeper = [],
+  stages: STAGES = DEFAULT_STAGES,
+}) {
   const lesson = lessonById(lessonId);
   const isBrowser = useIsBrowser();
-  const [stage, setStage] = useState("predict");
+  const [stage, setStage] = useState(STAGES[0].id);
   const [done, setDone] = useState(false);
 
   useEffect(() => {

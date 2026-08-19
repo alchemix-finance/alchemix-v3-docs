@@ -1,4 +1,9 @@
-/* ── Deposit flow ────────────────────────────────────────── */
+/* Shared lesson parts.
+ *
+ * A left-to-right flow of steps, an LTV meter with a cap marker, and a row of
+ * stat tiles. Four beginner lessons use at least one of these, so they live here
+ * rather than being copied into each lab with small drifts between them. */
+
 .flow {
   display: grid;
   grid-template-columns: 1fr auto 1fr auto 1fr;
@@ -93,6 +98,16 @@
 }
 
 .meterCap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #d4952a;
+}
+
+/* A second marker on the same bar, for the liquidation threshold. Warmer than
+   the cap marker because crossing it is the only one that costs you anything. */
+.meterLiq {
   position: absolute;
   top: 0;
   bottom: 0;

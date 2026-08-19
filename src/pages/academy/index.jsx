@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import AcademyShell from "@site/src/components/Academy/Shell";
 import { readCompletions } from "@site/src/components/Academy/lib/api";
-import { TOTAL_POINTS, TRACK, trackState } from "@site/src/components/Academy/lib/track";
+import { ADVANCED, BEGINNER, TOTAL_POINTS, trackState } from "@site/src/components/Academy/lib/track";
 import styles from "./track.module.css";
 
 /**
@@ -22,21 +22,25 @@ export default function AcademyTrack() {
     setCompleted(Object.keys(readCompletions()));
   }, []);
 
-  const lessons = trackState(completed);
-  const doneCount = completed.length;
+  const lessons = trackState(completed, BEGINNER);
+  const doneCount = lessons.filter((l) => l.state === "done").length;
 
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by driving the mechanisms yourself. Six lessons, no wallet, no sign-in."
+      description="Learn how Alchemix works by using it. Seven short lessons, no wallet, no sign-in, and no prior experience assumed."
     >
       <section className={styles.intro}>
-        <div className={styles.eyebrow}>Track one</div>
-        <h1 className={styles.headline}>Learn how Alchemix works by driving it yourself.</h1>
+        <div className={styles.eyebrow}>Beginner track</div>
+        <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
         <p className={styles.sub}>
-          Six lessons, each built around a working model of one mechanism. You are asked
-          what you expect it to do before you are shown. No wallet, no sign-in, and
-          nothing to install.
+          Seven short lessons covering everything you need to use Alchemix: what it does,
+          what happens to your deposit, how borrowing works, and what can go wrong. Each
+          one gives you something to try before it tells you the answer.
+        </p>
+        <p className={styles.sub}>
+          No wallet, no sign-in, and nothing to install. No prior experience with DeFi is
+          assumed.
         </p>
       </section>
 
@@ -44,6 +48,24 @@ export default function AcademyTrack() {
         {lessons.map((lesson, i) => (
           <TrackRow key={lesson.id} lesson={lesson} last={i === lessons.length - 1} />
         ))}
+      </section>
+
+      <section className={styles.next}>
+        <div className={styles.nextHead}>
+          <div className={styles.eyebrow}>Advanced track</div>
+          <p className={styles.nextSub}>
+            Coming after this one, for anyone who wants the arithmetic underneath. Not
+            needed to use Alchemix, and not required to graduate.
+          </p>
+        </div>
+        <ul className={styles.nextList}>
+          {ADVANCED.map((lesson) => (
+            <li key={lesson.id}>
+              <span className={styles.nextTitle}>{lesson.title}</span>
+              <span className={styles.nextBlurb}>{lesson.blurb}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className={styles.reward}>

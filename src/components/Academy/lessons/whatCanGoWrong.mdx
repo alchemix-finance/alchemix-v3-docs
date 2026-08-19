@@ -1,0 +1,26 @@
+Price volatility cannot force an Alchemix position to close. Loans and collateral
+are like-kind, with ETH backing alETH and USDC backing alUSD, so when a price moves,
+what you hold and what you owe move together and the ratio between them is
+unchanged.
+
+That is the risk most people arrive worried about, and here it does not apply.
+
+### What can trigger a liquidation
+
+A loss inside the Mix-Yield Token. If a strategy is exploited or reports a negative
+return, the collateral behind every position is worth less while the debt is
+unchanged, so ratios climb. A position that crosses the **95%** liquidation
+threshold is brought back into line.
+
+Only the minimum needed to restore the position to a healthy LTV is liquidated. The
+rest is untouched, and where collateral cannot cover the liquidator fee, a separate
+fee vault covers the difference.
+
+### The cap and the threshold are different things
+
+Reaching the 90% borrowing cap stops you borrowing more. Nothing is sold and no fee
+is charged, and you can stay there indefinitely. The 95% threshold is a separate
+line that only a loss of backing can bring you to.
+
+The further below the threshold you sit, the larger a loss your position can absorb.
+That is the reason to think about your LTV before you borrow.

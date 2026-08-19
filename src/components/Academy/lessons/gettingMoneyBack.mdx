@@ -1,0 +1,21 @@
+There are two ways to get at a deposit you have borrowed against, and one of them
+unlocks the other.
+
+The first is to withdraw whatever is already free. Any collateral not needed to
+keep the remaining debt under the 90% cap can leave at any time, at no cost.
+
+The second is to repay first. Every unit you repay releases more than a unit of
+collateral, because the debt was only ever holding back what the cap required.
+Repay the balance in full and the whole deposit is free.
+
+### Why the free amount is smaller than you expect
+
+A position with 10,000 deposited and 5,000 borrowed does not have 5,000 available
+to withdraw. The 5,000 of debt needs about 5,556 of collateral standing behind it
+at the cap, which leaves roughly 4,444.
+
+It is the same 90% rule you met when borrowing, read backwards. Borrowing, it told
+you the most you could take. Withdrawing, it tells you the least you have to leave.
+
+Both numbers are shown in the vault interface, so none of this has to be worked out
+by hand. Knowing where the smaller one comes from is what stops it being a surprise.
