@@ -10,7 +10,7 @@ import {
 } from "../kit";
 
 /**
- * Lesson 4: what borrowing costs.
+ * Lesson 3: what borrowing costs.
  *
  * There is no interest rate, which regularly gets read as "there is no cost".
  * There is one, it is just charged differently: alAssets are minted at face value
@@ -46,7 +46,7 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => `${money(v)} alUSD`}
       targetFoot="the capital you need in hand"
       landingFoot="what your borrow actually raises"
-      passTitle="Lesson 4 complete."
+      passTitle="Lesson 3 complete."
       passBody="You can size a borrow against the price you will actually get for it, which is the difference between asking for capital and receiving it."
     />
   );
@@ -65,7 +65,7 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="An Alchemix loan charges no interest. That is not the same as free."
+      headline="An Alchemix loan charges no interest. It still has a cost."
     >
       <Sub>
         You borrow {money(WANT)} alUSD against your position. Your recorded debt is{" "}
@@ -102,8 +102,7 @@ function Predict({ onDone }) {
           <Body>
             {close ? "That is the right shape. " : `You answered ${money(guess)}. `}
             The {money(shortfall)} difference is the market discount, and it is the real
-            cost of borrowing here. It is charged once, at the moment you sell, rather
-            than accruing over time the way interest would.
+            cost of borrowing here. It is charged once, at the moment you sell, and nothing accrues after that.
           </Body>
           <Body>
             Inside Alchemix nothing changed: 1 alUSD still cancels exactly 1 of debt. The
@@ -131,7 +130,7 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="To receive a number, you have to borrow past it."
+      headline="To receive the full amount, you have to borrow past it."
     >
       <Sub>
         Set the capital you need and the price alUSD is trading at. The gap between what
@@ -192,13 +191,12 @@ function Explore({ onDone }) {
         >
           <Body>
             There is no interest, so nothing accrues while you hold the loan. What you pay
-            is set once, by the price you sold at, and it is proportional to the size of
-            the borrow rather than to how long you keep it.
+            is set once, by the price you sold at. It is proportional to the size of the
+            borrow, and holding the loan longer adds nothing.
           </Body>
           <Body>
             A second cost arrives later, when redemptions repay your debt using your
-            collateral: a small borrower redemption fee is taken at that moment. It is
-            event-based rather than time-based, so its effective annual cost depends on
+            collateral: a small borrower redemption fee is taken at that moment. It is charged when the event happens, so its effective annual cost depends on
             your starting LTV and how long the transmutation takes. The live rate is in
             the fee schedule, since governance can change it.
           </Body>

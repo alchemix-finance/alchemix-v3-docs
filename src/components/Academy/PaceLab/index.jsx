@@ -7,7 +7,7 @@ import useElementWidth from "../lib/useElementWidth";
 import { Checkpoint } from "../kit";
 
 /**
- * Lesson 2: the pace of repayment.
+ * Lesson 1: the pace of repayment.
  *
  * Three stages. The learner commits to a prediction before seeing anything, then
  * explores freely, then answers a server-set challenge to complete the lesson.
@@ -59,8 +59,8 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => `${(v * 100).toFixed(1)}% a year`}
       targetFoot="debt still outstanding"
       landingFoot="adjust until the two match"
-      passTitle="Lesson 2 complete."
-      passBody="You worked the mechanism rather than recalling it. The pace of repayment is set by the protocol, and now you can read it."
+      passTitle="Lesson 1 complete."
+      passBody="You worked the mechanism out for yourself. The pace of repayment is set by the protocol, and now you can read it."
     />
   );
 }
@@ -318,7 +318,7 @@ function Explore({ onDone }) {
             The redemption rate is a property of the protocol, applied equally to
             everyone in the market. You do not set it and you cannot accelerate it. What
             your own choices do change is how much collateral keeps working for you while
-            redemptions run, which lesson 3 covers.
+            redemptions run, which the next lesson covers.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint

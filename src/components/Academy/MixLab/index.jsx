@@ -16,7 +16,7 @@ import LocalNotice from "../LocalNotice";
  * occupy.
  *
  * The caps are the lesson. They are the reason a given LTV is safe, which is what
- * lesson 3 builds on. So the learner is put in the position of someone reading a
+ * lesson 4 builds on. So the learner is put in the position of someone reading a
  * governance proposal: chase the yield, hit the cap, understand why it is there.
  *
  * Allocation is a DAO decision, never a user one. The copy is careful about that:
@@ -394,7 +394,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
         <div className={styles.passBox}>
           <div className={styles.passHead}>Lesson 2 complete.</div>
           <p className={styles.revealBody}>
-            You found the highest yield the risk caps allow. Lesson 3 takes the same caps
+            You found the highest yield the risk caps allow. Lesson 4 takes the same caps
             and shows what they mean for the LTV you can safely borrow at.
           </p>
           <Link to="/academy" className={styles.primaryLink}>

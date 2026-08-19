@@ -10,7 +10,7 @@ import {
 } from "../kit";
 
 /**
- * Lesson 5: LTV and what can go wrong.
+ * Lesson 4: LTV and what can go wrong.
  *
  * The misconception this exists to break is the one imported from every other
  * lending protocol: that a price crash liquidates you. It cannot here, because
@@ -49,8 +49,8 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => `${v.toFixed(1)}%`}
       targetFoot="the highest LTV that survives"
       landingFoot="set the slider to your answer"
-      passTitle="Lesson 5 complete."
-      passBody="You can size a position against the only thing that can actually close it. That is the number the risk caps in lesson 3 were protecting, and the capstone puts both to work."
+      passTitle="Lesson 4 complete."
+      passBody="You can size a position against the only thing that can actually close it. That is the number the risk caps in lesson 2 were protecting, and the capstone puts both to work."
     />
   );
 }
@@ -157,8 +157,7 @@ function Predict({ onDone }) {
                 </Body>
                 <Body>
                   Ana absorbed it with room to spare. Ben had almost none, which is what a
-                  high LTV actually costs you: not exposure to the market, exposure to the
-                  vault.
+                  high LTV actually costs you: exposure to the vault.
                 </Body>
               </Reveal>
             </>
@@ -280,10 +279,9 @@ function Explore({ onDone }) {
             {pct(1 - loss)}, or {pct(ceiling)}.
           </Body>
           <Body>
-            This is what the risk caps in lesson 3 were doing. By limiting how much of the
+            This is what the risk caps in lesson 2 were doing. By limiting how much of the
             vault can sit in higher risk strategies, the DAO limits how large a loss is
-            plausible, which is what makes a given LTV a reasonable choice rather than a
-            guess.
+            plausible, which is what a reasoned choice of LTV rests on.
           </Body>
           <Body>
             Only the minimum needed to restore a healthy ratio is liquidated. The rest of

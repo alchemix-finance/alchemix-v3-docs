@@ -10,7 +10,7 @@ import {
 } from "../kit";
 
 /**
- * Lesson 6: the Transmuter and the peg.
+ * Lesson 5: the Transmuter and the peg.
  *
  * A synthetic trading under a dollar looks like a failure to anyone who has
  * watched an algorithmic stablecoin come apart. alAssets are not that: every one
@@ -47,7 +47,7 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
       controlDisplay={(v) => `${v.toFixed(2)}%`}
       targetFoot="what the wait is worth, annualised"
       landingFoot="set the slider to your answer"
-      passTitle="Lesson 6 complete."
+      passTitle="Lesson 5 complete."
       passBody="You can price a discount against the time you have to wait for it, which is the same calculation the people who close the gap are running."
     />
   );
@@ -72,7 +72,7 @@ function Predict({ onDone }) {
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
         Alchemix, and the Transmuter will exchange it for the underlying at exactly 1:1
-        after a fixed term. Right now that term is {WEEKS} weeks.
+        after a fixed term. In this lesson the term is {WEEKS} weeks.
       </Sub>
 
       <div className={own.tradeRow}>
@@ -112,8 +112,7 @@ function Predict({ onDone }) {
           <Body>
             {close ? "That is close. " : `You answered ${guess.toFixed(1)}%. `}
             Buying at {PRICE.toFixed(2)} and receiving 1.00 is a gain of{" "}
-            {perTerm.toFixed(2)}% on what you put in. Earning that in {WEEKS} weeks rather
-            than a year is what lifts it to {annual.toFixed(2)}% annualised.
+            {perTerm.toFixed(2)}% on what you put in. Compressing that gain into {WEEKS} weeks is what lifts it to {annual.toFixed(2)}% annualised.
           </Body>
           <Body>
             The shorter the term, the more the same discount is worth. That relationship
@@ -231,13 +230,10 @@ function Explore({ onDone }) {
           <Body>
             Both of them buy alUSD when it is cheap, which is buying pressure that pushes
             the price back towards face value. The Transmuter is what makes their buying
-            rational: it guarantees the 1:1 exchange at the end of a known wait, so the
-            discount has a floor under it rather than being a bet on sentiment.
+            rational: it guarantees the 1:1 exchange at the end of a known wait, so the discount has a floor under it.
           </Body>
           <Body>
-            That is why alAssets are described as synthetic debt tokens rather than
-            algorithmic stablecoins. The peg is held by an exchange mechanism and real
-            collateral, not by minting and burning against a market.
+            That is why alAssets are described as synthetic debt tokens. The peg is held by an exchange mechanism and real collateral, and no minting or burning against a market is involved.
           </Body>
         </Reveal>
       ) : (

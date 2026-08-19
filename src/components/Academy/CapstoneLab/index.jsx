@@ -12,15 +12,15 @@ import {
 } from "../kit";
 
 /**
- * Lesson 7: the capstone.
+ * Lesson 6: the capstone.
  *
  * No new mechanism. The whole point is that two earlier answers now have to be
  * used together, because in practice they constrain each other: the discount
  * decides how much you must borrow, and the coming loss decides how much
  * collateral that borrow needs standing behind it.
  *
- * A learner who only took lesson 4 sizes the borrow and gets liquidated. One who
- * only took lesson 5 picks a safe LTV and comes up short of the capital. Neither
+ * A learner who only took lesson 3 sizes the borrow and gets liquidated. One who
+ * only took lesson 4 picks a safe LTV and comes up short of the capital. Neither
  * half is sufficient, which is what makes it a capstone rather than a review.
  */
 
@@ -52,7 +52,7 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       targetFoot="the smallest deposit that works"
       landingFoot="set the slider to your answer"
       passTitle="Track complete."
-      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using nothing but what the earlier lessons established. That is the whole beginner track."
+      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using nothing but what the earlier lessons established. That is the whole advanced track."
     />
   );
 }
@@ -113,12 +113,12 @@ function Predict({ onDone }) {
         >
           <Body>
             Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)},
-            which lesson 4 covers. Depositing exactly that much would put you at{" "}
+            which lesson 3 covers. Depositing exactly that much would put you at{" "}
             {pct(naiveLtv)} LTV, and a {pct(LOSS)} loss takes that to{" "}
             {pct(ltvAfterLoss(naiveLtv, LOSS))}, well past the {pct(LIQ_LTV)} threshold.
           </Body>
           <Body>
-            Lesson 5 gives the ceiling: at a {pct(LOSS)} loss, the highest starting LTV
+            Lesson 4 gives the ceiling: at a {pct(LOSS)} loss, the highest starting LTV
             that survives is {pct(survivableLtv(LOSS))}. The deposit has to be large enough
             that {money2(borrow)} of debt sits at or under it, which puts the floor at{" "}
             {money2(truth)}.

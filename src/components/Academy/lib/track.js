@@ -86,9 +86,10 @@ export const BEGINNER = [
 /**
  * The advanced track.
  *
- * Built and graded, and held back from the track map until its copy has had the
- * same tone pass the beginner track was written under. Listed here so the map
- * can show what is coming next.
+ * Built, graded, and through the same tone pass the beginner track was written
+ * under. Held back from the track map until the lessons have had a walkthrough;
+ * flipping ready publishes one. Listed here so the map can show what is coming
+ * next.
  */
 export const ADVANCED = [
   {
