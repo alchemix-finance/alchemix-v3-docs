@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/academy/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/academy/:path*"
+    }
+  ]
+}
