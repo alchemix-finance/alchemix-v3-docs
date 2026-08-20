@@ -178,6 +178,50 @@
   opacity: 0.55;
 }
 
+/* A finished row is a quiet link back into its lesson. It must never compete
+   with the one live card, so the affordance is a small revisit line that
+   brightens on hover rather than a second card. */
+.doneLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.doneLink:hover,
+.doneLink:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.doneLink .rowTitle {
+  transition: color 0.15s ease;
+}
+
+.doneLink:hover .rowTitle {
+  color: #ffffff;
+}
+
+.revisit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  margin-top: 0.5625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7078;
+  transition: color 0.15s ease;
+}
+
+.revisit svg {
+  width: 13px;
+  height: 13px;
+}
+
+.doneLink:hover .revisit,
+.doneLink:focus-visible .revisit {
+  color: #5ba88a;
+}
+
 /* ── Shared labels ───────────────────────────────────────── */
 .microLabel {
   font-size: 0.6875rem;

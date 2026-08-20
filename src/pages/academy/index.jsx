@@ -152,12 +152,23 @@ function TrackRow({ lesson, last }) {
       <div className={`${styles.body} ${last ? styles.bodyLast : ""}`}>
         {state === "current" ? (
           <CurrentCard lesson={lesson} />
-        ) : (
-          <div className={state === "locked" ? styles.muted : undefined}>
-            <div className={`${styles.microLabel} ${state === "done" ? styles.doneLabel : ""}`}>
-              Lesson {lesson.n}
-              {state === "done" ? " · Complete" : ""}
+        ) : state === "done" ? (
+          // A finished lesson stays open for rereading. Revisiting never clears
+          // the stored completion; the lesson page opens with every stage unlocked.
+          <Link to={lesson.slug} className={styles.doneLink}>
+            <div className={`${styles.microLabel} ${styles.doneLabel}`}>
+              Lesson {lesson.n} · Complete
             </div>
+            <div className={styles.rowTitle}>{lesson.title}</div>
+            <div className={styles.rowBlurb}>{lesson.blurb}</div>
+            <span className={styles.revisit}>
+              Revisit lesson
+              <ArrowIcon />
+            </span>
+          </Link>
+        ) : (
+          <div className={styles.muted}>
+            <div className={styles.microLabel}>Lesson {lesson.n}</div>
             <div className={styles.rowTitle}>{lesson.title}</div>
             <div className={styles.rowBlurb}>{lesson.blurb}</div>
           </div>
