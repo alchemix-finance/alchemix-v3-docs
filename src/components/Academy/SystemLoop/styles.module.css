@@ -1,8 +1,9 @@
-/* One loop, five stops.
+/* One loop, five stops, drawn as a vertical chain.
  *
- * Matches the lesson-part card language: dark tiles, copper hairlines, muted
- * notes. Five columns on a wide screen, one column with rotated arrows on a
- * phone, and a return line underneath that closes the circle. */
+ * The diagram always renders inside the wrap-up prose column, which caps at
+ * 46rem, so five columns across would leave each card too narrow to read. A
+ * vertical chain uses the width a row at a time, in the same visual language
+ * as the note rows. */
 
 .wrap {
   margin: 1.75rem 0;
@@ -10,16 +11,19 @@
 
 .loop {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.375rem;
 }
 
 .stop {
+  display: grid;
+  grid-template-columns: 5.5rem 12rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.875rem;
   border: 1px solid rgba(245, 192, 154, 0.16);
   border-radius: 8px;
   background: #141618;
-  padding: 0.875rem 0.9375rem;
+  padding: 0.9375rem 1.0625rem;
   min-width: 0;
 }
 
@@ -28,27 +32,24 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-bottom: 0.375rem;
 }
 
 .stopValue {
   font-size: 0.875rem;
   font-weight: 700;
   color: #e8e8ea;
-  line-height: 1.3;
-  margin-bottom: 0.375rem;
+  line-height: 1.35;
 }
 
 .stopNote {
-  font-size: 0.71875rem;
-  line-height: 1.45;
+  font-size: 0.75rem;
+  line-height: 1.5;
   color: #6b7078;
 }
 
 .arrow {
-  align-self: center;
   justify-self: center;
-  flex: none;
+  transform: rotate(90deg);
 }
 
 .back {
@@ -64,13 +65,13 @@
   color: #8a8f99;
 }
 
-@media (max-width: 860px) {
-  .loop {
+@media (max-width: 640px) {
+  .stop {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.375rem;
+    gap: 0.25rem;
   }
 
-  .arrow {
-    transform: rotate(90deg);
+  .stopValue {
+    margin-bottom: 0.125rem;
   }
 }

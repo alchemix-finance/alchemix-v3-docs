@@ -619,6 +619,12 @@
   margin: 1.5rem 0 0;
 }
 
+/* Notes carry no bottom margin because they usually end a stage. When a panel
+   follows them directly, it needs the gap restored. */
+.notes + .panel {
+  margin-top: 1.5rem;
+}
+
 .note {
   display: grid;
   grid-template-columns: auto 1fr;
