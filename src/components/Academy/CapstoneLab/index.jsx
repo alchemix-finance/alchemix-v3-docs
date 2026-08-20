@@ -47,6 +47,7 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       unit="amount"
       targetOf={(f) => minimumCollateral(f.cashWanted, f.price, f.loss)}
       computeOf={(f, v) => v}
+      direct
       controlLabel="Deposit"
       controlDisplay={(v) => money(v)}
       targetFoot="the smallest deposit that works"

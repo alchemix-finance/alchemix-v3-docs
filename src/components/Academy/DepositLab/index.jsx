@@ -39,6 +39,7 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
       unit="amount"
       targetOf={(f) => f.deposit * (1 + f.ratePct / 100)}
       computeOf={(f, v) => v}
+      direct
       controlLabel="Worth after a year"
       controlDisplay={(v) => money(v)}
       targetFoot="what the deposit grows to"

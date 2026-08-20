@@ -43,6 +43,7 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
       unit="apr"
       targetOf={(f) => annualisedFromDiscount(f.price, f.weeks)}
       computeOf={(f, v) => v}
+      direct
       controlLabel="Annualised return"
       controlDisplay={(v) => `${v.toFixed(2)}%`}
       targetFoot="what the wait is worth, annualised"

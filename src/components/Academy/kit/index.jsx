@@ -202,6 +202,10 @@ export function Checkpoint({
   targetOf,
   computeOf,
   unit,
+  /* When the slider IS the answer (computeOf is the identity), showing the
+     target card would print the solution. `direct` hides the compare cards,
+     and a miss reveals the target but swaps the figures before the retry. */
+  direct = false,
   controlLabel,
   controlDisplay,
   targetFoot,
@@ -303,20 +307,22 @@ export function Checkpoint({
 
       {children}
 
-      <div className={styles.checkGrid}>
-        <div className={styles.checkCard}>
-          <div className={styles.microLabel}>Target</div>
-          <div className={styles.bigNumber}>{formatByUnit(target, unit)}</div>
-          <div className={styles.checkFoot}>{targetFoot}</div>
-        </div>
-        <div className={styles.checkCard}>
-          <div className={styles.microLabel}>Your answer gives</div>
-          <div className={styles.bigNumber} style={{ color: onTarget ? "#5ba88a" : "#f5c09a" }}>
-            {formatByUnit(landing, unit)}
+      {!direct ? (
+        <div className={styles.checkGrid}>
+          <div className={styles.checkCard}>
+            <div className={styles.microLabel}>Target</div>
+            <div className={styles.bigNumber}>{formatByUnit(target, unit)}</div>
+            <div className={styles.checkFoot}>{targetFoot}</div>
           </div>
-          <div className={styles.checkFoot}>{landingFoot}</div>
+          <div className={styles.checkCard}>
+            <div className={styles.microLabel}>Your answer gives</div>
+            <div className={styles.bigNumber} style={{ color: onTarget ? "#5ba88a" : "#f5c09a" }}>
+              {formatByUnit(landing, unit)}
+            </div>
+            <div className={styles.checkFoot}>{landingFoot}</div>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <Controls>
         <Control
@@ -331,7 +337,7 @@ export function Checkpoint({
         />
       </Controls>
 
-      {!passed ? (
+      {!passed && !(direct && result && !result.passed) ? (
         <Actions>
           <button type="button" className={styles.primary} onClick={onSubmit} disabled={submitting}>
             {submitting ? "Checking..." : "Submit answer"}
@@ -343,10 +349,19 @@ export function Checkpoint({
 
       {result && !result.passed ? (
         <div className={styles.missBox}>
-          That gives {formatByUnit(result.actual, result.unit)} against a target of{" "}
-          {formatByUnit(result.target, result.unit)}, accepted within{" "}
-          {formatByUnit(result.tolerance, result.unit)}. Adjust and submit again.
+          {direct
+            ? `Your answer was ${formatByUnit(result.actual, result.unit)}. This question wanted ${formatByUnit(result.target, result.unit)}, accepted within ${formatByUnit(result.tolerance, result.unit)}. `
+            : `That gives ${formatByUnit(result.actual, result.unit)} against a target of ${formatByUnit(result.target, result.unit)}, accepted within ${formatByUnit(result.tolerance, result.unit)}. Adjust and submit again.`}
+          {direct ? "The next question uses fresh figures, so the number above will not fit it." : null}
         </div>
+      ) : null}
+
+      {!passed && direct && result && !result.passed ? (
+        <Actions>
+          <button type="button" className={styles.primary} onClick={load}>
+            Try a new question
+          </button>
+        </Actions>
       ) : null}
 
       {passed ? (

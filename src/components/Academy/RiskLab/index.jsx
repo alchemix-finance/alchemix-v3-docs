@@ -45,6 +45,7 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       unit="pct"
       targetOf={(f) => survivableLtv(f.loss) * 100}
       computeOf={(f, v) => v}
+      direct
       controlLabel="Starting LTV"
       controlDisplay={(v) => `${v.toFixed(1)}%`}
       targetFoot="the highest LTV that survives"

@@ -40,6 +40,7 @@ export default function BorrowLab({ lessonId, stage, onStage, done, onComplete }
       unit="amount"
       targetOf={(f) => f.deposit * MAX_LTV}
       computeOf={(f, v) => v}
+      direct
       controlLabel="Most you can borrow"
       controlDisplay={(v) => money(v)}
       targetFoot="the borrowing cap on this position"

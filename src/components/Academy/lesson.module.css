@@ -31,7 +31,14 @@
 .hint {
   font-size: 0.8125rem;
   color: #6b7078;
-  margin: -1.25rem 0 2rem;
+  margin: 0 0 2rem;
+}
+
+/* Only when the hint directly follows the control grid it refers to does it
+   tuck up underneath. A blanket negative margin overlapped whatever else came
+   before it, which in most Try stages was a note box. */
+.controls + .hint {
+  margin-top: -1.25rem;
 }
 
 .aside {
@@ -621,7 +628,9 @@
 
 /* Notes carry no bottom margin because they usually end a stage. When a panel
    follows them directly, it needs the gap restored. */
-.notes + .panel {
+.notes + .panel,
+.notes + .reveal,
+.notes + .actions {
   margin-top: 1.5rem;
 }
 

@@ -205,7 +205,7 @@ const GENERATORS = {
         `You need ${money(cashWanted)} of working capital. alUSD trades at ${price.toFixed(3)}, ` +
         `and the MYT is about to report a loss of ${(loss * 100).toFixed(1)}% of its backing. ` +
         `What is the smallest deposit that raises the capital and still survives the loss?`,
-      controls: { slider: { min: 0, max: target * 2, step: target / 500 } },
+      controls: { slider: { min: 0, max: cashWanted * 4, step: cashWanted / 250 } },
     };
   },
 };

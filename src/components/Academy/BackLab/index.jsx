@@ -42,6 +42,7 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       unit="amount"
       targetOf={(f) => withdrawable(f.collateral, f.debt)}
       computeOf={(f, v) => v}
+      direct
       controlLabel="Withdraw"
       controlDisplay={(v) => money(v)}
       targetFoot="the most that can leave right now"
