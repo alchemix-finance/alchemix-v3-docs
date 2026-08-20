@@ -68,7 +68,7 @@ export const BEGINNER = [
     id: "what-can-go-wrong",
     slug: "/academy/what-can-go-wrong",
     title: "What can go wrong",
-    blurb: "The risk that does not exist here, and the one that does.",
+    blurb: "Why a price crash cannot close your position, and what can.",
     minutes: 7,
     ready: true,
   },
@@ -151,7 +151,17 @@ export const ADVANCED = [
 /** The track graduation is measured against. */
 export const TRACK = BEGINNER;
 
-export const TOTAL_POINTS = BEGINNER.length * 100;
+/**
+ * Reward figures, mirrored from the engine's action catalogue (`scripts/seed.ts`
+ * there, which is authoritative). Settled 2026-08-20: each track carries its own
+ * Discord role, and finishing a track banks a bonus on top of the per-lesson
+ * points. Mirrored here so the track map can state the numbers without a request.
+ */
+export const LESSON_POINTS = 100;
+export const BEGINNER_BONUS = 200;
+export const ADVANCED_BONUS = 400;
+
+export const TOTAL_POINTS = BEGINNER.length * LESSON_POINTS;
 
 export function lessonById(id) {
   return [...BEGINNER, ...ADVANCED].find((l) => l.id === id) ?? null;

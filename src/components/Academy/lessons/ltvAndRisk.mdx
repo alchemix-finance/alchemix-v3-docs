@@ -11,7 +11,7 @@ Two thresholds matter, and they do different jobs:
   minimum needed to restore a healthy ratio is liquidated, and the rest of the
   position is untouched.
 
-### What can actually move you towards it
+### What can move you towards it
 
 A loss inside the Mix-Yield Token. If a strategy is exploited or reports negative
 returns, the backing behind every position falls, and the liquidation marker slides towards you while your position stands still.
@@ -24,6 +24,6 @@ threshold applied to whatever backing remains:
 
 A 12% loss leaves 83.6%. A 20% loss leaves 76%.
 
-This is what the risk caps in lesson 2 are protecting. By limiting how much of the
+The risk caps from lesson 2 protect this number. By limiting how much of the
 vault may sit in higher risk strategies, the DAO limits how large a loss is
-plausible, which is what a reasoned choice of LTV rests on.
+plausible, and a reasoned choice of LTV rests on that bound.

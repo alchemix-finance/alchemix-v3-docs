@@ -48,7 +48,7 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       targetFoot="the most that can leave right now"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 5 complete."
-      passBody="You can read a position: what is in it, what is owed, and what is genuinely free to move. Next: the one risk that is real here, and the one that is not."
+      passBody="You can read a position: what is in it, what is owed, and what is free to move. Next: what can and cannot force a position to close."
     />
   );
 }
@@ -94,7 +94,7 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title={`${money(truth)}, not ${money(BORROW)}.`}
+          title={`${money(truth)} is free to move.`}
           onNext={onDone}
           nextLabel="See both ways out"
         >
@@ -108,8 +108,8 @@ function Learn({ onDone }) {
             behind it at the cap. Everything above that, {money(truth)}, is free to leave.
           </Body>
           <Body>
-            It is the same 90% rule from lesson 3, read backwards. Then it told you how much
-            you could borrow. Here it tells you how much you have to leave.
+            It is the same 90% rule from lesson 3, read backwards. When you borrowed, it set
+            the most you could take. Withdrawing, it sets the least you have to leave.
           </Body>
         </Reveal>
       )}
@@ -201,9 +201,9 @@ function Try({ onDone }) {
           </Body>
           <Body>
             You never have to repay on a schedule to get at your money. The position tells
-            you what is free, and the app shows both numbers, so this is not arithmetic you
-            will be doing by hand. Knowing where it comes from is what stops the smaller
-            number being a shock.
+            you what is free, and the app shows both numbers, so none of it has to be worked
+            out by hand. Knowing where it comes from keeps the smaller number from being a
+            shock.
           </Body>
         </Reveal>
       ) : (

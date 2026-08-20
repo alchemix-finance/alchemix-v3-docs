@@ -24,7 +24,7 @@ const STOPS = [
   {
     label: "Sell",
     value: "usually just under 1.00",
-    note: "Sold for working capital, which is what opens the discount.",
+    note: "Sold for working capital, which opens the discount.",
     tone: "#d4952a",
   },
   {

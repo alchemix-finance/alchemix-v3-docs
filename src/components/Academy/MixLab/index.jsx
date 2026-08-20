@@ -51,7 +51,7 @@ function Predict({ onDone }) {
       </p>
 
       <div className={own.strategyGrid}>
-        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Entered and exited directly, priced by what it actually holds, no wait to withdraw" tone="cons" />
+        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Entered and exited directly, priced by what it holds, no wait to withdraw" tone="cons" />
         <StrategyCard klass="Moderate" apr={DEMO.moderate} note="Depends on outside markets for pricing or exit, or can lock withdrawals for a time" tone="mod" />
         <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="Meets the Moderate tests, plus an extra factor such as being newer or less proven" tone="aggr" />
       </div>
@@ -111,8 +111,8 @@ function Predict({ onDone }) {
           </div>
 
           <p className={styles.revealBody}>
-            The governance docs give the reason directly: the caps exist so that users can
-            set an LTV that keeps liquidation risk low. Your borrowing headroom rests on
+            Per the governance docs, the caps exist so that users can set an LTV that
+            keeps liquidation risk low. Your borrowing headroom rests on
             what the vault underneath is allowed to hold.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
@@ -251,10 +251,9 @@ function Explore({ onDone }) {
               : ""}
           </p>
           <p className={styles.revealBody}>
-            This is what your collateral earns while your loan clears, and it is also what
-            sets your safe borrowing headroom. A vault that could hold 100% Aggressive
-            would make a high LTV far more dangerous, which is exactly why the ceilings
-            exist.
+            Your collateral earns this blend while your loan clears, and the same ceilings
+            set your safe borrowing headroom. A vault that could hold 100% Aggressive would
+            make a high LTV far more dangerous, and the ceilings are there to prevent it.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint

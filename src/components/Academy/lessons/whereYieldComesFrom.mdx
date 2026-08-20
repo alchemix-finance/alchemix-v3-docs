@@ -12,14 +12,14 @@ Every strategy carries a classification, and the classification sets a ceiling:
 
 ### Why the ceilings matter to a borrower
 
-The governance documentation states the purpose directly: the caps exist so that
-users can set an LTV that keeps liquidation risk low.
+Per the governance documentation, the caps exist so that users can set an LTV
+that keeps liquidation risk low.
 
-That connection is worth holding onto. Alchemix positions are not closed by price
-movement, because debt and collateral are like-kind. What can move the liquidation
-threshold is a loss inside the vault itself. A composition that could hold far more
-risk would make a high LTV considerably more dangerous, so the ceilings on the vault
-are what make your borrowing headroom meaningful.
+Alchemix positions are not closed by price movement, because debt and collateral
+are like-kind. Only a loss inside the vault itself can push a position toward
+liquidation. A composition that could hold far more risk would make a high LTV
+considerably more dangerous, so the ceilings on the vault protect your borrowing
+headroom.
 
 One deduction happens before yield reaches you: a performance fee, a share of
 what the strategies earn, goes to the protocol before the remainder is credited

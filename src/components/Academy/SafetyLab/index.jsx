@@ -43,7 +43,7 @@ export default function SafetyLab({ lessonId, stage, onStage, done, onComplete }
       onPass={onComplete}
       headline="One question before you move on."
       passTitle="Lesson 6 complete."
-      passBody="You know which risk applies here and which one does not, and you can tell the borrowing cap apart from the liquidation threshold. One lesson left."
+      passBody="You know which risk applies here, and you can tell the borrowing cap apart from the liquidation threshold. One lesson left."
     />
   );
 }
@@ -108,7 +108,7 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="This is a guess, not the graded question.">
+        <Actions aside="Guessing is free here. The graded question comes at the end.">
           <Primary onClick={() => setRevealed(true)} disabled={!pick}>
             Check my answer
           </Primary>
@@ -129,8 +129,7 @@ function Learn({ onDone }) {
           </Body>
           <Body>
             Their ratio is unchanged, so there is nothing to liquidate. It works the same way
-            for USDC and alUSD. This is what the docs mean by describing loans and collateral
-            as like-kind.
+            for USDC and alUSD. The docs call this pairing like-kind.
           </Body>
         </Reveal>
       )}
@@ -234,7 +233,7 @@ function Try({ onDone }) {
 
       {touched.price && touched.loss ? (
         <Reveal
-          title="One real risk, and it is not the one people arrive worried about."
+          title="One real risk, and most people arrive worried about a different one."
           onNext={onDone}
           nextLabel="Answer one question"
         >
@@ -244,9 +243,9 @@ function Try({ onDone }) {
             before you choose how much to borrow.
           </Body>
           <Body>
-            The further you sit below the threshold, the larger a loss you can absorb. That
-            is the whole reason to think about your LTV, and the advanced track works out
-            exactly how much room a given LTV buys you.
+            The further you sit below the threshold, the larger a loss you can absorb.
+            Choose your LTV with that in mind. The advanced track works out exactly how
+            much room a given LTV buys you.
           </Body>
         </Reveal>
       ) : (

@@ -45,9 +45,9 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       controlLabel="Borrow"
       controlDisplay={(v) => `${money(v)} alUSD`}
       targetFoot="the capital you need in hand"
-      landingFoot="what your borrow actually raises"
+      landingFoot="what your borrow raises"
       passTitle="Lesson 3 complete."
-      passBody="You can size a borrow against the price you will actually get for it, which is the difference between asking for capital and receiving it."
+      passBody="You can size a borrow against the price you will get for it, which is the difference between asking for capital and receiving it."
     />
   );
 }
@@ -134,7 +134,7 @@ function Explore({ onDone }) {
     >
       <Sub>
         Set the capital you need and the price alUSD is trading at. The gap between what
-        you borrow and what you receive is the whole cost of the loan.
+        you borrow and what you receive is the full cost of the loan.
       </Sub>
 
       <div className={own.compare}>

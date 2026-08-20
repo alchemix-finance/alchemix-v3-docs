@@ -102,8 +102,8 @@ function Learn({ onDone }) {
             you deposited. Alchemix lets that reach 90%.
           </Body>
           <Body>
-            What arrives is not USDC. Borrowing mints you alUSD, a token Alchemix issues
-            that is worth one USDC inside the protocol. You can hold it, spend it, or swap
+            Borrowing mints you alUSD, a token Alchemix issues that is worth one USDC
+            inside the protocol. You can hold it, spend it, or swap
             it for something else. Lesson 7 covers where it comes from and how to turn it
             back.
           </Body>
@@ -187,8 +187,8 @@ function Try({ onDone }) {
       <Notes>
         <Note label="Still earning">
           Look at the last tile. Borrowing did not take anything out of the vault. All
-          {" "}{money(collateral)} is still deposited and still earning, which is what pays
-          this loan down.
+          {" "}{money(collateral)} is still deposited and still earning, and that earning
+          pays this loan down.
         </Note>
         <Note label="At the cap">
           Reaching 90% stops you borrowing more. It does not close the position, sell
@@ -208,7 +208,7 @@ function Try({ onDone }) {
           </Body>
           <Body>
             Whether you should borrow that much is a different question, and lesson 6 gets to
-            it. For now the number is the thing: nine tenths of what you put in.
+            it. For now the number to keep is nine tenths of what you put in.
           </Body>
         </Reveal>
       ) : (

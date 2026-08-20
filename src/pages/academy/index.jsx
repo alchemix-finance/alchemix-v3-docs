@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import AcademyShell from "@site/src/components/Academy/Shell";
 import { readCompletions } from "@site/src/components/Academy/lib/api";
-import { ADVANCED, BEGINNER, TOTAL_POINTS, trackState } from "@site/src/components/Academy/lib/track";
+import {
+  ADVANCED, ADVANCED_BONUS, BEGINNER, BEGINNER_BONUS, LESSON_POINTS, TOTAL_POINTS, trackState,
+} from "@site/src/components/Academy/lib/track";
 import styles from "./track.module.css";
 
 /**
@@ -89,8 +91,9 @@ export default function AcademyTrack() {
         <div className={styles.nextHead}>
           <div className={styles.eyebrow}>Advanced track</div>
           <p className={styles.nextSub}>
-            Coming after this one, for anyone who wants the arithmetic underneath. Not
-            needed to use Alchemix, and not required to graduate.
+            Coming after this one, for anyone who wants the arithmetic underneath.
+            Graduation asks for the beginner track alone. Finishing this one earns a
+            second Discord role and banks another {ADVANCED_BONUS} season points.
           </p>
         </div>
         <ul className={styles.nextList}>
@@ -106,21 +109,25 @@ export default function AcademyTrack() {
       <section className={styles.reward}>
         <div className={styles.rewardCard}>
           <div className={styles.microLabel}>On finishing the track</div>
-          <div className={styles.rewardTitle}>A Discord role, and a place in the founding class</div>
+          <div className={styles.rewardTitle}>The graduate role, and a place in the founding class</div>
           <p className={styles.rewardBody}>
-            The founding class role is available only before season one opens. Once the
-            season begins it can no longer be earned.
+            Each track has its own Discord role. The founding class role is available
+            only before season one opens. Once the season begins it can no longer be
+            earned.
           </p>
         </div>
         <div className={styles.rewardCard}>
           <div className={styles.microLabel}>Banked for season one</div>
           <div className={styles.pointsRow}>
-            <span className={styles.points}>{doneCount * 100}</span>
-            <span className={styles.pointsOf}>of {TOTAL_POINTS} points</span>
+            <span className={styles.points}>
+              {doneCount * LESSON_POINTS + (doneCount === lessons.length ? BEGINNER_BONUS : 0)}
+            </span>
+            <span className={styles.pointsOf}>of {TOTAL_POINTS + BEGINNER_BONUS} points</span>
           </div>
           <p className={styles.rewardBody}>
-            Lesson points convert to season points when season one opens, so graduates
-            begin the season with a balance already banked.
+            Each lesson banks {LESSON_POINTS} points, and finishing the track banks{" "}
+            {BEGINNER_BONUS} more. Everything converts to season points when season one
+            opens, so graduates begin the season with a balance already banked.
           </p>
         </div>
       </section>

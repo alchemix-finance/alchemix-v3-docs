@@ -13,7 +13,7 @@ export default function WhereYieldComesFromLesson() {
       deeper={[
         { to: "/user/concepts/myt-and-yield", label: "Mix-Yield Token" },
         { to: "/governance/guides/myt-strategies", label: "MYT Strategies", note: "the classification rules and the cap table" },
-        { to: "/user/concepts/liquidations", label: "Liquidations", note: "what a vault loss actually does to a position" },
+        { to: "/user/concepts/liquidations", label: "Liquidations", note: "what a vault loss does to a position" },
         { to: "/user/tutorials/use-passive-myt", label: "Earn Passive Yield with Mixed Yield" },
       ]}
     />

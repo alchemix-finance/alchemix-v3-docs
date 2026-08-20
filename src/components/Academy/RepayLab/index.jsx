@@ -111,7 +111,7 @@ function Learn({ onDone }) {
           >
             <Body>
               {close ? "You were in the right area. " : `You said ${money(guess)}. `}
-              Your deposit stayed in the vault the whole time, earning. That is what brings
+              Your deposit stayed in the vault the whole time, earning. That earning brings
               the balance down, and it happens whether you are watching or not.
             </Body>
             <Body>
@@ -146,13 +146,13 @@ const EVENTS = [
     id: "repay",
     label: "Repay 2,000 by hand",
     delta: -2_000,
-    note: "Always allowed, at any time, in any amount.",
+    note: "Allowed at any time, in any amount.",
   },
   {
     id: "price",
     label: "Collateral price drops 30%",
     delta: 0,
-    note: "No effect. What you owe is recorded in alUSD, not in dollars of collateral.",
+    note: "No effect. The debt is recorded in alUSD, so a collateral price move never touches it.",
   },
   {
     id: "wait",
@@ -182,7 +182,7 @@ function Try({ onDone }) {
   const enough = tried.has("borrow") || tried.has("repay") ? tried.size >= 2 : tried.size >= 3;
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Which of these actually moves the line?">
+    <Stage eyebrow="Stage 2 · Try" headline="Which of these moves the line?">
       <Sub>
         Same loan as before. Apply any of these to the position and watch what the balance
         does. Two of them change it. Two do not.
@@ -245,8 +245,8 @@ function Try({ onDone }) {
               what you hold does not change.
             </Note>
             <Note label="Time">
-              No interest is added for time passing. That is the whole point: here, time
-              works for you.
+              No interest is added for time passing. Time only ever brings the balance
+              down.
             </Note>
           </Notes>
         </Reveal>

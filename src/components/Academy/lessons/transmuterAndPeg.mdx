@@ -1,8 +1,8 @@
-An alAsset trading below face value is not a broken peg. Every alAsset in
+An alAsset can trade below face value while its peg holds. Every alAsset in
 circulation is backed by at least one unit of collateral inside the Alchemist, and
 the Transmuter will exchange it for the underlying at exactly 1:1 after a fixed
-term. alAssets are synthetic debt tokens, and that exchange mechanism is what holds
-the soft peg.
+term. alAssets are synthetic debt tokens, and that exchange mechanism holds the soft
+peg.
 
 So a discount is a price on waiting, and the shorter the wait the more the same
 discount is worth:
@@ -20,7 +20,9 @@ about 8.04% annualised.
 - **The borrower** buys the same discounted alAssets to clear their own debt, since
   1 alAsset cancels 1 of debt regardless of what they paid for it.
 
-Both are buying when the price is low, and that buying is what closes the gap. The Transmuter is what makes it rational: the 1:1 exchange is guaranteed at the end of a known wait.
+Both are buying when the price is low, and that buying closes the gap. The
+Transmuter makes the trade rational by guaranteeing the 1:1 exchange at the end
+of a known wait.
 
 If you want the liquidity immediately instead, external pools such as Curve and
 Balancer trade alAssets at market price with no waiting and some slippage.

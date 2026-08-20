@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="self-repaying"
-      description="Watch a loan balance fall on its own, and find out which of four events actually moves it."
+      description="Watch a loan balance fall on its own, and find out which of four events moves it."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

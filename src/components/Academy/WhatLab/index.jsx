@@ -55,7 +55,7 @@ const PILLARS = [
     id: "borrow",
     title: "Borrow",
     line: "Take a loan against that deposit, up to 90% of its value.",
-    body: "You keep the deposit and it keeps earning. The loan charges no interest and has no payment schedule, and the balance goes down over time on its own. This is the part people find surprising, and it is what the next few lessons are about.",
+    body: "You keep the deposit and it keeps earning. The loan charges no interest and has no payment schedule, and the balance goes down over time on its own. Most people find this surprising, and the next few lessons show how it works.",
     colour: "#f5c09a",
   },
   {
@@ -128,8 +128,8 @@ function Learn({ onDone }) {
           </Body>
           <Body>
             An Alchemix loan works the other way round. Your deposit stays where it is and
-            keeps earning, and that is what clears the balance. You are not paying the loan
-            off out of your income. The deposit you borrowed against is doing it.
+            keeps earning, and that earning clears the balance. The deposit you borrowed
+            against does the repaying, so nothing comes out of your income.
           </Body>
         </Reveal>
       ) : (
@@ -226,13 +226,13 @@ function Compare({ onDone }) {
           nextLabel="Answer one question"
         >
           <Body>
-            That is the difference worth remembering. A normal loan balance only falls when
-            you pay it. An Alchemix balance falls because the deposit behind it is working.
+            A normal loan balance only falls when you pay it. An Alchemix balance falls
+            because the deposit behind it is working.
           </Body>
           <Body>
             How quickly it falls depends on conditions that change, so no lesson can promise
-            you a date. What does not change is the direction. Left alone, the balance only
-            moves down.
+            you a date. The direction does not change. Left alone, the balance only moves
+            down.
           </Body>
         </Reveal>
       ) : (

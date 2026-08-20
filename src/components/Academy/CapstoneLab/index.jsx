@@ -53,7 +53,7 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       targetFoot="the smallest deposit that works"
       landingFoot="set the slider to your answer"
       passTitle="Track complete."
-      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using nothing but what the earlier lessons established. That is the whole advanced track."
+      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using only what the earlier lessons established."
     />
   );
 }
@@ -108,7 +108,7 @@ function Predict({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title={`${money2(truth)}, and the obvious answer is not close.`}
+          title={`It takes ${money2(truth)}.`}
           onNext={onDone}
           nextLabel="See both constraints at once"
         >
@@ -233,13 +233,13 @@ function Explore({ onDone }) {
             How much you must borrow is decided by the price you can sell at, and nothing
             about your position changes it. How much collateral that borrow needs behind it
             is decided by the loss you have to survive, and nothing about the market
-            changes that. The deposit is simply the first divided by the second.
+            changes that. The deposit is the first divided by the second.
           </Body>
           <Body>
             Notice what moving the price does. A worse discount means borrowing more to
             raise the same capital, which raises the LTV, which needs more collateral to
-            survive the same loss. The two constraints are not independent, and that is
-            the thing worth carrying away from this track.
+            survive the same loss. The two constraints move together. Neither number can
+            be chosen in isolation.
           </Body>
         </Reveal>
       ) : (

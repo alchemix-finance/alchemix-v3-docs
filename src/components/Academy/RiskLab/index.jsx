@@ -51,7 +51,7 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       targetFoot="the highest LTV that survives"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 4 complete."
-      passBody="You can size a position against the only thing that can actually close it. That is the number the risk caps in lesson 2 were protecting, and the capstone puts both to work."
+      passBody="You can size a position against the one loss that can close it. The risk caps in lesson 2 were protecting that number, and the capstone puts both to work."
     />
   );
 }
@@ -151,14 +151,14 @@ function Predict({ onDone }) {
                 nextLabel="Find where the line sits"
               >
                 <Body>
-                  This is the threat that is real. If a strategy inside the vault reports a
+                  This is the threat to size against. If a strategy inside the vault reports a
                   loss, the backing behind every position falls, and the liquidation
                   marker slides towards you. Nothing about the price of ETH or USDC is
                   involved.
                 </Body>
                 <Body>
-                  Ana absorbed it with room to spare. Ben had almost none, which is what a
-                  high LTV actually costs you: exposure to the vault.
+                  Ana absorbed it with room to spare. Ben had almost none. The cost of a
+                  high LTV is exposure to the vault.
                 </Body>
               </Reveal>
             </>
@@ -280,9 +280,9 @@ function Explore({ onDone }) {
             {pct(1 - loss)}, or {pct(ceiling)}.
           </Body>
           <Body>
-            This is what the risk caps in lesson 2 were doing. By limiting how much of the
+            The risk caps in lesson 2 were holding this line. By limiting how much of the
             vault can sit in higher risk strategies, the DAO limits how large a loss is
-            plausible, which is what a reasoned choice of LTV rests on.
+            plausible, and a reasoned choice of LTV rests on that bound.
           </Body>
           <Body>
             Only the minimum needed to restore a healthy ratio is liquidated. The rest of

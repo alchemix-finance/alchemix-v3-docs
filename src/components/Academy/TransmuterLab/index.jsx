@@ -44,7 +44,7 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       onPass={onComplete}
       headline="The last question in the track."
       passTitle="Track complete."
-      passBody="You have covered everything a first-time user needs: what Alchemix does, what your deposit becomes, how borrowing works, why the balance falls, how to get your money out, what can actually go wrong, and how alAssets turn back into the real thing."
+      passBody="You have covered everything a first-time user needs: what Alchemix does, what your deposit becomes, how borrowing works, why the balance falls, how to get your money out, what can go wrong, and how alAssets turn back into the real thing."
     />
   );
 }
@@ -118,7 +118,7 @@ function Learn({ onDone }) {
             no slippage, and waiting the full term costs you nothing.
           </Body>
           <Body>
-            That guarantee is what holds the price of alUSD near 1.00 in the first place. If
+            That guarantee holds the price of alUSD near 1.00 in the first place. If
             it drifts too far below, buying it and redeeming here becomes worth doing, and
             that buying pushes the price back up.
           </Body>
@@ -205,14 +205,14 @@ function Try({ onDone }) {
 
       {moved.price && moved.weeks ? (
         <Reveal
-          title="The gap between the two numbers is the whole opportunity."
+          title="The gap between the two numbers is the opportunity."
           onNext={onDone}
           nextLabel="Take the last check"
         >
           <Body>
-            Move the price up and the gap closes. That is the mechanism working: the further
-            alUSD drifts below 1.00, the more people want to buy it and redeem it here, and
-            that buying pushes it back towards 1.00.
+            Move the price up and the gap closes. The further alUSD drifts below 1.00, the
+            more people want to buy it and redeem it here, and that buying pushes it back
+            towards 1.00.
           </Body>
           <Body>
             Turning that gap into a rate you can compare against anything else is the

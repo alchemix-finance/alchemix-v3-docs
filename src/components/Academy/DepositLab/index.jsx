@@ -61,8 +61,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Where your money goes.">
       <Sub>
-        You deposit {money(START)} USDC. It does not sit there as USDC. The vault wraps it
-        into a token called the Mix-Yield Token, or MYT, and that token is what earns.
+        You deposit {money(START)} USDC. The vault wraps it into a token called the
+        Mix-Yield Token, or MYT, and the MYT does the earning.
       </Sub>
 
       <div className={own.flow}>
@@ -80,8 +80,8 @@ function Learn({ onDone }) {
           not have to watch them.
         </Note>
         <Note label="How you earn">
-          Nothing is paid out to you. Each MYT you hold simply becomes worth more of
-          the underlying asset over time.
+          There is no payout to claim. Each MYT you hold becomes worth more of the
+          underlying asset over time.
         </Note>
         <Note label="Getting out">
           There is no lock-up. You can redeem your MYT for the underlying asset plus
@@ -127,8 +127,8 @@ function Learn({ onDone }) {
             to tie up.
           </Body>
           <Body>
-            This matters more than it sounds. It means the yield and the borrowing are two
-            separate decisions. Plenty of people use the vault and never take a loan at all.
+            The yield and the borrowing are two separate decisions. Plenty of people use
+            the vault and never take a loan at all.
           </Body>
         </Reveal>
       )}

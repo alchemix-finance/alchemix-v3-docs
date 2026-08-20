@@ -316,9 +316,9 @@ function Explore({ onDone }) {
           </p>
           <p className={styles.revealBody}>
             The redemption rate is a property of the protocol, applied equally to
-            everyone in the market. You do not set it and you cannot accelerate it. What
-            your own choices do change is how much collateral keeps working for you while
-            redemptions run, which the next lesson covers.
+            everyone in the market. You do not set it and you cannot accelerate it. Your
+            own choices change how much collateral keeps working for you while redemptions
+            run, which the next lesson covers.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint

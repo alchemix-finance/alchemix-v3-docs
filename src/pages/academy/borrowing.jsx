@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="borrowing"
-      description="How much you can borrow against a deposit, what arrives when you do, and what reaching the cap actually means."
+      description="How much you can borrow against a deposit, what arrives when you do, and what reaching the cap means."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

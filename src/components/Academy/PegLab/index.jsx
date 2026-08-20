@@ -113,11 +113,11 @@ function Predict({ onDone }) {
           <Body>
             {close ? "That is close. " : `You answered ${guess.toFixed(1)}%. `}
             Buying at {PRICE.toFixed(2)} and receiving 1.00 is a gain of{" "}
-            {perTerm.toFixed(2)}% on what you put in. Compressing that gain into {WEEKS} weeks is what lifts it to {annual.toFixed(2)}% annualised.
+            {perTerm.toFixed(2)}% on what you put in. Compressing that gain into {WEEKS} weeks lifts it to {annual.toFixed(2)}% annualised.
           </Body>
           <Body>
             The shorter the term, the more the same discount is worth. That relationship
-            is what makes a persistent discount so hard to sustain.
+            makes a persistent discount hard to sustain.
           </Body>
         </Reveal>
       )}
@@ -160,7 +160,7 @@ function Explore({ onDone }) {
     >
       <Sub>
         Both of them buy alUSD below face value. One is buying a return, the other is
-        buying back their own debt. Their buying is what closes the gap.
+        buying back their own debt. Their buying closes the gap.
       </Sub>
 
       <div className={own.roles}>
@@ -230,8 +230,9 @@ function Explore({ onDone }) {
         >
           <Body>
             Both of them buy alUSD when it is cheap, which is buying pressure that pushes
-            the price back towards face value. The Transmuter is what makes their buying
-            rational: it guarantees the 1:1 exchange at the end of a known wait, so the discount has a floor under it.
+            the price back towards face value. The Transmuter makes their buying rational
+            by guaranteeing the 1:1 exchange at the end of a known wait, so the discount
+            has a floor under it.
           </Body>
           <Body>
             That is why alAssets are described as synthetic debt tokens. The peg is held by an exchange mechanism and real collateral, and no minting or burning against a market is involved.
