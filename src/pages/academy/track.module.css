@@ -39,6 +39,74 @@
 }
 
 /* ── The spine ───────────────────────────────────────────── */
+/* ── Where it runs ───────────────────────────────────────── */
+.markets {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.625rem;
+  margin-top: 1.75rem;
+  max-width: 39rem;
+}
+
+.market {
+  border: 1px solid rgba(245, 192, 154, 0.14);
+  border-radius: 8px;
+  background: #141618;
+  padding: 0.75rem 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.marketChain {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #e8e8ea;
+}
+
+.marketPair {
+  font-size: 0.71875rem;
+  color: #8a8f99;
+}
+
+.marketsNote {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #6b7078;
+  max-width: 39rem;
+}
+
+/* ── Track complete ──────────────────────────────────────── */
+.graduate {
+  position: relative;
+  z-index: 1;
+  margin: 0 clamp(1.25rem, 4.4vw, 4rem) 2rem;
+  border: 1px solid rgba(91, 168, 138, 0.35);
+  border-radius: 10px;
+  background: rgba(91, 168, 138, 0.06);
+  padding: 1.5rem 1.625rem;
+}
+
+.graduateTitle {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #e8e8ea;
+  margin: 0.375rem 0 0.5rem;
+}
+
+.graduateBody {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #a8adb6;
+  margin: 0;
+}
+
+.graduateBody a {
+  color: #5ba88a;
+}
+
 .track {
   position: relative;
   z-index: 1;
@@ -287,9 +355,9 @@
 }
 
 /* ── What comes after the beginner track ─────────────────────
-   Listed rather than linked. The advanced lessons are built and graded, and are
-   held back until their copy has had the tone pass the beginner track was
-   written under. Showing the titles answers "is this all there is" without
+   Listed, not linked yet. The advanced lessons are built, graded, and through
+   the same tone pass as the beginner track; they are held back until they have
+   had a walkthrough. Showing the titles answers "is this all there is" without
    promising a link that is not there yet. */
 
 .next {

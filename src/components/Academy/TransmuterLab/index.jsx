@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
+import parts from "../parts.module.css";
 import { apiBase } from "../lib/api";
 import {
   Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Note,
@@ -71,6 +72,16 @@ function Learn({ onDone }) {
           catch is that you wait a set period first.
         </Note>
       </Notes>
+
+      <div className={parts.flow4}>
+        <Step n="1" label="Deposit" value="alUSD goes in" note="You hand your alAssets to the Transmuter" />
+        <FlowArrow />
+        <Step n="2" label="Queue" value="The term runs" note="Your deposit waits out the governance-set term" />
+        <FlowArrow />
+        <Step n="3" label="Earmark" value="Collateral is reserved" note="Borrower collateral equal to your claim is set aside to guarantee it" />
+        <FlowArrow />
+        <Step n="4" label="Maturity" value="One for one" note="You receive full value, whatever the market price is" tone="#5ba88a" />
+      </div>
 
       <Panel>
         <Question>
@@ -213,5 +224,24 @@ function Try({ onDone }) {
         <Hint>Move both controls to carry on.</Hint>
       )}
     </Stage>
+  );
+}
+
+function Step({ n, label, value, note, tone }) {
+  return (
+    <div className={parts.step}>
+      <div className={parts.stepNum}>{n}</div>
+      <div className={parts.stepLabel}>{label}</div>
+      <div className={parts.stepValue} style={tone ? { color: tone } : undefined}>{value}</div>
+      <div className={parts.stepNote}>{note}</div>
+    </div>
+  );
+}
+
+function FlowArrow() {
+  return (
+    <svg className={parts.arrow} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,192,154,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h13M13 6l6 6-6 6" />
+    </svg>
   );
 }

@@ -12,6 +12,15 @@
   margin-bottom: 2rem;
 }
 
+/* Four stops instead of three, for the Transmuter timeline. */
+.flow4 {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
 .step {
   border: 1px solid rgba(245, 192, 154, 0.16);
   border-radius: 8px;
@@ -155,7 +164,8 @@
 }
 
 @media (max-width: 860px) {
-  .flow {
+  .flow,
+  .flow4 {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem;
   }

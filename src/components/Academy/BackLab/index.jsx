@@ -182,8 +182,9 @@ function Try({ onDone }) {
           unit of collateral, because the debt was only holding back what the cap required.
         </Note>
         <Note label="Repaying">
-          You can repay with alUSD, or with the same asset you deposited. Either way the
-          protocol counts one alUSD as clearing one unit of debt.
+          You can repay with alUSD, with MYT, or with the asset you deposited. One alUSD
+          clears exactly one unit of debt. If part of the loan shows as earmarked in the
+          app, that part is repaid with MYT, and the asset menu only offers what is valid.
         </Note>
       </Notes>
 

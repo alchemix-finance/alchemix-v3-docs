@@ -51,9 +51,9 @@ function Predict({ onDone }) {
       </p>
 
       <div className={own.strategyGrid}>
-        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Contract wrap, fundamental pricing, no duration risk" tone="cons" />
-        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="External pricing or multi-week duration risk" tone="mod" />
-        <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="As Moderate, with further risk factors on top" tone="aggr" />
+        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Entered and exited directly, priced by what it actually holds, no wait to withdraw" tone="cons" />
+        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="Depends on outside markets for pricing or exit, or can lock withdrawals for a time" tone="mod" />
+        <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="Meets the Moderate tests, plus an extra factor such as being newer or less proven" tone="aggr" />
       </div>
 
       <div className={styles.panel}>

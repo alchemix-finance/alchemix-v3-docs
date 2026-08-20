@@ -1,3 +1,5 @@
+import SystemLoop from "../SystemLoop";
+
 Two constraints decide the size of a position, and they are not independent.
 
 **How much you must borrow** is set by the price you can sell at. Raising a given
@@ -15,6 +17,12 @@ Put together, the smallest deposit that does both is:
 The part worth carrying away is how the two interact. A worse discount means
 borrowing more to raise the same capital, which raises the LTV, which needs more
 collateral to survive the same loss. Neither number can be chosen in isolation.
+
+### The whole system
+
+Each lesson in this track covered one stop on this loop:
+
+<SystemLoop />
 
 ### Where to go next
 

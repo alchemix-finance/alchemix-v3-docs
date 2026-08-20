@@ -1,3 +1,5 @@
+import SystemLoop from "../SystemLoop";
+
 The Transmuter exchanges alAssets for the real thing at a guaranteed 1:1 rate: one
 alUSD for one USDC, one alETH for one ETH. There is no slippage, and the market
 price of the alAsset makes no difference to what you receive.
@@ -11,6 +13,10 @@ current term in the app before you deposit.
 Your claim is met from the collateral of people who have borrowed. That is the same
 flow paying their loans down, which is why the borrowing side and the redemption
 side of Alchemix are really one system.
+
+The whole loop, in one picture:
+
+<SystemLoop />
 
 ### Two things to know before using it
 
@@ -28,3 +34,11 @@ market price slightly under par. A small discount is normal, and it is what you
 would expect while borrowers are selling. The 1:1 guarantee is what pulls the price
 back: the further it drifts, the more worthwhile buying and redeeming becomes, and
 that buying closes the gap.
+
+### Put it to use
+
+The [quick start](/user/quick-start) walks the same flow in the interface, with
+real numbers and screenshots, and the [tutorials](/user/tutorials/use-passive-myt)
+cover each screen step by step. The app itself is at
+[alchemix.fi](https://alchemix.fi). When you want the arithmetic underneath what
+you just used, the advanced track on the academy page picks it up.

@@ -42,7 +42,42 @@ export default function AcademyTrack() {
           No wallet, no sign-in, and nothing to install. No prior experience with DeFi is
           assumed.
         </p>
+
+        <div className={styles.markets} aria-label="Where Alchemix runs">
+          <div className={styles.market}>
+            <span className={styles.marketChain}>Ethereum</span>
+            <span className={styles.marketPair}>alETH · alUSD</span>
+          </div>
+          <div className={styles.market}>
+            <span className={styles.marketChain}>Optimism</span>
+            <span className={styles.marketPair}>alETH · alUSD</span>
+          </div>
+          <div className={styles.market}>
+            <span className={styles.marketChain}>Arbitrum</span>
+            <span className={styles.marketPair}>alETH · alUSD</span>
+          </div>
+        </div>
+        <p className={styles.marketsNote}>
+          Six markets on three chains: an ETH and a USDC market on each. Everything in
+          these lessons applies to all six.
+        </p>
       </section>
+
+      {doneCount === lessons.length && doneCount > 0 ? (
+        <section className={styles.graduate}>
+          <div className={styles.microLabel}>Track complete</div>
+          <div className={styles.graduateTitle}>Every lesson passed.</div>
+          <p className={styles.graduateBody}>
+            The next step is the real thing. The{" "}
+            <Link to="/user/quick-start">quick start</Link> walks the same flow in the
+            interface, with real numbers and screenshots, and the app itself is at{" "}
+            <a href="https://alchemix.fi" target="_blank" rel="noopener noreferrer">
+              alchemix.fi
+            </a>
+            .
+          </p>
+        </section>
+      ) : null}
 
       <section className={styles.track}>
         {lessons.map((lesson, i) => (
