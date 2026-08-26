@@ -48,6 +48,7 @@ module.exports = {
         "tutorials/repay-loan",
         "tutorials/withdraw",
         "tutorials/redeem-alassets",
+        "tutorials/ecosystem-vaults",
       ],
     },
     {
