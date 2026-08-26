@@ -175,16 +175,16 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      announcementBar: {
-        id: "beta-2025-audit",
-        content:
-          "<strong>Public BETA:</strong> These docs are in active development. Expect gaps and changes. " +
-          '<a href="https://discord.gg/alchemix">Get support</a> · ' +
-          '<a href="https://github.com/alchemix-finance/alchemix-v3-docs/issues/new">Report an issue</a>',
-        backgroundColor: "#0d0e10",
-        textColor: "#f5c09a",
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   id: "beta-2025-audit",
+      //   content:
+      //     "<strong>Public BETA:</strong> These docs are in active development. Expect gaps and changes. " +
+      //     '<a href="https://discord.gg/alchemix">Get support</a> · ' +
+      //     '<a href="https://github.com/alchemix-finance/alchemix-v3-docs/issues/new">Report an issue</a>',
+      //   backgroundColor: "#0d0e10",
+      //   textColor: "#f5c09a",
+      //   isCloseable: true,
+      // },
       //   announcementBar: {
       //   id: "v3_launch2",
       //   content:
