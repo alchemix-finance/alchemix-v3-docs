@@ -185,7 +185,8 @@ function Try({ onDone }) {
         <Note label="Repaying">
           You can repay with alUSD, with MYT, or with the asset you deposited. One alUSD
           clears exactly one unit of debt. If part of the loan shows as earmarked in the
-          app, that part is repaid with MYT, and the asset menu only offers what is valid.
+          app (set aside for the protocol's next repayment cycle), that part is repaid
+          with MYT, and the asset menu only offers what is valid.
         </Note>
       </Notes>
 

@@ -111,8 +111,8 @@ function Learn({ onDone }) {
           >
             <Body>
               {close ? "You were in the right area. " : `You said ${money(guess)}. `}
-              Your deposit stayed in the vault the whole time, earning. That earning brings
-              the balance down, and it happens whether you are watching or not.
+              Your deposit stayed in the vault the whole time, earning, while the protocol
+              brought the balance down. It happens whether you are watching or not.
             </Body>
             <Body>
               The exact pace depends on conditions that move, so the shape of this line is

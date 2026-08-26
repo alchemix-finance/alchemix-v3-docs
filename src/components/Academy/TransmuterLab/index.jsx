@@ -108,7 +108,7 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title={`Exactly ${money(HOLDING)}. One for one, every time.`}
+          title={`Exactly ${money(HOLDING)}. One for one.`}
           onNext={onDone}
           nextLabel="Compare the two routes"
         >
@@ -189,8 +189,8 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="Leaving early">
-          You are not locked in. You can exit a Transmuter deposit before it matures, but an
-          early-withdrawal fee applies and you give up part of the outcome.
+          You are not locked in. You can exit a Transmuter deposit before it matures, but
+          an early transmutation fee applies and you give up part of the outcome.
         </Note>
         <Note label="Why it fills over time">
           Your claim is met from the collateral of people who borrowed. That is the same

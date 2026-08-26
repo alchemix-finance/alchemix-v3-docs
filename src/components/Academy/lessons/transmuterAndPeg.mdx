@@ -2,7 +2,8 @@ An alAsset can trade below face value while its peg holds. Every alAsset in
 circulation is backed by at least one unit of collateral inside the Alchemist, and
 the Transmuter will exchange it for the underlying at exactly 1:1 after a fixed
 term. alAssets are synthetic debt tokens, and that exchange mechanism holds the soft
-peg.
+peg. The docs flag one exception: if an exploit ever leaves bad debt in the
+Alchemist, redemptions pay out pro-rata until the backing is restored.
 
 So a discount is a price on waiting, and the shorter the wait the more the same
 discount is worth:

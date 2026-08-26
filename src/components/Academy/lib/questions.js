@@ -25,16 +25,16 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. Your collateral keeps working while the loan is open, and that is what clears the balance over time.",
+        "Right. The protocol repays the loan from the position itself, and that clears the balance over time.",
         "Alchemix charges no interest, so nothing is being added to your balance.",
-        "The balance is not static. Your collateral keeps working while the loan is open, and that pays it down.",
+        "The balance does not sit still. The protocol repays it from the position while the loan is open.",
         "The amount you owe is recorded in alUSD or alETH and does not follow the market price of your collateral.",
       ],
     },
     {
       prompt: "What are you charged for an Alchemix loan?",
       options: [
-        "No interest. The loan is paid down out of what your collateral earns",
+        "No interest. The protocol pays the loan down for you over time",
         "A variable rate that rises when more people are borrowing",
         "A fixed annual rate, agreed at the moment you borrow",
         "A daily fee for every day the loan stays open",
@@ -57,8 +57,8 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. That is the point of the design: the deposit you borrowed against is the thing paying the loan down.",
-        "It keeps earning. If it stopped, there would be nothing to pay the loan down with.",
+        "Right. That is the point of the design: the position you borrowed against is what repays the loan.",
+        "It keeps earning the whole time. Nothing about an open loan stops the deposit working.",
         "Nothing is sold. You keep your deposit, which is the point of borrowing against it in the first place.",
         "Your deposit is not lent to anyone. It stays yours and keeps earning in the vault.",
       ],
@@ -80,7 +80,7 @@ export const QUESTIONS = {
         "Right. Choosing to mint more alAssets is the only thing that raises what you owe.",
         "Time alone lowers the balance. No interest accrues, so nothing is pushing it up.",
         "A price move does not change what you owe. Your debt is recorded in alUSD or alETH, not in dollars of collateral.",
-        "Yield works in your favour. It is part of what makes the position clear its balance.",
+        "Yield works in your favour. It never raises what you owe.",
       ],
     },
     {
@@ -113,7 +113,7 @@ export const QUESTIONS = {
       explain: [
         "Right. Left alone, the balance only moves in one direction.",
         "No interest is added to an Alchemix loan, so nothing pushed the balance up.",
-        "It did not stay flat. Your collateral kept working, and that pays the balance down.",
+        "It did not stay flat. The protocol was repaying it the whole time.",
         "The balance does not track the market. It is recorded in alUSD or alETH and only moves as it is repaid.",
       ],
     },
@@ -207,7 +207,7 @@ export const QUESTIONS = {
       prompt:
         "You need your funds back before your Transmuter deposit has matured. What are your options?",
       options: [
-        "Exit early and pay an early-withdrawal fee, giving up part of the outcome",
+        "Exit early and pay an early transmutation fee, giving up part of the outcome",
         "Nothing. The deposit is locked until it matures",
         "Sell your place in the queue to another user",
         "Withdraw free of charge, as long as you do it in the first week",
@@ -217,7 +217,7 @@ export const QUESTIONS = {
         "Right. Leaving early is always possible, and the fee is the cost of not waiting.",
         "You are not locked in. Early exit is available, it just costs you part of the fixed-rate outcome.",
         "Queue positions are not traded between users. You exit your own deposit and pay the fee.",
-        "There is no free window. The early-withdrawal fee applies whenever you leave before maturity.",
+        "There is no free window. The early transmutation fee applies whenever you leave before maturity.",
       ],
     },
   ],

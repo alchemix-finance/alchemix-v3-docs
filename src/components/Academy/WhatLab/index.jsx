@@ -48,7 +48,7 @@ const PILLARS = [
     id: "save",
     title: "Save",
     line: "Deposit ETH or USDC and earn on it.",
-    body: "Your deposit goes into a vault that spreads it across several yield strategies. The Alchemix DAO picks those strategies and adjusts them over time, so there is nothing for you to manage. There is no lock-up, and you can take your money out whenever you want.",
+    body: "Your deposit goes into a vault that spreads it across several yield strategies. The Alchemix DAO, the community that governs the protocol, picks those strategies and adjusts them over time, so there is nothing for you to manage. There is no lock-up, and you can take your money out whenever you want.",
     colour: "#5ba88a",
   },
   {
@@ -128,8 +128,8 @@ function Learn({ onDone }) {
           </Body>
           <Body>
             An Alchemix loan works the other way round. Your deposit stays where it is and
-            keeps earning, and that earning clears the balance. The deposit you borrowed
-            against does the repaying, so nothing comes out of your income.
+            keeps earning, and the protocol repays the balance from the position itself.
+            Nothing comes out of your income.
           </Body>
         </Reveal>
       ) : (
@@ -227,7 +227,8 @@ function Compare({ onDone }) {
         >
           <Body>
             A normal loan balance only falls when you pay it. An Alchemix balance falls
-            because the deposit behind it is working.
+            because the protocol repays it for you, out of the position rather than out
+            of your pocket.
           </Body>
           <Body>
             How quickly it falls depends on conditions that change, so no lesson can promise
