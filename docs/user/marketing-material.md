@@ -132,6 +132,38 @@ The standalone Alchemix mark, for avatars, favicons, and tight spaces where the 
 
 </div>
 
+### Mix-Yield Token Logos
+
+The Mix-Yield Token marks for the WETH and USDC vaults.
+
+<div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '1rem'}}>
+
+  <div>
+    <div style={{fontWeight: 600, marginBottom: '0.5rem'}}>mixWETH</div>
+    <div style={{marginBottom: '0.75rem'}}>
+      <img src="/img/BrandAssets/Svg/mixWETH_01.svg" alt="mixWETH logo" style={{maxHeight: '80px', display: 'block'}} />
+    </div>
+    <div>
+      {/* PNG placeholder: add static/img/BrandAssets/Png/mixWETH_01.png, then uncomment the button below */}
+      {/* <a class="button button--primary button--sm" href="/img/BrandAssets/Png/mixWETH_01.png" download="mixWETH_01.png" style={{marginRight: '0.5rem'}}>PNG</a> */}
+      <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/mixWETH_01.svg" download="mixWETH_01.svg">SVG</a>
+    </div>
+  </div>
+
+  <div>
+    <div style={{fontWeight: 600, marginBottom: '0.5rem'}}>mixUSDC</div>
+    <div style={{marginBottom: '0.75rem'}}>
+      <img src="/img/BrandAssets/Svg/mixUSDC_01.svg" alt="mixUSDC logo" style={{maxHeight: '80px', display: 'block'}} />
+    </div>
+    <div>
+      {/* PNG placeholder: add static/img/BrandAssets/Png/mixUSDC_01.png, then uncomment the button below */}
+      {/* <a class="button button--primary button--sm" href="/img/BrandAssets/Png/mixUSDC_01.png" download="mixUSDC_01.png" style={{marginRight: '0.5rem'}}>PNG</a> */}
+      <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/mixUSDC_01.svg" download="mixUSDC_01.svg">SVG</a>
+    </div>
+  </div>
+
+</div>
+
 ### Brand Colors
 
 <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem', marginTop: '1rem'}}>

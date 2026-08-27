@@ -16,7 +16,7 @@ All official logos, token marks, brand colors, and typography live on one page, 
 
 [**Marketing Material & logo downloads →**](/user/marketing-material)
 
-That page includes the full Alchemix logo (Copper, White, Black), the standalone brand mark for avatars and tight spaces, alETH and alUSD token logos, the brand color palette, and both brand typefaces.
+That page includes the full Alchemix logo (Copper, White, Black), the standalone brand mark for avatars and tight spaces, alETH and alUSD token logos, the Mix-Yield Token logos (mixWETH, mixUSDC), the brand color palette, and both brand typefaces.
 
 ### Usage guidelines for partners
 
