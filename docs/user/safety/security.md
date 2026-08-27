@@ -37,8 +37,8 @@ All core smart contracts for Alchemix V3 have undergone testing and audits by ex
 MYT access control and strategy contracts received dedicated reviews:
 
 - **Nethermind**
-  - Reviewed: February 2026
-  - Focus: MYT access control (`myt-ac`) and strategy (`myt`) repositories.
+  - Reviewed: February 2026, final report August 2026
+  - Focus: MYT access-control logic and the yield-strategy adapter contracts.
   - [View Report](/audits/v3-nethermind.pdf)
 - **yAudit (yAuditDAO)**
   - Reviewed: April 2026
