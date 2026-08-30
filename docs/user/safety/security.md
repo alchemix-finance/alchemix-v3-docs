@@ -60,7 +60,9 @@ The table below maps every live MYT strategy to the audit that reviewed its adap
 | Ether.fi (weETH)       | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
 | Frax (sfrxETH)         | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
 | InfiniFi (siUSD)       | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
-| Yearn (yvUSD)          | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Yearn (yvUSD)\*        | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+
+\* Yearn's yvUSD held iUSD in the past but no longer does.
 
 Every whitelisted strategy is audited before it goes live under the continuous program described below.
 

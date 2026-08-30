@@ -105,9 +105,11 @@ The audit covering each live strategy is listed on the [Security & Audits](../sa
 
 Each classification caps how much of an MYT a strategy can occupy, both on its own and across all strategies of that tier. These caps let you set an LTV that limits liquidation risk from higher-risk strategies.
 
-| Classification | Max Individual Strategy | Max All Strategies |
+| Classification | Max Individual Strategy | Max All Strategies\* |
 |---|---|---|
 | Conservative | None | None |
-| Moderate | 25% | 40% |
-| Aggressive | 10% | 10% |
+| Moderate | 40% | 60% |
+| Aggressive | 20% | 20% |
+
+\* Max All Strategies is inclusive of that risk level and all riskier levels. The Conservative cap covers Conservative, Moderate, and Aggressive strategies together. The Moderate cap covers Moderate and Aggressive, and the Aggressive cap covers Aggressive only.
 
