@@ -109,6 +109,44 @@ For more specific operations tailored to individual strategies, see the contract
 - **Notified By** - [`SlippageBPSUpdated(uint256 newSlippageBPS)`](/dev/myt/myt-contract#Events_SlippageBPSUpdated)
 </details>
 
+### Adapter call parameters
+
+> Types defined in `IMYTStrategy` that describe how a single `allocate` or `deallocate` call should be carried out. The caller (normally the AlchemistAllocator) ABI-encodes a `VaultAdapterParams` value into the `data` argument of those functions.
+
+<details id="Variables_ActionType">
+  <summary>ActionType</summary>
+
+- **Description** - An enum selecting which internal route a call takes.
+  - `direct` - allocate or deallocate through the protocol's own wrap or unwrap path, with no DEX swap.
+  - `swap` - allocate or deallocate through a 0x DEX swap using `SwapParams.txData`.
+  - `unwrapAndSwap` - deallocate only. Unwraps the protocol token to an intermediate asset, then swaps that to the vault asset via 0x.
+- **Type** - enum (`direct`, `swap`, `unwrapAndSwap`)
+- **Used By**
+  - [`allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_allocate) - accepts `direct` and `swap`
+  - [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate) - accepts `direct`, `swap`, and `unwrapAndSwap`
+  - [`_validateDeallocateAction(ActionType action, bytes4 selector)`](/dev/myt/myt-contract#InternalOperations_validateDeallocateAction)
+</details>
+<details id="Variables_VaultAdapterParams">
+  <summary>VaultAdapterParams</summary>
+
+- **Description** - The struct ABI-encoded into the `data` argument of `allocate` and `deallocate`. Carries the action type and the swap parameters. The swap parameters are only read for the `swap` and `unwrapAndSwap` actions.
+- **Type** - struct with fields `ActionType action` and `SwapParams swapParams`
+- **Used By**
+  - [`allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_allocate)
+  - [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate)
+</details>
+<details id="Variables_SwapParams">
+  <summary>SwapParams</summary>
+
+- **Description** - Swap details for the `swap` and `unwrapAndSwap` action types.
+  - `txData` - the 0x swap calldata that the strategy forwards to the AllowanceHolder.
+  - `minIntermediateOut` - the minimum amount of the intermediate token (for example stETH from an unwrap) that must be received before the swap. Only used for `unwrapAndSwap`.
+- **Type** - struct with fields `bytes txData` and `uint256 minIntermediateOut`
+- **Used By**
+  - [`allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_allocate) - `txData` only
+  - [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate)
+</details>
+
 ### Public State
 
 > State that is available and can be read from outside of the contract.
@@ -135,13 +173,14 @@ For more specific operations tailored to individual strategies, see the contract
 - **Updated By** - none. Constant varible.
 - **Read By** - `FIXED_POINT_SCALAR()`
 </details>
-<details>
+<details id="Constants_FORCE_DEALLOCATE_SELECTOR">
   <summary>FORCE_DEALLOCATE_SELECTOR</summary>
 
-- **Description** - A bytes4 constant set to 0xe4d38cd8. When passed as the `selector` param to [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate), swap-based and unwrap-based withdrawal routes are bypassed, allowing only the direct withdrawal path.
+- **Description** - A bytes4 constant set to 0xe4d38cd8, the selector the Morpho V2 vault passes as `selector` on its force-deallocate path. When [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate) receives it, [`_validateDeallocateAction()`](/dev/myt/myt-contract#InternalOperations_validateDeallocateAction) reverts with `ForceDeallocateSwapNotAllowed()` unless the action is `direct` and the strategy's `_canForceDeallocate()` returns true. Swap-based and unwrap-based routes revert on this path.
 - **Type** - bytes4
 - **Used By**
   - [`deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_deallocate)
+  - [`_validateDeallocateAction(ActionType action, bytes4 selector)`](/dev/myt/myt-contract#InternalOperations_validateDeallocateAction)
 - **Updated By** - none. Constant variable.
 - **Read By** - `FORCE_DEALLOCATE_SELECTOR()`
 </details>
@@ -156,7 +195,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Description** - A Morpho VaultV2 contract which manages and allocates to individual strategies through adapters such as this one.
 - **Type** - IVaultV2
 - **Used By**
-  - [Vault Actions](/dev/myt/myt-contract#VaultActions)
+  - [Vault Actions](/dev/myt/myt-contract#vault-actions)
   - [`withdrawToVault()`](/dev/myt/myt-contract#OwnerActions_withdrawToVault)
   - [`allocation()`](/dev/myt/myt-contract#ReadingState_allocation)
   - [`_isProtectedToken(address token)`](/dev/myt/myt-contract#InternalOperations_isProtectedToken)
@@ -202,22 +241,10 @@ For more specific operations tailored to individual strategies, see the contract
 - **Type** - bool
 - **Used By**
   - [`allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)`](/dev/myt/myt-contract#VaultActions_allocate)
-  - [`claimRewards(address token, bytes memory quote, uint256 minAmountOut)`](/dev/myt/myt-contract#UserActions_claimRewards)
+  - [`claimRewards(address token, bytes memory quote, uint256 minAmountOut)`](/dev/myt/myt-contract#OwnerActions_claimRewards)
 - **Updated By**
   - `setKillSwitch(bool value)`
 - **Read By** - `killSwitch()`
-</details>
-<details>
-  <summary>whitelistedAllocators</summary>
-
-- **Description** - A mapping of addresses which are allowed to call functions that move funds.
-- **Type** - `mapping(address => bool)`
-- **Used By**
-  - [`claimWithdrawalQueue(uint256 positionId)`](/dev/myt/myt-contract#UserActions_claimWithdrawalQueue)
-- **Updated By**
-  - `setWhitelistedAllocator(address to, bool val)`
-- **Read By** 
-  - `whitelistedAllocators(address)` - returns a true/false value indicating whether or not the address passed is a whitelisted allocator
 </details>
 <details>
   <summary>allowanceHolder</summary>
@@ -233,27 +260,22 @@ For more specific operations tailored to individual strategies, see the contract
 
 ## Functions
 
-### User Actions
+### Owner Actions
 
-> Actions that are performed by any external callers. In some cases this may be necessitate elevated permissions or restrict user access, but these are one-offs rather than patterns of actors decsribed by traditional only\_ modifiers.
+> Actions guarded by the `onlyOwner` modifier from OpenZeppelin `Ownable`. The owner is set from `params.owner` at deployment and can be changed later with `transferOwnership()`. Calls from any other address revert with `OwnableUnauthorizedAccount(address account)`.
 
 <details id="UserActions_claimWithdrawalQueue">
   <summary>claimWithdrawalQueue(uint256 positionId)</summary>
 
 - **Description** - Handles claiming withdrawals from strategies that implement a withdrawal queue system.<br/><br/>
-  First checks that the caller is a whitelistedAllocator, then delegates to the internal function `_claimWithdrawalQueue()` which is overridden and defined in derived strategy implementations.
+  Delegates to the internal function `_claimWithdrawalQueue()` which is overridden and defined in derived strategy implementations.
   - `@param positionId` - The ID of the position to claim for from the underlying protocol.
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - nonpayable
 - **Returns** - `uint256 ret` - The amount of assets claimed from the withdrawal queue (returned by the strategy-specific implementation).
 - **Emits** - none
-- **Reverts** - With `"PD"` if `msg.sender` is not whitelisted
+- **Reverts** - [`OwnableUnauthorizedAccount(address)`](/dev/myt/myt-contract#Errors_OwnableUnauthorizedAccount) if `msg.sender` is not the owner
 </details>
-
-### Owner Actions
-
-> Actions guarded by the onlyOwner modifier, which restricts access to the owner set at deployment time
-
 <details id="OwnerActions_claimRewards">
   <summary>claimRewards(address token, bytes memory quote, uint256 minAmountOut)</summary>
 
@@ -338,18 +360,6 @@ For more specific operations tailored to individual strategies, see the contract
   - [`IncentivesUpdated(bool newValue)`](/dev/myt/myt-contract#Events_IncentivesUpdated)
 - **Reverts** - none
 </details>
-<details id="OwnerActions_setWhitelistedAllocator">
-  <summary>setWhitelistedAllocator(address to, bool val)</summary>
-
-- **Description** - Sets or unsets an address as a whitelisted allocator authorized to call various functions listed under [`UserActions`](/dev/myt/myt-contract#user-actions)
-  - `@param to` — address to set or unset as a whitelisted allocator
-  - `@param val` — true or false value to set or unset as a whitelisted alloactor
-- **Visibility Specifier** - public
-- **State Mutability Specifier** - nonpayable
-- **Emits** - none
-- **Reverts**
-- if `to` is the zero address
-</details>
 <details id="OwnerActions_setKillSwitch">
   <summary>setKillSwitch(bool val)</summary>
 
@@ -357,10 +367,34 @@ For more specific operations tailored to individual strategies, see the contract
   - `@param val` - true to activate emergency mode, false to resume normal operation
 - **Visibility Specifier** - public
 - **State Mutability Specifier** - nonpayable
-- **Modifiers** - [`onlyOwner`](/dev/myt/myt-contract#AccessControl_onlyOwner)
+- **Modifiers** - [`onlyOwner`](/dev/myt/myt-contract#owner-actions)
 - **Emits**
   - [`Emergency(bool val)`](/dev/myt/myt-contract#Events_Emergency)
 - **Reverts** - none
+</details>
+<details id="OwnerActions_transferOwnership">
+  <summary>transferOwnership(address newOwner)</summary>
+
+- **Description** - Inherited from OpenZeppelin `Ownable`. Transfers ownership of the strategy to `newOwner` in a single step. The new owner immediately gains access to every function guarded by `onlyOwner`. `params.owner` is not updated and keeps the value set at deployment.
+  - `@param newOwner` - the address to become the new owner
+- **Visibility Specifier** - public
+- **State Mutability Specifier** - nonpayable
+- **Emits**
+  - [`OwnershipTransferred(address previousOwner, address newOwner)`](/dev/myt/myt-contract#Events_OwnershipTransferred)
+- **Reverts**
+  - [`OwnableUnauthorizedAccount(address)`](/dev/myt/myt-contract#Errors_OwnableUnauthorizedAccount) - `msg.sender` is not the owner
+  - [`OwnableInvalidOwner(address)`](/dev/myt/myt-contract#Errors_OwnableInvalidOwner) - `newOwner` is the zero address
+</details>
+<details id="OwnerActions_renounceOwnership">
+  <summary>renounceOwnership()</summary>
+
+- **Description** - Inherited from OpenZeppelin `Ownable`. Sets the owner to the zero address, which permanently disables every `onlyOwner` function on this strategy, including the kill switch, reward claims, and token rescue.
+- **Visibility Specifier** - public
+- **State Mutability Specifier** - nonpayable
+- **Emits**
+  - [`OwnershipTransferred(address previousOwner, address newOwner)`](/dev/myt/myt-contract#Events_OwnershipTransferred)
+- **Reverts**
+  - [`OwnableUnauthorizedAccount(address)`](/dev/myt/myt-contract#Errors_OwnableUnauthorizedAccount) - `msg.sender` is not the owner
 </details>
 
 ### Vault Actions
@@ -382,6 +416,7 @@ For more specific operations tailored to individual strategies, see the contract
 - **Emits**
   - [`Allocate(uint256 amountAllocated, address this)`](/dev/myt/myt-contract#Events_Allocate)
 - **Reverts**
+  - With `"PD"` if `msg.sender` is not the MYT vault
   - [`StrategyAllocationPaused(address)`](/dev/myt/myt-contract#Errors_StrategyAllocationPaused) — killSwitch is enabled
   - [`InvalidAmount(uint256, uint256)`](/dev/myt/myt-contract#Errors_InvalidAmount) — assets is 0
   - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — unrecognized action type
@@ -390,10 +425,10 @@ For more specific operations tailored to individual strategies, see the contract
   <summary>deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)</summary>
 
 - **Description** - Deallocates `assets` from the underlying strategy back to the vault, computes the delta between the new allocation and previous allocation, and reports the change.<br/><br/>
-  Decodes `data` as a `VaultAdapterParams` struct to determine the action type. If `direct`, calls `_deallocate(assets)`. If `swap` (and the selector is not `FORCE_DEALLOCATE_SELECTOR`), calls `_deallocate(assets, swapCalldata)`. If `unwrapAndSwap` (and the selector is not `FORCE_DEALLOCATE_SELECTOR`), calls `_deallocate(assets, swapCalldata, minIntermediateOut)`. All `_deallocate` variants are overridden and defined in derived strategy implementations. Does not check `killSwitch`. Reverts if `assets` is 0.
+  Decodes `data` as a `VaultAdapterParams` struct to determine the action type, then runs [`_validateDeallocateAction(action, selector)`](/dev/myt/myt-contract#InternalOperations_validateDeallocateAction), which reverts with `ForceDeallocateSwapNotAllowed()` when `selector` is `FORCE_DEALLOCATE_SELECTOR` and either the action is not `direct` or the strategy's `_canForceDeallocate()` returns false. If `direct`, calls `_deallocate(assets)`. If `swap`, calls `_deallocate(assets, swapCalldata)`. If `unwrapAndSwap`, calls `_deallocate(assets, swapCalldata, minIntermediateOut)`. All `_deallocate` variants are overridden and defined in derived strategy implementations. Does not check `killSwitch`. Reverts if `assets` is 0.
   - `@param data` - ABI-encoded `VaultAdapterParams` struct containing the action type and optional swap parameters.
   - `@param assets` - the amount of tokens the vault is requesting to deallocate from the strategy.
-  - `@param selector` - A bytes4 value passed by the vault. When equal to [`FORCE_DEALLOCATE_SELECTOR`](/dev/myt/myt-contract#Constants_FORCE_DEALLOCATE_SELECTOR), swap-based and unwrap-based routes are bypassed.
+  - `@param selector` - The vault entry point's selector, passed through by the vault. When equal to [`FORCE_DEALLOCATE_SELECTOR`](/dev/myt/myt-contract#Constants_FORCE_DEALLOCATE_SELECTOR), only the `direct` action is accepted, and only if the strategy opts in through `_canForceDeallocate()`. Anything else reverts with `ForceDeallocateSwapNotAllowed()`.
   - `@param sender` - Unused, but in place to match the Morpho V2 spec. May be used in the future.
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
@@ -401,8 +436,10 @@ For more specific operations tailored to individual strategies, see the contract
 - **Emits**
   - [`Deallocate(uint256 amountDeallocated, address this)`](/dev/myt/myt-contract#Events_Deallocate)
 - **Reverts**
+  - With `"PD"` if `msg.sender` is not the MYT vault
   - [`InvalidAmount(uint256, uint256)`](/dev/myt/myt-contract#Errors_InvalidAmount) — assets is 0
-  - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) — unrecognized action type, or swap/unwrapAndSwap used with FORCE_DEALLOCATE_SELECTOR
+  - [`ActionNotSupported()`](/dev/myt/myt-contract#Errors_ActionNotSupported) - unrecognized action type
+  - [`ForceDeallocateSwapNotAllowed()`](/dev/myt/myt-contract#Errors_ForceDeallocateSwapNotAllowed) - `selector` is `FORCE_DEALLOCATE_SELECTOR` and either the action is not `direct` or `_canForceDeallocate()` returns false
   - With `"inconsistent totalValue"` if `_totalValue()` after deallocation is less than `assets`
 </details>
 
@@ -497,6 +534,28 @@ For more specific operations tailored to individual strategies, see the contract
 - **Returns** - none
 - **Emits** - none
 - **Reverts** - [`InsufficientBalance(uint256, uint256)`](/dev/myt/myt-contract#Errors_InsufficientBalance) — balance is less than `amount`
+</details>
+<details id="InternalOperations_validateDeallocateAction">
+  <summary>_validateDeallocateAction(ActionType action, bytes4 selector)</summary>
+
+- **Description** - Internal check run at the start of `deallocate()`. When `selector` equals `FORCE_DEALLOCATE_SELECTOR`, it requires that `action` is `direct` and that `_canForceDeallocate()` returns true; any other combination reverts. Calls with any other selector pass through unchanged.
+  - `@param action` - the decoded `ActionType` for this deallocation
+  - `@param selector` - the selector passed by the vault
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - none
+- **Emits** - none
+- **Reverts** - [`ForceDeallocateSwapNotAllowed()`](/dev/myt/myt-contract#Errors_ForceDeallocateSwapNotAllowed) - force-deallocate path with a non-direct action, or on a strategy that does not opt in
+</details>
+<details id="InternalOperations_canForceDeallocate">
+  <summary>_canForceDeallocate()</summary>
+
+- **Description** - Virtual opt-in hook read by `_validateDeallocateAction()`. It reports whether this strategy supports direct withdrawals on the vault's force-deallocate path. Returns true by default. Derived contracts override it to return false when a forced direct withdrawal is unsafe or unsupported for their protocol.
+- **Visibility Specifier** - internal
+- **State Mutability Specifier** - view
+- **Returns** - `bool` - true if the strategy allows force deallocation
+- **Emits** - none
+- **Reverts** - none
 </details>
 <details id="InternalOperations_isProtectedToken">
   <summary>_isProtectedToken(address token)</summary>
@@ -654,6 +713,16 @@ For more specific operations tailored to individual strategies, see the contract
 - **Emits** - none
 - **Reverts** - none
 </details>
+<details id="ReadingState_owner">
+  <summary>owner()</summary>
+
+- **Description** - Inherited from OpenZeppelin `Ownable`. Returns the current owner, the address allowed to call the Owner Actions above. Initialised from `params.owner` at deployment and updated by `transferOwnership()` or `renounceOwnership()`.
+- **Visibility Specifier** - public
+- **State Mutability Specifier** - view
+- **Returns** - `address` - the current owner
+- **Emits** - none
+- **Reverts** - none
+</details>
 
 ## Errors
 
@@ -662,6 +731,9 @@ For more specific operations tailored to individual strategies, see the contract
 - <span id="Errors_ActionNotSupported"><strong><code>ActionNotSupported()</code></strong> - An error which is used to indicate that the requested action type is not supported by this strategy, or that a base virtual function has not been overridden by a derived contract.</span>
 - <span id="Errors_InvalidAmount"><strong><code>InvalidAmount(uint256 min, uint256 received)</code></strong> - An error which is used to indicate that an amount provided was below the required minimum. Used for zero-amount checks and swap output validation.</span>
 - <span id="Errors_InsufficientBalance"><strong><code>InsufficientBalance(uint256 required, uint256 available)</code></strong> - An error which is used to indicate that the strategy contract does not hold enough of a token to fulfill the requested operation.</span>
+- <span id="Errors_ForceDeallocateSwapNotAllowed"><strong><code>ForceDeallocateSwapNotAllowed()</code></strong> - An error which is used to indicate that a force deallocation was attempted with a swap or unwrap-and-swap action, or on a strategy whose `_canForceDeallocate()` returns false. Only direct withdrawals are allowed on the force-deallocate path.</span>
+- <span id="Errors_OwnableUnauthorizedAccount"><strong><code>OwnableUnauthorizedAccount(address account)</code></strong> - Inherited from OpenZeppelin `Ownable`. Raised when an address other than the owner calls a function guarded by `onlyOwner`.</span>
+- <span id="Errors_OwnableInvalidOwner"><strong><code>OwnableInvalidOwner(address owner)</code></strong> - Inherited from OpenZeppelin `Ownable`. Raised when the zero address is passed as the new owner, at deployment or in `transferOwnership()`.</span>
 
 ## Events
 
@@ -678,3 +750,4 @@ For more specific operations tailored to individual strategies, see the contract
 - <span id="Events_WithdrawToVault"><strong><code>WithdrawToVault(uint256 indexed amount)</code></strong> - Emitted when leftover idle assets are transferred back to the vault.</span>
 - <span id="Events_RewardsClaimed"><strong><code>RewardsClaimed(address indexed token, uint256 indexed amount)</code></strong> - Emitted when reward tokens are claimed from the underlying protocol.</span>
 - <span id="Events_TokensRescued"><strong><code>TokensRescued(address indexed token, address indexed to, uint256 amount)</code></strong> - Emitted when mistakenly sent ERC20 tokens are rescued from the strategy contract.</span>
+- <span id="Events_OwnershipTransferred"><strong><code>OwnershipTransferred(address indexed previousOwner, address indexed newOwner)</code></strong> - Inherited from OpenZeppelin `Ownable`. Emitted at deployment and whenever `transferOwnership()` or `renounceOwnership()` changes the owner.</span>

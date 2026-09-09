@@ -27,6 +27,8 @@ The AlchemistAllocator is a role-gated front controller for a specific Morpho V2
     - [`allocateWithSwap(address adapter, uint256 amount, bytes memory txData)`](/dev/myt/alchemist-allocator-contract#Functions_allocateWithSwap)
     - [`deallocateWithSwap(address adapter, uint256 amount, bytes memory txData)`](/dev/myt/alchemist-allocator-contract#Functions_deallocateWithSwap)
     - [`deallocateWithUnwrapAndSwap(address adapter, uint256 amount, bytes memory txData, uint256 minIntermediateOut)`](/dev/myt/alchemist-allocator-contract#Functions_deallocateWithUnwrapAndSwap)
+    - [`setLiquidityAdapter(address adapter, bytes memory data)`](/dev/myt/alchemist-allocator-contract#Functions_setLiquidityAdapter)
+    - [`setMaxRate(uint256 rate)`](/dev/myt/alchemist-allocator-contract#Functions_setMaxRate)
     - [`_validateCaps(address adapter, uint256 amount)`](/dev/myt/alchemist-allocator-contract#InternalOperations_validateCaps)
   - **Updated By** - none. Set once on deployment.
 </details>
@@ -42,7 +44,7 @@ The AlchemistAllocator is a role-gated front controller for a specific Morpho V2
 
 ## Functions
 
-> All external functions require the caller to be either the admin or an active operator. There are no modifier-based access control sections. The check is performed inline via `require(msg.sender == admin || operators[msg.sender], "PD")`.
+> The allocation, deallocation, and `setLiquidityAdapter` functions require the caller to be either the admin or an active operator. That check is performed inline via `require(msg.sender == admin || operators[msg.sender], "PD")`. `setMaxRate` is admin-only through the inherited `onlyAdmin` modifier, which also reverts with `"PD"`.
 
 <details id="Functions_allocate">
   <summary>allocate(address adapter, uint256 amount)</summary>
@@ -115,18 +117,43 @@ The AlchemistAllocator is a role-gated front controller for a specific Morpho V2
     - With `"PD"` if `msg.sender` is not the admin or an active operator.
   - **Emits** - none
 </details>
+<details id="Functions_setLiquidityAdapter">
+  <summary>setLiquidityAdapter(address adapter, bytes memory data)</summary>
+
+  - **Description** - Sets the vault's liquidity adapter and the calldata the vault passes to it, by calling `vault.setLiquidityAdapterAndData(adapter, data)`. The Morpho V2 vault allocates incoming deposits to the liquidity adapter and deallocates from it when a withdrawal exceeds the vault's idle balance, so this selects which strategy absorbs deposit and withdrawal flow. Passing the zero address as `adapter` turns that routing off. Does not enforce cap validation.
+    - `@param adapter` - The address of the MYT strategy adapter to use as the liquidity adapter.
+    - `@param data` - The ABI-encoded adapter data the vault forwards on those deposit and withdrawal calls. For MYT strategies this is an encoded `VaultAdapterParams` struct.
+  - **Visibility Specifier** - external
+  - **State Mutability Specifier** - nonpayable
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the admin or an active operator.
+  - **Emits** - none
+</details>
+<details id="Functions_setMaxRate">
+  <summary>setMaxRate(uint256 rate)</summary>
+
+  - **Description** - Sets the vault's maximum interest accrual rate by calling `vault.setMaxRate(rate)`. The Morpho V2 vault uses this value to bound how fast `totalAssets` can grow between accruals, which limits the share-price effect of donations and force-deallocate penalties.
+    - `@param rate` - The new maximum rate, expressed as a WAD-scaled per-second rate. The vault rejects values above its `MAX_MAX_RATE`, which corresponds to 200% APR.
+  - **Visibility Specifier** - external
+  - **State Mutability Specifier** - nonpayable
+  - **Access Control** - `onlyAdmin`
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the admin.
+    - `MaxRateTooHigh()` - if `rate` exceeds the vault's `MAX_MAX_RATE`. Propagated from the Morpho V2 vault call.
+  - **Emits** - none
+</details>
 
 ### Internal Operations
 
 <details id="InternalOperations_validateCaps">
   <summary>_validateCaps(address adapter, uint256 amount)</summary>
 
-  - **Description** - Internal helper that enforces allocation limits before funds are moved into a strategy. Checks four cap layers in order:<br/><br/>
-    1. **Absolute cap** — the maximum quantity of underlying assets that may be allocated to the strategy, set on the vault.<br/>
-    2. **Relative cap** — the maximum percentage of the vault's total assets that the strategy can hold, converted to an absolute value.<br/>
-    3. **Global risk cap** — the maximum total allocation across all strategies in the same risk class, as defined by the StrategyClassifier.<br/>
-    4. **Local risk cap** (operators only) — the per-strategy cap defined by the StrategyClassifier. Only applied when the caller is an operator, not the admin.<br/><br/>
-    The effective individual strategy limit is the minimum of the absolute cap and absolute value of the relative cap. For operators, this is further constrained by the local risk cap. The function reverts if the proposed allocation would push the strategy or its risk class over any of these limits.
+  - **Description** - Internal helper that enforces allocation limits before funds are moved into a strategy. It reads the strategy's absolute and relative caps from the vault, looks up the strategy's risk level and the matching global and local risk caps on the StrategyClassifier, and converts each percentage cap (WAD, 1e18 = 100%) into an asset amount using the vault's `totalAssets`. The checks then run in this order:<br/><br/>
+    1. **Individual limit** - set to the lower of the absolute cap and the asset value of the relative cap.<br/>
+    2. **Global risk cap** - sums the current allocation of every adapter in the same risk class and reverts if `amount` on its own exceeds the remaining room under that class's global cap.<br/>
+    3. **Local risk cap** (operators only) - when the caller is not the admin, the individual limit is lowered to the per-strategy cap from the StrategyClassifier if that is smaller.<br/>
+    4. **Individual check** - reverts if the strategy's existing allocation plus `amount` exceeds the individual limit.<br/><br/>
+    The global check compares the requested `amount` alone against the remaining class capacity. The individual check compares the strategy's existing allocation plus `amount` against its limit.
     - `@param adapter` - The strategy adapter address.
     - `@param amount` - The amount proposed for allocation.
   - **Visibility Specifier** - internal

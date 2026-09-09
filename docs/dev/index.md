@@ -14,7 +14,7 @@ This section of the docs contains contract descriptions and architecture describ
 
 1. **Deposit to Earn & Borrow**
 
-   Deposit your collateral into your preferred yield strategy to start earning interest, and be able to take out a loan. Use your deposit to borrow and receive alAssets while your deposit earns interest.
+   Deposit ETH or USDC into a Mix-Yield Token (MYT) to start earning yield, then deposit the MYT into the Alchemist to open a position. Borrow alAssets against it while the MYT keeps earning.
 
 2. **Swap alAsset**
 
@@ -22,4 +22,4 @@ This section of the docs contains contract descriptions and architecture describ
 
 3. **Wait, Withdraw, Borrow, Repay, or Self-Liquidate**
 
-   Your chosen yield strategy will earn interest on the full initial deposit. When the chosen strategy earns yield, your share of the yield is used to repay your debt over time automatically. Manage your loan as needed, with the flexibility to withdraw principal, borrow more, repay, or self-liquidate at any time.
+   Your MYT keeps earning on the full deposit. As Transmuter positions mature, redemptions draw MYT from your collateral and cancel the same amount of debt, so the loan pays down over time without action from you. Manage your loan as needed, with the flexibility to withdraw collateral your debt doesn't need, borrow more, repay, or self-liquidate at any time.

@@ -38,7 +38,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - **Used By** - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
 </details>
 
-### TransmuterInititializationParams
+### TransmuterInitializationParams
 
 > State set by params at creation-time of the transmuter to initially configure it.
 
@@ -55,13 +55,15 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 <details>
   <summary>timeToTransmute</summary>
 
-- **Description** - the time in blocks that it will take to transmuter new staking positions
+- **Description** - the time in blocks that it will take to transmute new staking positions
 - **Type** - uint256
 - **Used By**
   - [`createRedemption(uint256 syntheticDepositAmount, address recipient)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
+- **Updated By**
+  - [`setTransmutationTime(uint256 time)`](/dev/transmuter/transmuter-contract#AdminActions_setTransmutationTime)
 - **Read By**
   - `timeToTransmute()`
-- **Nofified By** - [`TransmutationTimeUpdated()`](/dev/transmuter/transmuter-contract#Events_TransmutationTimeUpdated)
+- **Notified By** - [`TransmutationTimeUpdated()`](/dev/transmuter/transmuter-contract#Events_TransmutationTimeUpdated)
 </details>
 <details>
   <summary>transmutationFee</summary>
@@ -74,7 +76,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
   - [`setTransmutationFee(uint256)`](/dev/transmuter/transmuter-contract#AdminActions_setTransmutationFee)
 - **Read By**
   - `transmutationFee()`
-- **Nofified By** - [`TransmutationFeeUpdated()`](/dev/transmuter/transmuter-contract#Events_TransmutationFeeUpdated)
+- **Notified By** - [`TransmutationFeeUpdated()`](/dev/transmuter/transmuter-contract#Events_TransmutationFeeUpdated)
 </details>
 <details>
   <summary>exitFee</summary>
@@ -87,12 +89,12 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
   - [`setExitFee(uint256)`](/dev/transmuter/transmuter-contract#AdminActions_setExitFee)
 - **Read By**
   - `exitFee()`
-- **Nofified By** - [`ExitFeeUpdated()`](/dev/transmuter/transmuter-contract#Events_ExitFeeUpdated)
+- **Notified By** - [`ExitFeeUpdated()`](/dev/transmuter/transmuter-contract#Events_ExitFeeUpdated)
 </details>
 <details>
-  <summary>protocolFeeReceiver</summary>
+  <summary>feeReceiver</summary>
 
-- **Description** - the address that receives protocol fees from transmutation claims and early exit fees.
+- **Description** - the address that receives protocol fees from transmutation claims and early exit fees. The constructor copies this value into the `protocolFeeReceiver` state variable. Must be non-zero or the constructor reverts with `IllegalArgument()`.
 - **Type** - address
 - **Used By**
   - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
@@ -102,10 +104,19 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
   - `protocolFeeReceiver()`
 - **Notified By** - [`ProtocolFeeReceiverUpdated()`](/dev/transmuter/transmuter-contract#Events_ProtocolFeeReceiverUpdated)
 </details>
+<details>
+  <summary>graphSize</summary>
+
+- **Description** - Present in the `TransmuterInitializationParams` struct but not read by the constructor. It has no effect on the deployed contract.
+- **Type** - uint256
+- **Used By** - none
+- **Updated By** - none
+- **Read By** - none
+</details>
 
 ### Constants
 
-> Immutable variables used as helpers or for informational purposes.
+> Constant variables used as helpers or for informational purposes.
 
 <details>
   <summary>BPS</summary>
@@ -113,10 +124,11 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - **Description** - Constant equaling 10_000. Used for any explicit decimal representation. Treats 100% as 10,000; meaning 10% would be expressed as 1000 BPS.
 - **Type** - uint256
 - **Used By**
+  - [`constructor(TransmuterInitializationParams params)`](/dev/transmuter/transmuter-contract#Constructor_constructor)
   - [`setTransmutationFee(uint256)`](/dev/transmuter/transmuter-contract#AdminActions_setTransmutationFee)
   - [`setExitFee(uint256)`](/dev/transmuter/transmuter-contract#AdminActions_setExitFee)
   - [`claimRedemption(uint256)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
-- **Updated By** - NONE - immutable variable
+- **Updated By** - NONE - constant
 </details>
 <details>
   <summary>FIXED_POINT_SCALAR</summary>
@@ -125,7 +137,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - **Type** - uint256
 - **Used By**
   - [`claimRedemption(uint256)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
-- **Updated By** - NONE - immutable variable
+- **Updated By** - NONE - constant
 </details>
 <details>
   <summary>BLOCK_SCALING_FACTOR</summary>
@@ -136,14 +148,14 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
   - [`createRedemption(uint256 syntheticDepositAmount, address recipient)`](/dev/transmuter/transmuter-contract#UserActions_createRedemption)
   - [`claimRedemption(uint256 id)`](/dev/transmuter/transmuter-contract#UserActions_claimRedemption)
   - [`queryGraph(uint256 startBlock, uint256 endBlock)`](/dev/transmuter/transmuter-contract#ReadingState_queryGraph)
-- **Updated By** - NONE - immutable variable
+- **Updated By** - NONE - constant
 </details>
 <details>
   <summary>version</summary>
 
 - **Description** - Constant expressing Alchemix version. Not used for anything in the contract.
 - **Type** - string
-- **Updated By** - NONE - immutable variable
+- **Updated By** - NONE - constant
 - **Read By** - `version()`
 </details>
 
@@ -203,6 +215,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
   - [`acceptAdmin()`](/dev/transmuter/transmuter-contract#UserActions_acceptAdmin)
 - **Updated By**
   - [`setPendingAdmin(address value)`](/dev/transmuter/transmuter-contract#AdminActions_setPendingAdmin)
+  - [`acceptAdmin()`](/dev/transmuter/transmuter-contract#UserActions_acceptAdmin) (resets it to the zero address)
 - **Read By**
   - `pendingAdmin()`
 - **Notified By** - [`PendingAdminUpdated(address value)`](/dev/transmuter/transmuter-contract#Events_PendingAdminUpdated)
@@ -295,6 +308,29 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 
 ## Functions
 
+### Constructor
+
+> Runs once at deployment. The deployer becomes the admin.
+
+<details id="Constructor_constructor">
+  <summary>constructor(TransmuterInitializationParams params)</summary>
+
+- **Description** - Deploys the Transmuter and seeds its configuration from the `TransmuterInitializationParams` struct.<br/><br/>
+  Sets `syntheticToken`, `timeToTransmute`, `transmutationFee`, `exitFee`, and `protocolFeeReceiver` (from `params.feeReceiver`), then sets `admin` to `msg.sender`. The `graphSize` field of the struct is ignored. `depositCap` is left at its default of 0, so `createRedemption` reverts with `DepositCapReached()` until the admin calls `setDepositCap`. `alchemist` is also unset at deployment and is configured through `setAlchemist`.<br/><br/>
+  The contract inherits OpenZeppelin `ERC721Enumerable` and sets the ERC721 name to "Alchemix V3 Transmuter" and the symbol to "TRNSMTR". Position NFTs therefore expose the standard ERC721 functions (`balanceOf`, `ownerOf`, `transferFrom`, `approve`, and so on) plus the enumerable extension (`totalSupply`, `tokenByIndex`, `tokenOfOwnerByIndex`) in addition to the functions documented on this page.<br/><br/>
+  - `@param params` - the `TransmuterInitializationParams` struct described in the Variables section
+- **Visibility Specifier** - none (constructor)
+- **State Mutability Specifier** - nonpayable
+- **Returns** - none
+- **Emits** - none
+- **Reverts**
+  - `IllegalArgument()` - if `params.feeReceiver` is the zero address
+  - `IllegalArgument()` - if `params.timeToTransmute` is 0
+  - `IllegalArgument()` - if `params.timeToTransmute` exceeds `type(int256).max`
+  - `IllegalArgument()` - if `params.transmutationFee` exceeds BPS (> 100%)
+  - `IllegalArgument()` - if `params.exitFee` exceeds BPS (> 100%)
+</details>
+
 ### User Actions
 
 > Functions that can be called by external accounts which influence the state or balance of the Transmuter.
@@ -310,7 +346,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
 - **Emits**
-  - [`PositionCreated(address owner, uint256 amount, uint256 tokenId)`](/dev/transmuter/transmuter-contract#Events_PositionCreated)
+  - [`PositionCreated(address indexed creator, uint256 amountStaked, uint256 nftId)`](/dev/transmuter/transmuter-contract#Events_PositionCreated) - `creator` is `msg.sender`, which may differ from `recipient` (the address that receives the NFT)
 - **Reverts**
   - `DepositZeroAmount()` - if `syntheticDepositAmount == 0`
   - `IllegalArgument()` - if `recipient` is the zero address
@@ -319,8 +355,10 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 <details id="UserActions_claimRedemption">
   <summary>claimRedemption(uint256 id)</summary>
 
-- **Description** - Settles and closes the redemption for the staked position identified by id, paying out the vested portion in yield tokens and returning any unvested synthetics minus fees applied.<br/><br/>
-  Validates the position exists and is not being claimed in its creation block. Computes the vested vs. unvested split using block-based linear vesting. Verifies ownership and burns the position token. Calculates bad debt from Alchemist state and scales down vested payout if necessary. First uses yield from prior repayments to reduce redemptions, then redeems the rest from the Alchemist (calls `alchemist.redeem()`). Applies the transmutation fee to vested yield, and an exit fee to synthetics returned (unvested debt). If the staked position was not fully transmuted (vested) then the staking graph is updated to remove the remaining per-block rate. Transfers yield and synthetic payouts/fees, burns the transmuted synthetics, reduces `totalSyntheticsIssued` (calls `alchemist.reduceSyntheticsIssued()`), decrements `totalLocked`, removes the position from `totalActiveLocked` if it still counts toward the cap, and deletes the position. Informs the alchemist of its yieldToken quantity (calls `alchemist.setTransmuterTokenBalance()`).<br/><br/>
+- **Description** - Settles and closes the redemption for the staked position identified by id, paying out the vested portion in yield tokens and returning the unvested synthetics minus the exit fee. If the transmuter cannot deliver enough yield tokens to cover the vested portion, the uncovered debt is refunded as synthetics as well.<br/><br/>
+  Validates the position exists and is not being claimed in its creation block. Computes the vested vs. unvested split using block-based linear vesting. Verifies ownership and burns the position token.<br/><br/>
+  Checks for bad debt in the Alchemist. `badDebtRatio = mulDivUp(alchemist.totalSyntheticsIssued() * 10 ** underlyingDecimals, alchemist.getTotalLockedUnderlyingValue() + alchemist.convertYieldTokensToUnderlying(transmuter MYT balance))`, rounded up so the ratio is never understated. Only when this ratio exceeds `1e18` is the vested amount scaled down: `scaledTransmuted = amountTransmuted * 1e18 / badDebtRatio`. First uses yield tokens already held from prior repayments, then redeems the remainder from the Alchemist (calls `alchemist.redeem()`). The amount actually paid out, `distributable`, is the smaller of the yield value of `scaledTransmuted` and the yield tokens available (held balance plus `redeemedShares`). The transmutation fee is taken from `distributable` only, rounded down, and the claimant receives the remainder. If `distributable` is worth less than `scaledTransmuted` in debt terms, the shortfall is refunded to the claimant in synthetics on top of the unvested amount: `syntheticReturned = (amountNottransmuted - syntheticFee) + shortfallDebt`. The exit fee applies to the unvested portion only, so no exit fee is charged on a shortfall refund. Only `position.amount - (syntheticReturned + syntheticFee)` is burned.<br/><br/>
+  If the position was not fully vested, the staking graph is updated to remove the remaining per-block rate. Transfers yield and synthetic payouts/fees, burns the transmuted synthetics, reduces `totalSyntheticsIssued` by the burned amount (calls `alchemist.reduceSyntheticsIssued()`), decrements `totalLocked`, removes the position from `totalActiveLocked` if it still counts toward the cap, and deletes the position. Informs the alchemist of its yieldToken quantity (calls `alchemist.setTransmuterTokenBalance()`).<br/><br/>
   - `@param id` - the id of the staked position to claim and close
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
@@ -399,7 +437,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
 - **Emits**
-  - [`DepositCapUpdated(address value)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
+  - [`DepositCapUpdated(uint256 cap)`](/dev/transmuter/transmuter-contract#Events_DepositCapUpdated)
 - **Reverts**
   - `IllegalArgument()` - if `msg.sender` is not the current admin
   - `IllegalArgument()` - if `cap` exceeds `type(int256).max`
@@ -438,7 +476,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
 - **Emits**
-  - [`TransmutationTimeUpdated(uint256 fee)`](/dev/transmuter/transmuter-contract#Events_TransmutationTimeUpdated)
+  - [`TransmutationTimeUpdated(uint256 time)`](/dev/transmuter/transmuter-contract#Events_TransmutationTimeUpdated)
 - **Reverts**
   - `IllegalArgument()` - if `msg.sender` is not the current admin
   - `IllegalArgument()` - if `time` is 0
@@ -447,15 +485,15 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 <details id="AdminActions_setProtocolFeeReceiver">
   <summary>setProtocolFeeReceiver(address value)</summary>
 
-- **Description** - Sets the address that wil recieve fees from the Transmuter.
+- **Description** - Sets the address that will receive fees from the Transmuter.
 - **Visibility Specifier** - external
 - **State Mutability Specifier** - nonpayable
 - **Returns** - none
 - **Emits**
   - [`ProtocolFeeReceiverUpdated(address value)`](/dev/transmuter/transmuter-contract#Events_ProtocolFeeReceiverUpdated)
 - **Reverts**
-  - `IllegalArgument()` — if `msg.sender` is not the current admin
-  - `IllegalArgument()` — if `value` is the zero address
+  - `IllegalArgument()` - if `msg.sender` is not the current admin
+  - `IllegalArgument()` - if `value` is the zero address
 </details>
 
 ### Internal Operations
@@ -526,7 +564,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
   <summary>queryGraph(uint256 startBlock, uint256 endBlock)</summary>
 
 - **Description** - Allows callers to see how much is scheduled to be redeemed between two blocks numbers.<br/><br/>
-  Queries the staking graph to calculate the total redemption amount that is scheduled to be applied for all staked positions between two block numbers by delegating to `_stakingGraph.queryStake(startBlock, endBlock)`. If the query does not find an amount for that block span then it returns 0. Otherwise, it uses `FixedPointMath.mulDivUp` to scale the queried amount back down by `BLOCK_SCALING_FACTOR` to restore to token units and returns the result.<br/><br/>
+  Queries the staking graph to calculate the total redemption amount that is scheduled to be applied for all staked positions between two block numbers by delegating to `_stakingGraph.queryStake(startBlock, endBlock)`. Returns 0 if `endBlock` is less than `startBlock`, or if the query does not find an amount for that block span. Otherwise, it uses `FixedPointMath.mulDivUp` to scale the queried amount back down by `BLOCK_SCALING_FACTOR` to restore to token units and returns the result.<br/><br/>
   - `@param startBlock` - block number at which to start the query range
   - `@param endBlock` - block number at which to end the query range
 - **Visibility Specifier** - external
@@ -541,7 +579,7 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - <span id="Events_AdminUpdated"><strong><code>AdminUpdated(address admin)</code></strong> - Emitted when the admin address is updated.</span>
 - <span id="Events_PendingAdminUpdated"><strong><code>PendingAdminUpdated(address pendingAdmin)</code></strong> - Emitted when the pending admin is updated.</span>
 - <span id="Events_AlchemistUpdated"><strong><code>AlchemistUpdated(address alchemist)</code></strong> - Emitted when the associated alchemist is updated.</span>
-- <span id="Events_PositionCreated"><strong><code>PositionCreated(address indexed creator, uint256 amountStaked, uint256 nftId)</code></strong> - Emitted when a position is created.</span>
+- <span id="Events_PositionCreated"><strong><code>PositionCreated(address indexed creator, uint256 amountStaked, uint256 nftId)</code></strong> - Emitted when a position is created. `creator` is `msg.sender`, which may differ from the `recipient` that owns the minted NFT.</span>
 - <span id="Events_PositionClaimed"><strong><code>PositionClaimed(address indexed claimer, uint256 amountClaimed, uint256 amountUnclaimed)</code></strong> - Emitted when a position is claimed.</span>
 - <span id="Events_GraphSizeUpdated"><strong><code>GraphSizeUpdated(uint256 size)</code></strong> - Defined in the interface but not currently emitted by any function in the contract.</span>
 - <span id="Events_DepositCapUpdated"><strong><code>DepositCapUpdated(uint256 cap)</code></strong> - Emitted when the deposit cap is updated.</span>
@@ -560,6 +598,9 @@ Each Transmuter takes one synthetic debt asset (alAsset) and is associated with 
 - <span id="Errors_CallerNotOwner"><strong><code>CallerNotOwner()</code></strong> - Reverts when the caller does not own the position NFT they are trying to claim.</span>
 - <span id="Errors_PositionNotMatured"><strong><code>PositionNotMatured(uint256 id, uint256 maturationBlock, uint256 currentBlock)</code></strong> - Reverts when attempting to poke a position that has not yet fully matured.</span>
 - <span id="Errors_PositionAlreadyPoked"><strong><code>PositionAlreadyPoked(uint256 id)</code></strong> - Reverts when attempting to poke a position that has already been poked.</span>
+- <span id="Errors_NotRegisteredAlchemist"><strong><code>NotRegisteredAlchemist()</code></strong> - Defined in `TransmuterErrors.sol` but not currently used by any function in the contract.</span>
+- <span id="Errors_AlchemistDuplicateEntry"><strong><code>AlchemistDuplicateEntry()</code></strong> - Defined in `TransmuterErrors.sol` but not currently used by any function in the contract.</span>
+- <span id="Errors_DepositTooLarge"><strong><code>DepositTooLarge()</code></strong> - Defined in `TransmuterErrors.sol` but not currently used by any function in the contract.</span>
 - <span id="Errors_IllegalArgument"><strong><code>IllegalArgument()</code></strong> - Reverts when a function argument fails a validation check via `_checkArgument()`. Used across admin setter functions.</span>
 - <span id="Errors_IllegalState"><strong><code>IllegalState()</code></strong> - Reverts when a state precondition fails via `_checkState()`. Used in `acceptAdmin()` to verify a pending admin exists.</span>
 - <span id="Errors_Unauthorized"><strong><code>Unauthorized()</code></strong> - Reverts when `msg.sender` is not authorized. Used in `acceptAdmin()` when the caller is not the `pendingAdmin`.</span>

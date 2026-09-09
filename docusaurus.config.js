@@ -167,6 +167,11 @@ const config = {
             from: "/governance/onchain/vqalcx",
             to: "/governance/onchain/alcx-token",
           },
+          {
+            // Orphaned v2-era dev FAQ deleted 2026-09-02; send old links to the v3 user FAQ
+            from: "/dev/faq",
+            to: "/user/faq",
+          },
         ],
       },
     ],
