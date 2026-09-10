@@ -28,7 +28,7 @@ You can manually repay part or all of your debt at any time to unlock your colla
 
 <FramedImage src="/img/borrowing-in-alchemix-01.png" alt="Vault detail page" />
 
-Click Vaults in the top navigation, then click the vault you want to borrow against.
+Click Borrow in the top navigation, then click the vault you want to borrow against.
 
 ### Step 2 – Select the Borrow tab
 
@@ -54,11 +54,11 @@ Approve the transaction in your wallet. Once it completes, the position stats up
 
 ### Step 6 – Track your position
 
-The position is visible on the vault detail page and from your Dashboard. Use the alAsset however you like. Swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
+The position is visible on the vault detail page and from your Dashboard. Use the alAsset however you like. Swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage from the Yield Looping tab on the vault page.
 
 ### What repays the debt
 
-Your collateral continues to earn yield in your vault. The DAO sets a period length for redemptions. When a Transmuter user completes a redemption, a slice of depositors' MYT collateral is liquidated to fund the redemption, repaying debt equal to the redeemed amount in the process. Given enough time and redemptions, this will eventually clear a vault user's entire debt.
+Your collateral continues to earn yield in your vault. The DAO sets a period length for redemptions. When a Transmuter user claims a redemption, a slice of borrowers' MYT collateral is transferred to the Transmuter to fund it, and the same amount of debt is cancelled in the process. Given enough time and redemptions, this will eventually clear a vault user's entire debt.
 
 [Learn more about redemptions →](../concepts/redemption-rate.md)
 
@@ -68,10 +68,10 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Maximum LTV             | 90% of collateral value.                                                                                                                                          |
 | Interest Rate           | Zero. Debt balance only declines; it never accrues new interest.                                                                                                  |
-| Repayment sources       | Vault yield, transmuter redemptions, manual repayments.                                                                                                           |
-| Early repayment options | Use alAssets to repay the debt at any time.                                                                                                                       |
+| Repayment sources       | Transmuter redemptions (drawn from your collateral) and manual repayments. Vault yield accrues to your collateral and does not repay debt directly.                |
+| Early repayment options | Repay at any time with alAssets, MYT, or the underlying asset. alAssets only clear debt that has not been earmarked, while earmarked debt is repaid with MYT or the underlying asset.                                                                                                                       |
 | Position NFT            | Your position is represented by an NFT available in your wallet after the transaction confirms.                                                                   |
-| Liquidation             | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](../concepts/liquidations.md) |
+| Liquidation             | Only a loss of value in the MYT itself can push a position past the 95% threshold. Redemptions cancel debt and collateral in equal amounts, so they do not raise your LTV, though a higher-LTV position gives up a larger share of its collateral to each redemption. [Learn more →](../concepts/liquidations.md) |
 
 #### Why borrow instead of selling?
 
@@ -79,7 +79,7 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 
 - **Stable** – Avoid variable interest rates, price-based liquidations, and rollover risk common in other lending markets.
 
-- **IL Protection** – Combine borrowing with like-for-like liquidity pools to generate fees without impermanent loss.
+- **IL Protection** – Combine borrowing with like-for-like liquidity pools to generate fees, with impermanent loss limited to moves in the alAsset's peg.
 
 - **Leverage** – Loop alAssets back into the vault to amplify yield while the repayment mechanism remains self-managed.
 

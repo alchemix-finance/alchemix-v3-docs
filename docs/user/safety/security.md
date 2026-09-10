@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Security & Audits" />
 
-Alchemix V3 is designed with security at every layer. The approach combines an external audit suite, real-time automated threat monitoring, ongoing strategy review by Nethermind, and a bug bounty program.
+Alchemix V3 is designed with security at every layer. The approach combines an external audit suite, real-time automated threat monitoring, independent review of every yield strategy before it is whitelisted, and a bug bounty program.
 
 ### Audit coverage & reports
 
@@ -47,11 +47,11 @@ MYT access control and strategy contracts received dedicated reviews:
 
 #### Strategy audit coverage
 
-The table below maps every live MYT strategy to the audit that reviewed its adapter contract. Strategies that share an implementation are covered by the same report.
+The table below maps every whitelisted MYT strategy to the audit that reviewed its adapter contract. Whitelisted means the strategy has passed review and is registered on the vault. It does not mean the strategy currently holds an allocation: weights change as the DAO rebalances, and the live composition of each MYT is shown in the [Mixed Yield tab](https://alchemix.fi/mixed-yield). Strategies that share an implementation are covered by the same report.
 
-| Strategy (provider)    | Live on                               | Reviewed by                             |
+| Strategy (provider)    | Whitelisted on                        | Reviewed by                             |
 | :--------------------- | :------------------------------------ | :-------------------------------------- |
-| Aave V3                | Arbitrum (USDC, ETH), Optimism (ETH, USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Aave V3                | Mainnet (ETH), Arbitrum (USDC, ETH), Optimism (ETH, USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Euler                  | Mainnet (USDC), Arbitrum (USDC, ETH)  | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Fluid                  | Mainnet (USDC), Arbitrum (USDC)       | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Auto Finance (Tokemak) | Mainnet (USDC, ETH)                   | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
@@ -64,41 +64,44 @@ The table below maps every live MYT strategy to the audit that reviewed its adap
 
 \* Yearn's yvUSD held iUSD in the past but no longer does.
 
-Every whitelisted strategy is audited before it goes live under the continuous program described below.
+{/* This table has to match the adapters that are actually registered on the vaults, and that set changes whenever a strategy is added or retired. Check it against the live vaults before each release. A strategy earns a row here once it has been announced and its audit is published, so a strategy can be whitelisted on-chain for a while before it belongs in this table. Pending additions and the reasoning behind each row are kept in the maintainer notes outside this repo. */}
+
+Every strategy is audited before it is whitelisted, under the continuous program described below.
 
 #### Continuous MYT strategy audits
 
-To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must undergo a dedicated audit by Nethermind before being whitelisted. This ensures that the risk profile of the MYT remains consistent even as the underlying strategy landscape evolves.
+To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must be covered by an independent audit, by Nethermind or yAudit, before being whitelisted. New adapter code gets its own review; a strategy that reuses an adapter already covered by one of the reports above inherits that coverage. This keeps a consistent review standard for adapter code as strategies are added. Exposure limits are set separately through the risk-class caps.
 
 ### Internal security practices
 
 Beyond external reviews, Alchemix V3 is protected by a multi-layered internal defense strategy:
 
-- **Extensive Testing Suites:** 100% unit test coverage combined with advanced invariant testing (Scribble/Diligent) to ensure protocol properties hold under all conditions.
+- **Extensive Testing Suites:** A large unit test suite alongside Foundry invariant suites, including per-chain multi-strategy invariants that exercise each MYT configuration.
 - **Simulation & Fuzzing:** Continuous mainnet-fork testing and fuzzing via Foundry to stress-test the protocol against real-world market volatility and edge cases.
 - **Multi-Stage Code Reviews:** Every line of code is reviewed by multiple internal contributors before moving to external audit.
 
 ### Real-time threat monitoring
 
-Alchemix uses Hypernative for real-time threat detection across its contracts and dependencies, with pre-configured automation that can **auto-pause the protocol** the moment suspicious on-chain activity is detected. This complements the manual Guardian circuit breaker described below.
+Alchemix uses Hypernative for real-time threat detection across its contracts and dependencies. Alerts feed the Guardian circuit breaker described below, which can pause new deposits and loans. Withdrawals, repayments, liquidations, and Transmuter claims are never blocked by a pause.
 
-This has already mattered in practice. In the March 2026 DolaSavings/sDOLA price-manipulation incident, Alchemix had indirect exposure through Curve liquidity pools. Hypernative detected the attacker's preparation phase, automation paused the protocol, and treasury funds were withdrawn before the exploit landed, resulting in **zero losses for Alchemix**.
+This has already mattered in practice. In the March 2026 DolaSavings/sDOLA price-manipulation incident, before the v3 launch, Alchemix had indirect exposure through Curve liquidity pools. Hypernative detected the attacker's preparation phase and treasury funds were withdrawn before the exploit landed, resulting in **zero losses for Alchemix**.
 
 ### Bug bounties
 
 We encourage the stress-testing of our code. Our program is hosted on **Immunefi**, the leading platform for DeFi security, and was relaunched for the V3 contracts.
 
-- **Max Bounty:** Up to **$300,000** for critical vulnerabilities.
+- **Max Bounty:** Up to **$150,000** for critical vulnerabilities.
 - **Scope:** All core Alchemist, Transmuter, and MYT contracts.
 - **Link:** [View Alchemix on Immunefi](https://immunefi.com/bug-bounty/alchemix-1/information/)
 
-### Governance & timelocks
+### Governance & protocol changes
 
-To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 uses a timelock system.
+Protocol changes go through DAO governance (Snapshot vote, multisig execution). Management actions on the MYT vault additionally use an on-chain submit-and-execute two-step; Alchemist and Transmuter parameter changes are executed directly by the admin multisig.
 
-- **Upgradeability:** Critical contracts are upgradeable only via the DAO.
-- **Timelock Delay:** Set by governance. This delay provides users and third-party monitors time to exit or react before any code changes are executed.
-- **Guardian Role:** A dedicated Guardian address can pause deposits and loans in an emergency but **cannot** unpause them or access funds, serving as a circuit breaker during volatility.
+- **Upgradeability:** The Transmuter and the MYT vaults are not upgradeable; their code is fixed at deployment. The Alchemist runs behind an upgradeable proxy whose ProxyAdmin is held by the v3 admin multisig, acting under DAO governance.
+- **Two-Step Confirmation:** Management actions on the MYT vault, such as adding a strategy or raising a cap, must be submitted in one transaction and executed in a second, and the parameters of both must match. This double confirmation guards against mistaken or malformed changes.
+- **Timelock Durations:** The MYT vault inherits Morpho Vault V2’s timelock system, but all timelock durations are currently set to zero, so there is no enforced waiting period between submitting and executing a change. Governance can raise these durations on-chain if a delay is ever needed.
+- **Guardian Role:** A dedicated Guardian address can pause and unpause deposits and new loans in an emergency. It cannot change protocol parameters, access funds, or affect withdrawals, repayments, or liquidations, so it is a circuit breaker only.
 
 
 ### Learn more

@@ -20,7 +20,7 @@ They serve two purposes:
 The protocol values 1 alAsset at 1 unit of its underlying, but market price can drift below that. Borrowing and redemption both create opportunities around that gap.
 
 :::note Not an algorithmic stablecoin
-alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
+alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every alAsset is minted against MYT collateral worth at least 1.11 times the debt (90% maximum LTV). If that collateral ever loses value, liquidations and pro-rata Transmuter payouts restore the balance. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
 :::
 
 ### Borrowing, selling, and the market discount
@@ -51,8 +51,8 @@ A small, predictable discount is healthy; large discrepancies invite arbitrage.
 
 | Mechanism           | How it helps                                                                                                  |
 | ------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets at maturity. |
-| Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value.                      |
+| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets when claimed. |
+| Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value, up to the amount of alAssets the Alchemist on that chain has issued. |
 
 Together these forces pull market price toward 1.00 and keep borrowing capital-efficient.
 
@@ -70,7 +70,7 @@ A higher LTV does not, by itself, change the percentage discount an alAsset trad
 
 Higher LTV means more capital deployed upfront. At 90% LTV on a $1,000 deposit you receive $900 in alAssets, twice what you’d get at 45%. That capital is yours to use anywhere: yield strategies, liquidity pools, purchases, or working capital. Whether high LTV makes sense depends on whether your deployed capital earns more than the collateral erosion it costs you over time.
 
-Inside Alchemix, high LTV positions erode more collateral per redemption cycle than the vault yield replaces. Collateral and debt both fall, but the collateral falls faster, so you’ll need to re-borrow more often to maintain leverage. At lower LTV, vault yield can outpace redemptions entirely, letting collateral grow while debt falls.
+Inside Alchemix, high LTV positions erode more collateral per redemption cycle than the vault yield replaces. Each redemption cancels the same value of debt as it removes in collateral, so your LTV drifts down and you’ll need to re-borrow more often to maintain leverage. At lower LTV, vault yield can outpace redemptions entirely, so collateral grows while debt falls.
 
 The visualizer below shows only the internal Alchemix view. Returns on capital deployed outside the protocol are not included, and those returns are often the primary reason to borrow at higher leverage.
 

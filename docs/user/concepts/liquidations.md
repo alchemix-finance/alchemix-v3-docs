@@ -10,10 +10,10 @@ import HealthBar from "@site/src/components/HealthBar";
 
 <PageBanner title="Liquidations" />
 
-Liquidations in Alchemix v3 are a system-wide safety valve that activates only when the <Term id="myt">Mix-Yield Token</Term> loses backing. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close.
+Liquidations in Alchemix v3 are a system-wide safety valve that activates only when the <Term id="myt">Mix-Yield Token</Term> loses backing. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, a move in the price of ETH or USDC does **not** force positions to close.
 
 :::tip Liquidations in Alchemix are rare
-Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.
+Price volatility in ETH or USDC alone cannot trigger a liquidation. Only a fall in the value the MYT reports, such as an exploit, a strategy reporting negative returns, or an oracle-priced strategy (a liquid staking token, for example) trading below its underlying, can push your LTV toward the fixed 95% liquidation threshold. Day-to-day, most users will never encounter one.
 :::
 
 ### When liquidation does not occur
@@ -27,8 +27,8 @@ Price volatility alone cannot trigger a liquidation. Only a loss in the underlyi
 ### What can trigger liquidation
 
 <StatStrip items={[
-  { label: "Strategy loss, exploit, or severe slippage inside MYT", value: "Oracle shows MYT NAV is less than system debt." },
-  { label: "Position exceeds liquidation threshold (95% LTV)",      value: "Oracle shows collateral value vs. debt ratio breaching threshold." },
+  { label: "Strategy loss, exploit, or severe slippage inside MYT", value: "The MYT share price falls, raising every position's LTV." },
+  { label: "Position exceeds liquidation threshold (95% LTV)",      value: "Collateral, valued at the MYT share price, divided by debt reaches the 95% bound. Anyone can then liquidate the position." },
 ]} />
 
 ### Reading the health bar
@@ -37,7 +37,7 @@ The colored bar in the vault UI gives an at-a-glance view of your position. Keep
 
 <HealthBar currentLtv={62} maxLtv={90} liqLtv={95} />
 
-Only the minimum needed to restore your position to a healthy LTV, at or below the 90% maximum, is liquidated. The rest of your position is untouched. A liquidator fee is paid on both paths. If collateral can’t cover it, a separate fee vault (fundable by the DAO or any entity) covers the difference.
+In a normal liquidation, any earmarked debt is first repaid from your collateral, then only enough additional collateral is taken to restore the position to the target ratio, at or below the 90% maximum. The rest of your position is untouched. If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee. In a partial liquidation that fee comes from the position’s surplus collateral. In a full liquidation, or when the position cannot safely cover the fee, the whole fee is paid from a separate fee vault that the DAO or anyone can fund.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 

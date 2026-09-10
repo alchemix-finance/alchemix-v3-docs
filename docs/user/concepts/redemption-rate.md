@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Redemption Rate" />
 
-Redemptions convert earmarked collateral into the asset required to repay debt.
+Redemptions pull MYT collateral from positions with earmarked debt, send it to the Transmuter, and cancel the same amount of debt.
 
 Two ideas matter:
 
@@ -144,7 +144,7 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 
 ### Temporal leverage
 
-Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until a Transmuter position actually matures. The transfer out of the vault happens at that maturity moment, when the claim must be settled.
+Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until the Transmuter position is actually claimed. The transfer out of the vault happens at that claim, which the position holder can trigger for the vested portion at any time, including well after maturity.
 
 Throughout that waiting period your full deposit continues to earn yield, giving you an extra return called “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 

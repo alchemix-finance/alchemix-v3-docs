@@ -28,7 +28,7 @@ Connect a wallet on the target chain and keep a small balance of the native gas 
 
 <FramedImage src="/img/quick-start-01.png" alt="Deposit to MYT" />
 
-Open **Vaults**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain, and deposit. The vault mints MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
+Open **Borrow**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain, and deposit. The vault mints MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
 
 ### Step 2 – Borrow at 20% LTV
 

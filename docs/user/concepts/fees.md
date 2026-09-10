@@ -9,7 +9,7 @@ import { FeeValue, FeeSchedule } from "@site/src/components/FeeValue";
 
 <PageBanner title="Fees" />
 
-All Alchemix v3 fees are set by on-chain governance and fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and performance fees on yield generation.
+All Alchemix v3 fees are on-chain parameters set by the protocol admin multisig under DAO governance. They fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and performance fees on yield generation. A separate liquidator fee applies only to liquidated positions (see [Liquidations](./liquidations.md)).
 
 ```mermaid
 %%{init: {
@@ -39,21 +39,23 @@ flowchart TD
 
     C --> I(Exit early or wait?)
     I -->|Wait full term| J(<b>0.00%</b> full<br/>redemption value):::free
-    I -.->|Exit early| K(<b>2.50-3.00%</b><br/><span style='color:#8a8f99'>Early Transmutation Fee</span>):::fee
+    I -.->|Exit early| K(<b>1.00% to 2.50%</b><br/><span style='color:#8a8f99'>Early Transmutation Fee, set per chain</span>):::fee
 
     linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#f5c09a,stroke-width:2px
 ```
 
 ### Borrower redemption fee
 
-When the <Term id="transmuter">Transmuter</Term> converts queued alAssets into vault value, it credits that amount against outstanding loans. At that moment, a small fraction of the repaid debt is routed to the protocol treasury.
+When a <Term id="transmuter">Transmuter</Term> position is claimed, the redeemed amount is cancelled from outstanding loans and pulled from borrower collateral in MYT. At that moment, an additional fee, a small percentage of that value, is taken from collateral and routed to the protocol fee receiver.
 
-The same fee applies whenever collateral is used to reconcile earmarked debt, not only through scheduled Transmuter redemptions. A force-repay (for example, during a self-liquidation) settles earmarked debt with collateral and is charged at this same rate, so the small protocol fees you see on those events are this borrower redemption fee.
+The same fee applies whenever collateral is used to settle earmarked debt, whatever triggers the settlement. A force-repay (for example, during a self-liquidation) settles earmarked debt with collateral and is charged at this same rate, so the small protocol fees you see on those events are this borrower redemption fee.
 
 - **Current Rate:** <FeeValue metric="redemption" />
 - **Effective Cost:** Because this is event-based rather than time-based, the cost depends on your starting <Term id="ltv">LTV</Term> and the duration of the transmutation.
 
 Effective APR ≈ Fee × (1 year ÷ Transmutation Time) × Starting LTV
+
+This assumes the Transmuter queue equals total system debt, which is the maximum redemption rate. When the queue is smaller, a smaller share of your debt is redeemed each year and the effective cost is lower.
 
 ### Transmuter fees
 
@@ -61,8 +63,8 @@ The Transmuter involves two distinct fee types depending on the user's action:
 
 1. **Transmuter Fee:** An optional fee applied when a Transmuter depositor claims their underlying assets.
    - **Current Rate:** <FeeValue metric="transmuter" />
-2. **Early Transmutation Fee:** A fee applied when a user chooses to withdraw their funds from the Transmuter queue before the transmutation process is complete. This ensures the system remains stable and penalizes short-term "queue hopping."
-   - **Current Rate:** <FeeValue metric="earlyExit" />
+2. **Early Transmutation Fee:** A fee applied to the unvested alAssets returned when a depositor claims before maturity. The vested portion is still paid out in MYT and is not charged this fee. The fee keeps the system stable and discourages short-term "queue hopping."
+   - **Current Rate:** <FeeValue metric="earlyExit" /> on Ethereum and Optimism, <FeeValue metric="earlyExit" chain="arbitrum" /> on Arbitrum. The rate is set per chain by governance.
 
 ### MYT performance fee
 

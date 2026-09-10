@@ -23,7 +23,7 @@ That page includes the full Alchemix logo (Copper, White, Black), the standalone
 - **Use the assets as provided.** Don't recolor, stretch, add effects to, or redraw the logo or token marks.
 - **Pick the right variant for your background.** Copper or White on dark backgrounds, Black on light. The standalone mark is for small sizes (favicons, avatars, token lists).
 - **Name the tokens correctly.** The synthetics are written *alUSD* and *alETH* (lowercase "al"), and the yield token is *Mix-Yield Token* or *MYT*.
-- **Integrations may reference Alchemix by name** when describing a genuine integration ("Powered by Alchemix", "alUSD supported"). Trademark use beyond that — including in project names or forked deployments — requires a license; see the [Friendly Fork Initiative](../how-to/friendly-fork.md) for what licensed forks may and may not use.
+- **Integrations may reference Alchemix by name** when describing a genuine integration ("Powered by Alchemix", "alUSD supported"). Trademark use beyond that, including in project names or forked deployments, requires a license; see the [Friendly Fork Initiative](../how-to/friendly-fork.md) for what licensed forks may and may not use.
 
 ### Questions or custom requests
 

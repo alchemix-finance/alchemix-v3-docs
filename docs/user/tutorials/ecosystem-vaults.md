@@ -9,12 +9,12 @@ import FramedImage from "@site/src/components/FramedImage";
 
 <PageBanner title="Ecosystem Vaults" />
 
-The Ecosystem page collects vaults and markets that sit alongside the core Alchemix protocol. Some are curated by the Alchemix team, others are third-party protocols that Alchemix links to but does not operate. Two are live today:
+The Ecosystem menu collects vaults and markets that sit alongside the core Alchemix protocol. Some are curated by the Alchemix team, others are third-party protocols that Alchemix links to but does not operate. Two are live today:
 
 - **Alchemix Ecosystem ETH vault** – a curated WETH vault run by the Alchemix team.
 - **Euler 4-way market** – a third-party Euler lending market for WETH, USDC, alETH, and alUSD.
 
-Open both from the top navigation under Ecosystem → Vaults, or go directly to [alchemix.fi/ecosystem](https://alchemix.fi/ecosystem). Click any card to expand it.
+Open the Ecosystem ETH vault from the top navigation under Ecosystem → Vaults, or go directly to [alchemix.fi/ecosystem](https://alchemix.fi/ecosystem). The Euler market has its own page under Ecosystem → Lending, or go directly to [alchemix.fi/lending](https://alchemix.fi/lending). Click any card to expand it.
 
 ### Prerequisites
 
@@ -64,7 +64,7 @@ Euler is a third-party lending market, not operated by Alchemix. Borrowing again
 
 <FramedImage src="/img/ecosystem-vaults-03.png" alt="Euler 4-way market per-asset rate table" />
 
-Expand the Euler 4-way market card. The table lists supply APY and borrow APY for each asset so you can compare what you would earn by lending against what you would pay to borrow.
+Open the Lending page and expand the Euler 4-way market card. The table lists supply APY and borrow APY for each asset so you can compare what you would earn by lending against what you would pay to borrow.
 
 ### Step 2 – Lend
 

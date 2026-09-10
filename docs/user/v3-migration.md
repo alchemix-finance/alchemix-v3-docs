@@ -38,7 +38,7 @@ The migration was conducted via a coordinated protocol upgrade (governance-appro
 - **Dust threshold:** Positions valued at less than $0.01 USD at the time of the snapshot were not migrated.
 
 :::info No action required
-The migration ran automatically and is now complete. Eligible V2 positions were recreated on V3 and are available in the [Alchemix app](https://alchemix.fi). If you held a V2 position through the snapshot, it has already been migrated.
+The migration was executed by the Alchemix multisig and is now complete. Eligible V2 positions were recreated on V3 and are available in the [Alchemix app](https://alchemix.fi). If you held a V2 position through the snapshot, it has already been migrated.
 :::
 
 
@@ -148,4 +148,4 @@ At the conclusion of the earning period, a fixed pool of **10,000 ALCX** is dist
 
 - [Alchemix v3 dApp](https://alchemix.fi)
 - [AIP-123 Governance Proposal](https://alchemix.fi/governance/0xa3228100b34d6063dc03d35132c044a93ea1fbcce10a960bd43fb5a8454ec4b9)
-- [Mana announcement thread (X)](https://x.com/AlchemixFi/status/2014381213465940470) — the in-app Mana calculator was retired when the earning period closed
+- [Mana announcement thread (X)](https://x.com/AlchemixFi/status/2014381213465940470). The in-app Mana calculator was retired when the earning period closed

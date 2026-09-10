@@ -20,6 +20,14 @@ const SELECTORS = {
   performanceFee: "0x87788782",
 };
 
+// BASE LAUNCH: add a `base` entry (USDC only) here and to FALLBACK, then add
+// base to CHAIN_LABELS and the FeeSchedule chain list in index.jsx. Take the
+// addresses from the real deployment log, not from the broadcast log in the v3
+// repo, which records a dry run. Two cautions: Base fee parameters do not match
+// the other chains, so read every FALLBACK value off Base rather than copying a
+// row above; and the deployer reused one address across chains, so several Base
+// addresses collide with contracts of a different type on Ethereum, Optimism
+// and Arbitrum. Verify each address on Base before adding it.
 const CHAINS = {
   ethereum: {
     rpcs: [
@@ -81,18 +89,20 @@ const CHAINS = {
 };
 
 // Confirmed on-chain values (fractions of 1). Used as seed + fallback.
+// Re-verified 2026-09-02: exitFee() is 100 bps on Ethereum and Optimism and
+// 250 bps on Arbitrum, for both the alETH and alUSD transmuters.
 const FALLBACK = {
   ethereum: {
-    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
-    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.03, myt: 0.15 },
+    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
+    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
   },
   optimism: {
-    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
-    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.03, myt: 0.15 },
+    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
+    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
   },
   arbitrum: {
     eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
-    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.03, myt: 0.15 },
+    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
   },
 };
 

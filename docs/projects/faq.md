@@ -14,7 +14,7 @@ Answers to the questions we hear most from projects, protocols, and treasuries e
 
 <summary>What is Alchemix V3, in one paragraph?</summary>
 
-Alchemix V3 is a protocol for saving, borrowing, and earning fixed-yield returns. Users deposit ETH or USDC into a Mix-Yield Token (MYT), a DAO-curated basket of yield strategies, and can borrow synthetic alAssets (alETH or alUSD) against it at up to 90% LTV with 0% interest. Debt is repaid automatically by vault yield and scheduled Transmuter redemptions rather than monthly payments.
+Alchemix V3 is a protocol for saving, borrowing, and earning fixed-yield returns. Users deposit ETH or USDC into a Mix-Yield Token (MYT), a DAO-curated basket of yield strategies, and can borrow synthetic alAssets (alETH or alUSD) against it at up to 90% LTV with 0% interest. Debt is repaid automatically by scheduled Transmuter redemptions drawn from the collateral, with no monthly payments, while the collateral keeps earning yield.
 
 [Learn more about how Alchemix works →](/user)
 
@@ -44,7 +44,7 @@ Three headline changes: the maximum LTV rose from 50% to 90%, collateral is now 
 
 <summary>Can users be liquidated?</summary>
 
-Not by price movements. Debt is denominated in the same asset as the collateral (like-kind borrowing), so market volatility does not change a position's LTV. Liquidation is only possible if the MYT itself loses backing — for example through a strategy exploit — and a position crosses the liquidation threshold above the 90% borrowing cap.
+Not by price movements. Debt is denominated in the same asset as the collateral (like-kind borrowing), so market volatility does not change a position's LTV. Liquidation is only possible if the MYT itself loses backing, for example through a strategy exploit, and a position crosses the 95% liquidation threshold, which sits above the 90% borrowing cap.
 
 [Learn more about liquidations →](/user/concepts/liquidations)
 
@@ -78,7 +78,7 @@ Each alAsset has a dedicated oracle feed provided by Chronicle Labs. This lets m
 
 <summary>Is Alchemix V3 audited?</summary>
 
-Yes. The V3 codebase was reviewed by Spearbit/Cantina, Nethermind, yAudit, an Immunefi audit competition, and independent researcher alpeh_v, alongside an in-house testing suite. Every new MYT strategy is audited by Nethermind before whitelisting, the protocol is monitored in real time by Hypernative with auto-pause capability, and an Immunefi bug bounty of up to $300,000 is active.
+Yes. The V3 codebase was reviewed by Spearbit/Cantina, Nethermind, yAudit, an Immunefi audit competition, and independent researcher alpeh_v, alongside an in-house testing suite. Every new MYT strategy is independently audited, by Nethermind or yAudit, before whitelisting. The protocol is monitored in real time by Hypernative, the Guardian multisig can pause new deposits and loans, and an Immunefi bug bounty of up to $150,000 is active.
 
 [Full audit reports and security practices →](/user/safety/security)
 

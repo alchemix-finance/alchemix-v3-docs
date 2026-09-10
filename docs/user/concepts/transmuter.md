@@ -8,10 +8,10 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Transmuter" />
 
-The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH) at a guaranteed 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of <Term id="myt">MYT</Term> that normally unwraps to the underlying asset immediately.
+The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH) at a 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of <Term id="myt">MYT</Term> that normally unwraps to the underlying asset immediately.
 
-:::tip Instant vs. guaranteed liquidity
-The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as redemptions mature.
+:::tip Instant vs. fixed-rate liquidity
+The Transmuter pays out at a **1:1 exchange rate** (no market slippage) but works over time as positions vest. Payouts are scaled down only if the Alchemist carries bad debt (see Edge-case handling below).
 
 - **Want it now?** Use external liquidity pools (Curve, Balancer) which are instant but may have slight price slippage.
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
@@ -38,9 +38,9 @@ flowchart LR
     classDef default font-weight:bold;
 
     A(Deposit<br/><span style='color:#8a8f99'>alUSD or alETH</span>)
-    B(Queue<br/><span style='color:#8a8f99'>Locked for Transmutation Time</span>)
-    C(Earmark<br/><span style='color:#8a8f99'>MYT reserved from collateral</span>)
-    D{{Maturity<br/>alAssets burned · 1:1 paid out}}
+    B(Vesting<br/><span style='color:#8a8f99'>Linear per block over the Transmutation Time</span>)
+    C(Earmark<br/><span style='color:#8a8f99'>Borrower debt reserved for your claim</span>)
+    D{{Claim<br/>alAssets burned · 1:1 paid out in MYT}}
 
     A e1@--> B e2@--> C e3@--> D
 
@@ -52,21 +52,21 @@ flowchart LR
 ```
 
 - **Deposit** – Send alUSD or alETH to the Transmuter contract.
-- **Queue** – Each deposit matures after the Transmutation Time, a governance-set duration that varies by asset and chain and is adjusted over time in response to market factors such as Transmuter capacity and demand. Always check the current term for your asset in the [dapp](https://alchemix.fi/fixed-yield) before depositing. You can exit early, but an early-withdrawal fee applies and you give up a portion of the fixed-rate outcome.
-- **Earmark** – The protocol reserves an equal value of <Term id="myt">MYT</Term> from borrower collateral to guarantee your claim.
-- **Maturity** – You receive 1 asset-worth of MYT from borrowers for every 1 alAsset deposited.
+- **Vesting** – Each deposit vests linearly over the Transmutation Time, a duration set per asset and chain by the protocol admin under DAO governance and adjusted over time in response to market factors such as Transmuter capacity and demand. Always check the current term for your asset in the [dapp](https://alchemix.fi/fixed-yield) before depositing. You can exit early with the vested share paid out, and the unvested share returned as alAssets minus the early exit fee.
+- **Earmark** – As your position vests, the protocol earmarks a matching amount of borrower debt. That debt can only be settled with <Term id="myt">MYT</Term> collateral, which stays in place and keeps earning until you claim.
+- **Claim** – You receive 1 asset-worth of MYT from borrower collateral for every 1 alAsset that has vested. You can claim at any time after maturity, and the claimed alAssets are burned.
 
 All redeemed alAssets are burned, contracting their supply.
 
 ### Why discounts exist
 
-Borrowers often sell newly minted alAssets for working capital, pushing market price slightly below par. The spread between that market price and the Transmuter’s guaranteed 1:1 accounting creates a fixed-rate opportunity for buyers.
+Borrowers often sell newly minted alAssets for working capital, pushing market price slightly below par. The spread between that market price and the Transmuter’s fixed 1:1 accounting creates a fixed-rate opportunity for buyers.
 
-Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its external market price.
+Inside Alchemix, 1 alUSD offsets 1 USD worth of debt at face value, regardless of its external market price (debt already earmarked for redemption is settled with MYT instead).
 
 #### Fixed-rate yield example
 
-The figures below are **illustrative only**. The live market price, transmutation term, and resulting APR vary by asset and chain and are set by governance. Always check the current terms in the [dapp](https://alchemix.fi/fixed-yield).
+The figures below are **illustrative only**. The live market price is set by trading, the transmutation term is set per asset and chain by the protocol admin under DAO governance, and the resulting APR comes from both. Always check the current terms in the [dapp](https://alchemix.fi/fixed-yield).
 
 **Market**: alUSD = 0.96 USDC
 
@@ -80,7 +80,7 @@ The figures below are **illustrative only**. The live market price, transmutatio
 | Profit                  | 416 USDC = 4.16% in 3 mo = \~16.6% APR     |
 
 :::warning Transmuter deposit caps
-The Transmuter has a maximum deposit cap based on the total alAssets minted on its specific chain. If a Transmuter is full, you may need to bridge alAssets to another chain to deposit.
+The Transmuter has a deposit cap set per chain, and it can never hold more alAssets than the paired Alchemist has issued. If a Transmuter is full, you may need to bridge alAssets to another chain to deposit.
 
 **Always verify available Transmuter capacity on your target chain before purchasing alAssets.**
 :::
