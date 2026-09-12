@@ -62,7 +62,7 @@ Historically alAssets were used primarily inside the Alchemix ecosystem, because
 
 In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the soft peg for everyone.
 
-See where alAssets can be put to work, including external lending markets like the Euler alAsset market, on the [Alchemix ecosystem page →](https://alchemix.fi/ecosystem).
+See where alAssets can be put to work in external lending markets like the Euler 4-way market on the app's Lending page, under Ecosystem → Lending. The [Lending tutorial →](../tutorials/lending.md) walks through supplying and borrowing there.
 
 ### LTV sensitivity
 

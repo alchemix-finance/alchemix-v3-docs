@@ -1,7 +1,7 @@
 # Alchemix Documentation
 
 > Alchemix is a DeFi protocol offering self-repaying loans. Deposit ETH or USDC, borrow up to 90% LTV at 0% interest, and scheduled Transmuter redemptions repay the debt from your collateral while it keeps earning yield. No price-based liquidations. Live on Ethereum, Optimism, and Arbitrum.
-> Generated: 2026-09-03
+> Generated: 2026-09-11
 
 ---
 
@@ -29,6 +29,8 @@
 - [Redeem alAssets](https://docs.alchemix.fi/user/tutorials/redeem-alassets): Using the Transmuter for fixed-rate yield
 - [Withdraw](https://docs.alchemix.fi/user/tutorials/withdraw): Withdrawing collateral and managing LTV headroom
 - [Use Passive MYT](https://docs.alchemix.fi/user/tutorials/use-passive-myt): Earning yield without borrowing
+- [Ecosystem Vaults](https://docs.alchemix.fi/user/tutorials/ecosystem-vaults): Depositing WETH into the team-curated Alchemix Ecosystem ETH vault (Ecosystem → Vaults)
+- [Lending](https://docs.alchemix.fi/user/tutorials/lending): Supplying and borrowing on the third-party Euler 4-way market (Ecosystem → Lending)
 
 ### Safety
 - [Risk Considerations](https://docs.alchemix.fi/user/safety/risk-considerations): Understanding protocol risks
