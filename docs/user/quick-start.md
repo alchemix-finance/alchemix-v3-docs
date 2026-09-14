@@ -26,7 +26,7 @@ Connect a wallet on the target chain and keep a small balance of the native gas 
 
 ### Step 1 – Deposit to the MYT
 
-<FramedImage src="/img/quick-start-01.png" alt="Deposit to MYT" />
+<FramedImage src="/img/quick-start-01.png" alt="Borrow page listing the available vaults" />
 
 Open **Borrow**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain, and deposit. The vault mints MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
 
@@ -35,7 +35,7 @@ Open **Borrow**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain,
 <FramedImage src="/img/quick-start-02.png" alt="Borrow at 20% LTV" />
 
 :::tip Check the alAsset market price first
-alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
+alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The Trade → Swap page shows the current price and estimated proceeds before you confirm.
 :::
 
 On the same vault page stay on Deposit/Borrow. Enter a borrow near 20% LTV, then mint [alETH or alUSD](./concepts/alAssets.md), respectively.
@@ -44,7 +44,7 @@ If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in
 
 :::warning Before you confirm
 
-- **Strategy mix:** open the vault details to see the current MYT weight and ceilings for higher-risk buckets.
+- **Strategy mix:** open the vault's Info panel to see the strategies the MYT is deployed in, with each one's risk level and allocation.
 - **Health bar:** note the Liquidation LTV marker. Keep a wide buffer to reduce the need for active position management.
   :::
 

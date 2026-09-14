@@ -60,21 +60,23 @@ Type how much of the selected asset you want to commit. The panel instantly show
 
 Click Deposit and approve the transaction in your wallet.
 
-### Manage or close a position
+### Manage or exit a position
 
 Go to the Dashboard and scroll to Open Fixed Yield Positions.
 
 <FramedImage src="/img/redeem-alassets-02.png" alt="Open Fixed Yield Positions" />
 
-| Function      | When to use                | Effect                                                                                                                                       |
-| ------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Close         | Term ended                 | Receive the underlying asset. The Transmuter pays out MYT, which the app unwraps in the same transaction.                                                                                                             |
-| Close (early) | Need funds before maturity | Receives a reduced amount, UI shows the penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
+Click **Claim** on the position you want to exit, which will have a different effect depending on if the position has fully matured:
 
-If the app returns MYT instead of the underlying asset, for example when unwrapping would incur slippage or the MYT vault lacks immediate liquidity, you can hold it and keep earning, or unwrap it later from the Mixed Yield page.
+| Term state          | Modal                          | Effect                                                                                                                                      |
+| ------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matured             | Claim Transmuted Assets        | Receive the underlying asset. The Transmuter pays out MYT, which the app unwraps in the same transaction.                                    |
+| Still vesting       | Early Exit Transmuter Position | The button reads **Claim with Penalty**. You receive a reduced amount, and the modal shows the Early Claim Penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
+
+If the app returns MYT instead of the underlying asset, for example when unwrapping would incur slippage or the MYT vault lacks immediate liquidity, you can hold it and keep earning, or unwrap it later from the Mixed Yield page, under Earn → Variable Rate.
 
 ### Key points
 
-- The full displayed return is reached at maturity. Closing early pays the vested share at 1:1 and returns the rest as alAssets minus the exit fee.
+- The full displayed return is reached at maturity. Exiting early pays the vested share at 1:1 and returns the rest as alAssets minus the exit fee.
 
-- Early closure invokes the penalty shown in the UI.
+- An early exit invokes the penalty shown in the UI.

@@ -51,4 +51,4 @@ Stay on the Deposit tab. Enter the amount of WETH you want to deposit, or click 
 
 ### Step 4 – Withdraw
 
-Switch to the Withdraw tab when you want to exit. Claim your vault shares first, then submit the withdrawal. Withdrawals are batched and processed on the fortnightly cycle, so the funds return to your wallet once the next processing window completes.
+Switch to the Withdraw tab when you want to exit. Claim your vault shares first, then click **Request Withdraw**. Withdrawals are batched and processed on the fortnightly cycle, so the funds return to your wallet once the next processing window completes.

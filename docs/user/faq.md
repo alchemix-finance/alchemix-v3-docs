@@ -118,7 +118,7 @@ Most of the time, the cost and reward cancel out, so the net effect is similar t
 
 Yes, but an early exit applies a penalty that reduces your return. The pop-up shows the exact amount before you confirm.
 
-[Learn more about early exits →](./tutorials/redeem-alassets.md#manage-or-close-a-position)
+[Learn more about early exits →](./tutorials/redeem-alassets.md#manage-or-exit-a-position)
 
 </details>
 
@@ -189,7 +189,7 @@ Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/
   Where can I see live data?
 </summary>
 
-Current redemption rate, queued alAssets, vault APRs, and historic term stats are displayed directly in the main dashboard and the Fixed Yield page.
+Vault APRs appear on the Borrow page and on your Dashboard. A vault's current redemption rate and earmarked balance sit at the top of that vault's own page, with fuller detail under its Earmarking and Redemptions tabs. Fixed-rate terms and their projected APRs are on the Fixed Yield page.
 
 [View live data →](https://alchemix.fi/)
 

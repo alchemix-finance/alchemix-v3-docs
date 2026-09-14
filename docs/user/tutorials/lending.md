@@ -11,7 +11,7 @@ import FramedImage from "@site/src/components/FramedImage";
 
 The Lending page lists third-party lending markets that Alchemix links to but does not operate. One is live today: the **Euler 4-way market**, covering WETH, USDC, alETH, and alUSD.
 
-Open it from the top navigation under **Ecosystem → Lending**, or go directly to [alchemix.fi/lending](https://alchemix.fi/lending), then click the card to expand it.
+Open it from the top navigation under **Ecosystem → Lending**, or go directly to [alchemix.fi/lending](https://alchemix.fi/lending).
 
 :::note Separate from the Ecosystem vaults
 Lending is its own page. Vaults curated by the Alchemix team, such as the Alchemix Ecosystem ETH vault, live under Ecosystem → Vaults and are covered in [Ecosystem Vaults →](./ecosystem-vaults.md).
@@ -51,7 +51,7 @@ Each row lists how much of that asset is supplied and borrowed across the market
 
 <FramedImage src="/img/lending-03.png" alt="Euler Lend panel and Borrow positions section" />
 
-In the Lend panel on the left, choose your asset, enter an amount or click MAX, and supply it to start earning. Your supplied balance and its current APY appear above the input. Switch to the Withdraw tab to pull supplied assets back out, subject to available liquidity in the market.
+Click **Supply** on the row for the asset you want to lend. That opens the Lend panel on the left. Choose your asset, enter an amount or click MAX, and supply it to start earning. Your supplied balance and its current APY appear above the input. Switch to the Withdraw tab to pull supplied assets back out, subject to available liquidity in the market.
 
 ### Step 4 – Borrow
 

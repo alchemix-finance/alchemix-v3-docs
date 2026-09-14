@@ -86,7 +86,7 @@ flowchart LR
 There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
 
 :::info Compositions change, verify in the app
-The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
+The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [on the Mixed Yield page →](https://alchemix.fi/mixed-yield), under Earn → Variable Rate
 :::
 
 ### How strategies are classified

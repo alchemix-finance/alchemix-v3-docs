@@ -3,7 +3,7 @@
 > This file contains the Alchemix V3 user and integrator documentation concatenated for AI consumption.
 > Developer and governance sections are still being expanded and are indexed at https://docs.alchemix.fi/llms.txt.
 > Source: https://docs.alchemix.fi
-> Generated: 2026-09-12
+> Generated: 2026-09-14
 
 
 ---
@@ -172,7 +172,7 @@ Most of the time, the cost and reward cancel out, so the net effect is similar t
 
 Yes, but an early exit applies a penalty that reduces your return. The pop-up shows the exact amount before you confirm.
 
-[Learn more about early exits →](https://docs.alchemix.fi/user/tutorials/redeem-alassets#manage-or-close-a-position)
+[Learn more about early exits →](https://docs.alchemix.fi/user/tutorials/redeem-alassets#manage-or-exit-a-position)
 
 **Q: What fees does Alchemix charge?**
 
@@ -217,7 +217,7 @@ Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/
 
 **Q: Where can I see live data?**
 
-Current redemption rate, queued alAssets, vault APRs, and historic term stats are displayed directly in the main dashboard and the Fixed Yield page.
+Vault APRs appear on the Borrow page and on your Dashboard. A vault's current redemption rate and earmarked balance sit at the top of that vault's own page, with fuller detail under its Earmarking and Redemptions tabs. Fixed-rate terms and their projected APRs are on the Fixed Yield page.
 
 [View live data →](https://alchemix.fi/)
 
@@ -574,7 +574,7 @@ Open **Borrow**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain,
 ### Step 2 – Borrow at 20% LTV
 
 :::tip Check the alAsset market price first
-alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
+alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The Trade → Swap page shows the current price and estimated proceeds before you confirm.
 :::
 
 On the same vault page stay on Deposit/Borrow. Enter a borrow near 20% LTV, then mint [alETH or alUSD](https://docs.alchemix.fi/user/concepts/alAssets), respectively.
@@ -583,7 +583,7 @@ If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in
 
 :::warning Before you confirm
 
-- **Strategy mix:** open the vault details to see the current MYT weight and ceilings for higher-risk buckets.
+- **Strategy mix:** open the vault's Info panel to see the strategies the MYT is deployed in, with each one's risk level and allocation.
 - **Health bar:** note the Liquidation LTV marker. Keep a wide buffer to reduce the need for active position management.
   :::
 
@@ -812,7 +812,7 @@ flowchart LR
 There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
 
 :::info Compositions change, verify in the app
-The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
+The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [on the Mixed Yield page →](https://alchemix.fi/mixed-yield), under Earn → Variable Rate
 :::
 
 ### How strategies are classified
@@ -1589,7 +1589,7 @@ MYT access control and strategy contracts received dedicated reviews:
 
 #### Strategy audit coverage
 
-The table below maps every whitelisted MYT strategy to the audit that reviewed its adapter contract. Whitelisted means the strategy has passed review and is registered on the vault. It does not mean the strategy currently holds an allocation: weights change as the DAO rebalances, and the live composition of each MYT is shown in the [Mixed Yield tab](https://alchemix.fi/mixed-yield). Strategies that share an implementation are covered by the same report.
+The table below maps every whitelisted MYT strategy to the audit that reviewed its adapter contract. Whitelisted means the strategy has passed review and is registered on the vault. It does not mean the strategy currently holds an allocation: weights change as the DAO rebalances, and the live composition of each MYT is shown on the [Mixed Yield page](https://alchemix.fi/mixed-yield), under Earn → Variable Rate. Strategies that share an implementation are covered by the same report.
 
 | Strategy (provider)    | Whitelisted on                        | Reviewed by                             |
 | :--------------------- | :------------------------------------ | :-------------------------------------- |
@@ -1669,7 +1669,7 @@ Open Earn in the top navigation and choose Variable Rate, or go directly to [alc
 
 ### Step 2 – Find your MYT
 
-Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
+Use the asset filters (alUSD or alETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
 
 ### Step 3 – Review strategy allocation
 
@@ -1732,7 +1732,7 @@ Alchemix does not use price-based liquidations. Liquidation risk comes from a yi
 
 ### Step 4 – Enter a borrow amount
 
-Type the alAsset amount you want to borrow, or click Max to borrow the maximum within the current LTV limit.
+Type the alAsset amount you want to borrow, or click MAX to borrow the maximum within the current LTV limit.
 
 ### Step 5 – Confirm
 
@@ -1821,7 +1821,7 @@ You can often buy alUSD or alETH on secondary markets (like Curve) for slightly 
 
 ### Step 3 – Enter the amount
 
-Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
+Type the number of tokens you want to use to repay debt. MAX will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
 
 ### Step 4 – Send the transaction
 
@@ -1852,7 +1852,7 @@ You can withdraw collateral from Alchemix at any time.
 
 ### Step 1 – Open the vault
 
-Click Dashboard in the top navigation, then click the vault you want to withdraw from.
+Click Dashboard in the top navigation, then click **Manage** on the vault position you want to withdraw from.
 
 ### Step 2 – Open the Withdraw tab
 
@@ -1927,22 +1927,24 @@ Type how much of the selected asset you want to commit. The panel instantly show
 
 Click Deposit and approve the transaction in your wallet.
 
-### Manage or close a position
+### Manage or exit a position
 
 Go to the Dashboard and scroll to Open Fixed Yield Positions.
 
-| Function      | When to use                | Effect                                                                                                                                       |
-| ------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Close         | Term ended                 | Receive the underlying asset. The Transmuter pays out MYT, which the app unwraps in the same transaction.                                                                                                             |
-| Close (early) | Need funds before maturity | Receives a reduced amount, UI shows the penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
+Click **Claim** on the position you want to exit. What happens next depends on whether the term has ended:
 
-If the app returns MYT instead of the underlying asset, for example when unwrapping would incur slippage or the MYT vault lacks immediate liquidity, you can hold it and keep earning, or unwrap it later from the Mixed Yield page.
+| Term state          | Modal                          | Effect                                                                                                                                      |
+| ------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matured             | Claim Transmuted Assets        | Receive the underlying asset. The Transmuter pays out MYT, which the app unwraps in the same transaction.                                    |
+| Still vesting       | Early Exit Transmuter Position | The button reads **Claim with Penalty**. You receive a reduced amount, and the modal shows the Early Claim Penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
+
+If the app returns MYT instead of the underlying asset, for example when unwrapping would incur slippage or the MYT vault lacks immediate liquidity, you can hold it and keep earning, or unwrap it later from the Mixed Yield page, under Earn → Variable Rate.
 
 ### Key points
 
-- The full displayed return is reached at maturity. Closing early pays the vested share at 1:1 and returns the rest as alAssets minus the exit fee.
+- The full displayed return is reached at maturity. Exiting early pays the vested share at 1:1 and returns the rest as alAssets minus the exit fee.
 
-- Early closure invokes the penalty shown in the UI.
+- An early exit invokes the penalty shown in the UI.
 
 
 ---
@@ -1989,7 +1991,7 @@ Stay on the Deposit tab. Enter the amount of WETH you want to deposit, or click 
 
 ### Step 4 – Withdraw
 
-Switch to the Withdraw tab when you want to exit. Claim your vault shares first, then submit the withdrawal. Withdrawals are batched and processed on the fortnightly cycle, so the funds return to your wallet once the next processing window completes.
+Switch to the Withdraw tab when you want to exit. Claim your vault shares first, then click **Request Withdraw**. Withdrawals are batched and processed on the fortnightly cycle, so the funds return to your wallet once the next processing window completes.
 
 
 ---
@@ -2000,7 +2002,7 @@ Source: https://docs.alchemix.fi/user/tutorials/lending
 
 The Lending page lists third-party lending markets that Alchemix links to but does not operate. One is live today: the **Euler 4-way market**, covering WETH, USDC, alETH, and alUSD.
 
-Open it from the top navigation under **Ecosystem → Lending**, or go directly to [alchemix.fi/lending](https://alchemix.fi/lending), then click the card to expand it.
+Open it from the top navigation under **Ecosystem → Lending**, or go directly to [alchemix.fi/lending](https://alchemix.fi/lending).
 
 :::note Separate from the Ecosystem vaults
 Lending is its own page. Vaults curated by the Alchemix team, such as the Alchemix Ecosystem ETH vault, live under Ecosystem → Vaults and are covered in [Ecosystem Vaults →](https://docs.alchemix.fi/user/tutorials/ecosystem-vaults).
@@ -2034,7 +2036,7 @@ Each row lists how much of that asset is supplied and borrowed across the market
 
 ### Step 3 – Lend
 
-In the Lend panel on the left, choose your asset, enter an amount or click MAX, and supply it to start earning. Your supplied balance and its current APY appear above the input. Switch to the Withdraw tab to pull supplied assets back out, subject to available liquidity in the market.
+Click **Supply** on the row for the asset you want to lend. That opens the Lend panel on the left. Choose your asset, enter an amount or click MAX, and supply it to start earning. Your supplied balance and its current APY appear above the input. Switch to the Withdraw tab to pull supplied assets back out, subject to available liquidity in the market.
 
 ### Step 4 – Borrow
 

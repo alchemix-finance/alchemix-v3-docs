@@ -26,7 +26,7 @@ You can manually repay part or all of your debt at any time to unlock your colla
 
 ### Step 1 – Open the vault
 
-<FramedImage src="/img/borrowing-in-alchemix-01.png" alt="Vault detail page" />
+<FramedImage src="/img/borrowing-in-alchemix-01.png" alt="Borrow page listing the available vaults" />
 
 Click Borrow in the top navigation, then click the vault you want to borrow against.
 
@@ -46,7 +46,7 @@ Alchemix does not use price-based liquidations. Liquidation risk comes from a yi
 
 ### Step 4 – Enter a borrow amount
 
-Type the alAsset amount you want to borrow, or click Max to borrow the maximum within the current LTV limit.
+Type the alAsset amount you want to borrow, or click MAX to borrow the maximum within the current LTV limit.
 
 ### Step 5 – Confirm
 

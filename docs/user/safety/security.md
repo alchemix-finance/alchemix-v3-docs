@@ -47,7 +47,7 @@ MYT access control and strategy contracts received dedicated reviews:
 
 #### Strategy audit coverage
 
-The table below maps every whitelisted MYT strategy to the audit that reviewed its adapter contract. Whitelisted means the strategy has passed review and is registered on the vault. It does not mean the strategy currently holds an allocation: weights change as the DAO rebalances, and the live composition of each MYT is shown in the [Mixed Yield tab](https://alchemix.fi/mixed-yield). Strategies that share an implementation are covered by the same report.
+The table below maps every whitelisted MYT strategy to the audit that reviewed its adapter contract. Whitelisted means the strategy has passed review and is registered on the vault. It does not mean the strategy currently holds an allocation: weights change as the DAO rebalances, and the live composition of each MYT is shown on the [Mixed Yield page](https://alchemix.fi/mixed-yield), under Earn → Variable Rate. Strategies that share an implementation are covered by the same report.
 
 | Strategy (provider)    | Whitelisted on                        | Reviewed by                             |
 | :--------------------- | :------------------------------------ | :-------------------------------------- |

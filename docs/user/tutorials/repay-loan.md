@@ -57,7 +57,7 @@ You can often buy alUSD or alETH on secondary markets (like Curve) for slightly 
 
 ### Step 3 – Enter the amount
 
-Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
+Type the number of tokens you want to use to repay debt. MAX will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
 
 ### Step 4 – Send the transaction
 
