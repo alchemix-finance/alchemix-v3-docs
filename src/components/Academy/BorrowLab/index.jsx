@@ -158,8 +158,7 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Push the borrow to the cap.">
       <Sub>
-        Move the amount the way you would type it into the Borrow tab. The bar under the card
-        is the health bar the app shows you while you do it.
+        Move the amount the way you would type it into the Borrow tab.
       </Sub>
 
       <PositionCard

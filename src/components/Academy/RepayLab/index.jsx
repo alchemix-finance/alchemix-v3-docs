@@ -95,9 +95,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        Your position holds 10,000 deposited and 5,000 borrowed. Now walk away for two
-        years. Redemptions repay the loan from your collateral while you are gone, so watch
-        both figures on the card.
+        Redemptions repay the loan from your collateral, at a pace the protocol sets for
+        the whole market.
       </Sub>
 
       <PositionCard
@@ -192,8 +191,7 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Run the months, then move the balance yourself.">
       <Sub>
-        This is the same position. Push the months forward, then try the two amounts
-        below. They are the same fields you use on the Repay tab and the
+        The two amounts below are the same fields you use on the Repay tab and the
         Borrow tab.
       </Sub>
 

@@ -108,6 +108,22 @@ const BANNED = [
 ];
 
 /**
+ * Stage directions: telling the reader to look at something the page is already
+ * showing them, and already drawing their eye to. "so watch both figures on the
+ * card" adds no fact; the card is right there and the figures are moving.
+ *
+ * A gating hint is different and allowed ("Move both controls to continue"),
+ * because it tells the reader progress is blocked until they act. The giveaway
+ * is the verb of perception, not the verb of action.
+ */
+const STAGE_DIRECTION = [
+  // "notice period" is a noun phrase about the product, not an instruction.
+  [/\b(watch|observe|keep an eye on)\b|\bnotice\b(?! period)/i, "stage direction: the page is already showing this"],
+  [/\bsee (what|the|it|how) [a-z]/i, "stage direction: says what the reader is about to look at"],
+  [/\blook at\b/i, "stage direction"],
+];
+
+/**
  * The two mechanisms that keep getting restated wrongly.
  * Redemptions repay debt out of the borrower's own collateral; yield raises the
  * MYT's value instead. The Transmuter is a fixed-yield product, and a borrower
@@ -126,6 +142,9 @@ const WRONG_MECHANISM = [
 for (const { file, s } of rows) {
   for (const [re, why] of BANNED) if (re.test(s)) failures.push({ file, s, why });
   for (const [re, why] of WRONG_MECHANISM) if (re.test(s)) failures.push({ file, s, why });
+  if (!/\bto continue\b/.test(s)) {
+    for (const [re, why] of STAGE_DIRECTION) if (re.test(s)) failures.push({ file, s, why });
+  }
 }
 
 /**

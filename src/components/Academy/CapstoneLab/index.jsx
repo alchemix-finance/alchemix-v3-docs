@@ -163,7 +163,7 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="Move one number and watch both checks respond."
+      headline="Find the smallest deposit that passes both checks."
     >
       <Sub>
         You still need {money(WANT)} of capital. Raise the deposit until both checks pass,

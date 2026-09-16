@@ -63,8 +63,7 @@ function Learn({ onDone }) {
     <Stage eyebrow="Stage 1 · Learn" headline="Your USDC goes into a vault and starts earning.">
       <Sub>
         On the Mixed Yield page you deposit {money(DEPOSIT)} USDC into a vault, the pool that
-        holds deposits like yours. The Dashboard then shows this card under Open Mixed Yield
-        Positions.
+        holds deposits like yours. The Dashboard lists it under Open Mixed Yield Positions.
       </Sub>
 
       <FlowSteps steps={STEPS} />
@@ -102,7 +101,7 @@ function Learn({ onDone }) {
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
-        <Reveal title={`All ${money(DEPOSIT)} of it comes back.`} onNext={onDone} nextLabel="Watch it earn">
+        <Reveal title={`All ${money(DEPOSIT)} of it comes back.`} onNext={onDone} nextLabel="Let it earn">
           <Body>
             Withdraw on any day, in any amount, and the USDC comes back carrying everything
             it earned. No lock-up, no notice period, no queue. Borrowing against it is a
@@ -130,11 +129,10 @@ function Try({ onDone }) {
   const full = share >= 100;
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Watch it earn, then take it out.">
+    <Stage eyebrow="Stage 2 · Try" headline="Earn for a year, then take it out.">
       <Sub>
-        Pick a rate and see what the deposit is worth after a year. Real rates move with
-        whatever the DAO's strategies are earning, so treat this one as an example. Then
-        withdraw some of it, or all of it.
+        Real rates move with whatever the DAO's strategies are earning, so treat this one
+        as an example.
       </Sub>
 
       <PositionCard

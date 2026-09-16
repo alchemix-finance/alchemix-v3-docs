@@ -133,8 +133,7 @@ function Explore({ onDone }) {
       headline="To end up with the full amount, you have to borrow more than it."
     >
       <Sub>
-        Set the capital you need, then set the price alUSD is trading at. The gap that
-        opens between what you borrow and what you receive is what the discount costs
+        The gap between what you borrow and what you receive is what the discount costs
         you.
       </Sub>
 
@@ -203,7 +202,7 @@ function Explore({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move both controls. Drop the price toward 0.95 to see the gap widen.</Hint>
+        <Hint>Move both controls to continue.</Hint>
       )}
     </Stage>
   );

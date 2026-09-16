@@ -61,9 +61,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="The price of ETH falls 40% overnight.">
       <Sub>
-        This is the same position, now priced in ETH so that a price move shows up on it. You
-        deposited 4 ETH and borrowed 2 alETH, which puts the LTV at 50%, or what you owe
-        divided by what you deposited. ETH was 2,500 last night.{" "}
+        This is the same position, priced in ETH. Borrowing 2 alETH against 4 ETH puts the
+        LTV at 50%, or what you owe divided by what you deposited. ETH was 2,500 last night.{" "}
         <strong>Liquidation</strong>, the second marker on the bar, means part of your deposit
         is sold to cover the debt.
       </Sub>
@@ -134,8 +133,8 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Push the price, then push the vault.">
       <Sub>
-        The bar measures your position against the 90% borrowing cap and the 95% liquidation
-        marker. Set how much you borrowed, then move each control in turn.
+        The bar measures your position against the 90% borrowing cap and the 95%
+        liquidation marker.
       </Sub>
 
       <PositionCard

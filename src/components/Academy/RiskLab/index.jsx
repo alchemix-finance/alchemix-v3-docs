@@ -211,8 +211,8 @@ function Explore({ onDone }) {
       headline="Every loss of backing has a highest LTV that survives it."
     >
       <Sub>
-        Set a starting LTV, then take backing away from it. The bar shows where the
-        position lands against the {pct(LIQ_LTV)} threshold that closes it.
+        The bar shows where the position lands against the {pct(LIQ_LTV)} threshold that
+        closes it.
       </Sub>
 
       <div className={own.healthWrap}>

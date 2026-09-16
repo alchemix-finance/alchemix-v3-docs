@@ -230,8 +230,7 @@ function Explore({ onDone }) {
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
-        Move the allocation and watch the blended APR respond. Push a class past its
-        ceiling and the vault turns the composition away.
+        Push a class past its ceiling and the vault turns the composition away.
       </p>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
@@ -246,7 +245,7 @@ function Explore({ onDone }) {
             leaving the other 50% in Conservative, which is free to take as much as it
             likes. Anything higher needs a composition the DAO forbids.
             {!sawBreach
-              ? " Push either slider past its ceiling to see the vault reject the mix."
+              ? " Push either slider past a ceiling as well."
               : ""}
           </p>
           <p className={styles.revealBody}>
@@ -262,7 +261,7 @@ function Explore({ onDone }) {
       ) : (
         <p className={styles.hint}>
           Find the highest blended APR that stays inside every cap.
-          {!sawBreach ? " Push a slider past its ceiling to see what happens." : ""}
+          {!sawBreach ? " Push a slider past a ceiling as well." : ""}
         </p>
       )}
     </>

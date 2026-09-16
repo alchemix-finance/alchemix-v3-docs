@@ -258,10 +258,9 @@ function Explore({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
-      <h1 className={styles.headline}>Push each input and see what the curve does.</h1>
+      <h1 className={styles.headline}>Push each input and find the one that moves the curve.</h1>
       <p className={styles.sub}>
-        The position is the same one Ana opened. The figure under the chart tracks every
-        move you make.
+        The position is the same one Ana opened.
       </p>
 
       <div className={styles.chartLive}>

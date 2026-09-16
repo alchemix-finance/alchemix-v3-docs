@@ -142,8 +142,7 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Weigh selling now against waiting.">
       <Sub>
-        Set how much alUSD you hold and what the market is paying for it. Only the
-        sell-now figure follows that price.
+        Only the sell-now figure follows the market price.
       </Sub>
 
       <div className={own.routes}>

@@ -59,11 +59,10 @@ function Learn({ onDone }) {
   const close = Math.abs(guess - truth) <= 300;
 
   return (
-    <Stage eyebrow="Stage 1 · Predict" headline="Read the position card.">
+    <Stage eyebrow="Stage 1 · Predict" headline="You want part of the deposit back.">
       <Sub>
-        The card in the app shows {money(DEPOSIT)} deposited and {money(BORROW)} borrowed
-        against it. You want some of that deposit back, and you want to leave the loan
-        open.
+        Your position holds {money(DEPOSIT)} deposited with {money(BORROW)} borrowed
+        against it, and you want to leave the loan open.
       </Sub>
 
       <Panel>
@@ -129,8 +128,8 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Explore" headline="Every unit you repay frees more than a unit of collateral.">
       <Sub>
-        Move the repay control and watch the free share of the deposit grow faster than
-        the amount you hand back. Clear the loan and all {money(DEPOSIT)} unlocks.
+        Repaying frees collateral faster than you hand it back. Clear the loan and all
+        {money(DEPOSIT)} unlocks.
       </Sub>
 
       <div className={own.meterWrap}>
