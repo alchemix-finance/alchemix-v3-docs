@@ -57,10 +57,10 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
       }
       controlLabel="Redemption rate"
       controlDisplay={(v) => `${(v * 100).toFixed(1)}% a year`}
-      targetFoot="debt still outstanding"
+      targetFoot="the share of debt still outstanding"
       landingFoot="adjust until the two match"
       passTitle="Lesson 2 complete."
-      passBody="You can read the pace of repayment from the redemption rate. Loan size and vault yield do not change it."
+      passBody="You can read the pace of repayment off the redemption rate. The size of the loan does not change it, and neither does the yield the collateral earns."
     />
   );
 }
@@ -97,11 +97,10 @@ function Predict({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 1 · Predict</div>
-      <h1 className={styles.headline}>Two positions open in the same vault on the same day.</h1>
+      <h1 className={styles.headline}>Ana and Ben open positions in the same vault on the same day.</h1>
       <p className={styles.sub}>
-        Ana and Ben deposit the same amount. Ben borrows four times what Ana does.
-        Neither repays anything by hand. Record what you expect before you run the
-        projection.
+        They deposit the same amount, and Ben borrows four times what Ana does. Neither
+        of them repays a thing by hand. Set both answers before the projection runs.
       </p>
 
       <div className={styles.setupGrid}>
@@ -259,10 +258,10 @@ function Explore({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
-      <h1 className={styles.headline}>Three inputs feed the projection.</h1>
+      <h1 className={styles.headline}>Push each input and see what the curve does.</h1>
       <p className={styles.sub}>
-        The position is the same as before. Move each input and watch what happens to
-        the curve.
+        The position is the same one Ana opened. The figure under the chart tracks every
+        move you make.
       </p>
 
       <div className={styles.chartLive}>
@@ -310,10 +309,9 @@ function Explore({ onDone }) {
           <div className={styles.revealHead}>The redemption rate sets the pace.</div>
           <p className={styles.revealBody}>
             Redemptions repay a share of total system debt each year, and every position
-            is repaid at that rate regardless of its size. The amount you borrow does not
-            change how quickly it clears, and neither does the yield your collateral
-            earns. Ana and Ben traced the same curve because the same rate applied to
-            both.
+            is repaid at that rate regardless of its size. Borrowing more does not change
+            how quickly a loan clears. Neither does the yield your collateral earns. Ana
+            and Ben traced one curve because the same rate applied to both of them.
           </p>
           <p className={styles.revealBody}>
             The redemption rate is a protocol-level parameter, applied equally to every

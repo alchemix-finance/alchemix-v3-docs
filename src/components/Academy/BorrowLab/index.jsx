@@ -49,10 +49,10 @@ export default function BorrowLab({ lessonId, stage, onStage, done, onComplete }
       direct
       controlLabel="Most you can borrow"
       controlDisplay={money}
-      targetFoot="the borrowing cap on this position"
+      targetFoot="the cap stops borrowing here"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 3 complete."
-      passBody="You know the cap is 90%, that borrowing creates alUSD or alETH in your wallet, and that the deposit keeps earning underneath."
+      passBody="Borrowing stops at 90% of the deposit and puts alUSD or alETH in your wallet. The deposit stays in the vault and keeps earning the whole time."
     />
   );
 }
@@ -66,8 +66,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="How much can you borrow?">
       <Sub>
-        The 10,000 USDC is deposited and earning. On the Vaults page, the Borrow tab asks
-        for an amount and offers a Max button.
+        The 10,000 USDC sits in the vault and earns. On the Vaults page, the Borrow tab asks
+        you for an amount and offers a Max button next to the field.
       </Sub>
 
       <PositionCard
@@ -101,16 +101,16 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title="9,000, which is 90% of the deposit."
+          title="The app fills in 9,000, or 90% of the deposit."
           onNext={onDone}
           nextLabel="Push it to the cap"
         >
           <Body>
-            That ratio is your <strong>loan to value</strong>, or LTV: what you owe divided
-            by what you deposited. Borrowing creates new alUSD in your wallet, and inside
-            the protocol one alUSD counts as one USDC. The deposit becomes the{" "}
-            <strong>collateral</strong> for the loan, the app's word for what stands behind
-            it. It stays in the vault and keeps earning.
+            Your <strong>loan to value</strong>, or LTV, is what you owe divided by what you
+            deposited, and the protocol caps it at 90%. Borrowing mints new alUSD into your
+            wallet, and inside the protocol one alUSD counts as one USDC. The deposit becomes
+            the <strong>collateral</strong> behind the loan, which is the app's word for what
+            stands behind it. It stays in the vault and keeps earning.
           </Body>
         </Reveal>
       )}
@@ -152,14 +152,14 @@ function Try({ onDone }) {
   const note = atCap
     ? "Borrowing stops here. Nothing else happens."
     : justReturned
-      ? "Back to 5,000 alUSD"
+      ? "The loan is back at 5,000 alUSD."
       : `In your wallet: ${money(borrow)} alUSD`;
 
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Push the borrow to the cap.">
       <Sub>
-        Move the amount the way you would type it into the Borrow tab. The bar under the
-        card is the health bar the app shows.
+        Move the amount the way you would type it into the Borrow tab. The bar under the card
+        is the health bar the app shows you while you do it.
       </Sub>
 
       <PositionCard
@@ -185,8 +185,8 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="What arrives">
-          alUSD, worth one USDC inside the protocol. On the open market it may trade a
-          little under 1.00.
+          alUSD lands in your wallet, and inside the protocol it counts as one USDC. On the
+          open market it may trade a little under 1.00.
         </Note>
         <Note label="At the cap">
           Borrowing stops, nothing is sold, and nothing is charged.
@@ -200,10 +200,10 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap stops
-            further borrowing and does nothing else: the position stays open and the
-            deposit keeps earning. The quick start suggests starting well below the cap,
-            so this position carries on at 5,000.
+            On 10,000 that is 9,000. On 4,000 it would be 3,600. Hitting the cap stops further
+            borrowing and does nothing else, so the position stays open and the deposit keeps
+            earning. The quick start suggests starting well below the cap, so this position
+            carries on at 5,000.
           </Body>
         </Reveal>
       ) : null}

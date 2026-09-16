@@ -26,7 +26,7 @@ const CRASH = 0.4;
 
 /** The line under the card: what the two sides are worth at a given ETH price. */
 function worthNote(price, borrowed) {
-  return `At ${money(price)} per ETH: deposit worth ${money(DEPOSIT * price)}, debt worth ${money(borrowed * price)}`;
+  return `At ${money(price)} per ETH, the deposit is worth ${money(DEPOSIT * price)} and the debt is worth ${money(borrowed * price)}.`;
 }
 
 export default function SafetyLab({ lessonId, stage, onStage, done, onComplete }) {
@@ -42,9 +42,8 @@ export default function SafetyLab({ lessonId, stage, onStage, done, onComplete }
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Answer the question."
       passTitle="Lesson 5 complete."
-      passBody="You know the one loss that can reach a position, why a price move cannot, and that a lower LTV leaves more room."
+      passBody="A price move cannot liquidate an Alchemix position. A real loss inside the vault is the one thing that can, and the lower your LTV, the more room you have before it reaches you."
     />
   );
 }
@@ -62,9 +61,10 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="The price of ETH falls 40% overnight.">
       <Sub>
-        The same position, shown in ETH so the price can move: 4 ETH deposited, 2 alETH
-        borrowed, LTV 50% (what you owe divided by what you deposited). ETH was 2,500.{" "}
-        <strong>Liquidation</strong>, the second marker on the bar, means part of the deposit
+        This is the same position, now priced in ETH so that a price move shows up on it. You
+        deposited 4 ETH and borrowed 2 alETH, which puts the LTV at 50%, or what you owe
+        divided by what you deposited. ETH was 2,500 last night.{" "}
+        <strong>Liquidation</strong>, the second marker on the bar, means part of your deposit
         is sold to cover the debt.
       </Sub>
 
@@ -95,7 +95,7 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Your debt is in alETH and your deposit is in ETH.">
+        <Actions aside="Your deposit is ETH and your debt is recorded in alETH.">
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
@@ -105,9 +105,9 @@ function Learn({ onDone }) {
           nextLabel="Find what does move it"
         >
           <Body>
-            The debt is recorded in alETH, the same kind of asset as the deposit. When ETH
-            falls, the deposit and the debt fall by the same share, and the ratio between
-            them stays where it was. Nothing is liquidated. USDC and alUSD pair the same way.
+            Your debt is recorded in alETH, the same kind of asset as your deposit. When ETH
+            falls, both sides fall by the same share and the ratio between them holds. Nothing
+            is liquidated. USDC and alUSD pair the same way.
           </Body>
         </Reveal>
       )}
@@ -134,8 +134,8 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Push the price, then push the vault.">
       <Sub>
-        The bar shows the position against the 90% cap and the 95% liquidation marker. Set
-        how much is borrowed, then try each control.
+        The bar measures your position against the 90% borrowing cap and the 95% liquidation
+        marker. Set how much you borrowed, then move each control in turn.
       </Sub>
 
       <PositionCard
@@ -145,7 +145,7 @@ function Try({ onDone }) {
         backingLoss={loss / 100}
         earning
         highlight="ltv"
-        note={crossed ? "Liquidation. Only the minimum needed is sold." : worthNote(price, borrowed)}
+        note={crossed ? "The position is past the marker. Only the minimum needed is sold." : worthNote(price, borrowed)}
       />
 
       <Controls>
@@ -171,26 +171,28 @@ function Try({ onDone }) {
           value={loss}
           onChange={(v) => { setLoss(v); mark("loss"); }}
           accent
-          verdict={crossed ? "marker reached" : null}
+          verdict={crossed ? "the marker has reached you" : null}
         />
       </Controls>
 
       <Notes>
         <Note label="A loss inside the vault">
-          A hack of a strategy, or a strategy losing money, leaves the same debt standing
-          against less deposit.
+          A strategy can be exploited, or it can simply lose money. Either way the same debt
+          stands against less deposit.
         </Note>
         <Note label="Past the marker">
-          Only the minimum needed to bring the position back is sold. The rest is untouched.
+          Only the minimum needed to bring the position back is sold. The rest stays where it
+          is and keeps earning.
         </Note>
       </Notes>
 
       {touched.price && touched.loss ? (
-        <Reveal title="One thing moves the marker." onNext={onDone} nextLabel="Take the check">
+        <Reveal title="Only one thing moves the marker." onNext={onDone} nextLabel="Take the check">
           <Body>
-            A price move changes both sides. A loss inside the strategies changes only the
-            deposit, so the marker slides toward the position. The lower your LTV, the larger
-            a loss the position absorbs. Reaching the 90% cap only stops borrowing.
+            A price move changes both sides at once. A loss inside the strategies changes only
+            the deposit, so the marker slides toward your position. The lower your LTV, the
+            more loss of backing you absorb before it arrives. Hitting the 90% cap only stops
+            you borrowing more.
           </Body>
         </Reveal>
       ) : null}

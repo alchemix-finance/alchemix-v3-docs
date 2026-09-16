@@ -3,19 +3,19 @@ by USDC, so collateral and debt move together and the ratio between them does no
 change when the market does. A 40% drawdown in ETH leaves an ETH-denominated
 position exactly where it was.
 
-Two thresholds matter, and they do different jobs:
+The borrowing cap and the liquidation threshold do different jobs:
 
-- **90%, the borrowing cap** – Reaching it stops further borrowing. The position
-  stays open and keeps earning.
-- **95%, the liquidation threshold** – Crossing it triggers a liquidation. Only the
-  minimum needed to restore a healthy ratio is liquidated, and the rest of the
-  position is untouched.
+- **The borrowing cap sits at 90%.** Reaching it stops further borrowing. The
+  position stays open and keeps earning.
+- **The liquidation threshold sits at 95%.** Crossing it can close part of a
+  position. Only the minimum needed to restore a healthy ratio is liquidated, and
+  the rest is untouched.
 
-### What can move you toward it
+### What can liquidate
 
-A loss inside the Mix-Yield Token. If a strategy is exploited or reports negative
-returns, the backing behind every position falls. The same debt now stands against
-less collateral, so the LTV rises.
+A loss inside the Mix-Yield Token is the only thing that can. If a strategy is
+exploited or reports negative returns, the backing behind every position falls.
+The same debt now stands against less collateral, so the LTV rises.
 
 The highest starting LTV that survives a loss is the liquidation threshold applied
 to the backing that remains:
@@ -26,4 +26,4 @@ A 12% loss leaves 83.6%. A 20% loss leaves 76%.
 
 The risk caps inside the Mix-Yield Token bound this number. By limiting how much of
 the vault may sit in higher risk strategies, the DAO limits how large a loss is
-plausible, and a reasoned choice of LTV rests on that bound.
+plausible. Those caps give you a worst case to size against.

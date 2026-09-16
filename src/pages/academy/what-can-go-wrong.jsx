@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="what-can-go-wrong"
-      description="A price crash leaves an Alchemix position where it is, and a loss inside the vault moves its liquidation marker."
+      description="A price crash cannot liquidate an Alchemix position. A real loss inside the vault is the one thing that can."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

@@ -13,22 +13,23 @@ rate does, and you do not control it.
 
 ### What borrowing more does cost
 
-Borrowing more does not cost you time, and there is no interest rate. It carries
-two costs:
+Borrowing more does not cost you time, and no interest is charged for it. It costs
+you when your debt is redeemed, and again if you sell the alAssets below face value.
 
-- **Redemption fee** – Charged on the amount redeemed, so it scales with how much
-  you borrowed.
-- **alAsset discount** – Applies if you sell your borrowed alUSD or alETH below face
-  value. Borrow 5,000 alUSD and sell it at 0.99, and you have paid roughly 50 for the
-  liquidity up front. The dApp shows the current price before you confirm.
+- **Redemption fee** – The fee is charged on the amount redeemed, so it scales with
+  how much you borrowed.
+- **alAsset discount** – You pay this one only if you sell your borrowed alUSD or
+  alETH below face value. Borrow 5,000 alUSD and sell it at 0.99, and you have paid
+  roughly 50 for the liquidity up front. The dApp shows the current price before you
+  confirm.
 
-The exposure a high LTV creates while the position is open is covered in Choosing
-an LTV.
+The Choosing an LTV lesson works out the exposure a high LTV creates while the
+position stays open.
 
-The pace above is what happens if you do nothing. You can repay part or all of the
-debt by hand at any time to free collateral sooner.
+That pace is what happens if you never touch the position. You can repay part or
+all of the debt by hand at any time and free collateral sooner.
 
-### Earmarking, and what it pays you
+### What earmarking pays you
 
 Redemptions land in cycles. When a cycle begins, the protocol earmarks a slice of
 each open loan, in proportion to its share of total system debt. The earmarked
@@ -36,5 +37,5 @@ collateral stays in place until the claim settles, and it keeps earning yield un
 then. The docs call this **temporal leverage**: the longer the gap between earmark
 and settlement, the more yield the earmarked collateral collects.
 
-Earmarked debt is repaid with MYT; the repay tab offers the right asset for each
+Earmarked debt is repaid with MYT. The repay tab offers the right asset for each
 part of a loan.

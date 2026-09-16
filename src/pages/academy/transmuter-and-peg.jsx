@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="transmuter-and-peg"
-      description="Why a discount on an alAsset is a price on waiting, and who closes the gap."
+      description="An alUSD below a dollar pays whoever is willing to wait for the Transmuter to exchange it 1:1. Work out what that wait is worth."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[

@@ -488,7 +488,7 @@ export function Checkpoint({
   if (loading) {
     return (
       <Stage eyebrow={eyebrow}>
-        <Sub>Loading the question...</Sub>
+        <Sub>Your question is loading.</Sub>
       </Stage>
     );
   }
@@ -497,8 +497,8 @@ export function Checkpoint({
     return (
       <Stage eyebrow={eyebrow} headline="The checkpoint did not answer.">
         <Sub>
-          Your work in this lesson is kept. Only the graded question needs the server.
-          Try again in a moment.
+          Your work in this lesson is kept, and only the graded question needs the
+          server. Try again in a moment.
         </Sub>
         <Actions>
           <button type="button" className={styles.primary} onClick={load}>Try again</button>
@@ -511,8 +511,12 @@ export function Checkpoint({
   const passed = Boolean(result?.passed || done);
 
   return (
-    <Stage eyebrow={eyebrow} headline={headline}>
-      <Sub>{challenge.prompt}</Sub>
+    <Stage eyebrow={eyebrow} headline={isChoice ? challenge.prompt : headline}>
+      {/* On a choice checkpoint the prompt is the headline, so a generic line
+          never sits above the real question. A numeric checkpoint keeps both:
+          the headline names the task, the prompt carries this learner's
+          figures. */}
+      {isChoice ? null : <Sub>{challenge.prompt}</Sub>}
       <LocalNotice show={challenge.local} />
       <Hint>
         {isChoice
@@ -699,7 +703,7 @@ function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onS
 
       {missed ? (
         <div className={styles.missBox}>
-          {result.feedback ?? "Not that one. Try another option."}
+          {result.feedback ?? "That one is wrong. Try another option."}
         </div>
       ) : null}
     </>

@@ -36,9 +36,8 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Answer the question."
       passTitle="Track complete."
-      passBody="You have covered what a first-time user meets in the app: the deposit, the loan, the balance falling, the one real risk, and the way back to USDC."
+      passBody="You can now deposit, borrow against that deposit, leave the balance to fall on its own, tell which loss can actually reach you, and turn alUSD back into USDC. That is everything the app asks of a first-time user."
     />
   );
 }
@@ -55,30 +54,31 @@ function Learn({ onDone }) {
       n: 1,
       label: "Deposit",
       value: `${money(HOLDING)} alUSD`,
-      note: "Into the Transmuter, from the Fixed Yield page",
+      note: "You deposit it on the Fixed Yield page",
       tone: "#8ea9d8",
     },
     {
       n: 2,
       label: "Wait",
       value: "The term",
-      note: "Set by the Alchemix DAO and shown in the app",
+      note: "The Alchemix DAO sets it and the app shows it",
       tone: "#8ea9d8",
     },
     {
       n: 3,
       label: "Receive",
       value: revealed ? `${money(HOLDING)} USDC` : "USDC",
-      note: "Paid as MYT, which the app turns back into USDC",
+      note: "Payment arrives as MYT and the app turns it into USDC",
       tone: revealed ? "#5ba88a" : "#8ea9d8",
     },
   ];
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="Turning alUSD back into USDC.">
+    <Stage eyebrow="Stage 1 · Learn" headline="Now turn the alUSD back into USDC.">
       <Sub>
-        You hold the {money(HOLDING)} alUSD you borrowed. Today the market pays {money2(PRICE)} USDC
-        for each one. The Fixed Yield page is the other route.
+        You are holding the {money(HOLDING)} alUSD you borrowed. On the open market today, each
+        one sells for {money2(PRICE)} USDC. The Transmuter is the other way out, and the app
+        puts it on the Fixed Yield page.
       </Sub>
 
       <FlowSteps steps={steps} />
@@ -100,19 +100,20 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside={`Selling today would return ${money(HOLDING * PRICE)}.`}>
+        <Actions aside={`Selling it today would return ${money(HOLDING * PRICE)} USDC.`}>
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
         <Reveal
-          title={`${money(HOLDING)}. One for one.`}
+          title={`${money(HOLDING)} USDC comes back, one for one.`}
           onNext={onDone}
-          nextLabel="Compare the two routes"
+          nextLabel="Compare it with selling"
         >
           <Body>
-            The Transmuter ignores the market price. One alUSD returns one USDC, and one alETH
-            returns one ETH, once the term is up. Waiting the full term costs nothing. Leaving
-            early carries a fee. Check the current term in the app before you deposit.
+            The Transmuter ignores the market price entirely. One alUSD returns one USDC and
+            one alETH returns one ETH, once the term is up. Waiting the full term costs
+            nothing, while leaving early carries a fee. Check the current term in the app
+            before you deposit.
           </Body>
         </Reveal>
       )}
@@ -131,8 +132,8 @@ function Try({ onDone }) {
   const sellNow = amount * price;
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Sell now, or wait.">
-      <Sub>Set the amount and the market price. Both routes update.</Sub>
+    <Stage eyebrow="Stage 2 · Try" headline="Weigh selling now against waiting.">
+      <Sub>Set the amount and the market price, and both routes update as you go.</Sub>
 
       <div className={own.routes}>
         <div className={own.route}>
@@ -173,7 +174,7 @@ function Try({ onDone }) {
           and the app shows it in advance.
         </Note>
         <Note label="The term">
-          Differs by asset and chain, and the app shows it before you deposit.
+          The term differs by asset and by chain, and the app shows it before you deposit.
         </Note>
       </Notes>
 
@@ -185,7 +186,8 @@ function Try({ onDone }) {
         >
           <Body>
             Move the price down and the gap widens. The further alUSD trades below 1.00, the
-            more it pays to buy it and wait, and that buying pulls the price back up.
+            more it pays to buy it and wait out the term, and that buying pulls the price back
+            up.
           </Body>
         </Reveal>
       ) : (

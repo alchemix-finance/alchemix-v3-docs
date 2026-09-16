@@ -7,11 +7,11 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="cost-of-borrowing"
-      description="An Alchemix loan charges no interest. Work out what you pay instead, and when it is charged."
+      description="An Alchemix loan charges no interest, so the cost arrives somewhere else. Work out where, and what it comes to."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/concepts/alAssets", label: "alAssets", note: "minting, selling, and the market discount" },
+        { to: "/user/concepts/alAssets", label: "alAssets", note: "why a minted alAsset can trade below face value" },
         { to: "/user/concepts/fees", label: "Fees", note: "live rates read from the contracts" },
         { to: "/user/tutorials/repay-loan", label: "Repay Your Loan" },
       ]}

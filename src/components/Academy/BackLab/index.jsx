@@ -34,17 +34,17 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Work out the withdrawal."
+      headline="Work out what you can withdraw."
       unit="amount"
       targetOf={(f) => withdrawable(f.collateral, f.debt)}
       computeOf={(f, v) => v}
       direct
       controlLabel="Withdraw"
       controlDisplay={(v) => money(v)}
-      targetFoot="the most that can leave right now"
+      targetFoot="the most that can leave the position today"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 1 complete."
-      passBody="You can read a position: what is deposited, what is owed, and what is free to withdraw. The next lesson works out what sets the pace at which the debt clears."
+      passBody="You can read a position card and say how much of the deposit is free to leave today. What sets the speed the debt clears at comes next."
     />
   );
 }
@@ -61,8 +61,9 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Predict" headline="Read the position card.">
       <Sub>
-        The card in the app shows {money(DEPOSIT)} deposited and {money(BORROW)} borrowed.
-        You want to withdraw part of the deposit and leave the loan open.
+        The card in the app shows {money(DEPOSIT)} deposited and {money(BORROW)} borrowed
+        against it. You want some of that deposit back, and you want to leave the loan
+        open.
       </Sub>
 
       <Panel>
@@ -92,12 +93,12 @@ function Learn({ onDone }) {
         <Reveal
           title={`${money(truth)} is free to withdraw.`}
           onNext={onDone}
-          nextLabel="See the two routes out"
+          nextLabel="See how to free the rest"
         >
           <Body>
             {close ? "That is close. " : `You said ${money(guess)}. `}
-            The loan holds back the collateral it needs to stay within the 90% cap, and
-            that amount is larger than the loan itself.
+            The loan holds back the collateral it needs to stay under the 90% cap, and it
+            needs more collateral than the loan itself.
           </Body>
           <Body>
             {money(BORROW)} of debt needs {money(BORROW / MAX_LTV)} of collateral behind it
@@ -126,10 +127,10 @@ function Try({ onDone }) {
   const clear = debt <= 0;
 
   return (
-    <Stage eyebrow="Stage 2 · Explore" headline="Two routes out of the position.">
+    <Stage eyebrow="Stage 2 · Explore" headline="Every unit you repay frees more than a unit of collateral.">
       <Sub>
-        Repay part of the loan and watch how much of the deposit comes free. Take the loan
-        to zero and the whole deposit unlocks.
+        Move the repay control and watch the free share of the deposit grow faster than
+        the amount you hand back. Clear the loan and all {money(DEPOSIT)} unlocks.
       </Sub>
 
       <div className={own.meterWrap}>
@@ -166,21 +167,21 @@ function Try({ onDone }) {
           value={repaid}
           onChange={(v) => { setRepaid(v); setMoved(true); }}
           accent
-          verdict={clear ? "loan cleared, everything is free" : null}
+          verdict={clear ? "the loan is clear and the deposit is free" : null}
         />
       </Controls>
 
       <Notes>
-        <Note label="Route one">
-          Withdraw what is already free and leave the loan open. There is no cost and no
-          wait.
+        <Note label="Withdraw now">
+          Take whatever is already free and leave the loan open. Nothing is charged for it
+          and nothing makes you wait.
         </Note>
-        <Note label="Route two">
-          Repay some or all of the loan first. Every unit repaid frees more than one unit
-          of collateral, because each unit of debt holds about 1.11 units of collateral
-          behind it at the cap.
+        <Note label="Repay first">
+          Repay some or all of the loan before you withdraw. Every unit repaid frees more
+          than one unit of collateral, because each unit of debt holds about 1.11 units of
+          collateral behind it at the cap.
         </Note>
-        <Note label="Repaying">
+        <Note label="Which asset repays">
           You can repay with alUSD, with MYT, or with the asset you deposited. One alUSD
           cancels one unit of debt. Part of the loan can show as earmarked in the app,
           meaning set aside for the next redemption cycle. Earmarked debt is repaid with

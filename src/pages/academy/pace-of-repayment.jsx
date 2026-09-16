@@ -7,7 +7,7 @@ export default function PaceOfRepaymentLesson() {
   return (
     <LessonPage
       lessonId="pace-of-repayment"
-      description="Work out what decides how fast an Alchemix loan clears, and what has no effect on it."
+      description="Borrowing more does not make a loan take longer to clear. One protocol-level rate sets the pace for every position in the market."
       Lab={PaceLab}
       Wrap={Wrap}
       deeper={[

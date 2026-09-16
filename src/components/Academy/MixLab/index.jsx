@@ -51,9 +51,9 @@ function Predict({ onDone }) {
       </p>
 
       <div className={own.strategyGrid}>
-        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Entered and exited directly, priced by what it holds, no wait to withdraw" tone="cons" />
-        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="Depends on outside markets for pricing or exit, or can lock withdrawals for a time" tone="mod" />
-        <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="Meets the Moderate tests, plus an extra factor such as being newer or less proven" tone="aggr" />
+        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="The vault enters and exits it directly, prices it by what it holds, and never waits to withdraw." tone="cons" />
+        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="It leans on an outside market to price or to exit, or it can lock withdrawals for a time." tone="mod" />
+        <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="It passes the Moderate tests and carries one factor more, such as being newer or less proven." tone="aggr" />
       </div>
 
       <div className={styles.panel}>
@@ -230,8 +230,9 @@ function Explore({ onDone }) {
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
-        The same three strategies. Move the allocation and watch the blended APR. A class
-        pushed past its ceiling is a composition the vault cannot hold.
+        The strategies are the same ones. Move the allocation and watch the blended APR
+        respond. Push a class past its ceiling and the vault can no longer hold the
+        composition.
       </p>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
@@ -242,9 +243,9 @@ function Explore({ onDone }) {
             {best.toFixed(2)}% is the highest blended APR inside every cap.
           </div>
           <p className={styles.revealBody}>
-            Aggressive at its 10% ceiling, Moderate at its 40% ceiling, and the remaining
-            50% in Conservative, which has no cap. Any higher number requires a
-            composition the DAO does not permit.
+            That mix fills Aggressive to its 10% ceiling and Moderate to its 40% ceiling,
+            and it leaves the other 50% in Conservative, which carries no cap. Anything
+            higher needs a composition the DAO does not permit.
             {!sawBreach
               ? " Push either slider past its ceiling to see the vault reject the mix."
               : ""}
@@ -392,8 +393,9 @@ function Checkpoint({ base, lessonId, done, onPass }) {
         <div className={styles.passBox}>
           <div className={styles.passHead}>Lesson 3 complete.</div>
           <p className={styles.revealBody}>
-            You found the highest yield the risk caps allow. The same caps are what make a
-            given LTV safe to borrow at.
+            You found the highest yield the risk caps allow. Those same caps are what make
+            a given LTV safe to borrow at, because they give you a worst case to size
+            against.
           </p>
           <Link to="/academy" className={styles.primaryLink}>
             Back to the track

@@ -39,10 +39,10 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
       direct
       controlLabel="Worth after a year"
       controlDisplay={money}
-      targetFoot="what the deposit grows to"
+      targetFoot="the deposit grows to this in a year"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 2 complete."
-      passBody="You know what a deposit becomes, who runs it, and that you can take it back at any time."
+      passBody="Your deposit becomes MYT and earns in strategies the Alchemix DAO steers. You can take it back any day you like."
     />
   );
 }
@@ -50,9 +50,9 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
 const STEPS = [
-  { n: 1, label: "You deposit", value: `${money(DEPOSIT)} USDC`, note: "Into the vault, from your wallet" },
-  { n: 2, label: "You receive", value: "MYT", note: "The Mix-Yield Token, a share of the vault", tone: "#5ba88a" },
-  { n: 3, label: "The DAO", value: "runs the strategies", note: "It chooses where the vault earns and rebalances over time", tone: "#5ba88a" },
+  { n: 1, label: "You deposit", value: `${money(DEPOSIT)} USDC`, note: "Your wallet sends the USDC to the vault." },
+  { n: 2, label: "You receive", value: "MYT", note: "Each Mix-Yield Token, or MYT, is a share of that vault.", tone: "#5ba88a" },
+  { n: 3, label: "The DAO", value: "runs the strategies", note: "It picks where the vault earns and rebalances as conditions change.", tone: "#5ba88a" },
 ];
 
 function Learn({ onDone }) {
@@ -60,7 +60,7 @@ function Learn({ onDone }) {
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="Where the deposit goes.">
+    <Stage eyebrow="Stage 1 · Learn" headline="Your USDC goes into a vault and starts earning.">
       <Sub>
         On the Mixed Yield page you deposit {money(DEPOSIT)} USDC into a vault, the pool that
         holds deposits like yours. The Dashboard then shows this card under Open Mixed Yield
@@ -75,7 +75,7 @@ function Learn({ onDone }) {
         asset="USDC"
         earning="Earning"
         highlight="deposited"
-        note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "No loan against it"}
+        note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "Nothing is borrowed against it."}
         compact
       />
 
@@ -102,11 +102,11 @@ function Learn({ onDone }) {
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
-        <Reveal title={`All ${money(DEPOSIT)}.`} onNext={onDone} nextLabel="Watch it earn">
+        <Reveal title={`All ${money(DEPOSIT)} of it comes back.`} onNext={onDone} nextLabel="Watch it earn">
           <Body>
-            There is no lock-up and no notice period. Withdraw at any time and the USDC comes
-            back with whatever it earned. Depositing and borrowing are separate decisions, and
-            a deposit on its own ties nothing up.
+            Nothing locks the deposit in, and no notice period stands in front of it.
+            Withdraw whenever you like and the USDC comes back with everything it earned.
+            Borrowing is a separate decision you have not made yet.
           </Body>
         </Reveal>
       )}
@@ -133,7 +133,8 @@ function Try({ onDone }) {
     <Stage eyebrow="Stage 2 · Try" headline="Watch it earn, then take it out.">
       <Sub>
         Pick a rate and see what the deposit is worth after a year. The live rate moves with
-        the DAO's strategies, so this rate is an example. Then withdraw some or all of it.
+        the DAO's strategies, so treat this one as an example. Then withdraw some of it, or
+        all of it.
       </Sub>
 
       <PositionCard
@@ -146,9 +147,9 @@ function Try({ onDone }) {
       />
 
       <Readout>
-        Worth <strong>{money(value)}</strong> after a year. Withdrawn:{" "}
-        <strong>{money(withdrawn)}</strong>. Still in the vault and earning:{" "}
-        <strong>{money(remaining)}</strong>.
+        After a year the deposit is worth <strong>{money(value)}</strong>. You have taken out{" "}
+        <strong>{money(withdrawn)}</strong>, and <strong>{money(remaining)}</strong> is still
+        in the vault earning.
       </Readout>
 
       <Controls>
@@ -166,13 +167,14 @@ function Try({ onDone }) {
           min={0} max={100} step={5}
           value={share}
           onChange={(v) => { setShare(v); if (v >= 100) setReachedFull(true); }}
-          verdict={full ? "the whole deposit left at once" : null}
+          verdict={full ? "The whole deposit came out at once" : null}
         />
       </Controls>
 
       <Notes>
         <Note label="How it reaches you">
-          Each MYT becomes worth more USDC as the strategies earn. There is nothing to claim.
+          Each MYT becomes worth more USDC as the strategies earn, so you never claim a
+          payout.
         </Note>
         <Note label="Who runs it">
           The Alchemix DAO chooses the strategies and rebalances them as conditions change.
@@ -186,9 +188,9 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            That is the deposit plus the rate applied to it once. Nothing in the position held
-            the withdrawal back at any point, and the USDC returned includes what was earned to
-            that day.
+            That is the deposit plus one year of that rate. At no point did the position hold
+            the withdrawal back, and the USDC that came out carried everything the deposit had
+            earned up to that day.
           </Body>
         </Reveal>
       ) : (

@@ -58,7 +58,7 @@ export default function AcademyShell({ title, description, children, left, right
             {right ?? (
               <>
                 <span className={styles.progressLabel}>
-                  {completed} of {LESSON_COUNT} lessons
+                  {completed} of {LESSON_COUNT} lessons complete
                 </span>
                 <span className={styles.progressShort}>
                   {completed}/{LESSON_COUNT}

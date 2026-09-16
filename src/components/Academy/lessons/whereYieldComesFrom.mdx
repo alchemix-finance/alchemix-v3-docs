@@ -3,12 +3,15 @@ routes deposits into several yield sources at once. You hold one token. The DAO
 selects the strategies behind it, sets target weights, and rebalances as markets
 shift.
 
-Every strategy carries a classification, and the classification sets a ceiling:
+Every strategy carries a classification, and the classification sets a ceiling on
+how much of the vault it may occupy.
 
-- **Conservative** – No cap. Reserved for strategies with contract wrap and unwrap,
-  fundamental pricing, and no duration risk.
-- **Moderate** – 25% for any single strategy, 40% across all of them.
-- **Aggressive** – 10% for any single strategy, and 10% across all of them.
+- **Conservative** – No cap applies. The class is reserved for strategies that wrap
+  and unwrap on contract, price off their own backing, and carry no duration risk.
+- **Moderate** – Any single strategy is capped at 25%, and the class is capped at
+  40% in total.
+- **Aggressive** – Any single strategy is capped at 10%, and the class is capped at
+  10% in total.
 
 ### Why the ceilings matter to a borrower
 
@@ -20,8 +23,9 @@ liquidation. A composition allowed to hold far more risk would make a high LTV
 considerably more dangerous, so the ceilings on the vault protect your borrowing
 headroom.
 
-One deduction happens before yield reaches you. A performance fee, a share of what
-the strategies earn, goes to the protocol before the remainder is credited to the
-MYT price. The current rate is read live on the [Fees](/user/concepts/fees) page.
+A cut is taken before the yield reaches you. A performance fee, a share of what the
+strategies earn, goes to the protocol before the remainder is credited to the MYT
+price. The current rate is read live on the [Fees](/user/concepts/fees) page.
 
-The Choosing an LTV lesson works out what the same caps mean for the LTV you choose.
+The Choosing an LTV lesson works out what these same caps mean for the number you
+pick.

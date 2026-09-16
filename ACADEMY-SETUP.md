@@ -1,6 +1,6 @@
 # Alchemix Academy: wiring notes
 
-Not published. Notes for whoever deploys this.
+This file is not published. It is notes for whoever deploys the Academy.
 
 ## What was added
 
@@ -109,8 +109,8 @@ the failure; `pnpm start` grades locally and marks it.
 
 ### Against the real grader
 
-Only needed when changing grading itself. The engine also defaults to port 3000,
-so give one of them another port.
+You only need this when you are changing grading itself. The engine also defaults
+to port 3000, so give one of them another port.
 
 ```bash
 # terminal 1, in the season engine repo
@@ -140,16 +140,16 @@ What has to be true before the link goes out.
 
 What a tester sees:
 
-1. The track map at `/academy`: a beginner track of six lessons and an
+1. The track map at `/academy` shows a beginner track of six lessons and an
    intermediate track of seven, each with one live lesson and a progress line.
    The header counts lessons complete out of 13.
 2. Each lesson has three stages. The last stage asks a question the engine set
    and grades the answer. A pass stores a token in the browser and marks the
    lesson done on the map.
-3. Finishing every lesson in a track shows the graduation panel for that track:
-   the role it earns, the points banked, and the claim button. With the claim
-   endpoint deployed, the button reports whether the engine verified the set
-   and lists any lesson it could not verify. Without it, the panel says the
-   claim opens with the Discord link.
+3. Finishing every lesson in a track shows the graduation panel for that track,
+   which names the role it earns, the points banked, and the claim button. With
+   the claim endpoint deployed, the button reports whether the engine verified
+   the set and lists any lesson it could not verify. Without it, the panel says
+   the claim opens with the Discord link.
 4. Progress lives in the tester's browser. A different browser or a cleared
    site starts from zero.

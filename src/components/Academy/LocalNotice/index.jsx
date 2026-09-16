@@ -20,8 +20,8 @@ export default function LocalNotice({ show }) {
         <path d="M12 8v5M12 16.5v.01" />
       </svg>
       <span>
-        Graded locally, because the season engine is not running. Completions
-        recorded this way do not count towards a reward.
+        The season engine is not running, so this was graded in your browser. A
+        completion recorded this way earns no reward.
       </span>
     </div>
   );

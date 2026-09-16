@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="borrowing"
-      description="Borrow up to 90% of the deposit, receive alUSD in your wallet, and see the deposit keep earning underneath."
+      description="Borrow up to 90% of your deposit and the alUSD lands in your wallet. The deposit keeps earning the whole time."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

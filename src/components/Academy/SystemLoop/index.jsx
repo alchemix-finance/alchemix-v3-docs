@@ -18,13 +18,13 @@ const STOPS = [
   {
     label: "Borrow",
     value: "alUSD is minted",
-    note: "A borrower mints it against a deposit that keeps earning.",
+    note: "It is minted against a deposit that goes on earning.",
     tone: "#f5c09a",
   },
   {
     label: "Sell",
     value: "usually just under 1.00",
-    note: "Sold for working capital, which opens the discount.",
+    note: "The borrower sells it for working capital, which opens the discount.",
     tone: "#d4952a",
   },
   {
@@ -36,7 +36,7 @@ const STOPS = [
   {
     label: "Wait",
     value: "collateral is earmarked",
-    note: "Borrower collateral is reserved for the claim, and keeps earning until it settles.",
+    note: "That borrower's collateral is reserved for the claim and keeps earning until it settles.",
     tone: "#8ea9d8",
   },
   {
@@ -67,7 +67,7 @@ export default function SystemLoop() {
       <figcaption className={styles.back}>
         <ReturnArrow />
         <span>
-          The burn shrinks the supply, the price moves back towards 1.00, and the
+          The burn shrinks the supply, the price moves back toward 1.00, and the
           loop starts again.
         </span>
       </figcaption>

@@ -23,9 +23,9 @@ import styles from "./track.module.css";
 
 const INTRO = {
   beginner:
-    "Six short lessons on the screens you use most: the deposit, the loan, the one real risk, and the swap back. One position runs through all of them.",
+    "You put in a deposit, borrow up to 90% of it, and the balance starts falling from there. When you want out, the Transmuter takes your alUSD back at 1:1. The beginner track walks the same position through all of it, one app screen at a time.",
   intermediate:
-    "Seven lessons that work through every important mechanic and how it functions, for a learner who wants the numbers underneath.",
+    "Underneath the app sits a vault with hard caps on the risk it can hold. The protocol sets one repayment pace for everyone. The intermediate track works through that machinery a mechanic at a time, and ends with a position you size yourself.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -50,20 +50,20 @@ export default function AcademyTrack() {
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by using it. Six beginner lessons and seven intermediate ones. No wallet, no sign-in, and no prior experience assumed."
+      description="Learn how Alchemix works by using it. The beginner track walks one position from the deposit through the loan that repays itself. The intermediate track goes underneath. You need no wallet and no sign-in."
     >
       <section className={styles.intro}>
         <div className={styles.eyebrow}>Alchemix Academy</div>
         <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
         <p className={styles.sub}>
-          Two tracks. The beginner track is six short lessons on the mechanics you use
-          most, one app screen each. The intermediate track is seven more that work
-          through every mechanic underneath. Each lesson gives you something to try
-          before it tells you the answer.
+          On most lending platforms your collateral sits idle while you pay interest on
+          the loan. Alchemix pays the loan down with what your deposit earns. Both tracks
+          below work through how that happens, on the same screens and with the same
+          numbers the app uses.
         </p>
         <p className={styles.sub}>
-          No wallet, no sign-in, and nothing to install. No prior experience with DeFi is
-          assumed.
+          You don't need a wallet, a sign-in, or anything installed. Nothing here assumes
+          you have used DeFi before.
         </p>
 
         <div className={styles.markets} aria-label="Where Alchemix runs">
@@ -81,8 +81,8 @@ export default function AcademyTrack() {
           </div>
         </div>
         <p className={styles.marketsNote}>
-          Six markets on three chains: an ETH and a USDC market on each. Everything in
-          these lessons applies to all six.
+          Each chain runs an ETH market and a USDC market. Every mechanic works the same
+          way in all six of them.
         </p>
       </section>
 
@@ -100,13 +100,13 @@ export default function AcademyTrack() {
         <div className={styles.rewardCard}>
           <div className={styles.microLabel}>Rewards</div>
           <div className={styles.rewardTitle}>
-            A role for each track, and a place in the founding class
+            Each track earns a Discord role, and the founding class closes when season
+            one opens
           </div>
           <p className={styles.rewardBody}>
-            Each lesson banks {LESSON_POINTS} points. Finishing a track banks its bonus
-            and earns its Discord role. Everything converts to season points when season
-            one opens. The founding class role is available only before season one
-            opens; once the season begins it can no longer be earned.
+            Each lesson banks {LESSON_POINTS} points. Finishing a track adds its bonus and
+            the Discord role that comes with it. All of it converts to season points when
+            season one opens, which is also the moment the founding class closes for good.
           </p>
 
           <div className={styles.rewardGrid}>
@@ -115,8 +115,9 @@ export default function AcademyTrack() {
                 <div className={styles.microLabel}>{track.label}</div>
                 <div className={styles.rewardRole}>{track.roleLine}</div>
                 <div className={styles.rewardPoints}>
-                  {fmt(trackTotalPoints(track))} points: {track.lessons.length} lessons at{" "}
-                  {LESSON_POINTS}, plus {track.bonus} for finishing the track.
+                  Each of the {track.lessons.length} lessons pays {LESSON_POINTS} points,
+                  and finishing the track adds {track.bonus} more. That comes to{" "}
+                  {fmt(trackTotalPoints(track))}.
                 </div>
               </div>
             ))}
@@ -221,7 +222,7 @@ function GraduationPanel({ track, completions, base, banked }) {
       "These completions were graded in the browser during development. They carry no signature, so the engine cannot verify them and there is nothing to claim.";
     tone = styles.statusWarn;
   } else if (status === "loading") {
-    body = "Checking your completions with the season engine.";
+    body = "The season engine is checking your completions.";
   } else if (status === "notOpen") {
     body =
       "The claim opens with the Discord link. Your completions are stored in this browser and will be ready when it does.";
@@ -248,7 +249,7 @@ function GraduationPanel({ track, completions, base, banked }) {
   return (
     <section className={styles.graduate}>
       <div className={styles.microLabel}>Track complete</div>
-      <div className={styles.graduateTitle}>Every lesson passed.</div>
+      <div className={styles.graduateTitle}>You passed every lesson.</div>
       <div className={styles.graduateMeta}>
         <span className={styles.graduateRole}>{track.roleLine}</span>
         <span className={styles.graduatePoints}>{fmt(banked)} points banked</span>

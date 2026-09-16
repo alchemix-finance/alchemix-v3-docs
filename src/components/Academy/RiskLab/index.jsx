@@ -41,17 +41,17 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Find the surviving LTV."
+      headline="Find the highest LTV that survives."
       unit="pct"
       targetOf={(f) => survivableLtv(f.loss) * 100}
       computeOf={(f, v) => v}
       direct
       controlLabel="Starting LTV"
       controlDisplay={(v) => `${v.toFixed(1)}%`}
-      targetFoot="the highest LTV that survives"
+      targetFoot="the highest starting LTV that survives the loss"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 5 complete."
-      passBody="You can size a position against the one loss that can close it. The risk caps inside the Mix-Yield Token bound how large that loss is likely to be. The capstone puts both numbers to work."
+      passBody="A loss inside the Mix-Yield Token is the only thing that can push a position past the threshold. Every loss has a highest starting LTV that survives it, and the DAO's risk caps bound how large a loss is plausible. The capstone puts both numbers to work."
     />
   );
 }
@@ -66,12 +66,12 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="Two positions, and the collateral price falls overnight."
+      headline="The price of the deposited asset falls overnight."
     >
       <Sub>
-        Ana is at {pct(SAFE_LTV)} LTV. Ben is at {pct(RISKY_LTV)}, close to the{" "}
-        {pct(MAX_LTV)} borrowing cap. Overnight the price of the deposited asset falls by{" "}
-        {pct(PRICE_CRASH)}.
+        Ana borrowed to {pct(SAFE_LTV)} LTV. Ben went to {pct(RISKY_LTV)}, near the{" "}
+        {pct(MAX_LTV)} borrowing cap. By morning the asset they both deposited is worth{" "}
+        {pct(PRICE_CRASH)} less.
       </Sub>
 
       <div className={own.pair}>
@@ -107,11 +107,11 @@ function Predict({ onDone }) {
       ) : (
         <>
           <div className={own.outcome}>
-            <OutcomeRow name="Ana" text="Untouched. Debt and collateral fell together." ok />
-            <OutcomeRow name="Ben" text="Untouched. Debt and collateral fell together." ok />
+            <OutcomeRow name="Ana" text="The LTV did not move. Debt and collateral fell by the same share." ok />
+            <OutcomeRow name="Ben" text="The LTV did not move. Debt and collateral fell by the same share." ok />
           </div>
 
-          <Reveal title="Neither. A price move cannot liquidate an Alchemix position.">
+          <Reveal title="Neither one is liquidated. Price cannot force you out of an Alchemix position.">
             <Body>
               alETH is backed by ETH and alUSD by USDC. When the collateral falls, the
               debt denominated in it falls by exactly as much. The ratio between them does
@@ -124,7 +124,7 @@ function Predict({ onDone }) {
           </Reveal>
 
           {!stage2 ? (
-            <Actions aside="Same two positions. This time the loss is inside the vault.">
+            <Actions aside="Now the loss happens inside the vault instead of in the market.">
               <Primary onClick={() => setStage2(true)}>Apply a loss of MYT backing</Primary>
             </Actions>
           ) : (
@@ -132,12 +132,12 @@ function Predict({ onDone }) {
               <div className={own.outcome}>
                 <OutcomeRow
                   name="Ana"
-                  text={`LTV moves to ${pct(ltvAfterLoss(SAFE_LTV, MYT_LOSS))}. Still far from the threshold.`}
+                  text={`The LTV moves to ${pct(ltvAfterLoss(SAFE_LTV, MYT_LOSS))}, which is still well short of the threshold.`}
                   ok
                 />
                 <OutcomeRow
                   name="Ben"
-                  text={`LTV moves to ${pct(ltvAfterLoss(RISKY_LTV, MYT_LOSS))}, past the ${pct(LIQ_LTV)} threshold. Liquidated.`}
+                  text={`The LTV moves to ${pct(ltvAfterLoss(RISKY_LTV, MYT_LOSS))}, past the ${pct(LIQ_LTV)} threshold, and the position is liquidated.`}
                   ok={survivesLoss(RISKY_LTV, MYT_LOSS)}
                 />
               </div>
@@ -211,8 +211,8 @@ function Explore({ onDone }) {
       headline="Every loss of backing has a highest LTV that survives it."
     >
       <Sub>
-        Set a starting LTV and a loss of backing. The bar shows where the position lands
-        against the {pct(LIQ_LTV)} threshold that closes it.
+        Set a starting LTV, then take backing away from it. The bar shows where the
+        position lands against the {pct(LIQ_LTV)} threshold that closes it.
       </Sub>
 
       <div className={own.healthWrap}>
@@ -266,7 +266,7 @@ function Explore({ onDone }) {
 
       {seenFail || (moved.ltv && moved.loss) ? (
         <Reveal
-          title="The liquidation threshold applied to the backing that remains."
+          title="The ceiling is the liquidation threshold applied to the backing that remains."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
@@ -279,7 +279,7 @@ function Explore({ onDone }) {
           <Body>
             The risk caps inside the Mix-Yield Token bound this number. By limiting how
             much of the vault can sit in higher risk strategies, the DAO limits how large a
-            loss is plausible. A reasoned choice of LTV rests on that bound.
+            loss is plausible. Those caps give you a worst case to size against.
           </Body>
           <Body>
             Only the minimum needed to restore a healthy ratio is liquidated. The rest of

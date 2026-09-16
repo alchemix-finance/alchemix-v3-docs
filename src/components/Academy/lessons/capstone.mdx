@@ -1,6 +1,8 @@
 import SystemLoop from "../SystemLoop";
 
-Two constraints decide the size of a position, and they depend on each other.
+A deposit big enough to raise the capital you need can still be too small to
+survive the loss you expect. Both have to hold at once, and the two numbers are
+not independent.
 
 **How much you must borrow** is set by the price you can sell at. Raising a given
 amount of spendable capital means borrowing that amount divided by the market
@@ -14,19 +16,19 @@ Put together, the smallest deposit that does both is:
 
 > Deposit = (capital ÷ price) ÷ (95% × (1 − loss))
 
-The two interact. A worse discount means borrowing more to raise the same capital.
-The larger borrow raises the LTV, so the same loss needs more collateral behind it.
-Neither number can be chosen in isolation.
+They pull on each other. A worse discount means borrowing more to raise the same
+capital. The larger borrow raises the LTV, so the same loss now needs more
+collateral behind it. Neither number can be chosen in isolation.
 
 ### The whole system
 
-The mechanisms fit together as one loop:
+Borrowing opens the discount and the Transmuter closes it, in one loop:
 
 <SystemLoop />
 
 ### Where to go next
 
 The [tutorials](/user/quick-start) walk through the same steps in the interface.
-The [risk considerations](/user/safety/risk-considerations) page covers what this
-track did not: bridge risk, oracle behavior, and the specific ways a strategy can
-fail.
+The [risk considerations](/user/safety/risk-considerations) page goes further than
+this track did, into bridge risk, oracle behavior, and the specific ways a strategy
+can fail.

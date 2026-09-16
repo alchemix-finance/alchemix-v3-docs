@@ -50,10 +50,10 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       direct
       controlLabel="Deposit"
       controlDisplay={(v) => money(v)}
-      targetFoot="the smallest deposit that works"
+      targetFoot="the smallest deposit that clears both checks"
       landingFoot="set the slider to your answer"
       passTitle="Track complete."
-      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using only the arithmetic from the earlier lessons."
+      passBody="You just sized a position against a discount you cannot control and a loss you cannot predict. The market sets the first number, the vault sets the second, and the deposit is where the two of them meet."
     />
   );
 }
@@ -72,16 +72,16 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="One deposit has to satisfy two constraints at once."
+      headline="One deposit has to raise the capital and survive the loss."
     >
       <Sub>
         You need {money(WANT)} of spendable capital. alUSD is trading at {PRICE.toFixed(2)},
-        and the MYT is about to report a loss of {pct(LOSS)} of its backing. You choose
-        one number: how much to deposit.
+        and the MYT is about to report a loss of {pct(LOSS)} of its backing. You get to
+        choose one number, the size of the deposit.
       </Sub>
 
       <div className={own.brief}>
-        <BriefRow label="Capital required" value={`${money(WANT)} USDC`} note="in hand, after selling" />
+        <BriefRow label="Capital required" value={`${money(WANT)} USDC`} note="what you need in hand after selling" />
         <BriefRow label="alUSD price" value={PRICE.toFixed(2)} note="what the market will pay you" tone="#f5c09a" />
         <BriefRow label="Coming loss of backing" value={pct(LOSS)} note="the vault is about to report it" tone="#d4645a" />
       </div>
@@ -103,19 +103,19 @@ function Predict({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Both conditions have to hold at once.">
+        <Actions aside="A deposit that only does one of the two fails.">
           <Primary onClick={() => setRevealed(true)}>Commit and stress it</Primary>
         </Actions>
       ) : (
         <Reveal
           title={`The smallest deposit is ${money2(truth)}.`}
           onNext={onDone}
-          nextLabel="See both constraints at once"
+          nextLabel="Work both checks at once"
         >
           <Body>
-            Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)}:
-            the capital divided by the price. Depositing exactly that much would put you at{" "}
-            {pct(naiveLtv)} LTV, and a {pct(LOSS)} loss takes that to{" "}
+            Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)},
+            which is the capital divided by the price. Deposit exactly that much and you
+            sit at {pct(naiveLtv)} LTV, where a {pct(LOSS)} loss takes you to{" "}
             {pct(ltvAfterLoss(naiveLtv, LOSS))}, well past the {pct(LIQ_LTV)} threshold.
           </Body>
           <Body>
@@ -163,11 +163,11 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="Both checks have to pass at once."
+      headline="Move one number and watch both checks respond."
     >
       <Sub>
-        You still need {money(WANT)} of capital. Move the deposit until the position both
-        raises it and survives the loss, then find the smallest deposit that does both.
+        You still need {money(WANT)} of capital. Raise the deposit until both checks pass,
+        then bring it back down to the smallest number that still holds.
       </Sub>
 
       <div className={own.checks}>
@@ -186,7 +186,7 @@ function Explore({ onDone }) {
           detail={
             survives
               ? `Starting at ${pct(ltv)}, a ${pct(loss)} loss moves it to ${pct(ltvAfterLoss(ltv, loss))}.`
-              : `Starting at ${pct(ltv)}, a ${pct(loss)} loss moves it to ${pct(ltvAfterLoss(ltv, loss))}, past ${pct(LIQ_LTV)}.`
+              : `Starting at ${pct(ltv)}, a ${pct(loss)} loss moves it to ${pct(ltvAfterLoss(ltv, loss))}, which is past the ${pct(LIQ_LTV)} threshold.`
           }
         />
       </div>
@@ -199,7 +199,7 @@ function Explore({ onDone }) {
           value={deposit}
           onChange={setDeposit}
           accent
-          verdict={works ? (tight ? "smallest that works" : "works, but larger than needed") : "does not work yet"}
+          verdict={works ? (tight ? "this is the smallest that works" : "it works, but it ties up more than you need") : "this one does not work yet"}
           tone={works ? undefined : "#d4645a"}
         />
         <Control
@@ -225,20 +225,21 @@ function Explore({ onDone }) {
 
       {solved ? (
         <Reveal
-          title="The discount sets the numerator, the loss sets the denominator."
+          title="The deposit is what you have to borrow divided by the LTV you can afford."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
           <Body>
-            How much you must borrow is decided by the price you can sell at, and nothing
-            about your position changes it. How much collateral that borrow needs behind it
-            is decided by the loss you have to survive, and nothing about the market
-            changes that. The deposit is the first divided by the second.
+            How much you must borrow is decided by the price you can sell at. Nothing
+            about your own position changes that number. How much collateral the borrow
+            needs behind it is decided by the loss you have to absorb, and no move in the
+            market changes that one. The deposit is the first divided by the second.
           </Body>
           <Body>
-            Move the price and watch both checks. A worse discount means borrowing more to
-            raise the same capital. The larger borrow raises the LTV, so the same loss
-            needs more collateral behind it. Neither number can be chosen in isolation.
+            Push the price down and both checks feel it. A worse discount means borrowing
+            more to raise the same capital. The larger borrow raises the LTV, so the same
+            loss now needs more collateral behind it. Neither number can be chosen in
+            isolation.
           </Body>
         </Reveal>
       ) : (

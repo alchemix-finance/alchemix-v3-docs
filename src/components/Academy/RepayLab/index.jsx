@@ -55,9 +55,8 @@ export default function RepayLab({ lessonId, stage, onStage, done, onComplete })
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Answer the question."
       passTitle="Lesson 4 complete."
-      passBody="You know what moves a balance, that repaying is always open to you, and where the app shows what is free to withdraw."
+      passBody="A balance falls on its own, and it falls faster whenever you choose to repay. The position card tells you how much of the deposit that frees."
     />
   );
 }
@@ -96,9 +95,9 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        The position holds 10,000 deposited and 5,000 borrowed. For two years you make no
-        payments and borrow nothing more. The protocol takes each repayment out of the
-        deposit, so both figures on the card move.
+        Your position holds 10,000 deposited and 5,000 borrowed. For two years you make no
+        payments and borrow nothing more. Repayment comes out of the deposit itself, so both
+        figures on the card move.
       </Sub>
 
       <PositionCard
@@ -109,7 +108,7 @@ function Learn({ onDone }) {
         highlight="borrowed"
         note={
           revealed
-            ? `Month ${month}. Illustrative pace. The live pace moves with protocol conditions.`
+            ? `Month ${month}. This pace is illustrative, and the live one moves with protocol conditions.`
             : "Month 0"
         }
       />
@@ -131,20 +130,20 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Nothing is pressed for two years.">
+        <Actions aside="You do nothing at all for two years.">
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
         <Reveal
-          title="About 2,000, at an illustrative pace."
+          title="About 2,000 is left, at an illustrative pace."
           onNext={onDone}
           nextLabel="See what moves it"
         >
           <Body>
-            You paid nothing and nothing was added, for time or for any price move. Each
-            repayment came out of the deposit, which kept earning the whole time. The live
-            pace is set by the protocol and changes, so the app is the place to read your
-            own balance.
+            You paid nothing, and nothing was added for time passing or for any price move.
+            The repayments came out of the deposit, which kept earning the whole time. The
+            protocol sets the live pace and that pace changes, so read your own balance in
+            the app.
           </Body>
         </Reveal>
       )}
@@ -191,10 +190,10 @@ function Try({ onDone }) {
   }, [enough]);
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="What moves the balance.">
+    <Stage eyebrow="Stage 2 · Try" headline="Run the months, then move the balance yourself.">
       <Sub>
-        Same position. Run the months, then use the two amounts, which are the fields on
-        the Repay tab and the Borrow tab.
+        This is the same position. Push the months forward, then try the two amounts below.
+        They are the fields you use on the Repay tab and the Borrow tab.
       </Sub>
 
       <PositionCard
@@ -203,7 +202,7 @@ function Try({ onDone }) {
         asset="USDC"
         earning
         highlight="borrowed"
-        note={`Free to withdraw: ${money(free)} USDC`}
+        note={`${money(free)} USDC is free to withdraw.`}
         compact
       />
 
@@ -219,7 +218,7 @@ function Try({ onDone }) {
           formatY={money}
         />
         <Legend items={[{ label: "Balance", color: "#f5c09a" }]} />
-        <Hint>Illustrative pace. The live pace moves with protocol conditions.</Hint>
+        <Hint>This pace is illustrative, and the live one moves with protocol conditions.</Hint>
       </div>
 
       <Controls>
@@ -237,7 +236,7 @@ function Try({ onDone }) {
           min={0} max={5_000} step={250}
           value={repay}
           onChange={setRepay}
-          verdict={repay > 0 ? "raises what is free to withdraw" : null}
+          verdict={repay > 0 ? "this frees more of your deposit" : null}
         />
         <Control
           label="Borrow more"
@@ -250,24 +249,24 @@ function Try({ onDone }) {
       </Controls>
 
       <Notes>
-        <Note label="Time">
+        <Note label="Time passing">
           Nothing is added for time passing, so the line only falls.
         </Note>
-        <Note label="Repaying">
-          Allowed at any time, in any amount, with alUSD, MYT, or USDC.
+        <Note label="Repaying by hand">
+          You can repay at any time, in any amount, with alUSD, MYT, or USDC.
         </Note>
       </Notes>
 
       {unlocked ? (
         <Reveal
-          title="Time lowers it. Repaying lowers it. Borrowing raises it."
+          title="Time and repayment both lower it. Only borrowing more raises it."
           onNext={onDone}
           nextLabel="Take the check"
         >
           <Body>
-            Those are the only things that move it, and two of them are your own choices.
-            Repay part or all whenever you want, with alUSD, MYT, or USDC, and the card
-            shows what is free to withdraw as soon as you do.
+            Nothing else moves it, and two of the three are your own choices. Repay part or
+            all of the balance whenever you want, with alUSD, MYT, or USDC, and the figure
+            for what is free to withdraw rises the moment you do.
           </Body>
         </Reveal>
       ) : null}

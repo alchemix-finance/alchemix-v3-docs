@@ -9,8 +9,8 @@
  *   Moderate       25% per strategy, 40% across all Moderate strategies
  *   Aggressive     10% per strategy, 10% across all Aggressive strategies
  *
- * The same file states why they exist, which is the point lesson 2 lands: the
- * caps are what let a user set an LTV that keeps liquidation risk low.
+ * The same file states why the caps exist: they are what lets a user set an LTV
+ * that keeps liquidation risk low. The Mix-Yield Token lesson lands that point.
  *
  * The season engine mirrors these values and its test suite asserts them, so a
  * governance change fails a test rather than quietly teaching an old number.

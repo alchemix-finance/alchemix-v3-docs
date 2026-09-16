@@ -7,11 +7,11 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="capstone"
-      description="Size one position against a discount you cannot control and a loss you cannot predict."
+      description="The price you can sell at decides what you borrow, and the loss you have to survive decides what must stand behind it. One deposit has to satisfy both."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/quick-start", label: "Quick Start", note: "the same steps in the interface" },
+        { to: "/user/quick-start", label: "Quick Start", note: "how the same steps look in the app" },
         { to: "/user/safety/risk-considerations", label: "Risk Considerations" },
         { to: "/user/faq", label: "FAQ" },
       ]}

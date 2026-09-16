@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="your-deposit"
-      description="Your deposit becomes MYT, the Alchemix DAO runs the strategies it earns from, and you can take it back at any time."
+      description="Your deposit becomes MYT and earns in strategies the Alchemix DAO steers. Nothing locks it in."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

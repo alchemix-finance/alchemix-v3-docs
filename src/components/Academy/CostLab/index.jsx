@@ -38,7 +38,7 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Size the borrow."
+      headline="Size the borrow to land the cash you need."
       unit="amount"
       targetOf={(f) => f.cashWanted}
       computeOf={(f, v) => v * f.price}
@@ -47,7 +47,7 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       targetFoot="the capital you need in hand"
       landingFoot="what your borrow raises"
       passTitle="Lesson 4 complete."
-      passBody="You can size a borrow against the price you will sell it at, so the amount you receive matches the amount you need."
+      passBody="You can size a borrow against the price you will sell it at, so what lands in your hand matches what you came for. You carry the larger number as debt, and the gap between the two is what borrowing costs you."
     />
   );
 }
@@ -65,12 +65,12 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="An Alchemix loan charges no interest. The cost is charged when you sell the alUSD."
+      headline="An Alchemix loan charges no interest. The cost arrives when you sell the alUSD."
     >
       <Sub>
-        You borrow {money(WANT)} alUSD against your position. Your recorded debt is{" "}
-        {money(WANT)}. You now want spendable USDC, so you sell the alUSD on the open
-        market, where it is trading at {PRICE.toFixed(2)}.
+        You borrow {money(WANT)} alUSD against your position, and the debt recorded
+        against you is {money(WANT)}. What you actually want is spendable USDC, so you
+        sell the alUSD on the open market, where it is trading at {PRICE.toFixed(2)}.
       </Sub>
 
       <Panel>
@@ -130,11 +130,12 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="To receive the full amount, you have to borrow more than it."
+      headline="To end up with the full amount, you have to borrow more than it."
     >
       <Sub>
-        Set the capital you need and the price alUSD is trading at. The gap between what
-        you borrow and what you receive is the cost of the discount.
+        Set the capital you need, then set the price alUSD is trading at. The gap that
+        opens between what you borrow and what you receive is what the discount costs
+        you.
       </Sub>
 
       <div className={own.compare}>
@@ -185,21 +186,21 @@ function Explore({ onDone }) {
 
       {moved.want && moved.price ? (
         <Reveal
-          title="The discount is the cost, and it scales with how much you borrow."
+          title="The discount is the cost, and it grows with the size of the borrow."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
           <Body>
-            There is no interest, so nothing accrues while you hold the loan. What you pay
-            is set once, by the price you sold at. It is proportional to the size of the
-            borrow, and holding the loan longer adds nothing.
+            Nothing accrues while you hold the loan, because no interest is charged. The
+            price you sold at settles what you pay, once. Hold the loan for years and that
+            figure does not move.
           </Body>
           <Body>
-            A second cost arrives later. When redemptions repay your debt from your
+            Another charge arrives later. When redemptions repay your debt out of your
             collateral, a small borrower redemption fee is taken from the amount repaid.
             The fee is charged per event, so its effective annual cost depends on your
-            starting LTV and how long the transmutation takes. Governance sets the rate,
-            and the fee schedule in the docs shows the live value.
+            starting LTV and on how long the transmutation takes. Governance sets the
+            rate, and the fee schedule in the docs shows the live value.
           </Body>
         </Reveal>
       ) : (

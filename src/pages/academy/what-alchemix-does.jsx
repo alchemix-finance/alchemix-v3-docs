@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="what-alchemix-does"
-      description="The three things you can do in Alchemix, and why a loan balance falls without payments."
+      description="An Alchemix loan charges no interest, and the balance falls without a payment from you."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

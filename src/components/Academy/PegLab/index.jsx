@@ -49,7 +49,7 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
       targetFoot="what the wait is worth, annualized"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 6 complete."
-      passBody="You can price a discount against the time you wait for it. The buyers who close the gap run the same calculation."
+      passBody="A discount on an alAsset is a rate, and the Transmuter is what makes that rate collectible. Every saver and every borrower who closes the gap runs the arithmetic you just ran."
     />
   );
 }
@@ -73,7 +73,7 @@ function Predict({ onDone }) {
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
         Alchemix, and the Transmuter will exchange it for the underlying at exactly 1:1
-        after a governance-set term. This lesson uses a term of {WEEKS} weeks.
+        once a governance-set term is up. Here that term runs {WEEKS} weeks.
       </Sub>
 
       <div className={own.tradeRow}>
@@ -106,7 +106,7 @@ function Predict({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title={`${annual.toFixed(2)}% annualized, from a ${perTerm.toFixed(2)}% gain over the term.`}
+          title={`The wait is worth ${annual.toFixed(2)}% annualized, on a ${perTerm.toFixed(2)}% gain over the term.`}
           onNext={onDone}
           nextLabel="See who buys the discount"
         >
@@ -117,8 +117,8 @@ function Predict({ onDone }) {
             which is {annual.toFixed(2)}% annualized.
           </Body>
           <Body>
-            The shorter the term, the more the same discount is worth. That relationship
-            makes a persistent discount hard to sustain.
+            The shorter the term, the more the same discount is worth. A wide discount
+            therefore pays too well to last.
           </Body>
         </Reveal>
       )}
@@ -157,21 +157,21 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="Two buyers take the discount for different reasons."
+      headline="A saver and a borrower both want alUSD below face value."
     >
       <Sub>
-        Both buy alUSD below face value. One buys a return. The other buys back their
-        own debt. Their buying closes the gap.
+        The saver is buying the return on the wait. The borrower is buying back a dollar
+        of their own debt for less than a dollar. Either way, the buying closes the gap.
       </Sub>
 
       <div className={own.roles}>
         <button type="button" className={`${own.role} ${role === "saver" ? own.roleOn : ""}`} onClick={() => pickRole("saver")}>
           <span className={own.roleName}>The saver</span>
-          <span className={own.roleNote}>Buys the discount, waits for maturity</span>
+          <span className={own.roleNote}>Waits out the term and redeems at 1.00</span>
         </button>
         <button type="button" className={`${own.role} ${role === "borrower" ? own.roleOn : ""}`} onClick={() => pickRole("borrower")}>
           <span className={own.roleName}>The borrower</span>
-          <span className={own.roleNote}>Buys the discount to clear debt cheaply</span>
+          <span className={own.roleNote}>Cancels a dollar of debt for less than a dollar</span>
         </button>
       </div>
 
@@ -181,9 +181,9 @@ function Explore({ onDone }) {
             <div className={styles.microLabel}>Annualized return on the wait</div>
             <div className={own.resultBig} style={{ color: "#5ba88a" }}>{annual.toFixed(2)}%</div>
             <div className={own.resultNote}>
-              {perTerm.toFixed(2)}% over {weeks} weeks, redeemed 1:1 at maturity. Leaving the
-              queue before it matures carries an early transmutation fee, so the return
-              assumes you wait.
+              That is {perTerm.toFixed(2)}% over {weeks} weeks, redeemed 1:1 at maturity.
+              Leaving the queue before it matures carries an early transmutation fee, so
+              the figure assumes you wait.
             </div>
           </>
         ) : (
@@ -214,7 +214,7 @@ function Explore({ onDone }) {
           min={4} max={40} step={1}
           value={weeks}
           onChange={setWeeks}
-          verdict={role === "saver" ? (weeks <= 10 ? "short wait, higher annualized return" : null) : undefined}
+          verdict={role === "saver" ? (weeks <= 10 ? "a shorter wait pays more" : null) : undefined}
         />
       </Controls>
 
@@ -230,9 +230,9 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            Both buy alUSD when it is cheap. That demand pushes the price back toward face
-            value. The Transmuter guarantees the 1:1 exchange at the end of a known wait,
-            which puts a floor under the discount.
+            Demand for cheap alUSD is what closes the gap. The Transmuter guarantees the
+            1:1 exchange at the end of a known wait, so the wider the discount runs, the
+            better that trade pays and the faster capital arrives to take it.
           </Body>
           <Body>
             alAssets are synthetic debt tokens. The peg is held by the exchange mechanism
@@ -241,7 +241,7 @@ function Explore({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Look at both roles to continue.</Hint>
+        <Hint>Open the other role to continue.</Hint>
       )}
     </Stage>
   );
