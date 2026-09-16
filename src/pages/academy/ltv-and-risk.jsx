@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="ltv-and-risk"
-      description="Find out why a price crash cannot liquidate an Alchemix position, and what can."
+      description="Why a price crash cannot liquidate an Alchemix position, and the loss that can."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[

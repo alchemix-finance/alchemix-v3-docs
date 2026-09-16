@@ -1,20 +1,27 @@
 /**
  * The tracks, as data.
  *
- * One source of truth for the track map and every lesson page, so a lesson's
- * number, title and blurb cannot drift between the places they appear.
+ * One source of truth for the track map, the shell's progress count, and every
+ * lesson page, so a lesson's number, title, and blurb cannot drift between the
+ * places they appear.
  *
  * `id` must match the lesson id the season engine grades against
  * (`src/lib/academy/lessons.ts` there). A mismatch means a completed lesson never
- * shows as complete. Ids are topic slugs rather than numbers, so the order can
- * change without invalidating stored progress.
+ * shows as complete. Ids are topic slugs rather than numbers, so a lesson can
+ * change track or order without invalidating stored progress.
  *
- * Two tracks, and the split between them is deliberate. The beginner track
- * covers what a user does with the product and asks for at most one arithmetic
- * step. The advanced track goes after the mechanism underneath: inverting a
- * projection, optimising an allocation, pricing a discount. Both are worth
- * teaching. Teaching them in one track is what made the first version
- * overwhelming.
+ * Two tracks.
+ *
+ * The beginner track is a brief look at the mechanics a typical user interacts
+ * with: six lessons, one app screen each, and one $10,000 position carried
+ * across them. Each lesson has one visual through-line that mirrors a real
+ * screen in the app, and the learner pushes on it before being told the answer.
+ *
+ * The intermediate track walks through every important mechanic and how it
+ * functions, for a learner committed to understanding the protocol: reading a
+ * position, the pace of repayment, the strategy mix, the cost of borrowing,
+ * choosing an LTV, the peg, and a capstone that sizes a position. Seven
+ * lessons, all published.
  */
 
 export const BEGINNER = [
@@ -23,155 +30,212 @@ export const BEGINNER = [
     id: "what-alchemix-does",
     slug: "/academy/what-alchemix-does",
     title: "What Alchemix does",
-    blurb: "Three things the protocol offers, and the one that surprises people.",
+    blurb: "Three things you can do here, and a loan balance that falls on its own.",
     minutes: 5,
     ready: true,
+    track: "beginner",
   },
   {
     n: 2,
     id: "your-deposit",
     slug: "/academy/your-deposit",
-    title: "Your deposit and what it earns",
-    blurb: "Where your money goes when you deposit it, and who decides what it does.",
+    title: "Your deposit",
+    blurb: "Where the money goes, who runs it, and how to take it back.",
     minutes: 6,
     ready: true,
+    track: "beginner",
   },
   {
     n: 3,
     id: "borrowing",
     slug: "/academy/borrowing",
-    title: "Borrowing against your deposit",
-    blurb: "How much you can borrow, what you receive, and what it costs to hold.",
+    title: "Borrowing against it",
+    blurb: "Borrow up to 90%, receive alUSD, and keep earning on the deposit.",
     minutes: 6,
     ready: true,
+    track: "beginner",
   },
   {
     n: 4,
     id: "self-repaying",
     slug: "/academy/self-repaying",
     title: "The loan repays itself",
-    blurb: "Watch a balance go down on its own, and see what would push it back up.",
+    blurb: "Run the months and watch the balance fall, then see what moves it.",
     minutes: 7,
     ready: true,
+    track: "beginner",
   },
   {
     n: 5,
-    id: "getting-money-back",
-    slug: "/academy/getting-money-back",
-    title: "Getting your money back",
-    blurb: "Two ways out, and why one of them gives you less than you expect.",
+    id: "what-can-go-wrong",
+    slug: "/academy/what-can-go-wrong",
+    title: "The one real risk",
+    blurb: "A price crash leaves the position where it is. A loss inside the vault moves the marker.",
     minutes: 7,
     ready: true,
+    track: "beginner",
   },
   {
     n: 6,
-    id: "what-can-go-wrong",
-    slug: "/academy/what-can-go-wrong",
-    title: "What can go wrong",
-    blurb: "Why a price crash cannot close your position, and what can.",
-    minutes: 7,
-    ready: true,
-  },
-  {
-    n: 7,
     id: "the-transmuter",
     slug: "/academy/the-transmuter",
-    title: "The Transmuter",
-    blurb: "Turn alAssets back into the real thing at 1:1, once you have waited.",
+    title: "Turning alAssets back",
+    blurb: "Swap alUSD for USDC at exactly 1:1 after a wait.",
     minutes: 6,
     ready: true,
+    track: "beginner",
   },
 ];
 
-/**
- * The advanced track.
- *
- * Built, graded, and through the same tone pass the beginner track was written
- * under. Held back from the track map until the lessons have had a walkthrough;
- * flipping ready publishes one. Listed here so the map can show what is coming
- * next.
- */
-export const ADVANCED = [
+export const INTERMEDIATE = [
   {
     n: 1,
+    id: "getting-money-back",
+    slug: "/academy/getting-money-back",
+    title: "Reading your position",
+    blurb: "What the numbers on your position mean, and the two routes out of it.",
+    minutes: 8,
+    ready: true,
+    track: "intermediate",
+  },
+  {
+    n: 2,
     id: "pace-of-repayment",
     slug: "/academy/pace-of-repayment",
     title: "The pace of repayment",
     blurb: "What sets the speed a loan clears at, and what has no effect on it.",
     minutes: 8,
-    ready: false,
+    ready: true,
+    track: "intermediate",
   },
   {
-    n: 2,
+    n: 3,
     id: "where-yield-comes-from",
     slug: "/academy/where-yield-comes-from",
     title: "Inside the Mix-Yield Token",
     blurb: "The strategy mix, and the ceilings the DAO puts on risk.",
     minutes: 8,
-    ready: false,
-  },
-  {
-    n: 3,
-    id: "cost-of-borrowing",
-    slug: "/academy/cost-of-borrowing",
-    title: "What borrowing really costs",
-    blurb: "There is no interest rate, so working out what you pay instead, and when.",
-    minutes: 8,
-    ready: false,
+    ready: true,
+    track: "intermediate",
   },
   {
     n: 4,
+    id: "cost-of-borrowing",
+    slug: "/academy/cost-of-borrowing",
+    title: "What borrowing really costs",
+    blurb: "What you pay instead of interest, and when you pay it.",
+    minutes: 8,
+    ready: true,
+    track: "intermediate",
+  },
+  {
+    n: 5,
     id: "ltv-and-risk",
     slug: "/academy/ltv-and-risk",
     title: "Choosing an LTV",
     blurb: "How far a position can fall before the threshold reaches it.",
     minutes: 9,
-    ready: false,
-  },
-  {
-    n: 5,
-    id: "transmuter-and-peg",
-    slug: "/academy/transmuter-and-peg",
-    title: "The peg and the discount",
-    blurb: "How a discount on an alAsset closes, and how to be the one who closes it.",
-    minutes: 9,
-    ready: false,
+    ready: true,
+    track: "intermediate",
   },
   {
     n: 6,
+    id: "transmuter-and-peg",
+    slug: "/academy/transmuter-and-peg",
+    title: "The peg and the discount",
+    blurb: "How a discount on an alAsset closes, and what closing it pays.",
+    minutes: 9,
+    ready: true,
+    track: "intermediate",
+  },
+  {
+    n: 7,
     id: "capstone",
     slug: "/academy/capstone",
     title: "Capstone",
-    blurb: "One position, sized to raise what you need and survive what is coming.",
+    blurb: "Size one position to raise the cash you need and survive the loss you expect.",
     minutes: 10,
-    ready: false,
+    ready: true,
+    track: "intermediate",
   },
 ];
 
-/** The track graduation is measured against. */
-export const TRACK = BEGINNER;
-
 /**
  * Reward figures, mirrored from the engine's action catalogue (`scripts/seed.ts`
- * there, which is authoritative). Settled 2026-08-20: each track carries its own
- * Discord role, and finishing a track banks a bonus on top of the per-lesson
- * points. Mirrored here so the track map can state the numbers without a request.
+ * there, which is authoritative). Each track carries its own Discord role, and
+ * finishing a track banks a bonus on top of the per-lesson points. Mirrored here
+ * so the track map can state the numbers without a request.
+ *
+ * The intermediate bonus is seeded under the key `academy.advanced.completed`.
+ * The key is deployed data and keeps its name; the track it pays for is the
+ * intermediate track.
  */
 export const LESSON_POINTS = 100;
 export const BEGINNER_BONUS = 200;
-export const ADVANCED_BONUS = 400;
+export const INTERMEDIATE_BONUS = 400;
 
-export const TOTAL_POINTS = BEGINNER.length * LESSON_POINTS;
+/** Points available per track: every lesson plus the completion bonus. */
+export const BEGINNER_TOTAL_POINTS = BEGINNER.length * LESSON_POINTS + BEGINNER_BONUS;
+export const INTERMEDIATE_TOTAL_POINTS = INTERMEDIATE.length * LESSON_POINTS + INTERMEDIATE_BONUS;
+export const TOTAL_POINTS = BEGINNER_TOTAL_POINTS + INTERMEDIATE_TOTAL_POINTS;
+
+/**
+ * The tracks in the order the map shows them.
+ *
+ * `key` is what the claim endpoint expects in its `track` field. `roleLine`
+ * names the Discord role a finished track earns, worded for the graduation
+ * panel and the rewards card.
+ */
+export const TRACKS = [
+  {
+    key: "beginner",
+    label: "Beginner track",
+    lessons: BEGINNER,
+    bonus: BEGINNER_BONUS,
+    roleLine: "Graduate role on Discord",
+  },
+  {
+    key: "intermediate",
+    label: "Intermediate track",
+    lessons: INTERMEDIATE,
+    bonus: INTERMEDIATE_BONUS,
+    roleLine: "Intermediate role on Discord",
+  },
+];
+
+/** Every lesson on the map, beginner first. */
+export const ALL_LESSONS = [...BEGINNER, ...INTERMEDIATE];
+export const LESSON_COUNT = ALL_LESSONS.length;
 
 export function lessonById(id) {
-  return [...BEGINNER, ...ADVANCED].find((l) => l.id === id) ?? null;
+  return ALL_LESSONS.find((l) => l.id === id) ?? null;
+}
+
+export function trackByKey(key) {
+  return TRACKS.find((t) => t.key === key) ?? null;
+}
+
+/** Points available for one track: every lesson plus its bonus. */
+export function trackTotalPoints(track) {
+  return track.lessons.length * LESSON_POINTS + track.bonus;
+}
+
+/**
+ * Points banked so far on one track. The bonus counts only once every lesson
+ * in the track is done, which is the same rule the engine's seed applies.
+ */
+export function trackBankedPoints(track, completedIds) {
+  const done = new Set(completedIds);
+  const finished = track.lessons.filter((l) => done.has(l.id)).length;
+  const bonus = finished === track.lessons.length ? track.bonus : 0;
+  return finished * LESSON_POINTS + bonus;
 }
 
 /**
  * Resolve each lesson to one of three display states.
  *
- * "current" is the first unfinished lesson that is built. Only one lesson is ever
- * current, because the track map's job is to leave no doubt about what to do next.
+ * "current" is the first unfinished lesson that is built. Only one lesson per
+ * track is ever current, so the map leaves no doubt about what to do next.
  */
 export function trackState(completedIds, lessons = BEGINNER) {
   const done = new Set(completedIds);

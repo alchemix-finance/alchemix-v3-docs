@@ -115,6 +115,8 @@ const GENERATORS = {
     };
   },
 
+  /* Intermediate track. */
+
   "getting-money-back": () => {
     const collateral = pick([10000, 20000, 25000, 40000, 50000]);
     const debt = Math.round(collateral * between(0.2, 0.6, 2));
@@ -127,7 +129,6 @@ const GENERATORS = {
     };
   },
 
-  /* Advanced track. */
   "pace-of-repayment": () => {
     const collateral = pick([10000, 20000, 25000, 50000]);
     const debt = Math.round(collateral * pick([0.2, 0.3, 0.4, 0.5]));
@@ -189,7 +190,7 @@ const GENERATORS = {
       fields: { price, weeks },
       prompt:
         `alUSD is trading at ${price.toFixed(3)} and the transmutation term is ${weeks} weeks. ` +
-        `Buying now and waiting for maturity returns what, annualised?`,
+        `Buying now and waiting for maturity returns what, annualized?`,
       controls: { slider: { min: 0, max: 60, step: 0.05 } },
     };
   },
@@ -224,6 +225,8 @@ const GRADERS = {
 
   borrowing: (f, a) => [a, f.deposit * MAX_LTV, f.deposit * 0.004, "amount"],
 
+  /* Intermediate track. */
+
   "getting-money-back": (f, a) => [
     a,
     withdrawable(f.collateral, f.debt),
@@ -231,7 +234,6 @@ const GRADERS = {
     "amount",
   ],
 
-  /* Advanced track. */
   "pace-of-repayment": (f, a) => [
     debtRemainingPct({
       collateral: f.collateral,

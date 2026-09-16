@@ -12,16 +12,16 @@ import {
 } from "../kit";
 
 /**
- * Lesson 6: the capstone.
+ * Intermediate lesson 7: the capstone.
  *
- * No new mechanism. The whole point is that two earlier answers now have to be
- * used together, because in practice they constrain each other: the discount
- * decides how much you must borrow, and the coming loss decides how much
- * collateral that borrow needs standing behind it.
+ * No new mechanism. Two earlier answers now have to be used together, because in
+ * practice they constrain each other: the discount decides how much you must
+ * borrow, and the coming loss decides how much collateral that borrow needs
+ * standing behind it.
  *
- * A learner who only took lesson 3 sizes the borrow and gets liquidated. One who
- * only took lesson 4 picks a safe LTV and comes up short of the capital. Neither
- * half is sufficient, which is what makes it a capstone rather than a review.
+ * A learner who only sizes the borrow against the discount gets liquidated. One
+ * who only picks a safe LTV comes up short of the capital. Neither half is
+ * sufficient on its own.
  */
 
 const WANT = 10_000;
@@ -53,7 +53,7 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       targetFoot="the smallest deposit that works"
       landingFoot="set the slider to your answer"
       passTitle="Track complete."
-      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using only what the earlier lessons established."
+      passBody="You sized a position against a discount you cannot control and a loss you cannot predict, using only the arithmetic from the earlier lessons."
     />
   );
 }
@@ -72,12 +72,12 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="One position, two constraints, and they pull against each other."
+      headline="One deposit has to satisfy two constraints at once."
     >
       <Sub>
         You need {money(WANT)} of spendable capital. alUSD is trading at {PRICE.toFixed(2)},
-        and the MYT is about to report a loss of {pct(LOSS)} of its backing. You get to
-        choose one number: how much to deposit.
+        and the MYT is about to report a loss of {pct(LOSS)} of its backing. You choose
+        one number: how much to deposit.
       </Sub>
 
       <div className={own.brief}>
@@ -108,21 +108,21 @@ function Predict({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title={`It takes ${money2(truth)}.`}
+          title={`The smallest deposit is ${money2(truth)}.`}
           onNext={onDone}
           nextLabel="See both constraints at once"
         >
           <Body>
-            Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)},
-            which lesson 3 covers. Depositing exactly that much would put you at{" "}
+            Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)}:
+            the capital divided by the price. Depositing exactly that much would put you at{" "}
             {pct(naiveLtv)} LTV, and a {pct(LOSS)} loss takes that to{" "}
             {pct(ltvAfterLoss(naiveLtv, LOSS))}, well past the {pct(LIQ_LTV)} threshold.
           </Body>
           <Body>
-            Lesson 4 gives the ceiling: at a {pct(LOSS)} loss, the highest starting LTV
+            The loss sets the ceiling. At a {pct(LOSS)} loss, the highest starting LTV
             that survives is {pct(survivableLtv(LOSS))}. The deposit has to be large enough
-            that {money2(borrow)} of debt sits at or under it, which puts the floor at{" "}
-            {money2(truth)}.
+            that {money2(borrow)} of debt sits at or under that LTV, which puts the floor
+            at {money2(truth)}.
           </Body>
         </Reveal>
       )}
@@ -163,11 +163,11 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="Both lights have to be green at once."
+      headline="Both checks have to pass at once."
     >
       <Sub>
         You still need {money(WANT)} of capital. Move the deposit until the position both
-        raises it and survives the loss, then find the smallest deposit that manages both.
+        raises it and survives the loss, then find the smallest deposit that does both.
       </Sub>
 
       <div className={own.checks}>
@@ -236,10 +236,9 @@ function Explore({ onDone }) {
             changes that. The deposit is the first divided by the second.
           </Body>
           <Body>
-            Notice what moving the price does. A worse discount means borrowing more to
-            raise the same capital, which raises the LTV, which needs more collateral to
-            survive the same loss. The two constraints move together. Neither number can
-            be chosen in isolation.
+            Move the price and watch both checks. A worse discount means borrowing more to
+            raise the same capital. The larger borrow raises the LTV, so the same loss
+            needs more collateral behind it. Neither number can be chosen in isolation.
           </Body>
         </Reveal>
       ) : (

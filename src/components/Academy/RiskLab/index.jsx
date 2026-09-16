@@ -10,15 +10,15 @@ import {
 } from "../kit";
 
 /**
- * Lesson 4: LTV and what can go wrong.
+ * Intermediate lesson 5: choosing an LTV.
  *
  * The misconception this exists to break is the one imported from every other
  * lending protocol: that a price crash liquidates you. It cannot here, because
  * debt and collateral are like-kind and move together.
  *
- * So the lesson applies a brutal price crash first and shows nothing happening,
- * which is the surprise, then applies a much smaller loss of MYT backing and
- * shows a position failing. Same LTV, two very different threats.
+ * The lesson applies a large price crash first and shows nothing happening, then
+ * applies a much smaller loss of MYT backing and shows a position failing. Same
+ * LTV, two very different threats.
  */
 
 const SAFE_LTV = 0.3;
@@ -50,8 +50,8 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => `${v.toFixed(1)}%`}
       targetFoot="the highest LTV that survives"
       landingFoot="set the slider to your answer"
-      passTitle="Lesson 4 complete."
-      passBody="You can size a position against the one loss that can close it. The risk caps in lesson 2 were protecting that number, and the capstone puts both to work."
+      passTitle="Lesson 5 complete."
+      passBody="You can size a position against the one loss that can close it. The risk caps inside the Mix-Yield Token bound how large that loss is likely to be. The capstone puts both numbers to work."
     />
   );
 }
@@ -66,7 +66,7 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="Two positions, and a very bad day for the collateral price."
+      headline="Two positions, and the collateral price falls overnight."
     >
       <Sub>
         Ana is at {pct(SAFE_LTV)} LTV. Ben is at {pct(RISKY_LTV)}, close to the{" "}
@@ -113,22 +113,19 @@ function Predict({ onDone }) {
 
           <Reveal title="Neither. A price move cannot liquidate an Alchemix position.">
             <Body>
-              {guess === "neither"
-                ? "You called it. "
-                : "Most people expect at least Ben to go. "}
-              alETH is backed by ETH and alUSD by USDC, so when the collateral falls the
+              alETH is backed by ETH and alUSD by USDC. When the collateral falls, the
               debt denominated in it falls by exactly as much. The ratio between them does
               not move, and a ratio that does not move cannot cross a threshold.
             </Body>
             <Body>
-              Hitting the {pct(MAX_LTV)} cap stops further borrowing. It does not close
-              anything, and the collateral underneath keeps earning.
+              Reaching the {pct(MAX_LTV)} cap stops further borrowing. The position stays
+              open and the collateral underneath keeps earning.
             </Body>
           </Reveal>
 
           {!stage2 ? (
-            <Actions aside="Same two positions, a different kind of bad day.">
-              <Primary onClick={() => setStage2(true)}>Now try something else</Primary>
+            <Actions aside="Same two positions. This time the loss is inside the vault.">
+              <Primary onClick={() => setStage2(true)}>Apply a loss of MYT backing</Primary>
             </Actions>
           ) : (
             <>
@@ -146,19 +143,19 @@ function Predict({ onDone }) {
               </div>
 
               <Reveal
-                title={`A ${pct(MYT_LOSS)} loss inside the MYT does what a ${pct(PRICE_CRASH)} crash could not.`}
+                title={`A ${pct(MYT_LOSS)} loss of MYT backing raises the LTV of every position.`}
                 onNext={onDone}
-                nextLabel="Find where the line sits"
+                nextLabel="Find the highest LTV that survives"
               >
                 <Body>
-                  This is the threat to size against. If a strategy inside the vault reports a
-                  loss, the backing behind every position falls, and the liquidation
-                  marker slides towards you. Nothing about the price of ETH or USDC is
-                  involved.
+                  If a strategy inside the vault reports a loss, the backing behind every
+                  position falls and the same debt stands against less collateral. The LTV
+                  rises with no change in the price of ETH or USDC. This is the loss to size
+                  a position against.
                 </Body>
                 <Body>
-                  Ana absorbed it with room to spare. Ben had almost none. The cost of a
-                  high LTV is exposure to the vault.
+                  Ana absorbed the loss with room to spare. Ben had almost none. A higher
+                  LTV leaves less room for a loss of backing.
                 </Body>
               </Reveal>
             </>
@@ -211,10 +208,10 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="Every loss has an LTV that survives it."
+      headline="Every loss of backing has a highest LTV that survives it."
     >
       <Sub>
-        Set a starting LTV and a loss of backing. The bar shows where the position lands,
+        Set a starting LTV and a loss of backing. The bar shows where the position lands
         against the {pct(LIQ_LTV)} threshold that closes it.
       </Sub>
 
@@ -269,7 +266,7 @@ function Explore({ onDone }) {
 
       {seenFail || (moved.ltv && moved.loss) ? (
         <Reveal
-          title="The threshold divided by what is left of the backing."
+          title="The liquidation threshold applied to the backing that remains."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
@@ -280,9 +277,9 @@ function Explore({ onDone }) {
             {pct(1 - loss)}, or {pct(ceiling)}.
           </Body>
           <Body>
-            The risk caps in lesson 2 were holding this line. By limiting how much of the
-            vault can sit in higher risk strategies, the DAO limits how large a loss is
-            plausible, and a reasoned choice of LTV rests on that bound.
+            The risk caps inside the Mix-Yield Token bound this number. By limiting how
+            much of the vault can sit in higher risk strategies, the DAO limits how large a
+            loss is plausible. A reasoned choice of LTV rests on that bound.
           </Body>
           <Body>
             Only the minimum needed to restore a healthy ratio is liquidated. The rest of

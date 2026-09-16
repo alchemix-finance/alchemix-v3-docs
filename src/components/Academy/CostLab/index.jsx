@@ -10,11 +10,11 @@ import {
 } from "../kit";
 
 /**
- * Lesson 3: what borrowing costs.
+ * Intermediate lesson 4: what borrowing really costs.
  *
  * There is no interest rate, which regularly gets read as "there is no cost".
  * There is one, it is just charged differently: alAssets are minted at face value
- * and can trade below it, so selling them for working capital realises the gap
+ * and can trade below it, so selling them for working capital realizes the gap
  * immediately while the recorded debt stays at face.
  *
  * The lesson lands by making the learner short of the amount they wanted. Asking
@@ -46,8 +46,8 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => `${money(v)} alUSD`}
       targetFoot="the capital you need in hand"
       landingFoot="what your borrow raises"
-      passTitle="Lesson 3 complete."
-      passBody="You can size a borrow against the price you will get for it, which is the difference between asking for capital and receiving it."
+      passTitle="Lesson 4 complete."
+      passBody="You can size a borrow against the price you will sell it at, so the amount you receive matches the amount you need."
     />
   );
 }
@@ -65,7 +65,7 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="An Alchemix loan charges no interest. It still has a cost."
+      headline="An Alchemix loan charges no interest. The cost is charged when you sell the alUSD."
     >
       <Sub>
         You borrow {money(WANT)} alUSD against your position. Your recorded debt is{" "}
@@ -74,7 +74,7 @@ function Predict({ onDone }) {
       </Sub>
 
       <Panel>
-        <Question>How much USDC do you walk away with?</Question>
+        <Question>How much USDC do you receive?</Question>
         <GuessSlider
           label="USDC received"
           value={guess}
@@ -100,14 +100,14 @@ function Predict({ onDone }) {
           nextLabel="See what sets the gap"
         >
           <Body>
-            {close ? "That is the right shape. " : `You answered ${money(guess)}. `}
-            The {money(shortfall)} difference is the market discount, and it is the real
-            cost of borrowing here. It is charged once, at the moment you sell, and nothing accrues after that.
+            {close ? "Your guess was close. " : `You answered ${money(guess)}. `}
+            The {money(shortfall)} difference is the market discount, the cost of borrowing
+            here. It is charged once, when you sell, and nothing accrues after that.
           </Body>
           <Body>
-            Inside Alchemix nothing changed: 1 alUSD still cancels exactly 1 of debt. The
-            discount only exists on the open market, which is also why buying alUSD back
-            cheaply is a way to clear debt for less than face value.
+            Inside Alchemix, 1 alUSD still cancels exactly 1 of debt. The discount exists
+            only on the open market. Buying alUSD back below 1.00 clears debt for less
+            than face value.
           </Body>
         </Reveal>
       )}
@@ -130,11 +130,11 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="To receive the full amount, you have to borrow past it."
+      headline="To receive the full amount, you have to borrow more than it."
     >
       <Sub>
         Set the capital you need and the price alUSD is trading at. The gap between what
-        you borrow and what you receive is the full cost of the loan.
+        you borrow and what you receive is the cost of the discount.
       </Sub>
 
       <div className={own.compare}>
@@ -149,7 +149,7 @@ function Explore({ onDone }) {
         </div>
 
         <div className={`${own.side} ${own.sideGood}`}>
-          <div className={styles.microLabel}>Borrow to land on it</div>
+          <div className={styles.microLabel}>Borrow enough to receive it</div>
           <div className={own.big} style={{ color: "#5ba88a" }}>{money2(needToBorrow)}</div>
           <div className={own.sideNote}>alUSD borrowed</div>
           <div className={own.sideResult} style={{ color: "#5ba88a" }}>
@@ -195,14 +195,15 @@ function Explore({ onDone }) {
             borrow, and holding the loan longer adds nothing.
           </Body>
           <Body>
-            A second cost arrives later, when redemptions repay your debt using your
-            collateral: a small borrower redemption fee is taken at that moment. It is charged when the event happens, so its effective annual cost depends on
-            your starting LTV and how long the transmutation takes. The live rate is in
-            the fee schedule, since governance can change it.
+            A second cost arrives later. When redemptions repay your debt from your
+            collateral, a small borrower redemption fee is taken from the amount repaid.
+            The fee is charged per event, so its effective annual cost depends on your
+            starting LTV and how long the transmutation takes. Governance sets the rate,
+            and the fee schedule in the docs shows the live value.
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move both controls. Drop the price towards 0.95 to see the gap widen.</Hint>
+        <Hint>Move both controls. Drop the price toward 0.95 to see the gap widen.</Hint>
       )}
     </Stage>
   );

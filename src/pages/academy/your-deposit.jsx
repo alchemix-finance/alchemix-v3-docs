@@ -8,13 +8,14 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="your-deposit"
-      description="What your deposit turns into, who decides where it earns, and how quickly you can take it back."
+      description="Your deposit becomes MYT, the Alchemix DAO runs the strategies it earns from, and you can take it back at any time."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/concepts/myt-and-yield", label: "Mix-Yield Token", note: "what your deposit becomes" },
-        { to: "/user/tutorials/use-passive-myt", label: "Use Passive MYT" },
+        { to: "/user/concepts/myt-and-yield", label: "Mix-Yield Token" },
+        { to: "/user/tutorials/use-passive-myt", label: "Tutorial: Mixed Yield" },
+        { to: "/user/tutorials/withdraw", label: "Tutorial: Withdraw" },
       ]}
     />
   );

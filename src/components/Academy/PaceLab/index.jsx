@@ -7,14 +7,14 @@ import useElementWidth from "../lib/useElementWidth";
 import { Checkpoint } from "../kit";
 
 /**
- * Lesson 1: the pace of repayment.
+ * Intermediate lesson 2: the pace of repayment.
  *
  * Three stages. The learner commits to a prediction before seeing anything, then
  * explores freely, then answers a server-set challenge to complete the lesson.
  *
- * The prediction stage is doing the teaching. Almost everyone assumes a smaller
+ * The prediction stage does the teaching. The common assumption is that a smaller
  * loan clears sooner, and watching two very different loans trace the same curve
- * is what makes the mechanism stick. A paragraph saying so does not.
+ * is what makes the mechanism stick.
  *
  * Stage state lives on the page, not here, because the header stepper is the
  * progress indicator for the whole lesson and the two must never disagree.
@@ -59,8 +59,8 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => `${(v * 100).toFixed(1)}% a year`}
       targetFoot="debt still outstanding"
       landingFoot="adjust until the two match"
-      passTitle="Lesson 1 complete."
-      passBody="You worked the mechanism out for yourself. The pace of repayment is set by the protocol, and now you can read it."
+      passTitle="Lesson 2 complete."
+      passBody="You can read the pace of repayment from the redemption rate. Loan size and vault yield do not change it."
     />
   );
 }
@@ -161,18 +161,18 @@ function Predict({ onDone }) {
           </div>
           <p className={styles.revealBody}>
             {guessedSame
-              ? "Your two answers agree with each other, and so does the projection. The curves sit exactly on top of one another, which is why only the dashed line reveals there are two."
-              : `You separated the two answers by ${Math.abs(ana - ben)} points. The projection puts them in the same place, with the curves exactly on top of one another.`}{" "}
+              ? "Your two answers match, and so does the projection. The two curves sit exactly on top of each other, and the dashed line is the only sign that there are two."
+              : `You put the two answers ${Math.abs(ana - ben)} points apart. The projection puts them in the same place, with the two curves exactly on top of each other.`}{" "}
             Ben borrowed four times what Ana did, and after {CHECK_MONTH} months the same
             share of each loan remains. Borrowing more did not extend his loan.
           </p>
           <p className={styles.revealBody}>
-            A conventional loan behaves the other way around, because interest accrues on
-            the balance and a larger balance takes longer to clear. Alchemix debt carries
-            no interest, and it clears on a schedule set elsewhere in the protocol.
+            On a conventional loan, interest accrues on the balance and a larger balance
+            takes longer to clear. Alchemix debt carries no interest. It clears at a rate
+            set by the protocol.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
-            Find what sets the schedule
+            Find what sets the pace
             <ArrowIcon />
           </button>
         </div>
@@ -244,8 +244,8 @@ function Explore({ onDone }) {
   const [yieldAnnual, setYield] = useState(0.05);
   const [redemptionAnnual, setRedemption] = useState(0.8);
 
-  // Which levers the learner has actually tried. The checklist is the lesson:
-  // two of these do nothing to the curve and one does everything.
+  // Which levers the learner has tried. The reveal waits until all three have
+  // moved, so the two that leave the curve alone get pushed as well.
   const [touched, setTouched] = useState({ debt: false, yield: false, redemption: false });
   const mark = (k) => setTouched((t) => (t[k] ? t : { ...t, [k]: true }));
 
@@ -259,7 +259,7 @@ function Explore({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
-      <h1 className={styles.headline}>Three inputs feed this projection, and one of them sets the pace.</h1>
+      <h1 className={styles.headline}>Three inputs feed the projection.</h1>
       <p className={styles.sub}>
         The position is the same as before. Move each input and watch what happens to
         the curve.
@@ -309,16 +309,16 @@ function Explore({ onDone }) {
         <div className={styles.reveal}>
           <div className={styles.revealHead}>The redemption rate sets the pace.</div>
           <p className={styles.revealBody}>
-            How much you borrow does not change how quickly it clears, and neither does
-            the yield your collateral earns. Redemptions repay a share of total system
-            debt each year, and every position is deleveraged at that rate regardless of
-            its size. That is why Ana and Ben traced the same curve.
+            Redemptions repay a share of total system debt each year, and every position
+            is repaid at that rate regardless of its size. The amount you borrow does not
+            change how quickly it clears, and neither does the yield your collateral
+            earns. Ana and Ben traced the same curve because the same rate applied to
+            both.
           </p>
           <p className={styles.revealBody}>
-            The redemption rate is a property of the protocol, applied equally to
-            everyone in the market. You do not set it and you cannot accelerate it. Your
-            own choices change how much collateral keeps working for you while redemptions
-            run, which the next lesson covers.
+            The redemption rate is a protocol-level parameter, applied equally to every
+            position in the market. You do not set it and you cannot speed it up. You can
+            still repay by hand at any time to clear debt sooner.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint

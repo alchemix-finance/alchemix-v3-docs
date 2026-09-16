@@ -3,7 +3,7 @@ import Link from "@docusaurus/Link";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import AcademyShell from "../Shell";
 import { hasCompletion } from "../lib/api";
-import { lessonById } from "../lib/track";
+import { lessonById, trackByKey } from "../lib/track";
 import styles from "./styles.module.css";
 
 /**
@@ -15,12 +15,14 @@ import styles from "./styles.module.css";
  *
  * A lesson supplies its own lab, its own wrap-up prose, and its own reading list.
  * Everything else here is identical from lesson to lesson, which is why it lives
- * in one place rather than being copied per page.
+ * in one place instead of being copied per page.
  */
 
 /**
- * The advanced track's shape. The beginner lessons pass their own labels, which
- * say what the learner is about to do in plainer words.
+ * The intermediate track's stage labels. Beginner lessons pass `BEGINNER_STAGES`
+ * from the kit (Learn / Try / Check), which say what the learner is about to do
+ * in plainer words. The stage ids are the same in both, so a lab never needs to
+ * know which track it is on.
  */
 const DEFAULT_STAGES = [
   { id: "predict", label: "Predict" },
@@ -37,6 +39,7 @@ export default function LessonPage({
   stages: STAGES = DEFAULT_STAGES,
 }) {
   const lesson = lessonById(lessonId);
+  const track = trackByKey(lesson.track);
   const isBrowser = useIsBrowser();
   const [stage, setStage] = useState(STAGES[0].id);
   const [done, setDone] = useState(false);
@@ -58,7 +61,11 @@ export default function LessonPage({
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M19 12H6M11 18l-6-6 6-6" />
           </svg>
-          <span className={styles.backLesson}>Lesson {lesson.n}</span>
+          <span className={styles.backLesson}>
+            <span className={styles.backTrack}>{track ? track.label : "Academy"}</span>
+            <span className={styles.backSep}> · </span>
+            Lesson {lesson.n}
+          </span>
           <span className={styles.divider} />
           <span className={styles.backTitle}>{lesson.title}</span>
         </Link>

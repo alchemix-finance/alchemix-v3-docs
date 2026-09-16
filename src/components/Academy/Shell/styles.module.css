@@ -97,7 +97,7 @@
 }
 
 /* Compact progress for phones. Hiding it entirely was wrong: progress is the
-   reason the track exists, so it shrinks to a count rather than disappearing. */
+   reason the track exists, so it shrinks to a count instead of disappearing. */
 .progressShort {
   display: none;
   font-size: 0.75rem;
@@ -127,6 +127,29 @@
 
   .brandText {
     letter-spacing: 0.14em;
+  }
+}
+
+/* At phone widths the header becomes two rows: the brand or back link on the
+   first, progress (or the stage stepper) and the docs link on the second. One
+   row cannot hold a track label, three stage buttons at 44px each, and the
+   exit link inside 320px without clipping something. */
+@media (max-width: 480px) {
+  .header {
+    flex-wrap: wrap;
+    row-gap: 0.625rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .headerRight {
+    flex: 1 1 100%;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .progressTrack {
+    flex: 1 1 auto;
+    max-width: 160px;
   }
 }
 

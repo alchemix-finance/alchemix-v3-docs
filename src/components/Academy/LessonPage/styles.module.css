@@ -228,3 +228,37 @@
     width: 0.875rem;
   }
 }
+
+/* The shell's header wraps to two rows at this width, so the back link has the
+   full row. "Intermediate track · Lesson 1" still needs a smaller face and
+   tighter tracking to fit 320px, and it may break after the track label. */
+@media (max-width: 480px) {
+  .back {
+    gap: 0.75rem;
+  }
+
+  .backLesson {
+    white-space: normal;
+    line-height: 1.4;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+  }
+
+  .step {
+    padding: 0.5rem 0.375rem;
+  }
+
+  .rule {
+    width: 0.625rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .backTrack {
+    display: block;
+  }
+
+  .backSep {
+    display: none;
+  }
+}

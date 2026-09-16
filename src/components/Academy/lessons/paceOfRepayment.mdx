@@ -4,19 +4,17 @@ that repayment is applied across the system in proportion to each position’s s
 of it.
 
 The redemption rate is the share of total system debt that redemptions repay in a
-year. It is a property of the protocol, and the same rate applies to everyone in
-the market. A position holding four times the debt has four times as much repaid
-per year, which leaves both positions at the same point on the curve.
+year. It is a protocol-level parameter, and the same rate applies to every position
+in the market. A position holding four times the debt has four times as much repaid
+per year, and both positions sit at the same point on the curve.
 
-So the size of your loan does not decide how long it takes. The redemption rate
-does, and you do not control it.
+The size of your loan does not decide how long it takes to clear. The redemption
+rate does, and you do not control it.
 
 ### What borrowing more does cost
 
-If borrowing more does not cost you time, and there is no interest rate, it is fair
-to ask what it does cost.
-
-Two things, neither of them time:
+Borrowing more does not cost you time, and there is no interest rate. It carries
+two costs:
 
 - **Redemption fee** – Charged on the amount redeemed, so it scales with how much
   you borrowed.
@@ -24,20 +22,19 @@ Two things, neither of them time:
   value. Borrow 5,000 alUSD and sell it at 0.99, and you have paid roughly 50 for the
   liquidity up front. The dApp shows the current price before you confirm.
 
-A third consideration, the exposure a high LTV creates while the position is
-open, is covered in lesson 4.
+The exposure a high LTV creates while the position is open is covered in Choosing
+an LTV.
 
-The pace above describes what happens if you do nothing at all. You remain in
-control throughout: repay part or all of your debt by hand at any time to unlock your
-collateral sooner.
+The pace above is what happens if you do nothing. You can repay part or all of the
+debt by hand at any time to free collateral sooner.
 
 ### Earmarking, and what it pays you
 
-Redemptions do not land all at once. When a cycle begins, the protocol earmarks a
-slice of each open loan, in proportion to its share of total system debt. The
-earmarked collateral is not moved until the claim settles, and it keeps earning
-yield for you the whole time. The docs call this temporal leverage: the longer
-the gap between earmark and settlement, the more extra yield you collect.
+Redemptions land in cycles. When a cycle begins, the protocol earmarks a slice of
+each open loan, in proportion to its share of total system debt. The earmarked
+collateral stays in place until the claim settles, and it keeps earning yield until
+then. The docs call this **temporal leverage**: the longer the gap between earmark
+and settlement, the more yield the earmarked collateral collects.
 
 Earmarked debt is repaid with MYT; the repay tab offers the right asset for each
 part of a loan.

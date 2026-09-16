@@ -1,34 +1,33 @@
-There are two ways to get at a deposit you have borrowed against, and one of them
-unlocks the other.
+A position card in the app shows what is deposited, what is owed, and what can be
+withdrawn now. There are two routes to the rest of the deposit.
 
-The first is to withdraw whatever is already free. Any collateral not needed to
-keep the remaining debt under the 90% cap can leave at any time, at no cost.
+The first is to withdraw whatever is already free. Any collateral the remaining
+debt does not need to stay under the 90% cap can leave at any time, at no cost.
 
-The second is to repay first. Every unit you repay releases more than a unit of
-collateral, because the debt was only ever holding back what the cap required.
-Repay the balance in full and the whole deposit is free.
+The second is to repay first. Every unit repaid frees more than one unit of
+collateral, because each unit of debt holds about 1.11 units of collateral behind
+it at the cap. Repay the balance in full and the whole deposit is free.
 
-### Why the free amount is smaller than you expect
+### Where the withdrawable figure comes from
 
-A position with 10,000 deposited and 5,000 borrowed does not have 5,000 available
-to withdraw. The 5,000 of debt needs about 5,556 of collateral standing behind it
-at the cap, which leaves roughly 4,444.
+A position with 10,000 deposited and 5,000 borrowed has about 4,444 available to
+withdraw. The 5,000 of debt needs about 5,556 of collateral behind it at the cap,
+and the rest is free.
 
-It is the same 90% rule you met when borrowing, read backwards. When you borrowed,
-the rule set the most you could take. When you withdraw, it sets the least you
-have to leave.
+It is the same 90% cap that limits borrowing, read the other way. When you borrow,
+the cap sets the most you can take. When you withdraw, it sets the least you have
+to leave.
 
-Both numbers are shown in the vault interface, so none of this has to be worked out
-by hand. Knowing where the smaller one comes from keeps it from being a surprise.
+The app shows both figures, so none of this has to be worked out by hand.
 
-### Two details the app will show you
+### Two details the app shows
 
-- **Earmarked debt** – The protocol repays loans in cycles, and while one is
-  under way part of your loan can show as earmarked, meaning set aside for the
-  next repayment. That part is repaid with MYT instead of alUSD, and the asset
-  menu in the repay tab only offers what is valid. Earmarked collateral keeps
-  earning right up until it settles.
+- **Earmarked debt** – The protocol repays loans in cycles. While a cycle is under
+  way, part of your loan can show as earmarked, meaning set aside for the next
+  redemption. That part is repaid with MYT instead of alUSD, and the asset menu in
+  the repay tab only offers what is valid. Earmarked collateral keeps earning until
+  it settles.
 
-- **Closing in one step** – A self-liquidation, which only you can trigger,
-  repays the remaining loan from your collateral in one transaction, leaving the
-  rest of the deposit free to withdraw.
+- **Closing in one step** – A self-liquidation, which only you can trigger, repays
+  the remaining loan from your collateral in one transaction and leaves the rest of
+  the deposit free to withdraw.

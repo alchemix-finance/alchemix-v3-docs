@@ -8,14 +8,14 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="what-can-go-wrong"
-      description="Why a price crash cannot liquidate an Alchemix position, and what can."
+      description="A price crash leaves an Alchemix position where it is, and a loss inside the vault moves its liquidation marker."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
         { to: "/user/concepts/liquidations", label: "Liquidations" },
-        { to: "/user/safety/risk-considerations", label: "Risk Considerations" },
-        { to: "/user/concepts/myt-and-yield", label: "Mix-Yield Token", note: "where a loss would come from" },
+        { to: "/user/concepts/myt-and-yield", label: "Mix-Yield Token" },
+        { to: "/user/safety/risk-considerations", label: "Risk considerations" },
       ]}
     />
   );

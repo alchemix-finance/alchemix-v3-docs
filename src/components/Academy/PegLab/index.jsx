@@ -10,16 +10,16 @@ import {
 } from "../kit";
 
 /**
- * Lesson 5: the Transmuter and the peg.
+ * Intermediate lesson 6: the peg and the discount.
  *
  * A synthetic trading under a dollar looks like a failure to anyone who has
- * watched an algorithmic stablecoin come apart. alAssets are not that: every one
+ * watched an algorithmic stablecoin come apart. alAssets are different: every one
  * is backed by at least one unit of collateral, and the Transmuter will exchange
  * it 1:1 after a known wait.
  *
- * So the discount is not damage, it is a price. The lesson asks the learner to
- * decide whether they would buy at that price, then shows the two people who
- * always do, and why their buying is what closes the gap.
+ * The discount is a price. The lesson asks the learner to work out the return at
+ * that price, then shows the two buyers who take it and how their buying closes
+ * the gap.
  */
 
 const PRICE = 0.97;
@@ -44,12 +44,12 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
       targetOf={(f) => annualisedFromDiscount(f.price, f.weeks)}
       computeOf={(f, v) => v}
       direct
-      controlLabel="Annualised return"
+      controlLabel="Annualized return"
       controlDisplay={(v) => `${v.toFixed(2)}%`}
-      targetFoot="what the wait is worth, annualised"
+      targetFoot="what the wait is worth, annualized"
       landingFoot="set the slider to your answer"
-      passTitle="Lesson 5 complete."
-      passBody="You can price a discount against the time you have to wait for it, which is the same calculation the people who close the gap are running."
+      passTitle="Lesson 6 complete."
+      passBody="You can price a discount against the time you wait for it. The buyers who close the gap run the same calculation."
     />
   );
 }
@@ -68,12 +68,12 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="alUSD is trading at 0.97. Nothing is broken."
+      headline="alUSD is trading at 0.97 and redeems at 1.00."
     >
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
         Alchemix, and the Transmuter will exchange it for the underlying at exactly 1:1
-        after a fixed term. In this lesson the term is {WEEKS} weeks.
+        after a governance-set term. This lesson uses a term of {WEEKS} weeks.
       </Sub>
 
       <div className={own.tradeRow}>
@@ -84,10 +84,10 @@ function Predict({ onDone }) {
 
       <Panel>
         <Question>
-          Waiting the full term and redeeming 1:1, what does that work out to annualised?
+          If you wait the full term and redeem 1:1, what is the annualized return?
         </Question>
         <GuessSlider
-          label="Annualised return"
+          label="Annualized return"
           value={guess}
           onChange={setGuess}
           disabled={revealed}
@@ -106,14 +106,15 @@ function Predict({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title={`${annual.toFixed(2)}% annualised, from a ${perTerm.toFixed(2)}% gain over the term.`}
+          title={`${annual.toFixed(2)}% annualized, from a ${perTerm.toFixed(2)}% gain over the term.`}
           onNext={onDone}
-          nextLabel="See who else is buying"
+          nextLabel="See who buys the discount"
         >
           <Body>
             {close ? "That is close. " : `You answered ${guess.toFixed(1)}%. `}
             Buying at {PRICE.toFixed(2)} and receiving 1.00 is a gain of{" "}
-            {perTerm.toFixed(2)}% on what you put in. Compressing that gain into {WEEKS} weeks lifts it to {annual.toFixed(2)}% annualised.
+            {perTerm.toFixed(2)}% on what you put in. That gain arrives in {WEEKS} weeks,
+            which is {annual.toFixed(2)}% annualized.
           </Body>
           <Body>
             The shorter the term, the more the same discount is worth. That relationship
@@ -156,11 +157,11 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="Two people want that discount, for completely different reasons."
+      headline="Two buyers take the discount for different reasons."
     >
       <Sub>
-        Both of them buy alUSD below face value. One is buying a return, the other is
-        buying back their own debt. Their buying closes the gap.
+        Both buy alUSD below face value. One buys a return. The other buys back their
+        own debt. Their buying closes the gap.
       </Sub>
 
       <div className={own.roles}>
@@ -177,7 +178,7 @@ function Explore({ onDone }) {
       <div className={own.result}>
         {role === "saver" ? (
           <>
-            <div className={styles.microLabel}>Annualised return on the wait</div>
+            <div className={styles.microLabel}>Annualized return on the wait</div>
             <div className={own.resultBig} style={{ color: "#5ba88a" }}>{annual.toFixed(2)}%</div>
             <div className={own.resultNote}>
               {perTerm.toFixed(2)}% over {weeks} weeks, redeemed 1:1 at maturity. Leaving the
@@ -213,29 +214,30 @@ function Explore({ onDone }) {
           min={4} max={40} step={1}
           value={weeks}
           onChange={setWeeks}
-          verdict={role === "saver" ? (weeks <= 10 ? "short wait, higher annualised" : null) : undefined}
+          verdict={role === "saver" ? (weeks <= 10 ? "short wait, higher annualized return" : null) : undefined}
         />
       </Controls>
 
       <Readout>
         At {price.toFixed(3)} over {weeks} weeks, the wait is worth{" "}
-        <strong>{annual.toFixed(2)}%</strong> annualised.
+        <strong>{annual.toFixed(2)}%</strong> annualized.
       </Readout>
 
       {both ? (
         <Reveal
-          title="A discount is an offer, and two different people keep taking it."
+          title="Both kinds of buying push the price back toward 1.00."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
           <Body>
-            Both of them buy alUSD when it is cheap, which is buying pressure that pushes
-            the price back towards face value. The Transmuter makes their buying rational
-            by guaranteeing the 1:1 exchange at the end of a known wait, so the discount
-            has a floor under it.
+            Both buy alUSD when it is cheap. That demand pushes the price back toward face
+            value. The Transmuter guarantees the 1:1 exchange at the end of a known wait,
+            which puts a floor under the discount.
           </Body>
           <Body>
-            That is why alAssets are described as synthetic debt tokens. The peg is held by an exchange mechanism and real collateral, and no minting or burning against a market is involved.
+            alAssets are synthetic debt tokens. The peg is held by the exchange mechanism
+            and the collateral behind every unit. The protocol does not mint or burn
+            against a market price to hold it.
           </Body>
         </Reveal>
       ) : (

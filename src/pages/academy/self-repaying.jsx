@@ -8,14 +8,14 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="self-repaying"
-      description="Watch a loan balance fall on its own, and find out which of four events moves it."
+      description="Leave the loan alone for two years and watch the balance fall, then see what moves it."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/concepts/self-repaying-loans", label: "Self-Repaying Loans" },
-        { to: "/user/concepts/redemption-rate", label: "Redemption Rate", note: "what sets the pace" },
-        { to: "/user/tutorials/repay-loan", label: "Repay a Loan" },
+        { to: "/user/concepts/self-repaying-loans", label: "Self-repaying loans" },
+        { to: "/user/tutorials/repay-loan", label: "Tutorial: Repay your loan" },
+        { to: "/user/tutorials/withdraw", label: "Tutorial: Withdraw" },
       ]}
     />
   );

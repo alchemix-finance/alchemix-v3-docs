@@ -7,13 +7,13 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="transmuter-and-peg"
-      description="Learn why a discount on an alAsset is a price on waiting, and who closes the gap."
+      description="Why a discount on an alAsset is a price on waiting, and who closes the gap."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
         { to: "/user/concepts/transmuter", label: "The Transmuter" },
-        { to: "/user/concepts/how-peg-is-maintained", label: "How the Peg Is Maintained" },
-        { to: "/user/tutorials/redeem-alassets", label: "Redeem alAssets" },
+        { to: "/user/concepts/how-peg-is-maintained", label: "How the Peg Works" },
+        { to: "/user/tutorials/redeem-alassets", label: "Fixed Yield", note: "depositing alAssets into the Transmuter, step by step" },
         { to: "/user/concepts/alAssets", label: "alAssets" },
       ]}
     />

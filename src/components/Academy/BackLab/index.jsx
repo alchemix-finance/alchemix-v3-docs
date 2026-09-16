@@ -10,15 +10,12 @@ import {
 } from "../kit";
 
 /**
- * Lesson 5: getting your money back.
+ * Intermediate lesson 1: reading your position.
  *
- * The one place a beginner is reliably caught out. Deposit 10,000, borrow 5,000,
- * and the obvious guess is that 5,000 is still yours to take. It is not, because
- * the debt left behind still has to sit under the 90% cap.
- *
- * This lands here rather than at lesson 1 on purpose. By now the cap has been
- * taught and used, so the surprise is a consequence the learner can follow
- * rather than a trick played on someone who was given no way to know.
+ * Deposit 10,000, borrow 5,000, and the obvious guess is that 5,000 is still
+ * free to withdraw. It is 4,444, because the debt left behind still has to sit
+ * under the 90% cap. The learner reads the position card, commits to a figure,
+ * then works both routes out: withdraw what is free, or repay to free more.
  */
 
 const DEPOSIT = 10_000;
@@ -37,7 +34,6 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      stageLabel="Check"
       headline="Work out the withdrawal."
       unit="amount"
       targetOf={(f) => withdrawable(f.collateral, f.debt)}
@@ -47,13 +43,13 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       controlDisplay={(v) => money(v)}
       targetFoot="the most that can leave right now"
       landingFoot="set the slider to your answer"
-      passTitle="Lesson 5 complete."
-      passBody="You can read a position: what is in it, what is owed, and what is free to move. Next: what can and cannot force a position to close."
+      passTitle="Lesson 1 complete."
+      passBody="You can read a position: what is deposited, what is owed, and what is free to withdraw. The next lesson works out what sets the pace at which the debt clears."
     />
   );
 }
 
-/* ── Stage 1: learn ──────────────────────────────────────── */
+/* ── Stage 1: predict ────────────────────────────────────── */
 
 function Learn({ onDone }) {
   const [guess, setGuess] = useState(BORROW);
@@ -63,15 +59,15 @@ function Learn({ onDone }) {
   const close = Math.abs(guess - truth) <= 300;
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="You want some of your deposit back.">
+    <Stage eyebrow="Stage 1 · Predict" headline="Read the position card.">
       <Sub>
-        You deposited {money(DEPOSIT)} and borrowed {money(BORROW)} against it. Now you want
-        to take some of the deposit out, and you are not repaying the loan first.
+        The card in the app shows {money(DEPOSIT)} deposited and {money(BORROW)} borrowed.
+        You want to withdraw part of the deposit and leave the loan open.
       </Sub>
 
       <Panel>
         <Question>
-          How much of the {money(DEPOSIT)} can you withdraw, with the {money(BORROW)} loan
+          How much of the {money(DEPOSIT)} can you withdraw with the {money(BORROW)} loan
           still open?
         </Question>
         <GuessSlider
@@ -89,27 +85,28 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Your borrowed alUSD stays borrowed either way.">
+        <Actions aside="The borrowed alUSD stays borrowed either way.">
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
         <Reveal
-          title={`${money(truth)} is free to move.`}
+          title={`${money(truth)} is free to withdraw.`}
           onNext={onDone}
-          nextLabel="See both ways out"
+          nextLabel="See the two routes out"
         >
           <Body>
             {close ? "That is close. " : `You said ${money(guess)}. `}
-            Borrowing {money(BORROW)} did not set aside {money(BORROW)} of your deposit. It
-            set aside however much that loan needs behind it to stay within the 90% cap.
+            The loan holds back the collateral it needs to stay within the 90% cap, and
+            that amount is larger than the loan itself.
           </Body>
           <Body>
-            {money(BORROW)} of debt needs {money(BORROW / MAX_LTV)} of collateral standing
-            behind it at the cap. Everything above that, {money(truth)}, is free to leave.
+            {money(BORROW)} of debt needs {money(BORROW / MAX_LTV)} of collateral behind it
+            at the cap. Everything above that, {money(truth)}, is free to withdraw.
           </Body>
           <Body>
-            It is the same 90% rule from lesson 3, read backwards. When you borrowed, it set
-            the most you could take. Withdrawing, it sets the least you have to leave.
+            It is the same 90% cap that limits borrowing, read the other way. When you
+            borrow, the cap sets the most you can take. When you withdraw, it sets the least
+            you have to leave.
           </Body>
         </Reveal>
       )}
@@ -117,7 +114,7 @@ function Learn({ onDone }) {
   );
 }
 
-/* ── Stage 2: try ────────────────────────────────────────── */
+/* ── Stage 2: explore ────────────────────────────────────── */
 
 function Try({ onDone }) {
   const [repaid, setRepaid] = useState(0);
@@ -129,10 +126,10 @@ function Try({ onDone }) {
   const clear = debt <= 0;
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Two ways out, and one unlocks the other.">
+    <Stage eyebrow="Stage 2 · Explore" headline="Two routes out of the position.">
       <Sub>
-        Repay part of the loan and watch how much of your deposit comes free. Take the loan
-        all the way to zero to see everything unlock.
+        Repay part of the loan and watch how much of the deposit comes free. Take the loan
+        to zero and the whole deposit unlocks.
       </Sub>
 
       <div className={own.meterWrap}>
@@ -150,7 +147,7 @@ function Try({ onDone }) {
         </div>
         <div className={own.meterKey}>
           <span>{money(locked)} held against the loan</span>
-          <span>{money(free)} yours to move</span>
+          <span>{money(free)} free to withdraw</span>
         </div>
       </div>
 
@@ -158,7 +155,7 @@ function Try({ onDone }) {
         <Stat label="Still owed" value={money(debt)} tone={clear ? "#5ba88a" : "#f5c09a"} />
         <Stat label="LTV" value={`${(ltvOf(DEPOSIT, debt) * 100).toFixed(1)}%`} />
         <Stat label="Can withdraw" value={money(free)} tone="#5ba88a" />
-        <Stat label="Must leave" value={money(locked)} tone={locked > 0 ? "#d4952a" : "#6b7078"} />
+        <Stat label="Must stay" value={money(locked)} tone={locked > 0 ? "#d4952a" : "#6b7078"} />
       </div>
 
       <Controls>
@@ -175,40 +172,39 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="Route one">
-          Withdraw what is already free and leave the loan running. Costs you nothing and
-          takes no waiting.
+          Withdraw what is already free and leave the loan open. There is no cost and no
+          wait.
         </Note>
         <Note label="Route two">
-          Repay some or all of the loan first. Every unit you repay releases more than a
-          unit of collateral, because the debt was only holding back what the cap required.
+          Repay some or all of the loan first. Every unit repaid frees more than one unit
+          of collateral, because each unit of debt holds about 1.11 units of collateral
+          behind it at the cap.
         </Note>
         <Note label="Repaying">
           You can repay with alUSD, with MYT, or with the asset you deposited. One alUSD
-          clears exactly one unit of debt. If part of the loan shows as earmarked in the
-          app (set aside for the protocol's next repayment cycle), that part is repaid
-          with MYT, and the asset menu only offers what is valid.
+          cancels one unit of debt. Part of the loan can show as earmarked in the app,
+          meaning set aside for the next redemption cycle. Earmarked debt is repaid with
+          MYT, and the repay menu only offers the assets that are valid.
         </Note>
       </Notes>
 
       {moved ? (
         <Reveal
-          title="What is free is whatever the cap does not need."
+          title={`${money(free)} is free with ${money(debt)} still owed.`}
           onNext={onDone}
-          nextLabel="Take the check"
+          nextLabel="Take the checkpoint"
         >
           <Body>
-            Your {money(debt)} of debt needs {money(debt / MAX_LTV)} standing behind it, so
-            {" "}{money(free)} of the {money(DEPOSIT)} is yours to move right now.
+            {money(debt)} of debt needs {money(debt / MAX_LTV)} of collateral behind it at
+            the cap. The remaining {money(free)} of the {money(DEPOSIT)} can be withdrawn now.
           </Body>
           <Body>
-            You never have to repay on a schedule to get at your money. The position tells
-            you what is free, and the app shows both numbers, so none of it has to be worked
-            out by hand. Knowing where it comes from keeps the smaller number from being a
-            shock.
+            There is no repayment schedule to meet before you withdraw. The app shows the
+            withdrawable amount next to the debt, so the arithmetic is done for you.
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move the repay control to carry on.</Hint>
+        <Hint>Move the repay control to continue.</Hint>
       )}
     </Stage>
   );

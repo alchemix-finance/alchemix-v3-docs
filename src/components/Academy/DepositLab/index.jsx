@@ -1,32 +1,29 @@
 import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import styles from "../lesson.module.css";
-import own from "../parts.module.css";
 import { apiBase } from "../lib/api";
 import {
-  Body, Checkpoint, Control, Controls, Hint, LineChart, Note, Notes, Panel,
-  Primary, Question, Reveal, Stage, Sub, money, GuessSlider, Actions,
+  Actions, Body, Checkpoint, Control, Controls, FlowSteps, GuessSlider, Hint, Note,
+  Notes, Panel, PositionCard, Primary, Question, Readout, Reveal, Stage, Sub, money,
 } from "../kit";
 
 /**
- * Lesson 2: your deposit and what it earns.
+ * Lesson 2: your deposit.
  *
- * Lesson 1 said the deposit keeps earning while a loan runs against it. This one
- * says what the deposit actually becomes and who is steering it, because a
- * beginner should know the answer to "where is my money" before being invited to
- * borrow against it.
- *
- * The Mix-Yield Token is named here and nowhere earlier. A term introduced two
- * lessons before it is explained is a term the reader has to carry, and the
- * first version of this track made that mistake.
+ * The 10,000 USDC deposit the rest of the track carries. Learn shows where it
+ * goes and asks how much can come back out the next day. Try applies a rate
+ * once, then withdraws some or all of it, and nothing on the card holds the
+ * withdrawal back. Check asks for the deposit after one year at the engine's
+ * rate.
  */
+
+const DEPOSIT = 10_000;
 
 export default function DepositLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
 
   if (stage === "predict") return <Learn onDone={() => onStage("explore")} />;
-  if (stage === "explore") return <Grow onDone={() => onStage("checkpoint")} />;
+  if (stage === "explore") return <Try onDone={() => onStage("checkpoint")} />;
 
   return (
     <Checkpoint
@@ -41,94 +38,75 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
       computeOf={(f, v) => v}
       direct
       controlLabel="Worth after a year"
-      controlDisplay={(v) => money(v)}
+      controlDisplay={money}
       targetFoot="what the deposit grows to"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 2 complete."
-      passBody="You know where a deposit goes, who decides what it does, and that you can take it back whenever you want. Next: borrowing against it without giving it up."
+      passBody="You know what a deposit becomes, who runs it, and that you can take it back at any time."
     />
   );
 }
 
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
-const START = 10_000;
+const STEPS = [
+  { n: 1, label: "You deposit", value: `${money(DEPOSIT)} USDC`, note: "Into the vault, from your wallet" },
+  { n: 2, label: "You receive", value: "MYT", note: "The Mix-Yield Token, a share of the vault", tone: "#5ba88a" },
+  { n: 3, label: "The DAO", value: "runs the strategies", note: "It chooses where the vault earns and rebalances over time", tone: "#5ba88a" },
+];
 
 function Learn({ onDone }) {
-  const [guess, setGuess] = useState(0);
+  const [guess, setGuess] = useState(5_000);
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="Where your money goes.">
+    <Stage eyebrow="Stage 1 · Learn" headline="Where the deposit goes.">
       <Sub>
-        You deposit {money(START)} USDC. The vault wraps it into a token called the
-        Mix-Yield Token, or MYT, and the MYT does the earning.
+        On the Mixed Yield page you deposit {money(DEPOSIT)} USDC into a vault, the pool that
+        holds deposits like yours. The Dashboard then shows this card under Open Mixed Yield
+        Positions.
       </Sub>
 
-      <div className={own.flow}>
-        <Step n="1" label="You deposit" value={`${money(START)} USDC`} note="Your own money" />
-        <Arrow />
-        <Step n="2" label="The vault gives you" value="MYT" note="A share of the whole pot" tone="#5ba88a" />
-        <Arrow />
-        <Step n="3" label="The MYT earns" value="Continuously" note="From the moment it is minted" tone="#5ba88a" />
-      </div>
+      <FlowSteps steps={STEPS} />
 
-      <Notes>
-        <Note label="Who chooses">
-          The Alchemix DAO picks which strategies the pot is spread across, and moves
-          the weights around as conditions change. You do not choose them, and you do
-          not have to watch them.
-        </Note>
-        <Note label="How you earn">
-          There is no payout to claim. Each MYT you hold becomes worth more of the
-          underlying asset over time.
-        </Note>
-        <Note label="Getting out">
-          There is no lock-up. You can redeem your MYT for the underlying asset plus
-          whatever it earned, at any time.
-        </Note>
-      </Notes>
+      <PositionCard
+        deposited={DEPOSIT}
+        borrowed={0}
+        asset="USDC"
+        earning="Earning"
+        highlight="deposited"
+        note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "No loan against it"}
+        compact
+      />
 
       <Panel>
         <Question>
-          Before we look at the numbers: of your {money(START)}, how much do you think you
-          can take back out on the day after you deposit it?
+          Tomorrow you want it back. How much of the {money(DEPOSIT)} can you take out?
         </Question>
         <GuessSlider
-          label="Available the next day"
+          label="Available tomorrow"
           value={guess}
           onChange={setGuess}
           disabled={revealed}
           color="#5ba88a"
           min={0}
-          max={START}
+          max={DEPOSIT}
           step={250}
-          format={(v) => money(v)}
-          scale={["Nothing", `All ${money(START)}`]}
+          format={money}
+          scale={["Nothing", `All ${money(DEPOSIT)}`]}
         />
       </Panel>
 
       {!revealed ? (
-        <Actions aside="This one is not a trick.">
+        <Actions aside="Open the position from the Dashboard and switch to the Withdraw tab.">
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
-        <Reveal
-          title={`All of it. There is nothing holding your deposit in.`}
-          onNext={onDone}
-          nextLabel="See what it earns over time"
-        >
+        <Reveal title={`All ${money(DEPOSIT)}.`} onNext={onDone} nextLabel="Watch it earn">
           <Body>
-            {guess >= START * 0.95
-              ? "You had it. "
-              : `You said ${money(guess)}. `}
-            A deposit on its own carries no lock-up and no notice period. That changes only
-            when you borrow against it, which is lesson 3, and even then you choose how much
-            to tie up.
-          </Body>
-          <Body>
-            The yield and the borrowing are two separate decisions. Plenty of people use
-            the vault and never take a loan at all.
+            There is no lock-up and no notice period. Withdraw at any time and the USDC comes
+            back with whatever it earned. Depositing and borrowing are separate decisions, and
+            a deposit on its own ties nothing up.
           </Body>
         </Reveal>
       )}
@@ -136,120 +114,86 @@ function Learn({ onDone }) {
   );
 }
 
-function Step({ n, label, value, note, tone }) {
-  return (
-    <div className={own.step}>
-      <div className={own.stepNum}>{n}</div>
-      <div className={own.stepLabel}>{label}</div>
-      <div className={own.stepValue} style={tone ? { color: tone } : undefined}>{value}</div>
-      <div className={own.stepNote}>{note}</div>
-    </div>
-  );
-}
+/* ── Stage 2: try ────────────────────────────────────────── */
 
-function Arrow() {
-  return (
-    <svg className={own.arrow} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,192,154,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M5 12h13M13 6l6 6-6 6" />
-    </svg>
-  );
-}
+function Try({ onDone }) {
+  const [rate, setRate] = useState(5);
+  const [share, setShare] = useState(0);
+  // Both latch: once the rate has moved and the withdrawal has reached 100%,
+  // the reveal stays open whatever the controls are set to afterwards.
+  const [movedRate, setMovedRate] = useState(false);
+  const [reachedFull, setReachedFull] = useState(false);
 
-/* ── Stage 2: grow ───────────────────────────────────────── */
-
-function Grow({ onDone }) {
-  const [deposit, setDeposit] = useState(10_000);
-  const [ratePct, setRatePct] = useState(6);
-  const [moved, setMoved] = useState({ deposit: false, rate: false });
-  const mark = (k) => setMoved((m) => (m[k] ? m : { ...m, [k]: true }));
-
-  const YEARS = 5;
-  // Compounding, because the docs are explicit that yield compounds continuously
-  // and nothing is paid out along the way. The rate is the learner's supposition,
-  // not a figure this lesson is claiming.
-  const at = (years) => deposit * Math.pow(1 + ratePct / 100, years);
-  const points = Array.from({ length: 61 }, (_, i) => (i / 60) * YEARS);
-
-  const afterOne = at(1);
-  const afterFive = at(YEARS);
+  const value = DEPOSIT * (1 + rate / 100);
+  const remaining = value * (1 - share / 100);
+  const withdrawn = value - remaining;
+  const full = share >= 100;
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="What it grows to.">
+    <Stage eyebrow="Stage 2 · Try" headline="Watch it earn, then take it out.">
       <Sub>
-        Set a deposit and a rate. The real rate moves with the strategies the DAO is
-        running, so the number here is yours to pick and the live one will differ.
+        Pick a rate and see what the deposit is worth after a year. The live rate moves with
+        the DAO's strategies, so this rate is an example. Then withdraw some or all of it.
       </Sub>
 
-      <div className={styles.chartLive}>
-        <div className={styles.chartHead}>
-          <span className={styles.microLabel}>Value of your deposit</span>
-          <span className={styles.aside}>{YEARS} years</span>
-        </div>
-        <LineChart
-          label="Deposit value over five years"
-          series={[{ id: "v", color: "#5ba88a", points: points.map((y) => ({ x: y, y: at(y) })) }]}
-          xMax={YEARS}
-          yMax={Math.max(at(YEARS) * 1.05, deposit * 1.1)}
-          xLabel="years"
-          formatY={(v) => money(v)}
-          formatX={(v) => String(Math.round(v))}
-          xTicks={5}
-        />
-      </div>
+      <PositionCard
+        deposited={remaining}
+        borrowed={0}
+        asset="USDC"
+        earning={remaining > 0 ? "Earning" : "Nothing deposited"}
+        highlight="deposited"
+        note={full ? "Withdrawn in full. Nothing held it back." : `After one year at ${rate}%`}
+      />
 
-      <div className={own.statRow}>
-        <Stat label="Deposited" value={money(deposit)} />
-        <Stat label="After one year" value={money(afterOne)} tone="#5ba88a" />
-        <Stat label={`After ${YEARS} years`} value={money(afterFive)} tone="#5ba88a" />
-        <Stat label="Earned" value={money(afterFive - deposit)} tone="#5ba88a" />
-      </div>
+      <Readout>
+        Worth <strong>{money(value)}</strong> after a year. Withdrawn:{" "}
+        <strong>{money(withdrawn)}</strong>. Still in the vault and earning:{" "}
+        <strong>{money(remaining)}</strong>.
+      </Readout>
 
       <Controls>
         <Control
-          label="Deposit"
-          display={money(deposit)}
-          min={1_000} max={50_000} step={500}
-          value={deposit}
-          onChange={(v) => { setDeposit(v); mark("deposit"); }}
+          label="Suppose it earns"
+          display={`${rate.toFixed(1)}% a year`}
+          min={1} max={15} step={0.5}
+          value={rate}
+          onChange={(v) => { setRate(v); setMovedRate(true); }}
+          accent
         />
         <Control
-          label="Suppose it earns"
-          display={`${ratePct.toFixed(1)}% a year`}
-          min={1} max={15} step={0.5}
-          value={ratePct}
-          onChange={(v) => { setRatePct(v); mark("rate"); }}
-          accent
+          label="Withdraw"
+          display={`${share}% of the deposit`}
+          min={0} max={100} step={5}
+          value={share}
+          onChange={(v) => { setShare(v); if (v >= 100) setReachedFull(true); }}
+          verdict={full ? "the whole deposit left at once" : null}
         />
       </Controls>
 
-      {moved.deposit && moved.rate ? (
+      <Notes>
+        <Note label="How it reaches you">
+          Each MYT becomes worth more USDC as the strategies earn. There is nothing to claim.
+        </Note>
+        <Note label="Who runs it">
+          The Alchemix DAO chooses the strategies and rebalances them as conditions change.
+        </Note>
+      </Notes>
+
+      {movedRate && reachedFull ? (
         <Reveal
-          title="One year of growth is the only number the checkpoint asks for."
+          title={`${money(DEPOSIT)} at ${rate}% is ${money(value)} after a year.`}
           onNext={onDone}
           nextLabel="Take the check"
         >
           <Body>
-            A deposit of {money(deposit)} earning {ratePct.toFixed(1)}% is worth{" "}
-            {money(afterOne)} after a year. That is the deposit plus the rate applied to
-            it, and nothing else.
-          </Body>
-          <Body>
-            Later years grow faster than the first, because what was earned starts earning
-            too. That is why the line bends upwards as it goes.
+            That is the deposit plus the rate applied to it once. Nothing in the position held
+            the withdrawal back at any point, and the USDC returned includes what was earned to
+            that day.
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move both controls to carry on.</Hint>
+        <Hint>Move the rate, then withdraw all of it to continue.</Hint>
       )}
     </Stage>
-  );
-}
-
-function Stat({ label, value, tone }) {
-  return (
-    <div className={own.stat}>
-      <div className={styles.statLabel}>{label}</div>
-      <div className={own.statValue} style={tone ? { color: tone } : undefined}>{value}</div>
-    </div>
   );
 }

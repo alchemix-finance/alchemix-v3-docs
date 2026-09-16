@@ -49,3 +49,23 @@ export function debtCurve({ collateral, debt, yieldAnnual, redemptionAnnual, mon
     protocolFee: PROTOCOL_FEE,
   }).map((p) => ({ month: p.month, pct: (p.debt / debt) * 100 }));
 }
+
+/**
+ * Deposited and borrowed over time, in the caller's own units.
+ *
+ * The same projection `debtCurve` reads, so a card that shows the two figures
+ * moving together takes both from one series. Collateral carries the yield and
+ * the redemptions, debt carries only the redemptions, and a zero debt gives a
+ * flat zero line with the collateral still compounding.
+ */
+export function positionCurve({ collateral, debt, yieldAnnual, redemptionAnnual, months }) {
+  return projectSeries({
+    collateral,
+    debt,
+    leverage: 1,
+    yieldAnnual,
+    redemptionAnnual,
+    months,
+    protocolFee: PROTOCOL_FEE,
+  }).map((p) => ({ month: p.month, debt: p.debt, collateral: p.collateral }));
+}

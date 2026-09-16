@@ -1,23 +1,15 @@
-Left alone, an Alchemix loan balance only moves in one direction. Nothing is added
-for time passing, because no interest accrues, and nothing is added when markets
-move.
+### Left alone
 
-Two things change the balance, and both are your own choices:
+No interest is added for time passing, and no price move changes what you owe.
+The protocol repays the balance out of the position, so an untouched loan only
+falls.
 
-- **Borrowing more** – Minting further alAssets against the same position raises
-  what you owe.
+### Your own choices
 
-- **Repaying** – You can repay part or all of the balance at any time, in any
-  amount, which unlocks collateral immediately.
+Borrowing more raises the balance. Repaying lowers it, and you can repay part or
+all at any time with alUSD, MYT, or USDC.
 
-### What does not change it
+### What the app shows
 
-A fall in the price of your collateral has no effect on what you owe. Your debt is
-recorded in alUSD or alETH, the same kind of asset you deposited, so a price move
-changes both sides together and leaves the ratio between them alone.
-
-Time passing has no effect beyond the decline already under way. There is no
-interest, no fee for holding the loan open, and no schedule to keep.
-
-The pace at which a balance clears depends on conditions that move, so the shape
-is the lesson and any particular date will differ.
+The position card shows what is free to withdraw. Repaying raises that figure
+straight away. The intermediate track works out the arithmetic behind it.

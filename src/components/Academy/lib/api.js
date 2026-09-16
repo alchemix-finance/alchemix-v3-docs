@@ -21,7 +21,7 @@ const STORAGE_KEY = "alchemix-academy-completions-v1";
  *
  * Never called during server-side rendering. Docusaurus prerenders every page, so
  * a bare localStorage reference at module scope would break the build. Every
- * caller reaches this from an effect.
+ * caller reaches this from an effect or an event handler.
  */
 export function readCompletions() {
   try {
@@ -52,6 +52,25 @@ export function hasCompletion(lessonId) {
 }
 
 /**
+ * The stored tokens for a set of lesson ids, in the order the ids were given.
+ * Ids with no stored token are skipped, so the result is what a claim can send.
+ * Same rule as `readCompletions`: call it from an effect or a handler.
+ */
+export function completionsFor(lessonIds) {
+  const all = readCompletions();
+  return lessonIds.map((id) => all[id]).filter((t) => typeof t === "string" && t.length > 0);
+}
+
+/**
+ * A completion issued by the dev-only grader. It carries no signature, so the
+ * engine will never count it. The track map uses this to say so before a claim
+ * is attempted.
+ */
+export function isLocalCompletion(token) {
+  return typeof token === "string" && token.startsWith(LOCAL_PREFIX);
+}
+
+/**
  * Pull a human-readable message out of an error body.
  *
  * The engine answers `{error: "some string"}`, but nothing guarantees the engine
@@ -60,7 +79,7 @@ export function hasCompletion(lessonId) {
  * first version of this trusted `body.error` to be a string and passed it
  * straight to `new Error`, which rendered as "[object Object]" in the lesson.
  *
- * That is not a hypothetical: a misconfigured rewrite produces exactly it.
+ * A misconfigured rewrite produces exactly that.
  */
 function messageFrom(body, status) {
   const fallback = `The checkpoint could not be reached (${status}).`;
@@ -155,4 +174,31 @@ export function submitAnswer(base, { challenge, params, answer }) {
       }),
     () => localGrade(params.lessonId, params, answer),
   );
+}
+
+/**
+ * Ask the engine to verify a finished track.
+ *
+ * POSTs `{ track, completions }` to `/api/academy/claim`. The engine checks each
+ * token's signature against the track's lesson ids and answers
+ * `{ eligible, track, completed, missing }`. It grants nothing; the Discord
+ * link is what turns an eligible claim into a role, and that step plugs in
+ * behind this endpoint.
+ *
+ * A 404 means the endpoint is not deployed yet. That resolves to
+ * `{ notOpen: true }` so the track map can say the claim opens later without
+ * treating it as a failure. Every other non-OK status throws with the engine's
+ * message, the same as a checkpoint.
+ */
+export async function claimGraduation(base, { track, completions }) {
+  try {
+    return await request(`${base}/api/academy/claim`, {
+      method: "POST",
+      headers: { "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({ track, completions }),
+    });
+  } catch (e) {
+    if (e?.status === 404) return { notOpen: true };
+    throw e;
+  }
 }

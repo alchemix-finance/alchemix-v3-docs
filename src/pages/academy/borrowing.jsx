@@ -8,14 +8,14 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="borrowing"
-      description="How much you can borrow against a deposit, what arrives when you do, and what reaching the cap means."
+      description="Borrow up to 90% of the deposit, receive alUSD in your wallet, and see the deposit keep earning underneath."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/tutorials/borrowing-in-alchemix", label: "Take a Loan" },
-        { to: "/user/concepts/alAssets", label: "alAssets", note: "what borrowing mints" },
-        { to: "/user/concepts/self-repaying-loans", label: "Self-Repaying Loans" },
+        { to: "/user/concepts/self-repaying-loans", label: "Self-repaying loans" },
+        { to: "/user/concepts/alAssets", label: "alAssets" },
+        { to: "/user/tutorials/borrowing-in-alchemix", label: "Tutorial: Take a loan" },
       ]}
     />
   );

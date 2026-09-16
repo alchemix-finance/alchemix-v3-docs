@@ -1,32 +1,33 @@
 import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import styles from "../lesson.module.css";
-import parts from "../parts.module.css";
-import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { LIQ_LTV, MAX_LTV, ltvAfterLoss } from "../lib/protocol";
+import { LIQ_LTV } from "../lib/protocol";
 import {
-  Actions, Body, ChoiceCheckpoint, Control, Controls, Hint, Note, Notes, Panel,
-  Primary, Question, Reveal, SetupCard, SetupGrid, Stage, Sub, money,
+  Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Note, Notes,
+  Panel, PositionCard, Primary, Question, Reveal, Stage, Sub, assetAmount, money,
 } from "../kit";
 
 /**
- * Lesson 6: what can go wrong.
+ * Lesson 5: the one real risk.
  *
- * The safety lesson, and the one a beginner most needs to get right. Everyone
- * arriving from another lending protocol carries the same fear, that a price
- * drop will close their position. Here it cannot, because debt and collateral
- * are the same kind of asset and move together.
- *
- * Saying that is not enough. The lesson lets them push the price as hard as they
- * like and watch nothing happen, then shows the thing that does move the
- * threshold, so the reassurance is earned rather than asserted.
+ * The carried position, shown in ETH so the price has something to move: 4 ETH
+ * deposited, 2 alETH borrowed. The learner guesses where the LTV lands after a
+ * 40% fall in ETH and finds it unchanged, because the debt and the deposit are
+ * the same kind of asset. Then three controls on the same card: the price moves
+ * only the dollar figures in the note, a loss inside the vault slides the
+ * liquidation marker toward the fill, and the starting LTV sets how much room
+ * there is before the two meet.
  */
 
-const DEPOSIT = 10_000;
-const CAREFUL = 4_500;
-const BOLD = 8_500;
+const DEPOSIT = 4;
+const BORROWED = 2;
+const PRICE = 2_500;
 const CRASH = 0.4;
+
+/** The line under the card: what the two sides are worth at a given ETH price. */
+function worthNote(price, borrowed) {
+  return `At ${money(price)} per ETH: deposit worth ${money(DEPOSIT * price)}, debt worth ${money(borrowed * price)}`;
+}
 
 export default function SafetyLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -41,95 +42,72 @@ export default function SafetyLab({ lessonId, stage, onStage, done, onComplete }
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="One question before you move on."
-      passTitle="Lesson 6 complete."
-      passBody="You know which risk applies here, and you can tell the borrowing cap apart from the liquidation threshold. One lesson left."
+      headline="Answer the question."
+      passTitle="Lesson 5 complete."
+      passBody="You know the one loss that can reach a position, why a price move cannot, and that a lower LTV leaves more room."
     />
   );
 }
 
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
-const OUTCOMES = [
-  { id: "both", label: "Both are liquidated" },
-  { id: "ben", label: "Ben is liquidated, Ana is fine" },
-  { id: "neither", label: "Neither is liquidated" },
-  { id: "partial", label: "Both are partly sold to bring their ratios down" },
-];
-
 function Learn({ onDone }) {
-  const [pick, setPick] = useState(null);
+  const [guess, setGuess] = useState(50);
   const [revealed, setRevealed] = useState(false);
 
+  // The card itself never changes here. Only the note under it moves, from the
+  // evening price to the morning one.
+  const price = revealed ? PRICE * (1 - CRASH) : PRICE;
+
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="A very bad day for the price.">
+    <Stage eyebrow="Stage 1 · Learn" headline="The price of ETH falls 40% overnight.">
       <Sub>
-        Ana and Ben both deposited {money(DEPOSIT)} of ETH. Ana borrowed carefully. Ben
-        borrowed close to the cap. Overnight, the price of ETH falls by{" "}
-        {(CRASH * 100).toFixed(0)}%.
+        The same position, shown in ETH so the price can move: 4 ETH deposited, 2 alETH
+        borrowed, LTV 50% (what you owe divided by what you deposited). ETH was 2,500.{" "}
+        <strong>Liquidation</strong>, the second marker on the bar, means part of the deposit
+        is sold to cover the debt.
       </Sub>
 
-      <SetupGrid>
-        <SetupCard
-          name="Ana"
-          color="#5ba88a"
-          stats={[
-            { label: "Deposited", value: money(DEPOSIT) },
-            { label: "Borrowed", value: money(CAREFUL), color: "#5ba88a" },
-            { label: "LTV", value: `${((CAREFUL / DEPOSIT) * 100).toFixed(0)}%`, color: "#a8adb6" },
-          ]}
-        />
-        <SetupCard
-          name="Ben"
-          color="#f5c09a"
-          stats={[
-            { label: "Deposited", value: money(DEPOSIT) },
-            { label: "Borrowed", value: money(BOLD), color: "#f5c09a" },
-            { label: "LTV", value: `${((BOLD / DEPOSIT) * 100).toFixed(0)}%`, color: "#a8adb6" },
-          ]}
-        />
-      </SetupGrid>
+      <PositionCard
+        deposited={DEPOSIT}
+        borrowed={BORROWED}
+        asset="ETH"
+        backingLoss={0}
+        earning
+        highlight="ltv"
+        note={worthNote(price, BORROWED)}
+      />
 
       <Panel>
-        <Question>What happens to the two positions?</Question>
-        <div className={own.options}>
-          {OUTCOMES.map((o) => (
-            <button
-              key={o.id}
-              type="button"
-              className={`${own.option} ${pick === o.id ? own.optionOn : ""}`}
-              onClick={() => setPick(o.id)}
-              disabled={revealed}
-            >
-              {o.label}
-            </button>
-          ))}
-        </div>
+        <Question>Where is the LTV in the morning?</Question>
+        <GuessSlider
+          label="LTV after the fall"
+          value={guess}
+          onChange={setGuess}
+          disabled={revealed}
+          color="#d4952a"
+          min={0}
+          max={100}
+          step={1}
+          format={(v) => `${v}%`}
+          scale={["0%", "Past liquidation"]}
+        />
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Guessing is free here. The graded question comes at the end.">
-          <Primary onClick={() => setRevealed(true)} disabled={!pick}>
-            Check my answer
-          </Primary>
+        <Actions aside="Your debt is in alETH and your deposit is in ETH.">
+          <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
         <Reveal
-          title="Neither. The price fall changed nothing for either of them."
+          title="50%. Both sides fell together."
           onNext={onDone}
-          nextLabel="See why, and what does matter"
+          nextLabel="Find what does move it"
         >
           <Body>
-            {pick === "neither"
-              ? "You had it, and it is the answer people find hardest to believe. "
-              : "Almost everyone picks Ben, because that is how every other lending protocol works. "}
-            Ana and Ben deposited ETH and borrowed alETH. When the price of ETH falls, the
-            value of what they hold falls, and so does the value of what they owe. By the
-            same amount, at the same moment.
-          </Body>
-          <Body>
-            Their ratio is unchanged, so there is nothing to liquidate. It works the same way
-            for USDC and alUSD. The docs call this pairing like-kind.
+            The debt is recorded in alETH, the same kind of asset as the deposit. When ETH
+            falls, the deposit and the debt fall by the same share, and the ratio between
+            them stays where it was. Nothing is liquidated. USDC and alUSD pair the same way.
           </Body>
         </Reveal>
       )}
@@ -140,117 +118,82 @@ function Learn({ onDone }) {
 /* ── Stage 2: try ────────────────────────────────────────── */
 
 function Try({ onDone }) {
-  const [startLtv, setStartLtv] = useState(60);
-  const [pricePct, setPricePct] = useState(0);
-  const [lossPct, setLossPct] = useState(0);
+  const [ltv, setLtv] = useState(50);
+  const [move, setMove] = useState(0);
+  const [loss, setLoss] = useState(0);
   const [touched, setTouched] = useState({ price: false, loss: false });
   const mark = (k) => setTouched((t) => (t[k] ? t : { ...t, [k]: true }));
 
-  // The price control is wired to nothing on purpose. A learner who drags it
-  // expecting the bar to move, and watches it sit still, has learned the lesson
-  // in a way no sentence achieves.
-  const now = ltvAfterLoss(startLtv / 100, lossPct / 100) * 100;
-  const liquidated = now > LIQ_LTV * 100;
+  const borrowed = (DEPOSIT * ltv) / 100;
+  const price = PRICE * (1 + move / 100);
+  const ltvNow = ltv / 100;
+  // The card slides the liquidation marker to liqLtv x (1 - loss). The marker
+  // has reached the fill once that lands at or under the starting LTV.
+  const crossed = LIQ_LTV * (1 - loss / 100) <= ltvNow;
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="One of these controls does nothing.">
+    <Stage eyebrow="Stage 2 · Try" headline="Push the price, then push the vault.">
       <Sub>
-        Set a starting LTV, then try both. The bar shows where the position sits against
-        the {(LIQ_LTV * 100).toFixed(0)}% threshold that would close it.
+        The bar shows the position against the 90% cap and the 95% liquidation marker. Set
+        how much is borrowed, then try each control.
       </Sub>
 
-      <div className={parts.meterWrap}>
-        <div className={parts.meterHead}>
-          <span className={styles.microLabel}>Loan to value now</span>
-          <span
-            className={parts.meterValue}
-            style={{ color: liquidated ? "#d4952a" : "#e8e8ea" }}
-          >
-            {now > 200 ? "over 200" : now.toFixed(1)}%
-          </span>
-        </div>
-        <div className={parts.meter}>
-          <span
-            className={parts.meterFill}
-            style={{
-              width: `${Math.min(now, 100)}%`,
-              background: liquidated ? "#d4952a" : undefined,
-            }}
-          />
-          <span className={parts.meterCap} style={{ left: `${MAX_LTV * 100}%` }} />
-          <span className={parts.meterLiq} style={{ left: `${LIQ_LTV * 100}%` }} />
-        </div>
-        <div className={parts.meterKey}>
-          <span>0%</span>
-          <span className={parts.capMark}>
-            Cap {(MAX_LTV * 100).toFixed(0)}% · Liquidation {(LIQ_LTV * 100).toFixed(0)}%
-          </span>
-        </div>
-      </div>
+      <PositionCard
+        deposited={DEPOSIT}
+        borrowed={borrowed}
+        asset="ETH"
+        backingLoss={loss / 100}
+        earning
+        highlight="ltv"
+        note={crossed ? "Liquidation. Only the minimum needed is sold." : worthNote(price, borrowed)}
+      />
 
       <Controls>
         <Control
           label="Starting LTV"
-          display={`${startLtv}%`}
-          min={10} max={90} step={1}
-          value={startLtv}
-          onChange={setStartLtv}
+          display={`${ltv}%, ${assetAmount(borrowed, "ETH")} alETH`}
+          min={10} max={90} step={5}
+          value={ltv}
+          onChange={setLtv}
         />
         <Control
-          label="Price of your collateral"
-          display={`${pricePct > 0 ? "+" : ""}${pricePct}%`}
-          min={-70} max={70} step={1}
-          value={pricePct}
-          onChange={(v) => { setPricePct(v); mark("price"); }}
-          verdict={touched.price ? "no effect on the bar" : null}
+          label="Price of ETH"
+          display={`${move > 0 ? "+" : ""}${move}%`}
+          min={-60} max={60} step={1}
+          value={move}
+          onChange={(v) => { setMove(v); mark("price"); }}
+          verdict={touched.price ? "the bar does not move" : null}
         />
         <Control
           label="Loss inside the vault"
-          display={`${lossPct}%`}
+          display={`${loss}%`}
           min={0} max={40} step={1}
-          value={lossPct}
-          onChange={(v) => { setLossPct(v); mark("loss"); }}
+          value={loss}
+          onChange={(v) => { setLoss(v); mark("loss"); }}
           accent
-          verdict={liquidated ? "threshold crossed" : null}
+          verdict={crossed ? "marker reached" : null}
         />
       </Controls>
 
       <Notes>
-        <Note label="The price control">
-          Drag it as far as you like. The bar does not move, because your debt moved with
-          your collateral. That is how the real position behaves.
+        <Note label="A loss inside the vault">
+          A hack of a strategy, or a strategy losing money, leaves the same debt standing
+          against less deposit.
         </Note>
-        <Note label="The loss control">
-          This is a loss inside the strategies your deposit is invested in, from something
-          like an exploit or a strategy reporting a negative return. Your collateral is
-          worth less while your debt is unchanged, so the ratio climbs.
-        </Note>
-        <Note label="If it does cross">
-          Only the minimum needed to bring the position back to a healthy LTV is
-          liquidated. The rest is untouched, and a fee vault covers any shortfall.
+        <Note label="Past the marker">
+          Only the minimum needed to bring the position back is sold. The rest is untouched.
         </Note>
       </Notes>
 
       {touched.price && touched.loss ? (
-        <Reveal
-          title="One real risk, and most people arrive worried about a different one."
-          onNext={onDone}
-          nextLabel="Answer one question"
-        >
+        <Reveal title="One thing moves the marker." onNext={onDone} nextLabel="Take the check">
           <Body>
-            Price volatility cannot force an Alchemix position to close. A loss in the
-            strategies holding your collateral can, and that is the risk worth reading about
-            before you choose how much to borrow.
-          </Body>
-          <Body>
-            The further you sit below the threshold, the larger a loss you can absorb.
-            Choose your LTV with that in mind. The advanced track works out exactly how
-            much room a given LTV buys you.
+            A price move changes both sides. A loss inside the strategies changes only the
+            deposit, so the marker slides toward the position. The lower your LTV, the larger
+            a loss the position absorbs. Reaching the 90% cap only stops borrowing.
           </Body>
         </Reveal>
-      ) : (
-        <Hint>Try both of the lower controls to carry on.</Hint>
-      )}
+      ) : null}
     </Stage>
   );
 }

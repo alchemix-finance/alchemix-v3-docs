@@ -3,30 +3,66 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
+import { positionCurve } from "../lib/model";
 import {
-  Actions, Body, ChoiceCheckpoint, Control, Controls, Hint, LineChart, Legend,
-  Note, Notes, Panel, Primary, Question, Reveal, Stage, Sub, money,
+  Actions, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
+  Legend, LineChart, Note, Notes, Panel, Primary, Question, Reveal, Stage, Sub, money,
 } from "../kit";
 
 /**
  * Lesson 1: what Alchemix does.
  *
- * The first lesson of the track, so it answers the question someone actually
- * arrives with: what is this, and why would I use it. No arithmetic, no
- * vocabulary the reader has not been given, and nothing that assumes they have
- * used a lending protocol before.
+ * The whole loop in one picture before any of it is explained: deposit, earn,
+ * borrow, the balance falling, alUSD turned back. The learner guesses the
+ * interest rate on the loan, finds it is zero, then watches the balance fall
+ * next to a loan with interest.
  *
- * The one fact worth the whole lesson is that the loan balance goes down on its
- * own. Stage 2 shows that against a normal loan, because the contrast is what
- * makes it land.
+ * The falling balance is the dApp's own projection at an illustrative pace.
+ * Forty percent of it is still standing at two years, so nothing on screen
+ * implies a payoff date.
  */
+
+const DEPOSIT = 10_000;
+const BORROW = 5_000;
+const YIELD = 0.05;
+const ILLUSTRATIVE_PACE = 0.35;
+const MONTHS = 24;
+
+/** The Alchemix balance, sampled weekly with a final point on month 24. */
+const ALCHEMIX = positionCurve({
+  collateral: DEPOSIT,
+  debt: BORROW,
+  yieldAnnual: YIELD,
+  redemptionAnnual: ILLUSTRATIVE_PACE,
+  months: MONTHS,
+});
+
+const OWED_AT_END = ALCHEMIX.reduce((best, p) =>
+  Math.abs(p.month - MONTHS) < Math.abs(best.month - MONTHS) ? p : best,
+).debt;
+
+/* ── The loop ────────────────────────────────────────────── */
+
+/** Green marks the saving side, copper the loan, blue the Transmuter side. */
+const LOOP = [
+  { n: 1, label: "Deposit", value: "10,000 USDC", note: "Mixed Yield page. Into a vault, the pool that holds deposits. You receive MYT, a share of it.", tone: "#5ba88a" },
+  { n: 2, label: "Earn", value: "MYT grows", note: "The DAO runs the strategies", tone: "#5ba88a" },
+  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "Vaults page. Up to 90% of the deposit, which stays in and keeps earning", tone: "#f5c09a" },
+  { n: 4, label: "Balance falls", value: "no payments", note: "Repaid out of the position", tone: "#f5c09a" },
+  { n: 5, label: "alUSD returns", value: "1:1 for USDC", note: "Fixed Yield page. Through the Transmuter, after a wait", tone: "#8ea9d8" },
+];
+
+/** After the reveal, step 4 carries the answer. Nothing else in the picture changes. */
+const LOOP_REVEALED = LOOP.map((s) =>
+  s.n === 4 ? { ...s, value: "no interest, no payments", tone: "#5ba88a" } : s,
+);
 
 export default function WhatLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
 
   if (stage === "predict") return <Learn onDone={() => onStage("explore")} />;
-  if (stage === "explore") return <Compare onDone={() => onStage("checkpoint")} />;
+  if (stage === "explore") return <Try onDone={() => onStage("checkpoint")} />;
 
   return (
     <ChoiceCheckpoint
@@ -34,210 +70,152 @@ export default function WhatLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="One question before you move on."
+      headline="Answer the question."
       passTitle="Lesson 1 complete."
-      passBody="You can say what Alchemix offers and what makes its loans different from the ones you have met before. The rest of the track works through each piece in turn."
+      passBody="You can say what Alchemix offers, and you know the loan balance falls without payments."
     />
   );
 }
 
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
-const PILLARS = [
-  {
-    id: "save",
-    title: "Save",
-    line: "Deposit ETH or USDC and earn on it.",
-    body: "Your deposit goes into a vault that spreads it across several yield strategies. The Alchemix DAO, the community that governs the protocol, picks those strategies and adjusts them over time, so there is nothing for you to manage. There is no lock-up, and you can take your money out whenever you want.",
-    colour: "#5ba88a",
-  },
-  {
-    id: "borrow",
-    title: "Borrow",
-    line: "Take a loan against that deposit, up to 90% of its value.",
-    body: "You keep the deposit and it keeps earning. The loan charges no interest and has no payment schedule, and the balance goes down over time on its own. Most people find this surprising, and the next few lessons show how it works.",
-    colour: "#f5c09a",
-  },
-  {
-    id: "fixed",
-    title: "Earn a fixed return",
-    line: "Buy alUSD or alETH below face value and redeem it at full value later.",
-    body: "Alchemix loans are issued as alUSD and alETH. Anyone can hand those back to the protocol and receive the real asset at an exact 1:1 rate, once a set waiting period is up. Buying below 1.00 and waiting is a return you can work out in advance. Lesson 7 covers it.",
-    colour: "#8ea9d8",
-  },
-];
-
 function Learn({ onDone }) {
-  const [open, setOpen] = useState("save");
-  const [seen, setSeen] = useState(() => new Set(["save"]));
-
-  const show = (id) => {
-    setOpen(id);
-    setSeen((s) => (s.has(id) ? s : new Set([...s, id])));
-  };
-
-  const allSeen = seen.size === PILLARS.length;
+  const [guess, setGuess] = useState(7);
+  const [revealed, setRevealed] = useState(false);
 
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Alchemix does three things.">
       <Sub>
-        You can use any one of them on its own. Open each to see what it means, then
-        move on to the one that makes Alchemix unusual.
+        Deposit and earn. Borrow against the deposit. Turn alUSD back into USDC. Each one
+        has its own page in the app.
       </Sub>
 
-      <div className={own.pillars}>
-        {PILLARS.map((p) => {
-          const on = open === p.id;
-          return (
-            <button
-              key={p.id}
-              type="button"
-              className={`${own.pillar} ${on ? own.pillarOn : ""}`}
-              onClick={() => show(p.id)}
-              aria-expanded={on}
-            >
-              <span className={own.pillarBar} style={{ background: p.colour }} />
-              <span className={own.pillarTitle} style={on ? { color: p.colour } : undefined}>
-                {p.title}
-              </span>
-              <span className={own.pillarLine}>{p.line}</span>
-              {seen.has(p.id) ? <span className={own.pillarSeen} aria-hidden="true">✓</span> : null}
-            </button>
-          );
-        })}
+      <div className={own.loop}>
+        <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
       </div>
+      <Hint>The alUSD from step 3 is what step 5 takes back.</Hint>
 
       <Panel>
-        <div className={own.detail}>
-          <div className={own.detailHead} style={{ color: PILLARS.find((p) => p.id === open).colour }}>
-            {PILLARS.find((p) => p.id === open).title}
-          </div>
-          <p className={own.detailBody}>{PILLARS.find((p) => p.id === open).body}</p>
-        </div>
+        <Question>
+          You borrow 5,000 alUSD against the deposit. What interest rate does the loan
+          charge?
+        </Question>
+        <GuessSlider
+          label="Interest rate"
+          value={guess}
+          onChange={setGuess}
+          disabled={revealed}
+          color="#f5c09a"
+          min={0}
+          max={20}
+          step={0.5}
+          format={(v) => `${v}% a year`}
+          scale={["0%", "20%"]}
+        />
       </Panel>
 
-      {allSeen ? (
+      {!revealed ? (
+        <Actions aside="Set the rate you would expect.">
+          <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
+        </Actions>
+      ) : (
         <Reveal
-          title="The second one is the reason the other two exist."
+          title="0%. The balance falls on its own."
           onNext={onDone}
-          nextLabel="See how that compares to a normal loan"
+          nextLabel="See it against a loan with interest"
         >
           <Body>
-            Everywhere else, borrowing costs you money for as long as you owe it. Interest
-            is added to the balance, and the balance grows until you pay it down.
-          </Body>
-          <Body>
-            An Alchemix loan works the other way round. Your deposit stays where it is and
-            keeps earning, and the protocol repays the balance from the position itself.
-            Nothing comes out of your income.
+            No interest is added to an Alchemix loan, and there is no payment schedule. The
+            protocol repays the balance out of the position, and the deposit keeps earning
+            while it does. How fast the balance falls depends on protocol conditions that
+            change, so no date can be promised.
           </Body>
         </Reveal>
-      ) : (
-        <Hint>Open all three to continue.</Hint>
       )}
     </Stage>
   );
 }
 
-/* ── Stage 2: compare ────────────────────────────────────── */
+/* ── Stage 2: try ────────────────────────────────────────── */
 
-const LOAN = 10_000;
-
-function Compare({ onDone }) {
-  const [ratePct, setRatePct] = useState(7);
-  const [years, setYears] = useState(5);
+function Try({ onDone }) {
+  const [rate, setRate] = useState(7);
   const [moved, setMoved] = useState(false);
 
-  // Both sides are the learner's own suppositions rather than claims about the
-  // protocol. The rate on a normal loan varies by lender, and how fast an
-  // Alchemix balance clears depends on conditions no lesson should pin a number
-  // to. What is being taught here is the direction each one moves in.
-  const months = Math.round(years * 12);
-  const normalAt = (m) => LOAN * Math.pow(1 + ratePct / 100, m / 12);
-  const alchemixAt = (m) => Math.max(LOAN * (1 - m / months), 0);
-
-  const points = Array.from({ length: 61 }, (_, i) => (i / 60) * months);
-  const yMax = Math.max(normalAt(months), LOAN) * 1.05;
+  // The amber line is the learner's own supposition about a lender elsewhere.
+  // The green line is fixed: only the rate control moves anything.
+  const interestAt = (m) => BORROW * Math.pow(1 + rate / 100, m / 12);
+  const interest = Array.from({ length: MONTHS + 1 }, (_, m) => ({ x: m, y: interestAt(m) }));
+  const alchemix = ALCHEMIX.map((p) => ({ x: p.month, y: p.debt }));
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="The same loan, two ways.">
+    <Stage eyebrow="Stage 2 · Try" headline="The same 5,000, two ways.">
       <Sub>
-        Both lines start at {money(LOAN)} borrowed. Set a rate you might be charged
-        elsewhere, and how long you want to look ahead.
+        Both loans start at 5,000 owed, with nothing repaid by hand. Set the rate a lender
+        might charge you elsewhere.
       </Sub>
 
       <div className={styles.chartLive}>
         <div className={styles.chartHead}>
-          <span className={styles.microLabel}>What you still owe</span>
+          <span className={styles.microLabel}>What you owe</span>
         </div>
         <LineChart
-          label="What you owe over time, on a normal loan and on an Alchemix loan"
+          label="What you owe"
           series={[
-            { id: "normal", color: "#d4952a", points: points.map((m) => ({ x: m, y: normalAt(m) })) },
-            { id: "alch", color: "#5ba88a", points: points.map((m) => ({ x: m, y: alchemixAt(m) })) },
+            { id: "interest", color: "#d4952a", points: interest },
+            { id: "alchemix", color: "#5ba88a", points: alchemix },
           ]}
-          xMax={months}
-          yMax={yMax}
+          xMax={MONTHS}
+          xTicks={4}
           xLabel="months"
+          yMax={7_500}
+          yTicks={3}
           formatY={(v) => money(v)}
-          formatX={(v) => String(Math.round(v))}
         />
         <Legend
           items={[
-            { label: "A normal loan", color: "#d4952a" },
-            { label: "An Alchemix loan", color: "#5ba88a" },
+            { label: "A loan with interest", color: "#d4952a" },
+            { label: "Alchemix", color: "#5ba88a" },
           ]}
         />
+        <Hint>Illustrative pace. The live pace moves with protocol conditions.</Hint>
       </div>
 
       <Controls>
         <Control
-          label="Rate on a normal loan"
-          display={`${ratePct.toFixed(1)}%`}
+          label="Rate on a loan with interest"
+          display={`${rate.toFixed(1)}% a year`}
           min={2} max={18} step={0.5}
-          value={ratePct}
-          onChange={(v) => { setRatePct(v); setMoved(true); }}
-        />
-        <Control
-          label="Looking ahead"
-          display={`${years} years`}
-          min={1} max={10} step={1}
-          value={years}
-          onChange={(v) => { setYears(v); setMoved(true); }}
+          value={rate}
+          onChange={(v) => { setRate(v); setMoved(true); }}
           accent
         />
       </Controls>
 
       <Notes>
-        <Note label="Normal loan">
-          You owe {money(normalAt(months))} after {years} {years === 1 ? "year" : "years"},
-          having borrowed {money(LOAN)}. Nothing was repaid, so interest kept being added.
+        <Note label="With interest">
+          {money(interestAt(MONTHS))} owed after two years at {rate}%, with nothing repaid.
         </Note>
         <Note label="Alchemix">
-          You owe nothing by then, and you never made a payment. Your deposit is still
-          yours, and it was earning the whole time.
+          About {money(Math.round(OWED_AT_END / 100) * 100)} owed after two years at the
+          illustrative pace, with nothing repaid.
         </Note>
       </Notes>
 
       {moved ? (
         <Reveal
-          title="No rate you pick makes the orange line go down."
+          title="One balance grows. The other is repaid from the position."
           onNext={onDone}
-          nextLabel="Answer one question"
+          nextLabel="Take the check"
         >
           <Body>
-            A normal loan balance only falls when you pay it. An Alchemix balance falls
-            because the protocol repays it for you, out of the position rather than out
-            of your pocket.
-          </Body>
-          <Body>
-            How quickly it falls depends on conditions that change, so no lesson can promise
-            you a date. The direction does not change. Left alone, the balance only moves
-            down.
+            A loan with interest rises until you pay it. An Alchemix balance falls because
+            the protocol repays it from the position, while the deposit underneath keeps
+            earning. The pace changes with protocol conditions. The direction does not.
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move either control to carry on.</Hint>
+        <Hint>Move the rate control to continue.</Hint>
       )}
     </Stage>
   );

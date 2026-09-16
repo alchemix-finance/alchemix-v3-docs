@@ -8,7 +8,7 @@ import { CAPS, blend } from "../lib/myt";
 import LocalNotice from "../LocalNotice";
 
 /**
- * Lesson 2: where the yield comes from.
+ * Intermediate lesson 3: inside the Mix-Yield Token.
  *
  * Your collateral does not sit still while a loan runs. It sits in the MYT,
  * spread across strategies the DAO classifies Conservative, Moderate or
@@ -16,8 +16,8 @@ import LocalNotice from "../LocalNotice";
  * occupy.
  *
  * The caps are the lesson. They are the reason a given LTV is safe, which is what
- * lesson 4 builds on. So the learner is put in the position of someone reading a
- * governance proposal: chase the yield, hit the cap, understand why it is there.
+ * the LTV lesson builds on. The learner is put in the position of someone reading
+ * a governance proposal: chase the yield, hit the cap, understand why it is there.
  *
  * Allocation is a DAO decision, never a user one. The copy is careful about that:
  * the learner reasons about a proposed allocation, they do not set their own.
@@ -43,11 +43,11 @@ function Predict({ onDone }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 1 · Predict</div>
-      <h1 className={styles.headline}>Your collateral is working somewhere while the loan runs.</h1>
+      <h1 className={styles.headline}>Your collateral keeps working while the loan runs.</h1>
       <p className={styles.sub}>
         Deposits are held in the Mix-Yield Token, which spreads them across strategies
-        the DAO has reviewed and classified. One of the three below pays far more than
-        the others.
+        the DAO has reviewed and classified. The Aggressive strategy below pays far more
+        than the other two.
       </p>
 
       <div className={own.strategyGrid}>
@@ -60,8 +60,8 @@ function Predict({ onDone }) {
         <span className={`${styles.corner} ${styles.cornerTl}`} />
         <span className={`${styles.corner} ${styles.cornerTr}`} />
         <div className={styles.question}>
-          If the goal were the highest possible yield, what share of the vault would you
-          put in the Aggressive strategy?
+          If the goal were the highest possible yield, what share of the vault would go
+          to the Aggressive strategy?
         </div>
         <div className={styles.guessHead}>
           <span className={styles.microLabel}>Share in Aggressive</span>
@@ -89,7 +89,7 @@ function Predict({ onDone }) {
           </div>
           <p className={styles.revealBody}>
             {guess > 10
-              ? `Your ${guess}% is not an allocation the vault can hold. `
+              ? `Your ${guess}% is above the cap. `
               : `Your ${guess}% is within the cap. `}
             Every strategy is classified Conservative, Moderate or Aggressive, and each
             class carries a ceiling on how much of the Mix-Yield Token it may occupy.
@@ -111,9 +111,8 @@ function Predict({ onDone }) {
           </div>
 
           <p className={styles.revealBody}>
-            Per the governance docs, the caps exist so that users can set an LTV that
-            keeps liquidation risk low. Your borrowing headroom rests on
-            what the vault underneath is allowed to hold.
+            The caps exist so that users can set an LTV that keeps liquidation risk low.
+            Your borrowing headroom rests on what the vault underneath is allowed to hold.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Build a mix inside the caps
@@ -204,7 +203,7 @@ function AllocSlider({ label, value, onChange, max, cap, over }) {
         style={over ? { accentColor: "#d4645a" } : undefined}
         aria-label={`${label} allocation`}
       />
-      {/* The slider deliberately travels past the cap. A control that simply
+      {/* The slider travels past the cap on purpose. A control that simply
           stopped would hide the rule; one that turns red teaches it. */}
       <div className={over ? own.capWarn : own.capNote}>Cap {cap}%</div>
     </div>
@@ -231,8 +230,8 @@ function Explore({ onDone }) {
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
-        The same three strategies. Move the allocation and watch the blended APR. Push a
-        class past its ceiling and the vault would no longer be a legal composition.
+        The same three strategies. Move the allocation and watch the blended APR. A class
+        pushed past its ceiling is a composition the vault cannot hold.
       </p>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
@@ -240,7 +239,7 @@ function Explore({ onDone }) {
       {atBest || sawBreach ? (
         <div className={styles.reveal}>
           <div className={styles.revealHead}>
-            {best.toFixed(2)}% is the most this vault can yield legally.
+            {best.toFixed(2)}% is the highest blended APR inside every cap.
           </div>
           <p className={styles.revealBody}>
             Aggressive at its 10% ceiling, Moderate at its 40% ceiling, and the remaining
@@ -251,9 +250,9 @@ function Explore({ onDone }) {
               : ""}
           </p>
           <p className={styles.revealBody}>
-            Your collateral earns this blend while your loan clears, and the same ceilings
-            set your safe borrowing headroom. A vault that could hold 100% Aggressive would
-            make a high LTV far more dangerous, and the ceilings are there to prevent it.
+            Your collateral earns this blend while your loan clears. The same ceilings
+            protect your borrowing headroom. A vault allowed to hold 100% Aggressive would
+            make a high LTV far more dangerous.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint
@@ -273,10 +272,10 @@ function Explore({ onDone }) {
 /* ── Stage 3: checkpoint ─────────────────────────────────── */
 
 /**
- * This lesson keeps its own checkpoint rather than using the shared one, because
- * the answer is produced by two controls working against each other rather than a
- * single slider. The allocator the learner already used in stage 2 is the natural
- * control, so the checkpoint reuses that instead of a generic one.
+ * This lesson keeps its own checkpoint instead of using the shared one, because
+ * the answer is produced by two controls working against each other, and the
+ * shared checkpoint has a single slider. The allocator the learner already used
+ * in stage 2 is the natural control, so the checkpoint reuses that.
  */
 
 function Checkpoint({ base, lessonId, done, onPass }) {
@@ -361,7 +360,7 @@ function Checkpoint({ base, lessonId, done, onPass }) {
   return (
     <>
       <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-      <h1 className={styles.headline}>Find the best legal composition.</h1>
+      <h1 className={styles.headline}>Find the best composition inside the caps.</h1>
       <p className={styles.sub}>{challenge.prompt}</p>
       <LocalNotice show={challenge.local} />
       <p className={styles.hint}>
@@ -383,18 +382,18 @@ function Checkpoint({ base, lessonId, done, onPass }) {
 
       {result && !result.passed ? (
         <div className={styles.missBox}>
-          That allocation blends to {result.actual}%. The best legal composition reaches{" "}
-          {result.target}%, accepted within {result.tolerance} of a percentage point.
-          Check whether both ceilings are being used in full.
+          That allocation blends to {result.actual}%. The best composition inside the caps
+          reaches {result.target}%, accepted within {result.tolerance} of a percentage
+          point. Check whether both ceilings are filled.
         </div>
       ) : null}
 
       {passed ? (
         <div className={styles.passBox}>
-          <div className={styles.passHead}>Lesson 2 complete.</div>
+          <div className={styles.passHead}>Lesson 3 complete.</div>
           <p className={styles.revealBody}>
-            You found the highest yield the risk caps allow. Lesson 4 takes the same caps
-            and shows what they mean for the LTV you can safely borrow at.
+            You found the highest yield the risk caps allow. The same caps are what make a
+            given LTV safe to borrow at.
           </p>
           <Link to="/academy" className={styles.primaryLink}>
             Back to the track

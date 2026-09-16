@@ -8,14 +8,14 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="what-alchemix-does"
-      description="The three things Alchemix does, and why its loans behave differently from every other loan you have taken."
+      description="The three things you can do in Alchemix, and why a loan balance falls without payments."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/quick-start", label: "Quick Start", note: "open a position in a few minutes" },
-        { to: "/user/concepts/self-repaying-loans", label: "Self-Repaying Loans" },
-        { to: "/user/glossary", label: "Glossary", note: "every term in one place" },
+        { to: "/user", label: "Alchemix v3 introduction" },
+        { to: "/user/concepts/self-repaying-loans", label: "Self-repaying loans" },
+        { to: "/user/quick-start", label: "Quick start" },
       ]}
     />
   );

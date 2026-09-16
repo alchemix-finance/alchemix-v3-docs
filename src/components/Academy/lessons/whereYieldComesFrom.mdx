@@ -1,5 +1,5 @@
 Your deposit is held as the Mix-Yield Token, a vault built on Morpho Vaults V2 that
-routes deposits into several yield sources at once. You hold one token; the DAO
+routes deposits into several yield sources at once. You hold one token. The DAO
 selects the strategies behind it, sets target weights, and rebalances as markets
 shift.
 
@@ -12,18 +12,16 @@ Every strategy carries a classification, and the classification sets a ceiling:
 
 ### Why the ceilings matter to a borrower
 
-Per the governance documentation, the caps exist so that users can set an LTV
-that keeps liquidation risk low.
+The caps exist so that users can set an LTV that keeps liquidation risk low.
 
-Alchemix positions are not closed by price movement, because debt and collateral
-are like-kind. Only a loss inside the vault itself can push a position toward
-liquidation. A composition that could hold far more risk would make a high LTV
+A price move cannot close an Alchemix position, because debt and collateral are
+like-kind. Only a loss inside the vault itself can push a position toward
+liquidation. A composition allowed to hold far more risk would make a high LTV
 considerably more dangerous, so the ceilings on the vault protect your borrowing
 headroom.
 
-One deduction happens before yield reaches you: a performance fee, a share of
-what the strategies earn, goes to the protocol before the remainder is credited
-to the MYT price. The current rate is read live on the
-[Fees](/user/concepts/fees) page.
+One deduction happens before yield reaches you. A performance fee, a share of what
+the strategies earn, goes to the protocol before the remainder is credited to the
+MYT price. The current rate is read live on the [Fees](/user/concepts/fees) page.
 
-Lesson 4 takes that thread and works out what it means for the LTV you choose.
+The Choosing an LTV lesson works out what the same caps mean for the LTV you choose.

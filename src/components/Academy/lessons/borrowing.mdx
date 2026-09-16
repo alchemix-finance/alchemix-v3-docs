@@ -1,24 +1,17 @@
-You can borrow up to **90%** of what your collateral is worth. That limit is your
-loan to value, or LTV: the amount you owe divided by the amount you deposited.
+### The cap
 
-Borrowing mints new alUSD or alETH to you: freshly created tokens Alchemix issues
-that are each worth one unit of the underlying asset inside the protocol. You can
-hold them, spend them, or swap them for something else. If you swap them below
-face value, the gap is the real cost of the loan, and the advanced track prices
-it. The position itself is recorded as an NFT, which appears in your wallet
-once the transaction confirms.
+You can borrow up to 90% of what you deposited. That ratio is your **loan to
+value**, or LTV: what you owe divided by what you deposited. Reaching 90% stops
+further borrowing. Nothing is sold and nothing is charged. The Borrow tab’s Max
+button fills in the cap for you.
 
-### Reaching the cap
+### What arrives
 
-Hitting 90% stops you borrowing more, and that is all it does. The position stays
-open, nothing is sold, and your collateral keeps earning underneath. You can sit at
-the cap for as long as you like.
+Borrowing creates alUSD against USDC or alETH against ETH in your wallet. Inside
+the protocol one alUSD counts as one USDC. On the open market it may trade a
+little below 1.00.
 
-### Your deposit stays yours
+### What stays
 
-Borrowing takes nothing out of the vault. The full amount you deposited is still
-there and still earning while the protocol pays the loan down. Selling the asset
-would have given all of that up.
-
-Whether you should borrow the full 90% is a separate question, and how far you sit
-below the cap decides how much room you have if anything goes wrong.
+Borrowing takes nothing out of the vault. The deposit becomes the **collateral**
+for the loan, and all of it stays in and keeps earning while the loan is open.

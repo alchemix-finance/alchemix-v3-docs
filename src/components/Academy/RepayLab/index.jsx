@@ -1,29 +1,46 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
-import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
+import { positionCurve } from "../lib/model";
+import { borrowable, withdrawable } from "../lib/protocol";
 import {
-  Actions, Body, ChoiceCheckpoint, GuessSlider, Hint, LineChart, Note, Notes,
-  Panel, Primary, Question, Reveal, Stage, Sub, money,
+  Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Legend,
+  LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, Stage,
+  Sub, money,
 } from "../kit";
 
 /**
  * Lesson 4: the loan repays itself.
  *
- * The claim from lesson 1, made concrete. A learner should leave able to say
- * which things move a balance and which do not, because that is the difference
- * between trusting the mechanism and hoping about it.
+ * The carried position, 10,000 deposited and 5,000 borrowed, is left alone for
+ * two years and the card ticks through the months while both figures fall. The
+ * Try stage puts the three things that move a balance on the same card: time,
+ * repaying by hand, and borrowing more.
  *
- * Nothing here states how fast a balance clears. The pace depends on conditions
- * that change, and the docs and the dApp's own projection model do not currently
- * agree on the split between the flows that drive it. That question belongs to
- * the advanced track. What this lesson teaches survives either answer: left
- * alone, the balance only moves down.
+ * Every falling figure comes from the dApp's own projection at an illustrative
+ * pace. Forty percent of the balance is still standing at two years, so nothing
+ * on screen implies a payoff date.
  */
 
-const START = 9_000;
-const TERM = 48;
+const DEPOSIT = 10_000;
+const BORROW = 5_000;
+const YIELD = 0.05;
+const ILLUSTRATIVE_PACE = 0.35;
+const MONTHS = 24;
+
+/** The position over two years, sampled weekly with a final point on month 24. */
+const CURVE = positionCurve({
+  collateral: DEPOSIT,
+  debt: BORROW,
+  yieldAnnual: YIELD,
+  redemptionAnnual: ILLUSTRATIVE_PACE,
+  months: MONTHS,
+});
+
+/** The sample nearest a whole month. */
+const sampleAt = (m) =>
+  CURVE.reduce((best, p) => (Math.abs(p.month - m) < Math.abs(best.month - m) ? p : best));
 
 export default function RepayLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -38,89 +55,98 @@ export default function RepayLab({ lessonId, stage, onStage, done, onComplete })
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="One question before you move on."
+      headline="Answer the question."
       passTitle="Lesson 4 complete."
-      passBody="You know what moves a loan balance and what leaves it alone. Next: how to get your money back out, by two different routes."
+      passBody="You know what moves a balance, that repaying is always open to you, and where the app shows what is free to withdraw."
     />
   );
 }
 
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
+const TICK_MS = 120;
+
 function Learn({ onDone }) {
-  const [guess, setGuess] = useState(START);
+  const [guess, setGuess] = useState(BORROW);
   const [revealed, setRevealed] = useState(false);
+  const [month, setMonth] = useState(0);
 
-  const AT = 24;
-  const truth = START * (1 - AT / TERM);
-  const close = Math.abs(guess - truth) <= 1_200;
+  // The reveal appears at once; only the card waits on the tick. Reduced
+  // motion goes straight to month 24.
+  useEffect(() => {
+    if (!revealed) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setMonth(MONTHS);
+      return undefined;
+    }
+    const id = setInterval(() => {
+      setMonth((m) => {
+        if (m >= MONTHS) {
+          clearInterval(id);
+          return m;
+        }
+        return m + 1;
+      });
+    }, TICK_MS);
+    return () => clearInterval(id);
+  }, [revealed]);
 
-  const points = Array.from({ length: 49 }, (_, i) => ({
-    x: i,
-    y: Math.max(START * (1 - i / TERM), 0),
-  }));
+  const at = sampleAt(month);
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then you do nothing.">
+    <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        You borrowed {money(START)} against your deposit. You make no payments, you do not
-        borrow again, and you leave the position completely alone for two years.
+        The position holds 10,000 deposited and 5,000 borrowed. For two years you make no
+        payments and borrow nothing more. The protocol takes each repayment out of the
+        deposit, so both figures on the card move.
       </Sub>
 
+      <PositionCard
+        deposited={at.collateral}
+        borrowed={at.debt}
+        asset="USDC"
+        earning
+        highlight="borrowed"
+        note={
+          revealed
+            ? `Month ${month}. Illustrative pace. The live pace moves with protocol conditions.`
+            : "Month 0"
+        }
+      />
+
       <Panel>
-        <Question>After those two years, how much do you still owe?</Question>
+        <Question>After two years, how much do you owe?</Question>
         <GuessSlider
-          label="Still owed after two years"
+          label="Owed after two years"
           value={guess}
           onChange={setGuess}
           disabled={revealed}
           color="#f5c09a"
           min={0}
-          max={START * 1.5}
+          max={7_500}
           step={250}
-          format={(v) => money(v)}
+          format={money}
           scale={["Nothing", "More than you borrowed"]}
         />
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Nothing was repaid by hand, and no interest was charged.">
+        <Actions aside="Nothing is pressed for two years.">
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
-        <>
-          <div className={styles.chartLive}>
-            <div className={styles.chartHead}>
-              <span className={styles.microLabel}>What you owe, doing nothing</span>
-            </div>
-            <LineChart
-              label="Loan balance falling over four years while untouched"
-              series={[{ id: "d", color: "#f5c09a", points }]}
-              xMax={TERM}
-              yMax={START * 1.05}
-              xLabel="months"
-              formatY={(v) => money(v)}
-              xTicks={4}
-            />
-          </div>
-
-          <Reveal
-            title="Less than you borrowed, without you doing anything."
-            onNext={onDone}
-            nextLabel="Find out what would change it"
-          >
-            <Body>
-              {close ? "You were in the right area. " : `You said ${money(guess)}. `}
-              Your deposit stayed in the vault the whole time, earning, while the protocol
-              brought the balance down. It happens whether you are watching or not.
-            </Body>
-            <Body>
-              The exact pace depends on conditions that move, so the shape of this line is
-              the lesson and the dates on it will differ. What holds in every case is the
-              direction. Left alone, the balance goes down.
-            </Body>
-          </Reveal>
-        </>
+        <Reveal
+          title="About 2,000, at an illustrative pace."
+          onNext={onDone}
+          nextLabel="See what moves it"
+        >
+          <Body>
+            You paid nothing and nothing was added, for time or for any price move. Each
+            repayment came out of the deposit, which kept earning the whole time. The live
+            pace is set by the protocol and changes, so the app is the place to read your
+            own balance.
+          </Body>
+        </Reveal>
       )}
     </Stage>
   );
@@ -128,131 +154,123 @@ function Learn({ onDone }) {
 
 /* ── Stage 2: try ────────────────────────────────────────── */
 
-/**
- * Four things a learner might expect to matter. Two of them do.
- *
- * Getting the two that do nothing wrong is the common beginner mistake, so they
- * are here as buttons that visibly do nothing rather than as a sentence saying
- * they do nothing.
- */
-const EVENTS = [
-  {
-    id: "borrow",
-    label: "Borrow another 2,000",
-    delta: 2_000,
-    note: "The only thing you can do that raises the balance.",
-  },
-  {
-    id: "repay",
-    label: "Repay 2,000 by hand",
-    delta: -2_000,
-    note: "Allowed at any time, in any amount.",
-  },
-  {
-    id: "price",
-    label: "Collateral price drops 30%",
-    delta: 0,
-    note: "No effect. The debt is recorded in alUSD, so a collateral price move never touches it.",
-  },
-  {
-    id: "wait",
-    label: "Wait six months",
-    delta: 0,
-    note: "No effect beyond the fall already happening. Nothing is added for time passing.",
-  },
-];
-
 function Try({ onDone }) {
-  const [log, setLog] = useState([]);
+  const [m, setM] = useState(0);
+  const [repay, setRepay] = useState(0);
+  const [more, setMore] = useState(0);
+  const [unlocked, setUnlocked] = useState(false);
 
-  const add = (event) => {
-    setLog((l) => (l.length >= 4 ? l : [...l, { ...event, at: 6 + l.length * 8 }]));
-  };
+  const at = sampleAt(m);
 
-  const points = useMemo(() => {
-    const rate = START / TERM;
-    return Array.from({ length: 97 }, (_, i) => {
-      const m = i / 2;
-      const added = log.filter((e) => e.at <= m).reduce((sum, e) => sum + e.delta, 0);
-      return { x: m, y: Math.max(START + added - rate * m, 0) };
-    });
-  }, [log]);
+  // The cap from lesson 3, seen again: at month 0 with nothing repaid the
+  // Borrow more thumb stops at 4,000. The cap is re-derived every render, so
+  // a stored value the months or repay controls have since outgrown is
+  // clamped back down rather than drawn past the cap.
+  const cap = borrowable(at.collateral, at.debt - repay);
+  const moreShown = Math.min(more, cap);
+  const capped = moreShown >= cap - 1e-9;
 
-  const tried = new Set(log.map((e) => e.id));
-  const enough = tried.has("borrow") || tried.has("repay") ? tried.size >= 2 : tried.size >= 3;
+  const balance = Math.max(at.debt - repay + moreShown, 0);
+  const free = withdrawable(at.collateral, balance);
+
+  // The line extends as the months slider moves, with the current repay and
+  // borrow-more applied at every drawn month.
+  const points = CURVE.filter((p) => p.month <= m + 1e-9).map((p) => ({
+    x: p.month,
+    y: Math.max(p.debt - repay + moreShown, 0),
+  }));
+  // At month 0 the series is one sample, and a one-point path draws nothing.
+  // A duplicated point makes a zero-length segment, which the chart's round
+  // line cap renders as a dot, so the starting balance shows before the
+  // months slider moves.
+  if (points.length === 1) points.push({ ...points[0] });
+
+  const enough = m >= 6 && (repay > 0 || moreShown > 0);
+  useEffect(() => {
+    if (enough) setUnlocked(true);
+  }, [enough]);
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Which of these moves the line?">
+    <Stage eyebrow="Stage 2 · Try" headline="What moves the balance.">
       <Sub>
-        Same loan as before. Apply any of these to the position and watch what the balance
-        does. Two of them change it. Two do not.
+        Same position. Run the months, then use the two amounts, which are the fields on
+        the Repay tab and the Borrow tab.
       </Sub>
 
+      <PositionCard
+        deposited={at.collateral}
+        borrowed={balance}
+        asset="USDC"
+        earning
+        highlight="borrowed"
+        note={`Free to withdraw: ${money(free)} USDC`}
+        compact
+      />
+
       <div className={styles.chartLive}>
-        <div className={styles.chartHead}>
-          <span className={styles.microLabel}>What you owe</span>
-          {log.length ? (
-            <button type="button" className={own.reset} onClick={() => setLog([])}>
-              Start over
-            </button>
-          ) : null}
-        </div>
         <LineChart
-          label="Loan balance responding to the actions applied"
-          series={[{ id: "d", color: "#f5c09a", points }]}
-          xMax={TERM}
-          yMax={START * 1.35}
-          xLabel="months"
-          formatY={(v) => money(v)}
+          label="What you owe"
+          series={[{ id: "balance", color: "#f5c09a", points }]}
+          xMax={MONTHS}
           xTicks={4}
+          xLabel="months"
+          yMax={10_000}
+          yTicks={4}
+          formatY={money}
         />
+        <Legend items={[{ label: "Balance", color: "#f5c09a" }]} />
+        <Hint>Illustrative pace. The live pace moves with protocol conditions.</Hint>
       </div>
 
-      <div className={own.buttons}>
-        {EVENTS.map((e) => (
-          <button
-            key={e.id}
-            type="button"
-            className={`${own.event} ${tried.has(e.id) ? own.eventDone : ""}`}
-            onClick={() => add(e)}
-            disabled={log.length >= 4}
-          >
-            <span className={own.eventLabel}>{e.label}</span>
-            {tried.has(e.id) ? <span className={own.eventNote}>{e.note}</span> : null}
-          </button>
-        ))}
-      </div>
+      <Controls>
+        <Control
+          label="Months passed"
+          display={`${m} months`}
+          min={0} max={MONTHS} step={1}
+          value={m}
+          onChange={setM}
+          accent
+        />
+        <Control
+          label="Repay by hand"
+          display={`${money(repay)} alUSD`}
+          min={0} max={5_000} step={250}
+          value={repay}
+          onChange={setRepay}
+          verdict={repay > 0 ? "raises what is free to withdraw" : null}
+        />
+        <Control
+          label="Borrow more"
+          display={`${money(moreShown)} alUSD`}
+          min={0} max={5_000} step={250}
+          value={moreShown}
+          onChange={(raw) => setMore(Math.min(raw, cap))}
+          verdict={capped ? "the cap stops you here" : null}
+        />
+      </Controls>
 
-      {log.length >= 4 ? (
-        <Hint>That is four changes. Start over if you want to try the others.</Hint>
-      ) : null}
+      <Notes>
+        <Note label="Time">
+          Nothing is added for time passing, so the line only falls.
+        </Note>
+        <Note label="Repaying">
+          Allowed at any time, in any amount, with alUSD, MYT, or USDC.
+        </Note>
+      </Notes>
 
-      {enough ? (
+      {unlocked ? (
         <Reveal
-          title="Only your own choices move it, and only one of them moves it up."
+          title="Time lowers it. Repaying lowers it. Borrowing raises it."
           onNext={onDone}
-          nextLabel="Answer one question"
+          nextLabel="Take the check"
         >
           <Body>
-            Borrowing more raises the balance, because you asked for more. Repaying lowers
-            it, because you paid. Everything else leaves it alone and lets the decline
-            carry on.
+            Those are the only things that move it, and two of them are your own choices.
+            Repay part or all whenever you want, with alUSD, MYT, or USDC, and the card
+            shows what is free to withdraw as soon as you do.
           </Body>
-          <Notes>
-            <Note label="Price moves">
-              Your debt is recorded in alUSD or alETH, the same kind of asset you deposited.
-              When the price moves, both sides move together, so what you owe relative to
-              what you hold does not change.
-            </Note>
-            <Note label="Time">
-              No interest is added for time passing. Time only ever brings the balance
-              down.
-            </Note>
-          </Notes>
         </Reveal>
-      ) : (
-        <Hint>Try at least three of them to carry on.</Hint>
-      )}
+      ) : null}
     </Stage>
   );
 }

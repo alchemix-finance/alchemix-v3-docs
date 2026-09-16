@@ -1,20 +1,18 @@
 An Alchemix loan charges no interest. The balance moves in one direction, down,
-unless you choose to mint more. What you pay instead arrives in two
-places, and both are tied to events, with no clock running on either.
+unless you choose to mint more. What you pay arrives in two places. Both are tied
+to events, and no clock runs on either.
 
 ### The market discount
 
 alAssets are minted at face value, and they can trade below it. Selling borrowed
-alUSD for spendable USDC realises that gap immediately, while the debt recorded
+alUSD for spendable USDC realizes that gap immediately, while the debt recorded
 inside the vault stays at face value.
 
 - **Borrowing 5,000 alUSD at a price of 0.97** puts about 4,850 USDC in your hand,
   against 5,000 of recorded debt.
 - **To receive 5,000 in hand**, you have to borrow about 5,155 instead.
 
-The cost scales with the size of the borrow, and holding it longer adds nothing. It is
-also the reason the same discount is an opportunity for somebody else, which is the
-subject of lesson 5.
+The cost scales with the size of the borrow, and holding it longer adds nothing.
 
 ### The borrower redemption fee
 
@@ -29,3 +27,6 @@ depends on your starting LTV and how long a transmutation takes, roughly:
 
 Current rates for this and every other fee are read live from the contracts on the
 [Fees](/user/concepts/fees) page, since governance can change them.
+
+The market discount is also an opportunity for whoever buys alUSD below 1.00. The
+peg and the discount lesson works out that return.

@@ -1,44 +1,65 @@
 import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AcademyShell from "@site/src/components/Academy/Shell";
-import { readCompletions } from "@site/src/components/Academy/lib/api";
 import {
-  ADVANCED, ADVANCED_BONUS, BEGINNER, BEGINNER_BONUS, LESSON_POINTS, TOTAL_POINTS, trackState,
+  apiBase, claimGraduation, completionsFor, isLocalCompletion, readCompletions,
+} from "@site/src/components/Academy/lib/api";
+import {
+  LESSON_POINTS, TOTAL_POINTS, TRACKS, lessonById, trackBankedPoints, trackState, trackTotalPoints,
 } from "@site/src/components/Academy/lib/track";
 import styles from "./track.module.css";
 
 /**
  * The track map: the academy's front door.
  *
- * The state on this page is the point. One lesson is live and carries the only
- * primary action on the screen; everything else is finished or waiting. A reader
- * should never have to work out what to do next, which is exactly what a
- * documentation sidebar makes them do.
+ * Two tracks on one page, beginner first. Each has its own rail, and in each
+ * rail one lesson is live and carries the primary action; everything else is
+ * finished or waiting. A reader never has to work out what to do next.
+ *
+ * Progress is read from localStorage after mount. The page prerenders with zero
+ * completions, then fills in.
  */
+
+const INTRO = {
+  beginner:
+    "Six short lessons on the screens you use most: the deposit, the loan, the one real risk, and the swap back. One position runs through all of them.",
+  intermediate:
+    "Seven lessons that work through every important mechanic and how it functions, for a learner who wants the numbers underneath.",
+};
+
+const fmt = (n) => n.toLocaleString("en-US");
+
 export default function AcademyTrack() {
+  const { siteConfig } = useDocusaurusContext();
+  const base = apiBase(siteConfig);
+
   // Read after mount, never during render. These pages are prerendered at build
   // time, so localStorage does not exist when this component first runs.
-  const [completed, setCompleted] = useState([]);
+  const [completions, setCompletions] = useState({});
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setCompleted(Object.keys(readCompletions()));
+    setCompletions(readCompletions());
+    setLoaded(true);
   }, []);
 
-  const lessons = trackState(completed, BEGINNER);
-  const doneCount = lessons.filter((l) => l.state === "done").length;
+  const completedIds = Object.keys(completions);
+  const banked = TRACKS.reduce((sum, t) => sum + trackBankedPoints(t, completedIds), 0);
 
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by using it. Seven short lessons, no wallet, no sign-in, and no prior experience assumed."
+      description="Learn how Alchemix works by using it. Six beginner lessons and seven intermediate ones. No wallet, no sign-in, and no prior experience assumed."
     >
       <section className={styles.intro}>
-        <div className={styles.eyebrow}>Beginner track</div>
+        <div className={styles.eyebrow}>Alchemix Academy</div>
         <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
         <p className={styles.sub}>
-          Seven short lessons covering everything you need to use Alchemix: what it does,
-          what happens to your deposit, how borrowing works, and what can go wrong. Each
-          one gives you something to try before it tells you the answer.
+          Two tracks. The beginner track is six short lessons on the mechanics you use
+          most, one app screen each. The intermediate track is seven more that work
+          through every mechanic underneath. Each lesson gives you something to try
+          before it tells you the answer.
         </p>
         <p className={styles.sub}>
           No wallet, no sign-in, and nothing to install. No prior experience with DeFi is
@@ -65,73 +86,202 @@ export default function AcademyTrack() {
         </p>
       </section>
 
-      {doneCount === lessons.length && doneCount > 0 ? (
-        <section className={styles.graduate}>
-          <div className={styles.microLabel}>Track complete</div>
-          <div className={styles.graduateTitle}>Every lesson passed.</div>
-          <p className={styles.graduateBody}>
-            The next step is the real thing. The{" "}
-            <Link to="/user/quick-start">quick start</Link> walks the same flow in the
-            interface, with real numbers and screenshots, and the app itself is at{" "}
-            <a href="https://alchemix.fi" target="_blank" rel="noopener noreferrer">
-              alchemix.fi
-            </a>
-            .
-          </p>
-        </section>
-      ) : null}
-
-      <section className={styles.track}>
-        {lessons.map((lesson, i) => (
-          <TrackRow key={lesson.id} lesson={lesson} last={i === lessons.length - 1} />
-        ))}
-      </section>
-
-      <section className={styles.next}>
-        <div className={styles.nextHead}>
-          <div className={styles.eyebrow}>Advanced track</div>
-          <p className={styles.nextSub}>
-            Coming after this one, for anyone who wants the arithmetic underneath.
-            Graduation asks for the beginner track alone. Finishing this one earns a
-            second Discord role and banks another {ADVANCED_BONUS} season points.
-          </p>
-        </div>
-        <ul className={styles.nextList}>
-          {ADVANCED.map((lesson) => (
-            <li key={lesson.id}>
-              <span className={styles.nextTitle}>{lesson.title}</span>
-              <span className={styles.nextBlurb}>{lesson.blurb}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {TRACKS.map((track) => (
+        <TrackSection
+          key={track.key}
+          track={track}
+          completions={completions}
+          loaded={loaded}
+          base={base}
+        />
+      ))}
 
       <section className={styles.reward}>
         <div className={styles.rewardCard}>
-          <div className={styles.microLabel}>On finishing the track</div>
-          <div className={styles.rewardTitle}>The graduate role, and a place in the founding class</div>
-          <p className={styles.rewardBody}>
-            Each track has its own Discord role. The founding class role is available
-            only before season one opens. Once the season begins it can no longer be
-            earned.
-          </p>
-        </div>
-        <div className={styles.rewardCard}>
-          <div className={styles.microLabel}>Banked for season one</div>
-          <div className={styles.pointsRow}>
-            <span className={styles.points}>
-              {doneCount * LESSON_POINTS + (doneCount === lessons.length ? BEGINNER_BONUS : 0)}
-            </span>
-            <span className={styles.pointsOf}>of {TOTAL_POINTS + BEGINNER_BONUS} points</span>
+          <div className={styles.microLabel}>Rewards</div>
+          <div className={styles.rewardTitle}>
+            A role for each track, and a place in the founding class
           </div>
           <p className={styles.rewardBody}>
-            Each lesson banks {LESSON_POINTS} points, and finishing the track banks{" "}
-            {BEGINNER_BONUS} more. Everything converts to season points when season one
-            opens, so graduates begin the season with a balance already banked.
+            Each lesson banks {LESSON_POINTS} points. Finishing a track banks its bonus
+            and earns its Discord role. Everything converts to season points when season
+            one opens. The founding class role is available only before season one
+            opens; once the season begins it can no longer be earned.
           </p>
+
+          <div className={styles.rewardGrid}>
+            {TRACKS.map((track) => (
+              <div key={track.key} className={styles.rewardTrack}>
+                <div className={styles.microLabel}>{track.label}</div>
+                <div className={styles.rewardRole}>{track.roleLine}</div>
+                <div className={styles.rewardPoints}>
+                  {fmt(trackTotalPoints(track))} points: {track.lessons.length} lessons at{" "}
+                  {LESSON_POINTS}, plus {track.bonus} for finishing the track.
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.pointsRow}>
+            <span className={styles.points}>{fmt(banked)}</span>
+            <span className={styles.pointsOf}>of {fmt(TOTAL_POINTS)} points banked</span>
+          </div>
         </div>
       </section>
     </AcademyShell>
+  );
+}
+
+function TrackSection({ track, completions, loaded, base }) {
+  const completedIds = Object.keys(completions);
+  const lessons = trackState(completedIds, track.lessons);
+  const doneCount = lessons.filter((l) => l.state === "done").length;
+  const complete = loaded && doneCount === lessons.length;
+  const banked = trackBankedPoints(track, completedIds);
+  const headingId = `track-${track.key}`;
+
+  return (
+    <section className={styles.trackSection} aria-labelledby={headingId}>
+      <div className={styles.trackHead}>
+        <h2 className={styles.eyebrow} id={headingId}>{track.label}</h2>
+        <p className={styles.trackIntro}>{INTRO[track.key]}</p>
+        <div className={styles.progress}>
+          <span className={styles.progressCount}>
+            {doneCount} of {lessons.length} lessons complete
+          </span>
+          <span className={styles.progressBar} aria-hidden="true">
+            <span
+              className={styles.progressFill}
+              style={{ width: `${(doneCount / lessons.length) * 100}%` }}
+            />
+          </span>
+          <span className={styles.progressPoints}>
+            {fmt(banked)} of {fmt(trackTotalPoints(track))} points
+          </span>
+        </div>
+      </div>
+
+      {complete ? (
+        <GraduationPanel track={track} completions={completions} base={base} banked={banked} />
+      ) : null}
+
+      <div className={styles.track}>
+        {lessons.map((lesson, i) => (
+          <TrackRow key={lesson.id} lesson={lesson} last={i === lessons.length - 1} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Shown once every lesson in a track is done.
+ *
+ * The claim is a verification call: the engine checks the stored tokens against
+ * the track and answers whether the set is complete. It grants nothing on its
+ * own; the Discord link is what turns an eligible claim into the role. Until the
+ * engine deploys the endpoint it answers 404, which lands in `notOpen` here.
+ */
+function GraduationPanel({ track, completions, base, banked }) {
+  const ids = track.lessons.map((l) => l.id);
+  const tokens = ids.map((id) => completions[id]).filter(Boolean);
+  const localOnly = tokens.length > 0 && tokens.every(isLocalCompletion);
+  const [claim, setClaim] = useState({ status: "idle" });
+
+  async function onClaim() {
+    setClaim({ status: "loading" });
+    try {
+      const res = await claimGraduation(base, {
+        track: track.key,
+        completions: completionsFor(ids),
+      });
+      if (res.notOpen) {
+        setClaim({ status: "notOpen" });
+      } else if (res.eligible) {
+        setClaim({ status: "eligible" });
+      } else {
+        setClaim({ status: "ineligible", missing: Array.isArray(res.missing) ? res.missing : [] });
+      }
+    } catch (e) {
+      setClaim({
+        status: "error",
+        message: e?.message || "The season engine could not be reached.",
+      });
+    }
+  }
+
+  const { status } = claim;
+  const busy = status === "loading";
+  const settled = status === "eligible" || status === "notOpen";
+
+  let body;
+  let tone = "";
+  if (localOnly) {
+    body =
+      "These completions were graded in the browser during development. They carry no signature, so the engine cannot verify them and there is nothing to claim.";
+    tone = styles.statusWarn;
+  } else if (status === "loading") {
+    body = "Checking your completions with the season engine.";
+  } else if (status === "notOpen") {
+    body =
+      "The claim opens with the Discord link. Your completions are stored in this browser and will be ready when it does.";
+    tone = styles.statusWarn;
+  } else if (status === "eligible") {
+    body =
+      "The season engine verified every completion on this track. Linking Discord is the next step.";
+    tone = styles.statusOk;
+  } else if (status === "ineligible") {
+    body = "The season engine could not verify every completion. Redo the lessons below, then check again.";
+    tone = styles.statusErr;
+  } else if (status === "error") {
+    body = claim.message;
+    tone = styles.statusErr;
+  } else {
+    body = "Claiming sends the completions stored in this browser to the season engine for verification.";
+  }
+
+  let buttonLabel = "Claim your role";
+  if (busy) buttonLabel = "Checking";
+  else if (status === "error") buttonLabel = "Try again";
+  else if (status === "ineligible") buttonLabel = "Check again";
+
+  return (
+    <section className={styles.graduate}>
+      <div className={styles.microLabel}>Track complete</div>
+      <div className={styles.graduateTitle}>Every lesson passed.</div>
+      <div className={styles.graduateMeta}>
+        <span className={styles.graduateRole}>{track.roleLine}</span>
+        <span className={styles.graduatePoints}>{fmt(banked)} points banked</span>
+      </div>
+
+      <p className={`${styles.graduateBody} ${tone}`} aria-live="polite">{body}</p>
+
+      {status === "ineligible" && claim.missing.length ? (
+        <ul className={styles.missingList}>
+          {claim.missing.map((id) => (
+            <li key={id}>{lessonById(id)?.title ?? id}</li>
+          ))}
+        </ul>
+      ) : null}
+
+      <div className={styles.graduateActions}>
+        <button
+          type="button"
+          className={`${styles.cta} ${styles.claim}`}
+          onClick={onClaim}
+          disabled={localOnly || busy || settled}
+        >
+          {buttonLabel}
+          {!busy && !settled ? <ArrowIcon /> : null}
+        </button>
+        {track.key === "beginner" ? (
+          <span className={styles.graduateAside}>
+            The <Link to="/user/quick-start">quick start</Link> walks the same flow in the
+            app.
+          </span>
+        ) : null}
+      </div>
+    </section>
   );
 }
 
@@ -201,7 +351,7 @@ function CurrentCard({ lesson }) {
   );
 }
 
-/* ── Icons. Drawn, never emoji, so they scale and recolour. ── */
+/* ── Icons. Drawn, never emoji, so they scale and recolor. ── */
 
 function CheckIcon() {
   return (

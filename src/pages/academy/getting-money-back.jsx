@@ -1,6 +1,5 @@
 import React from "react";
 import LessonPage from "@site/src/components/Academy/LessonPage";
-import { BEGINNER_STAGES } from "@site/src/components/Academy/kit";
 import Lab from "@site/src/components/Academy/BackLab";
 import Wrap from "@site/src/components/Academy/lessons/gettingMoneyBack.mdx";
 
@@ -8,13 +7,12 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="getting-money-back"
-      description="Two ways to get your deposit back, and why the amount you can withdraw is smaller than you expect."
-      stages={BEGINNER_STAGES}
+      description="How to read a position: what is owed, what can be withdrawn now, and the two routes to the rest."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
-        { to: "/user/tutorials/withdraw", label: "Withdraw Funds" },
-        { to: "/user/tutorials/repay-loan", label: "Repay a Loan" },
+        { to: "/user/tutorials/withdraw", label: "Withdraw" },
+        { to: "/user/tutorials/repay-loan", label: "Repay Your Loan", note: "earmarked debt and which asset to use" },
       ]}
     />
   );
