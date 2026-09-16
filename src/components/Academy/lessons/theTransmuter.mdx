@@ -1,10 +1,10 @@
-### What you get back
+### What the Transmuter is for
 
-Hand the Transmuter your alUSD or alETH, wait out a term, and it returns the
-underlying asset at exactly 1:1. One alUSD comes back as one USDC, one alETH as one
-ETH. Whatever the alAsset was trading at when you deposited it, you still collect
-the full unit. Payment arrives as MYT, which the app turns back into USDC or ETH
-for you.
+The Transmuter pays a fixed rate. You buy alUSD or alETH below face value,
+deposit it, wait out a governance-set term, and receive the underlying at exactly
+1:1. One alUSD comes back as one USDC, one alETH as one ETH, whatever the
+alAsset was trading at when you bought it. Payment arrives as MYT, which the app
+unwraps into USDC or ETH for you.
 
 ### How long you wait
 
@@ -15,6 +15,16 @@ shows you the current one before you deposit. Wait it out and you keep the whole
 ### Why the price stays near 1.00
 
 Borrowers often sell the alUSD they just borrowed, and that selling pushes the
-market price a little under 1.00. Every time it dips, buying the discount and
-waiting out the term pays the difference, so buyers step in and lift it back. The
-intermediate track prices that trade.
+market price a little under 1.00. Every time it dips, buying it and waiting
+out the term pays more, so buyers step in and lift the price back.
+
+### What this has to do with your loan
+
+The queue is what funds redemptions. Every alAsset waiting in the Transmuter
+earmarks an equal value of borrower collateral, and at maturity that collateral
+settles the claim while the borrower's debt falls. The saver's fixed rate and the
+borrower's falling balance are the same mechanism from two sides.
+
+If you are the borrower and you want your collateral back, repay and withdraw.
+Inside Alchemix one alUSD always cancels one USDC of debt, so the alUSD you
+borrowed is what you repay with.

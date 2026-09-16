@@ -173,8 +173,8 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="Withdraw now">
-          Take whatever is already free and leave the loan open. It is free to do, and it
-          goes through immediately.
+          Take whatever is already free and leave the loan open. It costs nothing and goes
+          through immediately.
         </Note>
         <Note label="Repay first">
           Repay some or all of the loan before you withdraw. Every unit repaid frees more

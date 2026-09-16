@@ -13,13 +13,19 @@ import {
  * Lesson 1: what Alchemix does.
  *
  * The whole loop in one picture before any of it is explained: deposit, earn,
- * borrow, the balance falling, alUSD turned back. The learner guesses the
+ * borrow, the balance falling, repay and withdraw. The learner guesses the
  * interest rate on the loan, finds it is zero, then watches the balance fall
  * next to a loan with interest.
  *
- * The falling balance is the dApp's own projection, run at an example rate.
- * Forty percent of it is still standing at two years, so nothing on screen
- * implies a payoff date.
+ * The loop deliberately ends on repay-and-withdraw, not on the Transmuter. A
+ * borrower holding alUSD repays with it, since 1 alUSD cancels 1 of debt
+ * inside the Alchemist. Routing it through the Transmuter would mean waiting
+ * out a term for USDC while still carrying the debt. The Transmuter is a
+ * fixed-yield product and gets its own lesson.
+ *
+ * The falling balance is the dApp's own projection, run at an example
+ * redemption rate. Forty percent of it is still standing at two years, so
+ * nothing on screen implies a payoff date.
  */
 
 const DEPOSIT = 10_000;
@@ -43,13 +49,13 @@ const OWED_AT_END = ALCHEMIX.reduce((best, p) =>
 
 /* ── The loop ────────────────────────────────────────────── */
 
-/** Green marks the saving side, copper the loan, blue the Transmuter side. */
+/** Green marks the saving side, copper the loan. */
 const LOOP = [
-  { n: 1, label: "Deposit", value: "10,000 USDC", note: "On the Mixed Yield page your USDC joins a vault, and you receive MYT, a share of it.", tone: "#5ba88a" },
+  { n: 1, label: "Deposit", value: "10,000 USDC", note: "Your USDC joins a vault on the Mixed Yield page and you receive MYT.", tone: "#5ba88a" },
   { n: 2, label: "Earn", value: "MYT grows", note: "The DAO picks the strategies the vault earns from.", tone: "#5ba88a" },
-  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "On the Vaults page you borrow up to 90%, and the deposit stays in and keeps earning.", tone: "#f5c09a" },
-  { n: 4, label: "Balance falls", value: "on its own", note: "The protocol repays it out of your position.", tone: "#f5c09a" },
-  { n: 5, label: "alUSD returns", value: "1:1 for USDC", note: "The Transmuter takes it back on the Fixed Yield page once the wait is up.", tone: "#8ea9d8" },
+  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "You borrow up to 90% on the Vaults page. The deposit stays in and keeps earning.", tone: "#f5c09a" },
+  { n: 4, label: "Balance falls", value: "on its own", note: "Redemptions repay it from your collateral. You never make a payment.", tone: "#f5c09a" },
+  { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay with alUSD, MYT, or USDC, then take the collateral back.", tone: "#5ba88a" },
 ];
 
 /** After the reveal, step 4 carries the answer. Nothing else in the picture changes. */
@@ -71,7 +77,7 @@ export default function WhatLab({ lessonId, stage, onStage, done, onComplete }) 
       done={done}
       onPass={onComplete}
       passTitle="Lesson 1 complete."
-      passBody="An Alchemix loan charges no interest. Your deposit keeps earning while you borrow against it, and those earnings are what clear the balance."
+      passBody="An Alchemix loan charges no interest. Redemptions clear the balance for you, drawing on collateral that keeps earning the whole time."
     />
   );
 }
@@ -85,15 +91,14 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Your deposit keeps earning while you borrow against it.">
       <Sub>
-        Deposit USDC on the Mixed Yield page and it starts earning the same day. Borrow
-        alUSD against it on the Vaults page. When you want USDC again, the Transmuter takes
-        the alUSD back on Fixed Yield.
+        Deposit USDC on the Mixed Yield page and it starts earning. Borrow alUSD against it
+        on the Vaults page. When you want the deposit back, repay the loan and withdraw.
       </Sub>
 
       <div className={own.loop}>
         <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
       </div>
-      <Hint>The alUSD you borrow in step 3 is the alUSD the Transmuter takes back in step 5.</Hint>
+      <Hint>You only act in steps 1, 3 and 5. Step 4 runs without you.</Hint>
 
       <Panel>
         <Question>
@@ -125,10 +130,10 @@ function Learn({ onDone }) {
           nextLabel="See it against a loan with interest"
         >
           <Body>
-            Your deposit does the paying instead. It keeps earning the whole time it backs
-            the loan, and the protocol puts those earnings straight against your balance.
-            How fast that runs depends on what the strategies earn and how quickly
-            redemptions come round, so nobody can promise you a date.
+            Redemptions repay the debt for you, drawing on your own collateral as they go.
+            Your deposit keeps earning the whole time it backs the loan, and because the debt
+            and the collateral are the same asset, being repaid this way costs you nothing
+            beyond a small redemption fee. The protocol's redemption rate sets the pace.
           </Body>
         </Reveal>
       )}
@@ -149,10 +154,11 @@ function Try({ onDone }) {
   const alchemix = ALCHEMIX.map((p) => ({ x: p.month, y: p.debt }));
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Put the same 5,000 next to a loan with interest.">
+    <Stage eyebrow="Stage 2 · Try" headline="Put the same 5,000 next to a loan that charges interest.">
       <Sub>
-        Both loans start at 5,000 owed, and both are left completely alone. Set the rate a
-        lender somewhere else might charge you.
+        The amber line is 5,000 borrowed from a lender that charges interest. Set the rate
+        it charges. The green line is your Alchemix loan, and nothing on this screen moves
+        it. Both are left alone for two years.
       </Sub>
 
       <div className={styles.chartLive}>
@@ -178,12 +184,12 @@ function Try({ onDone }) {
             { label: "Alchemix", color: "#5ba88a" },
           ]}
         />
-        <Hint>The green line uses an example rate. Real rates move with what the strategies earn.</Hint>
+        <Hint>The green line runs at an example redemption rate. The real one moves.</Hint>
       </div>
 
       <Controls>
         <Control
-          label="Rate on a loan with interest"
+          label="Interest rate"
           display={`${rate.toFixed(1)}% a year`}
           min={2} max={18} step={0.5}
           value={rate}
@@ -198,7 +204,7 @@ function Try({ onDone }) {
           payment.
         </Note>
         <Note label="Alchemix">
-          Two years at an example rate and you owe about{" "}
+          Two years at an example redemption rate and you owe about{" "}
           {money(Math.round(OWED_AT_END / 100) * 100)}, having never made a payment either.
         </Note>
       </Notes>
@@ -211,9 +217,8 @@ function Try({ onDone }) {
         >
           <Body>
             A loan with interest climbs until you pay it down. An Alchemix balance falls
-            instead, because the protocol is repaying it from the position while the deposit
-            underneath carries on earning. The speed of that fall changes. The direction
-            never does.
+            instead, because redemptions are clearing it from your collateral while that
+            collateral carries on earning.
           </Body>
         </Reveal>
       ) : (

@@ -11,7 +11,11 @@
 .flow4,
 .flow5 {
   display: grid;
-  align-items: center;
+  /* stretch, not center: the cards share a row, and a longer note on one of
+     them used to make that card taller than its neighbours. Stretching gives
+     every card the height of the tallest, so the row reads as one object. The
+     arrows opt out below. */
+  align-items: stretch;
   gap: 0.5rem;
   margin-bottom: 2rem;
 }
@@ -91,6 +95,9 @@
 
 .arrow {
   justify-self: center;
+  /* The grid stretches its items so the step cards match heights. An arrow
+     has no height to fill, so it centres itself against the row instead. */
+  align-self: center;
 }
 
 /* ── LTV meter ───────────────────────────────────────────── */

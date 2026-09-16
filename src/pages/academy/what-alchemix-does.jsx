@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="what-alchemix-does"
-      description="Your deposit keeps earning while you borrow against it, and those earnings are what clear the loan."
+      description="Borrow against a deposit that keeps earning, and redemptions clear the balance for you."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

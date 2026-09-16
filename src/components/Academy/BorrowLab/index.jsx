@@ -189,8 +189,7 @@ function Try({ onDone }) {
           of debt. Out on the open market it trades a little under 1.00.
         </Note>
         <Note label="At the cap">
-          Borrowing stops, and that is the whole of it. The position stays open and carries
-          on earning.
+          Borrowing stops. The position stays open and carries on earning.
         </Note>
       </Notes>
 
@@ -201,8 +200,8 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap simply
-            stops you borrowing more, and the position stays open with the deposit still
+            On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap stops you
+            borrowing more, and the position stays open with the deposit still
             earning. The quick start suggests starting well below the cap, so this one carries
             on at 5,000.
           </Body>

@@ -192,9 +192,8 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            The price you sold at settles your cost, once and for all. Hold the loan for a
-            month or for a decade and that figure stays exactly where it is, because there
-            is no interest running against it.
+            The price you sold at settles your cost. Hold the loan for as long as you like
+            and that figure stays where it is, because no interest runs against it.
           </Body>
           <Body>
             Another charge arrives later. When redemptions repay your debt out of your

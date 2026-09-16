@@ -9,12 +9,18 @@ import {
 } from "../kit";
 
 /**
- * Lesson 6: turning alAssets back.
+ * Lesson 6: the Transmuter.
  *
- * The 5,000 alUSD borrowed in lesson 3 goes back through the Transmuter. The
- * learner guesses what comes out after the term, then sets an amount and a
- * market price and watches the two routes side by side. The one-for-one tile
- * shows exactly the amount put in; only the sell-now tile follows the price.
+ * Framed as what it is, a fixed-rate yield product: buy alAssets below face
+ * value, wait out a governance-set term, collect 1:1. NOT as the borrower's
+ * exit. A borrower holding alUSD repays with it, since 1 alUSD cancels 1 of
+ * debt inside the Alchemist, and routing it through the Transmuter would mean
+ * waiting out a term for USDC while still carrying the debt.
+ *
+ * The learner buys at a discount, guesses what comes out after the term, then
+ * sets an amount and a market price and watches the two routes side by side.
+ * The one-for-one tile shows exactly the amount put in; only the sell-now tile
+ * follows the price.
  *
  * This lesson states no term length and no fee rate. The DAO sets both and both
  * vary, so the copy points at the app for the live figures instead.
@@ -37,7 +43,7 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       done={done}
       onPass={onComplete}
       passTitle="Track complete."
-      passBody="You can now deposit, borrow against it, leave the balance to fall on its own, name the one risk that can actually reach you, and turn alUSD back into USDC. That covers everything the app asks of a first-time user."
+      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, name the one risk that can actually reach you, and earn a fixed rate through the Transmuter. That covers the screens a first-time user actually touches."
     />
   );
 }
@@ -54,31 +60,32 @@ function Learn({ onDone }) {
       n: 1,
       label: "Deposit",
       value: `${money(HOLDING)} alUSD`,
-      note: "You deposit it on the Fixed Yield page",
+      note: "Deposit it on the Fixed Yield page.",
       tone: "#8ea9d8",
     },
     {
       n: 2,
       label: "Wait",
       value: "The term",
-      note: "The Alchemix DAO sets it and the app shows it",
+      note: "The Alchemix DAO sets it and the app shows it.",
       tone: "#8ea9d8",
     },
     {
       n: 3,
       label: "Receive",
       value: revealed ? `${money(HOLDING)} USDC` : "USDC",
-      note: "Payment arrives as MYT and the app turns it into USDC",
+      note: "Payment arrives as MYT and the app turns it into USDC.",
       tone: revealed ? "#5ba88a" : "#8ea9d8",
     },
   ];
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="Now turn the alUSD back into USDC.">
+    <Stage eyebrow="Stage 1 · Learn" headline="Buy alUSD under a dollar, collect a full one.">
       <Sub>
-        You are holding the {money(HOLDING)} alUSD you borrowed. On the open market today, each
-        one sells for {money2(PRICE)} USDC. The Transmuter is the other way out, and the app
-        puts it on the Fixed Yield page.
+        alUSD trades a little below face value, because borrowers sell the alUSD they mint.
+        Today each one costs {money2(PRICE)} USDC, so {money(HOLDING)} alUSD costs you{" "}
+        {money(HOLDING * PRICE)}. Hand it to the Transmuter on the Fixed Yield page and wait
+        out the term.
       </Sub>
 
       <FlowSteps steps={steps} />
@@ -100,7 +107,7 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside={`Selling it today would return ${money(HOLDING * PRICE)} USDC.`}>
+        <Actions aside={`You paid ${money(HOLDING * PRICE)} USDC for it.`}>
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
@@ -111,9 +118,10 @@ function Learn({ onDone }) {
         >
           <Body>
             The Transmuter ignores the market price entirely. One alUSD returns one USDC,
-            one alETH returns one ETH, once the term is up. Wait it out and you keep the full
-            amount. Leave early and you pay a fee. Check the current term in the app before
-            you deposit.
+            one alETH returns one ETH, once the term is up. You paid{" "}
+            {money(HOLDING * PRICE)} and collect {money(HOLDING)}, so the discount you bought
+            at is your return. The Alchemix DAO sets the term and it varies, so check the
+            current one in the app before you deposit.
           </Body>
         </Reveal>
       )}
@@ -133,7 +141,10 @@ function Try({ onDone }) {
 
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Weigh selling now against waiting.">
-      <Sub>Set the amount and the market price, and both routes update as you go.</Sub>
+      <Sub>
+        Set how much alUSD you hold and what the market is paying for it. The Transmuter
+        route ignores that price entirely.
+      </Sub>
 
       <div className={own.routes}>
         <div className={own.route}>

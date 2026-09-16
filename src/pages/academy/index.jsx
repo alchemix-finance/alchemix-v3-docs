@@ -23,7 +23,7 @@ import styles from "./track.module.css";
 
 const INTRO = {
   beginner:
-    "You put in a deposit, borrow up to 90% of it, and the balance starts falling from there. When you want out, the Transmuter takes your alUSD back at 1:1. The beginner track walks the same position through all of it, one app screen at a time.",
+    "You put in a deposit, borrow up to 90% of it, and redemptions start clearing the balance from there. Repay and withdraw whenever you want the collateral back. The beginner track walks the same position through all of it, one app screen at a time.",
   intermediate:
     "Underneath the app sits a vault with hard caps on the risk it can hold. The protocol sets one repayment pace for everyone. The intermediate track works through that machinery a mechanic at a time, and ends with a position you size yourself.",
 };
@@ -57,9 +57,9 @@ export default function AcademyTrack() {
         <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
         <p className={styles.sub}>
           On most lending platforms your collateral sits idle while you pay interest on
-          the loan. Alchemix pays the loan down with what your deposit earns. Both tracks
-          below work through how that happens, on the same screens and with the same
-          numbers the app uses.
+          the loan. In Alchemix the collateral keeps earning, and redemptions clear the debt
+          for you. Both tracks below work through how that happens, on the same screens and
+          with the same numbers the app uses.
         </p>
         <p className={styles.sub}>
           You don't need a wallet, a sign-in, or anything installed, and every lesson

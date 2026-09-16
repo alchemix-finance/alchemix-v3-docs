@@ -19,7 +19,7 @@ import {
  * repaying by hand, and borrowing more.
  *
  * Every falling figure comes from the dApp's own projection, run at an example
- * rate. Forty percent of the balance is still standing at two years, so nothing
+ * redemption rate. Forty percent of the balance is still standing at two years, so nothing
  * on screen implies a payoff date.
  */
 
@@ -96,8 +96,8 @@ function Learn({ onDone }) {
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
         Your position holds 10,000 deposited and 5,000 borrowed. Now walk away for two
-        years. The deposit keeps earning the whole time, and what it earns goes to
-        repaying the loan, so watch both figures on the card.
+        years. Redemptions repay the loan from your collateral while you are gone, so watch
+        both figures on the card.
       </Sub>
 
       <PositionCard
@@ -140,10 +140,10 @@ function Learn({ onDone }) {
           nextLabel="See what moves it"
         >
           <Body>
-            Two years went by and you never touched the position. The yield your deposit
-            earned did the paying, a little at a time, while the deposit itself stayed put
-            and carried on working. Real rates move up and down, so your own loan will run
-            faster or slower than this one.
+            Two years went by and you never made a payment. Redemptions cleared the balance
+            a little at a time, drawing on your own collateral, which carried on earning
+            throughout. Redemption rates move, so your own loan will run faster or slower
+            than this one.
           </Body>
         </Reveal>
       )}
@@ -219,7 +219,7 @@ function Try({ onDone }) {
           formatY={money}
         />
         <Legend items={[{ label: "Balance", color: "#f5c09a" }]} />
-        <Hint>An example rate, so your own position runs faster or slower than this.</Hint>
+        <Hint>This runs at an example redemption rate, and the real one moves.</Hint>
       </div>
 
       <Controls>
@@ -265,7 +265,7 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            Those three are the whole list, and two of them are yours to make. Repay any
+            Those three are the whole list, and two of them are your own choices. Repay any
             part of the balance whenever you want, with alUSD, MYT, or USDC, and the amount
             free to withdraw climbs the moment you do.
           </Body>

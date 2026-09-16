@@ -25,9 +25,9 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The protocol repays the loan out of the position, so the balance falls while you do nothing.",
+        "Right. Redemptions repay it out of your own collateral, so the balance falls while you do nothing.",
         "Alchemix charges no interest. The only direction that balance moves on its own is down.",
-        "The balance does not sit still. The protocol repays it from the position while the loan is open.",
+        "The balance does not sit still. Redemptions repay it from your collateral the whole time the loan is open.",
         "The amount you owe is recorded in alUSD or alETH and does not follow the market price of your collateral.",
       ],
     },
@@ -42,9 +42,9 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. An Alchemix loan has no interest rate at all.",
-        "There is no variable rate here, or any rate at all. The protocol pays the loan down instead of charging you.",
+        "There is no variable rate here, or any rate at all. Redemptions pay the loan down instead of a lender charging you.",
         "There is no fixed rate either. An Alchemix loan carries no rate of any kind.",
-        "Nothing is charged per day. Hold the loan for a decade and the balance still only falls.",
+        "Nothing is charged per day. Hold the loan for a decade and redemptions still only push the balance down.",
       ],
     },
     {
@@ -57,7 +57,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Exactly. Your deposit stays in the vault, and the yield it earns is part of what pays the loan down.",
+        "Exactly. Your deposit stays in the vault and keeps earning the whole time it backs the loan.",
         "It keeps earning the whole time. An open loan gives your deposit a job as collateral, and it carries on earning in that job.",
         "Nothing is sold. You keep your deposit, and it keeps earning while the loan is open.",
         "Your deposit is not lent to anyone. It stays yours and keeps earning in the vault.",
@@ -78,7 +78,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Borrowing more is the only thing that raises what you owe.",
-        "Time alone lowers the balance. Every month, redemptions clear a little more of it for you.",
+        "Time alone lowers the balance, because redemptions keep clearing a little more of it for you.",
         "A price move does not change what you owe. Your debt is recorded in alUSD or alETH, and that number does not follow the price of your collateral.",
         "Yield works in your favor. It never raises what you owe.",
       ],
@@ -147,8 +147,8 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Yes. The cap limits borrowing and does nothing else.",
-        "Nothing is closed or sold at the cap. It simply stops you borrowing more, and the position carries on earning.",
-        "Sitting at the cap is free. Borrowing simply stops there.",
+        "Nothing is closed or sold at the cap. It stops you borrowing more, and the position carries on earning.",
+        "Sitting at the cap is free. Borrowing stops there and the position keeps earning.",
         "Nothing is liquidated at the cap. Liquidation is a separate mechanism, and it needs a loss of backing.",
       ],
     },

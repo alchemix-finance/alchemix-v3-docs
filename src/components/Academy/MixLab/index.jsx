@@ -111,8 +111,8 @@ function Predict({ onDone }) {
           </div>
 
           <p className={styles.revealBody}>
-            The caps are what let you borrow at a high LTV and still sleep at night. Your
-            borrowing headroom rests on what the vault underneath is allowed to hold.
+            The caps are what make a high LTV safe to borrow at. Your borrowing headroom
+            rests on what the vault underneath is allowed to hold.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Build a mix inside the caps
