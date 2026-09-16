@@ -230,8 +230,8 @@ function Explore({ onDone }) {
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
-        The strategies are the same ones. Move the allocation and watch the blended APR
-        respond. Push a class past its ceiling and the vault turns the composition away.
+        Move the allocation and watch the blended APR respond. Push a class past its
+        ceiling and the vault turns the composition away.
       </p>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />

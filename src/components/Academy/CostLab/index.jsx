@@ -102,8 +102,7 @@ function Predict({ onDone }) {
           <Body>
             {close ? "Your guess was close. " : `You answered ${money(guess)}. `}
             The {money(shortfall)} difference is the market discount, and it is what
-            borrowing costs you here. You pay it once, at the moment you sell, and it stops
-            there.
+            borrowing costs you here. You pay it once, at the moment you sell.
           </Body>
           <Body>
             Inside Alchemix, 1 alUSD still cancels exactly 1 of debt. The discount exists

@@ -192,8 +192,8 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Run the months, then move the balance yourself.">
       <Sub>
-        Same position, your hands on the controls. Push the months forward, then try the
-        two amounts below. They are the same fields you use on the Repay tab and the
+        This is the same position. Push the months forward, then try the two amounts
+        below. They are the same fields you use on the Repay tab and the
         Borrow tab.
       </Sub>
 
@@ -265,9 +265,8 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            Those three are the whole list, and two of them are your own choices. Repay any
-            part of the balance whenever you want, with alUSD, MYT, or USDC, and the amount
-            free to withdraw climbs the moment you do.
+            Repaying does more than shrink the balance. It frees collateral too, and the
+            amount you can withdraw climbs the moment the repayment lands.
           </Body>
         </Reveal>
       ) : null}

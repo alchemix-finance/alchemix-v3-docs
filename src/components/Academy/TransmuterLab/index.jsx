@@ -142,8 +142,8 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Weigh selling now against waiting.">
       <Sub>
-        Set how much alUSD you hold and what the market is paying for it. The Transmuter
-        route ignores that price entirely.
+        Set how much alUSD you hold and what the market is paying for it. Only the
+        sell-now figure follows that price.
       </Sub>
 
       <div className={own.routes}>

@@ -233,7 +233,7 @@ function Explore({ onDone }) {
             How much you must borrow is decided by the price you can sell at, and nothing
             about your own position shifts that number. How much collateral the borrow needs
             behind it is decided by the loss you have to absorb, and the market has no say
-            in that one. The deposit is the first divided by the second.
+            in that one. Divide the borrow by the LTV you can afford and you have the deposit.
           </Body>
           <Body>
             Push the price down and both checks feel it. A worse discount means borrowing

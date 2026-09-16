@@ -100,7 +100,7 @@ function Predict({ onDone }) {
       <h1 className={styles.headline}>Ana and Ben open positions in the same vault on the same day.</h1>
       <p className={styles.sub}>
         They deposit the same amount, and Ben borrows four times what Ana does. Both then
-        leave the position completely alone. Set both answers before the projection runs.
+        leave the position alone. Set both answers before the projection runs.
       </p>
 
       <div className={styles.setupGrid}>
@@ -163,7 +163,7 @@ function Predict({ onDone }) {
               ? "Your two answers match, and so does the projection. The two curves sit exactly on top of each other, and the dashed line is the only sign that there are two."
               : `You put the two answers ${Math.abs(ana - ben)} points apart. The projection puts them in the same place, with the two curves exactly on top of each other.`}{" "}
             Ben borrowed four times what Ana did, and after {CHECK_MONTH} months the same
-            share of each loan remains. His bigger loan runs on exactly her schedule.
+            share of each loan remains.
           </p>
           <p className={styles.revealBody}>
             On a conventional loan, interest accrues on the balance, so a larger balance
@@ -309,15 +309,13 @@ function Explore({ onDone }) {
           <div className={styles.revealHead}>The redemption rate sets the pace.</div>
           <p className={styles.revealBody}>
             Redemptions repay a share of total system debt each year, and every position
-            is repaid at that rate whatever its size. Ana and Ben traced a single curve for
-            exactly this reason. One rate applied to both, so their loans cleared in
-            lockstep even though one was four times the other.
+            is repaid at that rate whatever its size. One rate applied to Ana and Ben alike,
+            so their loans cleared in lockstep even though one was four times the other.
           </p>
           <p className={styles.revealBody}>
             The redemption rate is a protocol-level parameter, applied equally to every
-            position in the market. It sits outside your hands, and outside everyone
-            else's. What you do control is repaying by hand, which clears debt the moment
-            you choose to.
+            position in the market. What you do control is repaying by hand, which clears
+            debt the moment you choose to.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint
