@@ -230,16 +230,16 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            How much you must borrow is decided by the price you can sell at. Nothing
-            about your own position changes that number. How much collateral the borrow
-            needs behind it is decided by the loss you have to absorb, and no move in the
-            market changes that one. The deposit is the first divided by the second.
+            How much you must borrow is decided by the price you can sell at, and nothing
+            about your own position shifts that number. How much collateral the borrow needs
+            behind it is decided by the loss you have to absorb, and the market has no say
+            in that one. The deposit is the first divided by the second.
           </Body>
           <Body>
             Push the price down and both checks feel it. A worse discount means borrowing
-            more to raise the same capital. The larger borrow raises the LTV, so the same
-            loss now needs more collateral behind it. Neither number can be chosen in
-            isolation.
+            more to raise the same capital. The larger borrow lifts your LTV, so that same
+            loss now needs more collateral standing behind it. You have to solve for both at
+            once.
           </Body>
         </Reveal>
       ) : (

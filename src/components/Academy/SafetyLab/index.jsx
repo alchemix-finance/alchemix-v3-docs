@@ -106,8 +106,8 @@ function Learn({ onDone }) {
         >
           <Body>
             Your debt is recorded in alETH, the same kind of asset as your deposit. When ETH
-            falls, both sides fall by the same share and the ratio between them holds. Nothing
-            is liquidated. USDC and alUSD pair the same way.
+            falls, both sides fall by the same share, so the ratio between them holds and your
+            position sits exactly where it did last night. USDC and alUSD pair up the same way.
           </Body>
         </Reveal>
       )}
@@ -145,7 +145,7 @@ function Try({ onDone }) {
         backingLoss={loss / 100}
         earning
         highlight="ltv"
-        note={crossed ? "The position is past the marker. Only the minimum needed is sold." : worthNote(price, borrowed)}
+        note={crossed ? "Past the marker. The protocol sells only enough to bring you back to a safe ratio." : worthNote(price, borrowed)}
       />
 
       <Controls>
@@ -181,18 +181,18 @@ function Try({ onDone }) {
           stands against less deposit.
         </Note>
         <Note label="Past the marker">
-          Only the minimum needed to bring the position back is sold. The rest stays where it
-          is and keeps earning.
+          The protocol sells only enough to bring the position back to a safe ratio. The rest
+          stays yours and carries on earning.
         </Note>
       </Notes>
 
       {touched.price && touched.loss ? (
         <Reveal title="Only one thing moves the marker." onNext={onDone} nextLabel="Take the check">
           <Body>
-            A price move changes both sides at once. A loss inside the strategies changes only
-            the deposit, so the marker slides toward your position. The lower your LTV, the
-            more loss of backing you absorb before it arrives. Hitting the 90% cap only stops
-            you borrowing more.
+            A price move changes both sides at once, which is why the bar sat still. A loss
+            inside the strategies changes only the deposit, so the marker slides toward your
+            position. The lower your LTV, the more loss you can absorb before it arrives.
+            Reaching the 90% cap just stops you borrowing more.
           </Body>
         </Reveal>
       ) : null}

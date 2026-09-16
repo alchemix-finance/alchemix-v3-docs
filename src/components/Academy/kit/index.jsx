@@ -520,8 +520,8 @@ export function Checkpoint({
       <LocalNotice show={challenge.local} />
       <Hint>
         {isChoice
-          ? "The options are in a different order for every learner. A letter copied from someone else will not match yours."
-          : "The figures are different for every learner. An answer copied from someone else will not fit yours."}
+          ? "Every learner gets the options in a different order, so a letter passed to you points at the wrong one."
+          : "Every learner gets different figures, so an answer passed to you will fit their question and miss yours."}
       </Hint>
 
       {children}

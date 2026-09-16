@@ -107,10 +107,10 @@ function Learn({ onDone }) {
         >
           <Body>
             Your <strong>loan to value</strong>, or LTV, is what you owe divided by what you
-            deposited, and the protocol caps it at 90%. Borrowing mints new alUSD into your
-            wallet, and inside the protocol one alUSD counts as one USDC. The deposit becomes
-            the <strong>collateral</strong> behind the loan, which is the app's word for what
-            stands behind it. It stays in the vault and keeps earning.
+            deposited, and the protocol caps it at 90%. Borrowing mints fresh alUSD into your
+            wallet, and inside the protocol one alUSD always cancels one USDC of debt. Your
+            deposit is now the <strong>collateral</strong> standing behind that loan. It stays
+            in the vault and keeps earning the whole time.
           </Body>
         </Reveal>
       )}
@@ -150,7 +150,7 @@ function Try({ onDone }) {
   }
 
   const note = atCap
-    ? "Borrowing stops here. Nothing else happens."
+    ? "Borrowing stops here. The position keeps earning."
     : justReturned
       ? "The loan is back at 5,000 alUSD."
       : `In your wallet: ${money(borrow)} alUSD`;
@@ -185,11 +185,12 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="What arrives">
-          alUSD lands in your wallet, and inside the protocol it counts as one USDC. On the
-          open market it may trade a little under 1.00.
+          alUSD lands in your wallet, and inside the protocol one of them cancels one USDC
+          of debt. Out on the open market it trades a little under 1.00.
         </Note>
         <Note label="At the cap">
-          Borrowing stops, nothing is sold, and nothing is charged.
+          Borrowing stops, and that is the whole of it. The position stays open and carries
+          on earning.
         </Note>
       </Notes>
 
@@ -200,10 +201,10 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            On 10,000 that is 9,000. On 4,000 it would be 3,600. Hitting the cap stops further
-            borrowing and does nothing else, so the position stays open and the deposit keeps
-            earning. The quick start suggests starting well below the cap, so this position
-            carries on at 5,000.
+            On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap simply
+            stops you borrowing more, and the position stays open with the deposit still
+            earning. The quick start suggests starting well below the cap, so this one carries
+            on at 5,000.
           </Body>
         </Reveal>
       ) : null}

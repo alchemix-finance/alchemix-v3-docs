@@ -18,8 +18,8 @@ import {
  * Try stage puts the three things that move a balance on the same card: time,
  * repaying by hand, and borrowing more.
  *
- * Every falling figure comes from the dApp's own projection at an illustrative
- * pace. Forty percent of the balance is still standing at two years, so nothing
+ * Every falling figure comes from the dApp's own projection, run at an example
+ * rate. Forty percent of the balance is still standing at two years, so nothing
  * on screen implies a payoff date.
  */
 
@@ -56,7 +56,7 @@ export default function RepayLab({ lessonId, stage, onStage, done, onComplete })
       done={done}
       onPass={onComplete}
       passTitle="Lesson 4 complete."
-      passBody="A balance falls on its own, and it falls faster whenever you choose to repay. The position card tells you how much of the deposit that frees."
+      passBody="Left alone, the balance falls on its own. Repay by hand and it falls faster, and the position card shows you how much of the deposit that frees up."
     />
   );
 }
@@ -95,9 +95,9 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        Your position holds 10,000 deposited and 5,000 borrowed. For two years you make no
-        payments and borrow nothing more. Repayment comes out of the deposit itself, so both
-        figures on the card move.
+        Your position holds 10,000 deposited and 5,000 borrowed. Now walk away for two
+        years. The deposit keeps earning the whole time, and what it earns goes to
+        repaying the loan, so watch both figures on the card.
       </Sub>
 
       <PositionCard
@@ -108,7 +108,7 @@ function Learn({ onDone }) {
         highlight="borrowed"
         note={
           revealed
-            ? `Month ${month}. This pace is illustrative, and the live one moves with protocol conditions.`
+            ? `Month ${month}`
             : "Month 0"
         }
       />
@@ -135,15 +135,15 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title="About 2,000 is left, at an illustrative pace."
+          title="You owe about 2,000. You paid none of it."
           onNext={onDone}
           nextLabel="See what moves it"
         >
           <Body>
-            You paid nothing, and nothing was added for time passing or for any price move.
-            The repayments came out of the deposit, which kept earning the whole time. The
-            protocol sets the live pace and that pace changes, so read your own balance in
-            the app.
+            Two years went by and you never touched the position. The yield your deposit
+            earned did the paying, a little at a time, while the deposit itself stayed put
+            and carried on working. Real rates move up and down, so your own loan will run
+            faster or slower than this one.
           </Body>
         </Reveal>
       )}
@@ -192,8 +192,9 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Run the months, then move the balance yourself.">
       <Sub>
-        This is the same position. Push the months forward, then try the two amounts below.
-        They are the fields you use on the Repay tab and the Borrow tab.
+        Same position, your hands on the controls. Push the months forward, then try the
+        two amounts below. They are the same fields you use on the Repay tab and the
+        Borrow tab.
       </Sub>
 
       <PositionCard
@@ -218,7 +219,7 @@ function Try({ onDone }) {
           formatY={money}
         />
         <Legend items={[{ label: "Balance", color: "#f5c09a" }]} />
-        <Hint>This pace is illustrative, and the live one moves with protocol conditions.</Hint>
+        <Hint>An example rate, so your own position runs faster or slower than this.</Hint>
       </div>
 
       <Controls>
@@ -250,7 +251,7 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="Time passing">
-          Nothing is added for time passing, so the line only falls.
+          Every month, redemptions clear a little more of the balance for you.
         </Note>
         <Note label="Repaying by hand">
           You can repay at any time, in any amount, with alUSD, MYT, or USDC.
@@ -264,9 +265,9 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            Nothing else moves it, and two of the three are your own choices. Repay part or
-            all of the balance whenever you want, with alUSD, MYT, or USDC, and the figure
-            for what is free to withdraw rises the moment you do.
+            Those three are the whole list, and two of them are yours to make. Repay any
+            part of the balance whenever you want, with alUSD, MYT, or USDC, and the amount
+            free to withdraw climbs the moment you do.
           </Body>
         </Reveal>
       ) : null}

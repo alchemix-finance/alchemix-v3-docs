@@ -1,13 +1,14 @@
 Your deposit is held as the Mix-Yield Token, a vault built on Morpho Vaults V2 that
 routes deposits into several yield sources at once. You hold one token. The DAO
-selects the strategies behind it, sets target weights, and rebalances as markets
-shift.
+selects the strategies behind it, sets their target weights, and rebalances as
+markets shift.
 
-Every strategy carries a classification, and the classification sets a ceiling on
-how much of the vault it may occupy.
+Every strategy carries a risk classification, and that classification sets a
+ceiling on how much of the vault it may occupy.
 
-- **Conservative** – No cap applies. The class is reserved for strategies that wrap
-  and unwrap on contract, price off their own backing, and carry no duration risk.
+- **Conservative** – Free to fill the entire vault. The class is reserved for
+  strategies that wrap and unwrap on contract, price off their own backing, and
+  carry no duration risk.
 - **Moderate** – Any single strategy is capped at 25%, and the class is capped at
   40% in total.
 - **Aggressive** – Any single strategy is capped at 10%, and the class is capped at
@@ -15,17 +16,16 @@ how much of the vault it may occupy.
 
 ### Why the ceilings matter to a borrower
 
-The caps exist so that users can set an LTV that keeps liquidation risk low.
+The caps are what let you borrow at a high LTV and still sleep at night.
 
 A price move cannot close an Alchemix position, because debt and collateral are
 like-kind. Only a loss inside the vault itself can push a position toward
-liquidation. A composition allowed to hold far more risk would make a high LTV
-considerably more dangerous, so the ceilings on the vault protect your borrowing
-headroom.
+liquidation. A composition free to load up on risk would make a high LTV genuinely
+dangerous, so the ceilings on the vault are protecting your borrowing headroom.
 
-A cut is taken before the yield reaches you. A performance fee, a share of what the
-strategies earn, goes to the protocol before the remainder is credited to the MYT
-price. The current rate is read live on the [Fees](/user/concepts/fees) page.
+The protocol takes a performance fee, a share of what the strategies earn, before
+the rest is credited to the MYT price. The current rate is read live on the
+[Fees](/user/concepts/fees) page.
 
 The Choosing an LTV lesson works out what these same caps mean for the number you
 pick.

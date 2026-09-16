@@ -101,8 +101,9 @@ function Predict({ onDone }) {
         >
           <Body>
             {close ? "Your guess was close. " : `You answered ${money(guess)}. `}
-            The {money(shortfall)} difference is the market discount, the cost of borrowing
-            here. It is charged once, when you sell, and nothing accrues after that.
+            The {money(shortfall)} difference is the market discount, and it is what
+            borrowing costs you here. You pay it once, at the moment you sell, and it stops
+            there.
           </Body>
           <Body>
             Inside Alchemix, 1 alUSD still cancels exactly 1 of debt. The discount exists
@@ -191,16 +192,16 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            Nothing accrues while you hold the loan, because no interest is charged. The
-            price you sold at settles what you pay, once. Hold the loan for years and that
-            figure does not move.
+            The price you sold at settles your cost, once and for all. Hold the loan for a
+            month or for a decade and that figure stays exactly where it is, because there
+            is no interest running against it.
           </Body>
           <Body>
             Another charge arrives later. When redemptions repay your debt out of your
-            collateral, a small borrower redemption fee is taken from the amount repaid.
-            The fee is charged per event, so its effective annual cost depends on your
-            starting LTV and on how long the transmutation takes. Governance sets the
-            rate, and the fee schedule in the docs shows the live value.
+            collateral, the protocol takes a small borrower redemption fee out of the amount
+            repaid. It lands per event rather than per year, so its effective annual cost
+            depends on your starting LTV and on how long the transmutation takes.
+            Governance sets the rate, and the fee schedule in the docs carries the live one.
           </Body>
         </Reveal>
       ) : (

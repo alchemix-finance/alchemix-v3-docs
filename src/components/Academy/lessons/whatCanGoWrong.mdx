@@ -1,18 +1,21 @@
 ### What a price move does
 
-Your debt and your deposit are the same kind of asset. ETH backs alETH, and USDC
-backs alUSD. When the price moves, both sides move together and the ratio between
-them holds. A price move on its own cannot liquidate an Alchemix position.
+On most lending platforms, liquidation is a price problem. The market falls far
+enough, and the protocol sells your collateral to cover the loan. Alchemix takes
+price out of that equation. Your debt and your deposit are the same kind of asset,
+ETH behind alETH and USDC behind alUSD, so the two sides move together and the
+ratio between them holds. A 40% drawdown leaves your position exactly where it was.
 
 ### What can liquidate
 
-A real loss inside the Mix-Yield Token can. A strategy is exploited, or it simply
-loses money, and your deposit is suddenly worth less while the debt stands where it
-was. The liquidation marker slides toward your position. Past it, only the minimum
-needed to cover the debt is sold, and the rest keeps earning.
+One thing does: a real loss inside the Mix-Yield Token. A strategy gets exploited,
+or it simply loses money, and your deposit is suddenly worth less while your debt
+stands where it was. The liquidation marker slides toward you. Cross it and the
+protocol sells just enough to bring the position back to a safe ratio. The rest
+stays yours and carries on earning.
 
 ### Where to set your LTV
 
-The lower your LTV, the larger a loss of backing your position absorbs before any of
-this reaches you. Hitting the 90% cap only stops you borrowing more, and liquidation
-does not begin until the 95% marker. The intermediate track works out the number.
+The lower you borrow, the larger a loss your position can absorb before any of this
+reaches you. The 90% cap only stops you borrowing more. Liquidation waits until
+95%. The intermediate track works out the number to pick.

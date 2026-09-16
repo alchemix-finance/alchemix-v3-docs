@@ -50,7 +50,7 @@ export default function AcademyTrack() {
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by using it. The beginner track walks one position from the deposit through the loan that repays itself. The intermediate track goes underneath. You need no wallet and no sign-in."
+      description="Learn how Alchemix works by using it. The beginner track walks one position from the deposit through the loan that repays itself. The intermediate track goes underneath. No wallet, no sign-in, nothing to install."
     >
       <section className={styles.intro}>
         <div className={styles.eyebrow}>Alchemix Academy</div>
@@ -62,8 +62,8 @@ export default function AcademyTrack() {
           numbers the app uses.
         </p>
         <p className={styles.sub}>
-          You don't need a wallet, a sign-in, or anything installed. Nothing here assumes
-          you have used DeFi before.
+          You don't need a wallet, a sign-in, or anything installed, and every lesson
+          assumes you are starting from scratch.
         </p>
 
         <div className={styles.markets} aria-label="Where Alchemix runs">

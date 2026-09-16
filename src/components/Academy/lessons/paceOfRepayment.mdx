@@ -1,41 +1,40 @@
-Debt in Alchemix is cleared by redemptions. As Transmuter positions mature,
-redemptions convert earmarked collateral into the asset needed to repay debt, and
-that repayment is applied across the system in proportion to each position’s share
-of it.
+Redemptions clear debt. As Transmuter positions mature, the protocol converts
+earmarked collateral into the asset needed to repay debt, then spreads that
+repayment across the system in proportion to what each position owes.
 
-The redemption rate is the share of total system debt that redemptions repay in a
-year. It is a protocol-level parameter, and the same rate applies to every position
-in the market. A position holding four times the debt has four times as much repaid
-per year, and both positions sit at the same point on the curve.
+The redemption rate is the share of total system debt repaid this way in a year. It
+is a protocol-level parameter, and every position in the market sits on the same
+one. Owe four times as much and four times as much gets repaid for you each year,
+which lands both positions at the same point on the curve.
 
-The size of your loan does not decide how long it takes to clear. The redemption
-rate does, and you do not control it.
+So the size of your loan has no say in how long it takes to clear. The redemption
+rate decides that, and it is set for the whole market rather than for you.
 
 ### What borrowing more does cost
 
-Borrowing more does not cost you time, and no interest is charged for it. It costs
-you when your debt is redeemed, and again if you sell the alAssets below face value.
+Borrowing more costs you in two places, and time is neither of them. You pay when
+your debt is redeemed, and again if you sell the alAssets below face value.
 
-- **Redemption fee** – The fee is charged on the amount redeemed, so it scales with
-  how much you borrowed.
+- **Redemption fee** – Charged on the amount redeemed, so it scales with how much
+  you borrowed.
 - **alAsset discount** – You pay this one only if you sell your borrowed alUSD or
-  alETH below face value. Borrow 5,000 alUSD and sell it at 0.99, and you have paid
-  roughly 50 for the liquidity up front. The dApp shows the current price before you
+  alETH below face value. Borrow 5,000 alUSD, sell it at 0.99, and that liquidity
+  cost you roughly 50 up front. The dApp shows the current price before you
   confirm.
 
 The Choosing an LTV lesson works out the exposure a high LTV creates while the
 position stays open.
 
-That pace is what happens if you never touch the position. You can repay part or
-all of the debt by hand at any time and free collateral sooner.
+All of that describes a position you leave alone. Repay part or all of the debt by
+hand at any time and you free collateral sooner.
 
 ### What earmarking pays you
 
 Redemptions land in cycles. When a cycle begins, the protocol earmarks a slice of
-each open loan, in proportion to its share of total system debt. The earmarked
-collateral stays in place until the claim settles, and it keeps earning yield until
-then. The docs call this **temporal leverage**: the longer the gap between earmark
-and settlement, the more yield the earmarked collateral collects.
+each open loan, sized to its share of total system debt. The earmarked collateral
+stays right where it is until the claim settles, earning yield the whole way. The
+docs call this **temporal leverage**: the longer the gap between earmark and
+settlement, the more yield that collateral collects for you.
 
-Earmarked debt is repaid with MYT. The repay tab offers the right asset for each
+Earmarked debt gets repaid with MYT. The repay tab offers the right asset for each
 part of a loan.

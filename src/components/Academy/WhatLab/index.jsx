@@ -17,7 +17,7 @@ import {
  * interest rate on the loan, finds it is zero, then watches the balance fall
  * next to a loan with interest.
  *
- * The falling balance is the dApp's own projection at an illustrative pace.
+ * The falling balance is the dApp's own projection, run at an example rate.
  * Forty percent of it is still standing at two years, so nothing on screen
  * implies a payoff date.
  */
@@ -48,13 +48,13 @@ const LOOP = [
   { n: 1, label: "Deposit", value: "10,000 USDC", note: "On the Mixed Yield page your USDC joins a vault, and you receive MYT, a share of it.", tone: "#5ba88a" },
   { n: 2, label: "Earn", value: "MYT grows", note: "The DAO picks the strategies the vault earns from.", tone: "#5ba88a" },
   { n: 3, label: "Borrow", value: "5,000 alUSD", note: "On the Vaults page you borrow up to 90%, and the deposit stays in and keeps earning.", tone: "#f5c09a" },
-  { n: 4, label: "Balance falls", value: "no payments", note: "The protocol repays it out of your position.", tone: "#f5c09a" },
+  { n: 4, label: "Balance falls", value: "on its own", note: "The protocol repays it out of your position.", tone: "#f5c09a" },
   { n: 5, label: "alUSD returns", value: "1:1 for USDC", note: "The Transmuter takes it back on the Fixed Yield page once the wait is up.", tone: "#8ea9d8" },
 ];
 
 /** After the reveal, step 4 carries the answer. Nothing else in the picture changes. */
 const LOOP_REVEALED = LOOP.map((s) =>
-  s.n === 4 ? { ...s, value: "0% interest, no payments", tone: "#5ba88a" } : s,
+  s.n === 4 ? { ...s, value: "0% interest, repaid for you", tone: "#5ba88a" } : s,
 );
 
 export default function WhatLab({ lessonId, stage, onStage, done, onComplete }) {
@@ -71,7 +71,7 @@ export default function WhatLab({ lessonId, stage, onStage, done, onComplete }) 
       done={done}
       onPass={onComplete}
       passTitle="Lesson 1 complete."
-      passBody="An Alchemix loan charges no interest. The balance falls while you make no payments at all."
+      passBody="An Alchemix loan charges no interest. Your deposit keeps earning while you borrow against it, and those earnings are what clear the balance."
     />
   );
 }
@@ -125,10 +125,10 @@ function Learn({ onDone }) {
           nextLabel="See it against a loan with interest"
         >
           <Body>
-            An Alchemix loan charges no interest, and nothing falls due on a schedule. The
-            protocol repays the balance out of your position while the deposit underneath
-            keeps earning. How fast that happens depends on protocol conditions that change,
-            so no one can promise you a date.
+            Your deposit does the paying instead. It keeps earning the whole time it backs
+            the loan, and the protocol puts those earnings straight against your balance.
+            How fast that runs depends on what the strategies earn and how quickly
+            redemptions come round, so nobody can promise you a date.
           </Body>
         </Reveal>
       )}
@@ -151,7 +151,7 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Put the same 5,000 next to a loan with interest.">
       <Sub>
-        Both loans start at 5,000 owed and nobody repays either one by hand. Set the rate a
+        Both loans start at 5,000 owed, and both are left completely alone. Set the rate a
         lender somewhere else might charge you.
       </Sub>
 
@@ -178,7 +178,7 @@ function Try({ onDone }) {
             { label: "Alchemix", color: "#5ba88a" },
           ]}
         />
-        <Hint>The green line runs at an illustrative pace. The live pace moves with protocol conditions.</Hint>
+        <Hint>The green line uses an example rate. Real rates move with what the strategies earn.</Hint>
       </div>
 
       <Controls>
@@ -194,26 +194,26 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="With interest">
-          You would owe {money(interestAt(MONTHS))} after two years at {rate}%, having
-          repaid nothing.
+          Two years at {rate}% and you owe {money(interestAt(MONTHS))}, having never made a
+          payment.
         </Note>
         <Note label="Alchemix">
-          You would owe about {money(Math.round(OWED_AT_END / 100) * 100)} after two years
-          at the illustrative pace, again having repaid nothing.
+          Two years at an example rate and you owe about{" "}
+          {money(Math.round(OWED_AT_END / 100) * 100)}, having never made a payment either.
         </Note>
       </Notes>
 
       {moved ? (
         <Reveal
-          title="One balance grows. The other is repaid from the position."
+          title="One balance grows. The other gets paid down for you."
           onNext={onDone}
           nextLabel="Take the check"
         >
           <Body>
-            A loan with interest rises until you pay it down. An Alchemix balance falls
-            instead, because the protocol repays it from the position while the deposit
-            underneath carries on earning. The pace changes with protocol conditions. The
-            direction does not.
+            A loan with interest climbs until you pay it down. An Alchemix balance falls
+            instead, because the protocol is repaying it from the position while the deposit
+            underneath carries on earning. The speed of that fall changes. The direction
+            never does.
           </Body>
         </Reveal>
       ) : (

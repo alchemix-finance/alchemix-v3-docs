@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="cost-of-borrowing"
-      description="An Alchemix loan charges no interest, so the cost arrives somewhere else. Work out where, and what it comes to."
+      description="The cost of an Alchemix loan lands in two places, and neither of them is a monthly payment. Work out both, and what they come to."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[

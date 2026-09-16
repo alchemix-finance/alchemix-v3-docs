@@ -44,7 +44,7 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       targetFoot="the most that can leave the position today"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 1 complete."
-      passBody="You can read a position card and say how much of the deposit is free to leave today. What sets the speed the debt clears at comes next."
+      passBody="You can read a position card and say how much of the deposit is free to leave today. The next lesson works out what sets the speed your debt clears at."
     />
   );
 }
@@ -97,8 +97,8 @@ function Learn({ onDone }) {
         >
           <Body>
             {close ? "That is close. " : `You said ${money(guess)}. `}
-            The loan holds back the collateral it needs to stay under the 90% cap, and it
-            needs more collateral than the loan itself.
+            Your loan holds back the collateral it needs to stay under the 90% cap, and that
+            is always more than the loan is worth.
           </Body>
           <Body>
             {money(BORROW)} of debt needs {money(BORROW / MAX_LTV)} of collateral behind it
@@ -173,8 +173,8 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="Withdraw now">
-          Take whatever is already free and leave the loan open. Nothing is charged for it
-          and nothing makes you wait.
+          Take whatever is already free and leave the loan open. It is free to do, and it
+          goes through immediately.
         </Note>
         <Note label="Repay first">
           Repay some or all of the loan before you withdraw. Every unit repaid frees more
@@ -185,7 +185,7 @@ function Try({ onDone }) {
           You can repay with alUSD, with MYT, or with the asset you deposited. One alUSD
           cancels one unit of debt. Part of the loan can show as earmarked in the app,
           meaning set aside for the next redemption cycle. Earmarked debt is repaid with
-          MYT, and the repay menu only offers the assets that are valid.
+          MYT, and the repay menu offers you only the assets that are valid.
         </Note>
       </Notes>
 
@@ -200,8 +200,9 @@ function Try({ onDone }) {
             the cap. The remaining {money(free)} of the {money(DEPOSIT)} can be withdrawn now.
           </Body>
           <Body>
-            There is no repayment schedule to meet before you withdraw. The app shows the
-            withdrawable amount next to the debt, so the arithmetic is done for you.
+            You can do this on any day you like, with no schedule to meet first. The app
+            shows the withdrawable amount right beside the debt, so it has already run this
+            arithmetic for you.
           </Body>
         </Reveal>
       ) : (

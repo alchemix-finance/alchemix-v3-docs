@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="the-transmuter"
-      description="The Transmuter returns one USDC for every alUSD you put in, once the term is up. The market price makes no difference."
+      description="The Transmuter returns one USDC for every alUSD you put in, once the term is up, whatever the market happens to be paying."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

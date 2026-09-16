@@ -1,21 +1,21 @@
-A price move cannot close an Alchemix position. alETH is backed by ETH and alUSD
-by USDC, so collateral and debt move together and the ratio between them does not
-change when the market does. A 40% drawdown in ETH leaves an ETH-denominated
+A price move cannot close an Alchemix position. alETH is backed by ETH and alUSD by
+USDC, so collateral and debt move together, and the ratio between them holds steady
+even when the market does not. A 40% drawdown in ETH leaves an ETH-denominated
 position exactly where it was.
 
 The borrowing cap and the liquidation threshold do different jobs:
 
-- **The borrowing cap sits at 90%.** Reaching it stops further borrowing. The
-  position stays open and keeps earning.
-- **The liquidation threshold sits at 95%.** Crossing it can close part of a
-  position. Only the minimum needed to restore a healthy ratio is liquidated, and
-  the rest is untouched.
+- **The borrowing cap sits at 90%.** Reach it and you stop borrowing. The position
+  stays open and keeps earning.
+- **The liquidation threshold sits at 95%.** Cross it and the protocol can close
+  part of the position, selling only enough to restore a healthy ratio and leaving
+  the rest alone.
 
 ### What can liquidate
 
 A loss inside the Mix-Yield Token is the only thing that can. If a strategy is
-exploited or reports negative returns, the backing behind every position falls.
-The same debt now stands against less collateral, so the LTV rises.
+exploited or reports negative returns, the backing behind every position falls. The
+same debt now stands against less collateral, so your LTV climbs on its own.
 
 The highest starting LTV that survives a loss is the liquidation threshold applied
 to the backing that remains:
@@ -24,6 +24,7 @@ to the backing that remains:
 
 A 12% loss leaves 83.6%. A 20% loss leaves 76%.
 
-The risk caps inside the Mix-Yield Token bound this number. By limiting how much of
-the vault may sit in higher risk strategies, the DAO limits how large a loss is
-plausible. Those caps give you a worst case to size against.
+The risk caps inside the Mix-Yield Token are what bound this number. By limiting
+how much of the vault may sit in higher risk strategies, the DAO limits how large a
+loss is plausible in the first place, and that hands you a worst case to size
+against.

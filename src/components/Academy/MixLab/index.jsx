@@ -51,7 +51,7 @@ function Predict({ onDone }) {
       </p>
 
       <div className={own.strategyGrid}>
-        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="The vault enters and exits it directly, prices it by what it holds, and never waits to withdraw." tone="cons" />
+        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="The vault enters and exits directly, prices it off what it actually holds, and withdraws on demand." tone="cons" />
         <StrategyCard klass="Moderate" apr={DEMO.moderate} note="It leans on an outside market to price or to exit, or it can lock withdrawals for a time." tone="mod" />
         <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="It passes the Moderate tests and carries one factor more, such as being newer or less proven." tone="aggr" />
       </div>
@@ -111,8 +111,8 @@ function Predict({ onDone }) {
           </div>
 
           <p className={styles.revealBody}>
-            The caps exist so that users can set an LTV that keeps liquidation risk low.
-            Your borrowing headroom rests on what the vault underneath is allowed to hold.
+            The caps are what let you borrow at a high LTV and still sleep at night. Your
+            borrowing headroom rests on what the vault underneath is allowed to hold.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Build a mix inside the caps
@@ -231,8 +231,7 @@ function Explore({ onDone }) {
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
         The strategies are the same ones. Move the allocation and watch the blended APR
-        respond. Push a class past its ceiling and the vault can no longer hold the
-        composition.
+        respond. Push a class past its ceiling and the vault turns the composition away.
       </p>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
@@ -244,16 +243,16 @@ function Explore({ onDone }) {
           </div>
           <p className={styles.revealBody}>
             That mix fills Aggressive to its 10% ceiling and Moderate to its 40% ceiling,
-            and it leaves the other 50% in Conservative, which carries no cap. Anything
-            higher needs a composition the DAO does not permit.
+            leaving the other 50% in Conservative, which is free to take as much as it
+            likes. Anything higher needs a composition the DAO forbids.
             {!sawBreach
               ? " Push either slider past its ceiling to see the vault reject the mix."
               : ""}
           </p>
           <p className={styles.revealBody}>
-            Your collateral earns this blend while your loan clears. The same ceilings
-            protect your borrowing headroom. A vault allowed to hold 100% Aggressive would
-            make a high LTV far more dangerous.
+            Your collateral earns this blend while your loan clears, and those same ceilings
+            are protecting your borrowing headroom. A vault free to hold 100% Aggressive
+            would make a high LTV genuinely dangerous.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint
@@ -365,8 +364,8 @@ function Checkpoint({ base, lessonId, done, onPass }) {
       <p className={styles.sub}>{challenge.prompt}</p>
       <LocalNotice show={challenge.local} />
       <p className={styles.hint}>
-        Every learner is given different figures, so an answer shared with you will not
-        fit your version of the question.
+        Every learner gets different figures, so an answer someone passes you will fit
+        their question and miss yours.
       </p>
 
       <Allocator aprs={aprs} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />

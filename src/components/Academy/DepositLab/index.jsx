@@ -52,7 +52,7 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
 const STEPS = [
   { n: 1, label: "You deposit", value: `${money(DEPOSIT)} USDC`, note: "Your wallet sends the USDC to the vault." },
   { n: 2, label: "You receive", value: "MYT", note: "Each Mix-Yield Token, or MYT, is a share of that vault.", tone: "#5ba88a" },
-  { n: 3, label: "The DAO", value: "runs the strategies", note: "It picks where the vault earns and rebalances as conditions change.", tone: "#5ba88a" },
+  { n: 3, label: "The DAO", value: "runs the strategies", note: "It picks where the vault earns and rebalances as markets move.", tone: "#5ba88a" },
 ];
 
 function Learn({ onDone }) {
@@ -75,7 +75,7 @@ function Learn({ onDone }) {
         asset="USDC"
         earning="Earning"
         highlight="deposited"
-        note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "Nothing is borrowed against it."}
+        note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "Deposited and earning."}
         compact
       />
 
@@ -104,9 +104,9 @@ function Learn({ onDone }) {
       ) : (
         <Reveal title={`All ${money(DEPOSIT)} of it comes back.`} onNext={onDone} nextLabel="Watch it earn">
           <Body>
-            Nothing locks the deposit in, and no notice period stands in front of it.
-            Withdraw whenever you like and the USDC comes back with everything it earned.
-            Borrowing is a separate decision you have not made yet.
+            Withdraw on any day, in any amount, and the USDC comes back carrying everything
+            it earned. No lock-up, no notice period, no queue. Borrowing against it is a
+            separate decision, and you can skip it entirely.
           </Body>
         </Reveal>
       )}
@@ -132,9 +132,9 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Watch it earn, then take it out.">
       <Sub>
-        Pick a rate and see what the deposit is worth after a year. The live rate moves with
-        the DAO's strategies, so treat this one as an example. Then withdraw some of it, or
-        all of it.
+        Pick a rate and see what the deposit is worth after a year. Real rates move with
+        whatever the DAO's strategies are earning, so treat this one as an example. Then
+        withdraw some of it, or all of it.
       </Sub>
 
       <PositionCard
@@ -143,7 +143,7 @@ function Try({ onDone }) {
         asset="USDC"
         earning={remaining > 0 ? "Earning" : "Nothing deposited"}
         highlight="deposited"
-        note={full ? "Withdrawn in full. Nothing held it back." : `After one year at ${rate}%`}
+        note={full ? "Withdrawn in full, the same day you asked." : `After one year at ${rate}%`}
       />
 
       <Readout>
@@ -173,11 +173,11 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="How it reaches you">
-          Each MYT becomes worth more USDC as the strategies earn, so you never claim a
-          payout.
+          Each MYT becomes worth more USDC as the strategies earn. Your yield shows up in
+          the value of what you already hold.
         </Note>
         <Note label="Who runs it">
-          The Alchemix DAO chooses the strategies and rebalances them as conditions change.
+          The Alchemix DAO chooses the strategies and rebalances them as markets move.
         </Note>
       </Notes>
 
@@ -188,9 +188,9 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            That is the deposit plus one year of that rate. At no point did the position hold
-            the withdrawal back, and the USDC that came out carried everything the deposit had
-            earned up to that day.
+            That is the deposit plus a year of that rate. The withdrawal went through the
+            moment you asked for it, and the USDC that came out carried every day of earnings
+            along with it.
           </Body>
         </Reveal>
       ) : (

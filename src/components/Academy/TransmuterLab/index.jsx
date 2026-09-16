@@ -16,8 +16,8 @@ import {
  * market price and watches the two routes side by side. The one-for-one tile
  * shows exactly the amount put in; only the sell-now tile follows the price.
  *
- * No term length and no fee rate is stated anywhere in this lesson. Both are
- * set by the DAO and vary, so the copy points at the app for the live figures.
+ * This lesson states no term length and no fee rate. The DAO sets both and both
+ * vary, so the copy points at the app for the live figures instead.
  */
 
 const HOLDING = 5_000;
@@ -37,7 +37,7 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       done={done}
       onPass={onComplete}
       passTitle="Track complete."
-      passBody="You can now deposit, borrow against that deposit, leave the balance to fall on its own, tell which loss can actually reach you, and turn alUSD back into USDC. That is everything the app asks of a first-time user."
+      passBody="You can now deposit, borrow against it, leave the balance to fall on its own, name the one risk that can actually reach you, and turn alUSD back into USDC. That covers everything the app asks of a first-time user."
     />
   );
 }
@@ -110,10 +110,10 @@ function Learn({ onDone }) {
           nextLabel="Compare it with selling"
         >
           <Body>
-            The Transmuter ignores the market price entirely. One alUSD returns one USDC and
-            one alETH returns one ETH, once the term is up. Waiting the full term costs
-            nothing, while leaving early carries a fee. Check the current term in the app
-            before you deposit.
+            The Transmuter ignores the market price entirely. One alUSD returns one USDC,
+            one alETH returns one ETH, once the term is up. Wait it out and you keep the full
+            amount. Leave early and you pay a fee. Check the current term in the app before
+            you deposit.
           </Body>
         </Reveal>
       )}

@@ -26,7 +26,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. The protocol repays the loan out of the position, so the balance falls while you do nothing.",
-        "Alchemix charges no interest, so nothing is being added to your balance.",
+        "Alchemix charges no interest. The only direction that balance moves on its own is down.",
         "The balance does not sit still. The protocol repays it from the position while the loan is open.",
         "The amount you owe is recorded in alUSD or alETH and does not follow the market price of your collateral.",
       ],
@@ -42,9 +42,9 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. An Alchemix loan has no interest rate at all.",
-        "There is no variable rate here. Alchemix loans do not accrue interest at all.",
-        "There is no fixed rate either. Alchemix loans do not accrue interest at all.",
-        "Nothing is charged per day. The loan does not accrue interest.",
+        "There is no variable rate here, or any rate at all. The protocol pays the loan down instead of charging you.",
+        "There is no fixed rate either. An Alchemix loan carries no rate of any kind.",
+        "Nothing is charged per day. Hold the loan for a decade and the balance still only falls.",
       ],
     },
     {
@@ -58,7 +58,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Exactly. Your deposit stays in the vault, and the yield it earns is part of what pays the loan down.",
-        "It keeps earning the whole time. Nothing about an open loan stops the deposit working.",
+        "It keeps earning the whole time. An open loan gives your deposit a job as collateral, and it carries on earning in that job.",
         "Nothing is sold. You keep your deposit, and it keeps earning while the loan is open.",
         "Your deposit is not lent to anyone. It stays yours and keeps earning in the vault.",
       ],
@@ -78,7 +78,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Borrowing more is the only thing that raises what you owe.",
-        "Time alone lowers the balance. No interest accrues, so nothing is pushing it up.",
+        "Time alone lowers the balance. Every month, redemptions clear a little more of it for you.",
         "A price move does not change what you owe. Your debt is recorded in alUSD or alETH, and that number does not follow the price of your collateral.",
         "Yield works in your favor. It never raises what you owe.",
       ],
@@ -97,7 +97,7 @@ export const QUESTIONS = {
         "Yes. You can repay any amount whenever you want, and the collateral it was holding frees up immediately.",
         "You are never locked in. You can repay part or all of the balance whenever you want.",
         "Borrowing more raises what you owe. It does not clear the loan faster.",
-        "Withdrawing collateral does not repay anything. It only moves collateral out, and only what is free to move.",
+        "Withdrawing moves collateral out of the position, and only the part that is already free. Your balance stays exactly where it was.",
       ],
     },
     {
@@ -112,7 +112,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Exactly. Left alone, the balance only moves down.",
-        "No interest is added to an Alchemix loan, so nothing pushed the balance up.",
+        "An Alchemix loan carries no interest, so the only direction it travelled was down.",
         "It did not stay flat. The protocol was repaying it the whole time.",
         "The balance does not track the market. It is recorded in alUSD or alETH and only moves as it is repaid.",
       ],
@@ -131,7 +131,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. A real loss in the strategies behind your collateral is the one thing that can move you toward liquidation.",
-        "A price fall moves your debt and your collateral together, so the ratio between them does not change.",
+        "A price fall moves your debt and your collateral together, so the ratio between them holds.",
         "The protocol values alAssets at face value for repayment, whatever an exchange is charging for them.",
         "Reaching the cap only stops further borrowing. The position stays open and keeps earning.",
       ],
@@ -147,8 +147,8 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Yes. The cap limits borrowing and does nothing else.",
-        "Nothing is closed or sold at the cap. You cannot borrow more against the position.",
-        "No fee is charged for sitting at the cap. Borrowing stops there.",
+        "Nothing is closed or sold at the cap. It simply stops you borrowing more, and the position carries on earning.",
+        "Sitting at the cap is free. Borrowing simply stops there.",
         "Nothing is liquidated at the cap. Liquidation is a separate mechanism, and it needs a loss of backing.",
       ],
     },
@@ -165,7 +165,7 @@ export const QUESTIONS = {
         "Exactly. ETH backs alETH and USDC backs alUSD, so a price move changes both sides by the same amount and the ratio holds.",
         "Nothing is paused. The price move leaves the position exactly where it was.",
         "The price is not fixed or ignored. It applies to your debt and your collateral equally.",
-        "There is no insurance fund doing this. A price move does not create a loss to absorb.",
+        "There is no insurance fund doing this. A price move leaves both sides of your position in the same ratio, so there is no loss to absorb.",
       ],
     },
   ],
@@ -182,7 +182,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. The exchange is exactly 1:1, and that guarantee is what holds the peg.",
-        "Waiting the full term costs you nothing. A fee applies only if you leave before it is up.",
+        "Wait the full term and you keep the whole 1:1. A fee applies only if you leave before it is up.",
         "The market price does not apply. The Transmuter exchanges at 1:1 regardless of what an exchange is charging.",
         "Your alAssets do not earn while they wait. The return comes from buying below 1.00 and receiving 1.00 at maturity.",
       ],
@@ -215,7 +215,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. You can leave early whenever you need to, and the fee is what not waiting costs you.",
-        "You are not locked in. Early exit is available, and it carries a fee.",
+        "You are never locked in. Exit early whenever you need to, and the fee is what not waiting costs you.",
         "Queue positions are not traded between users. You exit your own deposit and pay the fee.",
         "There is no free window. The early transmutation fee applies whenever you leave before maturity.",
       ],

@@ -7,7 +7,7 @@ export default function PaceOfRepaymentLesson() {
   return (
     <LessonPage
       lessonId="pace-of-repayment"
-      description="Borrowing more does not make a loan take longer to clear. One protocol-level rate sets the pace for every position in the market."
+      description="One protocol-level rate clears every position in the market, whatever its size. A bigger loan runs on exactly the same schedule."
       Lab={PaceLab}
       Wrap={Wrap}
       deeper={[

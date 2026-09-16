@@ -1,8 +1,8 @@
 import SystemLoop from "../SystemLoop";
 
 A deposit big enough to raise the capital you need can still be too small to
-survive the loss you expect. Both have to hold at once, and the two numbers are
-not independent.
+survive the loss you expect. Both have to hold at once, and the two numbers pull on
+each other.
 
 **How much you must borrow** is set by the price you can sell at. Raising a given
 amount of spendable capital means borrowing that amount divided by the market
@@ -16,9 +16,9 @@ Put together, the smallest deposit that does both is:
 
 > Deposit = (capital ÷ price) ÷ (95% × (1 − loss))
 
-They pull on each other. A worse discount means borrowing more to raise the same
-capital. The larger borrow raises the LTV, so the same loss now needs more
-collateral behind it. Neither number can be chosen in isolation.
+Watch how they tug. A worse discount means borrowing more to raise the same
+capital. The larger borrow lifts your LTV, so that same loss now needs more
+collateral standing behind it. You have to solve for both at once.
 
 ### The whole system
 

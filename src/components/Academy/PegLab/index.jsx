@@ -101,7 +101,7 @@ function Predict({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="Waiting the full term carries no exit fee.">
+        <Actions aside="Wait the full term and the whole gain is yours.">
           <Primary onClick={() => setRevealed(true)}>Commit and hold to maturity</Primary>
         </Actions>
       ) : (
@@ -117,8 +117,8 @@ function Predict({ onDone }) {
             which is {annual.toFixed(2)}% annualized.
           </Body>
           <Body>
-            The shorter the term, the more the same discount is worth. A wide discount
-            therefore pays too well to last.
+            The shorter the term, the more the same discount is worth. A wide discount pays
+            too well to last.
           </Body>
         </Reveal>
       )}
@@ -235,9 +235,10 @@ function Explore({ onDone }) {
             better that trade pays and the faster capital arrives to take it.
           </Body>
           <Body>
-            alAssets are synthetic debt tokens. The peg is held by the exchange mechanism
-            and the collateral behind every unit. The protocol does not mint or burn
-            against a market price to hold it.
+            alAssets are synthetic debt tokens. The peg rests on two things, the collateral
+            standing behind every unit and the Transmuter's promise to exchange it 1:1 at
+            maturity. An algorithmic stablecoin defends its price by minting and burning
+            against the market. Alchemix never has to.
           </Body>
         </Reveal>
       ) : (

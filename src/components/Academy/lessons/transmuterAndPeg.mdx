@@ -2,28 +2,29 @@ An alAsset can trade below face value while its peg holds. Every alAsset in
 circulation is backed by at least one unit of collateral inside the Alchemist, and
 the Transmuter will exchange it for the underlying at exactly 1:1 after a
 governance-set term. alAssets are synthetic debt tokens, and that exchange
-mechanism holds the soft peg. There is one exception. If an exploit leaves bad debt
-in the Alchemist, redemptions pay out pro-rata until the backing is restored.
+mechanism is what holds the soft peg. There is one exception. If an exploit leaves
+bad debt in the Alchemist, redemptions pay out pro-rata until the backing is
+restored.
 
-A discount is a price on waiting. The shorter the wait, the more the same discount
-is worth:
+A discount pays you for waiting, and the shorter the wait, the more the same
+discount is worth in annual terms:
 
 > Annualized = (discount ÷ price) × (52 ÷ weeks)
 
-Buying at 0.97 is a 3.09% gain over the term. Collect it in 20 weeks and that is
+Buying at 0.97 earns 3.09% over the term. Collect it in 20 weeks and that comes to
 about 8.04% annualized.
 
 ### Who buys the discount
 
 - **The saver** deposits alAssets into the Transmuter, waits out the term, and
-  redeems 1:1. Waiting the full term carries no exit fee. Leaving the queue early
-  carries an early transmutation fee, which exists to stop queue hopping.
+  redeems 1:1, keeping the full discount. Leaving the queue early costs an early
+  transmutation fee, which exists to stop queue hopping.
 - **The borrower** buys the same discounted alAssets to clear their own debt, since
   1 alAsset cancels 1 of debt regardless of what they paid for it.
 
-Both are buying when the price is low, and that buying closes the gap. The
-Transmuter makes the trade rational by guaranteeing the 1:1 exchange at the end
-of a known wait.
+Both are buying while the price is low, and that buying is what closes the gap. The
+Transmuter makes the trade rational by guaranteeing the 1:1 exchange at the end of
+a known wait.
 
-If you want the liquidity immediately, external pools such as Curve and Balancer
-trade alAssets at market price with no waiting and some slippage.
+If you want the liquidity right now, external pools such as Curve and Balancer
+trade alAssets at market price, with no waiting and some slippage.

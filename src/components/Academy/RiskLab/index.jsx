@@ -107,15 +107,15 @@ function Predict({ onDone }) {
       ) : (
         <>
           <div className={own.outcome}>
-            <OutcomeRow name="Ana" text="The LTV did not move. Debt and collateral fell by the same share." ok />
-            <OutcomeRow name="Ben" text="The LTV did not move. Debt and collateral fell by the same share." ok />
+            <OutcomeRow name="Ana" text="The LTV held steady. Debt and collateral fell by the same share." ok />
+            <OutcomeRow name="Ben" text="The LTV held steady. Debt and collateral fell by the same share." ok />
           </div>
 
           <Reveal title="Neither one is liquidated. Price cannot force you out of an Alchemix position.">
             <Body>
               alETH is backed by ETH and alUSD by USDC. When the collateral falls, the
-              debt denominated in it falls by exactly as much. The ratio between them does
-              not move, and a ratio that does not move cannot cross a threshold.
+              debt denominated in it falls by exactly as much. The ratio between them holds,
+              and a ratio that holds can never cross a threshold.
             </Body>
             <Body>
               Reaching the {pct(MAX_LTV)} cap stops further borrowing. The position stays
@@ -149,13 +149,13 @@ function Predict({ onDone }) {
               >
                 <Body>
                   If a strategy inside the vault reports a loss, the backing behind every
-                  position falls and the same debt stands against less collateral. The LTV
-                  rises with no change in the price of ETH or USDC. This is the loss to size
-                  a position against.
+                  position falls and the same debt stands against less collateral. Your LTV
+                  climbs while the price of ETH or USDC sits perfectly still. This is the
+                  loss to size a position against.
                 </Body>
                 <Body>
-                  Ana absorbed the loss with room to spare. Ben had almost none. A higher
-                  LTV leaves less room for a loss of backing.
+                  Ana absorbed the loss with room to spare. Ben had almost none. The higher
+                  you borrow, the thinner that margin gets.
                 </Body>
               </Reveal>
             </>
@@ -282,8 +282,8 @@ function Explore({ onDone }) {
             loss is plausible. Those caps give you a worst case to size against.
           </Body>
           <Body>
-            Only the minimum needed to restore a healthy ratio is liquidated. The rest of
-            the position stays open and keeps earning.
+            Even then, the protocol liquidates only enough to restore a healthy ratio. The
+            rest of the position stays open and carries on earning.
           </Body>
         </Reveal>
       ) : (
