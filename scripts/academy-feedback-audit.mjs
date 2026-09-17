@@ -31,6 +31,9 @@ function readAll(dir) {
 }
 const SRC = ACADEMY.map(readAll).join("\n");
 const ENG = fs.existsSync(ENGINE) ? readAll(ENGINE) : "";
+/* The intermediate track alone: the beginner track keeps two numeric checkpoints
+   on purpose, so a whole-engine search would never settle this one. */
+const ENG_INT = fs.existsSync(ENGINE) ? fs.readFileSync(path.join(ENGINE, "intermediate.ts"), "utf8") : "";
 
 /* [label, kind, needle]  kind: "gone" | "present" | "gone-engine" | "present-engine" */
 const CHECKS = [
@@ -102,11 +105,41 @@ const CHECKS = [
   ["the Vaults surface is named", "present", 'app: "Vaults"'],
   ["the Fixed Yield surface is named", "present", 'app: "Fixed Yield"'],
   ["a quick start that 'walks'", "gone", "quick start</Link> walks"],
+
+  /* The intermediate track: checkpoints, caps, and the prose around them. */
+  ["every intermediate checkpoint is a question, not a slider", "present-intermediate", 'choiceLesson('],
+  ["no numeric target left in the intermediate lessons", "gone-intermediate", 'kind: "number"'],
+  ["the pace checkpoint no longer inverts a projection", "gone-engine", "Find the redemption rate that leaves"],
+  ["the capstone checkpoint no longer asks for a deposit figure", "gone-engine", "What is the smallest deposit"],
+  ["the discount checkpoint no longer asks for an annualized return", "gone-engine", "returns what, annualized"],
+  ["the withdraw checkpoint no longer asks for an amount", "gone-engine", "How much of that collateral can you withdraw"],
+  ["the blend checkpoint no longer asks for an APR", "gone-engine", "Find the highest blended APR"],
+  ["MixLab no longer grades an allocation", "gone", "Submit this allocation"],
+  ["stale 10% Aggressive cap", "gone", "10% per strategy, 10% in total"],
+  ["stale 25% Moderate cap", "gone", "25% per strategy, 40% in total"],
+  ["stale cap figures in the MYT lesson", "gone", "capped at 25%"],
+  ["current Aggressive cap", "present", "20% per strategy, 20% in total"],
+  ["current Moderate cap, stated as cumulative", "present", "40% per strategy, 60% with Aggressive"],
+  ["the cumulative rule is explained", "present", "covers Moderate and Aggressive together"],
+  ["caps are checked at allocation, not on withdrawal", "present", "until the DAO rebalances"],
+  ["'all10,000' space typo", "gone", "Clear the loan and all\n        {money(DEPOSIT)}"],
+  ["the withdraw rule is stated before the guess", "present", "debt can never be more than 90%"],
+  ["the nearest reachable answer counts as right", "present", "as close as this slider gets"],
+  ["repaying shows what it freed", "present", 'label="Freed by repaying"'],
+  ["'Another charge arrives later'", "gone", "Another charge arrives later"],
+  ["'This is the loss to size a position against'", "gone", "loss to size a position against"],
+  ["'the liquidation threshold applied to the backing that remains' as a title", "gone", "threshold applied to the backing that remains."],
+  ["'The capstone puts both numbers to work'", "gone", "capstone puts both numbers to work"],
+  ["liquidation described as total", "gone", "and the position is liquidated."],
+  ["'the market has no effect in that one'", "gone", "in that one"],
+  ["the term gain is stated before the annualized guess", "present", "a gain of {perTerm.toFixed(2)}% over"],
+  ["'the founding class closes when season one opens' in the heading", "gone", "the founding class closes when season"],
+  ["'which is also the moment the founding class closes for good'", "gone", "closes for good"],
 ];
 
 let fails = 0;
 for (const [label, kind, needle] of CHECKS) {
-  const hay = kind.endsWith("engine") ? ENG : SRC;
+  const hay = kind.endsWith("intermediate") ? ENG_INT : kind.endsWith("engine") ? ENG : SRC;
   const found = hay.includes(needle);
   const want = kind.startsWith("present") ? found : !found;
   if (!want) fails += 1;

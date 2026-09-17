@@ -220,12 +220,16 @@
   margin-bottom: 0.5rem;
 }
 
-@media (max-width: 1080px) {
-  .backTitle {
+/* The chip gives up its room before the title does: the title names the lesson,
+   the chip only names the screen it is about. */
+@media (max-width: 1240px) {
+  .surface {
     display: none;
   }
+}
 
-  .surface {
+@media (max-width: 1080px) {
+  .backTitle {
     display: none;
   }
 

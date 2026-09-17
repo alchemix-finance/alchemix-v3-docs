@@ -1,12 +1,4 @@
-import { debtRemainingPct } from "./model";
-import { CAPS, bestBlend } from "./myt";
-import {
-  MAX_LTV,
-  annualisedFromDiscount,
-  minimumCollateral,
-  survivableLtv,
-  withdrawable,
-} from "./protocol";
+import { MAX_LTV } from "./protocol";
 import { QUESTIONS, permutation } from "./questions";
 
 /**
@@ -39,13 +31,7 @@ export const devFallbackEnabled = () => process.env.NODE_ENV !== "production";
 export const LOCAL_PREFIX = "local:";
 
 const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
-const between = (lo, hi, dp) => Number((lo + Math.random() * (hi - lo)).toFixed(dp));
 const money = (n) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
-
-const RATE_MIN = 0.35;
-const RATE_MAX = 1.6;
-const RATE_STEP = 0.005;
-const YIELD_ANNUAL = 0.05;
 
 /* ── Multiple choice, mirrored from the engine ───────────── */
 
@@ -115,100 +101,16 @@ const GENERATORS = {
     };
   },
 
-  /* Intermediate track. */
+  /* Intermediate track. Every checkpoint here is a question, not a number to
+     land on, so all seven route through the same choice bank. */
 
-  "getting-money-back": () => {
-    const collateral = pick([10000, 20000, 25000, 40000, 50000]);
-    const debt = Math.round(collateral * between(0.2, 0.6, 2));
-    return {
-      fields: { collateral, debt },
-      prompt:
-        `A position holds ${money(collateral)} of collateral against ${money(debt)} of debt. ` +
-        `How much of that collateral can you withdraw right now, without repaying anything first?`,
-      controls: { slider: { min: 0, max: collateral, step: collateral / 500 } },
-    };
-  },
-
-  "pace-of-repayment": () => {
-    const collateral = pick([10000, 20000, 25000, 50000]);
-    const debt = Math.round(collateral * pick([0.2, 0.3, 0.4, 0.5]));
-    const months = pick([12, 18, 24, 30, 36]);
-    const rate = between(RATE_MIN, RATE_MAX, 4);
-    const base = { collateral, debt, yieldAnnual: YIELD_ANNUAL, months };
-    const targetPct = Number(debtRemainingPct({ ...base, redemptionAnnual: rate }).toFixed(1));
-    return {
-      fields: { ...base, targetPct },
-      prompt:
-        `A position holds ${money(collateral)} of collateral against ${money(debt)} of debt. ` +
-        `Find the redemption rate that leaves ${targetPct.toFixed(1)}% of that debt outstanding ` +
-        `after ${months} months.`,
-      controls: { slider: { min: RATE_MIN, max: RATE_MAX, step: RATE_STEP } },
-    };
-  },
-
-  "where-yield-comes-from": () => {
-    const conservativeApr = between(3, 5, 1);
-    const moderateApr = Number((conservativeApr + between(2, 5, 1)).toFixed(1));
-    const aggressiveApr = Number((moderateApr + between(4, 10, 1)).toFixed(1));
-    return {
-      fields: { conservativeApr, moderateApr, aggressiveApr },
-      prompt:
-        `A proposed MYT holds three strategies: Conservative at ${conservativeApr.toFixed(1)}%, ` +
-        `Moderate at ${moderateApr.toFixed(1)}%, and Aggressive at ${aggressiveApr.toFixed(1)}%. ` +
-        `Find the highest blended APR the DAO could reach without breaching a risk cap.`,
-      controls: { caps: CAPS, step: 1 },
-    };
-  },
-
-  "cost-of-borrowing": () => {
-    const cashWanted = pick([2000, 5000, 8000, 10000, 15000]);
-    const price = between(0.94, 0.99, 3);
-    return {
-      fields: { cashWanted, price },
-      prompt:
-        `You need ${money(cashWanted)} of working capital, and alUSD is trading at ` +
-        `${price.toFixed(3)}. How much alUSD do you have to borrow to walk away with that amount?`,
-      controls: { slider: { min: 0, max: cashWanted * 1.5, step: cashWanted / 500 } },
-    };
-  },
-
-  "ltv-and-risk": () => {
-    const loss = between(0.08, 0.25, 3);
-    return {
-      fields: { loss },
-      prompt:
-        `The MYT reports a loss of ${(loss * 100).toFixed(1)}% of its backing. What is the ` +
-        `highest starting LTV that survives it without crossing the liquidation threshold?`,
-      controls: { slider: { min: 0, max: 95, step: 0.1 } },
-    };
-  },
-
-  "transmuter-and-peg": () => {
-    const price = between(0.93, 0.99, 3);
-    const weeks = pick([8, 10, 12, 16, 20, 26]);
-    return {
-      fields: { price, weeks },
-      prompt:
-        `alUSD is trading at ${price.toFixed(3)} and the transmutation term is ${weeks} weeks. ` +
-        `Buying now and waiting for maturity returns what, annualized?`,
-      controls: { slider: { min: 0, max: 60, step: 0.05 } },
-    };
-  },
-
-  capstone: () => {
-    const cashWanted = pick([5000, 10000, 12000, 20000, 25000]);
-    const price = between(0.94, 0.99, 3);
-    const loss = between(0.08, 0.25, 3);
-    const target = minimumCollateral(cashWanted, price, loss);
-    return {
-      fields: { cashWanted, price, loss },
-      prompt:
-        `You need ${money(cashWanted)} of working capital. alUSD trades at ${price.toFixed(3)}, ` +
-        `and the MYT is about to report a loss of ${(loss * 100).toFixed(1)}% of its backing. ` +
-        `What is the smallest deposit that raises the capital and still survives the loss?`,
-      controls: { slider: { min: 0, max: cashWanted * 4, step: cashWanted / 250 } },
-    };
-  },
+  "getting-money-back": () => choiceChallenge("getting-money-back"),
+  "pace-of-repayment": () => choiceChallenge("pace-of-repayment"),
+  "where-yield-comes-from": () => choiceChallenge("where-yield-comes-from"),
+  "cost-of-borrowing": () => choiceChallenge("cost-of-borrowing"),
+  "ltv-and-risk": () => choiceChallenge("ltv-and-risk"),
+  "transmuter-and-peg": () => choiceChallenge("transmuter-and-peg"),
+  capstone: () => choiceChallenge("capstone"),
 };
 
 /* ── Per-lesson graders. Each returns [actual, target, tolerance, unit]. ── */
@@ -225,49 +127,16 @@ const GRADERS = {
 
   borrowing: (f, a) => [a, f.deposit * MAX_LTV, f.deposit * 0.004, "amount"],
 
-  /* Intermediate track. */
+  /* Intermediate track. Every checkpoint here is a question, not a number to
+     land on, so all seven route through the same choice bank. */
 
-  "getting-money-back": (f, a) => [
-    a,
-    withdrawable(f.collateral, f.debt),
-    f.collateral * 0.004,
-    "amount",
-  ],
-
-  "pace-of-repayment": (f, a) => [
-    debtRemainingPct({
-      collateral: f.collateral,
-      debt: f.debt,
-      yieldAnnual: f.yieldAnnual,
-      redemptionAnnual: a,
-      months: f.months,
-    }),
-    f.targetPct,
-    1.0,
-    "pct",
-  ],
-
-  "where-yield-comes-from": (f, a) => [
-    a,
-    bestBlend({
-      conservative: f.conservativeApr,
-      moderate: f.moderateApr,
-      aggressive: f.aggressiveApr,
-    }),
-    0.05,
-    "apr",
-  ],
-
-  "cost-of-borrowing": (f, a) => [a * f.price, f.cashWanted, f.cashWanted * 0.004, "amount"],
-
-  "ltv-and-risk": (f, a) => [a, survivableLtv(f.loss) * 100, 0.3, "pct"],
-
-  "transmuter-and-peg": (f, a) => [a, annualisedFromDiscount(f.price, f.weeks), 0.25, "apr"],
-
-  capstone: (f, a) => {
-    const target = minimumCollateral(f.cashWanted, f.price, f.loss);
-    return [a, target, target * 0.005, "amount"];
-  },
+  "getting-money-back": (f, a) => choiceGrade("getting-money-back", f, a),
+  "pace-of-repayment": (f, a) => choiceGrade("pace-of-repayment", f, a),
+  "where-yield-comes-from": (f, a) => choiceGrade("where-yield-comes-from", f, a),
+  "cost-of-borrowing": (f, a) => choiceGrade("cost-of-borrowing", f, a),
+  "ltv-and-risk": (f, a) => choiceGrade("ltv-and-risk", f, a),
+  "transmuter-and-peg": (f, a) => choiceGrade("transmuter-and-peg", f, a),
+  capstone: (f, a) => choiceGrade("capstone", f, a),
 };
 
 export function localChallenge(lessonId) {

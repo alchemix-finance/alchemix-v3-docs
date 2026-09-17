@@ -41,17 +41,8 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Find the highest LTV that survives."
-      unit="pct"
-      targetOf={(f) => survivableLtv(f.loss) * 100}
-      computeOf={(f, v) => v}
-      direct
-      controlLabel="Starting LTV"
-      controlDisplay={(v) => `${v.toFixed(1)}%`}
-      targetFoot="the highest starting LTV that survives the loss"
-      landingFoot="set the slider to your answer"
       passTitle="Lesson 5 complete."
-      passBody="A loss inside the Mix-Yield Token is the only thing that can push a position past the threshold. Every loss has a highest starting LTV that survives it, and the DAO's risk caps bound how large a loss is plausible. The capstone puts both numbers to work."
+      passBody="A loss inside the Mix-Yield Token is the only thing that can push a position past the threshold. Every loss has a highest starting LTV that survives it, and the DAO's risk caps bound how large a loss is plausible."
     />
   );
 }
@@ -137,7 +128,7 @@ function Predict({ onDone }) {
                 />
                 <OutcomeRow
                   name="Ben"
-                  text={`The LTV moves to ${pct(ltvAfterLoss(RISKY_LTV, MYT_LOSS))}, past the ${pct(LIQ_LTV)} threshold, and the position is liquidated.`}
+                  text={`The LTV moves to ${pct(ltvAfterLoss(RISKY_LTV, MYT_LOSS))}, past the ${pct(LIQ_LTV)} threshold, so enough collateral is sold to bring it back under the cap.`}
                   ok={survivesLoss(RISKY_LTV, MYT_LOSS)}
                 />
               </div>
@@ -150,8 +141,7 @@ function Predict({ onDone }) {
                 <Body>
                   If a strategy inside the vault reports a loss, the backing behind every
                   position falls and the same debt stands against less collateral. Your LTV
-                  rises while the price of ETH or USDC stays exactly where it is. This is the
-                  loss to size a position against.
+                  rises while the price of ETH or USDC stays exactly where it is.
                 </Body>
                 <Body>
                   Ana absorbed the loss with room to spare. Ben had almost none. The higher
@@ -266,7 +256,7 @@ function Explore({ onDone }) {
 
       {seenFail || (moved.ltv && moved.loss) ? (
         <Reveal
-          title="The ceiling is the liquidation threshold applied to the backing that remains."
+          title="A loss shrinks your collateral, and the 95% threshold applies to what is left."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
@@ -277,9 +267,9 @@ function Explore({ onDone }) {
             {pct(1 - loss)}, or {pct(ceiling)}.
           </Body>
           <Body>
-            The risk caps inside the Mix-Yield Token bound this number. By limiting how
-            much of the vault can sit in higher risk strategies, the DAO limits how large a
-            loss is plausible. Those caps give you a worst case to size against.
+            The risk caps inside the Mix-Yield Token bound this number. At most 20% of the
+            vault can sit in Aggressive strategies and at most 60% in Moderate and Aggressive
+            together, which is what gives you a worst case to size against.
           </Body>
           <Body>
             Even then, the protocol liquidates only enough to restore a healthy ratio. The

@@ -21,6 +21,9 @@ import {
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
 
+/** What the guess slider moves in, and therefore what counts as landing on it. */
+const STEP = 100;
+
 export default function BackLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
@@ -34,17 +37,8 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Work out what you can withdraw."
-      unit="amount"
-      targetOf={(f) => withdrawable(f.collateral, f.debt)}
-      computeOf={(f, v) => v}
-      direct
-      controlLabel="Withdraw"
-      controlDisplay={(v) => money(v)}
-      targetFoot="the most that can leave the position today"
-      landingFoot="set the slider to your answer"
       passTitle="Lesson 1 complete."
-      passBody="You can read a position card and say how much of the deposit is free to leave today. The next lesson works out what sets the speed your debt clears at."
+      passBody="You can read a position card and say how much of the deposit is free to leave today."
     />
   );
 }
@@ -56,13 +50,19 @@ function Learn({ onDone }) {
   const [revealed, setRevealed] = useState(false);
 
   const truth = withdrawable(DEPOSIT, BORROW);
-  const close = Math.abs(guess - truth) <= 300;
+  // The slider moves in steps of 100, so the exact 4,444 is not on it. Landing on
+  // the nearest position it does have is the right answer, and is graded as one.
+  const nearest = Math.round(truth / STEP) * STEP;
+  const exact = guess === nearest;
+  const close = !exact && Math.abs(guess - truth) <= 300;
 
   return (
     <Stage eyebrow="Stage 1 · Predict" headline="You want part of the deposit back.">
       <Sub>
         Your position holds {money(DEPOSIT)} deposited with {money(BORROW)} borrowed
-        against it, and you want to leave the loan open.
+        against it, and you want to leave the loan open. One rule decides what can
+        leave: debt can never be more than 90% of the collateral standing under it, so
+        enough has to stay behind to keep the loan legal.
       </Sub>
 
       <Panel>
@@ -78,7 +78,7 @@ function Learn({ onDone }) {
           color="#f5c09a"
           min={0}
           max={DEPOSIT}
-          step={100}
+          step={STEP}
           format={(v) => money(v)}
           scale={["Nothing", `All ${money(DEPOSIT)}`]}
         />
@@ -95,7 +95,11 @@ function Learn({ onDone }) {
           nextLabel="See how to free the rest"
         >
           <Body>
-            {close ? "That is close. " : `You said ${money(guess)}. `}
+            {exact
+              ? "Right, and as close as this slider gets. "
+              : close
+                ? "That is close. "
+                : `You said ${money(guess)}. `}
             Your loan reserves the collateral it needs to stay under the 90% cap, and that
             is always more than the loan is worth.
           </Body>
@@ -116,6 +120,9 @@ function Learn({ onDone }) {
 
 /* ── Stage 2: explore ────────────────────────────────────── */
 
+/** What is free before a single unit is repaid, so the stage can show the gain. */
+const START_FREE = withdrawable(DEPOSIT, BORROW);
+
 function Try({ onDone }) {
   const [repaid, setRepaid] = useState(0);
   const [moved, setMoved] = useState(false);
@@ -128,8 +135,9 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Explore" headline="Every unit you repay frees more than a unit of collateral.">
       <Sub>
-        Repaying frees more collateral than the amount you repay. Clear the loan and all
-        {money(DEPOSIT)} unlocks.
+        At the 90% cap, one unit of debt reserves about 1.11 units of collateral, so every
+        unit you repay frees about 1.11 back. Clear the loan and all {money(DEPOSIT)}{" "}
+        unlocks.
       </Sub>
 
       <div className={own.meterWrap}>
@@ -155,7 +163,13 @@ function Try({ onDone }) {
         <Stat label="Still owed" value={money(debt)} tone={clear ? "#5ba88a" : "#f5c09a"} />
         <Stat label="LTV" value={`${(ltvOf(DEPOSIT, debt) * 100).toFixed(1)}%`} />
         <Stat label="Can withdraw" value={money(free)} tone="#5ba88a" />
-        <Stat label="Must stay" value={money(locked)} tone={locked > 0 ? "#d4952a" : "#6b7078"} />
+        {/* The point of the stage, stated as a number rather than left to be
+            inferred from two figures moving at different speeds. */}
+        <Stat
+          label="Freed by repaying"
+          value={repaid > 0 ? `+${money(free - START_FREE)}` : "-"}
+          tone={repaid > 0 ? "#5ba88a" : "#6b7078"}
+        />
       </div>
 
       <Controls>

@@ -43,22 +43,6 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Work out the redemption rate."
-      unit="pct"
-      targetOf={(f) => f.targetPct}
-      computeOf={(f, v) =>
-        debtRemainingPct({
-          collateral: f.collateral,
-          debt: f.debt,
-          yieldAnnual: f.yieldAnnual,
-          redemptionAnnual: v,
-          months: f.months,
-        })
-      }
-      controlLabel="Redemption rate"
-      controlDisplay={(v) => `${(v * 100).toFixed(1)}% a year`}
-      targetFoot="the share of debt still outstanding"
-      landingFoot="adjust until the two match"
       passTitle="Lesson 2 complete."
       passBody="You can read the pace of repayment off the redemption rate. It is the one input that moves the curve, and the protocol sets it for the whole market at once."
     />

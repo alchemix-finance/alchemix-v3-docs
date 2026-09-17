@@ -39,15 +39,6 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Price the wait."
-      unit="apr"
-      targetOf={(f) => annualisedFromDiscount(f.price, f.weeks)}
-      computeOf={(f, v) => v}
-      direct
-      controlLabel="Annualized return"
-      controlDisplay={(v) => `${v.toFixed(2)}%`}
-      targetFoot="what the wait is worth, annualized"
-      landingFoot="set the slider to your answer"
       passTitle="Lesson 6 complete."
       passBody="A discount on an alAsset is a rate, and the Transmuter is what makes that rate collectible. Savers and borrowers both run this arithmetic before they buy."
     />
@@ -73,7 +64,9 @@ function Predict({ onDone }) {
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
         Alchemix, and the Transmuter will exchange it for the underlying at exactly 1:1
-        once a governance-set term is up. Here that term runs {WEEKS} weeks.
+        once a governance-set term is up. Here that term runs {WEEKS} weeks. Spend{" "}
+        {money(STAKE)} and {money2(bought)} comes back, a gain of {perTerm.toFixed(2)}% over
+        the term. What that is worth per year is the part the term decides.
       </Sub>
 
       <div className={own.tradeRow}>

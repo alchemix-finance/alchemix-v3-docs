@@ -38,14 +38,6 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Size the borrow to raise the cash you need."
-      unit="amount"
-      targetOf={(f) => f.cashWanted}
-      computeOf={(f, v) => v * f.price}
-      controlLabel="Borrow"
-      controlDisplay={(v) => `${money(v)} alUSD`}
-      targetFoot="the capital you need in hand"
-      landingFoot="what your borrow raises"
       passTitle="Lesson 4 complete."
       passBody="You can size a borrow against the price you will sell it at, so the amount you receive matches what you needed. You owe the larger number as debt, and the gap between the two is what borrowing costs you."
     />
@@ -194,11 +186,10 @@ function Explore({ onDone }) {
             and that figure stays where it is, because Alchemix charges no interest.
           </Body>
           <Body>
-            Another charge arrives later. When redemptions repay your debt out of your
-            collateral, the protocol takes a small borrower redemption fee out of the amount
-            repaid. It is charged per event rather than per year, so its effective annual cost
-            depends on your starting LTV and on how long the transmutation takes.
-            Governance sets the rate. The fee schedule in the docs shows the live one.
+            The other cost is the borrower redemption fee. When redemptions repay your debt
+            out of your collateral, the protocol takes a small share of the amount repaid.
+            Like the discount, it is charged on an event rather than by the calendar.
+            Governance sets the rate, and the fee schedule in the docs shows the live one.
           </Body>
         </Reveal>
       ) : (

@@ -43,15 +43,6 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Size the whole position."
-      unit="amount"
-      targetOf={(f) => minimumCollateral(f.cashWanted, f.price, f.loss)}
-      computeOf={(f, v) => v}
-      direct
-      controlLabel="Deposit"
-      controlDisplay={(v) => money(v)}
-      targetFoot="the smallest deposit that clears both checks"
-      landingFoot="set the slider to your answer"
       passTitle="Track complete."
       passBody="You just sized a position against a discount you cannot control and a loss you cannot predict. The market sets how much you must borrow, the vault sets how much collateral that needs, and the deposit follows from both."
     />
@@ -230,10 +221,9 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            How much you must borrow is decided by the price you can sell at, and nothing
-            about your own position shifts that number. How much collateral the borrow needs
-            behind it is determined by the loss you have to absorb, and the market has no effect
-            in that one. Divide the borrow by the LTV you can afford and you have the deposit.
+            How much you must borrow is set by the price you can sell at. How much collateral
+            that borrow needs behind it is set by the loss you have to absorb, and the market
+            has no bearing on it. Divide the first by the second and you have the deposit.
           </Body>
           <Body>
             Push the price down and both checks respond. A worse discount means borrowing

@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Link from "@docusaurus/Link";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
-import { apiBase, fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
-import { CAPS, blend } from "../lib/myt";
-import LocalNotice from "../LocalNotice";
+import { apiBase } from "../lib/api";
+import { Checkpoint } from "../kit";
+import { CAPS, MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../lib/myt";
 
 /**
  * Intermediate lesson 3: inside the Mix-Yield Token.
@@ -21,6 +20,10 @@ import LocalNotice from "../LocalNotice";
  *
  * Allocation is a DAO decision, never a user one. The copy is careful about that:
  * the learner reasons about a proposed allocation, they do not set their own.
+ *
+ * The Moderate ceiling shown on its control moves as Aggressive fills, because
+ * the two share one. That is the rule the docs state in a footnote, and a control
+ * that visibly tightens teaches it better than the footnote does.
  */
 
 const DEMO = { conservative: 4.5, moderate: 9.0, aggressive: 18.0 };
@@ -31,7 +34,17 @@ export default function MixLab({ lessonId, stage, onStage, done, onComplete }) {
 
   if (stage === "predict") return <Predict onDone={() => onStage("explore")} />;
   if (stage === "explore") return <Explore onDone={() => onStage("checkpoint")} />;
-  return <Checkpoint base={base} lessonId={lessonId} done={done} onPass={onComplete} />;
+
+  return (
+    <Checkpoint
+      base={base}
+      lessonId={lessonId}
+      done={done}
+      onPass={onComplete}
+      passTitle="Lesson 3 complete."
+      passBody="You can say what the DAO is allowed to hold, and why that ceiling is what makes a given LTV safe to borrow at."
+    />
+  );
 }
 
 /* ── Stage 1: predict ────────────────────────────────────── */
@@ -85,14 +98,15 @@ function Predict({ onDone }) {
       ) : (
         <div className={styles.reveal}>
           <div className={styles.revealHead}>
-            The DAO caps Aggressive strategies at 10% of the vault.
+            The DAO caps Aggressive strategies at {MAX_AGGRESSIVE_PCT}% of the vault.
           </div>
           <p className={styles.revealBody}>
-            {guess > 10
+            {guess > MAX_AGGRESSIVE_PCT
               ? `Your ${guess}% is above the cap. `
               : `Your ${guess}% is within the cap. `}
             Every strategy is classified Conservative, Moderate or Aggressive, and each
-            class carries a ceiling on how much of the Mix-Yield Token it may occupy.
+            class carries two ceilings: one on a single strategy, and one on everything at
+            that risk level and above.
           </p>
 
           <div className={own.capTable}>
@@ -102,14 +116,19 @@ function Predict({ onDone }) {
             </div>
             <div className={own.capRow}>
               <span className={own.capName}>Moderate</span>
-              <span className={own.capValue}>25% per strategy, 40% in total</span>
+              <span className={own.capValue}>40% per strategy, 60% with Aggressive</span>
             </div>
             <div className={own.capRow}>
               <span className={own.capName}>Aggressive</span>
-              <span className={own.capValue}>10% per strategy, 10% in total</span>
+              <span className={own.capValue}>20% per strategy, 20% in total</span>
             </div>
           </div>
 
+          <p className={styles.revealBody}>
+            The second figure counts everything at that level and riskier. Moderate's 60%
+            covers Moderate and Aggressive together, so filling Aggressive to 20% leaves
+            Moderate 40% of the 60% they share.
+          </p>
           <p className={styles.revealBody}>
             The caps are what make a high LTV safe to borrow at. Your borrowing headroom
             rests on what the vault underneath is allowed to hold.
@@ -138,10 +157,13 @@ function StrategyCard({ klass, apr, note, tone }) {
 
 function Allocator({ aprs, mod, aggr, setMod, setAggr }) {
   const consPct = 100 - mod - aggr;
-  const modOver = mod > CAPS.moderate * 100;
-  const aggrOver = aggr > CAPS.aggressive * 100;
-  const negative = consPct < 0;
-  const legal = !modOver && !aggrOver && !negative;
+  // The ceiling on Moderate depends on what Aggressive already takes, because the
+  // two share one. It tightens on screen as Aggressive fills.
+  const modCap = maxModeratePct(aggr);
+  const modOver = mod > modCap;
+  const aggrOver = aggr > MAX_AGGRESSIVE_PCT;
+  const breach = capBreach(mod, aggr);
+  const legal = !breach;
   const apr = blend(aprs, mod, aggr);
 
   return (
@@ -165,22 +187,16 @@ function Allocator({ aprs, mod, aggr, setMod, setAggr }) {
           </div>
         </div>
         <div className={legal ? own.legalOk : own.legalBad}>
-          {negative
-            ? "Allocation exceeds 100%"
-            : aggrOver
-              ? "Breaches the 10% Aggressive cap"
-              : modOver
-                ? "Breaches the 40% Moderate cap"
-                : "Within every cap"}
+          {breach ?? "Within every cap"}
         </div>
       </div>
 
       <div className={styles.controls}>
         <AllocSlider
-          label="Moderate" value={mod} onChange={setMod} max={60} cap={CAPS.moderate * 100} over={modOver}
+          label="Moderate" value={mod} onChange={setMod} max={80} cap={modCap} over={modOver}
         />
         <AllocSlider
-          label="Aggressive" value={aggr} onChange={setAggr} max={30} cap={CAPS.aggressive * 100} over={aggrOver}
+          label="Aggressive" value={aggr} onChange={setAggr} max={40} cap={MAX_AGGRESSIVE_PCT} over={aggrOver}
         />
       </div>
     </>
@@ -217,12 +233,15 @@ function Explore({ onDone }) {
   const [aggr, setAggr] = useState(5);
   const [sawBreach, setSawBreach] = useState(false);
 
-  const over = mod > CAPS.moderate * 100 || aggr > CAPS.aggressive * 100;
+  const over = capBreach(mod, aggr) !== null;
   useEffect(() => {
     if (over) setSawBreach(true);
   }, [over]);
 
-  const best = useMemo(() => blend(DEMO, CAPS.moderate * 100, CAPS.aggressive * 100), []);
+  const best = useMemo(
+    () => blend(DEMO, maxModeratePct(MAX_AGGRESSIVE_PCT), MAX_AGGRESSIVE_PCT),
+    [],
+  );
   const atBest = Math.abs(blend(DEMO, mod, aggr) - best) < 0.005 && !over;
 
   return (
@@ -230,7 +249,8 @@ function Explore({ onDone }) {
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
-        Push a class past its ceiling and the vault turns the composition away.
+        Push a class past its ceiling and the vault turns the composition away. Moderate and
+        Aggressive share a ceiling, so filling one tightens the other.
       </p>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
@@ -241,12 +261,11 @@ function Explore({ onDone }) {
             {best.toFixed(2)}% is the highest blended APR inside every cap.
           </div>
           <p className={styles.revealBody}>
-            That mix fills Aggressive to its 10% ceiling and Moderate to its 40% ceiling,
-            leaving the other 50% in Conservative, which has no cap at all. Anything higher
-            needs a composition the DAO forbids.
-            {!sawBreach
-              ? " Push either slider past a ceiling as well."
-              : ""}
+            That mix fills Aggressive to its {MAX_AGGRESSIVE_PCT}% ceiling and gives Moderate
+            the {maxModeratePct(MAX_AGGRESSIVE_PCT)}% left of the 60% those two share, leaving
+            the rest in Conservative, which has no cap at all. Anything higher needs a
+            composition the DAO could not allocate.
+            {!sawBreach ? " Push either slider past a ceiling as well." : ""}
           </p>
           <p className={styles.revealBody}>
             Your collateral earns this blend while your loan clears. A vault free to hold
@@ -264,138 +283,6 @@ function Explore({ onDone }) {
           {!sawBreach ? " Push a slider past a ceiling as well." : ""}
         </p>
       )}
-    </>
-  );
-}
-
-/* ── Stage 3: checkpoint ─────────────────────────────────── */
-
-/**
- * This lesson keeps its own checkpoint instead of using the shared one, because
- * the answer is produced by two controls working against each other, and the
- * shared checkpoint has a single slider. The allocator the learner already used
- * in stage 2 is the natural control, so the checkpoint reuses that.
- */
-
-function Checkpoint({ base, lessonId, done, onPass }) {
-  const [challenge, setChallenge] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [mod, setMod] = useState(20);
-  const [aggr, setAggr] = useState(5);
-  const [result, setResult] = useState(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  const load = useCallback(() => {
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    fetchChallenge(base, lessonId)
-      .then(setChallenge)
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [base, lessonId]);
-
-  useEffect(load, [load]);
-
-  const aprs = useMemo(() => {
-    if (!challenge) return null;
-    const f = challenge.params.fields;
-    return { conservative: f.conservativeApr, moderate: f.moderateApr, aggressive: f.aggressiveApr };
-  }, [challenge]);
-
-  async function onSubmit() {
-    setSubmitting(true);
-    setError(null);
-    try {
-      const res = await submitAnswer(base, {
-        challenge: challenge.challenge,
-        params: challenge.params,
-        // The answer is the blended APR they reached, which is what the prompt
-        // asks for. The grader recomputes the optimum from the same figures.
-        answer: Number(blend(aprs, mod, aggr).toFixed(4)),
-      });
-      setResult(res);
-      if (res.passed && res.completion) {
-        saveCompletion(lessonId, res.completion);
-        onPass();
-      }
-    } catch (e) {
-      setError(e.message);
-      if (e.code === "bad_challenge") load();
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <>
-        <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-        <p className={styles.sub}>Preparing your question...</p>
-      </>
-    );
-  }
-
-  if (error && !challenge) {
-    return (
-      <>
-        <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-        <h1 className={styles.headline}>The checkpoint is not answering.</h1>
-        <p className={styles.sub}>
-          Everything you worked out in this lesson still stands. Only the graded question
-          needs the server, so try again in a moment.
-        </p>
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={load}>Try again</button>
-        </div>
-        <p className={styles.errorDetail}>{error}</p>
-      </>
-    );
-  }
-
-  const passed = result?.passed || done;
-
-  return (
-    <>
-      <div className={styles.eyebrow}>Stage 3 · Checkpoint</div>
-      <h1 className={styles.headline}>Find the best composition inside the caps.</h1>
-      <p className={styles.sub}>{challenge.prompt}</p>
-      <LocalNotice show={challenge.local} />
-      <Allocator aprs={aprs} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
-
-      {!passed ? (
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={onSubmit} disabled={submitting}>
-            {submitting ? "Checking..." : "Submit this allocation"}
-          </button>
-        </div>
-      ) : null}
-
-      {error && challenge ? <p className={styles.errorDetail}>{error}</p> : null}
-
-      {result && !result.passed ? (
-        <div className={styles.missBox}>
-          That allocation blends to {result.actual}%. The best composition inside the caps
-          reaches {result.target}%, accepted within {result.tolerance} of a percentage
-          point. Check whether both ceilings are filled.
-        </div>
-      ) : null}
-
-      {passed ? (
-        <div className={styles.passBox}>
-          <div className={styles.passHead}>Lesson 3 complete.</div>
-          <p className={styles.revealBody}>
-            You found the highest yield the risk caps allow. Those same caps are what make
-            a given LTV safe to borrow at, because they give you a worst case to size
-            against.
-          </p>
-          <Link to="/academy" className={styles.primaryLink}>
-            Back to the track
-            <ArrowIcon />
-          </Link>
-        </div>
-      ) : null}
     </>
   );
 }

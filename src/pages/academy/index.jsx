@@ -98,14 +98,11 @@ export default function AcademyTrack() {
       <section className={styles.reward}>
         <div className={styles.rewardCard}>
           <div className={styles.microLabel}>Rewards</div>
-          <div className={styles.rewardTitle}>
-            Each track earns a Discord role, and the founding class closes when season
-            one opens
-          </div>
+          <div className={styles.rewardTitle}>Each track earns a Discord role</div>
           <p className={styles.rewardBody}>
             Each lesson banks {LESSON_POINTS} points. Finishing a track adds its bonus and
             the Discord role that comes with it. All of it converts to season points when
-            season one opens, which is also the moment the founding class closes for good.
+            season one opens, which is when the founding class closes.
           </p>
 
           <div className={styles.rewardGrid}>
