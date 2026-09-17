@@ -23,13 +23,13 @@ The Mixed Yield page is a dedicated space for depositing into Mix-Yield Token va
 
 <FramedImage src="/img/use-passive-myt-01.png" alt="Mixed Yield page" />
 
-Click Mixed Yield in the top navigation, or go directly to [alchemix.fi/mixed-yield](https://alchemix.fi/mixed-yield).
+Open Earn in the top navigation and choose Variable Rate, or go directly to [alchemix.fi/mixed-yield](https://alchemix.fi/mixed-yield).
 
 ### Step 2 – Find your MYT
 
 <FramedImage src="/img/use-passive-myt-02.png" alt="Mixed Yield list" />
 
-Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
+Use the asset filters (alUSD or alETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
 
 ### Step 3 – Review strategy allocation
 
@@ -47,11 +47,11 @@ Click Deposit. Your wallet shows the network, gas estimate, and amounts. Approve
 
 ### Step 6 – Track your deposit
 
-<FramedImage src="/img/use-passive-myt-04.png" alt="Active MYT deposit" />
+<FramedImage src="/img/use-passive-myt-04.png" alt="Dashboard showing Mixed Yield Token Holdings" />
 
-Return to the Dashboard and find your position under Open Mixed Yield Positions. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
+Return to the Dashboard and find your position under Mixed Yield Token Holdings. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
 
-To borrow against your deposit, head over to the Vaults page.
+To borrow against your deposit, head over to the Borrow page.
 
 ### Why use Mixed Yield instead of managing strategies directly?
 

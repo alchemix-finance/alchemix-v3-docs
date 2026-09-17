@@ -12,7 +12,7 @@ This documentation is the most complete learning resource, but it may lag behind
 
 | Resource                                                     | Purpose                                                   |
 | ------------------------------------------------------------ | --------------------------------------------------------- |
-| [**dApp**](https://alchemix.fi)                               | The Alchemix dApp: Vaults, [Mixed Yield](https://alchemix.fi/mixed-yield) and [Fixed Yield](https://alchemix.fi/fixed-yield). |
+| [**dApp**](https://alchemix.fi)                               | The Alchemix dApp. Borrow, Earn ([Variable Rate](https://alchemix.fi/mixed-yield) and [Fixed Rate Yield](https://alchemix.fi/fixed-yield)). |
 | [**X (Twitter)**](https://x.com/AlchemixFi)                  | Official announcements and real-time updates.             |
 | [**Discord**](https://discord.gg/alchemix)                   | Community chat, support and contributor coordination.     |
 | [**Newsletter**](https://alchemixfi.substack.com/)           | Roundup of releases, governance and ecosystem news.       |

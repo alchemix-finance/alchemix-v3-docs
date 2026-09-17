@@ -19,9 +19,11 @@ Alchemix v3 is built around transparency, decentralization, and immutability: ev
 
 ## Layers of governance
 
+The table below describes the target model. Today, adjustable parameters are changed by the Alchemix multisig after a Snapshot vote.
+
 | Layer                                                                    | Control Model                              | Rationale                                                          |
 | ------------------------------------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------ |
-| Core vault logic                                                         | Immutable contracts                        | Safety first. Code that directly custodies deposits never changes. |
+| Core vault logic                                                         | Immutable contracts (target)               | Safety first. The goal is that code custodying deposits does not change. Today the Alchemist runs behind an upgradeable proxy. |
 | Adjustable parameters (redemption periods, fee rates, collateral limits) | On-chain DAO vote                          | Keeps policy decisions in the hands of token holders.              |
 | External Integrations                                                    | DAO-elected executor with a narrow mandate | Allows fast responses while remaining accountable to the DAO.      |
 

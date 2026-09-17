@@ -24,9 +24,9 @@ You can withdraw collateral from Alchemix at any time.
 
 ### Step 1 – Open the vault
 
-<FramedImage src="/img/withdraw-01.png" alt="Vault detail page" />
+<FramedImage src="/img/withdraw-01.png" alt="Dashboard showing open vault positions" />
 
-Click Dashboard in the top navigation, then click the vault you want to withdraw from.
+Click Dashboard in the top navigation, then click **Manage** on the vault position you want to withdraw from.
 
 ### Step 2 – Open the Withdraw tab
 

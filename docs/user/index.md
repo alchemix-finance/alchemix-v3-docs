@@ -48,7 +48,7 @@ Deposit ETH or USDC into a vault to receive <Term id="myt">Mix-Yield Tokens (MYT
 
 ### 2. Access credit with self-repaying loans
 
-Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthetic counterpart of your deposit and let your future yield repay the balance.
+Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthetic counterpart of your deposit. Scheduled redemptions pay the balance down from your collateral while the collateral keeps earning.
 
 <StatStrip items={[
 { label: "Borrowable asset", value: "alETH or alUSD" },

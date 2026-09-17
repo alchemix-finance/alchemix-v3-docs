@@ -3,7 +3,7 @@
 > This file contains the Alchemix V3 user and integrator documentation concatenated for AI consumption.
 > Developer and governance sections are still being expanded and are indexed at https://docs.alchemix.fi/llms.txt.
 > Source: https://docs.alchemix.fi
-> Generated: 2026-07-02
+> Generated: 2026-09-14
 
 
 ---
@@ -17,7 +17,7 @@
 
 Source: https://docs.alchemix.fi/user
 
-Alchemix is a protocol for saving, borrowing, and earning fixed-yield returns. Building on the self-repaying loan it introduced in 2021, v3 combines these three functions in one app. The protocol currently secures [live figure] in total value locked, with ALCX priced at [live figure] and alETH trading at [live figure].
+Alchemix is a protocol for saving, borrowing, and earning fixed-yield returns. Building on the self-repaying loan it introduced in 2021, v3 combines these three functions in one app. The protocol currently secures [live figure] in total value locked.
 
 - **Earn Competitive Risk-Adjusted Yield:** Deposit ETH or USDC and earn yield across a mix of strategies chosen and rebalanced by the DAO. No lock-ups, withdraw at any time.
 - **Borrow up to 90%, Interest Free:** Borrow against your deposit while it keeps earning yield. Scheduled redemptions chip away at your debt over time. No interest, no price-based liquidations.
@@ -37,7 +37,7 @@ Deposit ETH or USDC into a vault to receive Mix-Yield Tokens (MYT). Each MYT rep
 
 ### 2. Access credit with self-repaying loans
 
-Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthetic counterpart of your deposit and let your future yield repay the balance.
+Need liquidity but don’t want to sell your assets? Borrow Alchemix’s synthetic counterpart of your deposit. Scheduled redemptions pay the balance down from your collateral while the collateral keeps earning.
 
 - **Borrowable asset:** alETH or alUSD
 - **Maximum LTV:** 90% of collateral
@@ -78,7 +78,7 @@ This documentation is the most complete learning resource, but it may lag behind
 
 | Resource                                                     | Purpose                                                   |
 | ------------------------------------------------------------ | --------------------------------------------------------- |
-| [**dApp**](https://alchemix.fi)                               | The Alchemix dApp: Vaults, [Mixed Yield](https://alchemix.fi/mixed-yield) and [Fixed Yield](https://alchemix.fi/fixed-yield). |
+| [**dApp**](https://alchemix.fi)                               | The Alchemix dApp. Borrow, Earn ([Variable Rate](https://alchemix.fi/mixed-yield) and [Fixed Rate Yield](https://alchemix.fi/fixed-yield)). |
 | [**X (Twitter)**](https://x.com/AlchemixFi)                  | Official announcements and real-time updates.             |
 | [**Discord**](https://discord.gg/alchemix)                   | Community chat, support and contributor coordination.     |
 | [**Newsletter**](https://alchemixfi.substack.com/)           | Roundup of releases, governance and ecosystem news.       |
@@ -112,31 +112,31 @@ An alAsset is the synthetic token you borrow from Alchemix.
 
 They track their underlying asset but can trade below, or in rare circumstances above, 1:1 on the open market.
 
-[Learn more about alAssets →](https://docs.alchemix.fi/user/faq/concepts/alAssets)
+[Learn more about alAssets →](https://docs.alchemix.fi/user/concepts/alAssets)
 
 **Q: How much can I borrow?**
 
 You can borrow up to 90% loan-to-value (LTV) of your deposited collateral. The exact limit is shown on each vault page.
 
-[Learn more about LTV →](https://docs.alchemix.fi/user/faq/concepts/alAssets#ltv-sensitivity)
+[Learn more about LTV →](https://docs.alchemix.fi/user/concepts/alAssets#ltv-sensitivity)
 
 **Q: How does my loan repay itself?**
 
 Your MYT collateral grows in value as its underlying strategies earn yield. When a redemption occurs, the Transmuter swaps a portion of that collateral, equal in value to the queued alAssets earmarked for your position, and applies the proceeds to your outstanding debt.
 
-Each position has a maturity date, but redemptions can happen earlier or later depending on user activity. Until a redemption takes place, your full collateral balance continues compounding, and your debt remains unchanged unless you choose to borrow more.
+Transmuter positions have maturity dates, but their owners can claim earlier or later, so the timing of redemptions against your loan varies with their activity. Until a redemption takes place, your full collateral balance continues compounding, and your debt remains unchanged unless you choose to borrow more.
 
-[Learn more about Self-Repaying Loans →](https://docs.alchemix.fi/user/faq/concepts/self-repaying-loans)
+[Learn more about Self-Repaying Loans →](https://docs.alchemix.fi/user/concepts/self-repaying-loans)
 
 **Q: What is earmarked debt?**
 
-When a redemption cycle begins, the protocol gradually reserves (earmarks) a portion of each open loan based on the borrower’s share of total system debt. This earmarked amount is fixed once assigned for the remainder of the cycle and continues earning yield until settlement. If you choose to repay an earmarked slice early, repayment must be made in MYT.
+As Transmuter deposits vest, the protocol continuously reserves (earmarks) a matching amount of debt across all open loans, in proportion to each loan’s unearmarked debt. Earmarked debt stays earmarked until it is redeemed, and the collateral behind it continues earning yield until settlement. If you choose to repay an earmarked slice early, repayment must be made in MYT.
 
-[Learn more about redemptions →](https://docs.alchemix.fi/user/faq/concepts/redemption-rate)
+[Learn more about redemptions →](https://docs.alchemix.fi/user/concepts/redemption-rate)
 
 **Q: Is it possible to exit or repay my loan before it is fully repaid?**
 
-Yes. Alchemix allows you to exit or repay your loan at any time, even before it is fully self-repaid. We offer a self-liquidation feature that can only be triggered by the depositor that enables you to repay outstanding loans by using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties at all with Alchemix.
+Yes. Alchemix allows you to exit or repay your loan at any time, even before it is fully self-repaid. A self-liquidation feature, which only the position owner can trigger, repays the outstanding loan from your deposited collateral and returns the remaining collateral to you in the same transaction. There are no lock-in periods and no early repayment penalty. The standard 0.25% borrower fee still applies to any earmarked portion of the debt settled from collateral.
 
 **Q: What is the redemption rate?**
 
@@ -144,7 +144,7 @@ Redemptions in Alchemix v3 deleverage your position by using collateral to repay
 
 A key benefit is Temporal Leverage, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
 
-[Learn more about the redemption rate →](https://docs.alchemix.fi/user/faq/concepts/redemption-rate)
+[Learn more about the redemption rate →](https://docs.alchemix.fi/user/concepts/redemption-rate)
 
 **Q: Can I repay early?**
 
@@ -166,27 +166,27 @@ Most of the time, the cost and reward cancel out, so the net effect is similar t
 - The term is very short and you prefer a sure 1:1 rate on your loan compared to selling on a DEX, or;
 - Liquidity is thin, and the market discount is unusually deep.
 
-[Learn more about the transmuter and market discounts →](https://docs.alchemix.fi/user/faq/concepts/transmuter)
+[Learn more about the transmuter and market discounts →](https://docs.alchemix.fi/user/concepts/transmuter)
 
 **Q: Can I withdraw from the Transmuter early?**
 
 Yes, but an early exit applies a penalty that reduces your return. The pop-up shows the exact amount before you confirm.
 
-[Learn more about early exits →](https://docs.alchemix.fi/user/faq/tutorials/redeem-alassets#manage-or-close-a-position)
+[Learn more about early exits →](https://docs.alchemix.fi/user/tutorials/redeem-alassets#manage-or-exit-a-position)
 
 **Q: What fees does Alchemix charge?**
 
 Alchemix V3 utilizes four primary fee parameters:
 
-- Borrower Redemption Fee: 0.25% (applied when collateral is used to reconcile your earmarked debt, whether through a Transmuter redemption or a force-repay).
+- Borrower Redemption Fee: 0.25% (applied whenever earmarked debt is settled, whether through a Transmuter redemption, a force-repay during liquidation or self-liquidation, or your own MYT repayment of an earmarked amount).
 
 - MYT Yield Fee: 15.00% (a performance fee on gross yield generated by strategies).
 
-- Early Transmutation Fee: 1.00% (applied if you withdraw assets from the Transmuter queue early).
+- Early Transmutation Fee: 1.00% on Ethereum and Optimism, 2.50% on Arbitrum (applied if you withdraw assets from the Transmuter queue before maturity; set per chain).
 
 - Transmuter Fee: 0.00% (charged when claiming transmuted assets).
 
-[Learn more about fees →](https://docs.alchemix.fi/user/faq/concepts/fees)
+[Learn more about fees →](https://docs.alchemix.fi/user/concepts/fees)
 
 **Q: What if a vault strategy loses funds?**
 
@@ -199,7 +199,7 @@ Loss handling is different for each participant:
 
 Never. Earmarked collateral continues to earn you yield until the moment it is redeemed. This delayed settlement creates the temporal leverage, extra yield you would not receive in most other lending platforms.
 
-[Learn more about Temporal Leverage →](https://docs.alchemix.fi/user/faq/concepts/redemption-rate#temporal-leverage)
+[Learn more about Temporal Leverage →](https://docs.alchemix.fi/user/concepts/redemption-rate#temporal-leverage)
 
 **Q: Who controls the system?**
 
@@ -207,17 +207,17 @@ Alchemix V3 is composed of several key counterparties. MYT Depositors, Borrowers
 
 The system is secured by cross-chain bridge controls using multiple decentralized verification networks (DVNs) and utilizes fundamental oracles to insulate users from market price volatility.
 
-[Learn more about security and permissions →](https://docs.alchemix.fi/user/faq/safety/risk-considerations)
+[Learn more about security and permissions →](https://docs.alchemix.fi/user/safety/risk-considerations)
 
 **Q: Is Alchemix audited?**
 
-Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/Cantina, Nethermind, yAudit, Immunefi, and alpeh_v), alongside an extensive in-house security suite. A bug bounty of up to $300,000 is active on Immunefi, and the protocol is monitored in real time by Hypernative, which can auto-pause it if suspicious activity is detected.
+Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/Cantina, Nethermind, yAudit, Immunefi, and alpeh_v), alongside an extensive in-house security suite. A bug bounty of up to $150,000 is active on Immunefi, and the protocol is monitored in real time by Hypernative, with the Guardian multisig able to pause new deposits and loans if suspicious activity is detected.
 
-[Audit reports, bounty details, and security practices →](https://docs.alchemix.fi/user/faq/safety/security)
+[Audit reports, bounty details, and security practices →](https://docs.alchemix.fi/user/safety/security)
 
 **Q: Where can I see live data?**
 
-Current redemption rate, queued alAssets, vault APRs, and historic term stats are displayed directly in the main dashboard and the Fixed Yield page.
+Vault APRs appear on the Borrow page and on your Dashboard. A vault's current redemption rate and earmarked balance sit at the top of that vault's own page, with fuller detail under its Earmarking and Redemptions tabs. Fixed-rate terms and their projected APRs are on the Fixed Yield page.
 
 [View live data →](https://alchemix.fi/)
 
@@ -391,7 +391,7 @@ Quick definitions for key terms used throughout the Alchemix V3 documentation. E
 
 ### alAsset {#alasset}
 
-A synthetic token minted by borrowing against collateral in Alchemix. alUSD mirrors USDC; alETH mirrors ETH. Inside the protocol, 1 alAsset always cancels 1 unit of debt regardless of its external market price.
+A synthetic token minted by borrowing against collateral in Alchemix. alUSD mirrors USDC; alETH mirrors ETH. Inside the protocol, 1 alAsset cancels 1 unit of unearmarked debt at face value regardless of its external market price; earmarked debt is repaid with MYT instead.
 
 ### Alchemist {#alchemist}
 
@@ -399,7 +399,7 @@ The core smart contract that accepts MYT collateral, issues alAsset loans, and m
 
 ### Earmarked debt {#earmarked-debt}
 
-A fixed slice of a borrower's outstanding loan that the protocol reserves during a redemption cycle. Earmarked collateral continues earning yield until the moment of settlement. Earmarked debt must be repaid with MYT rather than alAssets.
+A slice of a borrower's outstanding debt that the protocol reserves as Transmuter positions vest. The collateral behind it continues earning yield until the moment of settlement. Earmarked debt must be repaid with MYT and cannot be cleared with alAssets.
 
 ### Fundamental oracle {#fundamental-oracle}
 
@@ -411,11 +411,11 @@ A dedicated external price feed, provided by Chronicle Labs, for each alAsset (o
 
 ### LTV (Loan-to-Value) {#ltv}
 
-The ratio of outstanding debt to collateral value, expressed as a percentage. Alchemix allows borrowing up to 90% LTV. Liquidation is triggered at 95% LTV.
+The ratio of outstanding debt to collateral value, expressed as a percentage. Alchemix allows borrowing up to 90% LTV. Positions at or above 95% LTV become eligible for liquidation.
 
 ### Mix-Yield Token (MYT) {#myt}
 
-An ERC-20 token representing a share of a diversified portfolio of yield strategies managed by the Alchemix DAO. MYT is the collateral accepted by the Alchemist. Its redemption value grows continuously as underlying strategies earn yield.
+An ERC-20 token representing a share of a diversified portfolio of yield strategies managed by the Alchemix DAO. MYT is the collateral accepted by the Alchemist. Its redemption value rises as underlying strategies earn yield, and falls if a strategy records a loss.
 
 ### Redemption rate {#redemption-rate}
 
@@ -423,7 +423,7 @@ An annualized measure of how quickly borrower debt is being paid down through Tr
 
 ### Self-repaying loan {#self-repaying-loan}
 
-An Alchemix loan whose balance decreases over time without the borrower taking action, as vault yield and scheduled Transmuter redemptions service the debt. Interest rate is 0%; debt only moves downward unless the borrower mints more.
+An Alchemix loan whose balance decreases over time without the borrower taking action. Scheduled Transmuter redemptions draw MYT from the borrower's collateral and cancel the same amount of debt, while the remaining collateral keeps earning yield. Interest rate is 0%; debt only moves downward unless the borrower mints more.
 
 ### Temporal leverage {#temporal-leverage}
 
@@ -518,6 +518,20 @@ The standalone Alchemix mark, for avatars, favicons, and tight spaces where the 
               <a class="button button--primary button--sm" href="/img/BrandAssets/Png/alUSD_Backed_01.png" download="alUSD_Backed_01.png" style={{marginRight: '0.5rem'}}>PNG</a>
       <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/alUSD_Backed_01.svg" download="alUSD_Backed_01.svg">SVG</a>
       
+      alUSDb          <img src="/img/BrandAssets/Svg/alUSDb_01.svg" alt="alUSDb logo" style={{maxHeight: '80px', display: 'block'}} />
+                          <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/alUSDb_01.svg" download="alUSDb_01.svg">SVG</a>
+      
+
+### Mix-Yield Token Logos
+
+The Mix-Yield Token marks for the WETH and USDC vaults.
+
+      mixWETH          <img src="/img/BrandAssets/Svg/mixWETH_01.svg" alt="mixWETH logo" style={{maxHeight: '80px', display: 'block'}} />
+                          <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/mixWETH_01.svg" download="mixWETH_01.svg">SVG</a>
+      
+      mixUSDC          <img src="/img/BrandAssets/Svg/mixUSDC_01.svg" alt="mixUSDC logo" style={{maxHeight: '80px', display: 'block'}} />
+                          <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/mixUSDC_01.svg" download="mixUSDC_01.svg">SVG</a>
+      
 
 ### Brand Colors
 
@@ -542,12 +556,12 @@ This page walks through the core borrowing path. A small deposit, a modest borro
 
 - Deposit ETH or USDC to mint MYT and start earning yield.
 - Borrow at about 20% LTV to mint alAssets, then swap them to USDC if you want working capital. (The protocol allows up to **90%** LTV; this guide uses ~20% as a conservative starting point.)
-- Watch scheduled redemptions reduce your debt while your full collateral keeps earning until maturity.
+- Watch scheduled redemptions reduce your debt while your collateral keeps earning underneath.
 
 If you already know what you're looking for, jump straight to the relevant tutorial:
 
-- [Earn yield with Mixed Yield →](https://docs.alchemix.fi/user/quick-start/tutorials/use-passive-myt)
-- [Buy alAssets below peg for fixed returns →](https://docs.alchemix.fi/user/quick-start/tutorials/redeem-alassets)
+- [Earn yield with Mixed Yield →](https://docs.alchemix.fi/user/tutorials/use-passive-myt)
+- [Buy alAssets below peg for fixed returns →](https://docs.alchemix.fi/user/tutorials/redeem-alassets)
 
 ### Prerequisites
 
@@ -555,44 +569,44 @@ Connect a wallet on the target chain and keep a small balance of the native gas 
 
 ### Step 1 – Deposit to the MYT
 
-Open **Vaults**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain, and deposit. The vault mints MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
+Open **Borrow**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain, and deposit. The vault mints MYT at a rate equivalent to your underlying assets. From here on out, each MYT represents a growing claim on the underlying as strategies earn.
 
 ### Step 2 – Borrow at 20% LTV
 
 :::tip Check the alAsset market price first
-alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The dApp shows the current price and estimated proceeds before you confirm.
+alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The Trade → Swap page shows the current price and estimated proceeds before you confirm.
 :::
 
-On the same vault page stay on Deposit/Borrow. Enter a borrow near 20% LTV, then mint [alETH or alUSD](https://docs.alchemix.fi/user/quick-start/concepts/alAssets), respectively.
+On the same vault page stay on Deposit/Borrow. Enter a borrow near 20% LTV, then mint [alETH or alUSD](https://docs.alchemix.fi/user/concepts/alAssets), respectively.
 
 If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in the UI will apply when redemptions occur.
 
 :::warning Before you confirm
 
-- **Strategy mix:** open the vault details to see the current MYT weight and ceilings for higher-risk buckets.
+- **Strategy mix:** open the vault's Info panel to see the strategies the MYT is deployed in, with each one's risk level and allocation.
 - **Health bar:** note the Liquidation LTV marker. Keep a wide buffer to reduce the need for active position management.
   :::
 
 ### Step 3 – Let it run
 
-The timeline below shows how this plays out in practice. Redemptions outpace yield in the first quarter, then yield overtakes. Debt drops 57% in a year while collateral finishes above its starting value. No repayments, no interest, no action required.
+The visualizer below projects how the position plays out. It tracks three lines over the term: your **Deposit** (collateral, earning yield), your **Debt** (paid down by scheduled redemptions), and your **Net Value** (deposit minus debt). Adjust the yield, redemption rate, alAsset price, and duration to see how the loan settles itself. No repayments, no interest, no action required.
 
-*(An interactive PositionTimeline illustration appears here in the web version.)*
+*(An interactive VaultVisualizer illustration appears here in the web version.)*
 
 ### Next steps
 
 Explore the concepts behind what you just did:
 
-- [Mix-Yield Token →](https://docs.alchemix.fi/user/quick-start/concepts/myt-and-yield)
-- [Redemption Rate →](https://docs.alchemix.fi/user/quick-start/concepts/redemption-rate)
-- [Liquidations →](https://docs.alchemix.fi/user/quick-start/concepts/liquidations)
-- [The Transmuter →](https://docs.alchemix.fi/user/quick-start/concepts/transmuter)
+- [Mix-Yield Token →](https://docs.alchemix.fi/user/concepts/myt-and-yield)
+- [Redemption Rate →](https://docs.alchemix.fi/user/concepts/redemption-rate)
+- [Liquidations →](https://docs.alchemix.fi/user/concepts/liquidations)
+- [The Transmuter →](https://docs.alchemix.fi/user/concepts/transmuter)
 
 Or go deeper with the step-by-step tutorials:
 
-- [Take a Loan →](https://docs.alchemix.fi/user/quick-start/tutorials/borrowing-in-alchemix)
-- [Repay Loans →](https://docs.alchemix.fi/user/quick-start/tutorials/repay-loan)
-- [Redeem alAssets →](https://docs.alchemix.fi/user/quick-start/tutorials/redeem-alassets)
+- [Take a Loan →](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix)
+- [Repay Loans →](https://docs.alchemix.fi/user/tutorials/repay-loan)
+- [Redeem alAssets →](https://docs.alchemix.fi/user/tutorials/redeem-alassets)
 
 
 ---
@@ -631,7 +645,7 @@ The migration was conducted via a coordinated protocol upgrade (governance-appro
 - **Dust threshold:** Positions valued at less than $0.01 USD at the time of the snapshot were not migrated.
 
 :::info No action required
-The migration ran automatically and is now complete. Eligible V2 positions were recreated on V3 and are available in the [Alchemix app](https://alchemix.fi). If you held a V2 position through the snapshot, it has already been migrated.
+The migration was executed by the Alchemix multisig and is now complete. Eligible V2 positions were recreated on V3 and are available in the [Alchemix app](https://alchemix.fi). If you held a V2 position through the snapshot, it has already been migrated.
 :::
 
 ### The migration Mana program
@@ -738,7 +752,7 @@ At the conclusion of the earning period, a fixed pool of **10,000 ALCX** is dist
 
 - [Alchemix v3 dApp](https://alchemix.fi)
 - [AIP-123 Governance Proposal](https://alchemix.fi/governance/0xa3228100b34d6063dc03d35132c044a93ea1fbcce10a960bd43fb5a8454ec4b9)
-- [Mana announcement thread (X)](https://x.com/AlchemixFi/status/2014381213465940470) — the in-app Mana calculator was retired when the earning period closed
+- [Mana announcement thread (X)](https://x.com/AlchemixFi/status/2014381213465940470). The in-app Mana calculator was retired when the earning period closed
 
 
 ---
@@ -771,9 +785,9 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 3. Hold MYT. As strategies earn yield, the redemption value of each token increases.
 
-4. Redeem at any time for your principal plus any accumulated yield.
+4. Redeem at any time for your share of the vault at the current exchange rate, which reflects accumulated yield and any strategy losses.
 
-There are no lock-ups, and yield compounds continuously. You can also use your MYT as collateral in an Alchemix vault to [borrow up to 90% LTV](https://docs.alchemix.fi/user/concepts/myt-and-yield/self-repaying-loans) against it while it keeps earning underneath.
+There are no lock-ups on MYT itself, and yield compounds continuously. Large withdrawals can depend on the liquidity available in the vault’s strategies. You can also use your MYT as collateral in an Alchemix vault to [borrow up to 90% LTV](https://docs.alchemix.fi/user/concepts/self-repaying-loans) against it while it keeps earning underneath.
 
 ```mermaid
 flowchart LR
@@ -795,67 +809,35 @@ flowchart LR
 
 ### Per-chain variants
 
-There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). Strategies differ by chain, letting you choose the profile that matches your preferences. These strategies can change with DAO-issued votes.
+There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
 
 :::info Compositions change, verify in the app
-The tables below are a point-in-time snapshot for reference. The DAO can revote strategy weights at any time, so always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
+The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [on the Mixed Yield page →](https://alchemix.fi/mixed-yield), under Earn → Variable Rate
 :::
 
-The strategy labels below map to their underlying providers: `Euler*` = Euler v2, `TokeAuto*` = Auto Finance, `Aave*` = Aave, `Fluid*` = Fluid, `Yearn`/`yv*` = Yearn, `wstETH` = Lido.
+### How strategies are classified
 
-#### Mainnet USDC
+Each MYT is governed by risk classifications. Before a strategy can be added to an MYT its adapter code must be covered by an independent audit, and the strategy is assigned one of three classifications:
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| EulerUSD | Moderate | - | 25% |
-| TokeAutoUSD | Moderate | - | 25% |
-| Yearn yvUSD | Conservative | Yes | - |
-| SiUSD | Conservative | - | - |
+- **Conservative** – enters and exits through the strategy contract directly, is priced by a fundamental oracle that measures backing against outstanding shares, and carries no meaningful withdrawal delay.
+- **Moderate** – depends on a DEX to enter or exit, or on an externally priced oracle, or can lock withdrawals for a period.
+- **Aggressive** – meets the Moderate criteria and carries an added risk factor, such as a newer or less proven strategy.
 
-#### Mainnet ETH
+Classification is driven by four inputs: how you enter and exit (contract or DEX), how the strategy is priced (fundamental or external oracle), withdrawal duration risk, and other factors such as the age of the strategy or confidence in the team. Other factors can only raise a classification, never lower it. See [MYT Launch Strategies](../../governance/guides/myt-strategies) for the full methodology.
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| EulerwETH | Moderate | - | 25% |
-| TokeAutoETH | Moderate | Yes | 25% |
-| wstETH | Moderate | - | 25% |
+The audit covering each live strategy is listed on the [Security & Audits](../safety/security#strategy-audit-coverage) page.
 
-#### Arbitrum USDC
+### Risk caps
 
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| AaveUSDC | Conservative | Yes | - |
-| EulerUSDC | Moderate | - | 25% |
-| FluidUSDC | Moderate | - | 25% |
+Each classification caps how much of an MYT a strategy can occupy, both on its own and across all strategies of that tier. These caps let you set an LTV that limits liquidation risk from higher-risk strategies. Caps are checked when the DAO allocates. Because they are relative to vault size, user withdrawals can leave an existing allocation above its cap until the DAO rebalances.
 
-#### Arbitrum ETH
-
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| AaveETH | Conservative | Yes | - |
-| EulerETH | Moderate | - | 25% |
-
-#### Optimism USDC
-
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| AaveUSDC | Conservative | Yes | - |
-
-#### Optimism ETH
-
-| Strategy | Risk | LiqAdapter | Max % |
-|---|---|---|---|
-| wstETH | Moderate | - | 25% |
-
-#### Global Risk Caps
-
-Each strategy's risk classification caps how much of an MYT it can occupy, both individually and across all strategies of that tier. See [MYT Launch Strategies](../../governance/guides/myt-strategies) for the full classification methodology.
-
-| Risk Level | Max Individual Strategy | Max All Strategies |
+| Classification | Max Individual Strategy | Max All Strategies\* |
 |---|---|---|
 | Conservative | None | None |
-| Moderate | 25% | 40% |
-| Aggressive | 10% | 10% |
+| Moderate | 40% | 60% |
+| Aggressive | 20% | 20% |
+
+\* Max All Strategies is inclusive of that risk level and all riskier levels. The Conservative cap covers Conservative, Moderate, and Aggressive strategies together. The Moderate cap covers Moderate and Aggressive, and the Aggressive cap covers Aggressive only.
 
 
 ---
@@ -866,7 +848,7 @@ Source: https://docs.alchemix.fi/user/concepts/how-peg-is-maintained
 
 alAssets are the tokens you borrow against your collateral. Their price floats near 1.00, but the protocol never forcibly pins it there. Market incentives and redemption mechanics do the work of pulling price back to parity after short-term drifts.
 
-**How the soft-peg works:** Inside the vault 1 alAsset always cancels 1 unit of debt, even if that token trades at a discount on exchanges. Fixed-duration redemptions and arbitrage tighten the gap, so price tends to revert without an explicit hard-peg.
+**How the soft-peg works:** Inside the vault 1 alAsset cancels 1 unit of debt at face value, even if that token trades at a discount on exchanges. Fixed-duration redemptions and arbitrage tighten the gap, so price tends to revert without an explicit hard-peg.
 
 ### Why price drifts happen
 
@@ -890,7 +872,7 @@ flowchart LR
 
 #### Contraction – Transmuter demand
 
-A wider discount plus a fixed-term Transmuter deposit produces a bond-like APR. Traders buy cheap alAssets, deposit them. The protocol earmarks an equal slice of collateral, transfers it to the Transmuter, and burns the alAssets at maturity. Supply contracts and price moves back towards peg.
+A wider discount plus a fixed-term Transmuter deposit produces a bond-like APR. Traders buy cheap alAssets and deposit them. As those deposits vest, the protocol earmarks a matching amount of borrower debt. When the depositor claims, the Alchemist pulls that value in MYT from borrower collateral, sends it to the Transmuter, and the claimed alAssets are burned. Supply contracts and price moves back towards peg.
 
 ```mermaid
 flowchart LR
@@ -910,7 +892,7 @@ Borrowing becomes less attractive while the redemption queue is large, so the sy
 
 #### External utility – Holding instead of selling
 
-alAssets are now externally priceable through dedicated [Chronicle Labs](https://docs.alchemix.fi/user/concepts/how-peg-is-maintained/alAssets#using-alassets-across-defi) oracles, so holders can deploy them as collateral in other DeFi protocols rather than selling them. Every holder who puts an alAsset to work elsewhere instead of selling it removes a unit of sell pressure, reinforcing the price and supporting the peg alongside the Transmuter.
+alAssets are now externally priceable through dedicated [Chronicle Labs](https://docs.alchemix.fi/user/concepts/alAssets#using-alassets-across-defi) oracles, so holders can deploy them as collateral in other DeFi protocols rather than selling them. Every holder who puts an alAsset to work elsewhere instead of selling it removes a unit of sell pressure, reinforcing the price and supporting the peg alongside the Transmuter.
 
 ### Key points to remember
 
@@ -929,27 +911,27 @@ Source: https://docs.alchemix.fi/user/concepts/self-repaying-loans
 
 A self-repaying loan lets you unlock liquidity without immediately selling your core position.
 
-Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or alUSD, that mirrors the price of what you deposited. You may mint alAssets worth up to **90%** of your collateral's face value and deploy them however you like. Meanwhile, two built-in cash flows reduce the loan balance:
+Deposit ETH or USDC and the vault issues a like-kind synthetic asset, alETH or alUSD, that mirrors the price of what you deposited. You may mint alAssets worth up to **90%** of your collateral's face value and deploy them however you like. Meanwhile, two things happen to the position without any action from you:
 
-- **Vault yield** – Your collateral is wrapped in the Mix-Yield Token, which earns yield continuously.
+- **Scheduled redemptions pay down the debt** – As Transmuter positions mature and are redeemed, the protocol takes MYT worth the redeemed amount out of your collateral and cancels the same amount of your debt. This is the only automatic repayment mechanism.
 
-- **Scheduled redemptions** – As Transmuter redemption positions mature, users will redeem their positions, which then triggers debt repayments using user collateral.
+- **Vault yield refills the collateral** – Your collateral is held as MYT, which keeps earning while it sits in the vault. Yield does not reduce your debt directly. It replaces some or all of the collateral that redemptions remove, so your net value can hold steady or grow while the debt falls depending on LTV and current rates.
 
-Because repayment comes from these predictable flows, the loan never accrues variable interest. The balance of your debt only moves in one direction (down) unless you choose to mint additional alAssets.
+Because debt and collateral are like-kind, each redemption reduces both by the same value. The loan never accrues interest, and the balance of your debt only moves in one direction (down) unless you choose to mint additional alAssets.
 
 :::tip You are in control
-While Alchemix loans repay themselves over time via yield, you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
+Redemptions repay the loan over time, but you are never locked in. You can manually repay part or all of your debt at any time to unlock your collateral immediately.
 :::
 
 ```mermaid
 flowchart LR
     classDef default font-weight:bold;
 
-    A(Deposit ETH or USDC) --> B(Collateral wrapped as MYT)
-    B --> C(Vault yield accrues continuously)
+    A(Deposit ETH or USDC) --> B(Collateral held as MYT)
+    B --> C(Vault yield accrues to the collateral)
     B --> D(Transmuter redemptions mature on schedule)
-    C e1@--> E{{Loan balance decreases}}
-    D e2@--> E
+    D e1@-->|cancels debt, draws collateral| E{{Debt falls while collateral is replenished}}
+    C e2@-->|replaces drawn collateral| E
 
     style E fill:#f5c09a,stroke:#1b1b1d,stroke-width:2px,color:#1b1b1d
     linkStyle 0,1,2,3,4 stroke:#f5c09a,stroke-width:2px
@@ -962,18 +944,19 @@ flowchart LR
 | **Collateral** | ETH → alETH, USDC → alUSD |
 | **Maximum LTV** | 90% |
 | **Interest rate** | 0% (balance declines, never compounding) |
-| **Repayment sources** | MYT yield, scheduled transmuter redemptions, manual repayments |
-| **Early repayment** | Send alAssets back at any time |
+| **Repayment sources** | Scheduled Transmuter redemptions (drawn from your collateral) and manual repayments |
+| **Vault yield** | Accrues to your MYT collateral and offsets what redemptions draw. It does not reduce debt directly |
+| **Early repayment** | Repay at any time with alAssets (unearmarked debt), or with MYT or the underlying asset (any debt, including earmarked) |
 | **Position NFT** | Your position is represented by an NFT available in your wallet after the transaction confirms |
-| **Liquidation** | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more |
+| **Liquidation** | Only a loss of value in the MYT itself can push a position past the 95% threshold. Redemptions lower your LTV, since they cancel debt and collateral in equal amounts |
 
 ### What can self-repaying loans be used for?
 
 - **Large purchases** – Access liquidity today without selling your position. No interest rate and no price-based liquidations means you don't need to watch the loan closely.
 
-- **Yield looping** – Deposit borrowed alAssets into new positions for amplified yield.
+- **Yield looping** – Swap borrowed alAssets for the underlying asset and deposit it into a new position for amplified exposure to MYT yield.
 
-- **IL protection** – Combine borrowing with like-for-like liquidity pools to generate fees without impermanent loss.
+- **IL mitigation** – Combine borrowing with like-for-like liquidity pools to generate fees, with impermanent loss limited to moves in the alAsset’s peg.
 
 - **Short-term opportunities** – Quickly move capital while keeping your underlying position intact.
 
@@ -985,11 +968,11 @@ For most borrowers, the position is low-maintenance. Deposit, mint, and check ba
 
 ### Learn more
 
-[alAssets: synthetic tokens explained →](https://docs.alchemix.fi/user/concepts/self-repaying-loans/alAssets)
+[alAssets: synthetic tokens explained →](https://docs.alchemix.fi/user/concepts/alAssets)
 
-[The Transmuter: how redemptions work →](https://docs.alchemix.fi/user/concepts/self-repaying-loans/transmuter)
+[The Transmuter: how redemptions work →](https://docs.alchemix.fi/user/concepts/transmuter)
 
-[Tutorial: Take a Loan →](https://docs.alchemix.fi/user/concepts/tutorials/borrowing-in-alchemix)
+[Tutorial: Take a Loan →](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix)
 
 
 ---
@@ -998,7 +981,7 @@ For most borrowers, the position is low-maintenance. Deposit, mint, and check ba
 
 Source: https://docs.alchemix.fi/user/concepts/redemption-rate
 
-Redemptions convert earmarked collateral into the asset required to repay debt.
+Redemptions pull MYT collateral from positions with earmarked debt, send it to the Transmuter, and cancel the same amount of debt.
 
 Two ideas matter:
 
@@ -1090,7 +1073,7 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 
 ### Temporal leverage
 
-Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until a Transmuter position actually matures. The transfer out of the vault happens at that maturity moment, when the claim must be settled.
+Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until the Transmuter position is actually claimed. The transfer out of the vault happens at that claim, which the position holder can trigger for the vested portion at any time, including well after maturity.
 
 Throughout that waiting period your full deposit continues to earn yield, giving you an extra return called “temporal leverage”. The longer the gap between earmark and settlement, the more additional yield you collect before the earmarked amount finally goes toward your debt.
 
@@ -1108,7 +1091,7 @@ flowchart LR
 
 ### Learn more
 
-- [**Transmuter Mechanics**](https://docs.alchemix.fi/user/concepts/redemption-rate/transmuter) – How earmarking and redemption batches work.
+- [**Transmuter Mechanics**](https://docs.alchemix.fi/user/concepts/transmuter) – How earmarking and redemption batches work.
 
 - [**Live Charts**](https://alchemix.fi/) – View past and present data directly in the dapp.
 
@@ -1130,7 +1113,7 @@ They serve two purposes:
 The protocol values 1 alAsset at 1 unit of its underlying, but market price can drift below that. Borrowing and redemption both create opportunities around that gap.
 
 :::note Not an algorithmic stablecoin
-alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](https://docs.alchemix.fi/user/concepts/alAssets/transmuter).
+alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every alAsset is minted against MYT collateral worth at least 1.11 times the debt (90% maximum LTV). If that collateral ever loses value, liquidations and pro-rata Transmuter payouts restore the balance. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](https://docs.alchemix.fi/user/concepts/transmuter).
 :::
 
 ### Borrowing, selling, and the market discount
@@ -1161,8 +1144,8 @@ A small, predictable discount is healthy; large discrepancies invite arbitrage.
 
 | Mechanism           | How it helps                                                                                                  |
 | ------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets at maturity. |
-| Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value.                      |
+| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets when claimed. |
+| Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value, up to the amount of alAssets the Alchemist on that chain has issued. |
 
 Together these forces pull market price toward 1.00 and keep borrowing capital-efficient.
 
@@ -1170,7 +1153,9 @@ Together these forces pull market price toward 1.00 and keep borrowing capital-e
 
 Historically alAssets were used primarily inside the Alchemix ecosystem, because external protocols had no reliable way to price them. With dedicated **Chronicle Labs** oracles, one feed per alAsset, alAssets can now be verifiably priced by other protocols and used as productive collateral across DeFi.
 
-In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the peg for everyone.
+In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the soft peg for everyone.
+
+See where alAssets can be put to work in external lending markets like the Euler 4-way market on the app's Lending page, under Ecosystem → Lending. The [Lending tutorial →](https://docs.alchemix.fi/user/tutorials/lending) walks through supplying and borrowing there.
 
 ### LTV sensitivity
 
@@ -1178,7 +1163,7 @@ A higher LTV does not, by itself, change the percentage discount an alAsset trad
 
 Higher LTV means more capital deployed upfront. At 90% LTV on a $1,000 deposit you receive $900 in alAssets, twice what you’d get at 45%. That capital is yours to use anywhere: yield strategies, liquidity pools, purchases, or working capital. Whether high LTV makes sense depends on whether your deployed capital earns more than the collateral erosion it costs you over time.
 
-Inside Alchemix, high LTV positions erode more collateral per redemption cycle than the vault yield replaces. Collateral and debt both fall, but the collateral falls faster, so you’ll need to re-borrow more often to maintain leverage. At lower LTV, vault yield can outpace redemptions entirely, letting collateral grow while debt falls.
+Inside Alchemix, high LTV positions erode more collateral per redemption cycle than the vault yield replaces. Each redemption cancels the same value of debt as it removes in collateral, so your LTV drifts down and you’ll need to re-borrow more often to maintain leverage. At lower LTV, vault yield can outpace redemptions entirely, so collateral grows while debt falls.
 
 The visualizer below shows only the internal Alchemix view. Returns on capital deployed outside the protocol are not included, and those returns are often the primary reason to borrow at higher leverage.
 
@@ -1186,9 +1171,9 @@ The visualizer below shows only the internal Alchemix view. Returns on capital d
 
 ### Learn more
 
-[Open a Self-Repaying Loan →](https://docs.alchemix.fi/user/concepts/alAssets/self-repaying-loans)
+[Open a Self-Repaying Loan →](https://docs.alchemix.fi/user/concepts/self-repaying-loans)
 
-[Redeem via the Transmuter →](https://docs.alchemix.fi/user/concepts/alAssets/transmuter)
+[Redeem via the Transmuter →](https://docs.alchemix.fi/user/concepts/transmuter)
 
 
 ---
@@ -1197,10 +1182,10 @@ The visualizer below shows only the internal Alchemix view. Returns on capital d
 
 Source: https://docs.alchemix.fi/user/concepts/transmuter
 
-The Transmuter lets you redeem alAssets (alUSD, alETH) at a guaranteed 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of MYT that normally unwraps to the underlying asset immediately.
+The Transmuter lets you redeem alAssets (alUSD, alETH) at a 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of MYT that normally unwraps to the underlying asset immediately.
 
-:::tip Instant vs. guaranteed liquidity
-The Transmuter guarantees a **1:1 exchange rate** (no slippage) but works over time as redemptions mature.
+:::tip Instant vs. fixed-rate liquidity
+The Transmuter pays out at a **1:1 exchange rate** (no market slippage) but works over time as positions vest. Payouts are scaled down only if the Alchemist carries bad debt (see Edge-case handling below).
 
 - **Want it now?** Use external liquidity pools (Curve, Balancer) which are instant but may have slight price slippage.
 - **Want 1:1 value?** Deposit into the Transmuter and wait for redemptions to clear over a fixed period to fill your order.
@@ -1213,9 +1198,9 @@ flowchart LR
     classDef default font-weight:bold;
 
     A(Deposit<br/><span style='color:#8a8f99'>alUSD or alETH</span>)
-    B(Queue<br/><span style='color:#8a8f99'>Locked for Transmutation Time</span>)
-    C(Earmark<br/><span style='color:#8a8f99'>MYT reserved from collateral</span>)
-    D{{Maturity<br/>alAssets burned · 1:1 paid out}}
+    B(Vesting<br/><span style='color:#8a8f99'>Linear per block over the Transmutation Time</span>)
+    C(Earmark<br/><span style='color:#8a8f99'>Borrower debt reserved for your claim</span>)
+    D{{Claim<br/>alAssets burned · 1:1 paid out in MYT}}
 
     A e1@--> B e2@--> C e3@--> D
 
@@ -1227,21 +1212,21 @@ flowchart LR
 ```
 
 - **Deposit** – Send alUSD or alETH to the Transmuter contract.
-- **Queue** – Each deposit matures after the Transmutation Time, a governance-set duration that varies by asset and chain and is adjusted over time in response to market factors such as Transmuter capacity and demand. Always check the current term for your asset in the [dapp](https://alchemix.fi/fixed-yield) before depositing. You can exit early, but an early-withdrawal fee applies and you give up a portion of the fixed-rate outcome.
-- **Earmark** – The protocol reserves an equal value of MYT from borrower collateral to guarantee your claim.
-- **Maturity** – You receive 1 asset-worth of MYT from borrowers for every 1 alAsset deposited.
+- **Vesting** – Each deposit vests linearly over the Transmutation Time, a duration set per asset and chain by the protocol admin under DAO governance and adjusted over time in response to market factors such as Transmuter capacity and demand. Always check the current term for your asset in the [dapp](https://alchemix.fi/fixed-yield) before depositing. You can exit early with the vested share paid out, and the unvested share returned as alAssets minus the early exit fee.
+- **Earmark** – As your position vests, the protocol earmarks a matching amount of borrower debt. That debt can only be settled with MYT collateral, which stays in place and keeps earning until you claim.
+- **Claim** – You receive 1 asset-worth of MYT from borrower collateral for every 1 alAsset that has vested. You can claim at any time after maturity, and the claimed alAssets are burned.
 
 All redeemed alAssets are burned, contracting their supply.
 
 ### Why discounts exist
 
-Borrowers often sell newly minted alAssets for working capital, pushing market price slightly below par. The spread between that market price and the Transmuter’s guaranteed 1:1 accounting creates a fixed-rate opportunity for buyers.
+Borrowers often sell newly minted alAssets for working capital, pushing market price slightly below par. The spread between that market price and the Transmuter’s fixed 1:1 accounting creates a fixed-rate opportunity for buyers.
 
-Inside Alchemix, 1 alUSD always offsets 1 USD worth of debt, regardless of its external market price.
+Inside Alchemix, 1 alUSD offsets 1 USD worth of debt at face value, regardless of its external market price (debt already earmarked for redemption is settled with MYT instead).
 
 #### Fixed-rate yield example
 
-The figures below are **illustrative only**. The live market price, transmutation term, and resulting APR vary by asset and chain and are set by governance. Always check the current terms in the [dapp](https://alchemix.fi/fixed-yield).
+The figures below are **illustrative only**. The live market price is set by trading, the transmutation term is set per asset and chain by the protocol admin under DAO governance, and the resulting APR comes from both. Always check the current terms in the [dapp](https://alchemix.fi/fixed-yield).
 
 **Market**: alUSD = 0.96 USDC
 
@@ -1255,7 +1240,7 @@ The figures below are **illustrative only**. The live market price, transmutatio
 | Profit                  | 416 USDC = 4.16% in 3 mo = \~16.6% APR     |
 
 :::warning Transmuter deposit caps
-The Transmuter has a maximum deposit cap based on the total alAssets minted on its specific chain. If a Transmuter is full, you may need to bridge alAssets to another chain to deposit.
+The Transmuter has a deposit cap set per chain, and it can never hold more alAssets than the paired Alchemist has issued. If a Transmuter is full, you may need to bridge alAssets to another chain to deposit.
 
 **Always verify available Transmuter capacity on your target chain before purchasing alAssets.**
 :::
@@ -1286,7 +1271,7 @@ There is no variable interest and no price-based liquidation affecting Transmute
 
 Source: https://docs.alchemix.fi/user/concepts/fees
 
-All Alchemix v3 fees are set by on-chain governance and fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and a performance fee on yield generation.
+All Alchemix v3 fees are on-chain parameters set by the protocol admin multisig under DAO governance. They fall into three areas: redemption-based fees for borrowers and transmuters, an early-exit fee for queued assets, and performance fees on yield generation. A separate liquidator fee applies only to liquidated positions (see [Liquidations](https://docs.alchemix.fi/user/concepts/liquidations)).
 
 ```mermaid
 flowchart TD
@@ -1301,51 +1286,54 @@ flowchart TD
     B --> F(Take a loan) --> G(Transmuter redemption<br/>repays your debt) --> H(<b>0.25%</b> borrower<br/><span style='color:#8a8f99'>redemption fee</span>):::fee
 
     C --> I(Exit early or wait?)
-    I -->|Wait full term| J(<b>0.00%</b> — full<br/>redemption value):::free
-    I -.->|Exit early| K(<b>1.00%</b><br/><span style='color:#8a8f99'>Early Transmutation Fee</span>):::fee
+    I -->|Wait full term| J(<b>0.00%</b> full<br/>redemption value):::free
+    I -.->|Exit early| K(<b>1.00% to 2.50%</b><br/><span style='color:#8a8f99'>Early Transmutation Fee, set per chain</span>):::fee
 
     linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#f5c09a,stroke-width:2px
 ```
 
 ### Borrower redemption fee
 
-When the Transmuter converts queued alAssets into vault value, it credits that amount against outstanding loans. At that moment, a small fraction of the repaid debt is routed to the protocol treasury.
+When a Transmuter position is claimed, the redeemed amount is cancelled from outstanding loans and pulled from borrower collateral in MYT. At that moment, an additional fee, a small percentage of that value, is taken from collateral and routed to the protocol fee receiver.
 
-The same fee applies whenever collateral is used to reconcile earmarked debt, not only through scheduled Transmuter redemptions. A force-repay (for example, during a self-liquidation) settles earmarked debt with collateral and is charged at this same rate, so the small protocol fees you see on those events are this borrower redemption fee.
+The same fee applies whenever collateral is used to settle earmarked debt, whatever triggers the settlement. A force-repay (for example, during a self-liquidation) settles earmarked debt with collateral and is charged at this same rate, so the small protocol fees you see on those events are this borrower redemption fee.
 
-- **Current Rate:** 0.25%
+- **Current Rate:** <FeeValue metric="redemption" />
 - **Effective Cost:** Because this is event-based rather than time-based, the cost depends on your starting LTV and the duration of the transmutation.
 
 Effective APR ≈ Fee × (1 year ÷ Transmutation Time) × Starting LTV
+
+This assumes the Transmuter queue equals total system debt, which is the maximum redemption rate. When the queue is smaller, a smaller share of your debt is redeemed each year and the effective cost is lower.
 
 ### Transmuter fees
 
 The Transmuter involves two distinct fee types depending on the user's action:
 
 1. **Transmuter Fee:** An optional fee applied when a Transmuter depositor claims their underlying assets.
-   - **Current Rate:** 0.00%
-2. **Early Transmutation Fee:** A fee applied when a user chooses to withdraw their funds from the Transmuter queue before the transmutation process is complete. This ensures the system remains stable and penalizes short-term "queue hopping."
-   - **Current Rate:** 1.00%
+   - **Current Rate:** <FeeValue metric="transmuter" />
+2. **Early Transmutation Fee:** A fee applied to the unvested alAssets returned when a depositor claims before maturity. The vested portion is still paid out in MYT and is not charged this fee. The fee keeps the system stable and discourages short-term "queue hopping."
+   - **Current Rate:** <FeeValue metric="earlyExit" /> on Ethereum and Optimism, <FeeValue metric="earlyExit" chain="arbitrum" /> on Arbitrum. The rate is set per chain by governance.
 
 ### MYT performance fee
 
 Each Mix-Yield Token (MYT) vault skims a share of the gross yield generated by its underlying strategies before crediting the remainder to the MYT price. This fee funds strategy maintenance and ongoing protocol development.
 
-- **Current Rate:** 15.00% (pending final DAO verification)
+- **Current Rate:** <FeeValue metric="myt" />
+
+### Ecosystem vault fee
+
+The Alchemix Ecosystem Vault is a curated vault that deploys deposited WETH across a mix of Alchemix v3 yield sources (liquidity pools, Mix-Yield Tokens, and Fixed-Yield Transmuter positions) to earn a blended yield. It takes a share of that yield before crediting the remainder to depositors. It currently runs as a single WETH vault on Ethereum.
+
+- **Current Rate:** 20.00% of yield
 
 ### Current fee schedule
 
-| Chain        | Base Asset | Redemption Fee | Transmuter Fee | Early Transmutation Fee | MYT Yield Fee |
-| :----------- | :--------- | :------------- | :------------- | :---------------------- | :------------ |
-| **Ethereum** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Ethereum** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Optimism** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Optimism** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Arbitrum** | ETH        | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
-| **Arbitrum** | USDC       | 0.25%          | 0.00%          | 1.00%          | 15.00%        |
+These values are read live from the fee parameters on each chain's contracts.
+
+<FeeSchedule />
 
 :::note Governance oversight
-All parameters are subject to Alchemix DAO oversight. Any updates to the fee schedule are executed on-chain and are visible within the Alchemix UI before taking effect.
+All parameters are subject to Alchemix DAO oversight. Any updates to the fee schedule are executed on-chain and become visible within the Alchemix UI when they take effect.
 :::
 
 
@@ -1355,10 +1343,10 @@ All parameters are subject to Alchemix DAO oversight. Any updates to the fee sch
 
 Source: https://docs.alchemix.fi/user/concepts/liquidations
 
-Liquidations in Alchemix v3 are a system-wide safety valve that activates only when the Mix-Yield Token loses backing. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, market price swings do **not** force positions to close.
+Liquidations in Alchemix v3 are a system-wide safety valve that activates only when the Mix-Yield Token loses backing. Because loans and collateral are like-kind, with ETH backing alETH and USDC backing alUSD, a move in the price of ETH or USDC does **not** force positions to close.
 
 :::tip Liquidations in Alchemix are rare
-Price volatility alone cannot trigger a liquidation. Only a loss in the underlying yield strategy, such as an exploit or a strategy reporting negative returns, can move the liquidation threshold. Day-to-day, most users will never encounter one.
+Price volatility in ETH or USDC alone cannot trigger a liquidation. Only a fall in the value the MYT reports, such as an exploit, a strategy reporting negative returns, or an oracle-priced strategy (a liquid staking token, for example) trading below its underlying, can push your LTV toward the fixed 95% liquidation threshold. Day-to-day, most users will never encounter one.
 :::
 
 ### When liquidation does not occur
@@ -1369,8 +1357,8 @@ Price volatility alone cannot trigger a liquidation. Only a loss in the underlyi
 
 ### What can trigger liquidation
 
-- **Strategy loss, exploit, or severe slippage inside MYT:** Oracle shows MYT NAV is less than system debt.
-- **Position exceeds liquidation threshold (95% LTV):** Oracle shows collateral value vs. debt ratio breaching threshold.
+- **Strategy loss, exploit, or severe slippage inside MYT:** The MYT share price falls, raising every position's LTV.
+- **Position exceeds liquidation threshold (95% LTV):** Collateral, valued at the MYT share price, divided by debt reaches the 95% bound. Anyone can then liquidate the position.
 
 ### Reading the health bar
 
@@ -1378,7 +1366,7 @@ The colored bar in the vault UI gives an at-a-glance view of your position. Keep
 
 *(An interactive HealthBar illustration appears here in the web version.)*
 
-Only the minimum needed to restore your position to a healthy LTV, at or below the 90% maximum, is liquidated. The rest of your position is untouched. A liquidator fee is paid on both paths. If collateral can’t cover it, a separate fee vault (fundable by the DAO or any entity) covers the difference.
+In a normal liquidation, any earmarked debt is first repaid from your collateral, then only enough additional collateral is taken to restore the position to the target ratio, at or below the 90% maximum. The rest of your position is untouched. If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee. In a partial liquidation that fee comes from the position’s surplus collateral. In a full liquidation, or when the position cannot safely cover the fee, the whole fee is paid from a separate fee vault that the DAO or anyone can fund.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 
@@ -1413,13 +1401,13 @@ The primary risks a borrower takes are liquidation risk and redemption risk.
 
 If the MYT suffers a loss then the LTV of a borrower's position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation, which will use collateral to repay debt, and pay the liquidator, until the user’s position is down to the target LTV.
 
-Users can mitigate liquidation risk by using a conservative LTV based on the risk levels of the strategies that make up each MYT. The Aggressive and Moderate risk strategies in each MYT are limited to 10% and 40% of the MYT, respectively. If the liquidation LTV is 95% then the user can take a 45% LTV. In this scenario, even if all of the Aggressive and Moderate risk strategies suffer 100% losses, the user will still have a 90% LTV and therefore not be subject to liquidation.
+Users can mitigate liquidation risk by using a conservative LTV based on the risk levels of the strategies that make up each MYT. Moderate and Aggressive risk strategies together are capped at 60% of an MYT, and Aggressive strategies alone at 20% (see the [risk caps](https://docs.alchemix.fi/user/concepts/myt-and-yield#risk-caps) table). If the liquidation LTV is 95% then a user can take a 36% LTV. In this scenario, even if all of the Moderate and Aggressive risk strategies suffer 100% losses, the user will still have a 90% LTV and therefore not be subject to liquidation.
 
 As described in [MYT strategy pricing](../../governance/guides/myt-strategies#pricing-approach), Conservative risk strategies are priced only by fundamental oracles. This means only the underlying value of the strategy matters - not the dex or market price of the strategy token. Therefore, liquidation with these strategies can only occur if the contract loses value due to an exploit or other form of loss, NOT due to dex pricing, dex manipulation, or oracle manipulation. This means that liquidation risk due to Conservative risk assets is significantly lower than Aggressive and Moderate risk assets.
 
 ### Redemption rate
 
-All borrowers will experience redemptions based on the amount of claims that occur in the transmuter. Borrowers should understand the [redemption rate](../concepts/redemption-rate), which effectively will deleverage the user over time while also charging redemption fees. Users can only face losses in one of two ways - from redemption fees, and from selling alAssets. The yield the users earn in the system is expected to offset these losses, but users should be aware of extreme conditions where low alAsset prices and high redemption rates could create situations where loans may be less profitable or even unprofitable. The good news is that Alchemix is designed to be a slow moving system especially at lower LTVs, so users who do not wish to constantly monitor positions can take loans at more conservative LTVs.
+All borrowers will experience redemptions based on the amount of claims that occur in the transmuter. Borrowers should understand the [redemption rate](../concepts/redemption-rate), which effectively will deleverage the user over time while also charging redemption fees. Apart from MYT strategy losses and liquidation, borrowers face losses in two ways: from redemption fees, and from selling alAssets below par. The yield the users earn in the system is expected to offset these losses, but users should be aware of extreme conditions where low alAsset prices and high redemption rates could create situations where loans may be less profitable or even unprofitable. The good news is that Alchemix is designed to be a slow moving system especially at lower LTVs, so users who do not wish to constantly monitor positions can take loans at more conservative LTVs.
 
 ### Liquidity providers
 
@@ -1461,9 +1449,9 @@ See [Contract Roles](../../governance/guides/contract-roles).
 
 ### Security & audits
 
-All core Alchemix V3 contracts have been audited by top-tier security firms, and a bug bounty program is active on Immunefi with a maximum payout of $300,000. New MYT strategies are reviewed by Nethermind before being whitelisted. Beyond audits, the protocol is monitored in real time by Hypernative, with automation that can pause the protocol if suspicious on-chain activity is detected.
+All core Alchemix V3 contracts have been audited by top-tier security firms, and a bug bounty program is active on Immunefi with a maximum payout of $150,000. New MYT strategies are independently audited, by Nethermind or yAudit, before being whitelisted. Beyond audits, the protocol is monitored in real time by Hypernative, and the Guardian multisig can pause new deposits and loans if suspicious on-chain activity is detected.
 
-[Full audit reports, bounty details, and security practices →](https://docs.alchemix.fi/user/safety/risk-considerations/security)
+[Full audit reports, bounty details, and security practices →](https://docs.alchemix.fi/user/safety/security)
 
 ### Alchemix on Layer 2
 
@@ -1493,10 +1481,10 @@ All core Alchemix V3 contracts have been audited by top-tier security firms, and
 | Asset | Minting chains | Notes |
 | --- | --- | --- |
 | **ALCX** | Ethereum only | Minted exclusively on Mainnet; L2 supply is purely bridge-derived |
-| **alUSD** | All chains | Can be minted or burned (Alchemist/Transmuter) on each chain |
-| **alETH** | All chains | Can be minted or burned (Alchemist/Transmuter) on each chain |
+| **alUSD** | Ethereum, Optimism, Arbitrum | Minted and burned by the Alchemist and Transmuter on those chains; Linea and Metis hold bridged supply only |
+| **alETH** | Ethereum, Optimism, Arbitrum | Minted and burned by the Alchemist and Transmuter on those chains; Linea and Metis hold bridged supply only |
 
-The Alchemix Bridge is a custom implementation of the LayerZero OFT standard for cross-chain messaging. Any alAsset can be bridged to any chain to repay debt or use the Transmuter, subject to the rate limits above. More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
+The Alchemix Bridge is a custom implementation of the LayerZero OFT standard for cross-chain messaging. alAssets can be bridged between supported chains, subject to the rate limits above. Repaying debt and depositing into the Transmuter are possible on Ethereum, Optimism, and Arbitrum, where an Alchemist and Transmuter are deployed. Each Alchemist only accepts alAsset repayments and Transmuter deposits up to the amount it has itself issued, so alAssets bridged in from another chain may exceed what can be burned there. More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
 
 :::warning Bridging alAssets back to Mainnet is not guaranteed
 Bridge capacity back to Mainnet is rate-limited. If that capacity is saturated, alAssets may become stranded on L2 and trade at a discount relative to Mainnet prices. Verify available bridge capacity before building a large cross-chain position.
@@ -1529,7 +1517,7 @@ Next, someone with a lot of stETH decides they can’t wait 30 days for their ET
 - Users may wish to arbitrage Alchemix, as they believe the MYT is mispriced, however, they cannot deposit stETH directly to the MYT. Thus, they deposit ETH:
   - They now have a share of the MYT
   - However, the MYT is now comprised of both ETH and stETH, thus the perceived value has moved closer to the fundamental value of 1:1
-- The users who obtain MYT by depositing ETH can now take an Alchemix loan of alETH. In their mind, they are collateralizing 0.8 ETH to mint 1 alETH, thus they will mint alETH and sell it, likely until alETH drops to 0.8 ETH or even lower
+- The users who obtain MYT by depositing ETH can now take an Alchemix loan of alETH. In their mind, they are collateralizing 0.8 ETH of real value to mint up to 0.9 alETH, thus they will mint alETH and sell it, likely until alETH drops to 0.8 ETH or even lower
 - As of now these users have generated no profit - they need to exit the system to generate profit. The only approaches they can take are:
   - Repay their loan with MYT - not viable, as the only way to get MYT is to deposit ETH, and they sold their loan for much less than 1 ETH per 1 alETH!
   - Repay their loan with alETH - not useful, as they just sold alETH!
@@ -1541,19 +1529,19 @@ Next, someone with a lot of stETH decides they can’t wait 30 days for their ET
 
 In some cases, a strategy may suffer a loss (due to an exploit or another reason) which means the MYT is truly fundamentally worth less than it was previously. In this scenario, the system checks users LTVs and makes users eligible for liquidation when they exceed the liquidation LTV set in the system.
 
-If the losses are too severe or too rapid, liquidations may not properly trigger. In this scenario, users may end up with bad debt (user debt is worth more than user collateral). If this results in global bad debt (global debt is worth more than global user collateral), then the transmuter will enter an emergency mode. In this mode, any claim made MYT assets through the transmuter will distribute pro-rata to the bad debt. Ie, if the Alchemist is 90% collateralized, then transmuter claims will only distribute 0.9 ETH worth of MYT for each 1 alETH transmuted. Users have the choice to trigger the claim, or wait until the Alchemist is re-collateralized to claim at 1:1.
+If the losses are too severe or too rapid, liquidations may not properly trigger. In this scenario, users may end up with bad debt (user debt is worth more than user collateral). If this results in global bad debt (global debt is worth more than global user collateral), then Transmuter claims are scaled down. Each claim checks the Alchemist’s collateralization at the moment it is made and, while backing is short, pays out pro-rata to the bad debt ratio. New deposits and loans on the Alchemist are also rejected while the shortfall persists. Ie, if the Alchemist is 90% collateralized, then transmuter claims will only distribute 0.9 ETH worth of MYT for each 1 alETH transmuted. Users have the choice to trigger the claim, or wait until the Alchemist is re-collateralized to claim at 1:1.
 
 #### MYT loss – price reported incorrectly
 
 Incorrect pricing is the least expected risk in the Alchemist, but not outside the realm of possibility. If a strategy is reporting an invalid price that is higher than the actual value of the strategy (ie, the strategy suffers a loss but the loss is not reported to the MYT), then Guardians will need to step in and pause deposits and new loans in the Alchemist to ensure additional collateral is not added to the Alchemist.
 
-Guardians may wish to de-allocate from the defunct strategy, on a case-by-case basis. De-allocating results in the loss being realized by the MYT, thus triggering liquidations and bad debt ratios. Depending on the nature of the loss, this may not always be the best option.
+The DAO, acting through the Allocator, may choose to de-allocate from the defunct strategy on a case-by-case basis. De-allocating realizes the loss in the MYT, which can make positions eligible for liquidation and raise the bad debt ratio. Depending on the nature of the loss, this may not always be the best option.
 
 In this scenario borrowers essentially are in a state where they perhaps should be liquidated, but are not yet. They may wish to repay some debt or unwind their position to avoid liquidation when the price updates, or they may wish to do nothing if their position is already in a state of bad debt (ie, they have essentially profited by the failure in pricing).
 
 Transmuter users may want to withdraw from the transmuter and sell their alAssets, or wait for resolution. If they make a claim on the transmuter, they will receive 1 asset worth of MYT, but this is according to the incorrect pricing. Thus, regardless of whether the pricing has been updated or not, they will be receiving potentially less than one asset worth of MYT per 1 alAsset redeemed, and thus may wish to wait for proper recollateralization.
 
-Existing MYT depositors will suffer the loss, but arbitrageurs may seek to deposit ETH to the MYT in order to mint alAssets with mispriced collateral. Even so, depositing ETH to the MYT is risky as many other users will be seeking to withdraw from the MYT, so there is no guarantee the arbitrageur can access their ETH after minting debt, especially because the Alchemist does not allow atomic (same block) deposit/withdraw txns as well as mint/repay debt txns.
+Existing MYT depositors will suffer the loss, but arbitrageurs may seek to deposit ETH to the MYT to mint alAssets with mispriced collateral. Even so, depositing ETH to the MYT is risky as many other users will be seeking to withdraw from the MYT, so there is no guarantee the arbitrageur can access their ETH after minting debt, especially because the Alchemist does not allow a repay in the same block as a mint, or a mint in the same block as a repay.
 
 
 ---
@@ -1562,7 +1550,7 @@ Existing MYT depositors will suffer the loss, but arbitrageurs may seek to depos
 
 Source: https://docs.alchemix.fi/user/safety/security
 
-Alchemix V3 is designed with security at every layer. The approach combines an external audit suite, real-time automated threat monitoring, ongoing strategy review by Nethermind, and a bug bounty program.
+Alchemix V3 is designed with security at every layer. The approach combines an external audit suite, real-time automated threat monitoring, independent review of every yield strategy before it is whitelisted, and a bug bounty program.
 
 ### Audit coverage & reports
 
@@ -1591,53 +1579,75 @@ All core smart contracts for Alchemix V3 have undergone testing and audits by ex
 MYT access control and strategy contracts received dedicated reviews:
 
 - **Nethermind**
-  - Reviewed: February 2026
-  - Focus: MYT access control (`myt-ac`) and strategy (`myt`) repositories.
+  - Reviewed: February 2026, final report August 2026
+  - Focus: MYT access-control logic and the yield-strategy adapter contracts.
   - [View Report](/audits/v3-nethermind.pdf)
 - **yAudit (yAuditDAO)**
   - Reviewed: April 2026
   - [Strategies report (April 15–17, 2026)](/audits/v3-strategies-yaudit.pdf)
   - [Strategies follow-up report (April 23–24, 2026)](/audits/v3-strategies-yaudit-followup.pdf)
 
+#### Strategy audit coverage
+
+The table below maps every whitelisted MYT strategy to the audit that reviewed its adapter contract. Whitelisted means the strategy has passed review and is registered on the vault. It does not mean the strategy currently holds an allocation: weights change as the DAO rebalances, and the live composition of each MYT is shown on the [Mixed Yield page](https://alchemix.fi/mixed-yield), under Earn → Variable Rate. Strategies that share an implementation are covered by the same report.
+
+| Strategy (provider)    | Whitelisted on                        | Reviewed by                             |
+| :--------------------- | :------------------------------------ | :-------------------------------------- |
+| Aave V3                | Mainnet (ETH), Arbitrum (USDC, ETH), Optimism (ETH, USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Euler                  | Mainnet (USDC), Arbitrum (USDC, ETH)  | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Fluid                  | Mainnet (USDC), Arbitrum (USDC)       | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Auto Finance (Tokemak) | Mainnet (USDC, ETH)                   | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Yearn (yvWETH)         | Mainnet (ETH)                         | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Lido (wstETH)          | Mainnet (ETH), Optimism (ETH)         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Ether.fi (weETH)       | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Frax (sfrxETH)         | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| InfiniFi (siUSD)       | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Yearn (yvUSD)\*        | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+
+\* Yearn's yvUSD held iUSD in the past but no longer does.
+
+Every strategy is audited before it is whitelisted, under the continuous program described below.
+
 #### Continuous MYT strategy audits
 
-To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must undergo a dedicated audit by Nethermind before being whitelisted. This ensures that the risk profile of the MYT remains consistent even as the underlying strategy landscape evolves.
+To ensure the safety of user collateral, Alchemix has established a **long-term partnership with Nethermind**. Every new yield strategy considered for inclusion in a Mix-Yield Token (MYT) must be covered by an independent audit, by Nethermind or yAudit, before being whitelisted. New adapter code gets its own review; a strategy that reuses an adapter already covered by one of the reports above inherits that coverage. This keeps a consistent review standard for adapter code as strategies are added. Exposure limits are set separately through the risk-class caps.
 
 ### Internal security practices
 
 Beyond external reviews, Alchemix V3 is protected by a multi-layered internal defense strategy:
 
-- **Extensive Testing Suites:** 100% unit test coverage combined with advanced invariant testing (Scribble/Diligent) to ensure protocol properties hold under all conditions.
+- **Extensive Testing Suites:** A large unit test suite alongside Foundry invariant suites, including per-chain multi-strategy invariants that exercise each MYT configuration.
 - **Simulation & Fuzzing:** Continuous mainnet-fork testing and fuzzing via Foundry to stress-test the protocol against real-world market volatility and edge cases.
 - **Multi-Stage Code Reviews:** Every line of code is reviewed by multiple internal contributors before moving to external audit.
 
 ### Real-time threat monitoring
 
-Alchemix uses Hypernative for real-time threat detection across its contracts and dependencies, with pre-configured automation that can **auto-pause the protocol** the moment suspicious on-chain activity is detected. This complements the manual Guardian circuit breaker described below.
+Alchemix uses Hypernative for real-time threat detection across its contracts and dependencies. Alerts feed the Guardian circuit breaker described below, which can pause new deposits and loans. Withdrawals, repayments, liquidations, and Transmuter claims are never blocked by a pause.
 
-This has already mattered in practice. In the March 2026 DolaSavings/sDOLA price-manipulation incident, Alchemix had indirect exposure through Curve liquidity pools. Hypernative detected the attacker's preparation phase, automation paused the protocol, and treasury funds were withdrawn before the exploit landed, resulting in **zero losses for Alchemix**.
+This has already mattered in practice. In the March 2026 DolaSavings/sDOLA price-manipulation incident, before the v3 launch, Alchemix had indirect exposure through Curve liquidity pools. Hypernative detected the attacker's preparation phase and treasury funds were withdrawn before the exploit landed, resulting in **zero losses for Alchemix**.
 
 ### Bug bounties
 
 We encourage the stress-testing of our code. Our program is hosted on **Immunefi**, the leading platform for DeFi security, and was relaunched for the V3 contracts.
 
-- **Max Bounty:** Up to **$300,000** for critical vulnerabilities.
+- **Max Bounty:** Up to **$150,000** for critical vulnerabilities.
 - **Scope:** All core Alchemist, Transmuter, and MYT contracts.
 - **Link:** [View Alchemix on Immunefi](https://immunefi.com/bug-bounty/alchemix-1/information/)
 
-### Governance & timelocks
+### Governance & protocol changes
 
-To prevent "flash-upgrades" and ensure community oversight, Alchemix V3 uses a timelock system.
+Protocol changes go through DAO governance (Snapshot vote, multisig execution). Management actions on the MYT vault additionally use an on-chain submit-and-execute two-step; Alchemist and Transmuter parameter changes are executed directly by the admin multisig.
 
-- **Upgradeability:** Critical contracts are upgradeable only via the DAO.
-- **Timelock Delay:** Set by governance. This delay provides users and third-party monitors time to exit or react before any code changes are executed.
-- **Guardian Role:** A dedicated Guardian address can pause deposits and loans in an emergency but **cannot** unpause them or access funds, serving as a circuit breaker during volatility.
+- **Upgradeability:** The Transmuter and the MYT vaults are not upgradeable; their code is fixed at deployment. The Alchemist runs behind an upgradeable proxy whose ProxyAdmin is held by the v3 admin multisig, acting under DAO governance.
+- **Two-Step Confirmation:** Management actions on the MYT vault, such as adding a strategy or raising a cap, must be submitted in one transaction and executed in a second, and the parameters of both must match. This double confirmation guards against mistaken or malformed changes.
+- **Timelock Durations:** The MYT vault inherits Morpho Vault V2’s timelock system, but all timelock durations are currently set to zero, so there is no enforced waiting period between submitting and executing a change. Governance can raise these durations on-chain if a delay is ever needed.
+- **Guardian Role:** A dedicated Guardian address can pause and unpause deposits and new loans in an emergency. It cannot change protocol parameters, access funds, or affect withdrawals, repayments, or liquidations, so it is a circuit breaker only.
 
 ### Learn more
 
 - [Alchemix GitHub](https://github.com/alchemix-finance)
 - [Audit archive (v2 era)](https://v2-docs.alchemix.fi/resources/audits-and-reports)
-- [FAQ](https://docs.alchemix.fi/user/safety/faq)
+- [FAQ](https://docs.alchemix.fi/user/faq)
 
 
 ---
@@ -1655,11 +1665,11 @@ The Mixed Yield page is a dedicated space for depositing into Mix-Yield Token va
 
 ### Step 1 – Open Mixed Yield
 
-Click Mixed Yield in the top navigation, or go directly to [alchemix.fi/mixed-yield](https://alchemix.fi/mixed-yield).
+Open Earn in the top navigation and choose Variable Rate, or go directly to [alchemix.fi/mixed-yield](https://alchemix.fi/mixed-yield).
 
 ### Step 2 – Find your MYT
 
-Use the asset filters (USDC or ETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
+Use the asset filters (alUSD or alETH) and chain filters to narrow the list. Sort by Highest APR to surface the best current rates. Click any card to expand it.
 
 ### Step 3 – Review strategy allocation
 
@@ -1675,9 +1685,9 @@ Click Deposit. Your wallet shows the network, gas estimate, and amounts. Approve
 
 ### Step 6 – Track your deposit
 
-Return to the Dashboard and find your position under Open Mixed Yield Positions. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
+Return to the Dashboard and find your position under Mixed Yield Token Holdings. This is the primary view for monitoring balances across all your MYT deposits. As yield accrues the redemption value of each MYT increases automatically.
 
-To borrow against your deposit, head over to the Vaults page.
+To borrow against your deposit, head over to the Borrow page.
 
 ### Why use Mixed Yield instead of managing strategies directly?
 
@@ -1695,18 +1705,18 @@ Source: https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix
 After depositing into a Mix-Yield Token, you can borrow alAssets against your position. The vault keeps your collateral earning yield and lets you mint synthetic assets (alETH against ETH, alUSD against USDC) worth up to 90% of your collateral's face value.
 
 :::tip You are in control
-You can manually repay part or all of your debt at any time to unlock your collateral. [Learn more about self-repaying loans →](https://docs.alchemix.fi/user/tutorials/concepts/self-repaying-loans)
+You can manually repay part or all of your debt at any time to unlock your collateral. [Learn more about self-repaying loans →](https://docs.alchemix.fi/user/concepts/self-repaying-loans)
 :::
 
 ### Prerequisites
 
 - Connect your wallet and switch to the chain that holds your MYT deposit.
 - Confirm you have ETH for gas on that chain.
-- If you don't have an MYT deposit yet, complete the [Mixed Yield tutorial →](https://docs.alchemix.fi/user/tutorials/borrowing-in-alchemix/use-passive-myt) first.
+- If you don't have an MYT deposit yet, complete the [Mixed Yield tutorial →](https://docs.alchemix.fi/user/tutorials/use-passive-myt) first.
 
 ### Step 1 – Open the vault
 
-Click Vaults in the top navigation, then click the vault you want to borrow against.
+Click Borrow in the top navigation, then click the vault you want to borrow against.
 
 ### Step 2 – Select the Borrow tab
 
@@ -1717,12 +1727,12 @@ Open the Borrow tab on the vault page. If you don't already have a corresponding
 The top of the detail page shows your current position: APR, Deposit, Debt, Health Factor, Earmarked, Redemption Rate, Borrowable, and LTV. The health bar shows your position relative to the MAX LTV and liquidation LTV markers.
 
 :::caution Liquidation risk
-Alchemix does not use price-based liquidations. Liquidation risk comes from a yield strategy losing value, which can reduce your collateral below the liquidation threshold (95% LTV). Keeping LTV low reduces your exposure. <br/><br/>[Learn more about Liquidations →](https://docs.alchemix.fi/user/tutorials/concepts/liquidations)
+Alchemix does not use price-based liquidations. Liquidation risk comes from a yield strategy losing value, which can reduce your collateral below the liquidation threshold (95% LTV). Keeping LTV low reduces your exposure. <br/><br/>[Learn more about Liquidations →](https://docs.alchemix.fi/user/concepts/liquidations)
 :::
 
 ### Step 4 – Enter a borrow amount
 
-Type the alAsset amount you want to borrow, or click Max to borrow the maximum within the current LTV limit.
+Type the alAsset amount you want to borrow, or click MAX to borrow the maximum within the current LTV limit.
 
 ### Step 5 – Confirm
 
@@ -1730,13 +1740,13 @@ Approve the transaction in your wallet. Once it completes, the position stats up
 
 ### Step 6 – Track your position
 
-The position is visible on the vault detail page and from your Dashboard. Use the alAsset however you like. Swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage.
+The position is visible on the vault detail page and from your Dashboard. Use the alAsset however you like. Swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage from the Yield Looping tab on the vault page.
 
 ### What repays the debt
 
-Your collateral continues to earn yield in your vault. The DAO sets a period length for redemptions. When a Transmuter user completes a redemption, a slice of depositors' MYT collateral is liquidated to fund the redemption, repaying debt equal to the redeemed amount in the process. Given enough time and redemptions, this will eventually clear a vault user's entire debt.
+Your collateral continues to earn yield in your vault. The DAO sets a period length for redemptions. When a Transmuter user claims a redemption, a slice of borrowers' MYT collateral is transferred to the Transmuter to fund it, and the same amount of debt is cancelled in the process. Given enough time and redemptions, this will eventually clear a vault user's entire debt.
 
-[Learn more about redemptions →](https://docs.alchemix.fi/user/tutorials/concepts/redemption-rate)
+[Learn more about redemptions →](https://docs.alchemix.fi/user/concepts/redemption-rate)
 
 ### Key information
 
@@ -1744,10 +1754,10 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Maximum LTV             | 90% of collateral value.                                                                                                                                          |
 | Interest Rate           | Zero. Debt balance only declines; it never accrues new interest.                                                                                                  |
-| Repayment sources       | Vault yield, transmuter redemptions, manual repayments.                                                                                                           |
-| Early repayment options | Use alAssets to repay the debt at any time.                                                                                                                       |
+| Repayment sources       | Transmuter redemptions (drawn from your collateral) and manual repayments. Vault yield accrues to your collateral and does not repay debt directly.                |
+| Early repayment options | Repay at any time with alAssets, MYT, or the underlying asset. alAssets only clear debt that has not been earmarked, while earmarked debt is repaid with MYT or the underlying asset.                                                                                                                       |
 | Position NFT            | Your position is represented by an NFT available in your wallet after the transaction confirms.                                                                   |
-| Liquidation             | Liquidations are extremely unlikely, but redemptions are applied to your share of the debt, thus affecting high LTV users more. [Learn more →](https://docs.alchemix.fi/user/tutorials/concepts/liquidations) |
+| Liquidation             | Only a loss of value in the MYT itself can push a position past the 95% threshold. Redemptions cancel debt and collateral in equal amounts, so they do not raise your LTV, though a higher-LTV position gives up a larger share of its collateral to each redemption. [Learn more →](https://docs.alchemix.fi/user/concepts/liquidations) |
 
 #### Why borrow instead of selling?
 
@@ -1755,7 +1765,7 @@ Your collateral continues to earn yield in your vault. The DAO sets a period len
 
 - **Stable** – Avoid variable interest rates, price-based liquidations, and rollover risk common in other lending markets.
 
-- **IL Protection** – Combine borrowing with like-for-like liquidity pools to generate fees without impermanent loss.
+- **IL Protection** – Combine borrowing with like-for-like liquidity pools to generate fees, with impermanent loss limited to moves in the alAsset's peg.
 
 - **Leverage** – Loop alAssets back into the vault to amplify yield while the repayment mechanism remains self-managed.
 
@@ -1811,7 +1821,7 @@ You can often buy alUSD or alETH on secondary markets (like Curve) for slightly 
 
 ### Step 3 – Enter the amount
 
-Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
+Type the number of tokens you want to use to repay debt. MAX will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
 
 ### Step 4 – Send the transaction
 
@@ -1842,7 +1852,7 @@ You can withdraw collateral from Alchemix at any time.
 
 ### Step 1 – Open the vault
 
-Click Dashboard in the top navigation, then click the vault you want to withdraw from.
+Click Dashboard in the top navigation, then click **Manage** on the vault position you want to withdraw from.
 
 ### Step 2 – Open the Withdraw tab
 
@@ -1852,9 +1862,9 @@ On the left panel, switch to the Withdraw tab.
 
 The health bar shows your current position relative to the 90% MAX LTV cap. Withdrawing does not touch your debt, but it shrinks your collateral pushing your LTV upward. If the amount you plan to withdraw will cross the MAX LTV line, repay a little first to give yourself headroom.
 
-[Learn how to repay →](https://docs.alchemix.fi/user/tutorials/withdraw/repay-loan)
+[Learn how to repay →](https://docs.alchemix.fi/user/tutorials/repay-loan)
 
-[Learn more about LTV and liquidations →](https://docs.alchemix.fi/user/tutorials/concepts/liquidations)
+[Learn more about LTV and liquidations →](https://docs.alchemix.fi/user/concepts/liquidations)
 
 ### Step 4 – Enter an amount
 
@@ -1873,11 +1883,11 @@ Source: https://docs.alchemix.fi/user/tutorials/redeem-alassets
 
 The Fixed Yield page lists every fixed-rate term available on your current network. By depositing alAssets, or letting the interface swap ETH or USDC into their alAsset form, you lock in a known return that settles on the term’s maturity date.
 
-While your position sits in the queue Alchemix earmarks matching collateral at 1:1 so your redemption is guaranteed once the term ends. Early exits are possible, but they forfeit part of the promised yield.
+While your position vests, Alchemix earmarks matching borrower debt at 1:1 so that MYT collateral covers your redemption. Payouts are made in full unless the Alchemist carries bad debt, in which case they are scaled down pro-rata. In early exits, the vested share is paid out, and the unvested share is returned as alAssets minus the early exit fee.
 
 ### Step 1 – Open the Fixed Yield page
 
-Select **Fixed Yield** from the top navigation, or go directly to [alchemix.fi/fixed-yield](https://alchemix.fi/fixed-yield). Each panel shows a fixed-rate term you can enter.
+Open **Earn** in the top navigation and choose **Fixed Rate**, or go directly to [alchemix.fi/fixed-yield](https://alchemix.fi/fixed-yield). Each panel shows a fixed-rate term you can enter.
 
 ### Step 2 – Pick a term
 
@@ -1897,6 +1907,8 @@ Each panel displays:
 
 - Deposit cap and remaining room
 
+- Early exit fee
+
 Click a term to select it.
 
 ### Step 3 – Choose a deposit asset
@@ -1915,22 +1927,120 @@ Type how much of the selected asset you want to commit. The panel instantly show
 
 Click Deposit and approve the transaction in your wallet.
 
-### Manage or close a position
+### Manage or exit a position
 
 Go to the Dashboard and scroll to Open Fixed Yield Positions.
 
-| Function      | When to use                | Effect                                                                                                                                       |
-| ------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Close         | Term ended                 | Receive underlying value in MYT.                                                                                                             |
-| Close (early) | Need funds before maturity | Receives a reduced amount, UI shows the penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
+Click **Claim** on the position you want to exit. What happens next depends on whether the term has ended:
 
-If the contract returns MYT due to temporary liquidity limits, you can unwrap it manually or wait until the queue clears.
+| Term state          | Modal                          | Effect                                                                                                                                      |
+| ------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matured             | Claim Transmuted Assets        | Receive the underlying asset. The Transmuter pays out MYT, which the app unwraps in the same transaction.                                    |
+| Still vesting       | Early Exit Transmuter Position | The button reads **Claim with Penalty**. You receive a reduced amount, and the modal shows the Early Claim Penalty in advance. The penalty is a percentage set by the DAO, applying to untransmuted funds only. |
+
+If the app returns MYT instead of the underlying asset, for example when unwrapping would incur slippage or the MYT vault lacks immediate liquidity, you can hold it and keep earning, or unwrap it later from the Mixed Yield page, under Earn → Variable Rate.
 
 ### Key points
 
-- Fixed-rate terms pay the displayed return only at maturity.
+- The full displayed return is reached at maturity. Exiting early pays the vested share at 1:1 and returns the rest as alAssets minus the exit fee.
 
-- Early closure invokes the penalty shown in the UI.
+- An early exit invokes the penalty shown in the UI.
+
+
+---
+
+## Ecosystem Vaults
+
+Source: https://docs.alchemix.fi/user/tutorials/ecosystem-vaults
+
+Ecosystem vaults are curated by the Alchemix team and sit alongside the core protocol. One is live today: the **Alchemix Ecosystem ETH vault**, a WETH vault that earns a blended yield from across the Alchemix ecosystem.
+
+Open it from the top navigation under **Ecosystem → Vaults**, or go directly to [alchemix.fi/ecosystem](https://alchemix.fi/ecosystem), then click the card to expand it.
+
+:::note Looking for the Euler market?
+Third-party lending markets are not on this page. The Euler 4-way market has its own page under **Ecosystem → Lending** — see [Lending →](https://docs.alchemix.fi/user/tutorials/lending).
+:::
+
+### Prerequisites
+
+- Connect your wallet.
+- Confirm you have ETH for gas.
+- Hold WETH to deposit.
+
+## Alchemix Ecosystem ETH vault
+
+This vault is curated by the Alchemix team. It puts your deposited WETH to work across the Alchemix ecosystem to earn a blended yield, and rebalances the allocation over time. The expanded card shows the current APR, total value locked, and a breakdown of where the capital is deployed.
+
+The vault takes a 20% share of the yield it earns before crediting the remainder to depositors. See the [ecosystem vault fee →](https://docs.alchemix.fi/user/concepts/fees#ecosystem-vault-fee) for details.
+
+:::info Deposits and withdrawals run on a cycle
+Deposits settle on the next epoch, and withdrawals are processed fortnightly. To withdraw, you first claim your vault shares, then withdraw once the cycle processes. Plan around this if you may need the funds at short notice.
+:::
+
+### Step 1 – Open the vault
+
+On the Ecosystem page, click the Alchemix Ecosystem ETH vault card to expand it.
+
+### Step 2 – Review the vault
+
+Check the APR and TVL at the top of the card. The deposit form is on the left. The allocation chart on the right lists each protocol the vault is deployed in along with its current value and percentage, and these weights shift as the team rebalances.
+
+### Step 3 – Deposit WETH
+
+Stay on the Deposit tab. Enter the amount of WETH you want to deposit, or click MAX to use your full balance, then confirm the transaction in your wallet. Your deposit settles on the next epoch.
+
+### Step 4 – Withdraw
+
+Switch to the Withdraw tab when you want to exit. Claim your vault shares first, then click **Request Withdraw**. Withdrawals are batched and processed on the fortnightly cycle, so the funds return to your wallet once the next processing window completes.
+
+
+---
+
+## Lending
+
+Source: https://docs.alchemix.fi/user/tutorials/lending
+
+The Lending page lists third-party lending markets that Alchemix links to but does not operate. One is live today: the **Euler 4-way market**, covering WETH, USDC, alETH, and alUSD.
+
+Open it from the top navigation under **Ecosystem → Lending**, or go directly to [alchemix.fi/lending](https://alchemix.fi/lending).
+
+:::note Separate from the Ecosystem vaults
+Lending is its own page. Vaults curated by the Alchemix team, such as the Alchemix Ecosystem ETH vault, live under Ecosystem → Vaults and are covered in [Ecosystem Vaults →](https://docs.alchemix.fi/user/tutorials/ecosystem-vaults).
+:::
+
+### Prerequisites
+
+- Connect your wallet.
+- Confirm you have ETH for gas.
+- Hold WETH, USDC, alETH, or alUSD to supply.
+
+## Euler 4-way market
+
+The Euler 4-way market is an Euler lending market covering four assets: WETH, USDC, alETH, and alUSD. You can supply any of them to earn yield from borrower demand, and you can borrow against collateral you have supplied.
+
+Listing alETH and alUSD here is what lets you put an alAsset to work without selling it. See [alAssets →](https://docs.alchemix.fi/user/concepts/alAssets) for why that matters to the peg.
+
+:::warning External market with liquidation risk
+Euler is a third-party lending market, not operated by Alchemix. Borrowing against your collateral exposes you to liquidation. If your collateral value falls relative to your debt, part of your collateral can be liquidated to repay it. Keep an eye on your health factor. See [liquidation risk →](https://docs.alchemix.fi/user/safety/risk-considerations#liquidation-risk).
+
+This is separate from Alchemix's own vaults, which carry no price-based liquidation. Borrowing on Euler does not behave like a self-repaying loan.
+:::
+
+### Step 1 – Open the market
+
+Open the Lending page from Ecosystem → Lending. The card header shows the market's total value locked, the four assets it covers, and the highest supply APY on offer. Below it sits the per-asset table, and below that the Borrow positions panel.
+
+### Step 2 – Read the market
+
+Each row lists how much of that asset is supplied and borrowed across the market, your own supplied and borrowed balances, and the supply and borrow APY, with accompanying Supply and Borrow buttons. Compare the two rates to see what you would earn by lending against what you would pay to borrow.
+
+### Step 3 – Lend
+
+Click **Supply** on the row for the asset you want to lend. That opens the Lend panel on the left. Choose your asset, enter an amount or click MAX, and supply it to start earning. Your supplied balance and its current APY appear above the input. Switch to the Withdraw tab to pull supplied assets back out, subject to available liquidity in the market.
+
+### Step 4 – Borrow
+
+Once you have supplied collateral, open a loan from the Borrow positions panel on the right. Each position is isolated, so you can run several at once against different collateral. Make sure you watch the health factor on every position. The closer it sits to the liquidation threshold, the smaller the drop in collateral value needed to trigger a liquidation.
 
 
 ---
@@ -1946,7 +2056,7 @@ Source: https://docs.alchemix.fi/projects
 
 Alchemix V3 transforms a single deposit of ETH or USDC into two complementary, capital-efficient positions. First, funds are wrapped into a **Mix-Yield Token (MYT)**, which earns yield across a diversified set of strategies curated and risk-managed by the Alchemix DAO. This same collateral simultaneously unlocks a flexible credit line, allowing users to mint synthetic **alAssets (alETH or alUSD)** worth up to 90% of the initial deposit.
 
-The redesigned **Transmuter** accepts these alAssets and, on a fixed schedule, returns MYT at a 1:1 ratio. This mechanism ensures alAssets maintain tight price parity with their underlying assets while creating predictable, bond-like yield opportunities for users who acquire alAssets at a market discount.
+The redesigned **Transmuter** accepts these alAssets and, on a fixed schedule, returns MYT at a 1:1 ratio. This redemption path anchors alAsset prices near their underlying assets and creates predictable, bond-like yield opportunities for users who acquire alAssets below par.
 
 ## Why integrate Alchemix?
 
@@ -1954,26 +2064,26 @@ Integrating with Alchemix V3 provides a combination of capital efficiency that t
 
 ## Where the platform fits
 
-- **DAO Treasuries** – Raise operating capital without liquidating long-term holdings. DAO’s can mint alAssets, exchange them for their required spending currency, and let the vault yield repay their debt over time.
+- **DAO Treasuries** – Raise operating capital without liquidating long-term holdings. DAOs can mint alAssets, exchange them for their required spending currency, and let scheduled redemptions repay the debt from collateral over time while the collateral keeps earning.
 
-- **Yield Strategists** – Thanks to Alchemix's like-kind borrowing and 0% interest on its debt, users can use our looping tool to generate reliable and highly competitive yield for both ETH and USD.
+- **Yield Strategists** – Thanks to Alchemix's like-kind borrowing and 0% interest on its debt, users can loop alAssets back into the vault to generate reliable and highly competitive yield for both ETH and USD.
 
-- **Liquidity Providers** – LPs can pair alAssets with another token that tracks the same price (for example, alETH with frxETH) and eliminate impermanent-loss risk on the alAsset side thanks to 1 to 1 redemptions through the Transmuter.
+- **Liquidity Providers** – LPs can pair alAssets with another token that tracks the same price (for example, alETH with frxETH) and keep impermanent-loss risk on the alAsset side low, since 1:1 redemptions through the Transmuter limit how far the alAsset can trade from its underlying.
 
 ## Core features
 
 | Feature                    | Purpose                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Alchemist Vault (ERC-4626) | The core borrowing engine. Deposit collateral to mint alAssets.                                       |
-| Mix-Yield Token (MYT)      | Tokenized basket of yield strategies, which can be unwrapped for the underlying assets at any time.   |
+| Alchemist                  | The core borrowing engine. Deposit MYT collateral to mint alAssets. Each position is an NFT.          |
+| Mix-Yield Token (MYT)      | ERC-4626 basket of yield strategies, which can be unwrapped for the underlying assets, subject to strategy liquidity. |
 | Transmuter                 | Fixed-duration redemptions that stabilize alAsset prices and create predictable return opportunities. |
-| Self-repaying CDP          | Debt is automatically retired by vault yield and scheduled redemptions.                               |
+| Self-repaying CDP          | Debt is retired by scheduled Transmuter redemptions drawn from collateral, while the collateral keeps earning yield. |
 
 ## What integrators gain
 
 By building on top of the V3 stack, projects gain a single-token gateway to highly competitive ETH and USD yield. Integrators can offer returns managed by a diversified set of DAO-curated strategies without the overhead of building internal yield infrastructure.
 
-Beyond yield, integrating alAssets as collateral or within liquidity pools gives projects direct exposure to the growth of the Alchemix V3 economy. Partners benefit from increased Total Value Locked (TVL), simplified liquidity management due to the absence of impermanent loss on like-for-like pairs, and joint marketing opportunities across the Alchemix ecosystem. As V3 scales, integrators are positioned to capture the value flowing through one of DeFi's most sustainable synthetic-asset engines.
+Beyond yield, integrating alAssets as collateral or within liquidity pools gives projects direct exposure to the growth of the Alchemix V3 economy. Partners benefit from increased Total Value Locked (TVL), simplified liquidity management thanks to the low impermanent loss of like-for-like pairs, and joint marketing opportunities across the Alchemix ecosystem. As V3 scales, integrators are positioned to capture the value flowing through one of DeFi's most sustainable synthetic-asset engines.
 
 ## Who benefits most
 
@@ -1990,7 +2100,7 @@ Answers to the questions we hear most from projects, protocols, and treasuries e
 
 **Q: What is Alchemix V3, in one paragraph?**
 
-Alchemix V3 is a protocol for saving, borrowing, and earning fixed-yield returns. Users deposit ETH or USDC into a Mix-Yield Token (MYT), a DAO-curated basket of yield strategies, and can borrow synthetic alAssets (alETH or alUSD) against it at up to 90% LTV with 0% interest. Debt is repaid automatically by vault yield and scheduled Transmuter redemptions rather than monthly payments.
+Alchemix V3 is a protocol for saving, borrowing, and earning fixed-yield returns. Users deposit ETH or USDC into a Mix-Yield Token (MYT), a DAO-curated basket of yield strategies, and can borrow synthetic alAssets (alETH or alUSD) against it at up to 90% LTV with 0% interest. Debt is repaid automatically by scheduled Transmuter redemptions drawn from the collateral, with no monthly payments, while the collateral keeps earning yield.
 
 [Learn more about how Alchemix works →](/user)
 
@@ -2008,7 +2118,7 @@ Three headline changes: the maximum LTV rose from 50% to 90%, collateral is now 
 
 **Q: Can users be liquidated?**
 
-Not by price movements. Debt is denominated in the same asset as the collateral (like-kind borrowing), so market volatility does not change a position's LTV. Liquidation is only possible if the MYT itself loses backing — for example through a strategy exploit — and a position crosses the liquidation threshold above the 90% borrowing cap.
+Not by price movements. Debt is denominated in the same asset as the collateral (like-kind borrowing), so market volatility does not change a position's LTV. Liquidation is only possible if the MYT itself loses backing, for example through a strategy exploit, and a position crosses the 95% liquidation threshold, which sits above the 90% borrowing cap.
 
 [Learn more about liquidations →](/user/concepts/liquidations)
 
@@ -2030,7 +2140,7 @@ Each alAsset has a dedicated oracle feed provided by Chronicle Labs. This lets m
 
 **Q: Is Alchemix V3 audited?**
 
-Yes. The V3 codebase was reviewed by Spearbit/Cantina, Nethermind, yAudit, an Immunefi audit competition, and independent researcher alpeh_v, alongside an in-house testing suite. Every new MYT strategy is audited by Nethermind before whitelisting, the protocol is monitored in real time by Hypernative with auto-pause capability, and an Immunefi bug bounty of up to $300,000 is active.
+Yes. The V3 codebase was reviewed by Spearbit/Cantina, Nethermind, yAudit, an Immunefi audit competition, and independent researcher alpeh_v, alongside an in-house testing suite. Every new MYT strategy is independently audited, by Nethermind or yAudit, before whitelisting. The protocol is monitored in real time by Hypernative, the Guardian multisig can pause new deposits and loans, and an Immunefi bug bounty of up to $150,000 is active.
 
 [Full audit reports and security practices →](/user/safety/security)
 
@@ -2074,7 +2184,7 @@ We review submissions regularly and will follow up directly if we see a strong f
 
 Source: https://docs.alchemix.fi/projects/how-to/getting-started
 
-Most integrations follow one of four paths. Find yours below, then reach out — every integration gets a direct line to the core team, so you never have to reverse-engineer the protocol alone.
+Most integrations follow one of four paths. Every integration gets a direct line to the core team.
 
 ### 1. Route deposits into the MYT
 
@@ -2089,7 +2199,7 @@ The Mix-Yield Token is a customized vault token built on Morpho Vaults V2 (ERC-4
 
 **For:** money markets, DEXs, liquidity managers.
 
-alUSD and alETH each have a dedicated Chronicle Labs oracle feed, so external protocols can price them verifiably. Like-for-like pools (alETH/ETH-family pairs) avoid impermanent loss on the alAsset side because the Transmuter redeems 1:1 at maturity.
+alUSD and alETH each have a dedicated Chronicle Labs oracle feed, so external protocols can price them verifiably. Like-for-like pools (alETH/ETH-family pairs) carry low impermanent loss on the alAsset side because the Transmuter's 1:1 redemption path keeps alAssets close to their underlying.
 
 - [alAssets and external pricing →](/user/concepts/alAssets#using-alassets-across-defi)
 - [How the peg holds →](/user/concepts/how-peg-is-maintained)
@@ -2098,7 +2208,7 @@ alUSD and alETH each have a dedicated Chronicle Labs oracle feed, so external pr
 
 **For:** treasuries, structured-product designers, fixed-income desks.
 
-Deposit alAssets into the Transmuter and receive a guaranteed 1:1 redemption at a known maturity date. Acquiring alAssets below par turns that into a fixed rate known at entry — a bond-like primitive that can be wrapped, tranched, or laddered.
+Deposit alAssets into the Transmuter and receive a 1:1 redemption in MYT that vests to a known maturity date, backed by borrower collateral. Acquiring alAssets below par turns that into a fixed rate known at entry, a bond-like primitive that can be wrapped, tranched, or laddered.
 
 - [Transmuter mechanics →](/user/concepts/transmuter)
 - [Live terms and rates →](https://alchemix.fi/fixed-yield)
@@ -2109,11 +2219,11 @@ Deposit alAssets into the Transmuter and receive a guaranteed 1:1 redemption at 
 
 Alchemix V3 is source-available under BUSL 1.1. The Friendly Fork Initiative licenses the codebase for production use, with chain exclusivity and direct technical advisory from the core team.
 
-- [Friendly Fork terms →](https://docs.alchemix.fi/projects/how-to/getting-started/friendly-fork)
+- [Friendly Fork terms →](https://docs.alchemix.fi/projects/how-to/friendly-fork)
 
 ### Before you build
 
-- **Read the protocol docs.** The [user documentation](/user) covers mechanics; the [developer section](/dev) covers contracts and is being expanded.
+- **Read the protocol docs.** The [user documentation](/user) covers mechanics; the [developer section](/dev) covers the contracts.
 - **Check the code.** The V3 contracts are public at [github.com/alchemix-finance/v3](https://github.com/alchemix-finance/v3).
 - **Understand the risk model.** [Risk considerations](/user/safety/risk-considerations) explains counterparty exposure for each role in the system, and [Security & audits](/user/safety/security) covers the audit suite and monitoring.
 
@@ -2121,7 +2231,7 @@ Alchemix V3 is source-available under BUSL 1.1. The Friendly Fork Initiative lic
 
 Fill in the [partnership form](https://docs.google.com/forms/d/1QxQ2fjYckzqoAFAEY9xYXpXdw6zb4Z6o5NaIiUVhQlE/viewform) or find us in [Discord](https://discord.gg/alchemix). We pair every serious integration with a BD lead and technical contact.
 
-[Apply to partner →](https://docs.alchemix.fi/projects/how-to/contact/apply-to-partner)
+[Apply to partner →](https://docs.alchemix.fi/projects/contact/apply-to-partner)
 
 
 ---
@@ -2216,9 +2326,33 @@ We believe in rewarding the liquidity and activity that drives the protocol forw
 
 Source: https://docs.alchemix.fi/projects/support/security
 
-Full audit reports, bug bounty details, internal security practices, and governance timelock information are maintained in the user-facing documentation.
+This is a summary of Alchemix security. Full reports, bug bounty details, internal practices, and governance controls are maintained in the [user-facing security page](/user/safety/security).
 
-[View Security & Audits →](/user/safety/security)
+### Audits
+
+- **Spearbit/Cantina**, May 2025: protocol fees, liquidation logic, and debt-redemption accounting.
+- **Immunefi audit competition**, October to November 2025: core Alchemist, Transmuter, and MYT contracts.
+- **alpeh_v** (independent researcher), October to November 2025: earmarking and transmutation accounting.
+- **Nethermind**, February 2026 with a final report in August 2026: MYT access control and yield-strategy adapters.
+- **yAudit**, March and April 2026: core contracts and the strategy adapters.
+
+Every yield strategy is independently audited before it is whitelisted on a Mix-Yield Token. The [strategy audit coverage](/user/safety/security#strategy-audit-coverage) table maps each whitelisted strategy to its report.
+
+### Monitoring and response
+
+- **Hypernative** monitors the contracts and their dependencies in real time. The Guardian role can pause new deposits and loans when suspicious activity is detected.
+- A **Guardian** role can pause and unpause deposits and new loans. It cannot change parameters or access funds, and pauses never block withdrawals, repayments, or liquidations.
+- Management actions on the MYT vault use a two-step submit-and-execute flow with matching parameters. Timelock durations are currently set to zero.
+
+### Bug bounty
+
+An Immunefi program covers the core Alchemist, Transmuter, and MYT contracts, with a maximum payout of $150,000 for critical vulnerabilities. [View Alchemix on Immunefi](https://immunefi.com/bug-bounty/alchemix-1/information/).
+
+### Oracles
+
+Each alAsset has a dedicated Chronicle Labs price feed, so external protocols can price alUSD and alETH without relying on DEX prices. See [using alAssets across DeFi](/user/concepts/alAssets#using-alassets-across-defi).
+
+[Full audit reports and security practices →](/user/safety/security)
 
 
 ---
@@ -2235,20 +2369,20 @@ All official logos, token marks, brand colors, and typography live on one page, 
 
 [**Marketing Material & logo downloads →**](/user/marketing-material)
 
-That page includes the full Alchemix logo (Copper, White, Black), the standalone brand mark for avatars and tight spaces, alETH and alUSD token logos, the brand color palette, and both brand typefaces.
+That page includes the full Alchemix logo (Copper, White, Black), the standalone brand mark for avatars and tight spaces, alETH and alUSD token logos, the Mix-Yield Token logos (mixWETH, mixUSDC), the brand color palette, and both brand typefaces.
 
 ### Usage guidelines for partners
 
 - **Use the assets as provided.** Don't recolor, stretch, add effects to, or redraw the logo or token marks.
 - **Pick the right variant for your background.** Copper or White on dark backgrounds, Black on light. The standalone mark is for small sizes (favicons, avatars, token lists).
 - **Name the tokens correctly.** The synthetics are written *alUSD* and *alETH* (lowercase "al"), and the yield token is *Mix-Yield Token* or *MYT*.
-- **Integrations may reference Alchemix by name** when describing a genuine integration ("Powered by Alchemix", "alUSD supported"). Trademark use beyond that — including in project names or forked deployments — requires a license; see the [Friendly Fork Initiative](https://docs.alchemix.fi/projects/support/how-to/friendly-fork) for what licensed forks may and may not use.
+- **Integrations may reference Alchemix by name** when describing a genuine integration ("Powered by Alchemix", "alUSD supported"). Trademark use beyond that, including in project names or forked deployments, requires a license; see the [Friendly Fork Initiative](https://docs.alchemix.fi/projects/how-to/friendly-fork) for what licensed forks may and may not use.
 
 ### Questions or custom requests
 
 For co-branding kits, high-resolution art, or anything not covered here, reach out to **@metalface** in the [official Discord](https://discord.gg/alchemix), or ask your BD contact.
 
-[Co-marketing & BD support →](https://docs.alchemix.fi/projects/support/brand-assets/co-marketing)
+[Co-marketing & BD support →](https://docs.alchemix.fi/projects/support/co-marketing)
 
 
 ---
@@ -2263,7 +2397,7 @@ This section contains a variety of potential use-cases for collaboration with Al
 
 Treasury managers can park idle ETH or USDC in the Mix-Yield Token (MYT) to earn a diversified return while assets remain fully on-chain. When liquidity is required, the same collateral facilitates a credit line of alAssets that can be swapped for operating capital. This allows the DAO to maintain its core exposure while the Alchemist system manages debt.
 
-The debt balance is reduced through two mechanisms: yield generated by the MYT and redemptions from the Transmuter. While redemptions reduce debt, they also reduce the underlying collateral. Therefore, maintaining a long-term position requires a conservative LTV where the yield generation is sufficient to offset the impact of the redemption rate.
+The debt balance is reduced by redemptions from the Transmuter. Each redemption reduces debt and the underlying collateral by the same value. Yield generated by the MYT accrues to the collateral and offsets that draw. Maintaining a long-term position therefore calls for a conservative LTV, where yield generation is sufficient to offset the impact of the redemption rate.
 
 Example flow:
 
@@ -2271,7 +2405,7 @@ Example flow:
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Deposit 10,000 ETH → MYT           | Treasury earns blended yield, MYT appreciates relative to ETH.                                                                             |
 | Mint 2,000 alETH, swap to stables  | Low-LTV borrowing creates runway without selling core assets.                                                                              |
-| Vault yield and redemptions accrue | Redemptions gradually reduce debt. If MYT yield remains higher than the redemption rate, the position will become debt free automatically. |
+| Vault yield and redemptions accrue | Redemptions gradually retire debt and remove matching collateral. Yield replenishes the collateral. If the yield on the collateral outpaces what redemptions draw (a function of LTV and the redemption rate), the collateral keeps growing while the debt falls to zero. |
 | Repay debt with excess alETH       | Unused alETH can be used to further reduce exposure to collateral redemptions.                                                             |
 
 ## Money-Market Protocols
@@ -2282,7 +2416,7 @@ For money-market protocols, the primary benefit is the ability to capture signif
 
 ## Vault Curators
 
-Strategy designers can submit new ERC-4626 modules for inclusion in the MYT basket. Once approved by governance, the module earns a slice of generated yield, providing curators with recurring revenue and improving the vault’s risk-adjusted return.
+Strategy designers can propose new strategy adapters for inclusion in the MYT basket. After an independent audit and risk classification, the Curator can add the adapter and set its caps. Well-performing strategies improve the vault’s risk-adjusted return. Compensation for strategy designers is arranged with the DAO; the vault contracts themselves pay only the protocol’s performance fee.
 
 ## DeFi Onboarders
 
@@ -2305,33 +2439,33 @@ Power users can stack three angles: looped leverage on risk-adjusted yield, fixe
 
 Source: https://docs.alchemix.fi/projects/why-integrate/feature-comparison
 
-DeFi credit comes in a few structural flavors. The table below compares Alchemix V3 against the two most common lending models — variable-rate money markets and CDP stablecoin systems — on the properties that matter to integrators and their users.
+DeFi credit comes in a few structural flavors. The table below compares Alchemix V3 against the two most common lending models, variable-rate money markets and CDP stablecoin systems, on the properties that matter to integrators and their users.
 
 This is a comparison of *mechanisms*, not of live rates. Rates, fees, and parameters change; the structural differences below do not.
 
-| Property | Alchemix V3 | Money markets (e.g., Aave, Compound) | CDP stablecoins (e.g., Sky/Maker, Liquity) |
+| Property | Alchemix V3 | Money markets (e.g., Aave, Compound) | CDP stablecoins |
 | --- | --- | --- | --- |
 | **Interest on debt** | 0%. Debt only moves down unless the user mints more. | Variable, set by pool utilization. Can spike without warning. | Stability fee (variable) or one-time minting fee. |
-| **Repayment** | Automatic. Vault yield and scheduled Transmuter redemptions retire debt over time. | Manual. Borrower must repay principal plus accrued interest. | Manual. Borrower must repay to unlock collateral. |
-| **Liquidation trigger** | Strategy loss only. Like-kind borrowing means price swings cannot move LTV. | Price-based. Collateral price drops force liquidation. | Price-based against the collateral ratio. |
+| **Repayment** | Automatic. Scheduled Transmuter redemptions retire debt from collateral over time, while the collateral keeps earning. | Manual. Borrower must repay principal plus accrued interest. | Manual. Borrower must repay to unlock collateral. |
+| **Liquidation trigger** | Strategy loss only. Like-kind borrowing means a move in the price of ETH or USDC cannot move LTV. | Price-based. Collateral price drops force liquidation. | Price-based against the collateral ratio. |
 | **Maximum LTV** | Up to 90%. | Typically 50–80% depending on asset. | Varies; overcollateralization is usually mandatory well below 90%. |
 | **Collateral productivity** | Collateral keeps earning inside the MYT while borrowed against. | Supplied assets earn the pool's supply rate. | Collateral generally sits idle (some vault types excepted). |
 | **Borrowable asset** | Like-kind synthetic (alETH against ETH, alUSD against USDC). | Any listed asset (cross-collateral risk). | Protocol stablecoin only. |
-| **Fixed-rate instrument** | Built in. Transmuter deposits lock a known 1:1 redemption at a known maturity. | Not native; requires third-party protocols. | Not native. |
-| **Position management burden** | Low. No interest accrual or price liquidations to monitor. | High. Rates and health factor need active monitoring. | Medium. Collateral ratio needs monitoring in volatile markets. |
+| **Fixed-rate instrument** | Built in. Transmuter deposits lock a 1:1 redemption at a known maturity, scaled down only if the Alchemist carries bad debt. | Not native; requires third-party protocols. | Not native. |
+| **Position management burden** | Low. No interest accrual, and no liquidation from a move in the collateral asset's price. | High. Rates and health factor need active monitoring. | Medium. Collateral ratio needs monitoring in volatile markets. |
 
 ### What this means in practice
 
-- **For end users**, an Alchemix loan is closer to "sell a slice of future yield" than to a margin account. There is no scenario where a user wakes up to an interest bill or a price-triggered liquidation.
-- **For integrators**, like-kind borrowing plus fundamental oracles mean positions built on Alchemix have fewer external dependencies to monitor — no utilization curves, no cross-collateral contagion.
+- **For end users**, an Alchemix loan is closer to an advance on their own collateral than to a margin account. Redemptions settle it over time and yield offsets the draw. A user never wakes up to an interest bill, and a move in the price of ETH or USDC cannot trigger a liquidation. Liquidation follows a fall in what the MYT reports, so the residual risk sits in the strategies rather than in the market price of the collateral asset.
+- **For integrators**, like-kind borrowing plus fundamental oracles mean positions built on Alchemix have fewer external dependencies to monitor: no utilization curves, no cross-collateral contagion.
 - **For treasuries**, the Transmuter's fixed-duration redemptions offer something neither model provides natively: a known return at a known date, backed by protocol collateral rather than counterparty credit.
 
 ### Where other models win
 
-Alchemix is not a universal replacement. Money markets support a much wider range of collateral and let users borrow assets other than a like-kind synthetic. CDP stablecoins offer deeper liquidity in their native stablecoin. If a user needs to borrow an arbitrary third asset against arbitrary collateral, a money market is the right tool; Alchemix is the right tool when the goal is liquidity against ETH or USDC without selling, without interest, and without price-liquidation risk.
+Alchemix is not a universal replacement. Money markets support a much wider range of collateral and let users borrow assets other than a like-kind synthetic. CDP stablecoins offer deeper liquidity in their native stablecoin. If a user needs to borrow an arbitrary third asset against arbitrary collateral, a money market is the right tool; Alchemix is the right tool when the goal is liquidity against ETH or USDC without selling, without interest, and without liquidation driven by the collateral asset's price.
 
 ### Learn more
 
-- [Use cases →](https://docs.alchemix.fi/projects/why-integrate/feature-comparison/use-cases)
+- [Use cases →](https://docs.alchemix.fi/projects/why-integrate/use-cases)
 - [Self-repaying loans explained →](/user/concepts/self-repaying-loans)
 - [Liquidation mechanics →](/user/concepts/liquidations)

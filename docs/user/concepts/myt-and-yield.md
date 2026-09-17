@@ -44,9 +44,9 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 3. Hold MYT. As strategies earn yield, the redemption value of each token increases.
 
-4. Redeem at any time for your principal plus any accumulated yield.
+4. Redeem at any time for your share of the vault at the current exchange rate, which reflects accumulated yield and any strategy losses.
 
-There are no lock-ups, and yield compounds continuously. You can also use your MYT as collateral in an Alchemix vault to [borrow up to 90% LTV](./self-repaying-loans.md) against it while it keeps earning underneath.
+There are no lock-ups on MYT itself, and yield compounds continuously. Large withdrawals can depend on the liquidity available in the vault’s strategies. You can also use your MYT as collateral in an Alchemix vault to [borrow up to 90% LTV](./self-repaying-loans.md) against it while it keeps earning underneath.
 
 ```mermaid
 %%{init: {
@@ -86,12 +86,12 @@ flowchart LR
 There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
 
 :::info Compositions change, verify in the app
-The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [in the Mixed Yield tab →](https://alchemix.fi/mixed-yield)
+The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [on the Mixed Yield page →](https://alchemix.fi/mixed-yield), under Earn → Variable Rate
 :::
 
 ### How strategies are classified
 
-Each MYT is governed by risk classifications. Before a strategy can be added to an MYT it is independently audited and assigned one of three classifications:
+Each MYT is governed by risk classifications. Before a strategy can be added to an MYT its adapter code must be covered by an independent audit, and the strategy is assigned one of three classifications:
 
 - **Conservative** – enters and exits through the strategy contract directly, is priced by a fundamental oracle that measures backing against outstanding shares, and carries no meaningful withdrawal delay.
 - **Moderate** – depends on a DEX to enter or exit, or on an externally priced oracle, or can lock withdrawals for a period.
@@ -103,11 +103,13 @@ The audit covering each live strategy is listed on the [Security & Audits](../sa
 
 ### Risk caps
 
-Each classification caps how much of an MYT a strategy can occupy, both on its own and across all strategies of that tier. These caps let you set an LTV that limits liquidation risk from higher-risk strategies.
+Each classification caps how much of an MYT a strategy can occupy, both on its own and across all strategies of that tier. These caps let you set an LTV that limits liquidation risk from higher-risk strategies. Caps are checked when the DAO allocates. Because they are relative to vault size, user withdrawals can leave an existing allocation above its cap until the DAO rebalances.
 
-| Classification | Max Individual Strategy | Max All Strategies |
+| Classification | Max Individual Strategy | Max All Strategies\* |
 |---|---|---|
 | Conservative | None | None |
-| Moderate | 25% | 40% |
-| Aggressive | 10% | 10% |
+| Moderate | 40% | 60% |
+| Aggressive | 20% | 20% |
+
+\* Max All Strategies is inclusive of that risk level and all riskier levels. The Conservative cap covers Conservative, Moderate, and Aggressive strategies together. The Moderate cap covers Moderate and Aggressive, and the Aggressive cap covers Aggressive only.
 

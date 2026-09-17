@@ -42,10 +42,12 @@ Generally, a strategy is only classified as “Conservative” if it meets all t
 
 As an example, if a strategy unwrap is “Contract”, pricing approach is “Fundamental”, and duration risk is “MultiWeek”, it would be classified as Moderate. If the strategy is also newer and less proven, it could be bumped up to Aggressive.
 
-Caps for each level are as follows. These caps ensure that users can set their LTV to minimize liquidation risk due to Aggressive and/or Moderate risk strategies.
+Caps for each level are as follows. These caps ensure that users can set their LTV to minimize liquidation risk due to Aggressive and/or Moderate risk strategies. The [risk caps](/user/concepts/myt-and-yield#risk-caps) table in the user docs is the canonical copy of these values.
 
-| Classification Level | Max Individual Strategy | Max All Strategies |
-| :------------------- | :---------------------- | :----------------- |
-| Conservative         | None                    | None               |
-| Moderate             | 25%                     | 40%                |
-| Aggressive           | 10%                     | 10%                |
+| Classification Level | Max Individual Strategy | Max All Strategies\* |
+| :------------------- | :---------------------- | :------------------- |
+| Conservative         | None                    | None                 |
+| Moderate             | 40%                     | 60%                  |
+| Aggressive           | 20%                     | 20%                  |
+
+\* Max All Strategies is inclusive of that risk level and all riskier levels. The Conservative cap covers Conservative, Moderate, and Aggressive strategies together. The Moderate cap covers Moderate and Aggressive, and the Aggressive cap covers Aggressive only.
