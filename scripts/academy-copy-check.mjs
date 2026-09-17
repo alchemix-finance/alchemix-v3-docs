@@ -34,6 +34,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import url from "node:url";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const SRC = path.join(ROOT, "src");
@@ -50,7 +51,8 @@ function sourceFiles() {
     if (fs.existsSync(f)) out.push(f);
   }
   for (const f of fs.readdirSync(path.join(A, "lessons"))) out.push(path.join(A, "lessons", f));
-  out.push(path.join(A, "lib", "track.js"), path.join(A, "lib", "questions.js"));
+  // questions.js is read through the module instead: see bankRows below.
+  out.push(path.join(A, "lib", "track.js"));
   for (const f of fs.readdirSync(P)) if (f.endsWith(".jsx")) out.push(path.join(P, f));
   return out;
 }
@@ -90,9 +92,38 @@ function sentences() {
   return rows;
 }
 
+/**
+ * The multiple-choice banks.
+ *
+ * Around 250 sentences of learner-facing copy that neither extractor above can
+ * see: a bank entry is a `prompt:` plus two arrays of bare strings, with no tag
+ * and no prop name on any item. So the whole of both question banks shipped
+ * unchecked, which is exactly the kind of blind spot this script exists to close.
+ *
+ * Read through the module rather than by regex, so a change to how a bank is
+ * written cannot quietly drop it back out of the inventory.
+ */
+async function bankRows() {
+  const file = path.join(A, "lib", "questions.js");
+  const { QUESTIONS } = await import(url.pathToFileURL(file).href);
+  const name = path.relative(SRC, file).replace(/\\/g, "/");
+  const out = [];
+  for (const [lessonId, bank] of Object.entries(QUESTIONS)) {
+    for (const q of bank) {
+      for (const text of [q.prompt, ...q.options, ...q.explain]) {
+        for (const s of String(text).split(/(?<=[.?!])\s+(?=[A-Z])/)) {
+          const t = s.trim();
+          if (t.length >= 12) out.push({ file: name, s: t, lesson: lessonId });
+        }
+      }
+    }
+  }
+  return out;
+}
+
 /* ── Checks ──────────────────────────────────────────────── */
 
-const rows = sentences();
+const rows = [...sentences(), ...(await bankRows())];
 const failures = [];
 const review = [];
 
@@ -112,7 +143,7 @@ const BANNED = [
   // carrying everything it earned": "very claudish". Note "carries" is fine in
   // its finance sense (a loan carries no interest), so only the loose uses list.
   [/\b(carries|carried|carry) on earning\b/i, "personification; write 'keeps earning'"],
-  [/\bstanding behind\b/i, "personification; write 'behind' or 'securing'"],
+  [/\b(standing|stands|stood) behind\b/i, "personification; write 'behind' or 'securing'"],
   [/\bcomes? back carrying\b/i, "personification; write 'is returned along with'"],
   [/\b(fee|cost|charge|payment|repayment)s? lands?\b/i, "personification; write 'is charged' or 'applies'"],
   [/\b(LTV|balance|figure|amount|number)s? climbs?\b/i, "personification; write 'rises'"],
@@ -137,7 +168,16 @@ const INANIMATE =
   "marker|markers|note|notes|graph|graphs|curve|curves";
 const VOLITIONAL =
   "walks?|walking|works? through|worked through|wants?|likes?|says?|tells?|decides?|chooses?|refuses?|forbids?|protects?|guards?|holds? back|feels?|knows?|waits?|leans?|steers?|hunts?|chases?|thinks?|prefers?|tries|remembers?";
-const PERSONIFIED = new RegExp(`\\b(${INANIMATE})\\s+(${VOLITIONAL})\\b`, "i");
+/**
+ * A noun inside a prepositional phrase is not the subject of the verb after it.
+ * "Everyone in the queue waits the same set duration" is people waiting, not a
+ * queue waiting, and the first draft of this rule flagged it.
+ */
+const OBLIQUE = "in|on|at|of|from|to|with|inside|through|into|across|behind|under|over|within|among";
+const PERSONIFIED = new RegExp(
+  `(?<!\\b(?:${OBLIQUE})\\s(?:the|a|an|your|its|their|this|that|every|each)\\s)\\b(${INANIMATE})\\s+(${VOLITIONAL})\\b`,
+  "i",
+);
 
 /**
  * Stage directions: telling the reader to look at something the page is already

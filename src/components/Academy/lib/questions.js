@@ -219,8 +219,8 @@ export const QUESTIONS = {
   "getting-money-back": [
     {
       prompt:
-        "A position holds 10,000 of collateral against 5,000 of debt, and the app says " +
-        "4,444 is free to withdraw rather than 5,000. What is the other 556 doing?",
+        "A position holds 10,000 of collateral against 5,000 of debt, and the app shows " +
+        "4,444 free to withdraw rather than 5,000. What is the other 556 doing?",
       options: [
         "Backing the debt, which needs 5,556 behind it to stay under the 90% cap",
         "Covering a fee charged when collateral leaves the position",
@@ -229,9 +229,9 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. Debt can be at most 90% of collateral, so 5,000 of debt reserves 5,556. Everything above that is free.",
-        "Taking collateral that is already free costs nothing. The gap is what the borrowing cap makes the loan keep.",
-        "Withdrawals are not on a cycle. You can take the free collateral any day, and the gap is the cap at work.",
+        "Yes. Debt can be at most 90% of collateral, so 5,000 of debt reserves 5,556. Everything above that is free.",
+        "Withdrawing what is already free costs nothing. The gap is collateral the cap reserves, not a charge.",
+        "Withdrawals are not on a cycle. You can take the free collateral any day, and what stays behind is set by the cap.",
         "Yield raises the value of the whole deposit. The gap is the collateral the 90% cap reserves against the debt.",
       ],
     },
@@ -247,8 +247,8 @@ export const QUESTIONS = {
       explain: [
         "Right. At a 90% cap, 1 of debt holds 1 / 0.9 of collateral, so clearing 1 of debt releases about 1.11.",
         "Repaying frees more than it clears. A unit of debt reserves 1.11 units of collateral, and that is what comes free.",
-        "That reads the cap the wrong way round. Debt is 90% of collateral, so collateral is 1 / 0.9 of debt: about 1.11.",
-        "Nothing is locked until the end. Every repayment frees collateral immediately.",
+        "That inverts the cap. Debt is 90% of collateral, so collateral is 1 / 0.9 of debt: about 1.11.",
+        "Collateral frees up with every repayment, not only once the last of the debt is gone.",
       ],
     },
     {
@@ -261,10 +261,10 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. Free collateral is free now. Repaying first is a choice, not a requirement.",
+        "Right. Whatever the app shows as free can leave today. Repaying first is a choice, not a requirement.",
         "Repaying frees more collateral, but whatever is already free can leave today.",
         "Redemption cycles clear debt. They have nothing to do with when you can withdraw.",
-        "Yield is not a gate. The free portion is whatever sits above what the cap reserves.",
+        "Yield raises what the deposit is worth. What is free to withdraw is whatever sits above what the cap reserves.",
       ],
     },
     {
@@ -279,9 +279,9 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. Reserved collateral is the debt divided by 0.9, so a smaller debt leaves more free.",
+        "Yes. Reserved collateral is the debt divided by 0.9, so a smaller debt leaves more free.",
         "The cap ties the two together. What is reserved is set by the debt: 5,556 against 5,000, 16,667 against 15,000.",
-        "Yield accrues to the deposit, not to the loan, and it does not change what the cap reserves.",
+        "Yield accrues to the deposit, not to the loan. It does not change what the cap reserves.",
         "Collateral above what the cap reserves is free at any time, whether or not debt is open.",
       ],
     },
@@ -300,9 +300,9 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The redemption rate is a share of debt, not an amount, so it lands on both loans equally.",
+        "Right. The redemption rate is a share of debt, not an amount, so it applies to both loans equally.",
         "That is how an interest-bearing loan behaves. Alchemix charges no interest, and the rate is a share of what you owe.",
-        "Redemptions are proportional. More of Ben's loan is cleared in absolute terms, but the same share of it.",
+        "Redemptions are proportional. More of Ben's loan is cleared in absolute terms, but not a larger share of it.",
         "Redemptions run whether or not you touch the position. That is what makes the loan self-repaying.",
       ],
     },
@@ -316,10 +316,10 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. It is the one input that moves the curve, and it is the same figure for every position in the market.",
+        "Yes. It is the one input that moves the curve, and it is the same figure for every position in the market.",
         "Loan size changes the amount cleared, not the pace. The same share of a large loan and a small one goes each year.",
         "Yield raises what your MYT is worth. Redemptions are what clear the debt, and the two are separate.",
-        "Your LTV decides how much room you have before a loss reaches you. It does not change the pace of repayment.",
+        "Your LTV sets how much room you have before a loss reaches you. It does not change the pace of repayment.",
       ],
     },
     {
@@ -335,7 +335,7 @@ export const QUESTIONS = {
         "Right. The rate is a protocol-level parameter applied to the whole market at once, not a term of your loan.",
         "There is no rate attached to a position. There is one rate, and it applies to everyone.",
         "Redemptions convert collateral already earmarked against the debt. Nothing extra is sold to keep up.",
-        "You are not asked. The rate applies to the market, and repaying by hand is the part you choose.",
+        "There is nothing to opt in to. The rate applies to the whole market, and repaying by hand is the part you choose.",
       ],
     },
     {
@@ -348,10 +348,10 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The rate is not yours to set, but repaying is always open and takes effect immediately.",
+        "Exactly. The rate is not yours to set, but repaying is always open and takes effect immediately.",
         "The rate is a market-wide parameter. There is no per-position setting for it.",
         "Borrowing more raises what you owe. It does not speed anything up.",
-        "The rate is fixed for everyone, but repaying by hand is not. That is the lever you hold.",
+        "The rate is fixed for everyone, but repaying by hand is not.",
       ],
     },
   ],
@@ -367,7 +367,7 @@ export const QUESTIONS = {
         ],
         correct: 0,
         explain: [
-          "Right. A loss of backing is the one thing that can liquidate you, and the caps bound how large a plausible loss is.",
+          "Right. A loss of backing is the one thing that can liquidate you, and the caps are what bound the size of a plausible one.",
           "Borrowing is capped at 90% of collateral. The risk caps govern what the vault may hold, not what you may take.",
           "The strategies set the yield. The caps limit how much of the riskiest ones the vault can hold.",
           "Which asset repays depends on whether the debt is earmarked. The risk caps are about vault composition.",
@@ -385,7 +385,7 @@ export const QUESTIONS = {
         ],
         correct: 0,
         explain: [
-          "Right. The all-strategies figure covers that class and every riskier one, so the 60% is Moderate plus Aggressive.",
+          "Yes. The all-strategies figure covers that class and every riskier one, so the 60% is Moderate plus Aggressive.",
           "The 60% is shared. Aggressive is already inside it, so 40% is what remains for Moderate.",
           "There is no rule ordering the two. Moderate is bounded by its own 40% and by the 60% it shares with Aggressive.",
           "Both carry caps. Moderate is capped at 40% on its own and at 60% together with Aggressive.",
@@ -406,7 +406,7 @@ export const QUESTIONS = {
           "Right. Aggressive fills its 20%, Moderate takes the 40% left of the shared 60%, and Conservative absorbs the rest.",
           "Aggressive is capped at 20%, and Moderate and Aggressive together at 60%. This breaches both.",
           "Aggressive is capped at 20%. Doubling it is not something the DAO could allocate.",
-          "This one is legal but leaves yield unused: Moderate can go to 40% before the shared ceiling binds.",
+          "This one is legal but not the best available: Moderate can go to 40% before the shared ceiling binds.",
         ],
       },
       {
@@ -421,10 +421,10 @@ export const QUESTIONS = {
         ],
         correct: 0,
         explain: [
-          "Right. The caps are relative to vault size and are enforced at allocation, so a shrinking vault can drift above one.",
+          "Exactly. The caps are relative to vault size and are enforced at allocation, so a shrinking vault can drift above one.",
           "Nothing sells automatically. Rebalancing is a DAO action.",
           "Withdrawals are never gated on composition. Your collateral stays yours to take.",
-          "The caps govern every allocation, not just the first. What they do not do is re-check on every withdrawal.",
+          "The caps govern every allocation, not just the first. They are simply not re-checked on every withdrawal.",
         ],
       },
     ],
@@ -456,7 +456,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The market price is between you and the buyer. Inside Alchemix, 1 alUSD is always 1 of debt.",
+        "Yes. The market price is between you and the buyer. Inside Alchemix, 1 alUSD is always 1 of debt.",
         "You received 970, but you minted 1,000, and 1,000 is what the position owes.",
         "Nothing is added. The discount is what you gave up on the sale, not something charged on top.",
         "The price never enters it. One alUSD cancels one of debt on any day, at any price.",
@@ -488,7 +488,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. It is paid once, up front, in the gap between what you mint and what you receive.",
+        "Exactly. It is paid once, up front, in the gap between what you mint and what you receive.",
         "There is none. The balance never rises unless you borrow again.",
         "Costs here are tied to events, never to the calendar. Holding a position costs nothing.",
         "Repaying early is free and frees collateral immediately. There is no penalty for it.",
@@ -509,7 +509,7 @@ export const QUESTIONS = {
       explain: [
         "Right. A loss of backing is the only thing that can reach you, and the caps are what make that worst case finite.",
         "Price cannot liquidate an Alchemix position. Debt and collateral are the same kind of asset and move together.",
-        "The rate decides how quickly the debt clears. It has no bearing on how much loss you can absorb.",
+        "The rate sets how quickly the debt clears. It has no bearing on how much loss you can absorb.",
         "They are different numbers. The cap is 90% and stops further borrowing; liquidation begins at 95%.",
       ],
     },
@@ -523,7 +523,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The same debt now stands against 80% of the collateral, and 50 / 0.8 is 62.5, well under the 95% threshold.",
+        "Yes. The same debt now stands against 80% of the collateral, and 50 / 0.8 is 62.5, well under the 95% threshold.",
         "Only a loss large enough to push your LTV past 95% does that. At 50% you have a lot of room.",
         "It does. Your collateral is worth less while the debt is unchanged, so the ratio between them moves.",
         "Debt is unchanged by a loss of backing. That is exactly why the ratio moves against you.",
@@ -532,7 +532,7 @@ export const QUESTIONS = {
     {
       prompt: "A position does cross the liquidation threshold. What does the protocol sell?",
       options: [
-        "Only enough to bring the position back to a safe ratio, and the rest stays yours and keeps earning",
+        "Only enough to bring the position back to a safe ratio",
         "The whole deposit, closing the position",
         "Enough to clear the debt in full",
         "Nothing, until the borrower chooses to act",
@@ -542,7 +542,7 @@ export const QUESTIONS = {
         "Right. It is the minimum needed to restore a healthy LTV, and everything above that is untouched.",
         "Nothing forces a position to close. What is sold is the minimum that restores a safe ratio.",
         "The debt is not cleared. Enough collateral is used to bring the ratio back under the cap, and no more.",
-        "Past the threshold the protocol acts without waiting. What it does is bounded, not total.",
+        "Past the threshold the protocol acts without waiting. What it sells is the minimum, not everything.",
       ],
     },
     {
@@ -555,7 +555,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. 4 ETH behind 2 alETH is a 50% LTV at any price, because the price divides out of both sides.",
+        "Exactly. 4 ETH behind 2 alETH is a 50% LTV at any price, because the price divides out of both sides.",
         "Nothing is paused. The ratio simply does not move when the price does.",
         "No averaging is needed. Both sides are denominated in the same asset, so the ratio is price-independent.",
         "Room is not what saves you. Even a 90% fall would leave the LTV exactly where it started.",
@@ -592,7 +592,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The wider the gap, the better the fixed return for waiting it out, and that buying is what closes it.",
+        "Yes. The wider the gap, the better the fixed return for waiting it out, and that buying is what closes it.",
         "No one is required to buy. The peg holds because waiting out the term pays, not because of intervention.",
         "Minting is not gated on the price. What restores the price is buyers taking the discount.",
         "No such fee exists. The discount is a cost a borrower takes when selling, not an ongoing charge.",
@@ -610,7 +610,7 @@ export const QUESTIONS = {
       explain: [
         "Right. The Transmuter is a fixed-yield product for savers. A borrower holding alUSD already holds what cancels the debt.",
         "That is the saver's route. It would mean waiting out a term for USDC while still carrying the debt.",
-        "Selling means taking the discount, then buying back what you already had in hand.",
+        "Selling means taking the discount on something you could have used to repay directly.",
         "They are not the same. Repaying settles today, and the Transmuter settles at the end of a term.",
       ],
     },
@@ -624,8 +624,8 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. Every alAsset in the queue earmarks an equal value of collateral, and at maturity that collateral settles the claim.",
-        "No separate reserve stands behind it. The backing is the collateral of borrowers whose debt the redemption repays.",
+        "Exactly. Every alAsset in the queue earmarks an equal value of collateral, and at maturity that collateral settles the claim.",
+        "There is no separate reserve. The backing is the collateral of borrowers whose debt the redemption repays.",
         "External pools give you the market price today. The 1:1 guarantee comes from collateral inside the protocol.",
         "Minting more would defeat the point. Redemptions burn alUSD, they do not create it.",
       ],
@@ -645,9 +645,9 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. One sets the numerator, the other the denominator. The deposit is the borrow divided by the survivable LTV.",
+        "Right. The deposit is the borrow you need, divided by the LTV that survives the loss.",
         "Those govern how fast the debt clears afterwards. Neither changes the size you have to open at.",
-        "Price does not enter it: debt and collateral move together. What binds is the loss, not the cap.",
+        "Price does not enter it: debt and collateral move together. The loss is what limits you, not the cap.",
         "Both are real, and neither sizes the position. They affect what it earns and what deleveraging costs.",
       ],
     },
@@ -661,7 +661,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. A wider discount means more debt for the same cash, and more debt needs more collateral behind it.",
+        "Yes. A wider discount means more debt for the same cash, and more debt needs more collateral behind it.",
         "Debt is recorded at face value. What it trades at does not reduce what you owe.",
         "The loss sets the LTV you can carry. The price sets how much you must borrow, and both move the deposit.",
         "The threshold is fixed at 95%. The price moves how much you borrow, not where liquidation sits.",
@@ -693,7 +693,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. Price moves debt and collateral together, so it cancels out of the sizing entirely.",
+        "Exactly. Price moves debt and collateral together, so it cancels out of the sizing entirely.",
         "A wider discount does move it: you borrow more to raise the same cash, so you deposit more.",
         "A larger loss does move it: the survivable LTV falls, so the same borrow needs more behind it.",
         "Raising more capital does move it: more borrow, and proportionally more deposit.",
