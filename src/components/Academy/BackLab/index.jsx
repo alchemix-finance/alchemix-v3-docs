@@ -96,7 +96,7 @@ function Learn({ onDone }) {
         >
           <Body>
             {close ? "That is close. " : `You said ${money(guess)}. `}
-            Your loan holds back the collateral it needs to stay under the 90% cap, and that
+            Your loan reserves the collateral it needs to stay under the 90% cap, and that
             is always more than the loan is worth.
           </Body>
           <Body>

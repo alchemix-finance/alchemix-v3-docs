@@ -65,7 +65,7 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="An Alchemix loan charges no interest. The cost arrives when you sell the alUSD."
+      headline="An Alchemix loan charges no interest. You pay the cost when you sell the alUSD."
     >
       <Sub>
         You borrow {money(WANT)} alUSD against your position, and the debt recorded

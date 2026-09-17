@@ -17,7 +17,7 @@ import {
  * No new mechanism. Two earlier answers now have to be used together, because in
  * practice they constrain each other: the discount decides how much you must
  * borrow, and the coming loss decides how much collateral that borrow needs
- * standing behind it.
+ * behind it.
  *
  * A learner who only sizes the borrow against the discount gets liquidated. One
  * who only picks a safe LTV comes up short of the capital. Neither half is
@@ -232,11 +232,11 @@ function Explore({ onDone }) {
           <Body>
             How much you must borrow is decided by the price you can sell at, and nothing
             about your own position shifts that number. How much collateral the borrow needs
-            behind it is decided by the loss you have to absorb, and the market has no say
+            behind it is determined by the loss you have to absorb, and the market has no effect
             in that one. Divide the borrow by the LTV you can afford and you have the deposit.
           </Body>
           <Body>
-            Push the price down and both checks feel it. A worse discount means borrowing
+            Push the price down and both checks respond. A worse discount means borrowing
             more to raise the same capital. The larger borrow lifts your LTV, so that same
             loss now needs more collateral behind it. You have to solve for both at
             once.

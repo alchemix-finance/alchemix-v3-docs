@@ -17,7 +17,7 @@
  * across them. Each lesson has one visual through-line that mirrors a real
  * screen in the app, and the learner pushes on it before being told the answer.
  *
- * The intermediate track walks through every important mechanic and how it
+ * The intermediate track covers every important mechanic and how it
  * functions, for a learner committed to understanding the protocol: reading a
  * position, the pace of repayment, the strategy mix, the cost of borrowing,
  * choosing an LTV, the peg, and a capstone that sizes a position. Seven
@@ -93,7 +93,7 @@ export const INTERMEDIATE = [
     id: "getting-money-back",
     slug: "/academy/getting-money-back",
     title: "Reading your position",
-    blurb: "Your position holds back the collateral your loan needs. The rest is yours to withdraw today.",
+    blurb: "Your position reserves the collateral your loan needs. The rest is yours to withdraw today.",
     minutes: 8,
     ready: true,
     track: "intermediate",

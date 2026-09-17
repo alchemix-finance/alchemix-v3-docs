@@ -52,7 +52,7 @@ function Predict({ onDone }) {
 
       <div className={own.strategyGrid}>
         <StrategyCard klass="Conservative" apr={DEMO.conservative} note="The vault enters and exits directly, prices it off what it actually holds, and withdraws on demand." tone="cons" />
-        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="It leans on an outside market to price or to exit, or it can lock withdrawals for a time." tone="mod" />
+        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="It depends on an outside market to price or to exit, or it can lock withdrawals for a time." tone="mod" />
         <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="It passes the Moderate tests and carries one factor more, such as being newer or less proven." tone="aggr" />
       </div>
 
@@ -249,9 +249,9 @@ function Explore({ onDone }) {
               : ""}
           </p>
           <p className={styles.revealBody}>
-            Your collateral earns this blend while your loan clears, and those same ceilings
-            protect your borrowing headroom. A vault free to hold 100% Aggressive would make
-            a high LTV genuinely dangerous.
+            Your collateral earns this blend while your loan clears. A vault free to hold
+            100% Aggressive would make a high LTV genuinely dangerous, and those same
+            ceilings are what prevent it.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint

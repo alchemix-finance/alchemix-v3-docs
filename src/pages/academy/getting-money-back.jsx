@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="getting-money-back"
-      description="Your loan holds back the collateral it needs to stay under the 90% cap. Everything above that can leave the position today."
+      description="Your loan reserves the collateral it needs to stay under the 90% cap. Everything above that can leave the position today."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[

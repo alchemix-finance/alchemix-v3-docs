@@ -23,9 +23,9 @@ import styles from "./track.module.css";
 
 const INTRO = {
   beginner:
-    "You put in a deposit, borrow up to 90% of it, and redemptions start clearing the balance from there. Repay and withdraw whenever you want the collateral back. The beginner track walks the same position through all of it.",
+    "You put in a deposit, borrow up to 90% of it, and redemptions start clearing the balance from there. Repay and withdraw whenever you want the collateral back. The beginner track follows one position through all of it.",
   intermediate:
-    "Underneath the app is a vault with hard caps on the risk it can hold, and Alchemix sets one repayment pace for every position. The intermediate track works through that machinery a mechanic at a time and ends with a position you size yourself.",
+    "Underneath the app is a vault with hard caps on the risk it can hold, and Alchemix sets one repayment pace for every position. The intermediate track covers that machinery one mechanic at a time, and the last lesson has you size a position yourself.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -50,7 +50,7 @@ export default function AcademyTrack() {
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by using it. The beginner track walks one position from the deposit through the loan that repays itself. The intermediate track goes underneath. No wallet, no sign-in, nothing to install."
+      description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track goes underneath. No wallet, no sign-in, nothing to install."
     >
       <section className={styles.intro}>
         <div className={styles.eyebrow}>Alchemix Academy</div>
@@ -58,7 +58,7 @@ export default function AcademyTrack() {
         <p className={styles.sub}>
           On most lending platforms your collateral sits idle while you pay interest on
           the loan. In Alchemix the collateral keeps earning, and redemptions clear the debt
-          for you. Both tracks below work through how that actually happens.
+          for you. Both tracks below cover how that actually happens.
         </p>
         <p className={styles.sub}>
           You don't need a wallet, a sign-in, or anything installed, and every lesson

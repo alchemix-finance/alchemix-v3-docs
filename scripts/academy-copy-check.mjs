@@ -119,6 +119,24 @@ const BANNED = [
 ];
 
 /**
+ * Personification as a CLASS, not a word list.
+ *
+ * The previous pass fixed "carrying", "standing", "lands" and "climbs" and left
+ * the rule unwritten, so "The beginner track walks the same position through all
+ * of it" sailed through. Keenan: "why is the track walking?"
+ *
+ * The test: an inanimate subject (a track, a lesson, a rate, a cap, a card, a
+ * cost) paired with a verb that needs a will behind it. People and governing
+ * bodies are exempt, so is market language where trading is the actor, and so
+ * are UI elements that literally move on screen.
+ */
+const INANIMATE =
+  "track|tracks|lesson|lessons|tutorial|tutorials|rate|cap|caps|ceiling|ceilings|loan|cost|costs|discount|card|number|numbers|check|checks|composition|fee|balance|position|price|figure|chart|bar|app|page";
+const VOLITIONAL =
+  "walks?|walking|works? through|worked through|wants?|likes?|says?|tells?|decides?|chooses?|refuses?|forbids?|protects?|guards?|holds? back|feels?|knows?|waits?|leans?|steers?|hunts?|chases?|thinks?|prefers?|tries|remembers?";
+const PERSONIFIED = new RegExp(`\\b(${INANIMATE})\\s+(${VOLITIONAL})\\b`, "i");
+
+/**
  * Stage directions: telling the reader to look at something the page is already
  * showing them, and already drawing their eye to. "so watch both figures on the
  * card" adds no fact; the card is right there and the figures are moving.
@@ -153,6 +171,8 @@ const WRONG_MECHANISM = [
 for (const { file, s } of rows) {
   for (const [re, why] of BANNED) if (re.test(s)) failures.push({ file, s, why });
   for (const [re, why] of WRONG_MECHANISM) if (re.test(s)) failures.push({ file, s, why });
+  const person = s.match(PERSONIFIED);
+  if (person) failures.push({ file, s, why: `personification: a ${person[1]} cannot "${person[2]}"` });
   if (!/\bto continue\b/.test(s)) {
     for (const [re, why] of STAGE_DIRECTION) if (re.test(s)) failures.push({ file, s, why });
   }

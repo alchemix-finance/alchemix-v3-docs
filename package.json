@@ -8,6 +8,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "copy:check": "node scripts/academy-copy-check.mjs",
+    "copy:audit": "node scripts/academy-feedback-audit.mjs",
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",

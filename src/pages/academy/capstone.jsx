@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="capstone"
-      description="The price you can sell at decides what you borrow, and the loss you have to survive decides how much collateral it needs. One deposit has to satisfy both."
+      description="The price you can sell at determines what you borrow, and the loss you have to survive determines how much collateral it needs. One deposit has to satisfy both."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[

@@ -26,7 +26,7 @@ import {
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
 const YIELD = 0.05;
-const ILLUSTRATIVE_PACE = 0.35;
+const EXAMPLE_PACE = 0.35;
 const MONTHS = 24;
 
 /** The position over two years, sampled weekly with a final point on month 24. */
@@ -34,7 +34,7 @@ const CURVE = positionCurve({
   collateral: DEPOSIT,
   debt: BORROW,
   yieldAnnual: YIELD,
-  redemptionAnnual: ILLUSTRATIVE_PACE,
+  redemptionAnnual: EXAMPLE_PACE,
   months: MONTHS,
 });
 
