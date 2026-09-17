@@ -96,6 +96,12 @@ const CHECKS = [
   ["'the second marker on the bar'", "gone", "the second marker on the bar"],
   ["old beginner track intro", "gone", "You put in a deposit"],
   ["old intermediate track intro", "gone", "Underneath the app is a vault"],
+
+  /* App surfaces named on the track card and in the lesson header. */
+  ["lessons carry the app screen they are about", "present", 'app: "Mixed Yield"'],
+  ["the Vaults surface is named", "present", 'app: "Vaults"'],
+  ["the Fixed Yield surface is named", "present", 'app: "Fixed Yield"'],
+  ["a quick start that 'walks'", "gone", "quick start</Link> walks"],
 ];
 
 let fails = 0;

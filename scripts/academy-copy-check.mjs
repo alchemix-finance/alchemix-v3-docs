@@ -131,7 +131,10 @@ const BANNED = [
  * are UI elements that literally move on screen.
  */
 const INANIMATE =
-  "track|tracks|lesson|lessons|tutorial|tutorials|rate|cap|caps|ceiling|ceilings|loan|cost|costs|discount|card|number|numbers|check|checks|composition|fee|balance|position|price|figure|chart|bar|app|page";
+  "track|tracks|lesson|lessons|tutorial|tutorials|rate|cap|caps|ceiling|ceilings|loan|cost|costs|discount|card|number|numbers|check|checks|composition|fee|balance|position|price|figure|chart|bar|app|page|" +
+  "quick start|guide|guides|docs|documentation|article|articles|section|sections|screen|screens|" +
+  "slider|sliders|control|controls|panel|panels|queue|vault|vaults|strategy|strategies|protocol|" +
+  "marker|markers|note|notes|graph|graphs|curve|curves";
 const VOLITIONAL =
   "walks?|walking|works? through|worked through|wants?|likes?|says?|tells?|decides?|chooses?|refuses?|forbids?|protects?|guards?|holds? back|feels?|knows?|waits?|leans?|steers?|hunts?|chases?|thinks?|prefers?|tries|remembers?";
 const PERSONIFIED = new RegExp(`\\b(${INANIMATE})\\s+(${VOLITIONAL})\\b`, "i");

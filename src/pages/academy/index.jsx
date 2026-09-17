@@ -276,13 +276,25 @@ function GraduationPanel({ track, completions, base, banked }) {
         </button>
         {track.key === "beginner" ? (
           <span className={styles.graduateAside}>
-            The <Link to="/user/quick-start">quick start</Link> walks the same flow in the
+            The <Link to="/user/quick-start">quick start</Link> covers the same flow in the
             app.
           </span>
         ) : null}
       </div>
     </section>
   );
+}
+
+/**
+ * The app screen a lesson is about, where it is one screen.
+ *
+ * Lesson 1 and the capstone cover two, and the pace of repayment is a
+ * protocol-level rate rather than a page, so those carry no surface and this
+ * renders nothing rather than guessing at one.
+ */
+function Surface({ lesson }) {
+  if (!lesson.app) return null;
+  return <>· <span className={styles.surface}>{lesson.app}</span> </>;
 }
 
 function TrackRow({ lesson, last }) {
@@ -307,7 +319,7 @@ function TrackRow({ lesson, last }) {
           // the stored completion; the lesson page opens with every stage unlocked.
           <Link to={lesson.slug} className={styles.doneLink}>
             <div className={`${styles.microLabel} ${styles.doneLabel}`}>
-              Lesson {lesson.n} · Complete
+              Lesson {lesson.n} <Surface lesson={lesson} /> · Complete
             </div>
             <div className={styles.rowTitle}>{lesson.title}</div>
             <div className={styles.rowBlurb}>{lesson.blurb}</div>
@@ -318,7 +330,9 @@ function TrackRow({ lesson, last }) {
           </Link>
         ) : (
           <div className={styles.muted}>
-            <div className={styles.microLabel}>Lesson {lesson.n}</div>
+            <div className={styles.microLabel}>
+              Lesson {lesson.n} <Surface lesson={lesson} />
+            </div>
             <div className={styles.rowTitle}>{lesson.title}</div>
             <div className={styles.rowBlurb}>{lesson.blurb}</div>
           </div>
@@ -335,7 +349,7 @@ function CurrentCard({ lesson }) {
       <span className={`${styles.corner} ${styles.cornerTr}`} />
 
       <div className={`${styles.microLabel} ${styles.currentLabel}`}>
-        Lesson {lesson.n} · Up next
+        Lesson {lesson.n} <Surface lesson={lesson} /> · Up next
       </div>
       <div className={styles.cardTitle}>{lesson.title}</div>
       <p className={styles.cardBlurb}>{lesson.blurb}</p>

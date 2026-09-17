@@ -68,6 +68,7 @@ export default function LessonPage({
           </span>
           <span className={styles.divider} />
           <span className={styles.backTitle}>{lesson.title}</span>
+          {lesson.app ? <span className={styles.surface}>{lesson.app}</span> : null}
         </Link>
       }
       right={

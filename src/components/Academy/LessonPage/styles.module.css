@@ -38,6 +38,21 @@
   text-overflow: ellipsis;
 }
 
+/* The app screen this lesson is about. Drops out with the title on a narrow
+   header, where the stepper needs the room more. */
+.surface {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8ea9d8;
+  border: 1px solid rgba(142, 169, 216, 0.28);
+  border-radius: 4px;
+  padding: 0.1875rem 0.4375rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* ── Header right: the stage stepper, which replaces the TOC ── */
 .stepper {
   display: flex;
@@ -207,6 +222,10 @@
 
 @media (max-width: 1080px) {
   .backTitle {
+    display: none;
+  }
+
+  .surface {
     display: none;
   }
 

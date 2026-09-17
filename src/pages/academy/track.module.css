@@ -352,6 +352,12 @@
   color: #5ba88a;
 }
 
+/* The app screen a lesson is about, set apart from the lesson number and
+   the state either side of it. */
+.surface {
+  color: #8ea9d8;
+}
+
 .currentLabel {
   color: #f5c09a;
   margin-bottom: 0.5625rem;

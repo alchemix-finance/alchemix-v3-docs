@@ -25,6 +25,14 @@ const BORROWED = 5;
 const PRICE = 2_500;
 const CRASH = 0.4;
 
+/**
+ * Where the slider starts: the answer an ordinary lending platform would give,
+ * with the debt fixed in dollars while the collateral falls. Every other lab
+ * starts its guess on the intuitive wrong answer, and this one used to start on
+ * the right one, which printed 50% on screen before the learner guessed.
+ */
+const NAIVE_LTV = Math.round((BORROWED / (DEPOSIT * (1 - CRASH))) * 100);
+
 /** The line under the card: what the two sides are worth at a given ETH price. */
 function worthNote(price, borrowed) {
   return `At ${money(price)} per ETH, the deposit is worth ${money(DEPOSIT * price)} and the debt is worth ${money(borrowed * price)}.`;
@@ -52,7 +60,7 @@ export default function SafetyLab({ lessonId, stage, onStage, done, onComplete }
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
 function Learn({ onDone }) {
-  const [guess, setGuess] = useState(50);
+  const [guess, setGuess] = useState(NAIVE_LTV);
   const [revealed, setRevealed] = useState(false);
 
   // The card itself never changes here. Only the note under it moves, from the
