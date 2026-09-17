@@ -179,10 +179,14 @@ export const INTERMEDIATE = [
  * The intermediate bonus is seeded under the key `academy.advanced.completed`.
  * The key is deployed data and keeps its name; the track it pays for is the
  * intermediate track.
+ *
+ * The bonuses are set so each track totals a round number: 6 lessons plus 400 is
+ * 1,000, and 7 lessons plus 800 is 1,500. Per-lesson points are the same for both
+ * tracks because one seeded key, `academy.module.completed`, covers every lesson.
  */
 export const LESSON_POINTS = 100;
-export const BEGINNER_BONUS = 200;
-export const INTERMEDIATE_BONUS = 400;
+export const BEGINNER_BONUS = 400;
+export const INTERMEDIATE_BONUS = 800;
 
 /** Points available per track: every lesson plus the completion bonus. */
 export const BEGINNER_TOTAL_POINTS = BEGINNER.length * LESSON_POINTS + BEGINNER_BONUS;
