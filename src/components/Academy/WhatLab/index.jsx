@@ -54,7 +54,7 @@ const LOOP = [
   { n: 1, label: "Deposit", value: "10,000 USDC", note: "You deposit USDC on the Mixed Yield page and receive MYT.", tone: "#5ba88a" },
   { n: 2, label: "Earn", value: "MYT grows", note: "The DAO picks the strategies the vault earns from.", tone: "#5ba88a" },
   { n: 3, label: "Borrow", value: "5,000 alUSD", note: "You borrow up to 90% on the Vaults page. The deposit stays in the vault and keeps earning.", tone: "#f5c09a" },
-  { n: 4, label: "Balance falls", value: "on its own", note: "Redemptions repay it from your collateral. You never make a payment.", tone: "#f5c09a" },
+  { n: 4, label: "Balance", value: "paid down", note: "Redemptions repay it from your collateral. You never make a payment.", tone: "#f5c09a" },
   { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay the debt, then withdraw the collateral.", tone: "#5ba88a" },
 ];
 
@@ -124,7 +124,7 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title="0%. The balance falls on its own."
+          title="0%. Nothing is added to the balance."
           onNext={onDone}
           nextLabel="See it against a loan with interest"
         >
@@ -216,9 +216,9 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            A loan with interest grows until you pay it down. An Alchemix balance falls
-            instead, because redemptions clear it from your collateral while that collateral
-            keeps earning.
+            A loan with interest grows until you pay it down. An Alchemix balance is repaid
+            out of your own collateral instead, and that collateral earns the whole time it
+            is doing so.
           </Body>
         </Reveal>
       ) : (

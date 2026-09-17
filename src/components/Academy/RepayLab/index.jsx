@@ -56,7 +56,7 @@ export default function RepayLab({ lessonId, stage, onStage, done, onComplete })
       done={done}
       onPass={onComplete}
       passTitle="Lesson 4 complete."
-      passBody="Left alone, the balance falls on its own. Repay by hand and it falls faster. The position card shows how much of the deposit that frees."
+      passBody="Redemptions pay the balance down for you. Repay by hand and it clears faster. The position card shows how much of the deposit that frees."
     />
   );
 }

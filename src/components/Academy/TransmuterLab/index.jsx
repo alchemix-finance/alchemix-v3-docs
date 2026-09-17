@@ -80,10 +80,10 @@ function Learn({ onDone }) {
   ];
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="Buy alUSD below a dollar, redeem it for a full one.">
+    <Stage eyebrow="Stage 1 · Learn" headline="Buy alUSD below a dollar, redeem it for a full USDC.">
       <Sub>
         alUSD trades a little below face value, because borrowers sell the alUSD they mint.
-        Today each one costs {money2(PRICE)} USDC, so {money(HOLDING)} alUSD costs you{" "}
+        At {money2(PRICE)} USDC each, {money(HOLDING)} alUSD costs you{" "}
         {money(HOLDING * PRICE)}. Deposit it into the Transmuter on the Fixed Yield page and
         wait out the term.
       </Sub>

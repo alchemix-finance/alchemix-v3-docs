@@ -10,17 +10,18 @@ import {
 /**
  * Lesson 5: the one real risk.
  *
- * The carried position, shown in ETH so the price has something to move: 4 ETH
- * deposited, 2 alETH borrowed. The learner guesses where the LTV lands after a
- * 40% fall in ETH and finds it unchanged, because the debt and the deposit are
- * the same kind of asset. Then three controls on the same card: the price moves
- * only the dollar figures in the note, a loss inside the vault slides the
- * liquidation marker toward the fill, and the starting LTV sets how much room
- * there is before the two meet.
+ * The carried position, shown in ETH so the price has something to move: 10 ETH
+ * deposited, 5 alETH borrowed. Both prices are stated outright, 2,500 before and
+ * 1,500 after, so the 40% in the headline is arithmetic the learner can check
+ * rather than do. The guess is where the LTV lands, and it lands unchanged,
+ * because the debt and the deposit are the same kind of asset. Then three
+ * controls on the same card: the price moves only the dollar figures in the
+ * note, a loss inside the vault slides the liquidation marker toward the fill,
+ * and the starting LTV sets how much room there is before the two meet.
  */
 
-const DEPOSIT = 4;
-const BORROWED = 2;
+const DEPOSIT = 10;
+const BORROWED = 5;
 const PRICE = 2_500;
 const CRASH = 0.4;
 
@@ -61,10 +62,11 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="The price of ETH falls 40% overnight.">
       <Sub>
-        This is the same position, priced in ETH. Borrowing 2 alETH against 4 ETH puts the
-        LTV at 50%, or what you owe divided by what you deposited. ETH was 2,500 last night.{" "}
-        <strong>Liquidation</strong>, the second marker on the bar, means part of your deposit
-        is sold to cover the debt.
+        The same position, this time in ETH. {BORROWED} alETH borrowed against {DEPOSIT} ETH
+        deposited is an LTV of 50%, what you owe over what you put in. ETH was{" "}
+        {money(PRICE)} last night and {money(PRICE * (1 - CRASH))} this morning. Cross the{" "}
+        <strong>liquidation</strong> marker and the protocol sells part of your deposit to
+        cover the debt.
       </Sub>
 
       <PositionCard
@@ -188,10 +190,10 @@ function Try({ onDone }) {
       {touched.price && touched.loss ? (
         <Reveal title="Only one thing moves the marker." onNext={onDone} nextLabel="Take the check">
           <Body>
-            A price move changes both sides at once, which is why the bar sat still. A loss
-            inside the strategies changes only the deposit, so the marker slides toward your
-            position. The lower your LTV, the more loss you can absorb before it arrives.
-            Reaching the 90% cap just stops you borrowing more.
+            A price move changes both sides at once. A loss inside the strategies changes
+            only the deposit, so the marker slides toward your position. The lower your LTV,
+            the more loss you can absorb before it arrives. Reaching the 90% cap just stops
+            you borrowing more.
           </Body>
         </Reveal>
       ) : null}

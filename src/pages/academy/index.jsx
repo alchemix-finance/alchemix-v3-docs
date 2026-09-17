@@ -23,9 +23,9 @@ import styles from "./track.module.css";
 
 const INTRO = {
   beginner:
-    "You put in a deposit, borrow up to 90% of it, and redemptions start clearing the balance from there. Repay and withdraw whenever you want the collateral back. The beginner track follows one position through all of it.",
+    "Deposit, borrow up to 90% against it, and your collateral keeps earning while redemptions clear what you owe. Repay and withdraw whenever you want it back. Six lessons, one position, in the order you would open it.",
   intermediate:
-    "Underneath the app is a vault with hard caps on the risk it can hold, and Alchemix sets one repayment pace for every position. The intermediate track covers that machinery one mechanic at a time, and the last lesson has you size a position yourself.",
+    "Where the yield actually comes from, why the vault caps how much risk it can hold, and why every borrower repays at the same rate. The last lesson hands you a target and has you size the position yourself.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");

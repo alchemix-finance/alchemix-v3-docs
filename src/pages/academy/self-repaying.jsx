@@ -8,7 +8,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="self-repaying"
-      description="Left alone for two years, an Alchemix loan only falls. Repaying and borrowing more are the two levers you hold."
+      description="Leave an Alchemix loan for two years and redemptions pay it down for you. Repaying and borrowing more are the only two things you control."
       stages={BEGINNER_STAGES}
       Lab={Lab}
       Wrap={Wrap}

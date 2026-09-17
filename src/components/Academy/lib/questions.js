@@ -111,8 +111,8 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Exactly. Left alone, the balance only moves down.",
-        "An Alchemix loan carries no interest, so the only direction it travelled was down.",
+        "Exactly. Nothing adds to the balance. Redemptions only ever pay it down.",
+        "An Alchemix loan carries no interest. Nothing was added over the year.",
         "It did not stay flat. The protocol was repaying it the whole time.",
         "The balance does not track the market. It is recorded in alUSD or alETH and only moves as it is repaid.",
       ],

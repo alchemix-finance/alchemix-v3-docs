@@ -42,7 +42,7 @@ const STOPS = [
   {
     label: "Redeem",
     value: "1:1 at maturity",
-    note: "The buyer is paid in full, the borrower's debt falls, and the alUSD is burned.",
+    note: "The buyer is paid in full, the borrower's debt is repaid, and the alUSD is burned.",
     tone: "#5ba88a",
   },
 ];

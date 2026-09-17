@@ -75,6 +75,27 @@ const CHECKS = [
   ["whole-percent rates in the engine", "present-engine", "[3, 4, 5, 6, 8, 10]"],
   ["round beginner deposits in the engine", "present-engine", "[10_000, 20_000, 30_000, 40_000, 50_000]"],
   ["fractional rate in the docs dev grader", "gone", "between(3, 10, 1)"],
+
+  /* Second read-through of the beginner track. */
+  ["'Left alone' twice on the lesson 4 checkpoint screen", "gone", "Left alone, the balance falls on its own"],
+  ["'Left alone, the balance only moves down'", "gone", "Left alone, the balance only moves down"],
+  ["'Left alone, the balance only moves down' in the engine", "gone-engine", "Left alone, the balance only moves down"],
+  ["'Left alone' in the lesson 4 blurb", "gone", "Left alone, the balance only falls"],
+  ["'a loan you never touch can only fall'", "gone", "can only fall"],
+  ["a balance that 'falls on its own'", "gone", "falls on its own"],
+  ["balance paid down, in financial terms", "present", "only ever paid down"],
+  ["British 'travelled'", "gone", "travelled"],
+  ["British 'travelled' in the engine", "gone-engine", "travelled"],
+  ["Transmuter paying 'a full one'", "gone", "pays you a full one"],
+  ["redeeming for 'a full one'", "gone", "for a full one."],
+  ["'Today each one costs', which implies a live price", "gone", "Today each one costs"],
+  ["round ETH deposit in lesson 5", "present", "const DEPOSIT = 10;"],
+  ["round alETH debt in lesson 5", "present", "const BORROWED = 5;"],
+  ["the morning price stated, so the 40% is checkable", "present", "this morning"],
+  ["'which is why the bar sat still'", "gone", "which is why the bar sat still"],
+  ["'the second marker on the bar'", "gone", "the second marker on the bar"],
+  ["old beginner track intro", "gone", "You put in a deposit"],
+  ["old intermediate track intro", "gone", "Underneath the app is a vault"],
 ];
 
 let fails = 0;
