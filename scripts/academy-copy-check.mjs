@@ -105,6 +105,17 @@ const BANNED = [
   [/\b(the point is|that is the point|is the lesson)\b/i, "pre-labelled significance"],
   [/—/, "em dash (the TOV bans them)"],
   [/\b(favour|annualised|towards|optimise|behaviour|recognise)\b/i, "British spelling"],
+  // Anti-cheat notices. The learner never asked, and it says nothing about Alchemix.
+  [/\bevery learner gets\b/i, "quiz housekeeping the learner did not ask for"],
+  // Personification. Alchemix is a technical protocol, not a place where money
+  // carries things and collateral stands about. Keenan on "the USDC comes back
+  // carrying everything it earned": "very claudish". Note "carries" is fine in
+  // its finance sense (a loan carries no interest), so only the loose uses list.
+  [/\b(carries|carried|carry) on earning\b/i, "personification; write 'keeps earning'"],
+  [/\bstanding behind\b/i, "personification; write 'behind' or 'securing'"],
+  [/\bcomes? back carrying\b/i, "personification; write 'is returned along with'"],
+  [/\b(fee|cost|charge|payment|repayment)s? lands?\b/i, "personification; write 'is charged' or 'applies'"],
+  [/\b(LTV|balance|figure|amount|number)s? climbs?\b/i, "personification; write 'rises'"],
 ];
 
 /**

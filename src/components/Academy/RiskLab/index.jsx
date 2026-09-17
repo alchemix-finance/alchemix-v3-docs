@@ -150,7 +150,7 @@ function Predict({ onDone }) {
                 <Body>
                   If a strategy inside the vault reports a loss, the backing behind every
                   position falls and the same debt stands against less collateral. Your LTV
-                  climbs while the price of ETH or USDC sits perfectly still. This is the
+                  rises while the price of ETH or USDC stays exactly where it is. This is the
                   loss to size a position against.
                 </Body>
                 <Body>
@@ -211,7 +211,7 @@ function Explore({ onDone }) {
       headline="Every loss of backing has a highest LTV that survives it."
     >
       <Sub>
-        The bar shows where the position lands against the {pct(LIQ_LTV)} threshold that
+        The bar shows where the position sits against the {pct(LIQ_LTV)} threshold that
         closes it.
       </Sub>
 
@@ -271,7 +271,7 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            A loss of {pct(loss)} leaves {pct(1 - loss)} of the collateral standing behind
+            A loss of {pct(loss)} leaves {pct(1 - loss)} of the collateral behind
             the same debt. The position survives while the debt still sits under{" "}
             {pct(LIQ_LTV)} of what remains, which puts the ceiling at {pct(LIQ_LTV)} of{" "}
             {pct(1 - loss)}, or {pct(ceiling)}.
@@ -283,7 +283,7 @@ function Explore({ onDone }) {
           </Body>
           <Body>
             Even then, the protocol liquidates only enough to restore a healthy ratio. The
-            rest of the position stays open and carries on earning.
+            rest of the position stays open and keeps earning.
           </Body>
         </Reveal>
       ) : (

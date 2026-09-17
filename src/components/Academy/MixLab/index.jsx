@@ -242,16 +242,16 @@ function Explore({ onDone }) {
           </div>
           <p className={styles.revealBody}>
             That mix fills Aggressive to its 10% ceiling and Moderate to its 40% ceiling,
-            leaving the other 50% in Conservative, which is free to take as much as it
-            likes. Anything higher needs a composition the DAO forbids.
+            leaving the other 50% in Conservative, which has no cap at all. Anything higher
+            needs a composition the DAO forbids.
             {!sawBreach
               ? " Push either slider past a ceiling as well."
               : ""}
           </p>
           <p className={styles.revealBody}>
             Your collateral earns this blend while your loan clears, and those same ceilings
-            are protecting your borrowing headroom. A vault free to hold 100% Aggressive
-            would make a high LTV genuinely dangerous.
+            protect your borrowing headroom. A vault free to hold 100% Aggressive would make
+            a high LTV genuinely dangerous.
           </p>
           <button type="button" className={styles.primary} onClick={onDone}>
             Take the checkpoint
@@ -362,11 +362,6 @@ function Checkpoint({ base, lessonId, done, onPass }) {
       <h1 className={styles.headline}>Find the best composition inside the caps.</h1>
       <p className={styles.sub}>{challenge.prompt}</p>
       <LocalNotice show={challenge.local} />
-      <p className={styles.hint}>
-        Every learner gets different figures, so an answer someone passes you will fit
-        their question and miss yours.
-      </p>
-
       <Allocator aprs={aprs} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
 
       {!passed ? (

@@ -56,7 +56,7 @@ export default function RepayLab({ lessonId, stage, onStage, done, onComplete })
       done={done}
       onPass={onComplete}
       passTitle="Lesson 4 complete."
-      passBody="Left alone, the balance falls on its own. Repay by hand and it falls faster, and the position card shows you how much of the deposit that frees up."
+      passBody="Left alone, the balance falls on its own. Repay by hand and it falls faster. The position card shows how much of the deposit that frees."
     />
   );
 }
@@ -95,8 +95,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        Redemptions repay the loan from your collateral, at a pace the protocol sets for
-        the whole market.
+        In Alchemix, redemptions repay the loan out of your own collateral. The protocol
+        sets that rate for every position at once.
       </Sub>
 
       <PositionCard
@@ -140,9 +140,8 @@ function Learn({ onDone }) {
         >
           <Body>
             Two years went by and you never made a payment. Redemptions cleared the balance
-            a little at a time, drawing on your own collateral, which carried on earning
-            throughout. Redemption rates move, so your own loan will run faster or slower
-            than this one.
+            gradually, out of collateral that kept earning the whole time. Redemption rates
+            move, so your own loan will clear faster or slower than this one.
           </Body>
         </Reveal>
       )}
@@ -217,7 +216,7 @@ function Try({ onDone }) {
           formatY={money}
         />
         <Legend items={[{ label: "Balance", color: "#f5c09a" }]} />
-        <Hint>This runs at an example redemption rate, and the real one moves.</Hint>
+        <Hint>These figures use an example redemption rate. Real rates move.</Hint>
       </div>
 
       <Controls>
@@ -252,19 +251,20 @@ function Try({ onDone }) {
           Every month, redemptions clear a little more of the balance for you.
         </Note>
         <Note label="Repaying by hand">
-          You can repay at any time, in any amount, with alUSD, MYT, or USDC.
+          Repay at any time, in any amount. alUSD clears standard debt, and MYT is required
+          for any debt already earmarked for redemption.
         </Note>
       </Notes>
 
       {unlocked ? (
         <Reveal
-          title="Time and repayment both lower it. Only borrowing more raises it."
+          title="Time and repayment lower the balance, and only borrowing more raises it."
           onNext={onDone}
           nextLabel="Take the check"
         >
           <Body>
-            Repaying does more than shrink the balance. It frees collateral too, and the
-            amount you can withdraw climbs the moment the repayment lands.
+            Repaying does more than reduce the balance. It frees collateral as well, so the
+            amount you can withdraw rises immediately.
           </Body>
         </Reveal>
       ) : null}

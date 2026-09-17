@@ -42,7 +42,7 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
       targetFoot="the deposit grows to this in a year"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 2 complete."
-      passBody="Your deposit becomes MYT and earns in strategies the Alchemix DAO steers. You can take it back any day you like."
+      passBody="Your deposit becomes MYT and earns in strategies the Alchemix DAO selects. You can take it back any day you like."
     />
   );
 }
@@ -52,7 +52,7 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
 const STEPS = [
   { n: 1, label: "You deposit", value: `${money(DEPOSIT)} USDC`, note: "Your wallet sends the USDC to the vault." },
   { n: 2, label: "You receive", value: "MYT", note: "Each Mix-Yield Token, or MYT, is a share of that vault.", tone: "#5ba88a" },
-  { n: 3, label: "The DAO", value: "runs the strategies", note: "It picks where the vault earns and rebalances as markets move.", tone: "#5ba88a" },
+  { n: 3, label: "The DAO", value: "Runs the strategies", note: "It picks where the vault earns and rebalances as markets move.", tone: "#5ba88a" },
 ];
 
 function Learn({ onDone }) {
@@ -101,11 +101,11 @@ function Learn({ onDone }) {
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
-        <Reveal title={`All ${money(DEPOSIT)} of it comes back.`} onNext={onDone} nextLabel="Let it earn">
+        <Reveal title={`All ${money(DEPOSIT)} of it is returned.`} onNext={onDone} nextLabel="Let it earn">
           <Body>
-            Withdraw on any day, in any amount, and the USDC comes back carrying everything
-            it earned. No lock-up, no notice period, no queue. Borrowing against it is a
-            separate decision, and you can skip it entirely.
+            Withdraw on any day, in any amount, and the full balance is returned to you
+            along with anything it earned. There is no lock-up, no notice period and no
+            queue. Borrowing against the deposit is optional.
           </Body>
         </Reveal>
       )}
@@ -131,8 +131,8 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Earn for a year, then take it out.">
       <Sub>
-        Real rates move with whatever the DAO's strategies are earning, so treat this one
-        as an example.
+        Real rates move with what the DAO's strategies earn, so treat this one as an
+        example.
       </Sub>
 
       <PositionCard
@@ -141,7 +141,7 @@ function Try({ onDone }) {
         asset="USDC"
         earning={remaining > 0 ? "Earning" : "Nothing deposited"}
         highlight="deposited"
-        note={full ? "Withdrawn in full, the same day you asked." : `After one year at ${rate}%`}
+        note={full ? "Withdrawn in full, settled immediately." : `After one year at ${rate}%`}
       />
 
       <Readout>
@@ -186,9 +186,8 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            That is the deposit plus a year of that rate. The withdrawal went through the
-            moment you asked for it, and the USDC that came out carried every day of earnings
-            along with it.
+            That is the deposit plus a year at that rate. The withdrawal settled
+            immediately, and it included every day of earnings up to that point.
           </Body>
         </Reveal>
       ) : (

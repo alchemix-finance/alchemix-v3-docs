@@ -93,19 +93,19 @@ const GENERATORS = {
   "the-transmuter": () => choiceChallenge("the-transmuter"),
 
   "your-deposit": () => {
-    const deposit = pick([1000, 2500, 5000, 10000, 20000]);
-    const ratePct = between(3, 10, 1);
+    const deposit = pick([5000, 10000, 20000, 25000, 50000]);
+    const ratePct = pick([3, 4, 5, 6, 8, 10]);
     return {
       fields: { deposit, ratePct },
       prompt:
-        `You deposit ${money(deposit)} USDC. Suppose the vault earns ${ratePct.toFixed(1)}% ` +
+        `You deposit ${money(deposit)} USDC. Suppose the vault earns ${ratePct}% ` +
         `over the next year. What is your deposit worth at the end of it?`,
       controls: { slider: { min: deposit, max: deposit * 1.15, step: deposit / 500 } },
     };
   },
 
   borrowing: () => {
-    const deposit = pick([1000, 2500, 4000, 8000, 15000, 30000]);
+    const deposit = pick([10000, 20000, 30000, 40000, 50000]);
     return {
       fields: { deposit },
       prompt:

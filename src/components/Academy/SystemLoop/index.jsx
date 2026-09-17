@@ -18,7 +18,7 @@ const STOPS = [
   {
     label: "Borrow",
     value: "alUSD is minted",
-    note: "It is minted against a deposit that goes on earning.",
+    note: "It is minted against a deposit that keeps earning.",
     tone: "#f5c09a",
   },
   {

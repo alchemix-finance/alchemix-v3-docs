@@ -49,7 +49,7 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
       targetFoot="what the wait is worth, annualized"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 6 complete."
-      passBody="A discount on an alAsset is a rate, and the Transmuter is what makes that rate collectible. Every saver and every borrower who closes the gap runs the arithmetic you just ran."
+      passBody="A discount on an alAsset is a rate, and the Transmuter is what makes that rate collectible. Savers and borrowers both run this arithmetic before they buy."
     />
   );
 }
@@ -231,12 +231,12 @@ function Explore({ onDone }) {
         >
           <Body>
             Demand for cheap alUSD is what closes the gap. The Transmuter guarantees the
-            1:1 exchange at the end of a known wait, so the wider the discount runs, the
-            better that trade pays and the faster capital arrives to take it.
+            1:1 exchange at the end of a known wait, so the wider the discount, the better
+            that trade pays and the faster buyers step in.
           </Body>
           <Body>
             alAssets are synthetic debt tokens. The peg rests on two things, the collateral
-            standing behind every unit and the Transmuter's promise to exchange it 1:1 at
+            behind every unit and the Transmuter's promise to exchange it 1:1 at
             maturity. An algorithmic stablecoin defends its price by minting and burning
             against the market. Alchemix never has to.
           </Body>

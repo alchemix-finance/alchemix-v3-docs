@@ -58,7 +58,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Exactly. Your deposit stays in the vault and keeps earning the whole time it backs the loan.",
-        "It keeps earning the whole time. An open loan gives your deposit a job as collateral, and it carries on earning in that job.",
+        "It keeps earning the whole time. An open loan gives your deposit a job as collateral, and it keeps earning in that job.",
         "Nothing is sold. You keep your deposit, and it keeps earning while the loan is open.",
         "Your deposit is not lent to anyone. It stays yours and keeps earning in the vault.",
       ],
@@ -147,7 +147,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Yes. The cap limits borrowing and does nothing else.",
-        "Nothing is closed or sold at the cap. It stops you borrowing more, and the position carries on earning.",
+        "Nothing is closed or sold at the cap. It stops you borrowing more, and the position keeps earning.",
         "Sitting at the cap is free. Borrowing stops there and the position keeps earning.",
         "Nothing is liquidated at the cap. Liquidation is a separate mechanism, and it needs a loss of backing.",
       ],

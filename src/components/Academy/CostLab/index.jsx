@@ -38,7 +38,7 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      headline="Size the borrow to land the cash you need."
+      headline="Size the borrow to raise the cash you need."
       unit="amount"
       targetOf={(f) => f.cashWanted}
       computeOf={(f, v) => v * f.price}
@@ -47,7 +47,7 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       targetFoot="the capital you need in hand"
       landingFoot="what your borrow raises"
       passTitle="Lesson 4 complete."
-      passBody="You can size a borrow against the price you will sell it at, so what lands in your hand matches what you came for. You carry the larger number as debt, and the gap between the two is what borrowing costs you."
+      passBody="You can size a borrow against the price you will sell it at, so the amount you receive matches what you needed. You owe the larger number as debt, and the gap between the two is what borrowing costs you."
     />
   );
 }
@@ -130,7 +130,7 @@ function Explore({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 2 · Explore"
-      headline="To end up with the full amount, you have to borrow more than it."
+      headline="To receive the full amount, you have to borrow more than it."
     >
       <Sub>
         The gap between what you borrow and what you receive is what the discount costs
@@ -191,14 +191,14 @@ function Explore({ onDone }) {
         >
           <Body>
             The price you sold at settles your cost. Hold the loan for as long as you like
-            and that figure stays where it is, because no interest runs against it.
+            and that figure stays where it is, because Alchemix charges no interest.
           </Body>
           <Body>
             Another charge arrives later. When redemptions repay your debt out of your
             collateral, the protocol takes a small borrower redemption fee out of the amount
-            repaid. It lands per event rather than per year, so its effective annual cost
+            repaid. It is charged per event rather than per year, so its effective annual cost
             depends on your starting LTV and on how long the transmutation takes.
-            Governance sets the rate, and the fee schedule in the docs carries the live one.
+            Governance sets the rate. The fee schedule in the docs shows the live one.
           </Body>
         </Reveal>
       ) : (

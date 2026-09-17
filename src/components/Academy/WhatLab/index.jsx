@@ -51,11 +51,11 @@ const OWED_AT_END = ALCHEMIX.reduce((best, p) =>
 
 /** Green marks the saving side, copper the loan. */
 const LOOP = [
-  { n: 1, label: "Deposit", value: "10,000 USDC", note: "Your USDC joins a vault on the Mixed Yield page and you receive MYT.", tone: "#5ba88a" },
+  { n: 1, label: "Deposit", value: "10,000 USDC", note: "You deposit USDC on the Mixed Yield page and receive MYT.", tone: "#5ba88a" },
   { n: 2, label: "Earn", value: "MYT grows", note: "The DAO picks the strategies the vault earns from.", tone: "#5ba88a" },
-  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "You borrow up to 90% on the Vaults page. The deposit stays in and keeps earning.", tone: "#f5c09a" },
+  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "You borrow up to 90% on the Vaults page. The deposit stays in the vault and keeps earning.", tone: "#f5c09a" },
   { n: 4, label: "Balance falls", value: "on its own", note: "Redemptions repay it from your collateral. You never make a payment.", tone: "#f5c09a" },
-  { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay with alUSD, MYT, or USDC, then take the collateral back.", tone: "#5ba88a" },
+  { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay the debt, then withdraw the collateral.", tone: "#5ba88a" },
 ];
 
 /** After the reveal, step 4 carries the answer. Nothing else in the picture changes. */
@@ -98,7 +98,6 @@ function Learn({ onDone }) {
       <div className={own.loop}>
         <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
       </div>
-      <Hint>You only act in steps 1, 3 and 5. Step 4 runs without you.</Hint>
 
       <Panel>
         <Question>
@@ -130,10 +129,11 @@ function Learn({ onDone }) {
           nextLabel="See it against a loan with interest"
         >
           <Body>
-            Redemptions repay the debt for you, drawing on your own collateral as they go.
-            Your deposit keeps earning the whole time it backs the loan, and because the debt
-            and the collateral are the same asset, being repaid this way costs you nothing
-            beyond a small redemption fee. The protocol's redemption rate sets the pace.
+            In Alchemix, redemptions repay the debt for you out of your own collateral.
+            That deleverages your position rather than charging you for it: your debt and
+            your collateral are the same asset, so the only cost is a small redemption fee.
+            Your deposit keeps earning the whole time it backs the loan, and the redemption
+            rate sets the pace.
           </Body>
         </Reveal>
       )}
@@ -184,7 +184,7 @@ function Try({ onDone }) {
             { label: "Alchemix", color: "#5ba88a" },
           ]}
         />
-        <Hint>The green line runs at an example redemption rate. The real one moves.</Hint>
+        <Hint>The green line uses an example redemption rate. Real rates move.</Hint>
       </div>
 
       <Controls>
@@ -216,9 +216,9 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            A loan with interest climbs until you pay it down. An Alchemix balance falls
-            instead, because redemptions are clearing it from your collateral while that
-            collateral carries on earning.
+            A loan with interest grows until you pay it down. An Alchemix balance falls
+            instead, because redemptions clear it from your collateral while that collateral
+            keeps earning.
           </Body>
         </Reveal>
       ) : (

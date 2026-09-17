@@ -23,9 +23,9 @@ import styles from "./track.module.css";
 
 const INTRO = {
   beginner:
-    "You put in a deposit, borrow up to 90% of it, and redemptions start clearing the balance from there. Repay and withdraw whenever you want the collateral back. The beginner track walks the same position through all of it, one app screen at a time.",
+    "You put in a deposit, borrow up to 90% of it, and redemptions start clearing the balance from there. Repay and withdraw whenever you want the collateral back. The beginner track walks the same position through all of it.",
   intermediate:
-    "Underneath the app sits a vault with hard caps on the risk it can hold. The protocol sets one repayment pace for everyone. The intermediate track works through that machinery a mechanic at a time, and ends with a position you size yourself.",
+    "Underneath the app is a vault with hard caps on the risk it can hold, and Alchemix sets one repayment pace for every position. The intermediate track works through that machinery a mechanic at a time and ends with a position you size yourself.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -58,8 +58,7 @@ export default function AcademyTrack() {
         <p className={styles.sub}>
           On most lending platforms your collateral sits idle while you pay interest on
           the loan. In Alchemix the collateral keeps earning, and redemptions clear the debt
-          for you. Both tracks below work through how that happens, on the same screens and
-          with the same numbers the app uses.
+          for you. Both tracks below work through how that actually happens.
         </p>
         <p className={styles.sub}>
           You don't need a wallet, a sign-in, or anything installed, and every lesson

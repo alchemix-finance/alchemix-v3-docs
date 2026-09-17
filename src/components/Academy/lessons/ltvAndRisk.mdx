@@ -14,7 +14,7 @@ The borrowing cap and the liquidation threshold do different jobs:
 
 A loss inside the Mix-Yield Token is the only thing that can. If a strategy is
 exploited or reports negative returns, the backing behind every position falls. The
-same debt now stands against less collateral, so your LTV climbs on its own.
+same debt now stands against less collateral, so your LTV rises on its own.
 
 The highest starting LTV that survives a loss is the liquidation threshold applied
 to the backing that remains:
@@ -25,5 +25,5 @@ A 12% loss leaves 83.6%. A 20% loss leaves 76%.
 
 The risk caps inside the Mix-Yield Token are what bound this number. By limiting
 how much of the vault may sit in higher risk strategies, the DAO limits how large a
-loss is plausible in the first place, and that hands you a worst case to size
+loss is plausible in the first place, and that gives you a worst case to size
 against.

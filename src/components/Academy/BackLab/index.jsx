@@ -128,7 +128,7 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Explore" headline="Every unit you repay frees more than a unit of collateral.">
       <Sub>
-        Repaying frees collateral faster than you hand it back. Clear the loan and all
+        Repaying frees more collateral than the amount you repay. Clear the loan and all
         {money(DEPOSIT)} unlocks.
       </Sub>
 

@@ -52,7 +52,7 @@ export default function BorrowLab({ lessonId, stage, onStage, done, onComplete }
       targetFoot="the cap stops borrowing here"
       landingFoot="set the slider to your answer"
       passTitle="Lesson 3 complete."
-      passBody="Borrowing stops at 90% of the deposit and puts alUSD or alETH in your wallet. The deposit stays in the vault and keeps earning the whole time."
+      passBody="Borrowing stops at 90% of the deposit. The alUSD or alETH is minted to your wallet, and the deposit stays in the vault earning the whole time."
     />
   );
 }
@@ -66,8 +66,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="How much can you borrow?">
       <Sub>
-        The 10,000 USDC sits in the vault and earns. On the Vaults page, the Borrow tab asks
-        you for an amount and offers a Max button next to the field.
+        Your 10,000 USDC is in the vault, earning. On the Vaults page, the Borrow tab asks
+        for an amount and offers a Max button.
       </Sub>
 
       <PositionCard
@@ -107,9 +107,14 @@ function Learn({ onDone }) {
         >
           <Body>
             Your <strong>loan to value</strong>, or LTV, is what you owe divided by what you
-            deposited, and the protocol caps it at 90%. Borrowing mints fresh alUSD into your
-            wallet, and inside the protocol one alUSD always cancels one USDC of debt. Your
-            deposit is now the <strong>collateral</strong> standing behind that loan. It stays
+            deposited. Alchemix caps it at 90%.
+          </Body>
+          <Body>
+            Borrowing mints new alUSD directly to your wallet. Inside the protocol one alUSD
+            always cancels one USDC of debt.
+          </Body>
+          <Body>
+            Your deposit becomes the <strong>collateral</strong> securing that loan. It stays
             in the vault and keeps earning the whole time.
           </Body>
         </Reveal>
@@ -184,11 +189,11 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="What arrives">
-          alUSD lands in your wallet, and inside the protocol one of them cancels one USDC
-          of debt. Out on the open market it trades a little under 1.00.
+          alUSD is minted directly to your wallet. Inside the protocol one of them cancels
+          one USDC of debt. On the open market it trades a little under 1.00.
         </Note>
         <Note label="At the cap">
-          Borrowing stops. The position stays open and carries on earning.
+          Borrowing stops. The position stays open and keeps earning.
         </Note>
       </Notes>
 
@@ -200,9 +205,7 @@ function Try({ onDone }) {
         >
           <Body>
             On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap stops you
-            borrowing more, and the position stays open with the deposit still
-            earning. The quick start suggests starting well below the cap, so this one carries
-            on at 5,000.
+            borrowing more. The position stays open and the deposit keeps earning.
           </Body>
         </Reveal>
       ) : null}

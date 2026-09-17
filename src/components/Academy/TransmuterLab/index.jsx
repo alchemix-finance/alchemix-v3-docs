@@ -43,7 +43,7 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       done={done}
       onPass={onComplete}
       passTitle="Track complete."
-      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, name the one risk that can actually reach you, and earn a fixed rate through the Transmuter. That covers the screens a first-time user actually touches."
+      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, identify the one risk that can reach you, and earn a fixed rate through the Transmuter. That covers the screens a first-time user actually touches."
     />
   );
 }
@@ -80,18 +80,18 @@ function Learn({ onDone }) {
   ];
 
   return (
-    <Stage eyebrow="Stage 1 · Learn" headline="Buy alUSD under a dollar, collect a full one.">
+    <Stage eyebrow="Stage 1 · Learn" headline="Buy alUSD below a dollar, redeem it for a full one.">
       <Sub>
         alUSD trades a little below face value, because borrowers sell the alUSD they mint.
         Today each one costs {money2(PRICE)} USDC, so {money(HOLDING)} alUSD costs you{" "}
-        {money(HOLDING * PRICE)}. Hand it to the Transmuter on the Fixed Yield page and wait
-        out the term.
+        {money(HOLDING * PRICE)}. Deposit it into the Transmuter on the Fixed Yield page and
+        wait out the term.
       </Sub>
 
       <FlowSteps steps={steps} />
 
       <Panel>
-        <Question>You wait the full term. How much USDC comes back?</Question>
+        <Question>You wait the full term. How much USDC do you receive?</Question>
         <GuessSlider
           label="USDC received"
           value={guess}
@@ -119,7 +119,7 @@ function Learn({ onDone }) {
           <Body>
             The Transmuter ignores the market price entirely. One alUSD returns one USDC,
             one alETH returns one ETH, once the term is up. You paid{" "}
-            {money(HOLDING * PRICE)} and collect {money(HOLDING)}, so the discount you bought
+            {money(HOLDING * PRICE)} and receive {money(HOLDING)}, so the discount you bought
             at is your return. The Alchemix DAO sets the term and it varies, so check the
             current one in the app before you deposit.
           </Body>

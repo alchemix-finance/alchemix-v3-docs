@@ -3,13 +3,13 @@ much of the deposit you can take out today.
 
 The amount you can take out moves two ways. Withdraw whatever is already free, which costs
 you nothing. Or repay first, and every unit you repay frees more than a unit of
-collateral, because each unit of debt is holding about 1.11 units behind it at the
-cap. Clear the balance outright and the whole deposit unlocks.
+collateral, because each unit of debt requires about 1.11 units of collateral at
+the cap. Clear the balance outright and the whole deposit unlocks.
 
 ### Where the withdrawable figure comes from
 
 Take a position with 10,000 deposited and 5,000 borrowed. That debt needs about
-5,556 of collateral standing behind it at the cap, which leaves about 4,444 free to
+5,556 of collateral behind it at the cap, which leaves about 4,444 free to
 withdraw.
 
 It is the same 90% cap that limits borrowing, read backwards. When you borrow, it
@@ -23,8 +23,8 @@ The app runs this arithmetic for you and shows both figures.
 - **Earmarked debt** – The protocol repays loans in cycles. While a cycle is under
   way, part of your loan shows as earmarked, meaning set aside for the next
   redemption. That part gets repaid with MYT rather than alUSD, and the asset menu
-  in the repay tab offers you only what is valid. Earmarked collateral carries on
-  earning right up until it settles.
+  in the repay tab offers you only what is valid. Earmarked collateral keeps earning
+  until it settles.
 
 - **Closing in one step** – A self-liquidation, which only you can trigger, repays
   the remaining loan from your collateral in a single transaction and leaves the

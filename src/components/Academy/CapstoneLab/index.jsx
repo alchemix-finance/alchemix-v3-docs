@@ -53,7 +53,7 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       targetFoot="the smallest deposit that clears both checks"
       landingFoot="set the slider to your answer"
       passTitle="Track complete."
-      passBody="You just sized a position against a discount you cannot control and a loss you cannot predict. The market sets the first number, the vault sets the second, and the deposit is where the two of them meet."
+      passBody="You just sized a position against a discount you cannot control and a loss you cannot predict. The market sets how much you must borrow, the vault sets how much collateral that needs, and the deposit follows from both."
     />
   );
 }
@@ -238,7 +238,7 @@ function Explore({ onDone }) {
           <Body>
             Push the price down and both checks feel it. A worse discount means borrowing
             more to raise the same capital. The larger borrow lifts your LTV, so that same
-            loss now needs more collateral standing behind it. You have to solve for both at
+            loss now needs more collateral behind it. You have to solve for both at
             once.
           </Body>
         </Reveal>

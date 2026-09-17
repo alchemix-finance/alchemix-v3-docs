@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="cost-of-borrowing"
-      description="The cost of an Alchemix loan lands in two places, and neither of them is a monthly payment. Work out both, and what they come to."
+      description="An Alchemix loan costs you in two places, and neither of them is a monthly payment. Work out both, and what they come to."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[

@@ -181,7 +181,7 @@ function Try({ onDone }) {
         </Note>
         <Note label="Past the marker">
           The protocol sells only enough to bring the position back to a safe ratio. The rest
-          stays yours and carries on earning.
+          stays yours and keeps earning.
         </Note>
       </Notes>
 

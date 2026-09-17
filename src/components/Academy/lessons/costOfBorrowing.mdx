@@ -6,7 +6,7 @@ charges are tied to events rather than to the calendar.
 ### The market discount
 
 alAssets are minted at face value, and they can trade below it. Selling borrowed
-alUSD for spendable USDC realizes that gap on the spot, while the debt recorded
+alUSD for spendable USDC realizes that gap immediately, while the debt recorded
 inside the vault stays at face value.
 
 - **Borrowing 5,000 alUSD at a price of 0.97** puts about 4,850 USDC in your hand,
@@ -22,7 +22,7 @@ When redemptions repay part of your debt using your collateral, a small fraction
 the amount repaid goes to the protocol treasury. The same fee applies whenever
 collateral settles earmarked debt, a self-liquidation included.
 
-The fee lands per event rather than per year, so its effective annual cost depends
+The fee is charged per event rather than per year, so its effective annual cost depends
 on your starting LTV and on how long a transmutation takes. It works out roughly
 as:
 

@@ -5,7 +5,7 @@ repayment across the system in proportion to what each position owes.
 The redemption rate is the share of total system debt repaid this way in a year. It
 is a protocol-level parameter, and every position in the market sits on the same
 one. Owe four times as much and four times as much gets repaid for you each year,
-which lands both positions at the same point on the curve.
+which puts both positions at the same point on the curve.
 
 So the size of your loan has no say in how long it takes to clear. The redemption
 rate decides that.
@@ -30,9 +30,9 @@ debt by hand at any time and you free collateral sooner.
 
 ### What earmarking pays you
 
-Redemptions land in cycles. When a cycle begins, the protocol earmarks a slice of
+Redemptions run in cycles. When a cycle begins, the protocol earmarks a slice of
 each open loan, sized to its share of total system debt. The earmarked collateral
-stays right where it is until the claim settles, earning yield the whole way. The
+stays in the vault until the claim settles, earning yield throughout. The
 docs call this **temporal leverage**: the longer the gap between earmark and
 settlement, the more yield that collateral collects for you.
 

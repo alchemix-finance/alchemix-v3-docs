@@ -518,12 +518,6 @@ export function Checkpoint({
           figures. */}
       {isChoice ? null : <Sub>{challenge.prompt}</Sub>}
       <LocalNotice show={challenge.local} />
-      <Hint>
-        {isChoice
-          ? "Every learner gets the options in a different order, so a letter passed to you points at the wrong one."
-          : "Every learner gets different figures, so an answer passed to you will fit their question and miss yours."}
-      </Hint>
-
       {children}
 
       {isChoice ? (
