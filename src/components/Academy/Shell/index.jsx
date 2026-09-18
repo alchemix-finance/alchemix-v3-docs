@@ -44,40 +44,42 @@ export default function AcademyShell({ title, description, children, left, right
         <div className={styles.glow} aria-hidden="true" />
 
         <header className={styles.header}>
-          {left ?? (
-            <Link to="/academy" className={styles.brand}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c09a" strokeWidth="1.5" aria-hidden="true">
-                <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" />
-                <path d="M12 8 L16.5 10.5 L16.5 15 L12 17.5 L7.5 15 L7.5 10.5 Z" stroke="rgba(245,192,154,0.45)" />
-              </svg>
-              <span className={styles.brandText}>Alchemix Academy</span>
-            </Link>
-          )}
-
-          <div className={styles.headerRight}>
-            {right ?? (
-              <>
-                <span className={styles.progressLabel}>
-                  {completed} of {LESSON_COUNT} lessons complete
-                </span>
-                <span className={styles.progressShort}>
-                  {completed}/{LESSON_COUNT}
-                </span>
-                <span className={styles.progressTrack}>
-                  <span
-                    className={styles.progressFill}
-                    style={{ width: `${(completed / LESSON_COUNT) * 100}%` }}
-                  />
-                </span>
-              </>
+          <div className={styles.headerInner}>
+            {left ?? (
+              <Link to="/academy" className={styles.brand}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c09a" strokeWidth="1.5" aria-hidden="true">
+                  <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" />
+                  <path d="M12 8 L16.5 10.5 L16.5 15 L12 17.5 L7.5 15 L7.5 10.5 Z" stroke="rgba(245,192,154,0.45)" />
+                </svg>
+                <span className={styles.brandText}>Alchemix Academy</span>
+              </Link>
             )}
-            <Link to="/user" className={styles.exit}>
-              Docs
-            </Link>
+
+            <div className={styles.headerRight}>
+              {right ?? (
+                <>
+                  <span className={styles.progressLabel}>
+                    {completed} of {LESSON_COUNT} lessons complete
+                  </span>
+                  <span className={styles.progressShort}>
+                    {completed}/{LESSON_COUNT}
+                  </span>
+                  <span className={styles.progressTrack}>
+                    <span
+                      className={styles.progressFill}
+                      style={{ width: `${(completed / LESSON_COUNT) * 100}%` }}
+                    />
+                  </span>
+                </>
+              )}
+              <Link to="/user" className={styles.exit}>
+                Docs
+              </Link>
+            </div>
           </div>
         </header>
 
-        {children}
+        <div className={styles.content}>{children}</div>
       </div>
     </>
   );

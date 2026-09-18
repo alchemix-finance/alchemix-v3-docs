@@ -1,46 +1,27 @@
 /* ── Statement ───────────────────────────────────────────── */
 
-/* Two columns on a wide screen: the pitch, and the diagram of the position the
-   beginner track builds. The page used to cap the whole hero at 56rem and leave
-   everything right of it empty. */
+/* No max-width of its own. The shell centres one column for the whole academy,
+   and a second cap here would measure this section against a different ruler
+   from the ones under it. The paragraphs carry their own reading measure. */
 .intro {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2.5rem;
-  align-items: start;
   padding: clamp(2.75rem, 6vw, 4.75rem) clamp(1.25rem, 4.4vw, 4rem) clamp(2rem, 4vw, 3.4rem);
-  max-width: 84rem;
 }
 
-.introText {
-  min-width: 0;
-  max-width: 44rem;
-}
-
-/* A container, so the diagram inside can lay itself out against the column it
-   actually got rather than against the viewport. Beside the hero text it is
-   about half the page and wants to be a vertical list; stacked under the text
-   it has the full width and wants to be a row. The viewport cannot tell those
-   apart. Browsers without container queries fall through to the row, which is
-   the layout that was there before. */
-.introAside {
-  min-width: 0;
-  container-type: inline-size;
-}
-
-@media (min-width: 1080px) {
-  .intro {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-    gap: 3.5rem;
-  }
-
-  /* The diagram sits with the body copy rather than level with the headline,
-     which would leave it floating beside a two-line hero. */
-  .introAside {
-    padding-top: 3.25rem;
-  }
+/* The diagram of the position the beginner track builds, on the same gutter as
+   the live strip below it and the track rails below that.
+ *
+ * It sat beside the hero text for a while, on the reasoning that the right half
+ * of the viewport was going begging. In a half-width column five stops have
+ * about 125px each and the diagram has to fall back to a vertical list, which
+ * left a tall narrow card against a short block of text. Full width it is a row
+ * of five, it matches the live strip directly under it, and the hero reads as
+ * one column of prose followed by two cards. */
+.loopSection {
+  position: relative;
+  z-index: 1;
+  margin: 0 clamp(1.25rem, 4.4vw, 4rem) 2.5rem;
 }
 
 .eyebrow {

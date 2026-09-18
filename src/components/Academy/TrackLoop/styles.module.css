@@ -117,36 +117,10 @@
   color: #8a8f99;
 }
 
-/* The vertical form: five stops stacked, arrows turned to point down. Five
-   stops across a column narrower than about 640px gives each one roughly
-   110px, which wraps "no price liquidation" onto four lines. A list is the
-   right shape at that width.
-
-   Beside the hero text, where the column is half the page. */
-@container (max-width: 640px) {
-  .loop {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.25rem;
-  }
-
-  .stop {
-    padding: 0.625rem 0.5rem;
-  }
-
-  .arrow {
-    display: block;
-    margin: 0 auto;
-    color: rgba(245, 192, 154, 0.2);
-    transform: rotate(90deg);
-    transition: color 0.3s ease;
-  }
-
-  .arrowOn {
-    color: rgba(245, 192, 154, 0.45);
-  }
-}
-
-/* Stacked under the hero text, where it has the full page width. */
+/* The diagram spans the content column, so its width tracks the viewport and
+   these are plain media queries. Five stops need roughly 9rem each to hold
+   their notes without shredding them; under that they wrap to two rows, and on
+   a phone they become a vertical list with the arrows turned to point down. */
 @media (max-width: 860px) {
   .loop {
     grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));

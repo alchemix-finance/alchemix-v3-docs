@@ -57,11 +57,7 @@ export default function AcademyTrack() {
       title="Alchemix Academy"
       description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track goes underneath. No wallet, no sign-in, nothing to install."
     >
-      {/* The hero is two columns from 1080px up: the pitch on the left, and on
-          the right the position the beginner track builds, which fills in as
-          lessons are finished. The right half used to be empty. */}
       <section className={styles.intro}>
-        <div className={styles.introText}>
           <div className={styles.eyebrow}>Alchemix Academy</div>
           <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
           <p className={styles.sub}>
@@ -93,11 +89,13 @@ export default function AcademyTrack() {
             Each chain runs an ETH market and a USDC market. Every mechanic works the same
             way in all six of them.
           </p>
-        </div>
+      </section>
 
-        <div className={styles.introAside}>
-          <TrackLoop completedIds={completedIds} />
-        </div>
+      {/* The diagram and the live strip are the same shape on purpose: two
+          full-width cards under the pitch, which is what fills the page at a
+          width the text column has no business filling on its own. */}
+      <section className={styles.loopSection}>
+        <TrackLoop completedIds={completedIds} />
       </section>
 
       <LiveFigures />

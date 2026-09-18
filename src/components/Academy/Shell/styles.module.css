@@ -1,4 +1,8 @@
 .page {
+  /* The one content width, shared by the header, the track map and every
+     lesson body, so nothing on any page is measured against a different ruler. */
+  --academy-width: 96rem;
+
   position: relative;
   min-height: 100vh;
   background: #0d0e10;
@@ -20,15 +24,42 @@
 }
 
 /* ── Header ──────────────────────────────────────────────── */
+
+/* The rule spans the window; what sits on it lines up with the content below,
+   which is what `.headerInner` is for. Without it the brand hugs the left edge
+   of a wide monitor while the page it labels is centred. */
 .header {
   position: relative;
   z-index: 1;
+  border-bottom: 1px solid rgba(245, 192, 154, 0.12);
+}
+
+.headerInner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  max-width: var(--academy-width);
+  margin: 0 auto;
   padding: 1.25rem clamp(1.25rem, 4.4vw, 4rem);
-  border-bottom: 1px solid rgba(245, 192, 154, 0.12);
+}
+
+/* One content column for the whole academy.
+ *
+ * Every section on the track map anchored itself to the window with its own
+ * gutter and then capped its text at 39rem, 46rem or 56rem. On a 1440px laptop
+ * that reads as a deliberate left-aligned column; on a 2560px monitor it reads
+ * as a page with an empty right half, and the hero's two columns end up using a
+ * third of the width available to them. Lesson pages never had the problem,
+ * because `.body` there has always been `max-width` plus `margin: 0 auto`.
+ *
+ * This gives the map the same treatment. Sections keep their own gutters and
+ * their own inner caps; they are now measured against a centred column rather
+ * than against the window.
+ */
+.content {
+  max-width: var(--academy-width);
+  margin: 0 auto;
 }
 
 .brand {
