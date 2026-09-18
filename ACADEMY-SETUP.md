@@ -76,9 +76,11 @@ live readings it was set against and the date they were checked. When they are
 next revisited, read the redemption rate off a couple of vaults in the app and
 the alAsset price off the Fixed Yield page, and update the comments with them.
 
-The track map also renders a live strip (`src/components/Academy/LiveFigures`)
-reading TVL, the redemption fee, the early exit fee and the MYT performance fee
-through the docs' existing `useAlchemixStats` and `useAlchemixFees` hooks.
+The track map briefly carried a strip of live protocol figures and no longer
+does. Four of the five were fees for mechanisms a reader meets several lessons
+in, so on the front door they caveated examples nobody had read yet. Where a
+current figure is worth having, the lesson that teaches the fee links to the
+[Fees](/user/concepts/fees) page, which reads the whole schedule live.
 
 ### Screenshots
 

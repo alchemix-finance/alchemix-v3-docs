@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AcademyShell from "@site/src/components/Academy/Shell";
-import LiveFigures from "@site/src/components/Academy/LiveFigures";
 import TrackLoop from "@site/src/components/Academy/TrackLoop";
 import { PositionCard } from "@site/src/components/Academy/kit";
 import {
@@ -91,14 +90,9 @@ export default function AcademyTrack() {
           </p>
       </section>
 
-      {/* The diagram and the live strip are the same shape on purpose: two
-          full-width cards under the pitch, which is what fills the page at a
-          width the text column has no business filling on its own. */}
       <section className={styles.loopSection}>
         <TrackLoop completedIds={completedIds} />
       </section>
-
-      <LiveFigures />
 
       {TRACKS.map((track) => (
         <TrackSection
