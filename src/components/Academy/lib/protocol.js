@@ -17,7 +17,62 @@ export const MAX_LTV = 0.9;
 /** Only ever reached because the MYT lost backing, never because a price moved. */
 export const LIQ_LTV = 0.95;
 
+/**
+ * The redemption rate the lessons project at.
+ *
+ * Illustrative, and every screen that uses it says so, but it has to be a rate
+ * the protocol plausibly runs at or the lessons teach the wrong shape. The
+ * lessons used 35% for a year, which is roughly half the low end of what the
+ * live vaults have been reading: checked 2026-09-17, Ethereum's USDC vault
+ * showed 87.70% and its ETH vault 63.94%, the USDC vault's 30-day average
+ * earmarking rate was 77.02%, and the capture in the borrowing tutorial shows
+ * 58.61%. 70% sits in the middle of that band.
+ *
+ * The difference is not cosmetic. Left alone for two years, a 5,000 loan has
+ * about 2,000 outstanding at 35% and about 600 at 70%, so the old figure
+ * described a product that repays itself roughly half as fast as this one does.
+ *
+ * Any lesson that projects a balance reads this rather than declaring its own,
+ * so the beginner and intermediate tracks cannot drift to different paces. It
+ * is display only: every graded checkpoint gets its rate from the engine.
+ */
+export const EXAMPLE_REDEMPTION = 0.7;
+
+/** What the lessons suppose the strategies earn. Illustrative, like the rate above. */
+export const EXAMPLE_YIELD = 0.05;
+
+/**
+ * The market price of an alAsset in the examples.
+ *
+ * Checked 2026-09-17: the Fixed Yield page quoted 0.959 on Ethereum and 0.950
+ * on Optimism, and the vault visualizer read 0.958. Three lessons price the
+ * discount and they each declared their own 0.97, which is outside that band in
+ * the direction that flatters the protocol on the cost lesson and understates
+ * it on the peg lesson. One constant so they cannot disagree.
+ *
+ * At 0.96 over a 20-week term the peg lesson annualizes to 10.83%, against the
+ * 10.51% the Fixed Yield page was projecting on the same day.
+ */
+export const EXAMPLE_AL_PRICE = 0.96;
+
 export const WEEKS_PER_YEAR = 52;
+
+/**
+ * The DAO's risk caps on an MYT, from `docs/user/concepts/myt-and-yield.md`.
+ *
+ * A cap counts its own class and every riskier one, so Aggressive is capped at
+ * 20% on its own and Moderate at 60% across Moderate and Aggressive together.
+ * Conservative is uncapped.
+ *
+ * `AGGRESSIVE_CAP` is what lets the beginner track answer "so what LTV should I
+ * open at?" rather than deferring the whole question: the largest loss the
+ * Aggressive class can inflict is its own cap, and `survivableLtv` turns that
+ * into a starting LTV. Caps are checked when the DAO allocates, and a run of
+ * withdrawals can leave an existing allocation above its cap until the DAO
+ * rebalances, so this bounds the intent rather than every instant.
+ */
+export const AGGRESSIVE_CAP = 0.2;
+export const MODERATE_CAP = 0.6;
 
 /**
  * Collateral you can take back right now, with no repayment first.

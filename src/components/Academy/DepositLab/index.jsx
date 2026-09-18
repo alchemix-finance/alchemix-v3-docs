@@ -14,6 +14,12 @@ import {
  * once, then withdraws some or all of it, and nothing on the card holds the
  * withdrawal back. Check asks for the deposit after one year at the engine's
  * rate.
+ *
+ * The deposit is made on the Borrow page, not on Mixed Yield. Both pages hold
+ * the same MYT, but this track carries one position through to a loan, and the
+ * Borrow page's Deposit/Borrow tab does the deposit and the borrow in a single
+ * transaction. Mixed Yield is the same vault for someone who does not want a
+ * loan, which is worth naming here and not worth sending a borrower to.
  */
 
 const DEPOSIT = 10_000;
@@ -62,8 +68,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Your USDC goes into a vault and starts earning.">
       <Sub>
-        On the Mixed Yield page you deposit {money(DEPOSIT)} USDC into a vault, the pool that
-        holds deposits like yours. The Dashboard lists it under Open Mixed Yield Positions.
+        On the Borrow page you open a vault, the pool that holds deposits like yours, and
+        put {money(DEPOSIT)} USDC into it. The Dashboard lists the position afterwards.
       </Sub>
 
       <FlowSteps steps={STEPS} />
@@ -106,6 +112,12 @@ function Learn({ onDone }) {
             Withdraw on any day, in any amount, and the full balance is returned to you
             along with anything it earned. There is no lock-up, no notice period and no
             queue. Borrowing against the deposit is optional.
+          </Body>
+          <Body>
+            Each vault carries a <strong>deposit cap</strong>, drawn on its card as a bar with
+            how full it is, and a vault sitting at its cap takes nothing further until the DAO
+            raises it. The Mixed Yield page, under Earn, holds the same vaults for anyone who
+            wants the yield without a loan.
           </Body>
         </Reveal>
       )}

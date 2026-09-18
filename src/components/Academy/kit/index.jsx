@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import styles from "../lesson.module.css";
 import parts from "../parts.module.css";
 import { fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
+import { nextLesson } from "../lib/track";
 import useElementWidth from "../lib/useElementWidth";
 import LocalNotice from "../LocalNotice";
 
@@ -259,6 +260,14 @@ const markPct = (x) => `${+(x * 100).toFixed(1)}%`;
  * The same card carries one position across the beginner track, so each lesson
  * changes a prop or two and the learner watches the same object move.
  *
+ * Earmarked and Health Factor are opt-in, because the app shows both on every
+ * position and this card used to show neither. `earmarked` draws the slice of
+ * the debt already set aside for the next redemption, as a lighter band inside
+ * the fill, and adds it as a stat; the LTV reading is unaffected, since
+ * earmarked debt is debt. `showHealth` adds the Health Factor, which is the
+ * distance to the borrowing cap written as a multiple: 3.00 at 30% against a
+ * 90% cap, 1.00 at the cap itself, and unbounded with no debt at all.
+ *
  * How a loss of backing is drawn. The docs describe the app's bar this way: if
  * MYT records a loss, the Liq marker slides left. This card does the same. The
  * fill and the LTV figure stay at borrowed / deposited, and the liquidation
@@ -278,11 +287,13 @@ const markPct = (x) => `${+(x * 100).toFixed(1)}%`;
 export function PositionCard({
   deposited,
   borrowed = 0,
+  earmarked = 0,
   asset = "USDC",
   capLtv = 0.9,
   liqLtv = 0.95,
   backingLoss = 0,
   earning = true,
+  showHealth = false,
   highlight = null,
   note = null,
   compact = false,
@@ -290,11 +301,15 @@ export function PositionCard({
 }) {
   const dep = Math.max(Number(deposited) || 0, 0);
   const debt = Math.max(Number(borrowed) || 0, 0);
+  const mark = Math.min(Math.max(Number(earmarked) || 0, 0), debt);
   const loss = Math.min(Math.max(Number(backingLoss) || 0, 0), 0.99);
 
   const ltv = dep > 0 ? debt / dep : 0;
   const effective = dep > 0 ? debt / (dep * (1 - loss)) : 0;
   const liqAt = liqLtv * (1 - loss);
+  // Reads the way the app prints it: a multiple of the borrowing cap, and the
+  // infinity glyph rather than a number once there is no debt to measure.
+  const health = debt > 0 ? capLtv / ltv : Infinity;
 
   const state = effective >= liqLtv - 1e-9 ? "liq" : ltv >= capLtv - 1e-9 ? "cap" : "ok";
   const tone = TONE[state];
@@ -323,7 +338,8 @@ export function PositionCard({
     `LTV ${markPct(ltv)}. Borrowing cap ${markPct(capLtv)}. Liquidation ${markPct(liqAt)}` +
     (loss > 0
       ? `, after a ${markPct(loss)} loss of backing. Effective LTV ${markPct(effective)}.`
-      : ".");
+      : ".") +
+    (mark > 0 ? ` ${markPct(dep > 0 ? mark / dep : 0)} of the deposit is earmarked.` : "");
 
   return (
     <div className={`${parts.card} ${compact ? parts.cardCompact : ""}`}>
@@ -353,6 +369,22 @@ export function PositionCard({
             <span className={parts.cardUnit}>{al}</span>
           </>
         ))}
+        {mark > 0
+          ? stat("earmarked", "Earmarked", (
+              <>
+                {assetAmount(mark, asset)}
+                <span className={parts.cardUnit}>{al}</span>
+              </>
+            ), "#8ea9d8")
+          : null}
+        {showHealth
+          ? stat(
+              "health",
+              "Health factor",
+              Number.isFinite(health) ? health.toFixed(2) : "∞",
+              state === "ok" && highlight === "health" ? "#f5c09a" : tone,
+            )
+          : null}
         {/* The LTV figure keeps its state color even when highlighted; a warning
             should not be painted over by the accent. */}
         {stat(
@@ -370,6 +402,19 @@ export function PositionCard({
             className={`${parts.cardFill} ${state === "cap" ? parts.cardFillCap : state === "liq" ? parts.cardFillLiq : ""}`}
             style={{ width: `${clamp(ltv)}%` }}
           />
+          {/* Earmarked debt is drawn at the leading edge of the fill, which is
+              where the next redemption takes it from. It is a band inside the
+              debt rather than beside it, because it is already counted in the
+              LTV the fill measures. */}
+          {mark > 0 ? (
+            <span
+              className={parts.cardEarmark}
+              style={{
+                left: `${clamp(ltv - mark / (dep || 1))}%`,
+                width: `${clamp(mark / (dep || 1))}%`,
+              }}
+            />
+          ) : null}
           <span className={`${parts.cardMark} ${parts.cardMarkCap} ${tagSide(capLtv)}`} style={{ left: `${clamp(capLtv)}%` }}>
             <span className={parts.cardTag}>Cap {markPct(capLtv)}</span>
           </span>
@@ -378,6 +423,19 @@ export function PositionCard({
           </span>
         </div>
       </div>
+
+      {mark > 0 ? (
+        <div className={parts.cardKey}>
+          <span className={parts.cardKeyItem}>
+            <span className={parts.cardKeyDotDebt} />
+            Borrowed
+          </span>
+          <span className={parts.cardKeyItem}>
+            <span className={parts.cardKeyDotMark} />
+            Earmarked for the next redemption
+          </span>
+        </div>
+      ) : null}
 
       {note ? <div className={parts.cardNote}>{note}</div> : null}
     </div>
@@ -509,6 +567,7 @@ export function Checkpoint({
   }
 
   const passed = Boolean(result?.passed || done);
+  const next = nextLesson(lessonId);
 
   return (
     <Stage eyebrow={eyebrow} headline={isChoice ? challenge.prompt : headline}>
@@ -562,10 +621,23 @@ export function Checkpoint({
           <div className={styles.passHead}>{passTitle}</div>
           {isChoice && result?.feedback ? <Body>{result.feedback}</Body> : null}
           <Body>{passBody}</Body>
-          <Link to="/academy" className={styles.primaryLink}>
-            Back to the track
-            <Arrow />
-          </Link>
+          {/* Forward is the primary action. A course of thirteen lessons that
+              only offers the way back makes every learner round-trip through
+              the map twelve times. The last lesson of the last track has
+              nowhere forward to go, and the map's graduation panel is the
+              right destination there. */}
+          <div className={styles.passActions}>
+            {next ? (
+              <Link to={next.slug} className={styles.primaryLink}>
+                Next: {next.title}
+                <Arrow />
+              </Link>
+            ) : null}
+            <Link to="/academy" className={next ? styles.secondaryLink : styles.primaryLink}>
+              Back to the track
+              {next ? null : <Arrow />}
+            </Link>
+          </div>
         </div>
       ) : null}
     </Stage>

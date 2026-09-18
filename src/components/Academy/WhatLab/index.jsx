@@ -4,6 +4,7 @@ import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { positionCurve } from "../lib/model";
+import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import {
   Actions, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
   Legend, LineChart, Note, Notes, Panel, Primary, Question, Reveal, Stage, Sub, money,
@@ -24,36 +25,35 @@ import {
  * fixed-yield product and gets its own lesson.
  *
  * The falling balance is the dApp's own projection, run at an example
- * redemption rate. Forty percent of it is still standing at two years, so
- * nothing on screen implies a payoff date.
+ * redemption rate, and nothing on screen implies a payoff date.
+ *
+ * This lesson owns the direction and lesson 4 owns the quantity. It used to own
+ * both: it projected the same 10,000 / 5,000 position over the same two years
+ * and printed "you owe about 2,000", which is the figure lesson 4 then asks the
+ * learner to predict. The chart here therefore reads the balance but never
+ * labels where it lands, so the discovery in lesson 4 is still a discovery.
  */
 
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
-const YIELD = 0.05;
-const EXAMPLE_PACE = 0.35;
 const MONTHS = 24;
 
 /** The Alchemix balance, sampled weekly with a final point on month 24. */
 const ALCHEMIX = positionCurve({
   collateral: DEPOSIT,
   debt: BORROW,
-  yieldAnnual: YIELD,
-  redemptionAnnual: EXAMPLE_PACE,
+  yieldAnnual: EXAMPLE_YIELD,
+  redemptionAnnual: EXAMPLE_REDEMPTION,
   months: MONTHS,
 });
-
-const OWED_AT_END = ALCHEMIX.reduce((best, p) =>
-  Math.abs(p.month - MONTHS) < Math.abs(best.month - MONTHS) ? p : best,
-).debt;
 
 /* ── The loop ────────────────────────────────────────────── */
 
 /** Green marks the saving side, copper the loan. */
 const LOOP = [
-  { n: 1, label: "Deposit", value: "10,000 USDC", note: "You deposit USDC on the Mixed Yield page and receive MYT.", tone: "#5ba88a" },
+  { n: 1, label: "Deposit", value: "10,000 USDC", note: "You deposit on the Borrow page and receive MYT.", tone: "#5ba88a" },
   { n: 2, label: "Earn", value: "MYT grows", note: "The DAO picks the strategies the vault earns from.", tone: "#5ba88a" },
-  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "You borrow up to 90% on the Vaults page. The deposit stays in the vault and keeps earning.", tone: "#f5c09a" },
+  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "Up to 90%, on the same screen. The deposit stays in the vault and keeps earning.", tone: "#f5c09a" },
   { n: 4, label: "Balance", value: "paid down", note: "Redemptions repay it from your collateral. You never make a payment.", tone: "#f5c09a" },
   { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay the debt, then withdraw the collateral.", tone: "#5ba88a" },
 ];
@@ -91,8 +91,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Your deposit keeps earning while you borrow against it.">
       <Sub>
-        Deposit USDC on the Mixed Yield page and it starts earning. Borrow alUSD against it
-        on the Vaults page. When you want the deposit back, repay the loan and withdraw.
+        Deposit USDC on the Borrow page and it starts earning. Borrow alUSD against it from
+        the same screen. When you want the deposit back, repay the loan and withdraw.
       </Sub>
 
       <div className={own.loop}>
@@ -204,8 +204,8 @@ function Try({ onDone }) {
           payment.
         </Note>
         <Note label="Alchemix">
-          Two years at an example redemption rate and you owe about{" "}
-          {money(Math.round(OWED_AT_END / 100) * 100)}, having never made a payment either.
+          Two years and you owe less than you borrowed, having never made a payment either.
+          Lesson 4 works out how much less.
         </Note>
       </Notes>
 
@@ -218,7 +218,8 @@ function Try({ onDone }) {
           <Body>
             A loan with interest grows until you pay it down. An Alchemix balance is repaid
             out of your own collateral instead, and that collateral earns the whole time it
-            is doing so.
+            is doing so. How fast it falls depends on the redemption rate, which the app
+            shows on your vault and which lesson 4 puts a number to.
           </Body>
         </Reveal>
       ) : (

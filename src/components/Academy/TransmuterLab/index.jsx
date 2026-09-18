@@ -3,6 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
+import { EXAMPLE_AL_PRICE } from "../lib/protocol";
 import {
   Actions, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
   Note, Notes, Panel, Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
@@ -22,12 +23,18 @@ import {
  * The one-for-one tile shows exactly the amount put in; only the sell-now tile
  * follows the price.
  *
- * This lesson states no term length and no fee rate. The DAO sets both and both
- * vary, so the copy points at the app for the live figures instead.
+ * The lesson names the fields on the Fixed Yield card and not their values. The
+ * DAO sets the term and the fees and both vary by asset and chain, but the card
+ * itself is stable: a projected fixed APR, a maturity date, a term, an early
+ * exit fee, a deposit cap, and the alAsset price it quotes against. Knowing
+ * what to read is the part that survives a governance vote.
+ *
+ * Buying and depositing is one action in the app, "Swap & Deposit", not two.
+ * The flow below draws it that way.
  */
 
 const HOLDING = 5_000;
-const PRICE = 0.97;
+const PRICE = EXAMPLE_AL_PRICE;
 
 export default function TransmuterLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -58,16 +65,16 @@ function Learn({ onDone }) {
   const steps = [
     {
       n: 1,
-      label: "Deposit",
-      value: `${money(HOLDING)} alUSD`,
-      note: "Deposit it on the Fixed Yield page.",
+      label: "Swap & deposit",
+      value: `${money(HOLDING * PRICE)} USDC`,
+      note: "One button on the Fixed Yield page buys the alUSD at the market price and deposits it.",
       tone: "#8ea9d8",
     },
     {
       n: 2,
       label: "Wait",
       value: "The term",
-      note: "The Alchemix DAO sets it and the app shows it.",
+      note: "The DAO sets it. The card names the maturity date before you commit.",
       tone: "#8ea9d8",
     },
     {
@@ -84,8 +91,8 @@ function Learn({ onDone }) {
       <Sub>
         alUSD trades a little below face value, because borrowers sell the alUSD they mint.
         At {money2(PRICE)} USDC each, {money(HOLDING)} alUSD costs you{" "}
-        {money(HOLDING * PRICE)}. Deposit it into the Transmuter on the Fixed Yield page and
-        wait out the term.
+        {money(HOLDING * PRICE)}. On the Fixed Yield page, Swap &amp; Deposit does the
+        purchase and the deposit in one go, and then you wait out the term.
       </Sub>
 
       <FlowSteps steps={steps} />
@@ -179,12 +186,14 @@ function Try({ onDone }) {
       </Controls>
 
       <Notes>
-        <Note label="Leaving early">
-          You can close a Transmuter position before it matures. An early exit fee applies,
-          and the app shows it in advance.
+        <Note label="Reading the card">
+          Each Fixed Yield card carries a projected fixed APR, the maturity date, the term,
+          the early exit fee, the deposit cap, and the alAsset price it is quoting against.
+          Those figures are live and the DAO changes them.
         </Note>
-        <Note label="The term">
-          The term differs by asset and by chain, and the app shows it before you deposit.
+        <Note label="Leaving early">
+          You can close a Transmuter position before it matures. The early exit fee on the
+          card is what it costs, and it exists to stop people hopping the queue.
         </Note>
       </Notes>
 

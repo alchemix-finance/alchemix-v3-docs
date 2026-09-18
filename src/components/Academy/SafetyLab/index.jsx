@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
-import { LIQ_LTV } from "../lib/protocol";
+import { AGGRESSIVE_CAP, LIQ_LTV, survivableLtv } from "../lib/protocol";
 import {
   Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Note, Notes,
   Panel, PositionCard, Primary, Question, Reveal, Stage, Sub, assetAmount, money,
@@ -153,6 +153,7 @@ function Try({ onDone }) {
         asset="ETH"
         backingLoss={loss / 100}
         earning
+        showHealth
         highlight="ltv"
         note={crossed ? "Past the marker. The protocol sells only enough to bring you back to a safe ratio." : worthNote(price, borrowed)}
       />
@@ -202,6 +203,15 @@ function Try({ onDone }) {
             only the deposit, so the marker slides toward your position. The lower your LTV,
             the more loss you can absorb before it arrives. Reaching the 90% cap just stops
             you borrowing more.
+          </Body>
+          <Body>
+            The DAO caps the riskiest class of strategy at{" "}
+            {Math.round(AGGRESSIVE_CAP * 100)}% of the vault, which bounds how large that
+            loss can get. Suppose the whole slice went to zero: liquidation begins at 95% of
+            whatever backing is left, so a position opened at or below{" "}
+            {Math.round(survivableLtv(AGGRESSIVE_CAP) * 100)}% survives it. Open lower and
+            you carry more room than that. The intermediate track derives the number for any
+            loss you want to size against.
           </Body>
         </Reveal>
       ) : null}

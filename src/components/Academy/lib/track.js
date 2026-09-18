@@ -22,6 +22,17 @@
  * position, the pace of repayment, the strategy mix, the cost of borrowing,
  * choosing an LTV, the peg, and a capstone that sizes a position. Seven
  * lessons, all published.
+ *
+ * `app` is the route a learner clicks to reach the screen, written the way the
+ * app's own navigation writes it. The app renamed Vaults to Borrow and moved
+ * Mixed Yield and Fixed Yield under an Earn menu, so a chip reading "Vaults"
+ * named a page title nobody sees any more. The docs make the same translation
+ * in prose ("the Mixed Yield page, under Earn → Variable Rate").
+ *
+ * `shot` is a screenshot of that screen, shown once per lesson under the lab.
+ * Every file listed here was checked against the live app: several older
+ * captures in `static/img` still show the pre-rename navigation and are not
+ * used. `shotAlt` describes it, and `shotNote` says what to look at.
  */
 
 export const BEGINNER = [
@@ -39,56 +50,76 @@ export const BEGINNER = [
     n: 2,
     id: "your-deposit",
     slug: "/academy/your-deposit",
-    app: "Mixed Yield",
+    app: "Borrow",
     title: "Your deposit",
     blurb: "Your deposit earns in a vault the Alchemix DAO manages. Withdraw any amount on any day.",
     minutes: 6,
     ready: true,
     track: "beginner",
+    shot: "/img/quick-start-02.png",
+    shotAlt: "A vault page with the Deposit/Borrow tab open",
+    shotNote:
+      "The Deposit/Borrow tab on a vault. The top field takes the asset you are depositing and the one under it the alAsset you are borrowing, so one transaction can do both.",
   },
   {
     n: 3,
     id: "borrowing",
     slug: "/academy/borrowing",
-    app: "Vaults",
+    app: "Borrow",
     title: "Borrowing against it",
     blurb: "Borrow up to 90% of your deposit. It keeps earning the whole time.",
     minutes: 6,
     ready: true,
     track: "beginner",
+    shot: "/img/borrowing-in-alchemix-01.png",
+    shotAlt: "The Borrow page listing the available vaults",
+    shotNote:
+      "The Borrow page. Each card is one vault: its APR, how full its deposit cap is, and the strategies behind it. LTV on every card reads 90.00%, the cap you just found.",
   },
   {
     n: 4,
     id: "self-repaying",
     slug: "/academy/self-repaying",
-    app: "Vaults",
+    app: "Borrow",
     title: "The loan repays itself",
     blurb: "Redemptions pay the balance down for you. Borrowing more is the only thing that raises it.",
     minutes: 7,
     ready: true,
     track: "beginner",
+    shot: "/img/repay-loan-01.png",
+    shotAlt: "A vault page with the Repay tab open",
+    shotNote:
+      "The Repay tab. Redemption Rate is the pace the protocol is clearing debt at right now, and Earmarked is the slice of this loan already set aside for the next one.",
   },
   {
     n: 5,
     id: "what-can-go-wrong",
     slug: "/academy/what-can-go-wrong",
-    app: "Vaults",
+    app: "Borrow",
     title: "The one real risk",
     blurb: "A price crash leaves your position exactly where it was. A loss inside the vault is the one thing that moves it.",
     minutes: 7,
     ready: true,
     track: "beginner",
+    shot: "/img/borrowing-in-alchemix-02.png",
+    shotAlt: "The position stats and health bar at the top of a vault page",
+    shotNote:
+      "The real bar. MAX LTV and LIQ LTV are the two markers you have been pushing against, and Health Factor is the same distance written as a multiple.",
   },
   {
     n: 6,
     id: "the-transmuter",
     slug: "/academy/the-transmuter",
-    app: "Fixed Yield",
+    app: "Earn · Fixed Rate",
     title: "The Transmuter",
     blurb: "Buy alUSD under a dollar, wait out the term, and redeem each one for a full USDC.",
     minutes: 6,
     ready: true,
     track: "beginner",
+    shot: "/img/redeem-alassets-01.png",
+    shotAlt: "The Fixed Yield page listing Transmuter positions",
+    shotNote:
+      "The Fixed Yield page. Each card states a projected fixed APR, the maturity date, the term, the early exit fee, and the alAsset price it is quoting against.",
   },
 ];
 
@@ -97,12 +128,16 @@ export const INTERMEDIATE = [
     n: 1,
     id: "getting-money-back",
     slug: "/academy/getting-money-back",
-    app: "Vaults",
+    app: "Borrow",
     title: "Reading your position",
     blurb: "Your position reserves the collateral your loan needs. The rest is yours to withdraw today.",
     minutes: 8,
     ready: true,
     track: "intermediate",
+    shot: "/img/repay-loan-01.png",
+    shotAlt: "A vault page showing every position stat",
+    shotNote:
+      "Every stat this lesson works through, on one screen: Deposit, Debt, Health Factor, Earmarked, Redemption Rate, Borrowable and LTV, over a bar that splits the deposit into what is free, what is owed, and what is earmarked.",
   },
   {
     n: 2,
@@ -118,18 +153,22 @@ export const INTERMEDIATE = [
     n: 3,
     id: "where-yield-comes-from",
     slug: "/academy/where-yield-comes-from",
-    app: "Mixed Yield",
+    app: "Earn · Variable Rate",
     title: "Inside the Mix-Yield Token",
     blurb: "The DAO caps how much of your collateral can sit in riskier strategies. Those caps are what make a high LTV safe.",
     minutes: 8,
     ready: true,
     track: "intermediate",
+    shot: "/img/use-passive-myt-02.png",
+    shotAlt: "The Mixed Yield page listing MYT vaults",
+    shotNote:
+      "The Mixed Yield page, the same vault without a loan against it. A vault's Info tab lists every strategy with the risk level this lesson caps.",
   },
   {
     n: 4,
     id: "cost-of-borrowing",
     slug: "/academy/cost-of-borrowing",
-    app: "Vaults",
+    app: "Borrow",
     title: "What borrowing really costs",
     blurb: "An Alchemix loan costs you in two places, and neither is a monthly payment. Find both.",
     minutes: 8,
@@ -140,7 +179,7 @@ export const INTERMEDIATE = [
     n: 5,
     id: "ltv-and-risk",
     slug: "/academy/ltv-and-risk",
-    app: "Vaults",
+    app: "Borrow",
     title: "Choosing an LTV",
     blurb: "Every loss of backing has a starting LTV that survives it. Find yours.",
     minutes: 9,
@@ -151,12 +190,16 @@ export const INTERMEDIATE = [
     n: 6,
     id: "transmuter-and-peg",
     slug: "/academy/transmuter-and-peg",
-    app: "Fixed Yield",
+    app: "Earn · Fixed Rate",
     title: "The peg and the discount",
     blurb: "An alUSD below a dollar pays whoever is willing to wait. Price the wait.",
     minutes: 9,
     ready: true,
     track: "intermediate",
+    shot: "/img/redeem-alassets-01.png",
+    shotAlt: "The Fixed Yield page listing Transmuter positions",
+    shotNote:
+      "The alAsset price each card quotes against is the discount this lesson priced, and the projected fixed APR next to it is that discount annualized over the term.",
   },
   {
     n: 7,
@@ -250,6 +293,14 @@ export function trackBankedPoints(track, completedIds) {
  *
  * "current" is the first unfinished lesson that is built. Only one lesson per
  * track is ever current, so the map leaves no doubt about what to do next.
+ *
+ * "ahead" was "locked", and the rename is the point. Every lesson is now
+ * reachable: someone arriving from a link can read any of them, which is what a
+ * course posted in a Discord channel has to allow. What an "ahead" lesson does
+ * not allow is working it, because a checkpoint answered out of order teaches
+ * nothing and banks points for a lesson whose setup the learner never saw. The
+ * lesson page renders it as a preview instead, and `currentLesson` below is who
+ * it points at.
  */
 export function trackState(completedIds, lessons = BEGINNER) {
   const done = new Set(completedIds);
@@ -261,6 +312,37 @@ export function trackState(completedIds, lessons = BEGINNER) {
       currentTaken = true;
       return { ...lesson, state: "current" };
     }
-    return { ...lesson, state: "locked" };
+    return { ...lesson, state: "ahead" };
   });
+}
+
+/**
+ * The lesson a learner should be working, on the track that holds `lessonId`.
+ *
+ * The first unfinished lesson of that track, or null once the track is
+ * finished. Preview mode needs this to name where to go instead, and it stays
+ * inside one track on purpose: someone previewing intermediate lesson 6 is sent
+ * back to their place in the intermediate track, not to the beginner track they
+ * may have deliberately skipped.
+ */
+export function currentLesson(completedIds, lessonId) {
+  const lesson = lessonById(lessonId);
+  const track = lesson ? trackByKey(lesson.track) : null;
+  if (!track) return null;
+
+  const done = new Set(completedIds);
+  return track.lessons.find((l) => l.ready && !done.has(l.id)) ?? null;
+}
+
+/**
+ * Where "Next lesson" goes after a checkpoint passes.
+ *
+ * The next lesson in the same track, then the first lesson of the track after
+ * it, then null on the last lesson of the last track, where the track map's
+ * graduation panel is the right destination instead.
+ */
+export function nextLesson(lessonId) {
+  const i = ALL_LESSONS.findIndex((l) => l.id === lessonId);
+  if (i < 0) return null;
+  return ALL_LESSONS.slice(i + 1).find((l) => l.ready) ?? null;
 }

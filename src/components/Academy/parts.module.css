@@ -276,10 +276,14 @@
   }
 }
 
+/* Three stats most of the time, four or five once Earmarked and the health
+   factor are switched on. Auto-fit rather than a fixed count so the extra
+   stats wrap to a second row on narrow screens instead of crushing the
+   figures, which are tabular and cannot shrink. */
 .cardStats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.75rem 0.75rem;
   margin-bottom: 1rem;
 }
 
@@ -363,6 +367,23 @@
   transition: width 0.3s ease, background 0.3s ease;
 }
 
+/* The earmarked band sits over the fill at its leading edge. Its own color
+   rather than a lightened fill, so it stays legible when the fill turns amber
+   at the cap or red past liquidation. */
+.cardEarmark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    #8ea9d8,
+    #8ea9d8 5px,
+    #7e99c8 5px,
+    #7e99c8 10px
+  );
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
 .cardFillCap {
   background: linear-gradient(90deg, #b8801f, #d4952a);
 }
@@ -417,6 +438,39 @@
 .cardTagFlip .cardTag {
   right: auto;
   left: 0;
+}
+
+/* Shown only when the bar carries an earmarked band, which is the one time
+   two fill colors need naming. */
+.cardKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.125rem;
+  margin: -0.5rem 0 0.75rem;
+}
+
+.cardKeyItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  font-size: 0.75rem;
+  color: #8a8f99;
+}
+
+.cardKeyDotDebt,
+.cardKeyDotMark {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.cardKeyDotDebt {
+  background: #5ba88a;
+}
+
+.cardKeyDotMark {
+  background: #8ea9d8;
 }
 
 .cardNote {

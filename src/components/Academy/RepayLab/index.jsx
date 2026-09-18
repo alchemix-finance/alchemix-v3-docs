@@ -3,7 +3,9 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import { apiBase } from "../lib/api";
 import { positionCurve } from "../lib/model";
-import { borrowable, withdrawable } from "../lib/protocol";
+import {
+  EXAMPLE_REDEMPTION, EXAMPLE_YIELD, borrowable, withdrawable,
+} from "../lib/protocol";
 import {
   Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Legend,
   LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, Stage,
@@ -18,25 +20,42 @@ import {
  * Try stage puts the three things that move a balance on the same card: time,
  * repaying by hand, and borrowing more.
  *
- * Every falling figure comes from the dApp's own projection, run at an example
- * redemption rate. Forty percent of the balance is still standing at two years, so nothing
- * on screen implies a payoff date.
+ * Every falling figure comes from the dApp's own projection, run at the example
+ * redemption rate in `protocol.js`, and the copy says so on every screen that
+ * shows one. A rate is not a schedule: the app reads the live one on the vault,
+ * and nothing here implies a payoff date.
+ *
+ * This lesson owns the number. Lesson 1 shows the same balance falling but
+ * never says where it lands, so the prediction here is still a prediction.
  */
 
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
-const YIELD = 0.05;
-const EXAMPLE_PACE = 0.35;
 const MONTHS = 24;
 
 /** The position over two years, sampled weekly with a final point on month 24. */
 const CURVE = positionCurve({
   collateral: DEPOSIT,
   debt: BORROW,
-  yieldAnnual: YIELD,
-  redemptionAnnual: EXAMPLE_PACE,
+  yieldAnnual: EXAMPLE_YIELD,
+  redemptionAnnual: EXAMPLE_REDEMPTION,
   months: MONTHS,
 });
+
+/**
+ * The reveal figure, rounded to the nearest hundred so the sentence reads like
+ * a person said it. Derived rather than written down, because the example rate
+ * is a constant someone may reasonably change again.
+ */
+const OWED_AT_END = Math.round(CURVE.at(-1).debt / 100) * 100;
+
+/**
+ * An illustrative earmark: a fifth of the balance set aside for the next
+ * redemption. The protocol sizes it to the position's share of total system
+ * debt, so a real one depends on the whole market. It is drawn here because the
+ * app shows Earmarked on every position and this track never did.
+ */
+const EARMARK_SHARE = 0.2;
 
 /** The sample nearest a whole month. */
 const sampleAt = (m) =>
@@ -96,12 +115,14 @@ function Learn({ onDone }) {
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
         In Alchemix, redemptions repay the loan out of your own collateral. The protocol
-        sets that rate for every position at once.
+        sets that rate for every position at once, and the app prints it on your vault as
+        the Redemption Rate.
       </Sub>
 
       <PositionCard
         deposited={at.collateral}
         borrowed={at.debt}
+        earmarked={revealed && month > 0 ? at.debt * EARMARK_SHARE : 0}
         asset="USDC"
         earning
         highlight="borrowed"
@@ -134,7 +155,7 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title="You owe about 2,000. You paid none of it."
+          title={`You owe about ${money(OWED_AT_END)}. You paid none of it.`}
           onNext={onDone}
           nextLabel="See what moves it"
         >
@@ -142,6 +163,12 @@ function Learn({ onDone }) {
             Two years went by and you never made a payment. Redemptions cleared the balance
             gradually, out of collateral that kept earning the whole time. Redemption rates
             move, so your own loan will clear faster or slower than this one.
+          </Body>
+          <Body>
+            The band inside the bar is <strong>earmarked</strong> debt: the slice already set
+            aside for the next redemption. That collateral stays in the vault earning until
+            the claim settles, and it is repaid with MYT rather than alUSD. The app shows the
+            same figure on your position.
           </Body>
         </Reveal>
       )}
@@ -197,6 +224,7 @@ function Try({ onDone }) {
       <PositionCard
         deposited={at.collateral}
         borrowed={balance}
+        earmarked={m > 0 ? balance * EARMARK_SHARE : 0}
         asset="USDC"
         earning
         highlight="borrowed"
@@ -249,6 +277,11 @@ function Try({ onDone }) {
       <Notes>
         <Note label="Time passing">
           Every month, redemptions clear a little more of the balance for you.
+        </Note>
+        <Note label="Where the money comes from">
+          Savers deposit alUSD into the Transmuter and wait out a term. Their queue earmarks
+          your collateral, and when it matures that collateral settles their claim and
+          clears your debt. Lesson 6 takes the saver's side.
         </Note>
         <Note label="Repaying by hand">
           Repay at any time, in any amount. alUSD clears standard debt, and MYT is required

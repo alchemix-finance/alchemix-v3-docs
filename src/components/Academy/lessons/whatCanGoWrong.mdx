@@ -17,5 +17,12 @@ stays yours and keeps earning.
 ### Where to set your LTV
 
 The lower you borrow, the larger a loss your position can absorb before any of this
-reaches you. The 90% cap only stops you borrowing more. Liquidation begins at
-95%. The intermediate track works out the number to pick.
+reaches you. The 90% cap only stops you borrowing more. Liquidation begins at 95%.
+
+The vault's own risk caps turn that into a number. The DAO can never put more than
+20% of an MYT into its riskiest class of strategy, so suppose that entire slice went
+to zero: 95% of the 80% still standing is 76%, and a position opened at or below 76%
+survives it. Open lower and you carry more room than that.
+
+The intermediate track turns this into a rule for any loss you want to size
+against, and shows where the caps come from.

@@ -4,7 +4,8 @@ import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import {
-  LIQ_LTV, borrowNeededFor, ltvAfterLoss, minimumCollateral, survivableLtv, survivesLoss,
+  EXAMPLE_AL_PRICE, LIQ_LTV, borrowNeededFor, ltvAfterLoss, minimumCollateral,
+  survivableLtv, survivesLoss,
 } from "../lib/protocol";
 import {
   Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
@@ -25,7 +26,7 @@ import {
  */
 
 const WANT = 10_000;
-const PRICE = 0.96;
+const PRICE = EXAMPLE_AL_PRICE;
 const LOSS = 0.12;
 
 const pct = (n) => `${(n * 100).toFixed(1)}%`;

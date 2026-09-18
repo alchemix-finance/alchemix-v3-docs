@@ -1,0 +1,177 @@
+.wrap {
+  margin: 0;
+  border: 1px solid rgba(245, 192, 154, 0.14);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(245, 192, 154, 0.04), rgba(245, 192, 154, 0.01));
+  padding: 1.375rem 1.5rem 1.5rem;
+  transition: border-color 0.3s ease;
+}
+
+/* Lesson 1 is this diagram, so finishing it lights the frame rather than any
+   one node. */
+.wrapOn {
+  border-color: rgba(245, 192, 154, 0.32);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.headLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a8f99;
+}
+
+.headCount {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f5c09a;
+  font-variant-numeric: tabular-nums;
+}
+
+.loop {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.5rem;
+}
+
+/* The arrows sit in the gaps rather than in their own columns, so the five
+   stops keep equal width and the diagram stays a five-beat rhythm. */
+.arrow {
+  display: none;
+}
+
+.stop {
+  position: relative;
+  min-width: 0;
+  padding: 0.75rem 0.625rem 0.8125rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  opacity: 0.45;
+  transition: opacity 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.stopDone {
+  opacity: 1;
+  background: rgba(245, 192, 154, 0.04);
+}
+
+/* The one the learner is about to reach. Visible without being louder than a
+   finished stop, which is the thing that has actually been earned. */
+.stopCurrent {
+  opacity: 0.9;
+  border-color: rgba(245, 192, 154, 0.35);
+}
+
+.stopTop {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  margin-bottom: 0.4375rem;
+}
+
+.stopNum {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 192, 154, 0.3);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: #8a8f99;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.stopLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  transition: color 0.3s ease;
+}
+
+.stopValue {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #e8e8ea;
+  line-height: 1.35;
+  margin-bottom: 0.3125rem;
+}
+
+.stopNote {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #8a8f99;
+}
+
+/* The vertical form: five stops stacked, arrows turned to point down. Five
+   stops across a column narrower than about 640px gives each one roughly
+   110px, which wraps "no price liquidation" onto four lines. A list is the
+   right shape at that width.
+
+   Beside the hero text, where the column is half the page. */
+@container (max-width: 640px) {
+  .loop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .stop {
+    padding: 0.625rem 0.5rem;
+  }
+
+  .arrow {
+    display: block;
+    margin: 0 auto;
+    color: rgba(245, 192, 154, 0.2);
+    transform: rotate(90deg);
+    transition: color 0.3s ease;
+  }
+
+  .arrowOn {
+    color: rgba(245, 192, 154, 0.45);
+  }
+}
+
+/* Stacked under the hero text, where it has the full page width. */
+@media (max-width: 860px) {
+  .loop {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .loop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .stop {
+    padding: 0.625rem 0.5rem;
+  }
+
+  .arrow {
+    display: block;
+    margin: 0 auto;
+    color: rgba(245, 192, 154, 0.2);
+    transform: rotate(90deg);
+    transition: color 0.3s ease;
+  }
+
+  .arrowOn {
+    color: rgba(245, 192, 154, 0.45);
+  }
+}

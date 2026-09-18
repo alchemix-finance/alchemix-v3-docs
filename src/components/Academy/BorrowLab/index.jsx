@@ -66,8 +66,8 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="How much can you borrow?">
       <Sub>
-        Your 10,000 USDC is in the vault, earning. On the Vaults page, the Borrow tab asks
-        for an amount and offers a Max button.
+        Your 10,000 USDC is in the vault, earning. On the Borrow page, the vault's Borrow tab
+        asks for an amount and offers a Max button.
       </Sub>
 
       <PositionCard

@@ -437,6 +437,39 @@
   margin-top: 1.5rem;
 }
 
+/* Two actions after a pass: forward, and back to the map. The row carries the
+   gap so neither button needs the rule above. */
+.passActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
+.passActions > .primaryLink {
+  margin-top: 0;
+}
+
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a8adb6;
+  text-decoration: none;
+  padding: 0.875rem 0.25rem;
+  min-height: 44px;
+  box-sizing: border-box;
+  transition: color 0.15s ease;
+}
+
+.secondaryLink:hover {
+  color: #f5c09a;
+  text-decoration: none;
+}
+
 .revealBody {
   font-size: 0.9375rem;
   line-height: 1.7;

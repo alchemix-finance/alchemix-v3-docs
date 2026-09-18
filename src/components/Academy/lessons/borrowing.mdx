@@ -6,6 +6,10 @@ stops you borrowing more. Your position stays open, keeps earning,
 and sitting at the cap costs you nothing. The Borrow tab’s Max button fills in the
 number for you.
 
+The app also prints a **health factor** next to your LTV. It is the same distance
+to the cap, written as a multiple: 3.00 at 30% LTV, 1.00 once you reach the cap,
+and unbounded while you have no debt at all.
+
 ### alUSD lands in your wallet
 
 Borrowing mints alUSD against USDC, or alETH against ETH, and sends it straight to
@@ -16,3 +20,19 @@ trades a little below 1.00, and the cost lesson puts a number on that gap.
 
 Every unit of it stays in the vault and keeps earning while the loan is open. It is
 now also the **collateral** securing your debt.
+
+### What people borrow for
+
+Borrowers put the alAsset to work in a few standard ways:
+
+- **Spending it.** Large purchases, or a periodic draw against a position that
+  keeps earning, without selling the position.
+- **Yield looping.** Swap the borrowed alAsset for the underlying, deposit that
+  too, and take amplified exposure to the vault's yield. The vault page has a tab
+  for it.
+- **Liquidity provision.** Pair the alAsset against its underlying, where the
+  impermanent loss is bounded by how far the peg moves.
+- **Short-term opportunities.** Move capital now and keep the position intact.
+
+Each of these starts by selling the alAsset, and that sale is where an Alchemix
+loan actually costs you. The intermediate track prices it.

@@ -6,11 +6,23 @@ deposit it, wait out a governance-set term, and receive the underlying at exactl
 alAsset was trading at when you bought it. Payment arrives as MYT, which the app
 unwraps into USDC or ETH for you.
 
-### How long you wait
+On the Fixed Yield page this is a single action. **Swap & Deposit** takes the asset
+you already hold, buys the alAsset at the market price, and deposits it into the
+queue in one transaction.
 
-The Alchemix DAO sets the term, and it differs by asset and by chain, so the app
-shows you the current one before you deposit. Wait it out and you receive the full
-1:1. Leave early and you pay a fee, quoted to you up front.
+### Reading the card
+
+Each position on that page states the same six things:
+
+- **Projected fixed APR** – the discount you are buying at, annualized over the term.
+- **Maturity date** – the day the 1:1 exchange is available to you.
+- **Term** – how long the wait is, which differs by asset and by chain.
+- **Early exit fee** – what leaving the queue before maturity costs.
+- **Deposit cap** – how much more the queue will take.
+- **alAsset price** – what the market is charging for the alAsset right now.
+
+The DAO sets the term and the fees, and the prices move, so the card is the thing
+to read rather than any number written down here.
 
 ### Why the price stays near 1.00
 
@@ -23,7 +35,8 @@ out the term pays more, so buyers step in and push the price back up.
 The queue is what funds redemptions. Every alAsset waiting in the Transmuter
 earmarks an equal value of borrower collateral, and at maturity that collateral
 settles the claim and repays the borrower's debt. The saver's fixed rate and the
-borrower's repayment are the same event, seen from two sides.
+borrower's repayment are the same event, seen from two sides. That is where the
+Earmarked figure on your own position came from in lesson 4.
 
 If you are the borrower and you want your collateral back, repay and withdraw.
 Inside Alchemix one alUSD always cancels one USDC of debt, so the alUSD you

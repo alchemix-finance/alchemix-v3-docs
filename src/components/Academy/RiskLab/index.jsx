@@ -49,20 +49,34 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
+/**
+ * Stage 1: predict.
+ *
+ * This used to open by asking which of two positions a price crash liquidates,
+ * which is the question the beginner track's fifth lesson opens with and
+ * answers. Anyone arriving here in order had answered it twice by the time they
+ * reached the explore stage.
+ *
+ * So the price crash is now the contrast rather than the question: the lesson
+ * asks the harder one first, which of the two survives a loss of backing, and
+ * runs the crash afterwards to show what the other kind of shock does. A
+ * learner who skipped the beginner track still meets both, in one sitting.
+ */
 function Predict({ onDone }) {
-  const [guess, setGuess] = useState("both");
+  const [guess, setGuess] = useState("neither");
   const [stage2, setStage2] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="The price of the deposited asset falls overnight."
+      headline="A strategy inside the vault loses money."
     >
       <Sub>
         Ana borrowed to {pct(SAFE_LTV)} LTV. Ben went to {pct(RISKY_LTV)}, near the{" "}
-        {pct(MAX_LTV)} borrowing cap. By morning the asset they both deposited is worth{" "}
-        {pct(PRICE_CRASH)} less.
+        {pct(MAX_LTV)} borrowing cap. Neither has touched their position since. The MYT
+        holding both deposits reports a {pct(MYT_LOSS)} loss of backing, and the price of
+        the underlying asset has not moved at all.
       </Sub>
 
       <div className={own.pair}>
@@ -91,61 +105,63 @@ function Predict({ onDone }) {
               ))}
             </div>
           </Panel>
-          <Actions>
-            <Primary onClick={() => setRevealed(true)}>Commit and run the crash</Primary>
+          <Actions aside="Liquidation begins at 95% LTV.">
+            <Primary onClick={() => setRevealed(true)}>Commit and apply the loss</Primary>
           </Actions>
         </>
       ) : (
         <>
           <div className={own.outcome}>
-            <OutcomeRow name="Ana" text="The LTV held steady. Debt and collateral fell by the same share." ok />
-            <OutcomeRow name="Ben" text="The LTV held steady. Debt and collateral fell by the same share." ok />
+            <OutcomeRow
+              name="Ana"
+              text={`The LTV moves to ${pct(ltvAfterLoss(SAFE_LTV, MYT_LOSS))}, which is still well short of the threshold.`}
+              ok
+            />
+            <OutcomeRow
+              name="Ben"
+              text={`The LTV moves to ${pct(ltvAfterLoss(RISKY_LTV, MYT_LOSS))}, past the ${pct(LIQ_LTV)} threshold, so enough collateral is sold to bring it back under the cap.`}
+              ok={survivesLoss(RISKY_LTV, MYT_LOSS)}
+            />
           </div>
 
-          <Reveal title="Neither one is liquidated. Price cannot force you out of an Alchemix position.">
+          <Reveal title={`Ben only. A ${pct(MYT_LOSS)} loss of backing raises every LTV at once.`}>
             <Body>
-              alETH is backed by ETH and alUSD by USDC. When the collateral falls, the
-              debt denominated in it falls by exactly as much. The ratio between them holds,
-              and a ratio that holds can never cross a threshold.
+              When a strategy reports a loss, the backing behind every position falls and
+              the same debt stands against less collateral. Your LTV rises while the price
+              of ETH or USDC sits exactly where it was.
             </Body>
             <Body>
-              Reaching the {pct(MAX_LTV)} cap stops further borrowing. The position stays
-              open and the collateral underneath keeps earning.
+              Ana absorbed the loss with room to spare. Ben had almost none. The higher you
+              borrow, the smaller the loss it takes to reach you, and that margin is what
+              your starting LTV buys.
             </Body>
           </Reveal>
 
           {!stage2 ? (
-            <Actions aside="Now the loss happens inside the vault instead of in the market.">
-              <Primary onClick={() => setStage2(true)}>Apply a loss of MYT backing</Primary>
+            <Actions aside="Now the same two positions, with the shock coming from the market.">
+              <Primary onClick={() => setStage2(true)}>Crash the price instead</Primary>
             </Actions>
           ) : (
             <>
               <div className={own.outcome}>
-                <OutcomeRow
-                  name="Ana"
-                  text={`The LTV moves to ${pct(ltvAfterLoss(SAFE_LTV, MYT_LOSS))}, which is still well short of the threshold.`}
-                  ok
-                />
-                <OutcomeRow
-                  name="Ben"
-                  text={`The LTV moves to ${pct(ltvAfterLoss(RISKY_LTV, MYT_LOSS))}, past the ${pct(LIQ_LTV)} threshold, so enough collateral is sold to bring it back under the cap.`}
-                  ok={survivesLoss(RISKY_LTV, MYT_LOSS)}
-                />
+                <OutcomeRow name="Ana" text={`The asset falls ${pct(PRICE_CRASH)} and the LTV does not move.`} ok />
+                <OutcomeRow name="Ben" text={`The asset falls ${pct(PRICE_CRASH)} and the LTV does not move.`} ok />
               </div>
 
               <Reveal
-                title={`A ${pct(MYT_LOSS)} loss of MYT backing raises the LTV of every position.`}
+                title="A price crash reaches neither of them."
                 onNext={onDone}
                 nextLabel="Find the highest LTV that survives"
               >
                 <Body>
-                  If a strategy inside the vault reports a loss, the backing behind every
-                  position falls and the same debt stands against less collateral. Your LTV
-                  rises while the price of ETH or USDC stays exactly where it is.
+                  alETH is backed by ETH and alUSD by USDC. When the collateral falls, the
+                  debt denominated in it falls by exactly as much. The ratio between them
+                  holds, and a ratio that holds can never cross a threshold.
                 </Body>
                 <Body>
-                  Ana absorbed the loss with room to spare. Ben had almost none. The higher
-                  you borrow, the thinner that margin gets.
+                  The market moves both sides of the position together, which is why it
+                  cannot touch you. A loss inside the vault moves the collateral side alone,
+                  and that is the shock your LTV has to be sized against.
                 </Body>
               </Reveal>
             </>

@@ -1,9 +1,46 @@
 /* ── Statement ───────────────────────────────────────────── */
+
+/* Two columns on a wide screen: the pitch, and the diagram of the position the
+   beginner track builds. The page used to cap the whole hero at 56rem and leave
+   everything right of it empty. */
 .intro {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
   padding: clamp(2.75rem, 6vw, 4.75rem) clamp(1.25rem, 4.4vw, 4rem) clamp(2rem, 4vw, 3.4rem);
-  max-width: 56rem;
+  max-width: 84rem;
+}
+
+.introText {
+  min-width: 0;
+  max-width: 44rem;
+}
+
+/* A container, so the diagram inside can lay itself out against the column it
+   actually got rather than against the viewport. Beside the hero text it is
+   about half the page and wants to be a vertical list; stacked under the text
+   it has the full width and wants to be a row. The viewport cannot tell those
+   apart. Browsers without container queries fall through to the row, which is
+   the layout that was there before. */
+.introAside {
+  min-width: 0;
+  container-type: inline-size;
+}
+
+@media (min-width: 1080px) {
+  .intro {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+
+  /* The diagram sits with the body copy rather than level with the headline,
+     which would leave it floating beside a two-line hero. */
+  .introAside {
+    padding-top: 3.25rem;
+  }
 }
 
 .eyebrow {
@@ -259,7 +296,7 @@
   border: 1px solid #f5c09a;
 }
 
-.node_locked {
+.node_ahead {
   background: rgba(245, 192, 154, 0.03);
   border: 1px solid rgba(245, 192, 154, 0.16);
 }
@@ -279,7 +316,7 @@
 
 .line_done { background: #5ba88a; }
 .line_current { background: rgba(245, 192, 154, 0.2); }
-.line_locked { background: rgba(245, 192, 154, 0.1); }
+.line_ahead { background: rgba(245, 192, 154, 0.1); }
 
 .body {
   padding: 0 0 1.625rem 1.375rem;
@@ -290,8 +327,58 @@
   padding-bottom: 0;
 }
 
-.muted {
+/* A lesson further down the track. Readable, so it is a link, but it stays
+   dimmer than the live card and its affordance says "read", not "start": what
+   opens is a preview with every control switched off. */
+.aheadLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
   opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+
+.aheadLink:hover,
+.aheadLink:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.peek {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  margin-top: 0.5625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7078;
+  transition: color 0.15s ease;
+}
+
+.peek svg {
+  width: 13px;
+  height: 13px;
+}
+
+.aheadLink:hover .peek,
+.aheadLink:focus-visible .peek {
+  color: #8ea9d8;
+}
+
+/* ── The carried position ────────────────────────────────── */
+.carried {
+  margin-bottom: 2.25rem;
+  max-width: 34rem;
+}
+
+.carriedLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a8f99;
+  margin-bottom: 0.875rem;
 }
 
 /* A finished row is a quiet link back into its lesson. It must never compete

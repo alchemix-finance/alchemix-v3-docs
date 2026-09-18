@@ -3,7 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { borrowNeededFor, discountCost } from "../lib/protocol";
+import { EXAMPLE_AL_PRICE, borrowNeededFor, discountCost } from "../lib/protocol";
 import {
   Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
   Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
@@ -23,7 +23,7 @@ import {
  */
 
 const WANT = 5_000;
-const PRICE = 0.97;
+const PRICE = EXAMPLE_AL_PRICE;
 
 export default function CostLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -111,7 +111,7 @@ function Predict({ onDone }) {
 
 function Explore({ onDone }) {
   const [want, setWant] = useState(5_000);
-  const [price, setPrice] = useState(0.97);
+  const [price, setPrice] = useState(EXAMPLE_AL_PRICE);
   const [moved, setMoved] = useState({ want: false, price: false });
   const mark = (k) => setMoved((m) => (m[k] ? m : { ...m, [k]: true }));
 

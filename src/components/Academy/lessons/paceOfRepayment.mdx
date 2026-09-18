@@ -10,23 +10,9 @@ which puts both positions at the same point on the curve.
 So the size of your loan has no effect on how long it takes to clear. The
 redemption rate determines that.
 
-### What borrowing more does cost
-
-Borrowing more costs you in two places, and time is neither of them. You pay when
-your debt is redeemed, and again if you sell the alAssets below face value.
-
-- **Redemption fee** – Charged on the amount redeemed, so it scales with how much
-  you borrowed.
-- **alAsset discount** – You pay this one only if you sell your borrowed alUSD or
-  alETH below face value. Borrow 5,000 alUSD, sell it at 0.99, and that liquidity
-  cost you roughly 50 up front. The dApp shows the current price before you
-  confirm.
-
-The Choosing an LTV lesson works out the exposure a high LTV creates while the
-position stays open.
-
-Redemptions set that pace for a position you leave alone. Repay part or all of the
-debt by hand at any time and you free collateral sooner.
+Your vault prints the current one as **Redemption Rate**, and it moves with the
+Transmuter queue. Read it before you plan around any pace, including the example
+pace these lessons project at.
 
 ### What earmarking pays you
 
@@ -38,3 +24,14 @@ settlement, the more yield that collateral collects for you.
 
 Earmarked debt gets repaid with MYT. The repay tab offers the right asset for each
 part of a loan.
+
+The vault's Earmarking and Redemptions panels show both sides of this: what has
+been earmarked per day over the last month, and what is scheduled to mature next.
+
+### Repaying by hand
+
+Redemptions set the pace for a position you leave alone. Repay part or all of the
+debt whenever you like and you free collateral sooner.
+
+The Choosing an LTV lesson works out the exposure a high LTV creates while the
+position stays open.

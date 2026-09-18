@@ -3,7 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { annualisedFromDiscount, termReturn } from "../lib/protocol";
+import { EXAMPLE_AL_PRICE, annualisedFromDiscount, termReturn } from "../lib/protocol";
 import {
   Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
   Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
@@ -22,7 +22,7 @@ import {
  * the gap.
  */
 
-const PRICE = 0.97;
+const PRICE = EXAMPLE_AL_PRICE;
 const WEEKS = 20;
 const STAKE = 10_000;
 
@@ -59,7 +59,7 @@ function Predict({ onDone }) {
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline="alUSD is trading at 0.97 and redeems at 1.00."
+      headline={`alUSD is trading at ${PRICE.toFixed(2)} and redeems at 1.00.`}
     >
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
@@ -131,7 +131,7 @@ function TradeStep({ label, value, tone }) {
 /* ── Stage 2: explore ────────────────────────────────────── */
 
 function Explore({ onDone }) {
-  const [price, setPrice] = useState(0.97);
+  const [price, setPrice] = useState(EXAMPLE_AL_PRICE);
   const [weeks, setWeeks] = useState(20);
   const [role, setRole] = useState("saver");
   const [seenBoth, setSeenBoth] = useState({ saver: true, borrower: false });

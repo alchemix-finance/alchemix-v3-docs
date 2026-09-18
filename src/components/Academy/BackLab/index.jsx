@@ -6,7 +6,7 @@ import { apiBase } from "../lib/api";
 import { MAX_LTV, ltvOf, withdrawable } from "../lib/protocol";
 import {
   Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
-  Panel, Primary, Question, Reveal, Stage, Sub, money,
+  Panel, PositionCard, Primary, Question, Reveal, Stage, Sub, money,
 } from "../kit";
 
 /**
@@ -16,10 +16,21 @@ import {
  * free to withdraw. It is 4,444, because the debt left behind still has to sit
  * under the 90% cap. The learner reads the position card, commits to a figure,
  * then works both routes out: withdraw what is free, or repay to free more.
+ *
+ * The explore stage carries the full position card, health factor and earmarked
+ * band included. This is the lesson about reading the screen, and it is the one
+ * place every stat the app prints should appear at once.
  */
 
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
+
+/**
+ * An illustrative earmark: a fifth of the balance reserved for the next
+ * redemption. A real one is sized to the position's share of total system debt,
+ * so it depends on the whole market rather than on this position.
+ */
+const EARMARK_SHARE = 0.2;
 
 /** What the guess slider moves in, and therefore what counts as landing on it. */
 const STEP = 100;
@@ -139,6 +150,21 @@ function Try({ onDone }) {
         unit you repay frees about 1.11 back. Clear the loan and all {money(DEPOSIT)}{" "}
         unlocks.
       </Sub>
+
+      {/* The whole card, with every stat the app prints, because this is the
+          lesson about reading one. The health factor is the same distance to
+          the cap the bar draws, written as a multiple, and it is the one stat
+          the academy never showed anywhere. */}
+      <PositionCard
+        deposited={DEPOSIT}
+        borrowed={debt}
+        earmarked={debt * EARMARK_SHARE}
+        asset="USDC"
+        earning
+        showHealth
+        note={`${money(free)} USDC is free to withdraw right now.`}
+        compact
+      />
 
       <div className={own.meterWrap}>
         <div className={own.meterHead}>

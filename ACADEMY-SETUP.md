@@ -33,8 +33,8 @@ the track map at `/academy`, beginner first.
 
 | Track | Lessons | Stage labels | Bonus on finishing |
 | --- | --- | --- | --- |
-| Beginner | 6 | Learn / Try / Check | 200 points and the graduate Discord role |
-| Intermediate | 7 | Predict / Explore / Checkpoint | 400 points and the intermediate Discord role |
+| Beginner | 6 | Learn / Try / Check | 400 points and the graduate Discord role |
+| Intermediate | 7 | Predict / Explore / Checkpoint | 800 points and the intermediate Discord role |
 
 Every lesson banks 100 points. The numbers mirror the engine's seed
 (`scripts/seed.ts` there, which is authoritative). The intermediate bonus is
@@ -45,8 +45,56 @@ Lesson ids match the engine's registry (`src/lib/academy/lessons.ts` there) and
 must not be renamed. The `getting-money-back` id is the intermediate track's
 first lesson, titled "Reading your position". Its id and grader are unchanged.
 
+### Reading ahead
+
+Every lesson is reachable from the map, including ones the learner has not
+got to yet. Opening one of those renders a **preview**: a banner saying the page
+does not respond and naming the lesson they should be on, the lab below it
+dimmed and made `inert`, the stage stepper disabled, and the same pointer
+repeated at the foot of the page. The banner's link stays inside the track the
+previewed lesson belongs to, so previewing an intermediate lesson does not send
+someone back to a beginner track they skipped on purpose.
+
+Nothing about grading changed. A preview never reaches a checkpoint, so it
+cannot bank points or store a completion, and `trackState` still marks exactly
+one lesson per track as current.
+
+The `inert` attribute has to be passed as `inert={true}`. React treats it as a
+boolean prop and drops the attribute for `inert=""`, which leaves the lab fully
+clickable.
+
+### Figures in the lessons
+
+`src/components/Academy/lib/protocol.js` holds the illustrative constants every
+lesson projects from: `EXAMPLE_REDEMPTION`, `EXAMPLE_YIELD` and
+`EXAMPLE_AL_PRICE`. They were per-lab before and had drifted apart from each
+other and from the protocol. They are display only; every graded checkpoint
+takes its figures from the engine.
+
+They are also the thing most likely to go stale. Each carries a comment with the
+live readings it was set against and the date they were checked. When they are
+next revisited, read the redemption rate off a couple of vaults in the app and
+the alAsset price off the Fixed Yield page, and update the comments with them.
+
+The track map also renders a live strip (`src/components/Academy/LiveFigures`)
+reading TVL, the redemption fee, the early exit fee and the MYT performance fee
+through the docs' existing `useAlchemixStats` and `useAlchemixFees` hooks.
+
+### Screenshots
+
+A lesson can name a screenshot in `lib/track.js` (`shot`, `shotAlt`,
+`shotNote`), shown with the wrap-up after the lesson is passed. Only files
+verified against the live app are used: several older captures in `static/img`
+still show the pre-rename navigation (`Vaults`, `Mixed Yield`, `Fixed Yield` as
+top-level items) and must not be added without re-checking. `deposit-and-borrow-*.png`
+is one of those.
+
+The app's navigation now reads Borrow, and Earn → Variable Rate / Fixed Rate.
+The `app` field on each lesson is written that way; the page titles Mixed Yield
+and Fixed Yield still exist and the prose names both where it helps.
+
 The shell's header counts completions across both tracks. Each track on the map
-has its own progress line and its own done / current / locked rail.
+has its own progress line and its own done / current / ahead rail.
 
 ## The proxy
 
@@ -142,14 +190,18 @@ What a tester sees:
 
 1. The track map at `/academy` shows a beginner track of six lessons and an
    intermediate track of seven, each with one live lesson and a progress line.
-   The header counts lessons complete out of 13.
+   The header counts lessons complete out of 13. The hero carries a diagram of
+   the position the beginner track builds, which fills in as lessons are
+   finished, and a live figures strip sits under it.
 2. Each lesson has three stages. The last stage asks a question the engine set
-   and grades the answer. A pass stores a token in the browser and marks the
-   lesson done on the map.
-3. Finishing every lesson in a track shows the graduation panel for that track,
+   and grades the answer. A pass stores a token in the browser, marks the
+   lesson done on the map, and offers the next lesson directly.
+3. Any lesson further down a track can be opened and read. It renders as an
+   inert preview that names the lesson to go to instead.
+4. Finishing every lesson in a track shows the graduation panel for that track,
    which names the role it earns, the points banked, and the claim button. With
    the claim endpoint deployed, the button reports whether the engine verified
    the set and lists any lesson it could not verify. Without it, the panel says
    the claim opens with the Discord link.
-4. Progress lives in the tester's browser. A different browser or a cleared
+5. Progress lives in the tester's browser. A different browser or a cleared
    site starts from zero.
