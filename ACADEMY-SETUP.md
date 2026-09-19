@@ -91,6 +91,24 @@ still show the pre-rename navigation (`Vaults`, `Mixed Yield`, `Fixed Yield` as
 top-level items) and must not be added without re-checking. `deposit-and-borrow-*.png`
 is one of those.
 
+The `academy-*.png` files are 2x captures of the screens that render without a
+wallet: the Borrow, Fixed Yield and Mixed Yield pages, and a vault's Info,
+Visualizer and Earmarking panels. `pnpm capture:app` takes them headless, in
+dark mode, through `scripts/capture-app-screens.mjs` (it needs Chrome
+installed). Run it again when the app changes. The crop rectangles are
+fractions of each file, so they survive a recapture at the same viewport unless
+the layout itself moves; open the lessons afterwards and check. The position
+screens (the stats strip, Repay and Withdraw with a balance, the open Fixed
+Yield positions) come from a real wallet and are 1x. If they are recaptured,
+do it at device scale 2 (a HiDPI display, or the DevTools device toolbar with
+DPR 2) and keep the PNG the browser writes. A screenshot taken through a
+browser-automation tool is JPEG-compressed and shows it.
+
+Every crop in `kit/index.jsx` keeps a margin around the element it shows,
+about 28 CSS px at 2x and 16 px at 1x, so the element's own border and rounded
+corners sit inside the frame. A crop drawn border-to-border reads as cut off
+once the frame's radius clips its corners.
+
 The app's navigation now reads Borrow, and Earn → Variable Rate / Fixed Rate.
 The `app` field on each lesson is written that way; the page titles Mixed Yield
 and Fixed Yield still exist and the prose names both where it helps.

@@ -11,6 +11,7 @@
     "banks:sync": "node scripts/sync-academy-banks.mjs",
     "banks:check": "node scripts/sync-academy-banks.mjs --check",
     "copy:audit": "node scripts/academy-feedback-audit.mjs",
+    "capture:app": "node scripts/capture-app-screens.mjs",
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
@@ -32,7 +33,8 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.9.2",
-    "@docusaurus/types": "^3.8.0"
+    "@docusaurus/types": "^3.8.0",
+    "puppeteer-core": "^24.43.1"
   },
   "browserslist": {
     "production": [

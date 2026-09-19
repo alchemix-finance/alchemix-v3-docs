@@ -397,6 +397,11 @@ export function ScreenShot({ src, alt, max, label = "The whole screen, in the ap
  *
  * Every file here was checked against the live app: the older captures in
  * static/img predate the navigation rename and none of them is used. The
+ * `academy-*.png` files are 2x captures of the screens that need no wallet,
+ * taken headless in dark mode by `scripts/capture-app-screens.mjs`; the rest
+ * are 1x captures of a real position. Every crop keeps a margin around the
+ * element it shows, so a card's own border and corners sit inside the window
+ * rather than on its edge. The
  * screens are the ETH market, so a caption describes the screen rather than
  * claiming it is the learner's own position.
  */
@@ -404,25 +409,27 @@ const STATS = [1610, 591];
 
 /** One stat tile on a vault, by column and row of the app's four-by-two grid. */
 const tile = (col, row) => ({
-  x: [48, 432, 815, 1197][col] / STATS[0],
-  y: [140, 268][row] / STATS[1],
-  w: 366 / STATS[0],
-  h: 118 / STATS[1],
+  // 16px of the surrounding panel on every side, so the tile's own border
+  // and rounded corners are inside the window rather than on its edge.
+  x: ([48, 432, 815, 1197][col] - 16) / STATS[0],
+  y: ([140, 268][row] - 16) / STATS[1],
+  w: (366 + 32) / STATS[0],
+  h: (118 + 32) / STATS[1],
 });
 
 export const SHOTS = {
   depositBorrow: {
     src: "/img/quick-start-02.png",
     size: [1872, 966],
-    crop: { x: 0.2137, y: 0.559, w: 0.2778, h: 0.4193 },
+    crop: { x: 0.203, y: 0.5135, w: 0.2991, h: 0.4803 },
     max: 22,
     alt: "The Deposit/Borrow tab: a field for the asset you are depositing above a field for the alAsset you are borrowing, then a Deposit button",
   },
   vaultCard: {
-    src: "/img/borrowing-in-alchemix-01.png",
-    size: [2016, 1272],
-    crop: { x: 0.4658, y: 0.5118, w: 0.4112, h: 0.2028 },
-    alt: "The figures on a vault card on the Borrow page: total deposits, total debt, earmarked, and LTV 90.00%",
+    src: "/img/academy-borrow.png",
+    size: [3200, 2500],
+    crop: { x: 0.0944, y: 0.382, w: 0.8113, h: 0.2036 },
+    alt: "A vault card on the Borrow page: its name, APR and deposit cap, then total deposits, total debt, earmarked, and LTV 90.00%",
   },
   redemptionRate: {
     src: "/img/borrowing-in-alchemix-02.png",
@@ -432,9 +439,9 @@ export const SHOTS = {
     alt: "The Redemption Rate stat on a vault, reading 58.61%",
   },
   depositCap: {
-    src: "/img/borrowing-in-alchemix-01.png",
-    size: [2016, 1272],
-    crop: { x: 0.1855, y: 0.5401, w: 0.2406, h: 0.1384 },
+    src: "/img/academy-borrow.png",
+    size: [3200, 2500],
+    crop: { x: 0.1766, y: 0.416, w: 0.2559, h: 0.1344 },
     max: 22,
     alt: "The left of a vault card on the Borrow page: its APR over a bar showing how full its deposit cap is",
   },
@@ -455,52 +462,52 @@ export const SHOTS = {
   positionBar: {
     src: "/img/borrowing-in-alchemix-02.png",
     size: STATS,
-    crop: { x: 0.0248, y: 0.7614, w: 0.9565, h: 0.1692 },
+    crop: { x: 0.0161, y: 0.7411, w: 0.9677, h: 0.1997 },
     alt: "A vault's bar, split into deposit, debt and earmarked, with MAX LTV and LIQ LTV marked near the right end",
   },
   repayTab: {
     src: "/img/repay-loan-01.png",
     size: [2038, 1270],
-    crop: { x: 0.185, y: 0.5378, w: 0.3057, h: 0.1929 },
+    crop: { x: 0.1727, y: 0.5276, w: 0.3248, h: 0.222 },
     max: 24,
     alt: "The Repay tab on a vault, with an amount field and a Repay button",
   },
   withdrawTab: {
     src: "/img/withdraw-02.png",
     size: [2060, 1239],
-    crop: { x: 0.1976, y: 0.5504, w: 0.2825, h: 0.1897 },
+    crop: { x: 0.1845, y: 0.5246, w: 0.3155, h: 0.226 },
     max: 24,
     alt: "The Withdraw tab on a vault, showing the amount available and a MAX button",
   },
   fixedYieldCard: {
-    src: "/img/redeem-alassets-01.png",
-    size: [2169, 1174],
-    crop: { x: 0.1369, y: 0.4233, w: 0.7197, h: 0.2624 },
+    src: "/img/academy-fixed-yield.png",
+    size: [3200, 2500],
+    crop: { x: 0.0944, y: 0.3712, w: 0.8113, h: 0.2252 },
     alt: "A card on the Fixed Yield page: projected fixed APR, deposit cap, term, early exit fee, maturity date and the alUSD price it quotes against",
   },
   alAssetPrice: {
-    src: "/img/redeem-alassets-01.png",
-    size: [2169, 1174],
-    crop: { x: 0.39, y: 0.7387, w: 0.1675, h: 0.095 },
+    src: "/img/academy-fixed-yield.png",
+    size: [3200, 2500],
+    crop: { x: 0.3719, y: 0.394, w: 0.1938, h: 0.18 },
     max: 20,
-    alt: "A Fixed Yield card quoting the alUSD price at 0.952 USDC, under its maturity date",
+    alt: "The detail panel of a Fixed Yield card: the maturity date, the alUSD price it is quoting, and the fields that fill in once you enter an amount",
   },
   fixedPositions: {
     src: "/img/redeem-alassets-02.png",
     size: [1557, 506],
-    crop: { x: 0.0578, y: 0.1344, w: 0.8863, h: 0.7352 },
+    crop: { x: 0.0424, y: 0.0909, w: 0.9159, h: 0.8221 },
     alt: "Open Fixed Yield positions, each with the APR it locked in, its end date, the alETH deposited, and the profit standing on it",
   },
   visualizerOut: {
-    src: "/img/visualizer-01.png",
-    size: [814, 765],
-    crop: { x: 0.037, y: 0.863, w: 0.934, h: 0.113 },
+    src: "/img/academy-visualizer.png",
+    size: [1336, 1470],
+    crop: { x: 0.0449, y: 0.8163, w: 0.9132, h: 0.0884 },
     alt: "What the Visualizer reports under its chart: loan cost, aggregate yield, and projected profit",
   },
   strategies: {
-    src: "/img/repay-loan-01.png",
-    size: [2038, 1270],
-    crop: { x: 0.5157, y: 0.5984, w: 0.2925, h: 0.1244 },
+    src: "/img/academy-vault-info.png",
+    size: [1336, 1160],
+    crop: { x: 0.0299, y: 0.0431, w: 0.9431, h: 0.5086 },
     alt: "The Info tab on a vault, listing each strategy with its risk level, APR and allocation",
   },
 };

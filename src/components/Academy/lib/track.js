@@ -47,7 +47,7 @@ export const BEGINNER = [
     minutes: 5,
     ready: true,
     track: "beginner",
-    shot: "/img/quick-start-01.png",
+    shot: "/img/academy-borrow.png",
     shotAlt: "The Borrow page, listing the vaults available to borrow against",
     shotNote:
       "The front door. Each card is a vault you can deposit into, with what the whole market has put in, what it has borrowed against that, how much is earmarked for redemption, and the 90.00% of a deposit anyone may borrow.",
@@ -77,7 +77,7 @@ export const BEGINNER = [
     minutes: 6,
     ready: true,
     track: "beginner",
-    shot: "/img/borrowing-in-alchemix-01.png",
+    shot: "/img/academy-borrow.png",
     shotAlt: "The Borrow page listing the available vaults",
     shotNote:
       "The Borrow page. Each card is one vault, showing its APR, how full its deposit cap is, and the strategies behind it. Every card reads 90.00% LTV, because the cap is the same on all of them.",
@@ -122,7 +122,7 @@ export const BEGINNER = [
     minutes: 6,
     ready: true,
     track: "beginner",
-    shot: "/img/redeem-alassets-01.png",
+    shot: "/img/academy-fixed-yield.png",
     shotAlt: "The Fixed Yield page listing Transmuter positions",
     shotNote:
       "The Fixed Yield page. Each card states a projected fixed APR, the maturity date, the term, the early exit fee, and the alAsset price it is quoting against.",
@@ -155,8 +155,8 @@ export const INTERMEDIATE = [
     minutes: 8,
     ready: true,
     track: "intermediate",
-    shot: "/img/earmarking-01.png",
-    shotMax: 44,
+    shot: "/img/academy-earmarking.png",
+    shotMax: 42,
     shotAlt: "The Earmarking panel on a vault, charting daily earmarked debt over 30 days against the rate",
     shotNote:
       "The Earmarking tab on a vault. Each bar is a day of alUSD Transmuter positions maturing, and the line over them is the rate that produced. The average across the month is the pace this lesson has you find.",
@@ -171,7 +171,7 @@ export const INTERMEDIATE = [
     minutes: 8,
     ready: true,
     track: "intermediate",
-    shot: "/img/use-passive-myt-02.png",
+    shot: "/img/academy-mixed-yield.png",
     shotAlt: "The Mixed Yield page listing MYT vaults",
     shotNote:
       "The Mixed Yield page, the same vault without a loan against it. A vault's Info tab lists every strategy with the risk level this lesson caps.",
@@ -212,7 +212,7 @@ export const INTERMEDIATE = [
     minutes: 9,
     ready: true,
     track: "intermediate",
-    shot: "/img/redeem-alassets-01.png",
+    shot: "/img/academy-fixed-yield.png",
     shotAlt: "The Fixed Yield page listing Transmuter positions",
     shotNote:
       "Each card quotes the alAsset price it is buying at. The projected fixed APR beside it is that discount annualized over the term.",
@@ -227,8 +227,8 @@ export const INTERMEDIATE = [
     minutes: 10,
     ready: true,
     track: "intermediate",
-    shot: "/img/visualizer-01.png",
-    shotMax: 50.5,
+    shot: "/img/academy-visualizer.png",
+    shotMax: 42,
     shotAlt: "The Visualizer tab on a vault, with its four inputs and its projection",
     shotNote:
       "The Visualizer, on any vault's info tabs. Three of its four inputs are what this track has been teaching: Yield APY from the Mix-Yield Token lesson, Redemption from the pace lesson, and the alAsset price from the cost and peg lessons. External APY is the one no lesson can give you, because it depends on what you do with the money. It reports the loan cost, the yield, and the profit left over.",
