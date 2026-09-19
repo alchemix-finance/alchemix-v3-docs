@@ -3,8 +3,8 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { MAX_LTV } from "../lib/protocol";
 import {
-  Actions, Body, Checkpoint, Control, Controls, GuessSlider, Note, Notes,
-  Panel, PositionCard, Primary, Question, Reveal, Stage, Sub, money,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Note, Notes, Panel,
+  PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
@@ -75,9 +75,15 @@ function Learn({ onDone }) {
         borrowed={revealed ? CAP : 0}
         asset="USDC"
         earning
+        marks="cap"
         highlight="borrowed"
         note={revealed ? "In your wallet: 9,000 alUSD" : "Borrow tab open"}
       />
+
+      <AppShot shot={SHOTS.depositBorrow}>
+        The vault's Deposit/Borrow tab. The lower field is the alAsset you are borrowing,
+        and MAX beside it fills in the most this deposit allows.
+      </AppShot>
 
       <Panel>
         <Question>You press Max. How much alUSD does the app fill in?</Question>
@@ -106,6 +112,7 @@ function Learn({ onDone }) {
           nextLabel="Push it to the cap"
         >
           <Body>
+            {said(guess, CAP, money)}
             Your <strong>loan to value</strong>, or LTV, is what you owe divided by what you
             deposited. Alchemix caps it at 90%.
           </Body>
@@ -171,6 +178,7 @@ function Try({ onDone }) {
         borrowed={borrow}
         asset="USDC"
         earning
+        marks="cap"
         highlight="borrowed"
         note={note}
       />
@@ -186,6 +194,11 @@ function Try({ onDone }) {
           verdict={atCap ? "Borrowing stops at 9,000" : null}
         />
       </Controls>
+
+      <AppShot shot={SHOTS.ltv}>
+        LTV on a real position, written against the cap: 30.00 out of 90.00%. The second
+        figure is the same on every vault in the protocol.
+      </AppShot>
 
       <Notes>
         <Note label="What arrives">

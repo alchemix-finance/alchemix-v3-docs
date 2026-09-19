@@ -2,11 +2,23 @@
 
 /* No max-width of its own. The shell centres one column for the whole academy,
    and a second cap here would measure this section against a different ruler
-   from the ones under it. The paragraphs carry their own reading measure. */
+   from the ones under it. The paragraphs carry their own reading measure.
+ *
+ * Two columns: the pitch on the left, what the course pays on the right. The
+ * rewards panel used to sit at the foot of the map, under both tracks, where a
+ * reader deciding whether to start would never reach it. */
 .intro {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+  align-items: start;
+  gap: 2.5rem clamp(2rem, 4vw, 4rem);
   padding: clamp(2.75rem, 6vw, 4.75rem) clamp(1.25rem, 4.4vw, 4rem) clamp(2rem, 4vw, 3.4rem);
+}
+
+.introText {
+  min-width: 0;
 }
 
 /* The diagram of the position the beginner track builds, on the same gutter as
@@ -54,44 +66,6 @@
   color: #a8adb6;
   max-width: 39rem;
   text-wrap: pretty;
-}
-
-/* ── Where it runs ───────────────────────────────────────── */
-.markets {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.625rem;
-  margin-top: 1.75rem;
-  max-width: 39rem;
-}
-
-.market {
-  border: 1px solid rgba(245, 192, 154, 0.14);
-  border-radius: 8px;
-  background: #141618;
-  padding: 0.75rem 0.9375rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.marketChain {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #e8e8ea;
-}
-
-.marketPair {
-  font-size: 0.71875rem;
-  color: #8a8f99;
-}
-
-.marketsNote {
-  margin: 0.75rem 0 0;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: #6b7078;
-  max-width: 39rem;
 }
 
 /* ── One track ───────────────────────────────────────────── */
@@ -143,22 +117,60 @@
   color: #6b7078;
 }
 
-.progressBar {
+/* One bar for the whole map: the track heads and the rewards panel.
+ *
+ * Copper while a track is in progress and green once it is finished, which is
+ * the same thing the check on a finished lesson's node says. It was green from
+ * the first lesson before, so the colour had nothing left to mark at the last. */
+.meter {
   display: block;
-  flex: 1 1 8rem;
-  max-width: 14rem;
-  height: 3px;
-  background: rgba(245, 192, 154, 0.14);
-  border-radius: 2px;
+  height: 5px;
+  background: rgba(245, 192, 154, 0.12);
+  border-radius: 3px;
   overflow: hidden;
 }
 
-.progressFill {
+.meterFill {
   display: block;
   height: 100%;
+  background: #f5c09a;
+  border-radius: 3px;
+  transition: width 0.45s ease, background 0.3s ease;
+}
+
+/* Both classes, not just the modifier: the CSS minifier groups rules that share
+   a declaration and can hoist that group above the rule it overrides, so this
+   has to win on specificity rather than on order. */
+.meterFill.meterDone {
   background: #5ba88a;
-  border-radius: 2px;
-  transition: width 0.4s ease;
+}
+
+/* The track head's bar shares the row with the count and the points. */
+.progress .meter {
+  flex: 1 1 8rem;
+  max-width: 14rem;
+}
+
+/* Said once a track has every lesson behind it, beside the bar that filled. */
+.donePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem 0.1875rem 0.375rem;
+  border: 1px solid rgba(91, 168, 138, 0.45);
+  border-radius: 4px;
+  background: rgba(91, 168, 138, 0.12);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5ba88a;
+  white-space: nowrap;
+}
+
+.donePill svg {
+  width: 11px;
+  height: 11px;
 }
 
 /* ── Track complete ──────────────────────────────────────── */
@@ -362,6 +374,135 @@
   margin-bottom: 0.875rem;
 }
 
+/* ── The intermediate track's sizing sheet ─────────────────
+   The counterpart to .carried above: what that track builds, rather than the
+   position this one does. A row fills in when its lesson is finished, so the
+   card is a progress readout and a reference at the same time. */
+.sheet {
+  margin-bottom: 2.25rem;
+  max-width: 40rem;
+  border: 1px solid rgba(245, 192, 154, 0.16);
+  border-radius: 10px;
+  background: #121416;
+  padding: 1.375rem 1.5rem;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sheetHead .carriedLabel {
+  margin-bottom: 0;
+}
+
+.sheetCount {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6b7078;
+  white-space: nowrap;
+}
+
+.sheetIntro {
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: #8a8f99;
+  margin: 0.75rem 0 1.125rem;
+}
+
+.sheetIntro strong {
+  color: #e8e8ea;
+  font-weight: 600;
+}
+
+.sheetRows {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+/* Field, figure, and what the figure means. The note drops to its own line on a
+   narrow screen rather than squeezing the two columns that carry the data. */
+.sheetRow {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(4.5rem, auto) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  padding: 0.625rem 0;
+  border-top: 1px solid rgba(245, 192, 154, 0.08);
+}
+
+.sheetRow:first-child {
+  border-top: 0;
+}
+
+.sheetField {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #8a8f99;
+  margin: 0;
+}
+
+.sheetRowOn .sheetField {
+  color: #e8e8ea;
+}
+
+.sheetValue {
+  margin: 0;
+  text-align: right;
+}
+
+.sheetFigure {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #f5c09a;
+}
+
+/* Both classes, so the modifier beats the base on specificity rather than on
+   source order. The minifier is free to reorder a grouped rule. */
+.sheetFigure.sheetOwn {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #8a8f99;
+}
+
+/* An input the learner has not earned yet: the lesson that fills it, as a link,
+   so the row is a way in rather than a locked slot. */
+.sheetPending {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7078;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(245, 192, 154, 0.3);
+  white-space: nowrap;
+}
+
+.sheetPending:hover {
+  color: #f5c09a;
+}
+
+.sheetNote {
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: #6b7078;
+  margin: 0;
+}
+
+.sheetFoot {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #6b7078;
+  margin: 1.125rem 0 0;
+  padding-top: 0.875rem;
+  border-top: 1px solid rgba(245, 192, 154, 0.08);
+}
+
 /* A finished row is a quiet link back into its lesson. It must never compete
    with the one live card, so the affordance is a small revisit line that
    brightens on hover. */
@@ -538,90 +679,232 @@
 }
 
 /* ── Rewards ─────────────────────────────────────────────── */
-.reward {
-  position: relative;
-  z-index: 1;
-  margin: 0 clamp(1.25rem, 4.4vw, 4rem) clamp(2.5rem, 5vw, 4rem);
-  border-top: 1px solid rgba(245, 192, 154, 0.12);
-  padding-top: 2.5rem;
-}
 
+/* Sits in the right column of the hero. It is the first thing on the page that
+   answers "what do I get", and it is also where a returning learner reads how
+   far along they are, so both tracks carry a bar. */
 .rewardCard {
   border: 1px solid rgba(245, 192, 154, 0.18);
   border-radius: 10px;
   background: #141618;
   padding: 1.5rem 1.625rem;
-  max-width: 56rem;
 }
 
 .rewardTitle {
-  font-size: 1.1875rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: #e8e8ea;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem;
 }
 
 .rewardBody {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   line-height: 1.65;
   color: #8a8f99;
   margin: 0;
-  max-width: 46rem;
 }
 
-.rewardGrid {
+/* The card promises points, so the card says where they are kept. Quieter than
+   the promise above it, because it is a condition rather than the offer. */
+.rewardNote {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #6b7078;
+  margin: 0.625rem 0 0;
+}
+
+.rewardTracks {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem 1.5rem;
-  margin: 1.5rem 0;
+  gap: 1.125rem;
+  margin: 1.375rem 0;
 }
 
 .rewardTrack {
-  padding: 0.75rem 0 0.75rem 0.875rem;
+  padding-left: 0.875rem;
   border-left: 1px solid rgba(245, 192, 154, 0.16);
   min-width: 0;
 }
 
-.rewardTrack .microLabel {
+.rewardTrackHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem;
   margin-bottom: 0.3125rem;
 }
 
-.rewardRole {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #e8e8ea;
-  margin-bottom: 0.25rem;
+.rewardTrackHead .microLabel {
+  margin-bottom: 0;
 }
 
-.rewardPoints {
-  font-size: 0.8125rem;
-  line-height: 1.5;
+.rewardRole {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e8e8ea;
+  margin-bottom: 0.625rem;
+}
+
+.rewardMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
   color: #8a8f99;
   font-variant-numeric: tabular-nums;
+}
+
+.rewardFigure {
+  font-weight: 700;
+  color: #a8adb6;
+  white-space: nowrap;
 }
 
 .pointsRow {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.625rem;
   padding-top: 1.25rem;
+  margin-bottom: 0.75rem;
   border-top: 1px solid rgba(245, 192, 154, 0.12);
 }
 
 .points {
-  font-size: 2.125rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #f5c09a;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.points.pointsDone {
+  color: #5ba88a;
 }
 
 .pointsOf {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #a8adb6;
+}
+
+/* The rewards panel needs about 25rem to hold a role line and a bar without
+   either wrapping. Below roughly 1000px the hero gives up its second column and
+   the panel sits under the pitch, still above both tracks. */
+/* ── Where progress lives ──────────────────────────────────
+   The foot of the map, after both tracks. Deliberately quiet: it is
+   housekeeping, and the one destructive control in the academy sits inside it
+   behind a confirm. */
+.progressNote {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  /* The same gutter the track sections sit in, so the foot of the page lines up
+     with the rails above it. */
+  margin: 0 clamp(1.25rem, 4.4vw, 4rem) 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(245, 192, 154, 0.1);
+}
+
+.progressNoteText {
+  flex: 1 1 22rem;
+  min-width: 0;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: #6b7078;
+  margin: 0;
+}
+
+.resetLink {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8a8f99;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.resetLink:hover {
+  color: #e8e8ea;
+}
+
+.resetAsk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  flex: 1 1 20rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid rgba(212, 100, 90, 0.35);
+  border-radius: 8px;
+  background: rgba(212, 100, 90, 0.06);
+}
+
+.resetWarn {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #d4645a;
+}
+
+.resetButtons {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.resetGo,
+.resetKeep {
+  appearance: none;
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.875rem;
+  border-radius: 6px;
+  cursor: pointer;
+  /* A touch target on a phone. */
+  min-height: 36px;
+}
+
+.resetGo {
+  border: 1px solid rgba(212, 100, 90, 0.5);
+  background: rgba(212, 100, 90, 0.14);
+  color: #d4645a;
+}
+
+.resetGo:hover {
+  background: rgba(212, 100, 90, 0.22);
+}
+
+.resetKeep {
+  border: 1px solid rgba(245, 192, 154, 0.2);
+  background: transparent;
+  color: #8a8f99;
+}
+
+.resetKeep:hover {
+  color: #e8e8ea;
+}
+
+@media (max-width: 1000px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rewardCard {
+    max-width: 34rem;
+  }
 }
 
 @media (max-width: 700px) {
@@ -629,27 +912,19 @@
     grid-template-columns: 3rem minmax(0, 1fr);
   }
 
-  .rewardGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.75rem;
+  /* Field and figure keep their row; what it means goes underneath. */
+  .sheetRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .sheetNote {
+    grid-column: 1 / -1;
   }
 }
 
-/* Phones. The market strip stacks, the live card and panels lose some
-   padding, and nothing keeps a fixed width wider than the viewport. */
+/* Phones. The live card and panels lose some padding, and nothing keeps a fixed
+   width wider than the viewport. */
 @media (max-width: 480px) {
-  .markets {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.5rem;
-  }
-
-  .market {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-  }
-
   .card,
   .graduate,
   .rewardCard {
@@ -660,7 +935,7 @@
     padding-left: 1rem;
   }
 
-  .progressBar {
+  .progress .meter {
     flex-basis: 100%;
     max-width: none;
     order: 3;

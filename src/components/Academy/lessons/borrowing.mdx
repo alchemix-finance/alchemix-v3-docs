@@ -2,7 +2,7 @@
 
 You can borrow up to 90% of what you deposited. That ratio is your **loan to
 value**, or LTV: what you owe divided by what you deposited. Reach 90% and Alchemix
-stops you borrowing more. Your position stays open, keeps earning,
+stops you borrowing more. Your position stays open and keeps earning,
 and sitting at the cap costs you nothing. The Borrow tab’s Max button fills in the
 number for you.
 
@@ -18,21 +18,22 @@ trades a little below 1.00, and the cost lesson puts a number on that gap.
 
 ### Your deposit stays put
 
-Every unit of it stays in the vault and keeps earning while the loan is open. It is
-now also the **collateral** securing your debt.
+Every unit of it keeps earning while the loan is open, and it is now also the
+**collateral** securing your debt.
 
 ### What people borrow for
 
 Borrowers put the alAsset to work in a few standard ways:
 
-- **Spending it.** Large purchases, or a periodic draw against a position that
-  keeps earning, without selling the position.
-- **Yield looping.** Swap the borrowed alAsset for the underlying, deposit that
-  too, and take amplified exposure to the vault's yield. The vault page has a tab
-  for it.
-- **Liquidity provision.** Pair the alAsset against its underlying, where the
-  impermanent loss is bounded by how far the peg moves.
-- **Short-term opportunities.** Move capital now and keep the position intact.
+- **Spend it.** Buy something large, or draw an income from a position you never
+  have to sell.
+- **Loop the yield.** Swap the alUSD back into USDC, deposit that too, and your
+  deposit earns on a bigger balance. It raises your LTV at the same time. The
+  vault page has a tab for it.
+- **Provide liquidity.** Pool the alUSD against USDC on an exchange and collect
+  the trading fees.
+- **Take a position elsewhere.** Put the cash to work somewhere else while your
+  deposit stays where it is.
 
-Each of these starts by selling the alAsset, and that sale is where an Alchemix
+All of these start by trading the alAsset, and that trade is where an Alchemix
 loan actually costs you. The intermediate track prices it.

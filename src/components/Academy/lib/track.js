@@ -32,7 +32,8 @@
  * `shot` is a screenshot of that screen, shown once per lesson under the lab.
  * Every file listed here was checked against the live app: several older
  * captures in `static/img` still show the pre-rename navigation and are not
- * used. `shotAlt` describes it, and `shotNote` says what to look at.
+ * used. `shotAlt` describes it, and `shotNote` says what to look at. `shotMax`
+ * caps the figure in rem for a capture narrower than the column it sits in.
  */
 
 export const BEGINNER = [
@@ -40,11 +41,16 @@ export const BEGINNER = [
     n: 1,
     id: "what-alchemix-does",
     slug: "/academy/what-alchemix-does",
+    app: "Borrow",
     title: "What Alchemix does",
     blurb: "Borrow against a deposit that keeps earning, and redemptions clear the balance for you.",
     minutes: 5,
     ready: true,
     track: "beginner",
+    shot: "/img/quick-start-01.png",
+    shotAlt: "The Borrow page, listing the vaults available to borrow against",
+    shotNote:
+      "The front door. Each card is a vault you can deposit into, with what the whole market has put in, what it has borrowed against that, how much is earmarked for redemption, and the 90.00% of a deposit anyone may borrow.",
   },
   {
     n: 2,
@@ -74,7 +80,7 @@ export const BEGINNER = [
     shot: "/img/borrowing-in-alchemix-01.png",
     shotAlt: "The Borrow page listing the available vaults",
     shotNote:
-      "The Borrow page. Each card is one vault: its APR, how full its deposit cap is, and the strategies behind it. LTV on every card reads 90.00%, the cap you just found.",
+      "The Borrow page. Each card is one vault, showing its APR, how full its deposit cap is, and the strategies behind it. Every card reads 90.00% LTV, because the cap is the same on all of them.",
   },
   {
     n: 4,
@@ -104,7 +110,7 @@ export const BEGINNER = [
     shot: "/img/borrowing-in-alchemix-02.png",
     shotAlt: "The position stats and health bar at the top of a vault page",
     shotNote:
-      "The real bar. MAX LTV and LIQ LTV are the two markers you have been pushing against, and Health Factor is the same distance written as a multiple.",
+      "The real bar. MAX LTV is where borrowing stops and LIQ LTV is where liquidation begins, the two markers the card above draws. Health Factor states the same distance as a multiple.",
   },
   {
     n: 6,
@@ -143,11 +149,17 @@ export const INTERMEDIATE = [
     n: 2,
     id: "pace-of-repayment",
     slug: "/academy/pace-of-repayment",
+    app: "Borrow · Earmarking",
     title: "The pace of repayment",
     blurb: "The protocol clears every loan in the market at one rate, whatever its size. Find that rate.",
     minutes: 8,
     ready: true,
     track: "intermediate",
+    shot: "/img/earmarking-01.png",
+    shotMax: 44,
+    shotAlt: "The Earmarking panel on a vault, charting daily earmarked debt over 30 days against the rate",
+    shotNote:
+      "The Earmarking tab on a vault. Each bar is a day of alUSD Transmuter positions maturing, and the line over them is the rate that produced. The average across the month is the pace this lesson has you find.",
   },
   {
     n: 3,
@@ -185,6 +197,10 @@ export const INTERMEDIATE = [
     minutes: 9,
     ready: true,
     track: "intermediate",
+    shot: "/img/borrowing-in-alchemix-02.png",
+    shotAlt: "The position stats and health bar at the top of a vault page",
+    shotNote:
+      "The same screen the beginner track read for the two markers, read here for the distance between them. LTV is where the position sits, Liquidation LTV is the 95% it has to stay under, and the gap between them is the loss of backing it can absorb.",
   },
   {
     n: 6,
@@ -199,17 +215,23 @@ export const INTERMEDIATE = [
     shot: "/img/redeem-alassets-01.png",
     shotAlt: "The Fixed Yield page listing Transmuter positions",
     shotNote:
-      "The alAsset price each card quotes against is the discount this lesson priced, and the projected fixed APR next to it is that discount annualized over the term.",
+      "Each card quotes the alAsset price it is buying at. The projected fixed APR beside it is that discount annualized over the term.",
   },
   {
     n: 7,
     id: "capstone",
     slug: "/academy/capstone",
+    app: "Borrow · Visualizer",
     title: "Capstone",
     blurb: "Raise the cash you need from a position that survives the loss you expect.",
     minutes: 10,
     ready: true,
     track: "intermediate",
+    shot: "/img/visualizer-01.png",
+    shotMax: 50.5,
+    shotAlt: "The Visualizer tab on a vault, with its four inputs and its projection",
+    shotNote:
+      "The Visualizer, on any vault's info tabs. Three of its four inputs are what this track has been teaching: Yield APY from the Mix-Yield Token lesson, Redemption from the pace lesson, and the alAsset price from the cost and peg lessons. External APY is the one no lesson can give you, because it depends on what you do with the money. It reports the loan cost, the yield, and the profit left over.",
   },
 ];
 

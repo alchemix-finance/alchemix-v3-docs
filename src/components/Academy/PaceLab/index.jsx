@@ -3,8 +3,9 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import styles from "../lesson.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
+import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import useElementWidth from "../lib/useElementWidth";
-import { Checkpoint } from "../kit";
+import { AppShot, Body, Checkpoint, Reveal, SHOTS } from "../kit";
 
 /**
  * Intermediate lesson 2: the pace of repayment.
@@ -23,8 +24,11 @@ import { Checkpoint } from "../kit";
 const COLLATERAL = 10_000;
 const ANA_DEBT = 2_000;
 const BEN_DEBT = 8_000;
-const YIELD = 0.05;
-const REDEMPTION = 0.8;
+// Both come from protocol.js. This lab used to declare its own 80% while the
+// beginner track projected at 70%, so the two tracks described loans clearing at
+// different speeds.
+const YIELD = EXAMPLE_YIELD;
+const REDEMPTION = EXAMPLE_REDEMPTION;
 const HORIZON = 36;
 const CHECK_MONTH = 12;
 
@@ -137,28 +141,29 @@ function Predict({ onDone }) {
       </div>
 
       {revealed ? (
-        <div className={styles.reveal}>
-          <div className={styles.revealHead}>
-            After {CHECK_MONTH} months, both positions have <strong>{truth.toFixed(1)}%</strong> of
-            their debt left.
-          </div>
-          <p className={styles.revealBody}>
+        <Reveal
+          title={
+            <>
+              After {CHECK_MONTH} months, both positions have{" "}
+              <strong>{truth.toFixed(1)}%</strong> of their debt left.
+            </>
+          }
+          onNext={onDone}
+          nextLabel="Find what sets the pace"
+        >
+          <Body>
             {guessedSame
               ? "Your two answers match, and so does the projection. The two curves sit exactly on top of each other, and the dashed line is the only sign that there are two."
               : `You put the two answers ${Math.abs(ana - ben)} points apart. The projection puts them in the same place, with the two curves exactly on top of each other.`}{" "}
             Ben borrowed four times what Ana did, and after {CHECK_MONTH} months the same
             share of each loan remains.
-          </p>
-          <p className={styles.revealBody}>
+          </Body>
+          <Body>
             On a conventional loan, interest accrues on the balance, so a larger balance
             takes longer to clear. Alchemix debt carries no interest at all. It clears at a
             rate the protocol sets, and that rate is the same for everyone in the market.
-          </p>
-          <button type="button" className={styles.primary} onClick={onDone}>
-            Find what sets the pace
-            <ArrowIcon />
-          </button>
-        </div>
+          </Body>
+        </Reveal>
       ) : null}
     </>
   );
@@ -224,8 +229,8 @@ function GuessSlider({ who, value, onChange, disabled, color }) {
 
 function Explore({ onDone }) {
   const [debt, setDebt] = useState(2_000);
-  const [yieldAnnual, setYield] = useState(0.05);
-  const [redemptionAnnual, setRedemption] = useState(0.8);
+  const [yieldAnnual, setYield] = useState(YIELD);
+  const [redemptionAnnual, setRedemption] = useState(REDEMPTION);
 
   // Which levers the learner has tried. The reveal waits until all three have
   // moved, so the two that leave the curve alone get pushed as well.
@@ -287,24 +292,28 @@ function Explore({ onDone }) {
         />
       </div>
 
+      <AppShot shot={SHOTS.redemptionRate}>
+        The third control, on a real vault. Every position in that market is repaid at this
+        one rate, so it is the figure to read before you judge how fast a loan will clear.
+      </AppShot>
+
       {found ? (
-        <div className={styles.reveal}>
-          <div className={styles.revealHead}>The redemption rate sets the pace.</div>
-          <p className={styles.revealBody}>
+        <Reveal
+          title="The redemption rate sets the pace."
+          onNext={onDone}
+          nextLabel="Take the checkpoint"
+        >
+          <Body>
             Redemptions repay a share of total system debt each year, and every position
             is repaid at that rate whatever its size. One rate applied to Ana and Ben alike,
             so their loans cleared in lockstep even though one was four times the other.
-          </p>
-          <p className={styles.revealBody}>
+          </Body>
+          <Body>
             The redemption rate is a protocol-level parameter, applied equally to every
             position in the market. What you do control is repaying by hand, which clears
             debt the moment you choose to.
-          </p>
-          <button type="button" className={styles.primary} onClick={onDone}>
-            Take the checkpoint
-            <ArrowIcon />
-          </button>
-        </div>
+          </Body>
+        </Reveal>
       ) : (
         <p className={styles.hint}>Move all three inputs to continue. {tried} of 3 so far.</p>
       )}

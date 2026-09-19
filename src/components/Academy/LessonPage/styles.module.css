@@ -121,7 +121,7 @@
   color: #8a8f99;
 }
 
-.step_seen:hover .stepLabel {
+.step:not(:disabled):hover .stepLabel {
   color: #e8e8ea;
 }
 
@@ -285,8 +285,15 @@
   color: #e8e8ea;
 }
 
+/* The write-up beside its reading list. */
+.wrapBody {
+  display: grid;
+  grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+  align-items: start;
+  gap: 2.5rem 3.5rem;
+}
+
 .prose {
-  max-width: 46rem;
   font-size: 0.9375rem;
   line-height: 1.75;
   color: #a8adb6;
@@ -320,12 +327,10 @@
 
 /* ── Go deeper ───────────────────────────────────────────── */
 .deeper {
-  margin-top: 2.5rem;
   border: 1px solid rgba(245, 192, 154, 0.18);
   border-radius: 10px;
   background: #141618;
   padding: 1.5rem 1.625rem;
-  max-width: 46rem;
 }
 
 .deeperLabel {
@@ -355,35 +360,12 @@
    lesson: the lab is the thing to push on, and this is what it turns out to
    have been. Every file used here was checked against the live app, since
    several older captures in static/img predate the navigation rename. */
-.shot {
+/* Runs the full width of the lab. It is a capture of a whole app screen, and at
+   the 52rem it used to sit at the figures on it were too small to read; the
+   column is all the room there is to give it. */
+/* The figure itself is the academy's shared one; this only places it. */
+.shotWrap {
   margin: 2.5rem 0 0;
-  max-width: 52rem;
-}
-
-.shotHead {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #8a8f99;
-  margin-bottom: 0.875rem;
-}
-
-.shotImg {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid rgba(245, 192, 154, 0.18);
-  border-radius: 10px;
-  background: #141618;
-}
-
-.shotNote {
-  margin-top: 0.875rem;
-  max-width: 46rem;
-  font-size: 0.875rem;
-  line-height: 1.65;
-  color: #8a8f99;
 }
 
 /* ── Wrap-up actions ─────────────────────────────────────── */
@@ -448,6 +430,19 @@
   .divider {
     display: none;
   }
+}
+
+/* Both two-column blocks in the wrap-up give up their second column together,
+   so the foot of a lesson is one column or two and never one and a half. */
+@media (max-width: 1000px) {
+  .wrapBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .prose {
+    max-width: 46rem;
+  }
+
 }
 
 @media (max-width: 860px) {

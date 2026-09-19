@@ -3,8 +3,9 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { AGGRESSIVE_CAP, LIQ_LTV, survivableLtv } from "../lib/protocol";
 import {
-  Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Note, Notes,
-  Panel, PositionCard, Primary, Question, Reveal, Stage, Sub, assetAmount, money,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Note, Notes,
+  Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, assetAmount, money,
+  said,
 } from "../kit";
 
 /**
@@ -70,11 +71,11 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="The price of ETH falls 40% overnight.">
       <Sub>
-        The same position, this time in ETH. {BORROWED} alETH borrowed against {DEPOSIT} ETH
-        deposited is an LTV of 50%, what you owe over what you put in. ETH was{" "}
-        {money(PRICE)} last night and {money(PRICE * (1 - CRASH))} this morning. Cross the{" "}
-        <strong>liquidation</strong> marker and the protocol sells part of your deposit to
-        cover the debt.
+        This lesson needs a price that moves, so the position moves to ETH: {DEPOSIT} ETH
+        deposited with {BORROWED} alETH borrowed against it. That is the same 50% LTV you
+        have been carrying. ETH was {money(PRICE)} last night and{" "}
+        {money(PRICE * (1 - CRASH))} this morning. Cross the <strong>liquidation</strong>{" "}
+        marker and the protocol sells part of your deposit to cover the debt.
       </Sub>
 
       <PositionCard
@@ -114,6 +115,7 @@ function Learn({ onDone }) {
           nextLabel="Find what does move it"
         >
           <Body>
+            {said(guess, 50, (v) => `${v}%`)}
             Your debt is recorded in alETH, the same kind of asset as your deposit. When ETH
             falls, both sides fall by the same share, so the ratio between them holds and your
             position sits exactly where it did last night. USDC and alUSD pair up the same way.
@@ -184,6 +186,11 @@ function Try({ onDone }) {
           verdict={crossed ? "the marker has reached you" : null}
         />
       </Controls>
+
+      <AppShot shot={SHOTS.positionBar}>
+        The same bar in the app. Deposit, debt and the earmarked slice share one track, and
+        MAX LTV and LIQ LTV are the two markers the card above draws.
+      </AppShot>
 
       <Notes>
         <Note label="A loss inside the vault">

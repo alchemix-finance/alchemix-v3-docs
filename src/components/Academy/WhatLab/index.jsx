@@ -6,8 +6,9 @@ import { apiBase } from "../lib/api";
 import { positionCurve } from "../lib/model";
 import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import {
-  Actions, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
-  Legend, LineChart, Note, Notes, Panel, Primary, Question, Reveal, Stage, Sub, money,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider,
+  Hint, Legend, LineChart, Note, Notes, Panel, Primary, Question, Reveal, SHOTS, Stage,
+  Sub, money, said,
 } from "../kit";
 
 /**
@@ -49,13 +50,24 @@ const ALCHEMIX = positionCurve({
 
 /* ── The loop ────────────────────────────────────────────── */
 
-/** Green marks the saving side, copper the loan. */
+/**
+ * Green marks the saving side, copper the loan.
+ *
+ * Five stops, and every name in them is one this lesson can carry. MYT and the
+ * DAO used to appear here and belong to lesson 2, which left the opening screen
+ * naming most of the protocol to teach one fact about interest.
+ *
+ * The third stop is why anyone does this. The loop used to run deposit, earn,
+ * borrow, repay, and a reader could finish lesson 1 without being told the money
+ * is for spending. The exit still ends on repay and withdraw, which is the
+ * borrower's actual way out.
+ */
 const LOOP = [
-  { n: 1, label: "Deposit", value: "10,000 USDC", note: "You deposit on the Borrow page and receive MYT.", tone: "#5ba88a" },
-  { n: 2, label: "Earn", value: "MYT grows", note: "The DAO picks the strategies the vault earns from.", tone: "#5ba88a" },
-  { n: 3, label: "Borrow", value: "5,000 alUSD", note: "Up to 90%, on the same screen. The deposit stays in the vault and keeps earning.", tone: "#f5c09a" },
-  { n: 4, label: "Balance", value: "paid down", note: "Redemptions repay it from your collateral. You never make a payment.", tone: "#f5c09a" },
-  { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay the debt, then withdraw the collateral.", tone: "#5ba88a" },
+  { n: 1, label: "Deposit", value: "10,000 USDC", note: "It goes into a vault on the Borrow page and starts earning.", tone: "#5ba88a" },
+  { n: 2, label: "Borrow", value: "5,000 alUSD", note: "Up to 90% of the deposit, from the same screen.", tone: "#f5c09a" },
+  { n: 3, label: "Spend it", value: "5,000 in hand", note: "Sell the alUSD and use the cash. Your 10,000 never leaves the vault.", tone: "#f5c09a" },
+  { n: 4, label: "Balance", value: "paid down", note: "Redemptions clear it out of your own collateral. You make no payment.", tone: "#f5c09a" },
+  { n: 5, label: "Close it out", value: "repay, withdraw", note: "Repay what is left, then take the deposit back.", tone: "#5ba88a" },
 ];
 
 /** After the reveal, step 4 carries the answer. Nothing else in the picture changes. */
@@ -91,13 +103,19 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Your deposit keeps earning while you borrow against it.">
       <Sub>
-        Deposit USDC on the Borrow page and it starts earning. Borrow alUSD against it from
-        the same screen. When you want the deposit back, repay the loan and withdraw.
+        Deposit USDC on the Borrow page and it starts earning. Borrow against it from the
+        same screen, in a token called alUSD that sells for dollars. When you want the
+        deposit back, repay the loan and withdraw.
       </Sub>
 
       <div className={own.loop}>
         <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
       </div>
+
+      <AppShot shot={SHOTS.vaultCard}>
+        A vault on the Borrow page, with what the whole market has deposited against it,
+        what it has borrowed, and the 90.00% of a deposit anyone may borrow.
+      </AppShot>
 
       <Panel>
         <Question>
@@ -124,16 +142,15 @@ function Learn({ onDone }) {
         </Actions>
       ) : (
         <Reveal
-          title="0%. Nothing is added to the balance."
+          title="0%. Redemptions pay the balance down instead."
           onNext={onDone}
           nextLabel="See it against a loan with interest"
         >
           <Body>
-            In Alchemix, redemptions repay the debt for you out of your own collateral.
-            That deleverages your position rather than charging you for it: your debt and
-            your collateral are the same asset, so the only cost is a small redemption fee.
-            Your deposit keeps earning the whole time it backs the loan, and the redemption
-            rate sets the pace.
+            {said(guess, 0, (v) => `${v}% a year`)}
+            On most lending platforms you pay interest for as long as the loan is open.
+            Alchemix charges none. The protocol spends a little of your own deposit to
+            clear the balance instead, and the rest of it keeps earning the whole way down.
           </Body>
         </Reveal>
       )}

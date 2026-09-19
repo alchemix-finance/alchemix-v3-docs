@@ -5,8 +5,8 @@ import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { EXAMPLE_AL_PRICE, annualisedFromDiscount, termReturn } from "../lib/protocol";
 import {
-  Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
-  Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
 /**
@@ -54,7 +54,6 @@ function Predict({ onDone }) {
   const perTerm = termReturn(PRICE);
   const annual = annualisedFromDiscount(PRICE, WEEKS);
   const bought = STAKE / PRICE;
-  const close = Math.abs(guess - annual) <= 1.5;
 
   return (
     <Stage
@@ -66,7 +65,7 @@ function Predict({ onDone }) {
         Alchemix, and the Transmuter will exchange it for the underlying at exactly 1:1
         once a governance-set term is up. Here that term runs {WEEKS} weeks. Spend{" "}
         {money(STAKE)} and {money2(bought)} comes back, a gain of {perTerm.toFixed(2)}% over
-        the term. What that is worth per year is the part the term decides.
+        the term. The length of that term decides what the gain is worth per year.
       </Sub>
 
       <div className={own.tradeRow}>
@@ -74,6 +73,12 @@ function Predict({ onDone }) {
         <TradeStep label="You receive" value={`${money2(bought)} alUSD`} tone="#f5c09a" />
         <TradeStep label={`After ${WEEKS} weeks`} value={`${money2(bought)} USDC`} tone="#5ba88a" />
       </div>
+
+      <AppShot shot={SHOTS.fixedPositions}>
+        Two of these positions, open. APR is the annualized figure this stage asks you to
+        work out, fixed at the price each one bought in at, and Profit is what has accrued
+        against it so far.
+      </AppShot>
 
       <Panel>
         <Question>
@@ -104,7 +109,7 @@ function Predict({ onDone }) {
           nextLabel="See who buys the discount"
         >
           <Body>
-            {close ? "That is close. " : `You answered ${guess.toFixed(1)}%. `}
+            {said(guess, annual, (v) => `${v.toFixed(1)}%`, 1.5)}
             Buying at {PRICE.toFixed(2)} and receiving 1.00 is a gain of{" "}
             {perTerm.toFixed(2)}% on what you put in. That gain arrives in {WEEKS} weeks,
             which is {annual.toFixed(2)}% annualized.

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import AcademyShell from "../Shell";
+import { ScreenShot } from "../kit";
 import { hasCompletion, readCompletions } from "../lib/api";
 import { currentLesson, lessonById, nextLesson, trackByKey } from "../lib/track";
 import styles from "./styles.module.css";
@@ -68,8 +69,19 @@ export default function LessonPage({
 
   const preview = Boolean(ahead);
 
-  // Stages unlock in order on a first run, but stay open afterwards so a finished
-  // lesson can be revisited without replaying it.
+  // The screenshot is context, not an answer, everywhere except the opening
+  // stage: lesson 3's capture of the Borrow page shows 90.00% on every card,
+  // which is the figure stage 1 asks the learner to predict. So it appears from
+  // the second stage onward, and immediately for someone reading ahead.
+  const showShot = Boolean(lesson.shot) && (preview || done || stage !== STAGES[0].id);
+
+  // The wrap-up prose is where the lesson is actually written down. Gating it on
+  // a passed checkpoint put the clearest explanation in the academy behind the
+  // test, and left "Read ahead" showing a frozen slider and nothing to read.
+  const showNotes = preview || done;
+
+  // How far into the lesson this learner has got, which is what the stepper
+  // colours. Every stage is clickable either way: see the stepper below.
   const reached = done ? STAGES.length - 1 : STAGES.findIndex((s) => s.id === stage);
 
   return (
@@ -97,8 +109,18 @@ export default function LessonPage({
             // A preview shows the stages so the shape of the lesson is visible,
             // but none of them is reachable: the lab below it is inert, and a
             // stepper that still moved would be the one way around that.
-            const reachable = !preview && (done || i <= reached);
-            const state = reachable ? (s.id === stage ? "on" : "seen") : "off";
+            //
+            // Inside a lesson the learner has actually reached, every stage is.
+            // Order is enforced between lessons, where it earns its keep: a
+            // checkpoint answered before its setup banks points for a lesson
+            // nobody saw. Within one lesson it only taxed the people who already
+            // know the material, and the checkpoint is server-graded, so passing
+            // it cold demonstrates exactly what the lesson claims to teach.
+            // `reached` still drives the styling, so the stepper goes on showing
+            // how far in they are.
+            const reachable = !preview;
+            const visited = done || i <= reached;
+            const state = !reachable ? "off" : s.id === stage ? "on" : visited ? "seen" : "off";
             return (
               <React.Fragment key={s.id}>
                 {i > 0 ? <span className={styles.rule} /> : null}
@@ -144,61 +166,78 @@ export default function LessonPage({
           </div>
         </div>
 
-        {preview ? <PreviewFooter current={ahead} /> : null}
+        {showShot ? <Shot lesson={lesson} /> : null}
 
-        {done ? (
+        {showNotes ? (
           <section className={styles.wrap}>
-            <h2 className={styles.wrapHead}>What you just worked out</h2>
-            <div className={styles.prose}>
-              <Wrap />
+            <h2 className={styles.wrapHead}>
+              {done ? "What you just worked out" : "What this lesson covers"}
+            </h2>
+            {/* The write-up and the reading list share a row. Stacked, the
+                list sat under a column of prose that stops well short of the
+                page, so the foot of every finished lesson was half empty. */}
+            <div className={styles.wrapBody}>
+              <div className={styles.prose}>
+                <Wrap />
+              </div>
+
+              {deeper.length ? (
+                <div className={styles.deeper}>
+                  <div className={styles.deeperLabel}>Go deeper in the docs</div>
+                  <ul className={styles.deeperList}>
+                    {deeper.map((d) => (
+                      <li key={d.to}>
+                        <Link to={d.to}>{d.label}</Link>
+                        {d.note ? `, ${d.note}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
             </div>
 
-            {lesson.shot ? (
-              <figure className={styles.shot}>
-                <figcaption className={styles.shotHead}>
-                  The screen this is, in the app
-                </figcaption>
-                <img
-                  className={styles.shotImg}
-                  src={lesson.shot}
-                  alt={lesson.shotAlt}
-                  loading="lazy"
-                />
-                {lesson.shotNote ? (
-                  <div className={styles.shotNote}>{lesson.shotNote}</div>
+            {done ? (
+              <div className={styles.wrapActions}>
+                {next ? (
+                  <Link to={next.slug} className={styles.wrapNext}>
+                    Next: {next.title}
+                    <ArrowIcon />
+                  </Link>
                 ) : null}
-              </figure>
-            ) : null}
-
-            {deeper.length ? (
-              <div className={styles.deeper}>
-                <div className={styles.deeperLabel}>Go deeper in the docs</div>
-                <ul className={styles.deeperList}>
-                  {deeper.map((d) => (
-                    <li key={d.to}>
-                      <Link to={d.to}>{d.label}</Link>
-                      {d.note ? `, ${d.note}` : ""}
-                    </li>
-                  ))}
-                </ul>
+                <Link to="/academy" className={styles.wrapBack}>
+                  Back to the track
+                </Link>
               </div>
             ) : null}
-
-            <div className={styles.wrapActions}>
-              {next ? (
-                <Link to={next.slug} className={styles.wrapNext}>
-                  Next: {next.title}
-                  <ArrowIcon />
-                </Link>
-              ) : null}
-              <Link to="/academy" className={styles.wrapBack}>
-                Back to the track
-              </Link>
-            </div>
           </section>
         ) : null}
+
+        {preview ? <PreviewFooter current={ahead} /> : null}
       </main>
     </AcademyShell>
+  );
+}
+
+/**
+ * The app screen the lesson is about.
+ *
+ * Its own block rather than part of the wrap-up, because it belongs beside the
+ * model while the learner is still pushing on it. `shotNote` describes the
+ * screen rather than the learner's progress, so the figure reads the same
+ * whether it is reached at stage 2 or by someone skimming ahead.
+ */
+function Shot({ lesson }) {
+  return (
+    <div className={styles.shotWrap}>
+      {/* The same figure the lab's own crops use, so a lesson does not present
+          its screenshots two different ways. `shotMax` caps the figure at the
+          capture's own width: most of these are full screens around 2,000px and
+          downscale into the column, but a capture of a single panel is narrower
+          than the column and would be blown up past its own resolution. */}
+      <ScreenShot src={lesson.shot} alt={lesson.shotAlt} max={lesson.shotMax}>
+        {lesson.shotNote}
+      </ScreenShot>
+    </div>
   );
 }
 
@@ -219,12 +258,13 @@ function PreviewBanner({ lesson, current }) {
           Preview
         </div>
         <h2 className={styles.previewTitle} id="preview-title">
-          You are reading ahead. Nothing on this page responds yet.
+          You are reading ahead.
         </h2>
         <p className={styles.previewText}>
-          Lesson {lesson.n} is open to read, and the controls under it are switched off
-          until you get here. Each lesson sets up the one after it, and the checkpoint
-          grades against that setup, so working them in order is what banks the points.
+          Lesson {lesson.n} is yours to read: the write-up, the app screen and the reading
+          list are all below. The controls stay switched off until you get here, because
+          each lesson sets up the one after it and the checkpoint grades against that
+          setup. Working them in order is what banks the points.
         </p>
         <div className={styles.previewActions}>
           <Link to={current.slug} className={styles.previewCta}>
@@ -245,7 +285,7 @@ function PreviewFooter({ current }) {
   return (
     <div className={styles.previewFoot}>
       <span className={styles.previewFootText}>
-        That is the whole lesson, switched off. Pick up where you left off:
+        That is the whole lesson. The controls come alive once you reach it:
       </span>
       <Link to={current.slug} className={styles.previewCta}>
         Lesson {current.n}: {current.title}

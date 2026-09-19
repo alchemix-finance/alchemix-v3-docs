@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "@docusaurus/Link";
 import styles from "../lesson.module.css";
 import parts from "../parts.module.css";
 import { fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
-import { nextLesson } from "../lib/track";
 import useElementWidth from "../lib/useElementWidth";
 import LocalNotice from "../LocalNotice";
 
@@ -71,17 +69,53 @@ export function Arrow() {
   );
 }
 
+/**
+ * The panel that answers the stage's question.
+ *
+ * Two columns on anything wider than a tablet: the verdict and the button that
+ * follows it on the left, the explanation on the right. The panel is as wide as
+ * the lab, and a single column of prose inside it stopped at about two thirds
+ * of that and left the rest of the box empty. Splitting it fills the box and
+ * shortens the line at the same time.
+ *
+ * The children are written head, body, button so the one-column layout on a
+ * phone reads in that order; the grid areas do the swapping.
+ */
 export function Reveal({ title, children, onNext, nextLabel }) {
   return (
     <div className={styles.reveal}>
-      <div className={styles.revealHead}>{title}</div>
-      {children}
-      {onNext ? <Primary onClick={onNext}>{nextLabel}</Primary> : null}
+      <div className={`${styles.resultHead} ${styles.revealHead}`}>{title}</div>
+      <div className={styles.resultText}>{children}</div>
+      {onNext ? (
+        <div className={styles.resultAct}>
+          <Primary onClick={onNext}>{nextLabel}</Primary>
+        </div>
+      ) : null}
     </div>
   );
 }
 
 export const Body = ({ children }) => <p className={styles.revealBody}>{children}</p>;
+
+/**
+ * The sentence a reveal opens on: what the learner said, before what is true.
+ *
+ * Stage one exists to get a commitment out of the learner before the answer
+ * arrives, and eight labs used to state the answer without acknowledging the
+ * commitment. That left the learner to remember their own number to find out
+ * whether they had been wrong, which is the one thing the prediction was for.
+ *
+ * `within` is how close counts as close, in whatever units the guess is in.
+ * Worth saying, because these sliders are coarse and an exact hit is often not
+ * on offer.
+ */
+export function said(guess, truth, format = (v) => String(v), within = 0) {
+  if (guess === truth) return `You said ${format(guess)}, which is exactly it. `;
+  if (within > 0 && Math.abs(guess - truth) <= within) {
+    return `You said ${format(guess)}, which is close. `;
+  }
+  return `You said ${format(guess)}. `;
+}
 
 export function Readout({ children }) {
   return <div className={styles.readout}>{children}</div>;
@@ -245,6 +279,232 @@ export function FlowArrow() {
   );
 }
 
+/* ── The app, inline ─────────────────────────────────────── */
+
+/**
+ * A detail of the real app, cropped out of a full screen capture.
+ *
+ * Every lesson already ends with the whole screen it is about. This is the
+ * other half of that: the one control or one stat the learner is pushing on
+ * right now, beside the model of it, so the slider they just moved has a face
+ * in the app.
+ *
+ * A crop is a fraction of the capture ({ x, y, w, h }, all 0 to 1). The frame
+ * takes its aspect ratio from the crop against the file's own pixel size, and
+ * the image inside is blown up to 1/w of the frame and shifted into place, so
+ * no files had to be re-cut and a crop can be nudged by editing four numbers.
+ */
+function cropStyle(shot) {
+  const [W, H] = shot.size;
+  const c = shot.crop ?? { x: 0, y: 0, w: 1, h: 1 };
+  return {
+    frame: { aspectRatio: `${(c.w * W) / (c.h * H)}` },
+    img: {
+      width: `${100 / c.w}%`,
+      left: `${(-c.x / c.w) * 100}%`,
+      top: `${(-c.y / c.h) * 100}%`,
+    },
+  };
+}
+
+/**
+ * The frame every app image in the academy sits in.
+ *
+ * One treatment for all of them, whether it is a cropped detail beside the
+ * control it explains or the whole screen at the foot of a lesson. The geometry
+ * is in fixed pixels rather than percentages, which is the reason the frame is
+ * drawn here instead of being a border on the image: the corner marks then read
+ * the same on a wide thin strip and on a tall panel, and a page of screenshots
+ * at six different aspect ratios still looks like one set.
+ *
+ * The docs do this too, in their own palette (`src/components/FramedImage`).
+ * Same idea, different marks: rules that overhang the picture at every corner,
+ * and a dot where they cross.
+ */
+function Frame({ children }) {
+  return (
+    <div className={parts.figFrame}>
+      <span className={parts.figMat} aria-hidden="true" />
+      <span className={`${parts.figRule} ${parts.figTop}`} aria-hidden="true" />
+      <span className={`${parts.figRule} ${parts.figBottom}`} aria-hidden="true" />
+      <span className={`${parts.figUpright} ${parts.figLeft}`} aria-hidden="true" />
+      <span className={`${parts.figUpright} ${parts.figRight}`} aria-hidden="true" />
+      <span className={`${parts.figDot} ${parts.figTl}`} aria-hidden="true" />
+      <span className={`${parts.figDot} ${parts.figTr}`} aria-hidden="true" />
+      <span className={`${parts.figDot} ${parts.figBl}`} aria-hidden="true" />
+      <span className={`${parts.figDot} ${parts.figBr}`} aria-hidden="true" />
+      {children}
+    </div>
+  );
+}
+
+/**
+ * One caption shape for every figure: a label, then what to look at.
+ *
+ * Always under the picture. The crops used to sit in a two-column figure with
+ * the caption beside them, which gave the academy two different-looking figures
+ * on the same page depending on how wide the crop was.
+ */
+function Caption({ label, children }) {
+  return (
+    <figcaption className={parts.figCap}>
+      <span className={parts.figLabel}>{label}</span>
+      {children ? <span className={parts.figText}>{children}</span> : null}
+    </figcaption>
+  );
+}
+
+export function AppShot({ shot, label = "In the app", children }) {
+  const { frame, img } = cropStyle(shot);
+
+  return (
+    <figure
+      className={parts.fig}
+      style={shot.max ? { "--fig-max": `${shot.max}rem` } : undefined}
+    >
+      <Frame>
+        <div className={parts.figWindow} style={frame}>
+          <img className={parts.figCrop} style={img} src={shot.src} alt={shot.alt} loading="lazy" />
+        </div>
+      </Frame>
+      <Caption label={label}>{children}</Caption>
+    </figure>
+  );
+}
+
+/**
+ * A whole capture rather than a crop of one, in the same frame.
+ *
+ * What the foot of a lesson shows: the entire screen the lesson is about, after
+ * the crops have pointed at the parts of it. `max` caps the figure for a capture
+ * narrower than the column, so it is never blown up past its own resolution.
+ */
+export function ScreenShot({ src, alt, max, label = "The whole screen, in the app", children }) {
+  return (
+    <figure className={parts.fig} style={max ? { "--fig-max": `${max}rem` } : undefined}>
+      <Frame>
+        <div className={parts.figWindow}>
+          <img className={parts.figWhole} src={src} alt={alt} loading="lazy" />
+        </div>
+      </Frame>
+      <Caption label={label}>{children}</Caption>
+    </figure>
+  );
+}
+
+/**
+ * The crops the lessons use, with the pixel size of each capture beside it.
+ *
+ * Every file here was checked against the live app: the older captures in
+ * static/img predate the navigation rename and none of them is used. The
+ * screens are the ETH market, so a caption describes the screen rather than
+ * claiming it is the learner's own position.
+ */
+const STATS = [1610, 591];
+
+/** One stat tile on a vault, by column and row of the app's four-by-two grid. */
+const tile = (col, row) => ({
+  x: [48, 432, 815, 1197][col] / STATS[0],
+  y: [140, 268][row] / STATS[1],
+  w: 366 / STATS[0],
+  h: 118 / STATS[1],
+});
+
+export const SHOTS = {
+  depositBorrow: {
+    src: "/img/quick-start-02.png",
+    size: [1872, 966],
+    crop: { x: 0.2137, y: 0.559, w: 0.2778, h: 0.4193 },
+    max: 22,
+    alt: "The Deposit/Borrow tab: a field for the asset you are depositing above a field for the alAsset you are borrowing, then a Deposit button",
+  },
+  vaultCard: {
+    src: "/img/borrowing-in-alchemix-01.png",
+    size: [2016, 1272],
+    crop: { x: 0.4658, y: 0.5118, w: 0.4112, h: 0.2028 },
+    alt: "The figures on a vault card on the Borrow page: total deposits, total debt, earmarked, and LTV 90.00%",
+  },
+  redemptionRate: {
+    src: "/img/borrowing-in-alchemix-02.png",
+    size: STATS,
+    crop: tile(1, 1),
+    max: 21,
+    alt: "The Redemption Rate stat on a vault, reading 58.61%",
+  },
+  depositCap: {
+    src: "/img/borrowing-in-alchemix-01.png",
+    size: [2016, 1272],
+    crop: { x: 0.1855, y: 0.5401, w: 0.2406, h: 0.1384 },
+    max: 22,
+    alt: "The left of a vault card on the Borrow page: its APR over a bar showing how full its deposit cap is",
+  },
+  healthFactor: {
+    src: "/img/borrowing-in-alchemix-02.png",
+    size: STATS,
+    crop: tile(3, 0),
+    max: 21,
+    alt: "The Health Factor stat on a vault, reading 3.00",
+  },
+  ltv: {
+    src: "/img/borrowing-in-alchemix-02.png",
+    size: STATS,
+    crop: tile(3, 1),
+    max: 21,
+    alt: "The LTV stat on a vault, reading 30.00 out of 90.00%",
+  },
+  positionBar: {
+    src: "/img/borrowing-in-alchemix-02.png",
+    size: STATS,
+    crop: { x: 0.0248, y: 0.7614, w: 0.9565, h: 0.1692 },
+    alt: "A vault's bar, split into deposit, debt and earmarked, with MAX LTV and LIQ LTV marked near the right end",
+  },
+  repayTab: {
+    src: "/img/repay-loan-01.png",
+    size: [2038, 1270],
+    crop: { x: 0.185, y: 0.5378, w: 0.3057, h: 0.1929 },
+    max: 24,
+    alt: "The Repay tab on a vault, with an amount field and a Repay button",
+  },
+  withdrawTab: {
+    src: "/img/withdraw-02.png",
+    size: [2060, 1239],
+    crop: { x: 0.1976, y: 0.5504, w: 0.2825, h: 0.1897 },
+    max: 24,
+    alt: "The Withdraw tab on a vault, showing the amount available and a MAX button",
+  },
+  fixedYieldCard: {
+    src: "/img/redeem-alassets-01.png",
+    size: [2169, 1174],
+    crop: { x: 0.1369, y: 0.4233, w: 0.7197, h: 0.2624 },
+    alt: "A card on the Fixed Yield page: projected fixed APR, deposit cap, term, early exit fee, maturity date and the alUSD price it quotes against",
+  },
+  alAssetPrice: {
+    src: "/img/redeem-alassets-01.png",
+    size: [2169, 1174],
+    crop: { x: 0.39, y: 0.7387, w: 0.1675, h: 0.095 },
+    max: 20,
+    alt: "A Fixed Yield card quoting the alUSD price at 0.952 USDC, under its maturity date",
+  },
+  fixedPositions: {
+    src: "/img/redeem-alassets-02.png",
+    size: [1557, 506],
+    crop: { x: 0.0578, y: 0.1344, w: 0.8863, h: 0.7352 },
+    alt: "Open Fixed Yield positions, each with the APR it locked in, its end date, the alETH deposited, and the profit standing on it",
+  },
+  visualizerOut: {
+    src: "/img/visualizer-01.png",
+    size: [814, 765],
+    crop: { x: 0.037, y: 0.863, w: 0.934, h: 0.113 },
+    alt: "What the Visualizer reports under its chart: loan cost, aggregate yield, and projected profit",
+  },
+  strategies: {
+    src: "/img/repay-loan-01.png",
+    size: [2038, 1270],
+    crop: { x: 0.5157, y: 0.5984, w: 0.2925, h: 0.1244 },
+    alt: "The Info tab on a vault, listing each strategy with its risk level, APR and allocation",
+  },
+};
+
 /* ── Position card ───────────────────────────────────────── */
 
 const TONE = { ok: "#5ba88a", cap: "#d4952a", liq: "#d4645a" };
@@ -288,12 +548,28 @@ export function PositionCard({
   deposited,
   borrowed = 0,
   earmarked = 0,
+  /**
+   * The protocol's redemption rate, as a decimal, when a lesson is teaching it.
+   * The app prints this on every vault and the card used to leave it out, which
+   * made "the balance falls" a claim with no number behind it.
+   */
+  redemption = null,
   asset = "USDC",
   capLtv = 0.9,
   liqLtv = 0.95,
   backingLoss = 0,
   earning = true,
   showHealth = false,
+  /**
+   * Which threshold markers the bar is allowed to draw: "all", "cap", or "none".
+   *
+   * A card that always drew both put "Liquidation 95%" in front of a beginner on
+   * lesson 2, three lessons before anything explains it, on a position with no
+   * debt. A lesson shows the markers it has taught and no others.
+   */
+  marks = "all",
+  /** Off until a lesson has said what the ratio is. Same reason as `marks`. */
+  showLtv = true,
   highlight = null,
   note = null,
   compact = false,
@@ -334,11 +610,24 @@ export function PositionCard({
     );
   };
 
+  const showCap = marks === "all" || marks === "cap";
+  const showLiq = marks === "all";
+  // With no markers and no debt there is nothing for the bar to say, so the card
+  // drops it rather than drawing an empty track.
+  const showBar = showCap || showLiq || debt > 0;
+
+  // The label describes what is actually drawn. Announcing a liquidation
+  // threshold the bar is not showing would put the term back in front of a
+  // learner using a screen reader.
   const barLabel =
-    `LTV ${markPct(ltv)}. Borrowing cap ${markPct(capLtv)}. Liquidation ${markPct(liqAt)}` +
-    (loss > 0
-      ? `, after a ${markPct(loss)} loss of backing. Effective LTV ${markPct(effective)}.`
-      : ".") +
+    `LTV ${markPct(ltv)}.` +
+    (showCap ? ` Borrowing cap ${markPct(capLtv)}.` : "") +
+    (showLiq
+      ? ` Liquidation ${markPct(liqAt)}${
+          loss > 0 ? `, after a ${markPct(loss)} loss of backing` : ""
+        }.`
+      : "") +
+    (loss > 0 ? ` Effective LTV ${markPct(effective)}.` : "") +
     (mark > 0 ? ` ${markPct(dep > 0 ? mark / dep : 0)} of the deposit is earmarked.` : "");
 
   return (
@@ -377,6 +666,9 @@ export function PositionCard({
               </>
             ), "#8ea9d8")
           : null}
+        {redemption != null
+          ? stat("redemption", "Redemption rate", `${+(redemption * 100).toFixed(1)}%`, "#8ea9d8")
+          : null}
         {showHealth
           ? stat(
               "health",
@@ -387,15 +679,18 @@ export function PositionCard({
           : null}
         {/* The LTV figure keeps its state color even when highlighted; a warning
             should not be painted over by the accent. */}
-        {stat(
-          "ltv",
-          "LTV",
-          `${(ltv * 100).toFixed(1)}%`,
-          state === "ok" && highlight === "ltv" ? "#f5c09a" : tone,
-          loss > 0 ? `Effective ${(effective * 100).toFixed(1)}%` : null,
-        )}
+        {showLtv
+          ? stat(
+              "ltv",
+              "LTV",
+              `${(ltv * 100).toFixed(1)}%`,
+              state === "ok" && highlight === "ltv" ? "#f5c09a" : tone,
+              loss > 0 ? `Effective ${(effective * 100).toFixed(1)}%` : null,
+            )
+          : null}
       </div>
 
+      {showBar ? (
       <div className={parts.cardBar}>
         <div className={parts.cardTrack} role="img" aria-label={barLabel}>
           <span
@@ -415,14 +710,19 @@ export function PositionCard({
               }}
             />
           ) : null}
-          <span className={`${parts.cardMark} ${parts.cardMarkCap} ${tagSide(capLtv)}`} style={{ left: `${clamp(capLtv)}%` }}>
-            <span className={parts.cardTag}>Cap {markPct(capLtv)}</span>
-          </span>
-          <span className={`${parts.cardMark} ${parts.cardMarkLiq} ${tagSide(liqAt)}`} style={{ left: `${clamp(liqAt)}%` }}>
-            <span className={parts.cardTag}>Liquidation {markPct(liqAt)}</span>
-          </span>
+          {showCap ? (
+            <span className={`${parts.cardMark} ${parts.cardMarkCap} ${tagSide(capLtv)}`} style={{ left: `${clamp(capLtv)}%` }}>
+              <span className={parts.cardTag}>Cap {markPct(capLtv)}</span>
+            </span>
+          ) : null}
+          {showLiq ? (
+            <span className={`${parts.cardMark} ${parts.cardMarkLiq} ${tagSide(liqAt)}`} style={{ left: `${clamp(liqAt)}%` }}>
+              <span className={parts.cardTag}>Liquidation {markPct(liqAt)}</span>
+            </span>
+          ) : null}
         </div>
       </div>
+      ) : null}
 
       {mark > 0 ? (
         <div className={parts.cardKey}>
@@ -457,8 +757,13 @@ const KEYS = ["A", "B", "C", "D", "E"];
  *
  * Choice options arrive in this learner's order and the answer goes back as the
  * index picked. Which option is right is never known here, so grading stays on
- * the server. A miss shows the feedback for the option picked and leaves the
- * rest alone.
+ * the server.
+ *
+ * A miss ends the question. The learner reads why the option they picked is
+ * wrong, and the next attempt draws a different variant from the bank. Leaving
+ * the same four options on screen made the checkpoint answerable by elimination,
+ * and handed over an explanation on every attempt while it happened. The numeric
+ * checkpoints already worked this way.
  */
 export function Checkpoint({
   base,
@@ -491,22 +796,33 @@ export function Checkpoint({
   const [result, setResult] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const load = useCallback(() => {
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    setPicked(null);
-    fetchChallenge(base, lessonId)
-      .then((c) => {
-        setChallenge(c);
-        const s = c.controls?.slider;
-        setValue(s ? s.min + (s.max - s.min) / 2 : 0);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [base, lessonId]);
+  /**
+   * Ask for a question, optionally excluding the variant just missed.
+   *
+   * A choice checkpoint passes the variant it is holding, so a miss costs the
+   * learner the question rather than one of four options.
+   */
+  const load = useCallback(
+    (avoid) => {
+      setLoading(true);
+      setError(null);
+      setResult(null);
+      setPicked(null);
+      fetchChallenge(base, lessonId, avoid)
+        .then((c) => {
+          setChallenge(c);
+          const s = c.controls?.slider;
+          setValue(s ? s.min + (s.max - s.min) / 2 : 0);
+        })
+        .catch((e) => setError(e.message))
+        .finally(() => setLoading(false));
+    },
+    [base, lessonId],
+  );
 
-  useEffect(load, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const fields = challenge?.params?.fields;
   const target = useMemo(() => (fields && targetOf ? targetOf(fields) : null), [fields, targetOf]);
@@ -567,7 +883,6 @@ export function Checkpoint({
   }
 
   const passed = Boolean(result?.passed || done);
-  const next = nextLesson(lessonId);
 
   return (
     <Stage eyebrow={eyebrow} headline={isChoice ? challenge.prompt : headline}>
@@ -583,15 +898,12 @@ export function Checkpoint({
         <ChoiceAnswer
           choices={challenge.controls.choices}
           picked={picked}
-          onPick={(i) => {
-            setPicked(i);
-            // A new selection is a new attempt, so the old verdict goes away.
-            if (result && !result.passed) setResult(null);
-          }}
+          onPick={setPicked}
           result={result}
           passed={passed}
           submitting={submitting}
           onSubmit={onSubmit}
+          onRetry={() => load(fields?.variant)}
         />
       ) : (
         <SliderAnswer
@@ -610,33 +922,23 @@ export function Checkpoint({
           passed={passed}
           submitting={submitting}
           onSubmit={onSubmit}
-          onRetry={load}
+          onRetry={() => load()}
         />
       )}
 
       {error && challenge ? <p className={styles.errorDetail}>{error}</p> : null}
 
+      {/* No onward links here. They used to sit in this panel, which put them
+          above the write-up of the lesson the learner had just finished: the
+          way out was offered before the summary of what they had worked out.
+          The write-up below carries the next lesson and the way back to the
+          map, so the reading order is verdict, screen, summary, onward. */}
       {passed ? (
         <div className={styles.passBox}>
-          <div className={styles.passHead}>{passTitle}</div>
-          {isChoice && result?.feedback ? <Body>{result.feedback}</Body> : null}
-          <Body>{passBody}</Body>
-          {/* Forward is the primary action. A course of thirteen lessons that
-              only offers the way back makes every learner round-trip through
-              the map twelve times. The last lesson of the last track has
-              nowhere forward to go, and the map's graduation panel is the
-              right destination there. */}
-          <div className={styles.passActions}>
-            {next ? (
-              <Link to={next.slug} className={styles.primaryLink}>
-                Next: {next.title}
-                <Arrow />
-              </Link>
-            ) : null}
-            <Link to="/academy" className={next ? styles.secondaryLink : styles.primaryLink}>
-              Back to the track
-              {next ? null : <Arrow />}
-            </Link>
+          <div className={`${styles.resultHead} ${styles.passHead}`}>{passTitle}</div>
+          <div className={styles.resultText}>
+            {isChoice && result?.feedback ? <Body>{result.feedback}</Body> : null}
+            <Body>{passBody}</Body>
           </div>
         </div>
       ) : null}
@@ -723,10 +1025,13 @@ function SliderAnswer({
 }
 
 /** The choice body of a checkpoint: the option list and the verdict. */
-function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onSubmit }) {
+function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onSubmit, onRetry }) {
   // Only revealed once the answer is settled, so a miss does not hand it over.
   const correct = passed && typeof result?.target === "number" ? result.target : null;
   const missed = Boolean(result && !result.passed);
+  // A settled question, either way. The options stop taking clicks, because the
+  // way on from a miss is a new question rather than a second guess at this one.
+  const settled = passed || missed;
 
   return (
     <>
@@ -744,7 +1049,7 @@ function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onS
               role="radio"
               aria-checked={picked === i}
               className={`${styles.choice} ${state}`}
-              disabled={passed}
+              disabled={settled}
               onClick={() => onPick(i)}
             >
               <span className={styles.choiceKey}>{KEYS[i] ?? i + 1}</span>
@@ -754,7 +1059,7 @@ function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onS
         })}
       </div>
 
-      {!passed ? (
+      {!settled ? (
         <Actions aside={picked == null ? "Choose an option." : null}>
           <button
             type="button"
@@ -768,9 +1073,16 @@ function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onS
       ) : null}
 
       {missed ? (
-        <div className={styles.missBox}>
-          {result.feedback ?? "That one is wrong. Try another option."}
-        </div>
+        <>
+          <div className={styles.missBox}>
+            {result.feedback ?? "That one is wrong."}
+          </div>
+          <Actions aside="Your next question covers the same ground from another angle.">
+            <button type="button" className={styles.primary} onClick={onRetry}>
+              Try a new question
+            </button>
+          </Actions>
+        </>
       ) : null}
     </>
   );

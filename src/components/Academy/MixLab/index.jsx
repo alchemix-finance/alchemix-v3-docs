@@ -3,7 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { Checkpoint } from "../kit";
+import { AppShot, Body, Checkpoint, Reveal, SHOTS } from "../kit";
 import { CAPS, MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../lib/myt";
 
 /**
@@ -96,18 +96,19 @@ function Predict({ onDone }) {
           </button>
         </div>
       ) : (
-        <div className={styles.reveal}>
-          <div className={styles.revealHead}>
-            The DAO caps Aggressive strategies at {MAX_AGGRESSIVE_PCT}% of the vault.
-          </div>
-          <p className={styles.revealBody}>
+        <Reveal
+          title={`The DAO caps Aggressive strategies at ${MAX_AGGRESSIVE_PCT}% of the vault.`}
+          onNext={onDone}
+          nextLabel="Build a mix inside the caps"
+        >
+          <Body>
             {guess > MAX_AGGRESSIVE_PCT
               ? `Your ${guess}% is above the cap. `
               : `Your ${guess}% is within the cap. `}
             Every strategy is classified Conservative, Moderate or Aggressive, and each
             class carries two ceilings: one on a single strategy, and one on everything at
             that risk level and above.
-          </p>
+          </Body>
 
           <div className={own.capTable}>
             <div className={own.capRow}>
@@ -124,20 +125,16 @@ function Predict({ onDone }) {
             </div>
           </div>
 
-          <p className={styles.revealBody}>
+          <Body>
             The second figure counts everything at that level and riskier. Moderate's 60%
             covers Moderate and Aggressive together, so filling Aggressive to 20% leaves
             Moderate 40% of the 60% they share.
-          </p>
-          <p className={styles.revealBody}>
+          </Body>
+          <Body>
             The caps are what make a high LTV safe to borrow at. Your borrowing headroom
             rests on what the vault underneath is allowed to hold.
-          </p>
-          <button type="button" className={styles.primary} onClick={onDone}>
-            Build a mix inside the caps
-            <ArrowIcon />
-          </button>
-        </div>
+          </Body>
+        </Reveal>
       )}
     </>
   );
@@ -255,28 +252,30 @@ function Explore({ onDone }) {
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
 
+      <AppShot shot={SHOTS.strategies}>
+        The real allocation, on a vault's Info tab. Each strategy is listed with the risk
+        level these ceilings apply to, what it earns, and how much of the vault it holds.
+      </AppShot>
+
       {atBest || sawBreach ? (
-        <div className={styles.reveal}>
-          <div className={styles.revealHead}>
-            {best.toFixed(2)}% is the highest blended APR inside every cap.
-          </div>
-          <p className={styles.revealBody}>
+        <Reveal
+          title={`${best.toFixed(2)}% is the highest blended APR inside every cap.`}
+          onNext={onDone}
+          nextLabel="Take the checkpoint"
+        >
+          <Body>
             That mix fills Aggressive to its {MAX_AGGRESSIVE_PCT}% ceiling and gives Moderate
             the {maxModeratePct(MAX_AGGRESSIVE_PCT)}% left of the 60% those two share, leaving
             the rest in Conservative, which has no cap at all. Anything higher needs a
             composition the DAO could not allocate.
             {!sawBreach ? " Push either slider past a ceiling as well." : ""}
-          </p>
-          <p className={styles.revealBody}>
+          </Body>
+          <Body>
             Your collateral earns this blend while your loan clears. A vault free to hold
             100% Aggressive would make a high LTV genuinely dangerous, and those same
             ceilings are what prevent it.
-          </p>
-          <button type="button" className={styles.primary} onClick={onDone}>
-            Take the checkpoint
-            <ArrowIcon />
-          </button>
-        </div>
+          </Body>
+        </Reveal>
       ) : (
         <p className={styles.hint}>
           Find the highest blended APR that stays inside every cap.

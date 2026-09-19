@@ -5,8 +5,8 @@ import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { LIQ_LTV, MAX_LTV, ltvAfterLoss, survivableLtv, survivesLoss } from "../lib/protocol";
 import {
-  Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
-  Primary, Question, Readout, Reveal, Stage, Sub,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Question, Readout, Reveal, SHOTS, Stage, Sub,
 } from "../kit";
 
 /**
@@ -62,8 +62,17 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
  * runs the crash afterwards to show what the other kind of shock does. A
  * learner who skipped the beginner track still meets both, in one sitting.
  */
+/** The three answers, in the order the panel offers them. */
+const PICKS = [
+  ["ben", "Ben only"],
+  ["both", "Both of them"],
+  ["neither", "Neither of them"],
+];
+
 function Predict({ onDone }) {
-  const [guess, setGuess] = useState("neither");
+  // Starts empty rather than on an answer. A pre-selected option is one the
+  // reveal would have to credit the learner with, and they never chose it.
+  const [guess, setGuess] = useState(null);
   const [stage2, setStage2] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
@@ -84,16 +93,17 @@ function Predict({ onDone }) {
         <PositionCard name="Ben" ltv={RISKY_LTV} color="#f5c09a" />
       </div>
 
+      <AppShot shot={SHOTS.positionBar}>
+        The two markers the cards above draw, on a real position. MAX LTV is where
+        borrowing stops and LIQ LTV is the {pct(LIQ_LTV)} this lesson sizes against.
+      </AppShot>
+
       {!revealed ? (
         <>
           <Panel>
             <Question>Which of them gets liquidated?</Question>
             <div className={own.choices}>
-              {[
-                ["ben", "Ben only"],
-                ["both", "Both of them"],
-                ["neither", "Neither of them"],
-              ].map(([id, label]) => (
+              {PICKS.map(([id, label]) => (
                 <button
                   key={id}
                   type="button"
@@ -105,8 +115,10 @@ function Predict({ onDone }) {
               ))}
             </div>
           </Panel>
-          <Actions aside="Liquidation begins at 95% LTV.">
-            <Primary onClick={() => setRevealed(true)}>Commit and apply the loss</Primary>
+          <Actions aside={guess ? "Liquidation begins at 95% LTV." : "Pick one before the loss lands."}>
+            <Primary onClick={() => setRevealed(true)} disabled={!guess}>
+              Commit and apply the loss
+            </Primary>
           </Actions>
         </>
       ) : (
@@ -126,6 +138,11 @@ function Predict({ onDone }) {
 
           <Reveal title={`Ben only. A ${pct(MYT_LOSS)} loss of backing raises every LTV at once.`}>
             <Body>
+              {guess === "ben"
+                ? "You said Ben only, and that is where the loss lands. "
+                : guess === "both"
+                  ? "You said both of them. Ana came through it. "
+                  : "You said neither of them. Ben did not come through it. "}
               When a strategy reports a loss, the backing behind every position falls and
               the same debt stands against less collateral. Your LTV rises while the price
               of ETH or USDC sits exactly where it was.
@@ -156,7 +173,7 @@ function Predict({ onDone }) {
                 <Body>
                   alETH is backed by ETH and alUSD by USDC. When the collateral falls, the
                   debt denominated in it falls by exactly as much. The ratio between them
-                  holds, and a ratio that holds can never cross a threshold.
+                  holds.
                 </Body>
                 <Body>
                   The market moves both sides of the position together, which is why it
@@ -269,6 +286,11 @@ function Explore({ onDone }) {
         At a {pct(loss)} loss, the highest starting LTV that survives is{" "}
         <strong>{pct(ceiling)}</strong>.
       </Readout>
+
+      <AppShot shot={SHOTS.healthFactor}>
+        Health Factor states the same distance the other way up: the borrowing cap over your
+        LTV, so 3.00 is a position at 30% against a 90% cap, and it falls as you borrow.
+      </AppShot>
 
       {seenFail || (moved.ltv && moved.loss) ? (
         <Reveal

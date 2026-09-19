@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import {
-  Actions, Body, Checkpoint, Control, Controls, FlowSteps, GuessSlider, Hint, Note,
-  Notes, Panel, PositionCard, Primary, Question, Readout, Reveal, Stage, Sub, money,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
+  Note, Notes, Panel, PositionCard, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub,
+  money, said,
 } from "../kit";
 
 /**
@@ -80,9 +81,16 @@ function Learn({ onDone }) {
         asset="USDC"
         earning="Earning"
         highlight="deposited"
+        marks="none"
+        showLtv={false}
         note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "Deposited and earning."}
         compact
       />
+
+      <AppShot shot={SHOTS.depositCap}>
+        A vault on the Borrow page. The bar is its deposit cap and how full it is, and the
+        figure above is what it is earning right now.
+      </AppShot>
 
       <Panel>
         <Question>
@@ -109,9 +117,9 @@ function Learn({ onDone }) {
       ) : (
         <Reveal title={`All ${money(DEPOSIT)} of it is returned.`} onNext={onDone} nextLabel="Let it earn">
           <Body>
+            {said(guess, DEPOSIT, money)}
             Withdraw on any day, in any amount, and the full balance is returned to you
-            along with anything it earned. There is no lock-up, no notice period and no
-            queue. Borrowing against the deposit is optional.
+            along with anything it earned. Borrowing against the deposit is optional.
           </Body>
           <Body>
             Each vault carries a <strong>deposit cap</strong>, drawn on its card as a bar with
@@ -153,6 +161,8 @@ function Try({ onDone }) {
         asset="USDC"
         earning={remaining > 0 ? "Earning" : "Nothing deposited"}
         highlight="deposited"
+        marks="none"
+        showLtv={false}
         note={full ? "Withdrawn in full, settled immediately." : `After one year at ${rate}%`}
       />
 
@@ -181,6 +191,11 @@ function Try({ onDone }) {
         />
       </Controls>
 
+      <AppShot shot={SHOTS.withdrawTab}>
+        The Withdraw tab, which is the second control above. Available is what the position
+        will release today, and MAX fills the field with all of it.
+      </AppShot>
+
       <Notes>
         <Note label="How it reaches you">
           Each MYT becomes worth more USDC as the strategies earn. Your yield shows up in
@@ -198,8 +213,7 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            That is the deposit plus a year at that rate. The withdrawal settled
-            immediately, and it included every day of earnings up to that point.
+            The withdrawal settled immediately, and it included every day of earnings.
           </Body>
         </Reveal>
       ) : (

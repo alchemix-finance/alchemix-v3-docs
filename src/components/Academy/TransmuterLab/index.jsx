@@ -5,8 +5,9 @@ import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { EXAMPLE_AL_PRICE } from "../lib/protocol";
 import {
-  Actions, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
-  Note, Notes, Panel, Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider,
+  Hint, Note, Notes, Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money,
+  money2, said,
 } from "../kit";
 
 /**
@@ -97,6 +98,11 @@ function Learn({ onDone }) {
 
       <FlowSteps steps={steps} />
 
+      <AppShot shot={SHOTS.fixedYieldCard}>
+        One card on the Fixed Yield page. The alUSD price is what you buy at, the term is
+        how long you wait, and the projected fixed APR is the first two annualized.
+      </AppShot>
+
       <Panel>
         <Question>You wait the full term. How much USDC do you receive?</Question>
         <GuessSlider
@@ -124,6 +130,7 @@ function Learn({ onDone }) {
           nextLabel="Compare it with selling"
         >
           <Body>
+            {said(guess, HOLDING, money)}
             The Transmuter ignores the market price entirely. One alUSD returns one USDC,
             one alETH returns one ETH, once the term is up. You paid{" "}
             {money(HOLDING * PRICE)} and receive {money(HOLDING)}, so the discount you bought

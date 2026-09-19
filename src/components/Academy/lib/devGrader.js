@@ -41,10 +41,24 @@ const money = (n) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
  * The variant and the seed are the only state: the variant picks the question,
  * the seed fixes the order its options are shown in. Both travel in `fields`, so
  * the grader below can rebuild the same order without storing anything.
+ *
+ * `avoid` names the variant the learner has just missed, and the draw excludes
+ * it. Four options and unlimited attempts made a choice checkpoint answerable by
+ * elimination, so a miss costs the question.
  */
-function choiceChallenge(lessonId) {
+function choiceChallenge(lessonId, avoid) {
   const bank = QUESTIONS[lessonId];
-  const variant = Math.floor(Math.random() * bank.length);
+  const skip =
+    Number.isInteger(avoid) && avoid >= 0 && avoid < bank.length && bank.length > 1 ? avoid : -1;
+  // Draw from the bank with the missed entry removed, then map back. Same rule
+  // the engine applies, so a locally redrawn question behaves the deployed way.
+  const variant =
+    skip < 0
+      ? Math.floor(Math.random() * bank.length)
+      : (() => {
+          const i = Math.floor(Math.random() * (bank.length - 1));
+          return i >= skip ? i + 1 : i;
+        })();
   const seed = 1 + Math.floor(Math.random() * 999_999);
   const q = bank[variant];
   const order = permutation(q.options.length, seed);
@@ -73,10 +87,10 @@ function choiceGrade(lessonId, f, answer) {
 const GENERATORS = {
   /* Beginner track. */
 
-  "what-alchemix-does": () => choiceChallenge("what-alchemix-does"),
-  "self-repaying": () => choiceChallenge("self-repaying"),
-  "what-can-go-wrong": () => choiceChallenge("what-can-go-wrong"),
-  "the-transmuter": () => choiceChallenge("the-transmuter"),
+  "what-alchemix-does": (avoid) => choiceChallenge("what-alchemix-does", avoid),
+  "self-repaying": (avoid) => choiceChallenge("self-repaying", avoid),
+  "what-can-go-wrong": (avoid) => choiceChallenge("what-can-go-wrong", avoid),
+  "the-transmuter": (avoid) => choiceChallenge("the-transmuter", avoid),
 
   "your-deposit": () => {
     const deposit = pick([5000, 10000, 20000, 25000, 50000]);
@@ -104,13 +118,13 @@ const GENERATORS = {
   /* Intermediate track. Every checkpoint here is a question, not a number to
      land on, so all seven route through the same choice bank. */
 
-  "getting-money-back": () => choiceChallenge("getting-money-back"),
-  "pace-of-repayment": () => choiceChallenge("pace-of-repayment"),
-  "where-yield-comes-from": () => choiceChallenge("where-yield-comes-from"),
-  "cost-of-borrowing": () => choiceChallenge("cost-of-borrowing"),
-  "ltv-and-risk": () => choiceChallenge("ltv-and-risk"),
-  "transmuter-and-peg": () => choiceChallenge("transmuter-and-peg"),
-  capstone: () => choiceChallenge("capstone"),
+  "getting-money-back": (avoid) => choiceChallenge("getting-money-back", avoid),
+  "pace-of-repayment": (avoid) => choiceChallenge("pace-of-repayment", avoid),
+  "where-yield-comes-from": (avoid) => choiceChallenge("where-yield-comes-from", avoid),
+  "cost-of-borrowing": (avoid) => choiceChallenge("cost-of-borrowing", avoid),
+  "ltv-and-risk": (avoid) => choiceChallenge("ltv-and-risk", avoid),
+  "transmuter-and-peg": (avoid) => choiceChallenge("transmuter-and-peg", avoid),
+  capstone: (avoid) => choiceChallenge("capstone", avoid),
 };
 
 /* ── Per-lesson graders. Each returns [actual, target, tolerance, unit]. ── */
@@ -139,11 +153,11 @@ const GRADERS = {
   capstone: (f, a) => choiceGrade("capstone", f, a),
 };
 
-export function localChallenge(lessonId) {
+export function localChallenge(lessonId, avoid) {
   const generate = GENERATORS[lessonId];
   if (!generate) throw new Error(`No local grader for ${lessonId}.`);
 
-  const { fields, prompt, controls } = generate();
+  const { fields, prompt, controls } = generate(avoid);
   return {
     params: { lessonId, fields },
     challenge: `${LOCAL_PREFIX}challenge`,

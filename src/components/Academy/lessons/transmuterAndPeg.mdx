@@ -1,9 +1,9 @@
 An alAsset can trade below face value while its peg holds. Every alAsset in
-circulation is backed by at least one unit of collateral inside the Alchemist, and
-the Transmuter will exchange it for the underlying at exactly 1:1 after a
-governance-set term. alAssets are synthetic debt tokens, and that exchange
-mechanism is what holds the soft peg. There is one exception. If an exploit leaves
-bad debt in the Alchemist, redemptions pay out pro-rata until the backing is
+circulation is backed by at least one unit of collateral inside the Alchemist, the
+contract that holds every position, and the Transmuter will exchange it for the
+underlying at exactly 1:1 after a governance-set term. That guarantee is what holds
+the soft peg on a synthetic debt token. There is one exception. If an exploit
+leaves bad debt in the Alchemist, redemptions pay out pro-rata until the backing is
 restored.
 
 A discount pays you for waiting, and the shorter the wait, the more the same
@@ -28,4 +28,4 @@ Transmuter makes the trade rational by guaranteeing the 1:1 exchange at the end 
 a known wait.
 
 If you want the liquidity right now, external pools such as Curve and Balancer
-trade alAssets at market price, with no waiting and some slippage.
+trade alAssets at market price. You get out the same day and pay slippage for it.

@@ -5,8 +5,8 @@ import own from "../parts.module.css";
 import { apiBase } from "../lib/api";
 import { MAX_LTV, ltvOf, withdrawable } from "../lib/protocol";
 import {
-  Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
-  Panel, PositionCard, Primary, Question, Reveal, Stage, Sub, money,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Note,
+  Notes, Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, money,
 } from "../kit";
 
 /**
@@ -210,6 +210,11 @@ function Try({ onDone }) {
         />
       </Controls>
 
+      <AppShot shot={SHOTS.withdrawTab}>
+        The Withdraw tab. Available is the figure this stage has been working out, and the
+        app has already run the arithmetic against your debt.
+      </AppShot>
+
       <Notes>
         <Note label="Withdraw now">
           Take whatever is already free and leave the loan open. It costs nothing and goes
@@ -221,10 +226,11 @@ function Try({ onDone }) {
           collateral behind it at the cap.
         </Note>
         <Note label="Which asset repays">
-          You can repay with alUSD, with MYT, or with the asset you deposited. One alUSD
-          cancels one unit of debt. Part of the loan can show as earmarked in the app,
-          meaning set aside for the next redemption cycle. Earmarked debt is repaid with
-          MYT, and the repay menu offers you only the assets that are valid.
+          You can repay with alUSD, with the asset you deposited, or with MYT, the token
+          your deposit is held as. One alUSD cancels one unit of debt. Part of the loan can
+          show as earmarked in the app, meaning set aside for the next redemption cycle.
+          Earmarked debt is repaid with MYT, and the repay menu offers you only the assets
+          that are valid. Lesson 3 goes inside the MYT.
         </Note>
       </Notes>
 

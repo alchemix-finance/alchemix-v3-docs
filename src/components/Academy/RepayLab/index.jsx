@@ -7,9 +7,9 @@ import {
   EXAMPLE_REDEMPTION, EXAMPLE_YIELD, borrowable, withdrawable,
 } from "../lib/protocol";
 import {
-  Actions, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Legend,
-  LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, Stage,
-  Sub, money,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Legend,
+  LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage,
+  Sub, money, said,
 } from "../kit";
 
 /**
@@ -60,6 +60,17 @@ const EARMARK_SHARE = 0.2;
 /** The sample nearest a whole month. */
 const sampleAt = (m) =>
   CURVE.reduce((best, p) => (Math.abs(p.month - m) < Math.abs(best.month - m) ? p : best));
+
+/**
+ * Where the balance stands after the first year, to the nearest hundred.
+ *
+ * The reveal needs it. A learner told the rate and then shown only the two-year
+ * figure has no way to check the shape of the fall against what they guessed.
+ */
+const OWED_AT_YEAR = Math.round(sampleAt(12).debt / 100) * 100;
+
+/** The example rate, written the way the app writes it. */
+const RATE = `${+(EXAMPLE_REDEMPTION * 100).toFixed(1)}%`;
 
 export default function RepayLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -114,17 +125,20 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        In Alchemix, redemptions repay the loan out of your own collateral. The protocol
-        sets that rate for every position at once, and the app prints it on your vault as
-        the Redemption Rate.
+        Redemptions repay the loan out of your own collateral, and the redemption rate is
+        the pace they run at: the share of what you owe that they clear over a year. The
+        protocol sets one rate for every position at once, and the app prints it on your
+        vault. This example runs at {RATE}.
       </Sub>
 
       <PositionCard
         deposited={at.collateral}
         borrowed={at.debt}
         earmarked={revealed && month > 0 ? at.debt * EARMARK_SHARE : 0}
+        redemption={EXAMPLE_REDEMPTION}
         asset="USDC"
         earning
+        marks="cap"
         highlight="borrowed"
         note={
           revealed
@@ -133,8 +147,14 @@ function Learn({ onDone }) {
         }
       />
 
+      <AppShot shot={SHOTS.redemptionRate}>
+        The rate on a live vault, reading 58.61% the day this was captured. It rises and
+        falls with how much is waiting in the Transmuter, so treat the {RATE} above as an
+        example rather than a schedule.
+      </AppShot>
+
       <Panel>
-        <Question>After two years, how much do you owe?</Question>
+        <Question>Two years at {RATE}, and you never touch it. How much do you owe?</Question>
         <GuessSlider
           label="Owed after two years"
           value={guess}
@@ -160,9 +180,10 @@ function Learn({ onDone }) {
           nextLabel="See what moves it"
         >
           <Body>
-            Two years went by and you never made a payment. Redemptions cleared the balance
-            gradually, out of collateral that kept earning the whole time. Redemption rates
-            move, so your own loan will clear faster or slower than this one.
+            {said(guess, OWED_AT_END, money, 250)}
+            Two years went by and you never made a payment. About {money(OWED_AT_YEAR)} was
+            still outstanding at the end of the first year, and the second year took most of
+            what was left, out of collateral that kept earning the whole time.
           </Body>
           <Body>
             The band inside the bar is <strong>earmarked</strong> debt: the slice already set
@@ -225,8 +246,10 @@ function Try({ onDone }) {
         deposited={at.collateral}
         borrowed={balance}
         earmarked={m > 0 ? balance * EARMARK_SHARE : 0}
+        redemption={EXAMPLE_REDEMPTION}
         asset="USDC"
         earning
+        marks="cap"
         highlight="borrowed"
         note={`${money(free)} USDC is free to withdraw.`}
         compact
@@ -273,6 +296,11 @@ function Try({ onDone }) {
           verdict={capped ? "the cap stops you here" : null}
         />
       </Controls>
+
+      <AppShot shot={SHOTS.repayTab}>
+        The Repay tab, which is the second control above. Type an amount, or take the
+        balance in your wallet with MAX, and the debt falls by what you send.
+      </AppShot>
 
       <Notes>
         <Note label="Time passing">

@@ -5,8 +5,8 @@ import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { EXAMPLE_AL_PRICE, borrowNeededFor, discountCost } from "../lib/protocol";
 import {
-  Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
-  Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
 /**
@@ -52,7 +52,6 @@ function Predict({ onDone }) {
 
   const received = WANT * PRICE;
   const shortfall = WANT - received;
-  const close = Math.abs(guess - received) <= 60;
 
   return (
     <Stage
@@ -64,6 +63,12 @@ function Predict({ onDone }) {
         against you is {money(WANT)}. What you actually want is spendable USDC, so you
         sell the alUSD on the open market, where it is trading at {PRICE.toFixed(2)}.
       </Sub>
+
+      <AppShot shot={SHOTS.alAssetPrice}>
+        The app quotes the same price this lesson is charging you. Every Fixed Yield card
+        prints what the alAsset is trading at, which is what a buyer pays and therefore
+        what you receive when you sell.
+      </AppShot>
 
       <Panel>
         <Question>How much USDC do you receive?</Question>
@@ -92,7 +97,7 @@ function Predict({ onDone }) {
           nextLabel="See what sets the gap"
         >
           <Body>
-            {close ? "Your guess was close. " : `You answered ${money(guess)}. `}
+            {said(guess, received, money, 60)}
             The {money(shortfall)} difference is the market discount, and it is what
             borrowing costs you here. You pay it once, at the moment you sell.
           </Body>

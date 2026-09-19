@@ -52,6 +52,22 @@ export function hasCompletion(lessonId) {
 }
 
 /**
+ * Throw away every stored completion.
+ *
+ * There was no way to do this short of opening devtools, which made the Academy
+ * awkward to demonstrate and impossible to retake. What it deletes is the
+ * receipts, so it deletes unclaimed points with them: the caller asks first.
+ */
+export function clearCompletions() {
+  try {
+    window.localStorage.removeItem(STORAGE_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * The stored tokens for a set of lesson ids, in the order the ids were given.
  * Ids with no stored token are skipped, so the result is what a claim can send.
  * Same rule as `readCompletions`: call it from an effect or a handler.
@@ -146,14 +162,23 @@ async function withDevFallback(lessonId, run, fallback) {
   }
 }
 
-export function fetchChallenge(base, lessonId) {
+/**
+ * Ask for one question.
+ *
+ * `avoid` is the variant the learner has just missed, and the engine draws a
+ * different one. It travels unsigned, which is safe in the only direction it can
+ * be abused: the worst a caller can do with it is refuse to be asked a question
+ * they have already seen.
+ */
+export function fetchChallenge(base, lessonId, avoid) {
+  const not = Number.isInteger(avoid) ? `&not=${avoid}` : "";
   return withDevFallback(
     lessonId,
     () =>
-      request(`${base}/api/academy/challenge?lesson=${encodeURIComponent(lessonId)}`, {
+      request(`${base}/api/academy/challenge?lesson=${encodeURIComponent(lessonId)}${not}`, {
         headers: { accept: "application/json" },
       }),
-    () => localChallenge(lessonId),
+    () => localChallenge(lessonId, avoid),
   );
 }
 

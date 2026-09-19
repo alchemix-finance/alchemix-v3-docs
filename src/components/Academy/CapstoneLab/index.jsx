@@ -4,12 +4,12 @@ import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import {
-  EXAMPLE_AL_PRICE, LIQ_LTV, borrowNeededFor, ltvAfterLoss, minimumCollateral,
+  EXAMPLE_AL_PRICE, LIQ_LTV, MAX_LTV, borrowNeededFor, ltvAfterLoss, minimumCollateral,
   survivableLtv, survivesLoss,
 } from "../lib/protocol";
 import {
-  Actions, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel,
-  Primary, Question, Readout, Reveal, Stage, Sub, money, money2,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
 /**
@@ -45,7 +45,7 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
       done={done}
       onPass={onComplete}
       passTitle="Track complete."
-      passBody="You just sized a position against a discount you cannot control and a loss you cannot predict. The market sets how much you must borrow, the vault sets how much collateral that needs, and the deposit follows from both."
+      passBody="The market sets how much you must borrow, the vault sets how much collateral that needs, and the deposit follows from both."
     />
   );
 }
@@ -57,7 +57,14 @@ function Predict({ onDone }) {
   const [revealed, setRevealed] = useState(false);
 
   const borrow = borrowNeededFor(WANT, PRICE);
-  const naive = borrow; // the answer someone gives who forgets the loss entirely
+  /**
+   * The deposit someone lands on who sizes against the cap and forgets the loss.
+   *
+   * This used to be the borrow itself, which put the counter-example at 100% LTV:
+   * a position the cap forbids and nobody could open. Sizing to the cap is the
+   * mistake people actually make, it is legal, and it still fails.
+   */
+  const naive = borrow / MAX_LTV;
   const truth = minimumCollateral(WANT, PRICE, LOSS);
   const naiveLtv = borrow / naive;
 
@@ -77,6 +84,11 @@ function Predict({ onDone }) {
         <BriefRow label="alUSD price" value={PRICE.toFixed(2)} note="what the market will pay you" tone="#f5c09a" />
         <BriefRow label="Coming loss of backing" value={pct(LOSS)} note="the vault is about to report it" tone="#d4645a" />
       </div>
+
+      <AppShot shot={SHOTS.visualizerOut}>
+        What the Visualizer reports once its four inputs are set. Loan cost is the discount
+        you take on the sale, and projected profit is what is left after it.
+      </AppShot>
 
       <Panel>
         <Question>What is the smallest deposit that gets you the capital and survives the loss?</Question>
@@ -105,10 +117,16 @@ function Predict({ onDone }) {
           nextLabel="Work both checks at once"
         >
           <Body>
+            {said(guess, truth, money, 100)}
             Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)},
-            which is the capital divided by the price. Deposit exactly that much and you
-            sit at {pct(naiveLtv)} LTV, where a {pct(LOSS)} loss takes you to{" "}
-            {pct(ltvAfterLoss(naiveLtv, LOSS))}, well past the {pct(LIQ_LTV)} threshold.
+            which is the capital divided by the price. The cap will let you open that
+            against {money2(naive)}, right at {pct(naiveLtv)} LTV. Take the smallest
+            deposit the cap allows and a {pct(LOSS)} loss carries you to{" "}
+            {pct(ltvAfterLoss(naiveLtv, LOSS))}, past the {pct(LIQ_LTV)} threshold.
+          </Body>
+          <Body>
+            The cap is not a safety margin. It is the most the protocol will lend against a
+            vault that has not lost anything yet.
           </Body>
           <Body>
             The loss sets the ceiling. At a {pct(LOSS)} loss, the highest starting LTV
@@ -136,13 +154,13 @@ function BriefRow({ label, value, note, tone }) {
 
 function Explore({ onDone }) {
   const [deposit, setDeposit] = useState(11_000);
-  const [price, setPrice] = useState(0.96);
+  const [price, setPrice] = useState(PRICE);
   const [loss, setLoss] = useState(0.12);
   const [solved, setSolved] = useState(false);
 
   const borrow = borrowNeededFor(WANT, price);
   const ltv = borrow / deposit;
-  const raisesEnough = deposit > 0 && borrow <= deposit * 0.9;
+  const raisesEnough = deposit > 0 && borrow <= deposit * MAX_LTV;
   const survives = survivesLoss(ltv, loss);
   const floor = minimumCollateral(WANT, price, loss);
   const works = raisesEnough && survives;
@@ -169,7 +187,7 @@ function Explore({ onDone }) {
           detail={
             raisesEnough
               ? `Borrowing ${money2(borrow)} at ${price.toFixed(3)} puts ${money(WANT)} in hand.`
-              : `Borrowing ${money2(borrow)} would need ${money2(borrow / 0.9)} of collateral to stay under the cap.`
+              : `Borrowing ${money2(borrow)} would need ${money2(borrow / MAX_LTV)} of collateral to stay under the cap.`
           }
         />
         <CheckRow

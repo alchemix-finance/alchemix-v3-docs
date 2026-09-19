@@ -5,12 +5,16 @@ import AcademyShell from "@site/src/components/Academy/Shell";
 import TrackLoop from "@site/src/components/Academy/TrackLoop";
 import { PositionCard } from "@site/src/components/Academy/kit";
 import {
-  apiBase, claimGraduation, completionsFor, isLocalCompletion, readCompletions,
+  apiBase, claimGraduation, clearCompletions, completionsFor, isLocalCompletion,
+  readCompletions,
 } from "@site/src/components/Academy/lib/api";
 import { positionCurve } from "@site/src/components/Academy/lib/model";
-import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "@site/src/components/Academy/lib/protocol";
 import {
-  LESSON_POINTS, TOTAL_POINTS, TRACKS, lessonById, trackBankedPoints, trackState, trackTotalPoints,
+  EXAMPLE_AL_PRICE, EXAMPLE_REDEMPTION, EXAMPLE_YIELD,
+} from "@site/src/components/Academy/lib/protocol";
+import {
+  BEGINNER_BONUS, INTERMEDIATE_BONUS, LESSON_POINTS, TOTAL_POINTS, TRACKS, lessonById,
+  trackBankedPoints, trackState, trackTotalPoints,
 } from "@site/src/components/Academy/lib/track";
 import styles from "./track.module.css";
 
@@ -29,7 +33,7 @@ const INTRO = {
   beginner:
     "Deposit, borrow up to 90% against it, and your collateral keeps earning while redemptions clear what you owe. Repay and withdraw whenever you want it back. Six lessons, one position, in the order you would open it.",
   intermediate:
-    "Where the yield actually comes from, why the vault caps how much risk it can hold, and why every borrower repays at the same rate. The last lesson hands you a target and has you size the position yourself.",
+    "Where the yield actually comes from, why the vault caps how much risk it can hold, and why every borrower repays at the same rate. It carries on from the beginner track, so start there if you have not borrowed before. Every vault has a Visualizer that projects a position from four inputs, and this track is how you learn to read three of them. The last lesson hands you a target and has you size the position yourself.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -57,6 +61,7 @@ export default function AcademyTrack() {
       description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track goes underneath. No wallet, no sign-in, nothing to install."
     >
       <section className={styles.intro}>
+        <div className={styles.introText}>
           <div className={styles.eyebrow}>Alchemix Academy</div>
           <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
           <p className={styles.sub}>
@@ -65,29 +70,13 @@ export default function AcademyTrack() {
             for you. Both tracks below cover how that actually happens.
           </p>
           <p className={styles.sub}>
-            You don't need a wallet, a sign-in, or anything installed, and every lesson
-            assumes you are starting from scratch. Read any lesson you like; the checkpoints
-            open in order.
+            You don't need a wallet, a sign-in, or anything installed. The beginner track
+            starts from scratch and the intermediate track picks up where it ends. Read any
+            lesson you like. The checkpoints open in order.
           </p>
+        </div>
 
-          <div className={styles.markets} aria-label="Where Alchemix runs">
-            <div className={styles.market}>
-              <span className={styles.marketChain}>Ethereum</span>
-              <span className={styles.marketPair}>alETH · alUSD</span>
-            </div>
-            <div className={styles.market}>
-              <span className={styles.marketChain}>Optimism</span>
-              <span className={styles.marketPair}>alETH · alUSD</span>
-            </div>
-            <div className={styles.market}>
-              <span className={styles.marketChain}>Arbitrum</span>
-              <span className={styles.marketPair}>alETH · alUSD</span>
-            </div>
-          </div>
-          <p className={styles.marketsNote}>
-            Each chain runs an ETH market and a USDC market. Every mechanic works the same
-            way in all six of them.
-          </p>
+        <RewardCard completedIds={completedIds} banked={banked} />
       </section>
 
       <section className={styles.loopSection}>
@@ -104,37 +93,167 @@ export default function AcademyTrack() {
         />
       ))}
 
-      <section className={styles.reward}>
-        <div className={styles.rewardCard}>
-          <div className={styles.microLabel}>Rewards</div>
-          <div className={styles.rewardTitle}>Each track earns a Discord role</div>
-          <p className={styles.rewardBody}>
-            Each lesson banks {LESSON_POINTS} points. Finishing a track adds its bonus and
-            the Discord role that comes with it. All of it converts to season points when
-            season one opens, which is when the founding class closes.
-          </p>
-
-          <div className={styles.rewardGrid}>
-            {TRACKS.map((track) => (
-              <div key={track.key} className={styles.rewardTrack}>
-                <div className={styles.microLabel}>{track.label}</div>
-                <div className={styles.rewardRole}>{track.roleLine}</div>
-                <div className={styles.rewardPoints}>
-                  Each of the {track.lessons.length} lessons pays {LESSON_POINTS} points,
-                  and finishing the track adds {track.bonus} more. That comes to{" "}
-                  {fmt(trackTotalPoints(track))}.
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className={styles.pointsRow}>
-            <span className={styles.points}>{fmt(banked)}</span>
-            <span className={styles.pointsOf}>of {fmt(TOTAL_POINTS)} points banked</span>
-          </div>
-        </div>
-      </section>
+      <ProgressNote
+        started={loaded && completedIds.length > 0}
+        onReset={() => {
+          clearCompletions();
+          setCompletions({});
+        }}
+      />
     </AcademyShell>
+  );
+}
+
+/**
+ * A bar that fills as points are banked.
+ *
+ * Copper while a track is in progress and green once it is finished, so the
+ * colour carries the same meaning as the check on a finished lesson's node. A
+ * bar that was green from the first lesson had nothing left to say at the last.
+ */
+function Meter({ value, total, complete, label }) {
+  const pct = total > 0 ? Math.min(value / total, 1) * 100 : 0;
+  return (
+    <span
+      className={styles.meter}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={total}
+      aria-valuenow={Math.round(value)}
+      aria-label={label}
+    >
+      <span
+        className={`${styles.meterFill} ${complete ? styles.meterDone : ""}`}
+        style={{ width: `${pct}%` }}
+      />
+    </span>
+  );
+}
+
+function DonePill() {
+  return (
+    <span className={styles.donePill}>
+      <CheckIcon />
+      Complete
+    </span>
+  );
+}
+
+/**
+ * The rewards panel, at the top of the page beside the headline.
+ *
+ * It used to sit at the foot of the map, under both tracks, which is the one
+ * place a reader deciding whether to start would never have reached. What the
+ * course pays is part of the pitch, so it opens the page.
+ *
+ * Each track carries a bar rather than a sentence of arithmetic. The figures are
+ * still there underneath it, but the thing a returning learner wants is how far
+ * along they are, and that reads faster as a bar than as two numbers.
+ */
+function RewardCard({ completedIds, banked }) {
+  const done = new Set(completedIds);
+  const full = banked >= TOTAL_POINTS;
+
+  return (
+    <aside className={styles.rewardCard} aria-labelledby="rewards-title">
+      <div className={styles.microLabel}>Rewards</div>
+      <h2 className={styles.rewardTitle} id="rewards-title">
+        Each track earns a Discord role
+      </h2>
+      <p className={styles.rewardBody}>
+        Every lesson banks {LESSON_POINTS} points. Finishing the beginner track adds{" "}
+        {BEGINNER_BONUS} more and the intermediate track {INTERMEDIATE_BONUS}, along with the
+        role each one carries. It all converts to season points when season one opens.
+      </p>
+      <p className={styles.rewardNote}>
+        Completions are kept in this browser until you claim them, so finish a track where
+        you started it.
+      </p>
+
+      <div className={styles.rewardTracks}>
+        {TRACKS.map((track) => {
+          const finished = track.lessons.filter((l) => done.has(l.id)).length;
+          const complete = finished === track.lessons.length;
+          const points = trackBankedPoints(track, completedIds);
+          const total = trackTotalPoints(track);
+
+          return (
+            <div key={track.key} className={styles.rewardTrack}>
+              <div className={styles.rewardTrackHead}>
+                <span className={styles.microLabel}>{track.label}</span>
+                {complete ? <DonePill /> : null}
+              </div>
+              <div className={styles.rewardRole}>{track.roleLine}</div>
+              <Meter
+                value={points}
+                total={total}
+                complete={complete}
+                label={`${track.label} points banked`}
+              />
+              <div className={styles.rewardMeta}>
+                <span>{finished} of {track.lessons.length} lessons</span>
+                <span className={styles.rewardFigure}>
+                  {fmt(points)} of {fmt(total)}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className={styles.pointsRow}>
+        <span className={`${styles.points} ${full ? styles.pointsDone : ""}`}>{fmt(banked)}</span>
+        <span className={styles.pointsOf}>of {fmt(TOTAL_POINTS)} points banked</span>
+      </div>
+      <Meter value={banked} total={TOTAL_POINTS} complete={full} label="Points banked" />
+    </aside>
+  );
+}
+
+/**
+ * Where progress lives, and how to be rid of it.
+ *
+ * Two facts nothing on the page stated. Completions sit in this browser, so a
+ * learner who opens the Academy on another device finds an empty map and no
+ * explanation. And there was no way to clear them short of devtools, which made
+ * the course impossible to retake and awkward to demonstrate at a community call.
+ *
+ * The confirm is not politeness. These receipts are the only proof of points
+ * that have not been claimed, and deleting them deletes the points.
+ */
+function ProgressNote({ started, onReset }) {
+  const [asking, setAsking] = useState(false);
+
+  return (
+    <section className={styles.progressNote}>
+      <p className={styles.progressNoteText}>
+        Your progress is stored in this browser. Open the Academy on another device and it
+        starts from zero, and clearing your site data clears your completions with it.
+      </p>
+
+      {started ? (
+        asking ? (
+          <div className={styles.resetAsk} role="alertdialog" aria-label="Delete your progress">
+            <span className={styles.resetWarn}>
+              This deletes every completion and the points they carry, and nothing restores
+              them.
+            </span>
+            <span className={styles.resetButtons}>
+              <button type="button" className={styles.resetGo} onClick={onReset}>
+                Delete it
+              </button>
+              <button type="button" className={styles.resetKeep} onClick={() => setAsking(false)}>
+                Keep it
+              </button>
+            </span>
+          </div>
+        ) : (
+          <button type="button" className={styles.resetLink} onClick={() => setAsking(true)}>
+            Start over
+          </button>
+        )
+      ) : null}
+    </section>
   );
 }
 
@@ -155,15 +274,16 @@ function TrackSection({ track, completions, loaded, base }) {
           <span className={styles.progressCount}>
             {doneCount} of {lessons.length} lessons complete
           </span>
-          <span className={styles.progressBar} aria-hidden="true">
-            <span
-              className={styles.progressFill}
-              style={{ width: `${(doneCount / lessons.length) * 100}%` }}
-            />
-          </span>
+          <Meter
+            value={doneCount}
+            total={lessons.length}
+            complete={complete}
+            label={`${track.label} lessons complete`}
+          />
           <span className={styles.progressPoints}>
             {fmt(banked)} of {fmt(trackTotalPoints(track))} points
           </span>
+          {complete ? <DonePill /> : null}
         </div>
       </div>
 
@@ -172,6 +292,7 @@ function TrackSection({ track, completions, loaded, base }) {
       ) : null}
 
       {track.key === "beginner" ? <CarriedPosition completedIds={completedIds} /> : null}
+      {track.key === "intermediate" ? <VisualizerSheet completedIds={completedIds} /> : null}
 
       <div className={styles.track}>
         {lessons.map((lesson, i) => (
@@ -258,10 +379,112 @@ function CarriedPosition({ completedIds }) {
         asset="USDC"
         earning
         showHealth={risk}
+        /* The map shows the learner only what the lessons have covered. The
+           ratio and the cap arrive in lesson 3, the liquidation marker in
+           lesson 5, so the card grows the same way the track does. */
+        showLtv={borrowed}
+        marks={risk ? "all" : borrowed ? "cap" : "none"}
         compact
         label="Your position"
         {...props}
       />
+    </div>
+  );
+}
+
+/**
+ * The intermediate track's carried artifact.
+ *
+ * The beginner track carries one position across six lessons and the map draws
+ * it. This track carried nothing: seven lessons on separate mechanics, and a
+ * capstone that handed the learner three fresh numbers at the end of them.
+ *
+ * It does have a spine, and two of the wrap-ups already point at it. Every vault
+ * has a Visualizer tab that projects a position, and it takes four inputs. Three
+ * are what this track teaches, one lesson each. The fourth depends on what the
+ * learner does with the capital they raised, so no lesson can supply it, and the
+ * capstone says as much.
+ *
+ * The figures are the lessons' own examples, which is what every other screen in
+ * the academy shows. The real ones are on the vault.
+ */
+const SHEET = [
+  {
+    field: "Yield APY",
+    value: `${(EXAMPLE_YIELD * 100).toFixed(2)}%`,
+    from: "where-yield-comes-from",
+    note: "what the strategies earn, inside the caps the DAO sets on them",
+  },
+  {
+    field: "Redemption",
+    value: `${(EXAMPLE_REDEMPTION * 100).toFixed(1)}%`,
+    from: "pace-of-repayment",
+    note: "the pace every loan in the market clears at",
+  },
+  {
+    field: "alAsset price",
+    value: EXAMPLE_AL_PRICE.toFixed(3),
+    from: "cost-of-borrowing",
+    note: "the discount you take when you sell what you borrowed",
+  },
+  {
+    field: "External APY",
+    value: "Yours",
+    from: null,
+    note: "what you earn on the capital you raised, which is your decision rather than the protocol's",
+  },
+];
+
+function VisualizerSheet({ completedIds }) {
+  const done = new Set(completedIds);
+  const filled = SHEET.filter((r) => r.from && done.has(r.from)).length;
+  const teachable = SHEET.filter((r) => r.from).length;
+
+  return (
+    <div className={styles.sheet}>
+      <div className={styles.sheetHead}>
+        <span className={styles.carriedLabel}>What this track builds toward</span>
+        <span className={styles.sheetCount}>
+          {filled} of {teachable} filled in
+        </span>
+      </div>
+      <p className={styles.sheetIntro}>
+        Every vault carries a <strong>Visualizer</strong> tab that projects the deposit, the
+        debt and the net value across a horizon you choose. These are the four figures it
+        asks for.
+      </p>
+
+      <dl className={styles.sheetRows}>
+        {SHEET.map((row) => {
+          const lesson = row.from ? lessonById(row.from) : null;
+          const known = !row.from || done.has(row.from);
+
+          return (
+            <div key={row.field} className={`${styles.sheetRow} ${known ? styles.sheetRowOn : ""}`}>
+              <dt className={styles.sheetField}>{row.field}</dt>
+              <dd className={styles.sheetValue}>
+                {known ? (
+                  // The input no lesson supplies is not a figure the learner
+                  // earned, so it does not get the colour that says one is.
+                  <span className={`${styles.sheetFigure} ${row.from ? "" : styles.sheetOwn}`}>
+                    {row.value}
+                  </span>
+                ) : (
+                  <Link to={lesson.slug} className={styles.sheetPending}>
+                    Lesson {lesson.n}
+                  </Link>
+                )}
+              </dd>
+              <dd className={styles.sheetNote}>{row.note}</dd>
+            </div>
+          );
+        })}
+      </dl>
+
+      <p className={styles.sheetFoot}>
+        Choosing an LTV turns the loss you expect into the ratio you open at, and the
+        capstone sizes the deposit from both.
+      </p>
     </div>
   );
 }

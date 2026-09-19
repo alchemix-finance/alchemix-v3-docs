@@ -415,67 +415,66 @@
   color: #e8e8ea;
 }
 
+/* A result panel is two columns wherever there is room: the verdict and the
+   button that follows it on the left, the explanation on the right.
+ *
+ * These panels are as wide as the lab, and a single column of prose inside one
+ * ran to about two thirds of that and left the rest of the box empty. The split
+ * fills the box and shortens the line at the same time, and the areas let the
+ * markup stay in reading order (head, text, button) for the one-column layout
+ * underneath. */
+.reveal,
+.passBox {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-areas:
+    "head text"
+    "act  text";
+  grid-template-rows: auto 1fr;
+  align-content: start;
+  column-gap: 2.75rem;
+  row-gap: 1.25rem;
+}
+
+.resultHead { grid-area: head; }
+.resultText { grid-area: text; min-width: 0; }
+.resultAct { grid-area: act; align-self: start; }
+
 .revealHead,
 .passHead {
   font-size: 1.1875rem;
   font-weight: 700;
   letter-spacing: -0.015em;
-  margin-bottom: 0.75rem;
   line-height: 1.45;
+  text-wrap: pretty;
 }
 
 .revealHead { color: #f5c09a; }
 .revealHead strong { color: #e8e8ea; }
 .passHead { color: #5ba88a; }
 
-/* The reveal and pass panels place their continue button directly after the
-   last child, without an actions row, so the gap has to live on the button. */
-.reveal > .primary,
-.reveal > .primaryLink,
-.passBox > .primary,
-.passBox > .primaryLink {
-  margin-top: 1.5rem;
-}
-
-/* Two actions after a pass: forward, and back to the map. The row carries the
-   gap so neither button needs the rule above. */
-.passActions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1rem;
-  margin-top: 1.5rem;
-}
-
-.passActions > .primaryLink {
-  margin-top: 0;
-}
-
-.secondaryLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #a8adb6;
-  text-decoration: none;
-  padding: 0.875rem 0.25rem;
-  min-height: 44px;
-  box-sizing: border-box;
-  transition: color 0.15s ease;
-}
-
-.secondaryLink:hover {
-  color: #f5c09a;
-  text-decoration: none;
-}
-
 .revealBody {
   font-size: 0.9375rem;
   line-height: 1.7;
   color: #e8e8ea;
   margin: 0 0 1rem;
-  max-width: 46rem;
+}
+
+.revealBody:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .reveal,
+  .passBox {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "text"
+      "act";
+    grid-template-rows: auto;
+    row-gap: 1rem;
+  }
 }
 
 /* ── Checkpoint ──────────────────────────────────────────── */
