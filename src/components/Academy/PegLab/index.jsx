@@ -3,7 +3,8 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { EXAMPLE_AL_PRICE, annualisedFromDiscount, termReturn } from "../lib/protocol";
+import { annualisedFromDiscount, termReturn } from "../lib/protocol";
+import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
   Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
@@ -22,16 +23,16 @@ import {
  * the gap.
  */
 
-const PRICE = EXAMPLE_AL_PRICE;
 const WEEKS = 20;
 const STAKE = 10_000;
 
 export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
+  const { price, live } = useAlUsdPrice();
 
-  if (stage === "predict") return <Predict onDone={() => onStage("explore")} />;
-  if (stage === "explore") return <Explore onDone={() => onStage("checkpoint")} />;
+  if (stage === "predict") return <Predict price={price} live={live} onDone={() => onStage("explore")} />;
+  if (stage === "explore") return <Explore market={price} onDone={() => onStage("checkpoint")} />;
 
   return (
     <Checkpoint
@@ -47,18 +48,18 @@ export default function PegLab({ lessonId, stage, onStage, done, onComplete }) {
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
-function Predict({ onDone }) {
+function Predict({ price, live, onDone }) {
   const [guess, setGuess] = useState(0);
   const [revealed, setRevealed] = useState(false);
 
-  const perTerm = termReturn(PRICE);
-  const annual = annualisedFromDiscount(PRICE, WEEKS);
-  const bought = STAKE / PRICE;
+  const perTerm = termReturn(price);
+  const annual = annualisedFromDiscount(price, WEEKS);
+  const bought = STAKE / price;
 
   return (
     <Stage
       eyebrow="Stage 1 · Predict"
-      headline={`alUSD is trading at ${PRICE.toFixed(2)} and redeems at 1.00.`}
+      headline={`alUSD is trading at ${priceText(price, live)}${live ? " today" : ""} and redeems at 1.00.`}
     >
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
@@ -110,7 +111,7 @@ function Predict({ onDone }) {
         >
           <Body>
             {said(guess, annual, (v) => `${v.toFixed(1)}%`, 1.5)}
-            Buying at {PRICE.toFixed(2)} and receiving 1.00 is a gain of{" "}
+            Buying at {priceText(price, live)} and receiving 1.00 is a gain of{" "}
             {perTerm.toFixed(2)}% on what you put in. That gain arrives in {WEEKS} weeks,
             which is {annual.toFixed(2)}% annualized.
           </Body>
@@ -135,8 +136,8 @@ function TradeStep({ label, value, tone }) {
 
 /* ── Stage 2: explore ────────────────────────────────────── */
 
-function Explore({ onDone }) {
-  const [price, setPrice] = useState(EXAMPLE_AL_PRICE);
+function Explore({ market, onDone }) {
+  const [price, setPrice] = useState(market);
   const [weeks, setWeeks] = useState(20);
   const [role, setRole] = useState("saver");
   const [seenBoth, setSeenBoth] = useState({ saver: true, borrower: false });

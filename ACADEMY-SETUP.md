@@ -76,6 +76,16 @@ live readings it was set against and the date they were checked. When they are
 next revisited, read the redemption rate off a couple of vaults in the app and
 the alAsset price off the Fixed Yield page, and update the comments with them.
 
+`EXAMPLE_AL_PRICE` is the fallback rather than the figure. The four lessons that
+price the discount (the beginner Transmuter lesson, and the intermediate cost,
+peg and capstone lessons) read the alUSD price from DefiLlama through
+`src/components/Academy/lib/useAlUsdPrice.js` and say "today" when they show
+it. Until the read resolves, and whenever it fails, is a day old, or is at or
+above par, they show the example and word it as one. The graded checkpoints
+carry their own figures, so the live price never reaches the grader. The
+redemption rate and the yield stay examples: each differs by vault, so there is
+no single live figure to read.
+
 The track map briefly carried a strip of live protocol figures and no longer
 does. Four of the five were fees for mechanisms a reader meets several lessons
 in, so on the front door they caveated examples nobody had read yet. Where a

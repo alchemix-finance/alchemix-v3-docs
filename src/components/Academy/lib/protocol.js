@@ -52,6 +52,11 @@ export const EXAMPLE_YIELD = 0.05;
  *
  * At 0.96 over a 20-week term the peg lesson annualizes to 10.83%, against the
  * 10.51% the Fixed Yield page was projecting on the same day.
+ *
+ * Since 2026-09-19 the four lessons that price the discount read the live
+ * figure through `useAlUsdPrice` and show this one only until that read
+ * resolves, or when it fails or returns a price the lessons cannot teach from.
+ * The track map's Visualizer sheet still shows it, as the example it is.
  */
 export const EXAMPLE_AL_PRICE = 0.96;
 
