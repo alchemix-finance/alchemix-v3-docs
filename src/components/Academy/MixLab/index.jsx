@@ -246,7 +246,7 @@ function Explore({ onDone }) {
       <div className={styles.eyebrow}>Stage 2 · Explore</div>
       <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
       <p className={styles.sub}>
-        Push a class past its ceiling and the vault turns the composition away. Moderate and
+        Push a class past its ceiling and the DAO could not allocate that mix. Moderate and
         Aggressive share a ceiling, so filling one tightens the other.
       </p>
 

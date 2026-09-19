@@ -235,8 +235,7 @@ function Try({ onDone }) {
           <Body>
             A loan with interest grows until you pay it down. An Alchemix balance is repaid
             out of your own collateral instead, and that collateral earns the whole time it
-            is doing so. How fast it falls depends on the redemption rate, which the app
-            shows on your vault and which lesson 4 puts a number to.
+            is doing so. How fast it falls depends on the redemption rate, which the app shows on your vault.
           </Body>
         </Reveal>
       ) : (

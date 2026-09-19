@@ -75,10 +75,14 @@ export default function LessonPage({
   // the second stage onward, and immediately for someone reading ahead.
   const showShot = Boolean(lesson.shot) && (preview || done || stage !== STAGES[0].id);
 
-  // The wrap-up prose is where the lesson is actually written down. Gating it on
-  // a passed checkpoint put the clearest explanation in the academy behind the
-  // test, and left "Read ahead" showing a frozen slider and nothing to read.
-  const showNotes = preview || done;
+  // The wrap-up prose is where the lesson is actually written down. It shows
+  // for a reader who is previewing, for a learner who has passed, and for a
+  // learner who has reached the checkpoint. Gating it on a pass put the clearest
+  // explanation in the academy behind the test. By the third stage every reveal
+  // in the lab has been shown, so nothing here is an answer the checkpoint was
+  // holding back: the questions ask what is true, and the write-up is what the
+  // learner was meant to have read before being asked.
+  const showNotes = preview || done || stage === STAGES[STAGES.length - 1].id;
 
   // How far into the lesson this learner has got, which is what the stepper
   // colours. Every stage is clickable either way: see the stepper below.
@@ -285,7 +289,7 @@ function PreviewFooter({ current }) {
   return (
     <div className={styles.previewFoot}>
       <span className={styles.previewFootText}>
-        That is the whole lesson. The controls come alive once you reach it:
+        That is the whole lesson. The controls switch on once you reach it:
       </span>
       <Link to={current.slug} className={styles.previewCta}>
         Lesson {current.n}: {current.title}

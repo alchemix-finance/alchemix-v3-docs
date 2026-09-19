@@ -187,7 +187,7 @@ function Explore({ onDone }) {
           nextLabel="Take the checkpoint"
         >
           <Body>
-            The price you sold at settles your cost. Hold the loan for as long as you like
+            The price you sold at fixes your cost. Hold the loan for as long as you like
             and that figure stays where it is, because Alchemix charges no interest.
           </Body>
           <Body>

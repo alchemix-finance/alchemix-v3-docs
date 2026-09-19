@@ -1,4 +1,3 @@
-import { MAX_LTV } from "./protocol";
 import { QUESTIONS, permutation } from "./questions";
 
 /**
@@ -29,9 +28,6 @@ import { QUESTIONS, permutation } from "./questions";
 export const devFallbackEnabled = () => process.env.NODE_ENV !== "production";
 
 export const LOCAL_PREFIX = "local:";
-
-const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
-const money = (n) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
 
 /* ── Multiple choice, mirrored from the engine ───────────── */
 
@@ -85,35 +81,15 @@ function choiceGrade(lessonId, f, answer) {
 /* ── Per-lesson generators ───────────────────────────────── */
 
 const GENERATORS = {
-  /* Beginner track. */
+  /* Beginner track. Every checkpoint is a question. Lessons 2 and 3 were sums
+     (deposit times a rate, deposit times the cap) until 2026-09-19. */
 
   "what-alchemix-does": (avoid) => choiceChallenge("what-alchemix-does", avoid),
+  "your-deposit": (avoid) => choiceChallenge("your-deposit", avoid),
+  borrowing: (avoid) => choiceChallenge("borrowing", avoid),
   "self-repaying": (avoid) => choiceChallenge("self-repaying", avoid),
   "what-can-go-wrong": (avoid) => choiceChallenge("what-can-go-wrong", avoid),
   "the-transmuter": (avoid) => choiceChallenge("the-transmuter", avoid),
-
-  "your-deposit": () => {
-    const deposit = pick([5000, 10000, 20000, 25000, 50000]);
-    const ratePct = pick([3, 4, 5, 6, 8, 10]);
-    return {
-      fields: { deposit, ratePct },
-      prompt:
-        `You deposit ${money(deposit)} USDC. Suppose the vault earns ${ratePct}% ` +
-        `over the next year. What is your deposit worth at the end of it?`,
-      controls: { slider: { min: deposit, max: deposit * 1.15, step: deposit / 500 } },
-    };
-  },
-
-  borrowing: () => {
-    const deposit = pick([10000, 20000, 30000, 40000, 50000]);
-    return {
-      fields: { deposit },
-      prompt:
-        `Your position holds ${money(deposit)} of collateral and you have not borrowed ` +
-        `anything yet. What is the most you can borrow against it?`,
-      controls: { slider: { min: 0, max: deposit, step: deposit / 500 } },
-    };
-  },
 
   /* Intermediate track. Every checkpoint here is a question, not a number to
      land on, so all seven route through the same choice bank. */
@@ -133,13 +109,11 @@ const GRADERS = {
   /* Beginner track. */
 
   "what-alchemix-does": (f, a) => choiceGrade("what-alchemix-does", f, a),
+  "your-deposit": (f, a) => choiceGrade("your-deposit", f, a),
+  borrowing: (f, a) => choiceGrade("borrowing", f, a),
   "self-repaying": (f, a) => choiceGrade("self-repaying", f, a),
   "what-can-go-wrong": (f, a) => choiceGrade("what-can-go-wrong", f, a),
   "the-transmuter": (f, a) => choiceGrade("the-transmuter", f, a),
-
-  "your-deposit": (f, a) => [a, f.deposit * (1 + f.ratePct / 100), f.deposit * 0.004, "amount"],
-
-  borrowing: (f, a) => [a, f.deposit * MAX_LTV, f.deposit * 0.004, "amount"],
 
   /* Intermediate track. Every checkpoint here is a question, not a number to
      land on, so all seven route through the same choice bank. */

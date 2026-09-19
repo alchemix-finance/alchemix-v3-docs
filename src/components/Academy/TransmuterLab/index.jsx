@@ -51,7 +51,7 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       done={done}
       onPass={onComplete}
       passTitle="Track complete."
-      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, identify the one risk that can reach you, and earn a fixed rate through the Transmuter. That covers the screens a first-time user actually touches."
+      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, identify the one risk that can reach you, and earn a fixed rate through the Transmuter."
     />
   );
 }
@@ -199,8 +199,7 @@ function Try({ onDone }) {
           Those figures are live and the DAO changes them.
         </Note>
         <Note label="Leaving early">
-          You can close a Transmuter position before it matures. The early exit fee on the
-          card is what it costs, and it exists to stop people hopping the queue.
+          You can close a Transmuter position before it matures. The early exit fee on the card is what it costs, and it exists to keep deposits committed for the term.
         </Note>
       </Notes>
 

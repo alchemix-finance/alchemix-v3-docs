@@ -1,6 +1,9 @@
 Redemptions clear debt. As Transmuter positions mature, the protocol converts
 earmarked collateral into the asset needed to repay debt, then spreads that
-repayment across the system in proportion to what each position owes.
+repayment across the system in proportion to what each position owes. Each
+redemption takes the same value off both sides of your position. That is
+deleveraging: the debt shrinks and so does the collateral behind it, and because
+the two are like-kind it costs you only the redemption fee.
 
 The redemption rate is the share of total system debt repaid this way in a year. It
 is a protocol-level parameter, and every position in the market sits on the same
@@ -11,8 +14,7 @@ The redemption rate sets how long a loan takes to clear, and the size of the loa
 does not enter it.
 
 Your vault prints the current one as **Redemption Rate**, and it moves with the
-Transmuter queue. Read it before you plan around any pace, including the example
-pace these lessons project at.
+Transmuter queue. Read it before you plan around any pace.
 
 ### What earmarking pays you
 

@@ -16,8 +16,7 @@ A loss inside the Mix-Yield Token is the only thing that can. If a strategy is
 exploited or reports negative returns, the backing behind every position falls. The
 same debt now stands against less collateral, so your LTV rises on its own.
 
-The highest starting LTV that survives a loss is the liquidation threshold applied
-to the backing that remains:
+After a loss, the 95% threshold applies to the collateral that remains, so the highest starting LTV that survives it is:
 
 > Survivable LTV = 95% × (1 − loss)
 

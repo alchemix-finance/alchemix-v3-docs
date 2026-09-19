@@ -31,9 +31,9 @@ import styles from "./track.module.css";
 
 const INTRO = {
   beginner:
-    "Deposit, borrow up to 90% against it, and your collateral keeps earning while redemptions clear what you owe. Repay and withdraw whenever you want it back. Six lessons, one position, in the order you would open it.",
+    "Deposit USDC or ETH and it starts earning. Borrow up to 90% of it as alUSD or alETH and sell that for cash. Redemptions then pay the balance down out of your own collateral, and the rest of it keeps earning. A price crash cannot liquidate you. When you want the deposit back, repay and withdraw.",
   intermediate:
-    "Where the yield actually comes from, why the vault caps how much risk it can hold, and why every borrower repays at the same rate. It carries on from the beginner track, so start there if you have not borrowed before. Every vault has a Visualizer that projects a position from four inputs, and this track is how you learn to read three of them. The last lesson hands you a target and has you size the position yourself.",
+    "Underneath the loan sits a vault with hard caps on the risk it can hold, one redemption rate that clears every loan in the market at the same pace, and a Transmuter that turns a discount on alUSD into a fixed rate. Each is a figure on the app, and each decides something about your position. Start with the beginner track if you have not borrowed before.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -58,7 +58,7 @@ export default function AcademyTrack() {
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track goes underneath. No wallet, no sign-in, nothing to install."
+      description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track covers the mechanics underneath it. No wallet, no sign-in, nothing to install."
     >
       <section className={styles.intro}>
         <div className={styles.introText}>
@@ -331,7 +331,7 @@ const CARRY_YEAR = positionCurve({
 }).at(-1);
 
 /**
- * An illustrative slice of the remaining debt shown as earmarked.
+ * An example slice of the remaining debt shown as earmarked.
  *
  * The protocol sizes each position's earmark to its share of total system debt
  * at the start of a cycle, so a real figure depends on the whole market. A fifth
@@ -481,10 +481,7 @@ function VisualizerSheet({ completedIds }) {
         })}
       </dl>
 
-      <p className={styles.sheetFoot}>
-        Choosing an LTV turns the loss you expect into the ratio you open at, and the
-        capstone sizes the deposit from both.
-      </p>
+      
     </div>
   );
 }

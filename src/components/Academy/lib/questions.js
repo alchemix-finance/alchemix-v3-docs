@@ -68,6 +68,143 @@ export const QUESTIONS = {
     },
   ],
 
+  "your-deposit": [
+    {
+      prompt:
+        "You deposit 10,000 USDC into a vault on the Borrow page. What does the vault do with it?",
+      options: [
+        "Wraps it into MYT, a share of a basket of yield strategies the Alchemix DAO manages",
+        "Lends it to other Alchemix users, who pay you interest on it",
+        "Holds it as USDC until you borrow against it",
+        "Sells it for alUSD and holds that instead",
+      ],
+      correct: 0,
+      explain: [
+        "Right. Your deposit becomes the Mix-Yield Token, and the DAO picks and rebalances the strategies behind it.",
+        "Alchemix lends nothing out. The deposit goes into yield strategies the DAO selects, and what they earn is yours.",
+        "The vault puts the USDC to work at once. It becomes MYT and starts earning whether or not you ever borrow.",
+        "Your USDC stays USDC underneath. alUSD only exists if you choose to borrow, and the deposit is what backs it.",
+      ],
+    },
+    {
+      prompt: "A year on, your deposit has earned 5%. Where does that yield show up?",
+      options: [
+        "In the value of the MYT you already hold, so each one is worth more USDC",
+        "As a USDC payment sent to your wallet at the end of each month",
+        "As extra MYT tokens added to your position",
+        "As a credit against a loan, if you have one",
+      ],
+      correct: 0,
+      explain: [
+        "Right. You hold the same MYT the whole time, and each one is worth a little more of the underlying as the strategies earn.",
+        "Nothing is paid out on a schedule. The yield sits in the value of your MYT, and you collect it whenever you withdraw.",
+        "The count of MYT stays where it was. What rises is what each one is worth.",
+        "Yield stays on the deposit side of a position. Redemptions are what clear a loan.",
+      ],
+    },
+    {
+      prompt: "You deposited 10,000 USDC last week and want it back today. What can you withdraw?",
+      options: [
+        "All of it, plus whatever it has earned, on any day you like",
+        "All of it, once a notice period has passed",
+        "Only the yield, until the vault's term ends",
+        "All of it, minus an early withdrawal fee",
+      ],
+      correct: 0,
+      explain: [
+        "Right. The vault has no lock-up, so any amount comes out on any day, and the yield comes with it.",
+        "Withdrawals go through the moment you ask. The vault holds no notice period.",
+        "The vault has no term. The whole deposit, principal and yield, is available on any day.",
+        "Withdrawing from the vault is free. The early exit fee belongs to the Transmuter, which is a different product.",
+      ],
+    },
+    {
+      prompt:
+        "A vault card on the Borrow page shows its deposit cap is full. What happens if you try to deposit?",
+      options: [
+        "The vault takes nothing more until the DAO raises the cap",
+        "Your deposit waits in a queue until space opens",
+        "Your deposit goes in, at a lower yield",
+        "Your deposit is routed to another vault automatically",
+      ],
+      correct: 0,
+      explain: [
+        "Right. A full cap closes the vault to new deposits, and the bar on the card shows how close it is.",
+        "There is no deposit queue. A full vault is closed until the DAO raises its cap.",
+        "The cap is a hard limit on what the vault holds, so nothing more goes in at any yield.",
+        "Nothing is routed for you. You pick the vault, and a full one is closed until the cap moves.",
+      ],
+    },
+  ],
+
+  "borrowing": [
+    {
+      prompt:
+        "Your 10,000 USDC is in the vault. You open the Borrow tab and press Max. What happens?",
+      options: [
+        "9,000 alUSD is minted to your wallet, and the 10,000 stays in the vault earning",
+        "9,000 USDC is sent from the vault to your wallet",
+        "10,000 alUSD is minted, since the deposit backs it one for one",
+        "9,000 alUSD is minted, and 9,000 of the deposit stops earning",
+      ],
+      correct: 0,
+      explain: [
+        "Right. Borrowing mints alUSD against the deposit, up to 90% of it, and the deposit itself does not move.",
+        "Borrowing mints a new token, alUSD, rather than releasing your USDC. The deposit stays in the vault.",
+        "The cap is 90% of the deposit, so 10,000 of collateral backs at most 9,000 alUSD.",
+        "Every unit of the deposit keeps earning with a loan against it. Backing the loan is a second job it does at the same time.",
+      ],
+    },
+    {
+      prompt: "What does your LTV measure?",
+      options: [
+        "What you owe divided by what you deposited",
+        "Your deposit divided by your debt",
+        "The share of your deposit that is still earning",
+        "How much more you are allowed to borrow",
+      ],
+      correct: 0,
+      explain: [
+        "Right. Borrow 3,000 against 10,000 and your LTV is 30%. Alchemix caps it at 90%.",
+        "That is the ratio upside down. LTV is loan to value: the debt over the deposit, so 3,000 against 10,000 is 30%.",
+        "The whole deposit earns whatever your LTV is. LTV is the debt as a share of the deposit.",
+        "Borrowing room is what the app calls Borrowable. LTV is what you owe as a share of what you deposited.",
+      ],
+    },
+    {
+      prompt: "Your vault shows a health factor of 3.00. What is it telling you?",
+      options: [
+        "Your LTV is a third of the 90% cap, so you are at 30%",
+        "You can borrow three times your deposit",
+        "Your deposit is worth three times your debt",
+        "You have three days before liquidation",
+      ],
+      correct: 0,
+      explain: [
+        "Right. Health factor is the borrowing cap divided by your LTV: 90% over 30% is 3.00, and it reads 1.00 at the cap.",
+        "Borrowing stops at 90% of the deposit, never above it. Health factor is how far under that cap you sit.",
+        "Close, but the figure is measured against the 90% cap rather than against the deposit. At 30% LTV the deposit is 3.33 times the debt, and the health factor is 3.00.",
+        "Health factor has no clock in it. It compares your LTV with the borrowing cap, and only a loss inside the vault can move you toward liquidation.",
+      ],
+    },
+    {
+      prompt: "After borrowing, 5,000 alUSD sits in your wallet. What is it?",
+      options: [
+        "A token minted against your deposit. Sell it for dollars, or hand it back to repay",
+        "5,000 USDC released from your deposit",
+        "A receipt you return to the vault when you want your deposit back",
+        "Your share of the vault, the same thing as MYT",
+      ],
+      correct: 0,
+      explain: [
+        "Right. alUSD is a new token minted against the collateral. It trades a little under a dollar, and inside Alchemix one alUSD cancels one USDC of debt.",
+        "Your USDC never left the vault. alUSD is a separate token, created when you borrowed.",
+        "alUSD is the loan rather than a receipt. Repaying it cancels debt, and withdrawing the deposit is a separate step.",
+        "MYT is what your deposit became, and it stays in the vault. alUSD is the debt you minted against it.",
+      ],
+    },
+  ],
+
   "self-repaying": [
     {
       prompt:
@@ -117,7 +254,7 @@ export const QUESTIONS = {
       explain: [
         "Right. Yield raises the collateral side, redemptions lower the debt side, and neither one drives the other.",
         "Redemptions are funded by the Transmuter queue, which earmarks collateral. Your yield stays with your deposit.",
-        "The debt falls on its own. Redemptions clear a share of it every year whether or not you act.",
+        "The debt is paid down without you. Redemptions clear a share of it every year whether or not you act.",
         "They are separate figures with separate causes. What the strategies earn has no bearing on how much gets repaid.",
       ],
     },
@@ -223,7 +360,7 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The exit is open on any day, and the fee exists to stop people hopping in and out of the queue.",
+        "Right. The exit is open on any day, and the fee exists to keep deposits committed for the term.",
         "You are never committed. Leaving is available whenever you need it, and the fee is what it costs.",
         "Queue positions are not traded between users. You exit your own deposit and pay the fee.",
         "The fee is charged on the early exit itself. Waiting out the term is the route that costs you nothing.",

@@ -37,6 +37,11 @@ export default function BorrowLab({ lessonId, stage, onStage, done, onComplete }
 
   return (
     <Checkpoint
+      /* The engine asks a question here (what Max does, what LTV measures, what
+         the health factor says, what alUSD is) and the checkpoint renders
+         whatever kind of control arrives. The slider props below are kept for
+         an engine that has not been redeployed since this lesson stopped being
+         a sum, and are ignored when a question arrives. */
       base={base}
       lessonId={lessonId}
       done={done}

@@ -141,8 +141,8 @@ function Predict({ onDone }) {
               {guess === "ben"
                 ? "You said Ben only, and that is where the loss lands. "
                 : guess === "both"
-                  ? "You said both of them. Ana came through it. "
-                  : "You said neither of them. Ben did not come through it. "}
+                  ? "You said both of them. Ana survived it. "
+                  : "You said neither of them. Ben was liquidated. "}
               When a strategy reports a loss, the backing behind every position falls and
               the same debt stands against less collateral. Your LTV rises while the price
               of ETH or USDC sits exactly where it was.
@@ -176,8 +176,7 @@ function Predict({ onDone }) {
                   holds.
                 </Body>
                 <Body>
-                  The market moves both sides of the position together, which is why it
-                  cannot touch you. A loss inside the vault moves the collateral side alone,
+                  The market moves both sides of the position together, which is why it cannot liquidate you. A loss inside the vault moves the collateral side alone,
                   and that is the shock your LTV has to be sized against.
                 </Body>
               </Reveal>

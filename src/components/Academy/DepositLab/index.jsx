@@ -34,6 +34,12 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
 
   return (
     <Checkpoint
+      /* The engine asks a question here (what the vault does with a deposit,
+         where the yield shows up, what can be withdrawn, what a full cap means)
+         and the checkpoint renders whatever kind of control arrives. The slider
+         props below are kept for an engine that has not been redeployed since
+         this lesson stopped being a sum, and are ignored when a question
+         arrives. */
       base={base}
       lessonId={lessonId}
       done={done}
@@ -213,7 +219,7 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            The withdrawal settled immediately, and it included every day of earnings.
+            The withdrawal settled immediately, and the yield came with it.
           </Body>
         </Reveal>
       ) : (

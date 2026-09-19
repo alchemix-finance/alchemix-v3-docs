@@ -192,11 +192,12 @@ What a tester sees:
 
 1. The track map at `/academy` shows a beginner track of six lessons and an
    intermediate track of seven, each with one live lesson and a progress line.
-   The header counts lessons complete out of 13. The hero carries a diagram of
-   the position the beginner track builds, which fills in as lessons are
-   finished, and a live figures strip sits under it.
+   The header counts lessons complete out of 13. The hero carries the rewards card,
+   and a diagram of the position the beginner track builds sits under it and
+   fills in as lessons are finished.
 2. Each lesson has three stages. The last stage asks a question the engine set
-   and grades the answer. A pass stores a token in the browser, marks the
+   and grades the answer. Every checkpoint in both tracks is a question about
+   what is true; a miss draws a different question from the lesson's bank. A pass stores a token in the browser, marks the
    lesson done on the map, and offers the next lesson directly.
 3. Any lesson further down a track can be opened and read. It renders as an
    inert preview that names the lesson to go to instead.

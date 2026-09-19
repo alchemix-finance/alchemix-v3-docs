@@ -31,8 +31,8 @@ function readAll(dir) {
 }
 const SRC = ACADEMY.map(readAll).join("\n");
 const ENG = fs.existsSync(ENGINE) ? readAll(ENGINE) : "";
-/* The intermediate track alone: the beginner track keeps two numeric checkpoints
-   on purpose, so a whole-engine search would never settle this one. */
+/* The intermediate track alone, for the assertions written when the beginner
+   track still had numeric checkpoints. Both tracks are all questions now. */
 const ENG_INT = fs.existsSync(ENGINE) ? fs.readFileSync(path.join(ENGINE, "intermediate.ts"), "utf8") : "";
 
 /* [label, kind, needle]  kind: "gone" | "present" | "gone-engine" | "present-engine" */
@@ -45,8 +45,8 @@ const CHECKS = [
   ["intermediate track that 'works through'", "gone", "track works through"],
   ["tutorials that 'walk through'", "gone", "tutorials](/user/quick-start) walk through"],
   ["DAO that 'steers'", "gone", "DAO steers"],
-  ["product anchor 'In Alchemix, redemptions'", "present", "In Alchemix, redemptions"],
-  ["deleveraging named", "present", "deleverages your position"],
+  ["the product is named in the lesson 1 reveal", "present", "Alchemix charges none"],
+  ["deleveraging named", "present", "deleveraging: the debt shrinks"],
   ["'decides that' pointing at a heading", "gone", "rate decides that"],
   ["'The green line you watched'", "gone", "green line you watched"],
   ["'how much debt the system carries'", "gone", "debt the system carries"],
@@ -75,8 +75,8 @@ const CHECKS = [
   ["flow cards share a height (align-items: stretch)", "present", "align-items: stretch"],
   ["WhatLab slider labelled plainly", "present", 'label="Interest rate"'],
   ["fractional checkpoint rate in the engine", "gone-engine", "randomInt(0, 71) / 10"],
-  ["whole-percent rates in the engine", "present-engine", "[3, 4, 5, 6, 8, 10]"],
-  ["round beginner deposits in the engine", "present-engine", "[10_000, 20_000, 30_000, 40_000, 50_000]"],
+  ["your-deposit is a question, not a sum", "present-engine", 'choiceLesson("your-deposit"'],
+  ["borrowing is a question, not a sum", "present-engine", 'choiceLesson("borrowing"'],
   ["fractional rate in the docs dev grader", "gone", "between(3, 10, 1)"],
 
   /* Second read-through of the beginner track. */
@@ -101,9 +101,9 @@ const CHECKS = [
   ["old intermediate track intro", "gone", "Underneath the app is a vault"],
 
   /* App surfaces named on the track card and in the lesson header. */
-  ["lessons carry the app screen they are about", "present", 'app: "Mixed Yield"'],
-  ["the Vaults surface is named", "present", 'app: "Vaults"'],
-  ["the Fixed Yield surface is named", "present", 'app: "Fixed Yield"'],
+  ["lessons carry the app screen they are about", "present", 'app: "Borrow"'],
+  ["the Variable Rate surface is named the way the app names it", "present", 'app: "Earn · Variable Rate"'],
+  ["the Fixed Rate surface is named the way the app names it", "present", 'app: "Earn · Fixed Rate"'],
   ["a quick start that 'walks'", "gone", "quick start</Link> walks"],
 
   /* The intermediate track: checkpoints, caps, and the prose around them. */

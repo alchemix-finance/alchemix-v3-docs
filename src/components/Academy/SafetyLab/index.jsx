@@ -216,8 +216,7 @@ function Try({ onDone }) {
             {Math.round(AGGRESSIVE_CAP * 100)}% of the vault, which bounds how large that
             loss can get. Suppose the whole slice went to zero: liquidation begins at 95% of
             whatever backing is left, so a position opened at or below{" "}
-            {Math.round(survivableLtv(AGGRESSIVE_CAP) * 100)}% survives it. Open lower and
-            you carry more room than that. The intermediate track derives the number for any
+            {Math.round(survivableLtv(AGGRESSIVE_CAP) * 100)}% survives it. Open lower and you have more room than that. The intermediate track derives the number for any
             loss you want to size against.
           </Body>
         </Reveal>

@@ -87,8 +87,7 @@ function Predict({ onDone }) {
       <div className={styles.eyebrow}>Stage 1 · Predict</div>
       <h1 className={styles.headline}>Ana and Ben open positions in the same vault on the same day.</h1>
       <p className={styles.sub}>
-        They deposit the same amount, and Ben borrows four times what Ana does. Both then
-        leave the position alone. Set both answers before the projection runs.
+        They deposit the same amount, and Ben borrows four times what Ana does. Both then leave the position alone, and redemptions run at {Math.round(REDEMPTION * 100)}% a year. Set both answers before the projection runs.
       </p>
 
       <div className={styles.setupGrid}>
@@ -153,7 +152,7 @@ function Predict({ onDone }) {
         >
           <Body>
             {guessedSame
-              ? "Your two answers match, and so does the projection. The two curves sit exactly on top of each other, and the dashed line is the only sign that there are two."
+              ? "Your two answers match, and so does the projection. The two curves sit exactly on top of each other."
               : `You put the two answers ${Math.abs(ana - ben)} points apart. The projection puts them in the same place, with the two curves exactly on top of each other.`}{" "}
             Ben borrowed four times what Ana did, and after {CHECK_MONTH} months the same
             share of each loan remains.

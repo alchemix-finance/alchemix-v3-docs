@@ -50,7 +50,7 @@ const CURVE = positionCurve({
 const OWED_AT_END = Math.round(CURVE.at(-1).debt / 100) * 100;
 
 /**
- * An illustrative earmark: a fifth of the balance set aside for the next
+ * An example earmark: a fifth of the balance set aside for the next
  * redemption. The protocol sizes it to the position's share of total system
  * debt, so a real one depends on the whole market. It is drawn here because the
  * app shows Earmarked on every position and this track never did.
@@ -181,9 +181,7 @@ function Learn({ onDone }) {
         >
           <Body>
             {said(guess, OWED_AT_END, money, 250)}
-            Two years went by and you never made a payment. About {money(OWED_AT_YEAR)} was
-            still outstanding at the end of the first year, and the second year took most of
-            what was left, out of collateral that kept earning the whole time.
+            Two years went by and you never made a payment. The rate applies to whatever is still owed, so the balance falls fastest early on: about {money(OWED_AT_YEAR)} was outstanding after the first year, and the second year took most of what was left, out of collateral that kept earning the whole time.
           </Body>
           <Body>
             The band inside the bar is <strong>earmarked</strong> debt: the slice already set

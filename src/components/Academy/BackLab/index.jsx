@@ -26,7 +26,7 @@ const DEPOSIT = 10_000;
 const BORROW = 5_000;
 
 /**
- * An illustrative earmark: a fifth of the balance reserved for the next
+ * An example earmark: a fifth of the balance reserved for the next
  * redemption. A real one is sized to the position's share of total system debt,
  * so it depends on the whole market rather than on this position.
  */
@@ -49,7 +49,7 @@ export default function BackLab({ lessonId, stage, onStage, done, onComplete }) 
       done={done}
       onPass={onComplete}
       passTitle="Lesson 1 complete."
-      passBody="You can read a position card and say how much of the deposit is free to leave today."
+      passBody="You can read a position card and say how much of the deposit you can withdraw today."
     />
   );
 }
@@ -71,9 +71,7 @@ function Learn({ onDone }) {
     <Stage eyebrow="Stage 1 · Predict" headline="You want part of the deposit back.">
       <Sub>
         Your position holds {money(DEPOSIT)} deposited with {money(BORROW)} borrowed
-        against it, and you want to leave the loan open. One rule decides what can
-        leave: debt can never be more than 90% of the collateral standing under it, so
-        enough has to stay behind to keep the loan legal.
+        against it, and you want to leave the loan open. One rule decides what can leave: your debt can never be more than 90% of your collateral, so enough of the deposit has to stay in the vault to keep the loan under the cap.
       </Sub>
 
       <Panel>
@@ -245,9 +243,7 @@ function Try({ onDone }) {
             the cap. The remaining {money(free)} of the {money(DEPOSIT)} can be withdrawn now.
           </Body>
           <Body>
-            You can do this on any day you like, with no schedule to meet first. The app
-            shows the withdrawable amount right beside the debt, so it has already run this
-            arithmetic for you.
+            You can do this on any day. The app shows the withdrawable amount beside the debt.
           </Body>
         </Reveal>
       ) : (

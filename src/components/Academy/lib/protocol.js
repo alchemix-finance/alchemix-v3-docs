@@ -20,7 +20,7 @@ export const LIQ_LTV = 0.95;
 /**
  * The redemption rate the lessons project at.
  *
- * Illustrative, and every screen that uses it says so, but it has to be a rate
+ * An example, and every screen that uses it says so, but it has to be a rate
  * the protocol plausibly runs at or the lessons teach the wrong shape. The
  * lessons used 35% for a year, which is roughly half the low end of what the
  * live vaults have been reading: checked 2026-09-17, Ethereum's USDC vault
@@ -38,7 +38,7 @@ export const LIQ_LTV = 0.95;
  */
 export const EXAMPLE_REDEMPTION = 0.7;
 
-/** What the lessons suppose the strategies earn. Illustrative, like the rate above. */
+/** What the lessons suppose the strategies earn. An example, like the rate above. */
 export const EXAMPLE_YIELD = 0.05;
 
 /**
