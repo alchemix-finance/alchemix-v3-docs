@@ -3,11 +3,11 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { EXAMPLE_AL_PRICE } from "../lib/protocol";
+import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider,
   Hint, Note, Notes, Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money,
-  money2, said,
+  said,
 } from "../kit";
 
 /**
@@ -35,14 +35,14 @@ import {
  */
 
 const HOLDING = 5_000;
-const PRICE = EXAMPLE_AL_PRICE;
 
 export default function TransmuterLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
+  const { price, live } = useAlUsdPrice();
 
-  if (stage === "predict") return <Learn onDone={() => onStage("explore")} />;
-  if (stage === "explore") return <Try onDone={() => onStage("checkpoint")} />;
+  if (stage === "predict") return <Learn price={price} live={live} onDone={() => onStage("explore")} />;
+  if (stage === "explore") return <Try market={price} onDone={() => onStage("checkpoint")} />;
 
   return (
     <ChoiceCheckpoint
@@ -58,8 +58,9 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
 
 /* ── Stage 1: learn ──────────────────────────────────────── */
 
-function Learn({ onDone }) {
-  const [guess, setGuess] = useState(HOLDING * PRICE);
+function Learn({ price, live, onDone }) {
+  const cost = HOLDING * price;
+  const [guess, setGuess] = useState(() => Math.round(cost / 25) * 25);
   const [revealed, setRevealed] = useState(false);
 
   // Step 3 is the only part of the picture the reveal changes.
@@ -67,7 +68,7 @@ function Learn({ onDone }) {
     {
       n: 1,
       label: "Swap & deposit",
-      value: `${money(HOLDING * PRICE)} USDC`,
+      value: `${money(cost)} USDC`,
       note: "One button on the Fixed Yield page buys the alUSD at the market price and deposits it.",
       tone: "#8ea9d8",
     },
@@ -90,10 +91,14 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="Buy alUSD below a dollar, redeem it for a full USDC.">
       <Sub>
-        alUSD trades a little below face value, because borrowers sell the alUSD they mint.
-        At {money2(PRICE)} USDC each, {money(HOLDING)} alUSD costs you{" "}
-        {money(HOLDING * PRICE)}. On the Fixed Yield page, Swap &amp; Deposit does the
-        purchase and the deposit in one go, and then you wait out the term.
+        alUSD trades a little below face value, because borrowers sell the alUSD they mint.{" "}
+        {live ? (
+          <>Today each one costs {priceText(price, live)} USDC, so {money(HOLDING)} alUSD comes to {money(cost)}.</>
+        ) : (
+          <>At {priceText(price, live)} USDC each, {money(HOLDING)} alUSD comes to {money(cost)}.</>
+        )}{" "}
+        On the Fixed Yield page, Swap &amp; Deposit does the purchase and the deposit in one
+        go, and then you wait out the term.
       </Sub>
 
       <FlowSteps steps={steps} />
@@ -120,7 +125,7 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside={`You paid ${money(HOLDING * PRICE)} USDC for it.`}>
+        <Actions aside={`You paid ${money(cost)} USDC for it.`}>
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
@@ -133,7 +138,7 @@ function Learn({ onDone }) {
             {said(guess, HOLDING, money)}
             The Transmuter ignores the market price entirely. One alUSD returns one USDC,
             one alETH returns one ETH, once the term is up. You paid{" "}
-            {money(HOLDING * PRICE)} and receive {money(HOLDING)}, so the discount you bought
+            {money(cost)} and receive {money(HOLDING)}, so the discount you bought
             at is your return. The Alchemix DAO sets the term and it varies, so check the
             current one in the app before you deposit.
           </Body>
@@ -145,9 +150,9 @@ function Learn({ onDone }) {
 
 /* ── Stage 2: try ────────────────────────────────────────── */
 
-function Try({ onDone }) {
+function Try({ market, onDone }) {
   const [amount, setAmount] = useState(HOLDING);
-  const [price, setPrice] = useState(PRICE);
+  const [price, setPrice] = useState(market);
   const [moved, setMoved] = useState({ amount: false, price: false });
   const mark = (k) => setMoved((m) => (m[k] ? m : { ...m, [k]: true }));
 
@@ -185,8 +190,8 @@ function Try({ onDone }) {
         />
         <Control
           label="Market price of alUSD"
-          display={money2(price)}
-          min={0.9} max={1} step={0.005}
+          display={price.toFixed(3)}
+          min={0.9} max={1} step={0.001}
           value={price}
           onChange={(v) => { setPrice(v); mark("price"); }}
         />

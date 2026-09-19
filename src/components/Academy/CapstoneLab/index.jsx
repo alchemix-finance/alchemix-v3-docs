@@ -4,9 +4,10 @@ import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import {
-  EXAMPLE_AL_PRICE, LIQ_LTV, MAX_LTV, borrowNeededFor, ltvAfterLoss, minimumCollateral,
-  survivableLtv, survivesLoss,
+  LIQ_LTV, MAX_LTV, borrowNeededFor, ltvAfterLoss, minimumCollateral, survivableLtv,
+  survivesLoss,
 } from "../lib/protocol";
+import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
   Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
@@ -26,7 +27,6 @@ import {
  */
 
 const WANT = 10_000;
-const PRICE = EXAMPLE_AL_PRICE;
 const LOSS = 0.12;
 
 const pct = (n) => `${(n * 100).toFixed(1)}%`;
@@ -34,9 +34,10 @@ const pct = (n) => `${(n * 100).toFixed(1)}%`;
 export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
+  const { price, live } = useAlUsdPrice();
 
-  if (stage === "predict") return <Predict onDone={() => onStage("explore")} />;
-  if (stage === "explore") return <Explore onDone={() => onStage("checkpoint")} />;
+  if (stage === "predict") return <Predict price={price} live={live} onDone={() => onStage("explore")} />;
+  if (stage === "explore") return <Explore market={price} onDone={() => onStage("checkpoint")} />;
 
   return (
     <Checkpoint
@@ -52,11 +53,11 @@ export default function CapstoneLab({ lessonId, stage, onStage, done, onComplete
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
-function Predict({ onDone }) {
+function Predict({ price, live, onDone }) {
   const [guess, setGuess] = useState(12_000);
   const [revealed, setRevealed] = useState(false);
 
-  const borrow = borrowNeededFor(WANT, PRICE);
+  const borrow = borrowNeededFor(WANT, price);
   /**
    * The deposit someone lands on who sizes against the cap and forgets the loss.
    *
@@ -65,7 +66,7 @@ function Predict({ onDone }) {
    * mistake people actually make, it is legal, and it still fails.
    */
   const naive = borrow / MAX_LTV;
-  const truth = minimumCollateral(WANT, PRICE, LOSS);
+  const truth = minimumCollateral(WANT, price, LOSS);
   const naiveLtv = borrow / naive;
 
   return (
@@ -74,14 +75,15 @@ function Predict({ onDone }) {
       headline="One deposit has to raise the capital and survive the loss."
     >
       <Sub>
-        You need {money(WANT)} of spendable capital. alUSD is trading at {PRICE.toFixed(2)},
-        and the MYT is about to report a loss of {pct(LOSS)} of its backing. You get to
+        You need {money(WANT)} of spendable capital. alUSD is trading at{" "}
+        {priceText(price, live)}{live ? " today" : ""}, and the MYT is about to report a loss of{" "}
+        {pct(LOSS)} of its backing. You get to
         choose one number, the size of the deposit.
       </Sub>
 
       <div className={own.brief}>
         <BriefRow label="Capital required" value={`${money(WANT)} USDC`} note="what you need in hand after selling" />
-        <BriefRow label="alUSD price" value={PRICE.toFixed(2)} note="what the market will pay you" tone="#f5c09a" />
+        <BriefRow label="alUSD price" value={priceText(price, live)} note="what the market will pay you" tone="#f5c09a" />
         <BriefRow label="Coming loss of backing" value={pct(LOSS)} note="the vault is about to report it" tone="#d4645a" />
       </div>
 
@@ -118,7 +120,7 @@ function Predict({ onDone }) {
         >
           <Body>
             {said(guess, truth, money, 100)}
-            Raising {money(WANT)} at {PRICE.toFixed(2)} means borrowing {money2(borrow)},
+            Raising {money(WANT)} at {priceText(price, live)} means borrowing {money2(borrow)},
             which is the capital divided by the price. The cap will let you open that
             against {money2(naive)}, right at {pct(naiveLtv)} LTV. Take the smallest
             deposit the cap allows and a {pct(LOSS)} loss carries you to{" "}
@@ -152,9 +154,9 @@ function BriefRow({ label, value, note, tone }) {
 
 /* ── Stage 2: explore ────────────────────────────────────── */
 
-function Explore({ onDone }) {
+function Explore({ market, onDone }) {
   const [deposit, setDeposit] = useState(11_000);
-  const [price, setPrice] = useState(PRICE);
+  const [price, setPrice] = useState(market);
   const [loss, setLoss] = useState(0.12);
   const [solved, setSolved] = useState(false);
 

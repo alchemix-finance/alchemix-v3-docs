@@ -3,7 +3,8 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { EXAMPLE_AL_PRICE, borrowNeededFor, discountCost } from "../lib/protocol";
+import { borrowNeededFor, discountCost } from "../lib/protocol";
+import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
   Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
@@ -23,14 +24,14 @@ import {
  */
 
 const WANT = 5_000;
-const PRICE = EXAMPLE_AL_PRICE;
 
 export default function CostLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
+  const { price, live } = useAlUsdPrice();
 
-  if (stage === "predict") return <Predict onDone={() => onStage("explore")} />;
-  if (stage === "explore") return <Explore onDone={() => onStage("checkpoint")} />;
+  if (stage === "predict") return <Predict price={price} live={live} onDone={() => onStage("explore")} />;
+  if (stage === "explore") return <Explore market={price} onDone={() => onStage("checkpoint")} />;
 
   return (
     <Checkpoint
@@ -46,11 +47,11 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
-function Predict({ onDone }) {
+function Predict({ price, live, onDone }) {
   const [guess, setGuess] = useState(WANT);
   const [revealed, setRevealed] = useState(false);
 
-  const received = WANT * PRICE;
+  const received = WANT * price;
   const shortfall = WANT - received;
 
   return (
@@ -61,7 +62,7 @@ function Predict({ onDone }) {
       <Sub>
         You borrow {money(WANT)} alUSD against your position, and the debt recorded
         against you is {money(WANT)}. What you actually want is spendable USDC, so you
-        sell the alUSD on the open market, where it is trading at {PRICE.toFixed(2)}.
+        sell the alUSD on the open market, where it is trading at {priceText(price, live)}{live ? " today" : ""}.
       </Sub>
 
       <AppShot shot={SHOTS.alAssetPrice}>
@@ -114,9 +115,9 @@ function Predict({ onDone }) {
 
 /* ── Stage 2: explore ────────────────────────────────────── */
 
-function Explore({ onDone }) {
+function Explore({ market, onDone }) {
   const [want, setWant] = useState(5_000);
-  const [price, setPrice] = useState(EXAMPLE_AL_PRICE);
+  const [price, setPrice] = useState(market);
   const [moved, setMoved] = useState({ want: false, price: false });
   const mark = (k) => setMoved((m) => (m[k] ? m : { ...m, [k]: true }));
 
