@@ -18,21 +18,21 @@ leave in, and the app runs it both ways for you.
 
 ### Every stat on the screen
 
-- **Health factor** – The distance to the borrowing cap, written as a multiple.
+- **Health factor.** The distance to the borrowing cap, written as a multiple.
   A position at 30% LTV against a 90% cap reads 3.00, a position at the cap reads
   1.00, and a position with no debt is unbounded. It carries the same information as the bar.
-- **Earmarked** – The protocol repays loans in cycles. While a cycle is under
+- **Earmarked.** The protocol repays loans in cycles. While a cycle is under
   way, part of your loan shows as earmarked, meaning set aside for the next
   redemption. That part gets repaid with the Mix-Yield Token, or MYT, the token your
   deposit is held as, rather than with alUSD, and the asset menu in the repay tab offers
   you only what is valid. Earmarked collateral keeps earning until it settles.
-- **Redemption rate** – The pace the protocol is currently clearing debt at,
+- **Redemption rate.** The pace the protocol is currently clearing debt at,
   the same for every position in the market.
-- **Borrowable** – What the cap will still let you mint.
-- **Liquidation LTV** – The ratio at which the protocol can start closing part of
+- **Borrowable.** What the cap will still let you mint.
+- **Liquidation LTV.** The ratio at which the protocol can start closing part of
   the position, marked on the bar at 95%. A price move cannot carry you there.
-  Choosing an LTV covers what can.
-- **Liquidate** – A self-liquidation, which only you can trigger, repays the
+  Only a loss inside the vault can, and the Choosing an LTV lesson sizes against it.
+- **Liquidate.** A self-liquidation, which only you can trigger, repays the
   remaining loan from your collateral in a single transaction and leaves the
   rest of the deposit free to withdraw.
 
@@ -40,6 +40,5 @@ leave in, and the app runs it both ways for you.
 
 The vault's **Visualizer** tab takes a yield rate, a redemption rate, an alAsset
 price and an external rate, and projects the deposit, the debt and the net value
-across a horizon you choose. It overlays the real redemption schedule for the
-near term before switching to the projection. Once you know what each input
-means, it answers a sizing question faster than the arithmetic does.
+across a horizon you choose. Once you know what each input means, it answers a
+sizing question faster than the arithmetic does.

@@ -1,21 +1,28 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import styles from "../lesson.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
 import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import useElementWidth from "../lib/useElementWidth";
-import { AppShot, Body, Checkpoint, Reveal, SHOTS } from "../kit";
+import {
+  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Question, Readout, Reveal, SHOTS, SetupCard, SetupGrid, Stage, Sub,
+} from "../kit";
 
 /**
  * Intermediate lesson 2: the pace of repayment.
  *
  * Three stages. The learner commits to a prediction before seeing anything, then
- * explores freely, then answers a server-set challenge to complete the lesson.
+ * explores freely, then answers a server-set question to complete the lesson.
  *
  * The prediction stage does the teaching. The common assumption is that a smaller
  * loan clears sooner, and watching two very different loans trace the same curve
  * is what makes the mechanism stick.
+ *
+ * Built from the kit's shared parts. Only the chart is its own, because it draws
+ * two curves with the learner's guesses marked on them, which the kit's line
+ * chart does not do.
  *
  * Stage state lives on the page, not here, because the header stepper is the
  * progress indicator for the whole lesson and the two must never disagree.
@@ -55,6 +62,17 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
+/** The three figures a setup card shows for one position. */
+function positionStats(deposit, borrow, color) {
+  return [
+    { label: "Deposited", value: fmt(deposit) },
+    { label: "Borrowed", value: fmt(borrow), color },
+    { label: "LTV", value: `${Math.round((borrow / deposit) * 100)}%`, color: "#a8adb6" },
+  ];
+}
+
+const GUESS_SCALE = ["All repaid", "Nothing repaid"];
+
 function Predict({ onDone }) {
   const [ana, setAna] = useState(50);
   const [ben, setBen] = useState(50);
@@ -83,40 +101,30 @@ function Predict({ onDone }) {
   const guessedSame = Math.abs(ana - ben) <= 5;
 
   return (
-    <>
-      <div className={styles.eyebrow}>Stage 1 · Predict</div>
-      <h1 className={styles.headline}>Ana and Ben open positions in the same vault on the same day.</h1>
-      <p className={styles.sub}>
-        They deposit the same amount, and Ben borrows four times what Ana does. Both then leave the position alone, and redemptions run at {Math.round(REDEMPTION * 100)}% a year. Set both answers before the projection runs.
-      </p>
+    <Stage eyebrow="Stage 1 · Predict" headline="Ana and Ben open positions in the same vault on the same day.">
+      <Sub>
+        They deposit the same amount, and Ben borrows four times what Ana does. Both then
+        leave the position alone, and redemptions run at {Math.round(REDEMPTION * 100)}% a
+        year. Set both answers before the projection runs.
+      </Sub>
 
-      <div className={styles.setupGrid}>
-        <SetupCard name="Ana" color="#5ba88a" deposit={COLLATERAL} borrow={ANA_DEBT} />
-        <SetupCard name="Ben" color="#f5c09a" deposit={COLLATERAL} borrow={BEN_DEBT} />
-      </div>
+      <SetupGrid>
+        <SetupCard name="Ana" color="#5ba88a" stats={positionStats(COLLATERAL, ANA_DEBT, "#5ba88a")} />
+        <SetupCard name="Ben" color="#f5c09a" stats={positionStats(COLLATERAL, BEN_DEBT, "#f5c09a")} />
+      </SetupGrid>
 
-      <div className={styles.panel}>
-        <span className={`${styles.corner} ${styles.cornerTl}`} />
-        <span className={`${styles.corner} ${styles.cornerTr}`} />
-
-        <div className={styles.question}>
-          After {CHECK_MONTH} months, how much of each loan is still outstanding?
-        </div>
-
+      <Panel>
+        <Question>After {CHECK_MONTH} months, how much of each loan is still outstanding?</Question>
         <div className={styles.guessGrid}>
-          <GuessSlider who="Ana's debt left" value={ana} onChange={setAna} disabled={revealed} color="#5ba88a" />
-          <GuessSlider who="Ben's debt left" value={ben} onChange={setBen} disabled={revealed} color="#f5c09a" />
+          <GuessSlider label="Ana's debt left" value={ana} onChange={setAna} disabled={revealed} color="#5ba88a" scale={GUESS_SCALE} />
+          <GuessSlider label="Ben's debt left" value={ben} onChange={setBen} disabled={revealed} color="#f5c09a" scale={GUESS_SCALE} />
         </div>
-      </div>
+      </Panel>
 
       {!revealed ? (
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={() => setRevealed(true)}>
-            Commit and run the projection
-            <ArrowIcon />
-          </button>
-          <span className={styles.aside}>You can adjust either answer until you commit.</span>
-        </div>
+        <Actions aside="You can adjust either answer until you commit.">
+          <Primary onClick={() => setRevealed(true)}>Commit and run the projection</Primary>
+        </Actions>
       ) : null}
 
       <div className={revealed ? styles.chartLive : styles.chartDimmed} aria-hidden={!revealed}>
@@ -164,63 +172,7 @@ function Predict({ onDone }) {
           </Body>
         </Reveal>
       ) : null}
-    </>
-  );
-}
-
-function SetupCard({ name, color, deposit, borrow }) {
-  return (
-    <div className={styles.setupCard}>
-      <div className={styles.setupName}>
-        <span className={styles.setupDot} style={{ background: color }} />
-        <span style={{ color }}>{name}</span>
-      </div>
-      <div className={styles.setupStats}>
-        <Stat label="Deposited" value={fmt(deposit)} />
-        <Stat label="Borrowed" value={fmt(borrow)} color={color} />
-        <Stat label="LTV" value={`${Math.round((borrow / deposit) * 100)}%`} color="#a8adb6" />
-      </div>
-    </div>
-  );
-}
-
-function Stat({ label, value, color }) {
-  return (
-    <div>
-      <div className={styles.statLabel}>{label}</div>
-      <div className={styles.statValue} style={color ? { color } : undefined}>
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function GuessSlider({ who, value, onChange, disabled, color }) {
-  return (
-    <div>
-      <div className={styles.guessHead}>
-        <span className={styles.microLabel}>{who}</span>
-        <span className={styles.guessValue} style={{ color }}>
-          {value}%
-        </span>
-      </div>
-      <input
-        type="range"
-        min={0}
-        max={100}
-        step={1}
-        value={value}
-        disabled={disabled}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className={styles.range}
-        style={{ accentColor: color }}
-        aria-label={who}
-      />
-      <div className={styles.guessScale}>
-        <span>All repaid</span>
-        <span>Nothing repaid</span>
-      </div>
-    </div>
+    </Stage>
   );
 }
 
@@ -244,12 +196,8 @@ function Explore({ onDone }) {
   const found = tried === 3;
 
   return (
-    <>
-      <div className={styles.eyebrow}>Stage 2 · Explore</div>
-      <h1 className={styles.headline}>Push each input and find the one that moves the curve.</h1>
-      <p className={styles.sub}>
-        The position is the same one Ana opened.
-      </p>
+    <Stage eyebrow="Stage 2 · Explore" headline="Push each input and find the one that moves the curve.">
+      <Sub>The position is the same one Ana opened.</Sub>
 
       <div className={styles.chartLive}>
         <div className={styles.chartHead}>
@@ -262,11 +210,11 @@ function Explore({ onDone }) {
         />
       </div>
 
-      <div className={styles.readout}>
+      <Readout>
         After {CHECK_MONTH} months, <strong>{atCheck.toFixed(1)}%</strong> of the debt is left.
-      </div>
+      </Readout>
 
-      <div className={styles.controls}>
+      <Controls>
         <Control
           label="Borrowed"
           display={fmt(debt)}
@@ -289,7 +237,7 @@ function Explore({ onDone }) {
           verdict={touched.redemption ? "sets the pace" : null}
           accent
         />
-      </div>
+      </Controls>
 
       <AppShot shot={SHOTS.redemptionRate}>
         The third control, on a real vault. Every position in that market is repaid at this
@@ -308,39 +256,14 @@ function Explore({ onDone }) {
             so their loans cleared in lockstep even though one was four times the other.
           </Body>
           <Body>
-            The redemption rate is a protocol-level parameter, applied equally to every
-            position in the market. What you do control is repaying by hand, which clears
-            debt the moment you choose to.
+            What you do control is repaying by hand, which clears debt the moment you
+            choose to.
           </Body>
         </Reveal>
       ) : (
-        <p className={styles.hint}>Move all three inputs to continue. {tried} of 3 so far.</p>
+        <Hint>Move all three inputs to continue. {tried} of 3 so far.</Hint>
       )}
-    </>
-  );
-}
-
-function Control({ label, display, min, max, step, value, onChange, verdict, accent }) {
-  return (
-    <div className={`${styles.control} ${accent ? styles.controlAccent : ""}`}>
-      <div className={styles.controlHead}>
-        <span className={styles.microLabel}>{label}</span>
-        <span className={styles.controlValue}>{display}</span>
-      </div>
-      <input
-        type="range"
-        min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className={styles.range}
-        aria-label={label}
-      />
-      {/* Explore passes null before a lever is touched, so the line stays reserved
-          and the cards do not jump as verdicts appear. The checkpoint passes
-          nothing at all, and should not carry an empty row. */}
-      {verdict !== undefined ? (
-        <div className={accent ? styles.verdictOn : styles.verdictOff}>{verdict ?? " "}</div>
-      ) : null}
-    </div>
+    </Stage>
   );
 }
 
@@ -449,13 +372,5 @@ function Chart({ curves, horizon, markers = [], highlightMonth }) {
         {markers.length ? <span className={styles.legendItem}>Circles mark your guesses</span> : null}
       </div>
     </div>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M5 12h13M13 6l6 6-6 6" />
-    </svg>
   );
 }

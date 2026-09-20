@@ -3,7 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { AGGRESSIVE_CAP, LIQ_LTV, survivableLtv } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Note, Notes,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
   Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, assetAmount, money,
   said,
 } from "../kit";
@@ -71,11 +71,11 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="The price of ETH falls 40% overnight.">
       <Sub>
-        This lesson needs a price that moves, so the position moves to ETH: {DEPOSIT} ETH
-        deposited with {BORROWED} alETH borrowed against it. That is the same 50% LTV you
-        have been carrying. ETH was {money(PRICE)} last night and{" "}
-        {money(PRICE * (1 - CRASH))} this morning. Cross the <strong>liquidation</strong>{" "}
-        marker and the protocol sells part of your deposit to cover the debt.
+        USDC does not move in price, so this position is in ETH: {DEPOSIT} ETH deposited
+        with {BORROWED} alETH borrowed against it, the same 50% LTV as before. ETH was{" "}
+        {money(PRICE)} last night and {money(PRICE * (1 - CRASH))} this morning. Cross the{" "}
+        <strong>liquidation</strong> marker and the protocol sells part of your deposit to
+        cover the debt.
       </Sub>
 
       <PositionCard
@@ -220,7 +220,9 @@ function Try({ onDone }) {
             loss you want to size against.
           </Body>
         </Reveal>
-      ) : null}
+      ) : (
+        <Hint>Move the price, then the loss inside the vault, to continue.</Hint>
+      )}
     </Stage>
   );
 }

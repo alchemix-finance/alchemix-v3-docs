@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
   Note, Notes, Panel, PositionCard, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub,
   money, said,
 } from "../kit";
@@ -13,8 +13,7 @@ import {
  * The 10,000 USDC deposit the rest of the track carries. Learn shows where it
  * goes and asks how much can come back out the next day. Try applies a rate
  * once, then withdraws some or all of it, and nothing on the card holds the
- * withdrawal back. Check asks for the deposit after one year at the engine's
- * rate.
+ * withdrawal back. Check asks what the vault did with it.
  *
  * The deposit is made on the Borrow page, not on Mixed Yield. Both pages hold
  * the same MYT, but this track carries one position through to a loan, and the
@@ -33,27 +32,11 @@ export default function DepositLab({ lessonId, stage, onStage, done, onComplete 
   if (stage === "explore") return <Try onDone={() => onStage("checkpoint")} />;
 
   return (
-    <Checkpoint
-      /* The engine asks a question here (what the vault does with a deposit,
-         where the yield shows up, what can be withdrawn, what a full cap means)
-         and the checkpoint renders whatever kind of control arrives. The slider
-         props below are kept for an engine that has not been redeployed since
-         this lesson stopped being a sum, and are ignored when a question
-         arrives. */
+    <ChoiceCheckpoint
       base={base}
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      stageLabel="Check"
-      headline="Work out what the deposit is worth."
-      unit="amount"
-      targetOf={(f) => f.deposit * (1 + f.ratePct / 100)}
-      computeOf={(f, v) => v}
-      direct
-      controlLabel="Worth after a year"
-      controlDisplay={money}
-      targetFoot="the deposit grows to this in a year"
-      landingFoot="set the slider to your answer"
       passTitle="Lesson 2 complete."
       passBody="Your deposit becomes MYT and earns in strategies the Alchemix DAO selects. You can take it back any day you like."
     />
@@ -157,8 +140,9 @@ function Try({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Earn for a year, then take it out.">
       <Sub>
-        Real rates move with what the DAO's strategies earn, so treat this one as an
-        example.
+        The first control is what the vault earns over the year, and the second is how
+        much of the deposit you take out at the end of it. Real rates move with what the
+        strategies earn.
       </Sub>
 
       <PositionCard

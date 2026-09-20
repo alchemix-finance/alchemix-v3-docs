@@ -219,9 +219,8 @@ function Try({ onDone }) {
           through immediately.
         </Note>
         <Note label="Repay first">
-          Repay some or all of the loan before you withdraw. Every unit repaid frees more
-          than one unit of collateral, because each unit of debt holds about 1.11 units of
-          collateral behind it at the cap.
+          Repay some or all of the loan before you withdraw, and about 1.11 units of
+          collateral come free for every unit repaid.
         </Note>
         <Note label="Which asset repays">
           You can repay with alUSD, with the asset you deposited, or with MYT, the token

@@ -133,9 +133,23 @@ const CHECKS = [
   ["'The capstone puts both numbers to work'", "gone", "capstone puts both numbers to work"],
   ["liquidation described as total", "gone", "and the position is liquidated."],
   ["'the market has no effect in that one'", "gone", "in that one"],
-  ["the term gain is stated before the annualized guess", "present", "a gain of {perTerm.toFixed(2)}% over"],
+  ["the term gain is stated before the annualized guess", "present", "{perTerm.toFixed(2)}% over the term. The length of that term"],
   ["'the founding class closes when season one opens' in the heading", "gone", "the founding class closes when season"],
   ["'which is also the moment the founding class closes for good'", "gone", "closes for good"],
+
+  /* Demo pass, 2026-09-19: the full read before the demo. */
+  ["referent chain 'Divide the first by the second'", "gone", "Divide the first by the second"],
+  ["lesson-structure subject 'This track borrows'", "gone", "This track borrows"],
+  ["lesson-structure subject 'This lesson needs a price that moves'", "gone", "This lesson needs a price"],
+  ["en-dash definition lists in the write-ups", "gone", "** \u2013 "],
+  ["unsourced Visualizer overlay claim", "gone", "overlays the real redemption schedule"],
+  ["one name for the early exit fee in the peg lesson", "gone", "early transmutation fee, so"],
+  ["hedge opening the deposit Try stage", "gone", "so treat this one as an"],
+  ["dead slider props gone from the beginner checkpoints", "gone", 'headline="Work out what the deposit is worth."'],
+  ["health factor taught in the borrowing lab before the check asks about it", "present", 'label="Health factor"'],
+  ["caps-at-allocation rule taught in the MYT lab before the check asks about it", "present", "checked when the DAO allocates, and they are measured"],
+  ["borrower collateral named as what funds the 1:1 in the peg lab", "present", "Borrower collateral is what funds that promise"],
+  ["every Try stage says how to continue", "present", "Push the amount up to the cap to continue"],
 ];
 
 let fails = 0;

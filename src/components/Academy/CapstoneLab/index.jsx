@@ -244,7 +244,7 @@ function Explore({ market, onDone }) {
           <Body>
             How much you must borrow is set by the price you can sell at. How much collateral
             that borrow needs behind it is set by the loss you have to absorb, and the market
-            has no bearing on it. Divide the first by the second and you have the deposit.
+            has no bearing on it. Divide the borrow by that LTV and you have the deposit.
           </Body>
           <Body>
             Push the price down and both checks respond. A worse discount means borrowing

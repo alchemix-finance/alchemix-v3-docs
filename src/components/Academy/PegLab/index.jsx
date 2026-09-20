@@ -64,9 +64,10 @@ function Predict({ price, live, onDone }) {
       <Sub>
         Every alUSD in circulation is backed by at least one USDC of collateral inside
         Alchemix, and the Transmuter will exchange it for the underlying at exactly 1:1
-        once a governance-set term is up. Here that term runs {WEEKS} weeks. Spend{" "}
-        {money(STAKE)} and {money2(bought)} comes back, a gain of {perTerm.toFixed(2)}% over
-        the term. The length of that term decides what the gain is worth per year.
+        once a governance-set term is up. Here that term runs {WEEKS} weeks. {money(STAKE)}{" "}
+        USDC buys {money2(bought)} alUSD, which redeems for {money2(bought)} USDC: a gain of{" "}
+        {perTerm.toFixed(2)}% over the term. The length of that term decides what the gain
+        is worth per year.
       </Sub>
 
       <div className={own.tradeRow}>
@@ -181,7 +182,7 @@ function Explore({ market, onDone }) {
             <div className={own.resultBig} style={{ color: "#5ba88a" }}>{annual.toFixed(2)}%</div>
             <div className={own.resultNote}>
               That is {perTerm.toFixed(2)}% over {weeks} weeks, redeemed 1:1 at maturity.
-              Leaving the queue before it matures carries an early transmutation fee, so
+              Leaving the queue before it matures carries an early exit fee, so
               the figure assumes you wait.
             </div>
           </>
@@ -236,8 +237,10 @@ function Explore({ market, onDone }) {
           <Body>
             alAssets are synthetic debt tokens. The peg rests on two things, the collateral
             behind every unit and the Transmuter's promise to exchange it 1:1 at
-            maturity. An algorithmic stablecoin defends its price by minting and burning
-            against the market. Alchemix never has to.
+            maturity. Borrower collateral is what funds that promise: every alAsset in the
+            queue earmarks an equal value of it inside the Alchemist, and at maturity that
+            collateral settles the claim. An algorithmic stablecoin defends its price by
+            minting and burning against the market. Alchemix never has to.
           </Body>
         </Reveal>
       ) : (

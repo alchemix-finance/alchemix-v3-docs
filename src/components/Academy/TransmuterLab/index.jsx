@@ -215,9 +215,8 @@ function Try({ market, onDone }) {
           nextLabel="Take the last check"
         >
           <Body>
-            Move the price down and the gap widens. The further alUSD trades below 1.00, the
-            more it pays to buy it and wait out the term, and that buying pulls the price back
-            up.
+            The further alUSD trades below 1.00, the more it pays to buy it and wait out the
+            term, and that buying pulls the price back up.
           </Body>
         </Reveal>
       ) : (

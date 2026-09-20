@@ -149,7 +149,7 @@ function Learn({ onDone }) {
 
       <AppShot shot={SHOTS.redemptionRate}>
         The rate on a live vault, reading 58.61% the day this was captured. It rises and
-        falls with how much is waiting in the Transmuter, so treat the {RATE} above as an
+        falls with how much alUSD is waiting to be redeemed, so the {RATE} above is an
         example rather than a schedule.
       </AppShot>
 
@@ -326,7 +326,9 @@ function Try({ onDone }) {
             amount you can withdraw rises immediately.
           </Body>
         </Reveal>
-      ) : null}
+      ) : (
+        <Hint>Run the months forward, then repay or borrow more, to continue.</Hint>
+      )}
     </Stage>
   );
 }

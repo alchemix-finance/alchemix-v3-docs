@@ -6,12 +6,12 @@ markets shift.
 Every strategy carries a risk classification, and that classification sets a
 ceiling on how much of the vault it may occupy.
 
-- **Conservative** – Free to fill the entire vault. The class is reserved for
+- **Conservative.** Free to fill the entire vault. The class is reserved for
   strategies that wrap and unwrap on contract, price off their own backing, and
   carry no duration risk.
-- **Moderate** – Any single strategy is capped at 40%, and Moderate and Aggressive
+- **Moderate.** Any single strategy is capped at 40%, and Moderate and Aggressive
   together at 60%.
-- **Aggressive** – Any single strategy is capped at 20%, and the class at 20% in
+- **Aggressive.** Any single strategy is capped at 20%, and the class at 20% in
   total.
 
 The second figure in each line counts that class and every riskier one. Fill

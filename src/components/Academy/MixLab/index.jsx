@@ -3,8 +3,11 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
-import { AppShot, Body, Checkpoint, Reveal, SHOTS } from "../kit";
-import { CAPS, MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../lib/myt";
+import {
+  Actions, AppShot, Body, Checkpoint, Controls, GuessSlider, Hint, Panel, Primary, Question,
+  Reveal, SHOTS, Stage, Sub,
+} from "../kit";
+import { MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../lib/myt";
 
 /**
  * Intermediate lesson 3: inside the Mix-Yield Token.
@@ -24,6 +27,10 @@ import { CAPS, MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../l
  * The Moderate ceiling shown on its control moves as Aggressive fills, because
  * the two share one. That is the rule the docs state in a footnote, and a control
  * that visibly tightens teaches it better than the footnote does.
+ *
+ * The stages are built from the kit. The allocator is this lesson's own control,
+ * because each of its sliders carries a cap line that turns red past the ceiling,
+ * which the kit's plain control has no place for.
  */
 
 const DEMO = { conservative: 4.5, moderate: 9.0, aggressive: 18.0 };
@@ -54,47 +61,37 @@ function Predict({ onDone }) {
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <>
-      <div className={styles.eyebrow}>Stage 1 · Predict</div>
-      <h1 className={styles.headline}>Your collateral keeps working while the loan runs.</h1>
-      <p className={styles.sub}>
+    <Stage eyebrow="Stage 1 · Predict" headline="Your collateral keeps working while the loan runs.">
+      <Sub>
         Deposits are held in the Mix-Yield Token, which spreads them across strategies
         the DAO has reviewed and classified. The Aggressive strategy below pays far more
         than the other two.
-      </p>
+      </Sub>
 
       <div className={own.strategyGrid}>
-        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="The vault enters and exits directly, prices it off what it actually holds, and withdraws on demand." tone="cons" />
+        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Enters and exits on contract, is priced off its own backing, and withdraws on demand." tone="cons" />
         <StrategyCard klass="Moderate" apr={DEMO.moderate} note="It depends on an outside market to price or to exit, or it can lock withdrawals for a time." tone="mod" />
         <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="It passes the Moderate tests and carries one factor more, such as being newer or less proven." tone="aggr" />
       </div>
 
-      <div className={styles.panel}>
-        <span className={`${styles.corner} ${styles.cornerTl}`} />
-        <span className={`${styles.corner} ${styles.cornerTr}`} />
-        <div className={styles.question}>
+      <Panel>
+        <Question>
           If the goal were the highest possible yield, what share of the vault would go
           to the Aggressive strategy?
-        </div>
-        <div className={styles.guessHead}>
-          <span className={styles.microLabel}>Share in Aggressive</span>
-          <span className={styles.guessValue} style={{ color: "#d4952a" }}>{guess}%</span>
-        </div>
-        <input
-          type="range" min={0} max={100} step={1} value={guess} disabled={revealed}
-          onChange={(e) => setGuess(Number(e.target.value))}
-          className={styles.range} style={{ accentColor: "#d4952a" }}
-          aria-label="Share in Aggressive"
+        </Question>
+        <GuessSlider
+          label="Share in Aggressive"
+          value={guess}
+          onChange={setGuess}
+          disabled={revealed}
+          color="#d4952a"
         />
-      </div>
+      </Panel>
 
       {!revealed ? (
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={() => setRevealed(true)}>
-            Commit and check the rules
-            <ArrowIcon />
-          </button>
-        </div>
+        <Actions>
+          <Primary onClick={() => setRevealed(true)}>Commit and check the rules</Primary>
+        </Actions>
       ) : (
         <Reveal
           title={`The DAO caps Aggressive strategies at ${MAX_AGGRESSIVE_PCT}% of the vault.`}
@@ -132,11 +129,11 @@ function Predict({ onDone }) {
           </Body>
           <Body>
             The caps are what make a high LTV safe to borrow at. Your borrowing headroom
-            rests on what the vault underneath is allowed to hold.
+            depends on what the vault underneath is allowed to hold.
           </Body>
         </Reveal>
       )}
-    </>
+    </Stage>
   );
 }
 
@@ -188,14 +185,14 @@ function Allocator({ aprs, mod, aggr, setMod, setAggr }) {
         </div>
       </div>
 
-      <div className={styles.controls}>
+      <Controls>
         <AllocSlider
           label="Moderate" value={mod} onChange={setMod} max={80} cap={modCap} over={modOver}
         />
         <AllocSlider
           label="Aggressive" value={aggr} onChange={setAggr} max={40} cap={MAX_AGGRESSIVE_PCT} over={aggrOver}
         />
-      </div>
+      </Controls>
     </>
   );
 }
@@ -242,13 +239,11 @@ function Explore({ onDone }) {
   const atBest = Math.abs(blend(DEMO, mod, aggr) - best) < 0.005 && !over;
 
   return (
-    <>
-      <div className={styles.eyebrow}>Stage 2 · Explore</div>
-      <h1 className={styles.headline}>Raise the yield until a ceiling stops you.</h1>
-      <p className={styles.sub}>
+    <Stage eyebrow="Stage 2 · Explore" headline="Raise the yield until a ceiling stops you.">
+      <Sub>
         Push a class past its ceiling and the DAO could not allocate that mix. Moderate and
         Aggressive share a ceiling, so filling one tightens the other.
-      </p>
+      </Sub>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
 
@@ -275,21 +270,18 @@ function Explore({ onDone }) {
             100% Aggressive would make a high LTV genuinely dangerous, and those same
             ceilings are what prevent it.
           </Body>
+          <Body>
+            The caps are checked when the DAO allocates, and they are measured against the
+            size of the vault. A run of withdrawals can leave an existing allocation above
+            its cap until the DAO rebalances.
+          </Body>
         </Reveal>
       ) : (
-        <p className={styles.hint}>
+        <Hint>
           Find the highest blended APR that stays inside every cap.
           {!sawBreach ? " Push a slider past a ceiling as well." : ""}
-        </p>
+        </Hint>
       )}
-    </>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M5 12h13M13 6l6 6-6 6" />
-    </svg>
+    </Stage>
   );
 }

@@ -3,7 +3,8 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { MAX_LTV } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Note, Notes, Panel,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
+  Panel,
   PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
@@ -36,26 +37,11 @@ export default function BorrowLab({ lessonId, stage, onStage, done, onComplete }
   if (stage === "explore") return <Try onDone={() => onStage("checkpoint")} />;
 
   return (
-    <Checkpoint
-      /* The engine asks a question here (what Max does, what LTV measures, what
-         the health factor says, what alUSD is) and the checkpoint renders
-         whatever kind of control arrives. The slider props below are kept for
-         an engine that has not been redeployed since this lesson stopped being
-         a sum, and are ignored when a question arrives. */
+    <ChoiceCheckpoint
       base={base}
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      stageLabel="Check"
-      headline="Find the most you can borrow."
-      unit="amount"
-      targetOf={(f) => f.deposit * MAX_LTV}
-      computeOf={(f, v) => v}
-      direct
-      controlLabel="Most you can borrow"
-      controlDisplay={money}
-      targetFoot="the cap stops borrowing here"
-      landingFoot="set the slider to your answer"
       passTitle="Lesson 3 complete."
       passBody="Borrowing stops at 90% of the deposit. The alUSD or alETH is minted to your wallet, and the deposit stays in the vault earning the whole time."
     />
@@ -183,6 +169,7 @@ function Try({ onDone }) {
         borrowed={borrow}
         asset="USDC"
         earning
+        showHealth
         marks="cap"
         highlight="borrowed"
         note={note}
@@ -207,11 +194,11 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="What arrives">
-          alUSD is minted directly to your wallet. Inside the protocol one of them cancels
-          one USDC of debt. On the open market it trades a little under 1.00.
+          alUSD, minted to your wallet. On the open market it trades a little under 1.00.
         </Note>
-        <Note label="At the cap">
-          Borrowing stops. The position stays open and keeps earning.
+        <Note label="Health factor">
+          The borrowing cap divided by your LTV. It reads 1.80 at 5,000 borrowed and 1.00 at
+          the cap, and the app prints it beside your LTV.
         </Note>
       </Notes>
 
@@ -223,10 +210,13 @@ function Try({ onDone }) {
         >
           <Body>
             On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap stops you
-            borrowing more. The position stays open and the deposit keeps earning.
+            borrowing more, and the deposit keeps earning. The health factor on the card is
+            the same distance written as a multiple: 3.00 at 30% LTV, 1.00 at the cap.
           </Body>
         </Reveal>
-      ) : null}
+      ) : (
+        <Hint>Push the amount up to the cap to continue.</Hint>
+      )}
     </Stage>
   );
 }
