@@ -353,7 +353,7 @@ export const QUESTIONS = {
         "You deposit alUSD in the Transmuter and then need the funds before the term is up. " +
         "What are your options?",
       options: [
-        "Leave the queue early and pay the early transmutation fee",
+        "Leave the queue early and pay the early exit fee",
         "Wait it out. The deposit is committed until it matures",
         "Swap your place in the queue with someone further forward",
         "Withdraw at no cost, since the fee applies to the redemption rather than the exit",

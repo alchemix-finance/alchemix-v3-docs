@@ -98,7 +98,7 @@ function Predict({ onDone }) {
     ];
   }, []);
 
-  const guessedSame = Math.abs(ana - ben) <= 5;
+  const spread = Math.abs(ana - ben);
 
   return (
     <Stage eyebrow="Stage 1 · Predict" headline="Ana and Ben open positions in the same vault on the same day.">
@@ -159,11 +159,14 @@ function Predict({ onDone }) {
           nextLabel="Find what sets the pace"
         >
           <Body>
-            {guessedSame
-              ? "Your two answers match, and so does the projection. The two curves sit exactly on top of each other."
-              : `You put the two answers ${Math.abs(ana - ben)} points apart. The projection puts them in the same place, with the two curves exactly on top of each other.`}{" "}
-            Ben borrowed four times what Ana did, and after {CHECK_MONTH} months the same
-            share of each loan remains.
+            You said {ana}% for Ana and {ben}% for Ben.{" "}
+            {spread === 0
+              ? "You had them level, and so does the projection, "
+              : spread <= 5
+                ? "You had them close, and the projection has them level, "
+                : `You put them ${spread} points apart, and the projection has them level, `}
+            with the two curves exactly on top of each other. Ben borrowed four times what
+            Ana did, and after {CHECK_MONTH} months the same share of each loan remains.
           </Body>
           <Body>
             On a conventional loan, interest accrues on the balance, so a larger balance

@@ -150,6 +150,16 @@ const CHECKS = [
   ["caps-at-allocation rule taught in the MYT lab before the check asks about it", "present", "checked when the DAO allocates, and they are measured"],
   ["borrower collateral named as what funds the 1:1 in the peg lab", "present", "Borrower collateral is what funds that promise"],
   ["every Try stage says how to continue", "present", "Push the amount up to the cap to continue"],
+
+  /* Sequential walkthrough, 2026-09-19: what a learner sees, in order. */
+  ["the six-lessons strip has a stop for lesson 1", "present", 'id: "what-alchemix-does",\n    label: "The idea"'],
+  ["the strip no longer counts five stops under a six-lesson heading", "gone", "repeat(5, minmax(0, 1fr))"],
+  ["the local-grading notice does not say 'was graded' before grading", "gone", "so this was graded in your browser"],
+  ["the pace reveal names both guesses before the truth", "present", "You said {ana}% for Ana and {ben}% for Ben."],
+  ["the pace reveal no longer calls two different numbers a match", "gone", "Your two answers match, and so does the projection"],
+  ["the capstone's Visualizer crop says why its loan cost reads zero", "present", "has no loan open, so its loan cost reads zero"],
+  ["one name for the Transmuter's exit fee, in the banks too", "gone", "early transmutation fee"],
+  ["the track map has a main landmark", "present", "      <main>\n        <section className={styles.intro}>"],
 ];
 
 let fails = 0;

@@ -10,14 +10,15 @@ import styles from "./styles.module.css";
  * across six lessons, was asserted in prose and drawn nowhere. This is that
  * claim drawn.
  *
- * It doubles as the progress display. Each stop is one beginner lesson and
- * lights when that lesson is finished, so the picture fills in as the position
- * gets built. The stop a learner is on carries a ring. Nothing here is a link:
- * the rails below are where lessons are opened, and a second set of targets for
- * the same six destinations would only split the click.
+ * It doubles as the progress display. Each stop is one beginner lesson, six
+ * in all, and lights when that lesson is finished, so the picture fills in as
+ * the position gets built. The stop a learner is on carries a ring. Nothing
+ * here is a link: the rails below are where lessons are opened, and a second
+ * set of targets for the same six destinations would only split the click.
  *
- * Lesson 1 has no stop of its own, because it is this diagram: finishing it
- * lights the frame rather than a node.
+ * Lesson 1 is the idea the other five build, so it is the first stop rather
+ * than a frame around them. A strip that said "six lessons" over five numbered
+ * boxes read as a mistake, whatever the frame was doing.
  *
  * Figures match the carried position the lessons use, and the copy says
  * "example" where a real one would vary. The live strip under the hero is what
@@ -25,6 +26,13 @@ import styles from "./styles.module.css";
  */
 
 const STOPS = [
+  {
+    id: "what-alchemix-does",
+    label: "The idea",
+    value: "A loan that repays itself",
+    note: "Deposit, borrow against it, and redemptions clear the debt.",
+    tone: "#5ba88a",
+  },
   {
     id: "your-deposit",
     label: "Deposit",
@@ -42,15 +50,15 @@ const STOPS = [
   {
     id: "self-repaying",
     label: "Repay",
-    value: "redemptions",
-    note: "The balance falls out of collateral that keeps earning.",
+    value: "No payments due",
+    note: "Redemptions clear the balance from collateral that keeps earning.",
     tone: "#f5c09a",
   },
   {
     id: "what-can-go-wrong",
     label: "Hold",
-    value: "no price liquidation",
-    note: "Debt and collateral are the same asset, so they move together.",
+    value: "No price liquidation",
+    note: "Debt and collateral are priced in the same asset, so they move together.",
     tone: "#8ea9d8",
   },
   {
@@ -64,19 +72,14 @@ const STOPS = [
 
 export default function TrackLoop({ completedIds = [] }) {
   const done = new Set(completedIds);
-  const introDone = done.has("what-alchemix-does");
-  // The stop a learner is about to reach: the first one not finished, counting
-  // lesson 1 as the gate on the first stop.
-  const currentId = introDone
-    ? (STOPS.find((s) => !done.has(s.id))?.id ?? null)
-    : STOPS[0].id;
-
+  // The stop a learner is about to reach: the first one not finished.
+  const currentId = STOPS.find((s) => !done.has(s.id))?.id ?? null;
   const finished = STOPS.filter((s) => done.has(s.id)).length;
 
   return (
     <figure
-      className={`${styles.wrap} ${introDone ? styles.wrapOn : ""}`}
-      aria-label={`The position the beginner track builds. ${finished} of ${STOPS.length} steps complete.`}
+      className={`${styles.wrap} ${finished > 0 ? styles.wrapOn : ""}`}
+      aria-label={`The position the beginner track builds. ${finished} of ${STOPS.length} lessons complete.`}
     >
       <figcaption className={styles.head}>
         <span className={styles.headLabel}>One position, six lessons</span>

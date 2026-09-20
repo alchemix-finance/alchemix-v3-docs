@@ -7,8 +7,8 @@
   transition: border-color 0.3s ease;
 }
 
-/* Lesson 1 is this diagram, so finishing it lights the frame rather than any
-   one node. */
+/* The frame brightens once the first lesson is done, so a started track reads
+   as started from the top of the page. */
 .wrapOn {
   border-color: rgba(245, 192, 154, 0.32);
 }
@@ -38,13 +38,13 @@
 
 .loop {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: start;
   gap: 0.5rem;
 }
 
-/* The arrows sit in the gaps rather than in their own columns, so the five
-   stops keep equal width and the diagram stays a five-beat rhythm. */
+/* The arrows sit in the gaps rather than in their own columns, so the six
+   stops keep equal width and the diagram stays a six-beat rhythm. */
 .arrow {
   display: none;
 }
@@ -118,12 +118,13 @@
 }
 
 /* The diagram spans the content column, so its width tracks the viewport and
-   these are plain media queries. Five stops need roughly 9rem each to hold
-   their notes without shredding them; under that they wrap to two rows, and on
-   a phone they become a vertical list with the arrows turned to point down. */
-@media (max-width: 860px) {
+   these are plain media queries. Six stops in a row need roughly 11rem each to
+   hold their notes without shredding them; under that they sit three to a row,
+   and on a phone they become a vertical list with the arrows turned to point
+   down. */
+@media (max-width: 1100px) {
   .loop {
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

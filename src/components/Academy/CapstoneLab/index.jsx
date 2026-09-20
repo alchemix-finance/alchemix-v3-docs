@@ -89,7 +89,8 @@ function Predict({ price, live, onDone }) {
 
       <AppShot shot={SHOTS.visualizerOut}>
         What the Visualizer reports once its four inputs are set. Loan cost is the discount
-        you take on the sale, and projected profit is what is left after it.
+        you take on the sale, and projected profit is what is left after it. This capture
+        has no loan open, so its loan cost reads zero.
       </AppShot>
 
       <Panel>

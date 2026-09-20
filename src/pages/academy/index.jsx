@@ -60,46 +60,48 @@ export default function AcademyTrack() {
       title="Alchemix Academy"
       description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track covers the mechanics underneath it. No wallet, no sign-in, nothing to install."
     >
-      <section className={styles.intro}>
-        <div className={styles.introText}>
-          <div className={styles.eyebrow}>Alchemix Academy</div>
-          <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
-          <p className={styles.sub}>
-            On most lending platforms your collateral sits idle while you pay interest on
-            the loan. In Alchemix the collateral keeps earning, and redemptions clear the debt
-            for you. Both tracks below cover how that actually happens.
-          </p>
-          <p className={styles.sub}>
-            You don't need a wallet, a sign-in, or anything installed. The beginner track
-            starts from scratch and the intermediate track picks up where it ends. Read any
-            lesson you like. The checkpoints open in order.
-          </p>
-        </div>
+      <main>
+        <section className={styles.intro}>
+          <div className={styles.introText}>
+            <div className={styles.eyebrow}>Alchemix Academy</div>
+            <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
+            <p className={styles.sub}>
+              On most lending platforms your collateral sits idle while you pay interest on
+              the loan. In Alchemix the collateral keeps earning, and redemptions clear the debt
+              for you. Both tracks below cover how that actually happens.
+            </p>
+            <p className={styles.sub}>
+              You don't need a wallet, a sign-in, or anything installed. The beginner track
+              starts from scratch and the intermediate track picks up where it ends. Read any
+              lesson you like. The checkpoints open in order.
+            </p>
+          </div>
 
-        <RewardCard completedIds={completedIds} banked={banked} />
-      </section>
+          <RewardCard completedIds={completedIds} banked={banked} />
+        </section>
 
-      <section className={styles.loopSection}>
-        <TrackLoop completedIds={completedIds} />
-      </section>
+        <section className={styles.loopSection}>
+          <TrackLoop completedIds={completedIds} />
+        </section>
 
-      {TRACKS.map((track) => (
-        <TrackSection
-          key={track.key}
-          track={track}
-          completions={completions}
-          loaded={loaded}
-          base={base}
+        {TRACKS.map((track) => (
+          <TrackSection
+            key={track.key}
+            track={track}
+            completions={completions}
+            loaded={loaded}
+            base={base}
+          />
+        ))}
+
+        <ProgressNote
+          started={loaded && completedIds.length > 0}
+          onReset={() => {
+            clearCompletions();
+            setCompletions({});
+          }}
         />
-      ))}
-
-      <ProgressNote
-        started={loaded && completedIds.length > 0}
-        onReset={() => {
-          clearCompletions();
-          setCompletions({});
-        }}
-      />
+      </main>
     </AcademyShell>
   );
 }
