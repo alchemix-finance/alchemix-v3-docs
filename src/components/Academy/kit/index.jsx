@@ -404,32 +404,60 @@ export function ScreenShot({ src, alt, max, label = "The whole screen, in the ap
  * Every file here was checked against the live app: the older captures in
  * static/img predate the navigation rename and none of them is used. The
  * `academy-*.png` files are 2x captures of the screens that need no wallet,
- * taken headless in dark mode by `scripts/capture-app-screens.mjs`; the rest
- * are 1x captures of a real position. Every crop keeps a margin around the
- * element it shows, so a card's own border and corners sit inside the window
- * rather than on its edge. The
- * screens are the ETH market, so a caption describes the screen rather than
- * claiming it is the learner's own position.
+ * taken headless in dark mode by `scripts/capture-app-screens.mjs`: the three
+ * list pages, the USDC vault page with its Deposit/Borrow tab open, its
+ * Withdraw and Repay tabs, and the Info, Visualizer and Earmarking panels. The
+ * rest (the stats strip, the bar, the open Fixed Yield positions) are 1x
+ * captures of a real ETH position, so their captions describe the screen
+ * rather than claiming it is the learner's own. Every crop keeps a margin
+ * around the element it shows, so a card's own border and corners sit inside
+ * the window rather than on its edge.
  */
 const STATS = [1610, 591];
 
-/** One stat tile on a vault, by column and row of the app's four-by-two grid. */
-const tile = (col, row) => ({
-  // 16px of the surrounding panel on every side, so the tile's own border
-  // and rounded corners are inside the window rather than on its edge.
-  x: ([48, 432, 815, 1197][col] - 16) / STATS[0],
-  y: ([140, 268][row] - 16) / STATS[1],
-  w: (366 + 32) / STATS[0],
-  h: (118 + 32) / STATS[1],
-});
+/**
+ * Two neighbouring stat tiles on a vault, by column and row of the app's
+ * four-by-two grid. A pair rather than a single tile: one tile came out as a
+ * 336px thumbnail in a 1,070px column, and two together fill a figure at the
+ * width every other crop uses, with the stat a lesson explains sitting next
+ * to the one it is read against. 16px of the surrounding panel on every side
+ * (10px above the second row, where the first row's tiles sit close), so the
+ * tiles' own borders and rounded corners are inside the window.
+ */
+const tiles = (col1, col2, row) => {
+  const cols = [48, 432, 815, 1197];
+  const top = row === 1 ? 10 : 16;
+  return {
+    x: (cols[col1] - 16) / STATS[0],
+    y: ([140, 268][row] - top) / STATS[1],
+    w: (cols[col2] + 366 + 16 - (cols[col1] - 16)) / STATS[0],
+    h: (118 + top + 16) / STATS[1],
+  };
+};
+
+/**
+ * The width the medium crops share, in rem: an action tab, a pair of stat
+ * tiles, the left of a card. About half the lesson column, so the figure reads
+ * as a figure rather than a thumbnail, and small enough that a 2x capture stays
+ * at or above two source pixels per CSS pixel.
+ */
+const MEDIUM = 36;
+
+/**
+ * The single-panel captures (Visualizer, Info) are 668 CSS px wide at 2x. A
+ * crop that runs their full width is capped here, the same cap the whole
+ * panel gets at the foot of the lesson, so it is never blown up past what
+ * the file holds.
+ */
+const PANEL = 42;
 
 export const SHOTS = {
   depositBorrow: {
-    src: "/img/quick-start-02.png",
-    size: [1872, 966],
-    crop: { x: 0.203, y: 0.5135, w: 0.2991, h: 0.4803 },
-    max: 22,
-    alt: "The Deposit/Borrow tab: a field for the asset you are depositing above a field for the alAsset you are borrowing, then a Deposit button",
+    src: "/img/academy-vault-usdc.png",
+    size: [3200, 2500],
+    crop: { x: 0.1, y: 0.524, w: 0.4, h: 0.304 },
+    max: MEDIUM,
+    alt: "The Deposit/Borrow tab on the USDC vault: a USDC field for the deposit above an alUSD field for the borrow, each with a MAX button, over the button that sends both",
   },
   vaultCard: {
     src: "/img/academy-borrow.png",
@@ -438,32 +466,32 @@ export const SHOTS = {
     alt: "A vault card on the Borrow page: its name, APR and deposit cap, then total deposits, total debt, earmarked, and LTV 90.00%",
   },
   redemptionRate: {
-    src: "/img/borrowing-in-alchemix-02.png",
-    size: STATS,
-    crop: tile(1, 1),
-    max: 21,
-    alt: "The Redemption Rate stat on a vault, reading 58.61%",
+    src: "/img/academy-vault-usdc.png",
+    size: [3200, 2500],
+    crop: { x: 0.1125, y: 0.2912, w: 0.3925, h: 0.096 },
+    max: MEDIUM,
+    alt: "Earmarked and Redemption Rate on the USDC vault, the rate reading 90.61%",
   },
   depositCap: {
     src: "/img/academy-borrow.png",
     size: [3200, 2500],
-    crop: { x: 0.1766, y: 0.416, w: 0.2559, h: 0.1344 },
-    max: 22,
-    alt: "The left of a vault card on the Borrow page: its APR over a bar showing how full its deposit cap is",
+    crop: { x: 0.0944, y: 0.382, w: 0.36, h: 0.2036 },
+    max: MEDIUM,
+    alt: "The left of a vault card on the Borrow page: its name, its APR, and a bar showing how full its deposit cap is",
   },
   healthFactor: {
     src: "/img/borrowing-in-alchemix-02.png",
     size: STATS,
-    crop: tile(3, 0),
-    max: 21,
-    alt: "The Health Factor stat on a vault, reading 3.00",
+    crop: tiles(2, 3, 0),
+    max: MEDIUM,
+    alt: "Debt and Health Factor on a real position: 0.30 alETH owed and a health factor of 3.00",
   },
   ltv: {
     src: "/img/borrowing-in-alchemix-02.png",
     size: STATS,
-    crop: tile(3, 1),
-    max: 21,
-    alt: "The LTV stat on a vault, reading 30.00 out of 90.00%",
+    crop: tiles(2, 3, 1),
+    max: MEDIUM,
+    alt: "Borrowable and LTV on a real position: 0.60 alETH still to borrow, and LTV 30.00 out of 90.00%",
   },
   positionBar: {
     src: "/img/borrowing-in-alchemix-02.png",
@@ -472,18 +500,16 @@ export const SHOTS = {
     alt: "A vault's bar, split into deposit, debt and earmarked, with MAX LTV and LIQ LTV marked near the right end",
   },
   repayTab: {
-    src: "/img/repay-loan-01.png",
-    size: [2038, 1270],
-    crop: { x: 0.1727, y: 0.5276, w: 0.3248, h: 0.222 },
-    max: 24,
-    alt: "The Repay tab on a vault, with an amount field and a Repay button",
+    src: "/img/academy-tab-repay.png",
+    size: [1304, 586],
+    max: MEDIUM,
+    alt: "The Repay tab on the USDC vault: an alUSD amount field with a MAX button, over the button that sends it",
   },
   withdrawTab: {
-    src: "/img/withdraw-02.png",
-    size: [2060, 1239],
-    crop: { x: 0.1845, y: 0.5246, w: 0.3155, h: 0.226 },
-    max: 24,
-    alt: "The Withdraw tab on a vault, showing the amount available and a MAX button",
+    src: "/img/academy-tab-withdraw.png",
+    size: [1304, 586],
+    max: MEDIUM,
+    alt: "The Withdraw tab on the USDC vault: a USDC amount field showing what is available, with a MAX button",
   },
   fixedYieldCard: {
     src: "/img/academy-fixed-yield.png",
@@ -494,9 +520,9 @@ export const SHOTS = {
   alAssetPrice: {
     src: "/img/academy-fixed-yield.png",
     size: [3200, 2500],
-    crop: { x: 0.3719, y: 0.394, w: 0.1938, h: 0.18 },
-    max: 20,
-    alt: "The detail panel of a Fixed Yield card: the maturity date, the alUSD price it is quoting, and the fields that fill in once you enter an amount",
+    crop: { x: 0.0944, y: 0.3712, w: 0.4713, h: 0.2252 },
+    max: MEDIUM,
+    alt: "The left of a Fixed Yield card: its projected fixed APR, term and early exit fee, beside the maturity date and the alUSD price it is quoting",
   },
   fixedPositions: {
     src: "/img/redeem-alassets-02.png",
@@ -508,12 +534,14 @@ export const SHOTS = {
     src: "/img/academy-visualizer.png",
     size: [1336, 1470],
     crop: { x: 0.0449, y: 0.8163, w: 0.9132, h: 0.0884 },
+    max: PANEL,
     alt: "What the Visualizer reports under its chart: loan cost, aggregate yield, and projected profit",
   },
   strategies: {
     src: "/img/academy-vault-info.png",
     size: [1336, 1160],
     crop: { x: 0.0299, y: 0.0431, w: 0.9431, h: 0.5086 },
+    max: PANEL,
     alt: "The Info tab on a vault, listing each strategy with its risk level, APR and allocation",
   },
 };

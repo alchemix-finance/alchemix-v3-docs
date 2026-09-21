@@ -175,6 +175,17 @@ const CHECKS = [
   ["the phone-only setup-card fix is gone", "gone", "Three figures across a phone-width card leaves about 85px each"],
   ["three controls lay out as three or one", "present", ".controls[data-count=\"3\"]"],
   ["the Controls wrapper reports its count", "present", "data-count={React.Children.toArray(children).length}"],
+
+  /* Visual walk, 2026-09-20: every screen looked at, not read. Thumbnail crops, an ETH tab under a USDC lesson, a deposit that kept shrinking under a cleared loan. */
+  ["the borrowing lesson's tab crop is the USDC vault, not an ETH capture", "present", 'depositBorrow: {\n    src: "/img/academy-vault-usdc.png"'],
+  ["lesson 2's whole screen is the USDC vault", "present", 'shot: "/img/academy-vault-usdc.png",\n    shotAlt: "The USDC vault page'],
+  ["no crop is a single 336px stat tile", "gone", "crop: tile("],
+  ["the Repay and Withdraw crops come from the 2x USDC captures", "present", '"/img/academy-tab-repay.png"'],
+  ["the redemption-rate caption quotes the figure in its capture", "present", "reading 90.61% the day this was captured"],
+  ["the repay lab re-runs the projection for the balance a repayment leaves", "present", "const curve = useMemo(() => curveFor(opening + moreShown)"],
+  ["the repay lab no longer shifts the un-repaid curve by the repayment", "gone", "y: Math.max(p.debt - repay + moreShown, 0)"],
+  ["the map's carried position has room for five stats on one row", "present", ".carried {\n  margin-bottom: 2.25rem;\n  max-width: 46rem;"],
+  ["the single-panel crops are capped at their capture width", "present", "max: PANEL,"],
 ];
 
 let fails = 0;

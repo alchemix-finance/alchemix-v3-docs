@@ -359,9 +359,13 @@
 }
 
 /* ── The carried position ────────────────────────────────── */
+/* Wide enough for the five stats the card carries after lesson 4 (Deposited,
+   Borrowed, Earmarked, Health Factor, LTV) to sit on one row. At 34rem the
+   fifth wrapped onto a row of its own and "Health Factor" broke over two
+   lines. The intermediate sheet below matches it. */
 .carried {
   margin-bottom: 2.25rem;
-  max-width: 34rem;
+  max-width: 46rem;
 }
 
 .carriedLabel {
@@ -379,7 +383,7 @@
    card is a progress readout and a reference at the same time. */
 .sheet {
   margin-bottom: 2.25rem;
-  max-width: 40rem;
+  max-width: 46rem;
   border: 1px solid rgba(245, 192, 154, 0.16);
   border-radius: 10px;
   background: #121416;

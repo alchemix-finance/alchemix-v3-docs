@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import { apiBase } from "../lib/api";
@@ -33,14 +33,23 @@ const DEPOSIT = 10_000;
 const BORROW = 5_000;
 const MONTHS = 24;
 
-/** The position over two years, sampled weekly with a final point on month 24. */
-const CURVE = positionCurve({
-  collateral: DEPOSIT,
-  debt: BORROW,
-  yieldAnnual: EXAMPLE_YIELD,
-  redemptionAnnual: EXAMPLE_REDEMPTION,
-  months: MONTHS,
-});
+/**
+ * The position over two years for a given opening balance, sampled weekly
+ * with a final point on month 24. The Try stage re-runs it for whatever the
+ * repay and borrow-more controls leave, so the deposit, the balance and the
+ * chart all come from one projection.
+ */
+const curveFor = (debt) =>
+  positionCurve({
+    collateral: DEPOSIT,
+    debt,
+    yieldAnnual: EXAMPLE_YIELD,
+    redemptionAnnual: EXAMPLE_REDEMPTION,
+    months: MONTHS,
+  });
+
+/** The untouched position: 5,000 borrowed and never repaid by hand. */
+const CURVE = curveFor(BORROW);
 
 /**
  * The reveal figure, rounded to the nearest hundred so the sentence reads like
@@ -58,8 +67,9 @@ const OWED_AT_END = Math.round(CURVE.at(-1).debt / 100) * 100;
 const EARMARK_SHARE = 0.2;
 
 /** The sample nearest a whole month. */
-const sampleAt = (m) =>
-  CURVE.reduce((best, p) => (Math.abs(p.month - m) < Math.abs(best.month - m) ? p : best));
+const nearestMonth = (curve, m) =>
+  curve.reduce((best, p) => (Math.abs(p.month - m) < Math.abs(best.month - m) ? p : best));
+const sampleAt = (m) => nearestMonth(CURVE, m);
 
 /**
  * Where the balance stands after the first year, to the nearest hundred.
@@ -148,9 +158,10 @@ function Learn({ onDone }) {
       />
 
       <AppShot shot={SHOTS.redemptionRate}>
-        The rate on a live vault, reading 58.61% the day this was captured. It rises and
+        The rate on a live vault, reading 90.61% the day this was captured. It rises and
         falls with how much alUSD is waiting to be redeemed, so the {RATE} above is an
-        example rather than a schedule.
+        example rather than a schedule. Earmarked, beside it, is the slice of a loan already
+        set aside for the next redemption.
       </AppShot>
 
       <Panel>
@@ -203,25 +214,34 @@ function Try({ onDone }) {
   const [more, setMore] = useState(0);
   const [unlocked, setUnlocked] = useState(false);
 
-  const at = sampleAt(m);
+  // Repaying by hand and borrowing more change what redemptions have left to
+  // work on, so the projection is re-run for the balance they leave rather
+  // than shifted after the fact. Shifting the 5,000 curve down by the
+  // repayment kept redeeming collateral for debt that no longer existed: at
+  // 24 months with 2,000 repaid the chart sat at zero while the card showed
+  // the deposit still falling, 6,350 against a loan that had been 3,000.
+  const opening = Math.max(BORROW - repay, 0);
+  const baseCurve = useMemo(() => curveFor(opening), [opening]);
+  const atBase = nearestMonth(baseCurve, m);
 
   // The cap from lesson 3, seen again: at month 0 with nothing repaid the
   // Borrow more thumb stops at 4,000. The cap is re-derived every render, so
   // a stored value the months or repay controls have since outgrown is
   // clamped back down rather than drawn past the cap.
-  const cap = borrowable(at.collateral, at.debt - repay);
+  const cap = borrowable(atBase.collateral, atBase.debt);
   const moreShown = Math.min(more, cap);
   const capped = moreShown >= cap - 1e-9;
 
-  const balance = Math.max(at.debt - repay + moreShown, 0);
+  const curve = useMemo(() => curveFor(opening + moreShown), [opening, moreShown]);
+  const at = nearestMonth(curve, m);
+  const balance = at.debt;
   const free = withdrawable(at.collateral, balance);
 
-  // The line extends as the months slider moves, with the current repay and
-  // borrow-more applied at every drawn month.
-  const points = CURVE.filter((p) => p.month <= m + 1e-9).map((p) => ({
-    x: p.month,
-    y: Math.max(p.debt - repay + moreShown, 0),
-  }));
+  // The line extends as the months slider moves, drawn from the projection
+  // that already carries the current repayment and extra borrow.
+  const points = curve
+    .filter((p) => p.month <= m + 1e-9)
+    .map((p) => ({ x: p.month, y: p.debt }));
   // At month 0 the series is one sample, and a one-point path draws nothing.
   // A duplicated point makes a zero-length segment, which the chart's round
   // line cap renders as a dot, so the starting balance shows before the

@@ -62,8 +62,8 @@ export const BEGINNER = [
     minutes: 6,
     ready: true,
     track: "beginner",
-    shot: "/img/quick-start-02.png",
-    shotAlt: "A vault page with the Deposit/Borrow tab open",
+    shot: "/img/academy-vault-usdc.png",
+    shotAlt: "The USDC vault page with the Deposit/Borrow tab open",
     shotNote:
       "The Deposit/Borrow tab on a vault. The top field takes the asset you are depositing and the one under it the alAsset you are borrowing, so one transaction can do both.",
   },

@@ -72,8 +72,9 @@ function Learn({ onDone }) {
       />
 
       <AppShot shot={SHOTS.depositBorrow}>
-        The vault's Deposit/Borrow tab. The lower field is the alAsset you are borrowing,
-        and MAX beside it fills in the most this deposit allows.
+        The vault's Deposit/Borrow tab, with the Borrow tab beside it for a deposit already
+        made. The lower field is the alUSD you are borrowing, and MAX beside it fills in the
+        most your deposit allows.
       </AppShot>
 
       <Panel>
@@ -188,8 +189,9 @@ function Try({ onDone }) {
       </Controls>
 
       <AppShot shot={SHOTS.ltv}>
-        LTV on a real position, written against the cap: 30.00 out of 90.00%. The second
-        figure is the same on every vault in the protocol.
+        LTV on a real position, written against the cap: 30.00 out of 90.00%. Borrowable
+        beside it is what the cap still allows, and the 90.00% is the same on every vault in
+        the protocol.
       </AppShot>
 
       <Notes>
