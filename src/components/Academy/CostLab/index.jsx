@@ -7,7 +7,7 @@ import { borrowNeededFor, discountCost } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
-  Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
+  Question, Readout, Reveal, NARROW, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
 /**
@@ -65,7 +65,7 @@ function Predict({ price, live, onDone }) {
         sell the alUSD on the open market, where it is trading at {priceText(price, live)}{live ? " today" : ""}.
       </Sub>
 
-      <AppShot shot={SHOTS.alAssetPrice}>
+      <AppShot shot={SHOTS.fixedYieldCard} narrow={NARROW.fixedPrice}>
         Every Fixed Yield card prints what the alAsset is trading at, which is what a
         buyer pays and therefore what you receive when you sell. The price moves, so this
         capture and today's figure can differ a little.

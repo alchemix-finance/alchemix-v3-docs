@@ -76,9 +76,9 @@ function Learn({ onDone }) {
         compact
       />
 
-      <AppShot shot={SHOTS.depositCap}>
-        A vault on the Borrow page. The bar is its deposit cap and how full it is, and the
-        figure above is what it is earning right now.
+      <AppShot shot={SHOTS.vaultCard}>
+        A vault on the Borrow page. The bar under its name is the deposit cap and how full
+        it is, and the figure above the bar is what it is earning right now.
       </AppShot>
 
       <Panel>

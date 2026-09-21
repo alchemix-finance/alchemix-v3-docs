@@ -6,7 +6,7 @@ import { apiBase } from "../lib/api";
 import { LIQ_LTV, MAX_LTV, ltvAfterLoss, survivableLtv, survivesLoss } from "../lib/protocol";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
-  Question, Readout, Reveal, SHOTS, Stage, Sub,
+  Question, Readout, Reveal, NARROW, SHOTS, Stage, Sub,
 } from "../kit";
 
 /**
@@ -286,9 +286,11 @@ function Explore({ onDone }) {
         <strong>{pct(ceiling)}</strong>.
       </Readout>
 
-      <AppShot shot={SHOTS.healthFactor}>
-        Health Factor states the same distance the other way up: the borrowing cap over your
-        LTV, so 3.00 is a position at 30% against a 90% cap, and it falls as you borrow.
+      <AppShot shot={SHOTS.statsTop} narrow={NARROW.debtHealth}>
+        Health Factor, at the right, states the same distance the other way up: the
+        borrowing cap over your LTV. A position at 30% against the 90% cap reads 3.00, it
+        falls as you borrow, and with nothing borrowed at all it shows the infinity sign,
+        as this vault does.
       </AppShot>
 
       {seenFail || (moved.ltv && moved.loss) ? (

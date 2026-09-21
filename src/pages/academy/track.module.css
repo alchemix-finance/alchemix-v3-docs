@@ -6,13 +6,18 @@
  *
  * Two columns: the pitch on the left, what the course pays on the right. The
  * rewards panel used to sit at the foot of the map, under both tracks, where a
- * reader deciding whether to start would never reach it. */
+ * reader deciding whether to start would never reach it.
+ *
+ * The pitch is centred against the panel. Top-aligned, its eyebrow sat ten
+ * pixels under the panel's border and twenty-five above the panel's own
+ * eyebrow, so the two columns read as almost lined up, which is worse than
+ * either. */
 .intro {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
-  align-items: start;
+  align-items: center;
   gap: 2.5rem clamp(2rem, 4vw, 4rem);
   padding: clamp(2.75rem, 6vw, 4.75rem) clamp(1.25rem, 4.4vw, 4rem) clamp(2rem, 4vw, 3.4rem);
 }
@@ -358,17 +363,10 @@
   color: #8ea9d8;
 }
 
-/* ── The carried position ────────────────────────────────── */
-/* Wide enough for the five stats the card carries after lesson 4 (Deposited,
-   Borrowed, Earmarked, Health Factor, LTV) to sit on one row. At 34rem the
-   fifth wrapped onto a row of its own and "Health Factor" broke over two
-   lines. The intermediate sheet below matches it. */
-.carried {
-  margin-bottom: 2.25rem;
-  max-width: 46rem;
-}
-
-.carriedLabel {
+/* ── The intermediate track's sizing sheet ─────────────────
+   What that track builds toward. A row fills in when its lesson is finished, so
+   the card is a progress readout and a reference at the same time. */
+.sheetLabel {
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -377,10 +375,6 @@
   margin-bottom: 0.875rem;
 }
 
-/* ── The intermediate track's sizing sheet ─────────────────
-   The counterpart to .carried above: what that track builds, rather than the
-   position this one does. A row fills in when its lesson is finished, so the
-   card is a progress readout and a reference at the same time. */
 .sheet {
   margin-bottom: 2.25rem;
   max-width: 46rem;
@@ -397,7 +391,7 @@
   gap: 1rem;
 }
 
-.sheetHead .carriedLabel {
+.sheetHead .sheetLabel {
   margin-bottom: 0;
 }
 

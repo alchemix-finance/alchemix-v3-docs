@@ -7,7 +7,7 @@ import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import useElementWidth from "../lib/useElementWidth";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
-  Question, Readout, Reveal, SHOTS, SetupCard, SetupGrid, Stage, Sub,
+  Question, Readout, Reveal, NARROW, SHOTS, SetupCard, SetupGrid, Stage, Sub,
 } from "../kit";
 
 /**
@@ -242,9 +242,10 @@ function Explore({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.redemptionRate}>
-        The third control, on a real vault. Every position in that market is repaid at this
-        one rate, so it is the figure to read before you judge how fast a loan will clear.
+      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
+        The third control, on a real vault: Redemption Rate, second from the left. Every
+        position in that market is repaid at this one rate, so it is the figure to read
+        before you judge how fast a loan will clear.
       </AppShot>
 
       {found ? (

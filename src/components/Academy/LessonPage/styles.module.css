@@ -354,20 +354,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* ── The screen, in the app ──────────────────────────────── */
-
-/* One screenshot per lesson, shown with the wrap-up rather than during the
-   lesson: the lab is the thing to push on, and this is what it turns out to
-   have been. Every file used here was checked against the live app, since
-   several older captures in static/img predate the navigation rename. */
-/* Runs the full width of the lab. It is a capture of a whole app screen, and at
-   the 52rem it used to sit at the figures on it were too small to read; the
-   column is all the room there is to give it. */
-/* The figure itself is the academy's shared one; this only places it. */
-.shotWrap {
-  margin: 2.5rem 0 0;
-}
-
 /* ── Wrap-up actions ─────────────────────────────────────── */
 
 .wrapActions {

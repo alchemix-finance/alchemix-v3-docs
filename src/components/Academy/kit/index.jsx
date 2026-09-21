@@ -288,12 +288,14 @@ export function FlowArrow() {
 /* ── The app, inline ─────────────────────────────────────── */
 
 /**
- * A detail of the real app, cropped out of a full screen capture.
+ * A piece of the real app, cropped out of a capture.
  *
- * Every lesson already ends with the whole screen it is about. This is the
- * other half of that: the one control or one stat the learner is pushing on
- * right now, beside the model of it, so the slider they just moved has a face
- * in the app.
+ * The one control, row of stats or card the learner is pushing on right now,
+ * beside the model of it, so the slider they just moved has a face in the app.
+ * Always a complete element with a margin around it, never a detail cut out of
+ * one, and always the width of the lesson column, on the same edges as the
+ * card above it. The lessons used to end with the whole screen as well; that
+ * was a second picture of the same thing and taught nothing the crop had not.
  *
  * A crop is a fraction of the capture ({ x, y, w, h }, all 0 to 1). The frame
  * takes its aspect ratio from the crop against the file's own pixel size, and
@@ -316,8 +318,7 @@ function cropStyle(shot) {
 /**
  * The frame every app image in the academy sits in.
  *
- * One treatment for all of them, whether it is a cropped detail beside the
- * control it explains or the whole screen at the foot of a lesson. The geometry
+ * One treatment for all of them, a thin strip of stats or a tall panel. The geometry
  * is in fixed pixels rather than percentages, which is the reason the frame is
  * drawn here instead of being a border on the image: the corner marks then read
  * the same on a wide thin strip and on a tall panel, and a page of screenshots
@@ -360,17 +361,32 @@ function Caption({ label, children }) {
   );
 }
 
-export function AppShot({ shot, label = "In the app", children }) {
-  const { frame, img } = cropStyle(shot);
+/**
+ * Below this figure width a shot's narrow variant is shown instead: a crop of
+ * the one thing the caption points at, or the app's own phone layout of the
+ * same panel. A desktop-width element in a phone's column is a thumbnail with
+ * text a few pixels tall. 640px sits under a tablet's column (about 690px at
+ * a 768px viewport, where the desktop crops still read) and over a phone's.
+ */
+const NARROW_PX = 640;
+
+/**
+ * `narrow` overrides the shot's own narrow variant, for a figure two lessons
+ * share where each points at a different part of it (the stat rows).
+ */
+export function AppShot({ shot, narrow, label = "In the app", children }) {
+  const [ref, width] = useElementWidth();
+  const variant = narrow ?? shot.narrow;
+  const shown = variant && width > 0 && width < NARROW_PX
+    ? { src: shot.src, size: shot.size, alt: shot.alt, ...variant }
+    : shot;
+  const { frame, img } = cropStyle(shown);
 
   return (
-    <figure
-      className={parts.fig}
-      style={shot.max ? { "--fig-max": `${shot.max}rem` } : undefined}
-    >
+    <figure className={parts.fig} ref={ref}>
       <Frame>
         <div className={parts.figWindow} style={frame}>
-          <img className={parts.figCrop} style={img} src={shot.src} alt={shot.alt} loading="lazy" />
+          <img className={parts.figCrop} style={img} src={shown.src} alt={shown.alt} loading="lazy" />
         </div>
       </Frame>
       <Caption label={label}>{children}</Caption>
@@ -379,150 +395,112 @@ export function AppShot({ shot, label = "In the app", children }) {
 }
 
 /**
- * A whole capture rather than a crop of one, in the same frame.
- *
- * What the foot of a lesson shows: the entire screen the lesson is about, after
- * the crops have pointed at the parts of it. `max` caps the figure for a capture
- * narrower than the column, so it is never blown up past its own resolution.
- */
-export function ScreenShot({ src, alt, max, label = "The whole screen, in the app", children }) {
-  return (
-    <figure className={parts.fig} style={max ? { "--fig-max": `${max}rem` } : undefined}>
-      <Frame>
-        <div className={parts.figWindow}>
-          <img className={parts.figWhole} src={src} alt={alt} loading="lazy" />
-        </div>
-      </Frame>
-      <Caption label={label}>{children}</Caption>
-    </figure>
-  );
-}
-
-/**
- * The crops the lessons use, with the pixel size of each capture beside it.
+ * The figures the lessons show, with the pixel size of each capture beside it.
  *
  * Every file here was checked against the live app: the older captures in
  * static/img predate the navigation rename and none of them is used. The
  * `academy-*.png` files are 2x captures of the screens that need no wallet,
- * taken headless in dark mode by `scripts/capture-app-screens.mjs`: the three
- * list pages, the USDC vault page with its Deposit/Borrow tab open, its
- * Withdraw and Repay tabs, and the Info, Visualizer and Earmarking panels. The
- * rest (the stats strip, the bar, the open Fixed Yield positions) are 1x
- * captures of a real ETH position, so their captions describe the screen
- * rather than claiming it is the learner's own. Every crop keeps a margin
- * around the element it shows, so a card's own border and corners sit inside
- * the window rather than on its edge.
+ * taken headless in dark mode by `scripts/capture-app-screens.mjs`: the list
+ * pages and the USDC vault page at a desktop width, and the vault's action
+ * tabs and info panels at a 1000px viewport, where each panel runs the width
+ * of the page and ends under its own content. The rest (the bar with a debt
+ * on it, the open Fixed Yield positions) are 1x captures of a real ETH
+ * position, so their captions describe the screen rather than claiming it is
+ * the learner's own.
+ *
+ * Every figure is a complete element with a margin around it: a card, a row
+ * of stat tiles, a tab with its panel. A single tile came out as a thumbnail,
+ * and half a card read as a picture cut in half.
+ *
+ * Each shot can carry a `narrow` variant for a phone's column ({ src, size,
+ * crop, alt }, each falling back to the shot's own): the detail the caption
+ * points at, cropped inside the element so no edge of it is cut, or the
+ * app's own phone layout of the panel from the 390px pass of the capture
+ * script (`academy-phone-*.png`). The stat rows have no default, because the
+ * lessons that share a row point at different tiles of it; they pass one of
+ * `NARROW` instead.
  */
-const STATS = [1610, 591];
+
+/** The USDC vault page at 1600 CSS px, and where its two rows of stat tiles sit. */
+const VAULT = [3200, 2500];
+const statsRow = (row) => ({
+  src: "/img/academy-vault-usdc.png",
+  size: VAULT,
+  // The four tiles of one row, with 12 CSS px of the panel around them.
+  crop: { x: 368 / VAULT[0], y: [528, 736][row] / VAULT[1], w: 2464 / VAULT[0], h: 224 / VAULT[1] },
+});
+
+/** The Withdraw and Repay tabs, each the tab strip and its whole panel. */
+const TAB = [2000, 580];
+
+/** The same panels at 390px, without the tab strip, which scrolls sideways there. */
+const PHONE_TAB = [780, 460];
 
 /**
- * Two neighbouring stat tiles on a vault, by column and row of the app's
- * four-by-two grid. A pair rather than a single tile: one tile came out as a
- * 336px thumbnail in a 1,070px column, and two together fill a figure at the
- * width every other crop uses, with the stat a lesson explains sitting next
- * to the one it is read against. 16px of the surrounding panel on every side
- * (10px above the second row, where the first row's tiles sit close), so the
- * tiles' own borders and rounded corners are inside the window.
+ * The stat tiles at 390px, two to a row: row 0 APR and Deposit, 1 Debt and
+ * Health Factor, 2 Earmarked and Redemption Rate, 3 Borrowable and LTV. The
+ * rows are not the same height (Redemption Rate wraps), so each has its own.
  */
-const tiles = (col1, col2, row) => {
-  const cols = [48, 432, 815, 1197];
-  const top = row === 1 ? 10 : 16;
-  return {
-    x: (cols[col1] - 16) / STATS[0],
-    y: ([140, 268][row] - top) / STATS[1],
-    w: (cols[col2] + 366 + 16 - (cols[col1] - 16)) / STATS[0],
-    h: (118 + top + 16) / STATS[1],
-  };
-};
-
-/**
- * The width the medium crops share, in rem: an action tab, a pair of stat
- * tiles, the left of a card. About half the lesson column, so the figure reads
- * as a figure rather than a thumbnail, and small enough that a 2x capture stays
- * at or above two source pixels per CSS pixel.
- */
-const MEDIUM = 36;
-
-/**
- * The single-panel captures (Visualizer, Info) are 668 CSS px wide at 2x. A
- * crop that runs their full width is capped here, the same cap the whole
- * panel gets at the foot of the lesson, so it is never blown up past what
- * the file holds.
- */
-const PANEL = 42;
+const PHONE_STATS = [684, 864];
+const phoneRow = (top, bottom, alt) => ({
+  src: "/img/academy-phone-stats.png",
+  size: PHONE_STATS,
+  crop: { x: 12 / PHONE_STATS[0], y: top / PHONE_STATS[1], w: 660 / PHONE_STATS[0], h: (bottom - top) / PHONE_STATS[1] },
+  alt,
+});
 
 export const SHOTS = {
-  depositBorrow: {
-    src: "/img/academy-vault-usdc.png",
-    size: [3200, 2500],
-    crop: { x: 0.1, y: 0.524, w: 0.4, h: 0.304 },
-    max: MEDIUM,
-    alt: "The Deposit/Borrow tab on the USDC vault: a USDC field for the deposit above an alUSD field for the borrow, each with a MAX button, over the button that sends both",
-  },
   vaultCard: {
     src: "/img/academy-borrow.png",
     size: [3200, 2500],
     crop: { x: 0.0944, y: 0.382, w: 0.8113, h: 0.2036 },
     alt: "A vault card on the Borrow page: its name, APR and deposit cap, then total deposits, total debt, earmarked, and LTV 90.00%",
+    narrow: {
+      crop: { x: 580 / 3200, y: 1060 / 2500, w: 790 / 3200, h: 310 / 2500 },
+      alt: "The top left of a vault card on the Borrow page: its name, its APR, and a bar showing how full its deposit cap is",
+    },
   },
-  redemptionRate: {
-    src: "/img/academy-vault-usdc.png",
-    size: [3200, 2500],
-    crop: { x: 0.1125, y: 0.2912, w: 0.3925, h: 0.096 },
-    max: MEDIUM,
-    alt: "Earmarked and Redemption Rate on the USDC vault, the rate reading 90.61%",
-  },
-  depositCap: {
-    src: "/img/academy-borrow.png",
-    size: [3200, 2500],
-    crop: { x: 0.0944, y: 0.382, w: 0.36, h: 0.2036 },
-    max: MEDIUM,
-    alt: "The left of a vault card on the Borrow page: its name, its APR, and a bar showing how full its deposit cap is",
-  },
-  healthFactor: {
-    src: "/img/borrowing-in-alchemix-02.png",
-    size: STATS,
-    crop: tiles(2, 3, 0),
-    max: MEDIUM,
-    alt: "Debt and Health Factor on a real position: 0.30 alETH owed and a health factor of 3.00",
-  },
-  ltv: {
-    src: "/img/borrowing-in-alchemix-02.png",
-    size: STATS,
-    crop: tiles(2, 3, 1),
-    max: MEDIUM,
-    alt: "Borrowable and LTV on a real position: 0.60 alETH still to borrow, and LTV 30.00 out of 90.00%",
-  },
-  positionBar: {
-    src: "/img/borrowing-in-alchemix-02.png",
-    size: STATS,
-    crop: { x: 0.0161, y: 0.7411, w: 0.9677, h: 0.1997 },
-    alt: "A vault's bar, split into deposit, debt and earmarked, with MAX LTV and LIQ LTV marked near the right end",
-  },
-  repayTab: {
-    src: "/img/academy-tab-repay.png",
-    size: [1304, 586],
-    max: MEDIUM,
-    alt: "The Repay tab on the USDC vault: an alUSD amount field with a MAX button, over the button that sends it",
+  depositBorrow: {
+    src: "/img/academy-tab-deposit.png",
+    size: [2000, 840],
+    alt: "The Deposit/Borrow tab on the USDC vault: a USDC field for the deposit above an alUSD field for the borrow, each with a MAX button, over the button that sends both",
+    narrow: { src: "/img/academy-phone-tab-deposit.png", size: [780, 704] },
   },
   withdrawTab: {
     src: "/img/academy-tab-withdraw.png",
-    size: [1304, 586],
-    max: MEDIUM,
-    alt: "The Withdraw tab on the USDC vault: a USDC amount field showing what is available, with a MAX button",
+    size: TAB,
+    alt: "The Withdraw tab on the USDC vault: a USDC amount field showing what is available, with a MAX button, over the button that sends it",
+    narrow: { src: "/img/academy-phone-tab-withdraw.png", size: PHONE_TAB },
+  },
+  repayTab: {
+    src: "/img/academy-tab-repay.png",
+    size: TAB,
+    alt: "The Repay tab on the USDC vault: an alUSD amount field with a MAX button, over the button that sends it",
+    narrow: { src: "/img/academy-phone-tab-repay.png", size: PHONE_TAB },
+  },
+  statsTop: {
+    ...statsRow(0),
+    alt: "The first row of the USDC vault's stats: APR 5.91%, Deposit 0.00 USDC, Debt 0.00 alUSD, and a Health Factor of infinity with nothing borrowed",
+  },
+  statsBottom: {
+    ...statsRow(1),
+    alt: "The second row of the USDC vault's stats: Earmarked 0.00 alUSD, Redemption Rate 90.61%, Borrowable 0.00 alUSD, and LTV 0.00 out of 90.00%",
+  },
+  positionBar: {
+    src: "/img/borrowing-in-alchemix-02.png",
+    size: [1610, 591],
+    crop: { x: 0.0161, y: 0.7411, w: 0.9677, h: 0.1997 },
+    alt: "A vault's bar, split into deposit, debt and earmarked, with MAX LTV and LIQ LTV marked near the right end",
   },
   fixedYieldCard: {
     src: "/img/academy-fixed-yield.png",
     size: [3200, 2500],
     crop: { x: 0.0944, y: 0.3712, w: 0.8113, h: 0.2252 },
     alt: "A card on the Fixed Yield page: projected fixed APR, deposit cap, term, early exit fee, maturity date and the alUSD price it quotes against",
-  },
-  alAssetPrice: {
-    src: "/img/academy-fixed-yield.png",
-    size: [3200, 2500],
-    crop: { x: 0.0944, y: 0.3712, w: 0.4713, h: 0.2252 },
-    max: MEDIUM,
-    alt: "The left of a Fixed Yield card: its projected fixed APR, term and early exit fee, beside the maturity date and the alUSD price it is quoting",
+    narrow: {
+      crop: { x: 580 / 3200, y: 1030 / 2500, w: 600 / 3200, h: 390 / 2500 },
+      alt: "The left of a Fixed Yield card: its projected fixed APR, deposit cap, term and early exit fee",
+    },
   },
   fixedPositions: {
     src: "/img/redeem-alassets-02.png",
@@ -530,19 +508,38 @@ export const SHOTS = {
     crop: { x: 0.0424, y: 0.0909, w: 0.9159, h: 0.8221 },
     alt: "Open Fixed Yield positions, each with the APR it locked in, its end date, the alETH deposited, and the profit standing on it",
   },
-  visualizerOut: {
-    src: "/img/academy-visualizer.png",
-    size: [1336, 1470],
-    crop: { x: 0.0449, y: 0.8163, w: 0.9132, h: 0.0884 },
-    max: PANEL,
-    alt: "What the Visualizer reports under its chart: loan cost, aggregate yield, and projected profit",
-  },
   strategies: {
     src: "/img/academy-vault-info.png",
-    size: [1336, 1160],
-    crop: { x: 0.0299, y: 0.0431, w: 0.9431, h: 0.5086 },
-    max: PANEL,
-    alt: "The Info tab on a vault, listing each strategy with its risk level, APR and allocation",
+    size: [1952, 504],
+    // Inside the panel, under the tab strip: the capture ends under the
+    // strategy list, so showing the panel's top edge without its bottom read
+    // as a picture cut in half. The allocation alone, with the panel's own
+    // background as its margin, reads as the detail it is.
+    crop: { x: 48 / 1952, y: 150 / 504, w: 1856 / 1952, h: 346 / 504 },
+    alt: "The allocation on a vault's Info tab: a chart of how the vault is split between its strategies, and each strategy listed with its risk level, APR and allocation",
+    narrow: {
+      crop: { x: 730 / 1952, y: 170 / 504, w: 840 / 1952, h: 310 / 504 },
+      alt: "The strategy list on a vault's Info tab: each strategy with its risk level, APR and allocation",
+    },
+  },
+  visualizer: {
+    src: "/img/academy-visualizer.png",
+    size: [2000, 1406],
+    alt: "The Visualizer tab on a vault: four inputs (Yield APY, Redemption, alUSD:USDC and External APY), a duration slider, a projection of deposit, net value and debt, and under it the loan cost, aggregate yield and projected profit",
+  },
+};
+
+/**
+ * Narrow variants a lesson passes by hand, where the shot it uses is shared
+ * with a lesson that points at a different part of it.
+ */
+export const NARROW = {
+  debtHealth: phoneRow(212, 404, "Debt and Health Factor on the USDC vault: 0.00 alUSD owed, and a health factor of infinity with nothing borrowed"),
+  earmarkedRedemption: phoneRow(412, 644, "Earmarked and Redemption Rate on the USDC vault: 0.00 alUSD earmarked, and the rate reading 90.61%"),
+  borrowableLtv: phoneRow(652, 852, "Borrowable and LTV on the USDC vault: 0.00 alUSD to borrow, and LTV 0.00 out of 90.00%"),
+  fixedPrice: {
+    crop: { x: 1250 / 3200, y: 1040 / 2500, w: 540 / 3200, h: 350 / 2500 },
+    alt: "The middle of a Fixed Yield card: its maturity date and the alUSD price it is quoting",
   },
 };
 

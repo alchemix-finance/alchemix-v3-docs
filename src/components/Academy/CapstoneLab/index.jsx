@@ -87,10 +87,12 @@ function Predict({ price, live, onDone }) {
         <BriefRow label="Coming loss of backing" value={pct(LOSS)} note="the vault is about to report it" tone="#d4645a" />
       </div>
 
-      <AppShot shot={SHOTS.visualizerOut}>
-        What the Visualizer reports once its four inputs are set. Loan cost is the discount
-        you take on the sale, and projected profit is what is left after it. This capture
-        has no loan open, so its loan cost reads zero.
+      <AppShot shot={SHOTS.visualizer}>
+        The Visualizer tab on any vault. Its four inputs run along the top, and three of
+        them are what this track has taught: the yield, the redemption rate, and the alUSD
+        price. External APY is what you earn on the cash you raise, which is yours to
+        decide. Under the chart it reports the loan cost, the yield, and the projected
+        profit. This capture has no loan open, so its loan cost reads zero.
       </AppShot>
 
       <Panel>

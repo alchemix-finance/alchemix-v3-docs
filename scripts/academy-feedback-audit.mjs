@@ -177,15 +177,29 @@ const CHECKS = [
   ["the Controls wrapper reports its count", "present", "data-count={React.Children.toArray(children).length}"],
 
   /* Visual walk, 2026-09-20: every screen looked at, not read. Thumbnail crops, an ETH tab under a USDC lesson, a deposit that kept shrinking under a cleared loan. */
-  ["the borrowing lesson's tab crop is the USDC vault, not an ETH capture", "present", 'depositBorrow: {\n    src: "/img/academy-vault-usdc.png"'],
-  ["lesson 2's whole screen is the USDC vault", "present", 'shot: "/img/academy-vault-usdc.png",\n    shotAlt: "The USDC vault page'],
+  ["the borrowing lesson's tab crop is the USDC vault, not an ETH capture", "present", 'depositBorrow: {\n    src: "/img/academy-tab-deposit.png"'],
+  ["the whole-screen figure under every lesson is gone", "gone", "shotNote:"],
   ["no crop is a single 336px stat tile", "gone", "crop: tile("],
   ["the Repay and Withdraw crops come from the 2x USDC captures", "present", '"/img/academy-tab-repay.png"'],
   ["the redemption-rate caption quotes the figure in its capture", "present", "reading 90.61% the day this was captured"],
   ["the repay lab re-runs the projection for the balance a repayment leaves", "present", "const curve = useMemo(() => curveFor(opening + moreShown)"],
   ["the repay lab no longer shifts the un-repaid curve by the repayment", "gone", "y: Math.max(p.debt - repay + moreShown, 0)"],
-  ["the map's carried position has room for five stats on one row", "present", ".carried {\n  margin-bottom: 2.25rem;\n  max-width: 46rem;"],
-  ["the single-panel crops are capped at their capture width", "present", "max: PANEL,"],
+  ["the map's carried position card is gone", "gone", "The position this track builds"],
+  ["no figure is capped narrower than the column", "gone", "--fig-max"],
+
+  // Keenan's read of lessons 1 to 3, 2026-09-21: the hero was not aligned, the
+  // carried position pushed numbers at a learner who had not met them, the
+  // whole-screen figures were bloat, and two crops were cut off and unaligned.
+  ["the hero's pitch is centred against the rewards panel", "present", "minmax(0, 25rem);\n  align-items: center;"],
+  ["the whole-screen label is gone", "gone", "The whole screen, in the app"],
+  ["the borrowing lesson shows the whole Deposit/Borrow panel", "present", '"/img/academy-tab-deposit.png"'],
+  ["no single-tile or tile-pair crops", "gone", "crop: tiles("],
+  ["no half-card crop of the vault card", "gone", "depositCap"],
+  ["no half-card crop of the Fixed Yield card", "gone", "alAssetPrice"],
+  ["figures sit on the column's own edges", "present", "padding: var(--fig-inset) 0;"],
+  ["the stat tiles are the 2x USDC rows", "present", "const statsRow = (row) => ({"],
+  ["phone-width columns get their own crop of each figure", "present", "const NARROW_PX = 640;"],
+  ["the phone tab captures are in use", "present", '"/img/academy-phone-tab-deposit.png"'],
 ];
 
 let fails = 0;

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import AcademyShell from "../Shell";
-import { ScreenShot } from "../kit";
 import { hasCompletion, readCompletions } from "../lib/api";
 import { currentLesson, lessonById, nextLesson, trackByKey } from "../lib/track";
 import styles from "./styles.module.css";
@@ -68,12 +67,6 @@ export default function LessonPage({
   }, [isBrowser, lessonId]);
 
   const preview = Boolean(ahead);
-
-  // The screenshot is context, not an answer, everywhere except the opening
-  // stage: lesson 3's capture of the Borrow page shows 90.00% on every card,
-  // which is the figure stage 1 asks the learner to predict. So it appears from
-  // the second stage onward, and immediately for someone reading ahead.
-  const showShot = Boolean(lesson.shot) && (preview || done || stage !== STAGES[0].id);
 
   // The wrap-up prose is where the lesson is actually written down. It shows
   // for a reader who is previewing, for a learner who has passed, and for a
@@ -170,8 +163,6 @@ export default function LessonPage({
           </div>
         </div>
 
-        {showShot ? <Shot lesson={lesson} /> : null}
-
         {showNotes ? (
           <section className={styles.wrap}>
             <h2 className={styles.wrapHead}>
@@ -219,29 +210,6 @@ export default function LessonPage({
         {preview ? <PreviewFooter current={ahead} /> : null}
       </main>
     </AcademyShell>
-  );
-}
-
-/**
- * The app screen the lesson is about.
- *
- * Its own block rather than part of the wrap-up, because it belongs beside the
- * model while the learner is still pushing on it. `shotNote` describes the
- * screen rather than the learner's progress, so the figure reads the same
- * whether it is reached at stage 2 or by someone skimming ahead.
- */
-function Shot({ lesson }) {
-  return (
-    <div className={styles.shotWrap}>
-      {/* The same figure the lab's own crops use, so a lesson does not present
-          its screenshots two different ways. `shotMax` caps the figure at the
-          capture's own width: most of these are full screens around 2,000px and
-          downscale into the column, but a capture of a single panel is narrower
-          than the column and would be blown up past its own resolution. */}
-      <ScreenShot src={lesson.shot} alt={lesson.shotAlt} max={lesson.shotMax}>
-        {lesson.shotNote}
-      </ScreenShot>
-    </div>
   );
 }
 

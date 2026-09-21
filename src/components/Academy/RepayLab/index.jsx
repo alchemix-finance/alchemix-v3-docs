@@ -8,7 +8,7 @@ import {
 } from "../lib/protocol";
 import {
   Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Legend,
-  LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage,
+  LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, NARROW, SHOTS, Stage,
   Sub, money, said,
 } from "../kit";
 
@@ -157,7 +157,7 @@ function Learn({ onDone }) {
         }
       />
 
-      <AppShot shot={SHOTS.redemptionRate}>
+      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
         The rate on a live vault, reading 90.61% the day this was captured. It rises and
         falls with how much alUSD is waiting to be redeemed, so the {RATE} above is an
         example rather than a schedule. Earmarked, beside it, is the slice of a loan already

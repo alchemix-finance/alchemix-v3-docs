@@ -28,12 +28,6 @@
  * Mixed Yield and Fixed Yield under an Earn menu, so a chip reading "Vaults"
  * named a page title nobody sees any more. The docs make the same translation
  * in prose ("the Mixed Yield page, under Earn → Variable Rate").
- *
- * `shot` is a screenshot of that screen, shown once per lesson under the lab.
- * Every file listed here was checked against the live app: several older
- * captures in `static/img` still show the pre-rename navigation and are not
- * used. `shotAlt` describes it, and `shotNote` says what to look at. `shotMax`
- * caps the figure in rem for a capture narrower than the column it sits in.
  */
 
 export const BEGINNER = [
@@ -47,10 +41,6 @@ export const BEGINNER = [
     minutes: 5,
     ready: true,
     track: "beginner",
-    shot: "/img/academy-borrow.png",
-    shotAlt: "The Borrow page, listing the vaults available to borrow against",
-    shotNote:
-      "The front door. Each card is a vault you can deposit into, with what the whole market has put in, what it has borrowed against that, how much is earmarked for redemption, and the 90.00% of a deposit anyone may borrow.",
   },
   {
     n: 2,
@@ -62,10 +52,6 @@ export const BEGINNER = [
     minutes: 6,
     ready: true,
     track: "beginner",
-    shot: "/img/academy-vault-usdc.png",
-    shotAlt: "The USDC vault page with the Deposit/Borrow tab open",
-    shotNote:
-      "The Deposit/Borrow tab on a vault. The top field takes the asset you are depositing and the one under it the alAsset you are borrowing, so one transaction can do both.",
   },
   {
     n: 3,
@@ -77,10 +63,6 @@ export const BEGINNER = [
     minutes: 6,
     ready: true,
     track: "beginner",
-    shot: "/img/academy-borrow.png",
-    shotAlt: "The Borrow page listing the available vaults",
-    shotNote:
-      "The Borrow page. Each card is one vault, showing its APR, how full its deposit cap is, and the strategies behind it. Every card reads 90.00% LTV, because the cap is the same on all of them.",
   },
   {
     n: 4,
@@ -92,10 +74,6 @@ export const BEGINNER = [
     minutes: 7,
     ready: true,
     track: "beginner",
-    shot: "/img/repay-loan-01.png",
-    shotAlt: "A vault page with the Repay tab open",
-    shotNote:
-      "The Repay tab. Redemption Rate is the pace the protocol is clearing debt at right now, and Earmarked is the slice of this loan already set aside for the next one.",
   },
   {
     n: 5,
@@ -107,10 +85,6 @@ export const BEGINNER = [
     minutes: 7,
     ready: true,
     track: "beginner",
-    shot: "/img/borrowing-in-alchemix-02.png",
-    shotAlt: "The position stats and health bar at the top of a vault page",
-    shotNote:
-      "The real bar. MAX LTV is where borrowing stops and LIQ LTV is where liquidation begins, the two markers the card above draws. Health Factor states the same distance as a multiple.",
   },
   {
     n: 6,
@@ -122,10 +96,6 @@ export const BEGINNER = [
     minutes: 6,
     ready: true,
     track: "beginner",
-    shot: "/img/academy-fixed-yield.png",
-    shotAlt: "The Fixed Yield page listing Transmuter positions",
-    shotNote:
-      "The Fixed Yield page. Each card states a projected fixed APR, the maturity date, the term, the early exit fee, and the alAsset price it is quoting against.",
   },
 ];
 
@@ -140,10 +110,6 @@ export const INTERMEDIATE = [
     minutes: 8,
     ready: true,
     track: "intermediate",
-    shot: "/img/repay-loan-01.png",
-    shotAlt: "A vault page showing every position stat",
-    shotNote:
-      "Every stat this lesson works through, on one screen: Deposit, Debt, Health Factor, Earmarked, Redemption Rate, Borrowable and LTV, over a bar that splits the deposit into what is free, what is owed, and what is earmarked.",
   },
   {
     n: 2,
@@ -155,11 +121,6 @@ export const INTERMEDIATE = [
     minutes: 8,
     ready: true,
     track: "intermediate",
-    shot: "/img/academy-earmarking.png",
-    shotMax: 42,
-    shotAlt: "The Earmarking panel on a vault, charting daily earmarked debt over 30 days against the rate",
-    shotNote:
-      "The Earmarking tab on a vault. Each bar is a day of alUSD Transmuter positions maturing, and the line over them is the rate that produced. The average across the month is the pace this lesson has you find.",
   },
   {
     n: 3,
@@ -171,10 +132,6 @@ export const INTERMEDIATE = [
     minutes: 8,
     ready: true,
     track: "intermediate",
-    shot: "/img/academy-mixed-yield.png",
-    shotAlt: "The Mixed Yield page listing MYT vaults",
-    shotNote:
-      "The Mixed Yield page, the same vault without a loan against it. A vault's Info tab lists every strategy with the risk level this lesson caps.",
   },
   {
     n: 4,
@@ -197,10 +154,6 @@ export const INTERMEDIATE = [
     minutes: 9,
     ready: true,
     track: "intermediate",
-    shot: "/img/borrowing-in-alchemix-02.png",
-    shotAlt: "The position stats and health bar at the top of a vault page",
-    shotNote:
-      "The same screen the beginner track read for the two markers, read here for the distance between them. LTV is where the position sits, Liquidation LTV is the 95% it has to stay under, and the gap between them is the loss of backing it can absorb.",
   },
   {
     n: 6,
@@ -212,10 +165,6 @@ export const INTERMEDIATE = [
     minutes: 9,
     ready: true,
     track: "intermediate",
-    shot: "/img/academy-fixed-yield.png",
-    shotAlt: "The Fixed Yield page listing Transmuter positions",
-    shotNote:
-      "Each card quotes the alAsset price it is buying at. The projected fixed APR beside it is that discount annualized over the term.",
   },
   {
     n: 7,
@@ -227,11 +176,6 @@ export const INTERMEDIATE = [
     minutes: 10,
     ready: true,
     track: "intermediate",
-    shot: "/img/academy-visualizer.png",
-    shotMax: 42,
-    shotAlt: "The Visualizer tab on a vault, with its four inputs and its projection",
-    shotNote:
-      "The Visualizer, on any vault's info tabs. Three of its four inputs are what this track has been teaching: Yield APY from the Mix-Yield Token lesson, Redemption from the pace lesson, and the alAsset price from the cost and peg lessons. External APY is the one no lesson can give you, because it depends on what you do with the money. It reports the loan cost, the yield, and the profit left over.",
   },
 ];
 

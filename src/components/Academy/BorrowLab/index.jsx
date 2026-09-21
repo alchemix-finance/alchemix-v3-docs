@@ -5,7 +5,7 @@ import { MAX_LTV } from "../lib/protocol";
 import {
   Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
   Panel,
-  PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, money, said,
+  PositionCard, Primary, Question, Reveal, NARROW, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
@@ -188,10 +188,10 @@ function Try({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.ltv}>
-        LTV on a real position, written against the cap: 30.00 out of 90.00%. Borrowable
-        beside it is what the cap still allows, and the 90.00% is the same on every vault in
-        the protocol.
+      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.borrowableLtv}>
+        A vault's second row of stats, with nothing borrowed yet. LTV, at the right, is
+        written against the cap, 0.00 out of 90.00%, and the 90.00% is the same on every
+        vault in the protocol. Borrowable beside it is what the cap still allows.
       </AppShot>
 
       <Notes>

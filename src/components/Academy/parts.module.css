@@ -560,21 +560,25 @@
 }
 
 /* ── The app, inline ─────────────────────────────────────────
-   A cropped detail of a real screen, shown beside the model of it while the
+   A complete element of a real screen, shown beside the model of it while the
    learner is still pushing on that model. The frame is the crop; the image
    inside is oversized and offset by the inline styles <AppShot> computes, so
    the capture itself is never re-cut.
 
-   Two columns by default, picture then caption, because a lab panel is wider
-   than any of these crops wants to be. A crop marked `full` spans the row and
-   takes its caption underneath: the position bar is 13 times wider than it is
-   tall and reads at the full width or not at all. */
+   Every figure runs the width of the lesson column, on the same edges as the
+   position card above it. A narrower figure sat under that card as a
+   thumbnail, and a half-width crop of a wide element read as a picture cut in
+   half. */
 
 /* ── The frame every app image sits in ─────────────────────
    Fixed-pixel geometry on purpose. A percentage inset would make the corner
    marks shrink on a wide thin strip and grow on a tall panel, and the academy
    shows both on the same page. The docs frame their images on the same
-   principle in their own palette; see `src/components/FramedImage`. */
+   principle in their own palette; see `src/components/FramedImage`.
+
+   The inset is vertical only. The picture's left and right edges sit on the
+   column's, so the figure lines up with the card above it, and the rules
+   overhang those edges by a few pixels the way they overhang top and bottom. */
 .fig {
   --fig-inset: 10px;
   --fig-over: 9px;
@@ -584,18 +588,15 @@
   margin: 0 0 1.75rem;
 }
 
-/* `--fig-max` caps the picture, never the caption. Capping the whole figure
-   turned the caption under a narrow crop into a tall thin column. */
 .figFrame {
   position: relative;
-  padding: var(--fig-inset);
-  max-width: var(--fig-max, none);
+  padding: var(--fig-inset) 0;
 }
 
 /* The mat, bounded by where the rules run. */
 .figMat {
   position: absolute;
-  inset: var(--fig-inset);
+  inset: var(--fig-inset) 0;
   border-radius: 6px;
   background: #0f1113;
   z-index: 0;
@@ -613,8 +614,8 @@
 
 .figRule {
   height: 1px;
-  left: calc(var(--fig-inset) - var(--fig-over));
-  right: calc(var(--fig-inset) - var(--fig-over));
+  left: calc(-1 * var(--fig-over));
+  right: calc(-1 * var(--fig-over));
 }
 
 .figUpright {
@@ -625,8 +626,8 @@
 
 .figTop { top: calc(var(--fig-inset) - 0.5px); }
 .figBottom { bottom: calc(var(--fig-inset) - 0.5px); }
-.figLeft { left: calc(var(--fig-inset) - 0.5px); }
-.figRight { right: calc(var(--fig-inset) - 0.5px); }
+.figLeft { left: -0.5px; }
+.figRight { right: -0.5px; }
 
 /* The same copper dot the track map puts on its live lesson card, here at each
    place the rules cross. */
@@ -640,10 +641,10 @@
   z-index: 3;
 }
 
-.figTl { top: var(--fig-inset); left: var(--fig-inset); }
-.figTr { top: var(--fig-inset); left: calc(100% - var(--fig-inset)); }
-.figBl { top: calc(100% - var(--fig-inset)); left: var(--fig-inset); }
-.figBr { top: calc(100% - var(--fig-inset)); left: calc(100% - var(--fig-inset)); }
+.figTl { top: var(--fig-inset); left: 0; }
+.figTr { top: var(--fig-inset); left: 100%; }
+.figBl { top: calc(100% - var(--fig-inset)); left: 0; }
+.figBr { top: calc(100% - var(--fig-inset)); left: 100%; }
 
 /* Everything inside is clipped to this, so a crop cannot spill over the rules. */
 .figWindow {
@@ -660,13 +661,6 @@
   position: absolute;
   display: block;
   max-width: none;
-}
-
-/* A whole capture, which just fills the window. */
-.figWhole {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 
 .figCap {
