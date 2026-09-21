@@ -337,7 +337,7 @@ function Try({ onDone }) {
           nextLabel="Take the check"
         >
           <Body>
-            Repaying does more than reduce the balance. It frees collateral as well, so the
+            Repaying also frees collateral, so the
             amount you can withdraw rises immediately.
           </Body>
         </Reveal>

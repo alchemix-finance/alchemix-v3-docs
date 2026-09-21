@@ -61,7 +61,7 @@ function Predict({ price, live, onDone }) {
     >
       <Sub>
         You borrow {money(WANT)} alUSD against your position, and the debt recorded
-        against you is {money(WANT)}. What you actually want is spendable USDC, so you
+        against you is {money(WANT)}. What you want is spendable USDC, so you
         sell the alUSD on the open market, where it is trading at {priceText(price, live)}{live ? " today" : ""}.
       </Sub>
 

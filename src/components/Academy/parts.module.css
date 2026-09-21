@@ -102,7 +102,7 @@
 
 /* ── LTV meter ───────────────────────────────────────────── */
 .meterWrap {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .meterHead {
@@ -176,7 +176,7 @@
   border: 1px solid rgba(245, 192, 154, 0.2);
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .stat {
@@ -202,12 +202,11 @@
   border-radius: 10px;
   background: #141618;
   padding: 1.25rem 1.375rem 1.375rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
 }
 
 .cardCompact {
   padding: 1rem 1.125rem 1.125rem;
-  margin-bottom: 1.25rem;
 }
 
 .cardHead {
@@ -560,99 +559,42 @@
 }
 
 /* ── The app, inline ─────────────────────────────────────────
-   A complete element of a real screen, shown beside the model of it while the
-   learner is still pushing on that model. The frame is the crop; the image
-   inside is oversized and offset by the inline styles <AppShot> computes, so
-   the capture itself is never re-cut.
+   A complete element of a real screen, shown under the model of it once the
+   learner has pushed on that model. The window is the crop; the image inside
+   is oversized and offset by the inline styles <AppShot> computes, so the
+   capture itself is never re-cut.
 
    Every figure runs the width of the lesson column, on the same edges as the
    position card above it. A narrower figure sat under that card as a
    thumbnail, and a half-width crop of a wide element read as a picture cut in
    half. */
 
-/* ── The frame every app image sits in ─────────────────────
-   Fixed-pixel geometry on purpose. A percentage inset would make the corner
-   marks shrink on a wide thin strip and grow on a tall panel, and the academy
-   shows both on the same page. The docs frame their images on the same
-   principle in their own palette; see `src/components/FramedImage`.
-
-   The inset is vertical only. The picture's left and right edges sit on the
-   column's, so the figure lines up with the card above it, and the rules
-   overhang those edges by a few pixels the way they overhang top and bottom. */
 .fig {
-  --fig-inset: 10px;
-  --fig-over: 9px;
-  --fig-dot: 4px;
-  --fig-line: rgba(245, 192, 154, 0.3);
-
-  margin: 0 0 1.75rem;
+  /* Above whatever ends the stage before it, the button row or the reveal that
+     replaces it, so the figure sits at one distance in both states. The margin
+     collapses with theirs. */
+  margin: 2.5rem 0 0;
 }
 
-.figFrame {
-  position: relative;
-  padding: var(--fig-inset) 0;
+/* ── The card every app image sits in ──────────────────────
+   The same card as the rest of the lesson: one rounded border at the position
+   card's tint, the picture filling it edge to edge, and the caption as its
+   foot. The figures used to borrow the docs' frame (hairlines overhanging each
+   corner, a dot where they cross; see `src/components/FramedImage`). That was
+   the one element on the page not drawn as a card, and its rules stuck out
+   past the column edge everything else sits on. */
+.figCard {
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;
+  background: #141618;
+  overflow: hidden;
 }
 
-/* The mat, bounded by where the rules run. */
-.figMat {
-  position: absolute;
-  inset: var(--fig-inset) 0;
-  border-radius: 6px;
-  background: #0f1113;
-  z-index: 0;
-}
-
-/* Rules run the width and height of the frame and overhang the picture at both
-   ends, so each corner reads as a bracket. */
-.figRule,
-.figUpright {
-  position: absolute;
-  background: var(--fig-line);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.figRule {
-  height: 1px;
-  left: calc(-1 * var(--fig-over));
-  right: calc(-1 * var(--fig-over));
-}
-
-.figUpright {
-  width: 1px;
-  top: calc(var(--fig-inset) - var(--fig-over));
-  bottom: calc(var(--fig-inset) - var(--fig-over));
-}
-
-.figTop { top: calc(var(--fig-inset) - 0.5px); }
-.figBottom { bottom: calc(var(--fig-inset) - 0.5px); }
-.figLeft { left: -0.5px; }
-.figRight { right: -0.5px; }
-
-/* The same copper dot the track map puts on its live lesson card, here at each
-   place the rules cross. */
-.figDot {
-  position: absolute;
-  width: var(--fig-dot);
-  height: var(--fig-dot);
-  border-radius: 50%;
-  background: rgba(245, 192, 154, 0.6);
-  transform: translate(-50%, -50%);
-  z-index: 3;
-}
-
-.figTl { top: var(--fig-inset); left: 0; }
-.figTr { top: var(--fig-inset); left: 100%; }
-.figBl { top: calc(100% - var(--fig-inset)); left: 0; }
-.figBr { top: calc(100% - var(--fig-inset)); left: 100%; }
-
-/* Everything inside is clipped to this, so a crop cannot spill over the rules. */
+/* Everything inside is clipped to this, so a crop cannot spill past the window. */
 .figWindow {
   position: relative;
-  z-index: 1;
   width: 100%;
   overflow: hidden;
-  border-radius: 5px;
   background: #0f1113;
 }
 
@@ -667,7 +609,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
-  margin: 0.875rem 0 0;
+  padding: 0.9375rem 1.375rem 1.0625rem;
+  border-top: 1px solid rgba(245, 192, 154, 0.12);
   min-width: 0;
 }
 

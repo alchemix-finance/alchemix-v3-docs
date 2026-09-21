@@ -181,7 +181,7 @@ function Try({ market, onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Try" headline="The price and the term set the rate on the card.">
       <Sub>
-        The same {money(HOLDING)} USDC comes back whatever the two say. What they decide is
+        The same {money(HOLDING)} USDC comes back at any price and any term. Together they set
         what the wait is worth, and the card prints that as a projected fixed APR.
       </Sub>
 

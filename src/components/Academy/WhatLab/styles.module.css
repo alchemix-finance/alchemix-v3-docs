@@ -1,8 +1,0 @@
-/* Lesson 1: the whole loop in one picture. */
-
-/* The caption under the steps belongs to them, so it tucks up under the flow
-   instead of sitting halfway between the picture and the question panel. The
-   flow's own bottom margin collapses with this one to a 1rem gap. */
-.loop {
-  margin-bottom: -1rem;
-}

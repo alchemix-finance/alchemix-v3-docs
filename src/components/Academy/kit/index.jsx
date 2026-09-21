@@ -297,10 +297,17 @@ export function FlowArrow() {
  * card above it. The lessons used to end with the whole screen as well; that
  * was a second picture of the same thing and taught nothing the crop had not.
  *
- * A crop is a fraction of the capture ({ x, y, w, h }, all 0 to 1). The frame
+ * A crop is a fraction of the capture ({ x, y, w, h }, all 0 to 1). The window
  * takes its aspect ratio from the crop against the file's own pixel size, and
- * the image inside is blown up to 1/w of the frame and shifted into place, so
+ * the image inside is blown up to 1/w of the window and shifted into place, so
  * no files had to be re-cut and a crop can be nudged by editing four numbers.
+ *
+ * The picture sits in the same card as the rest of the lesson: one rounded
+ * border at the position card's tint, the crop filling it edge to edge, and
+ * the caption as its foot. The figures used to borrow the docs' frame
+ * (`src/components/FramedImage`: hairlines overhanging each corner, a dot
+ * where they cross). That was the one element on the page not drawn as a
+ * card, and its rules stuck out past the column edge everything else sits on.
  */
 function cropStyle(shot) {
   const [W, H] = shot.size;
@@ -316,41 +323,12 @@ function cropStyle(shot) {
 }
 
 /**
- * The frame every app image in the academy sits in.
- *
- * One treatment for all of them, a thin strip of stats or a tall panel. The geometry
- * is in fixed pixels rather than percentages, which is the reason the frame is
- * drawn here instead of being a border on the image: the corner marks then read
- * the same on a wide thin strip and on a tall panel, and a page of screenshots
- * at six different aspect ratios still looks like one set.
- *
- * The docs do this too, in their own palette (`src/components/FramedImage`).
- * Same idea, different marks: rules that overhang the picture at every corner,
- * and a dot where they cross.
- */
-function Frame({ children }) {
-  return (
-    <div className={parts.figFrame}>
-      <span className={parts.figMat} aria-hidden="true" />
-      <span className={`${parts.figRule} ${parts.figTop}`} aria-hidden="true" />
-      <span className={`${parts.figRule} ${parts.figBottom}`} aria-hidden="true" />
-      <span className={`${parts.figUpright} ${parts.figLeft}`} aria-hidden="true" />
-      <span className={`${parts.figUpright} ${parts.figRight}`} aria-hidden="true" />
-      <span className={`${parts.figDot} ${parts.figTl}`} aria-hidden="true" />
-      <span className={`${parts.figDot} ${parts.figTr}`} aria-hidden="true" />
-      <span className={`${parts.figDot} ${parts.figBl}`} aria-hidden="true" />
-      <span className={`${parts.figDot} ${parts.figBr}`} aria-hidden="true" />
-      {children}
-    </div>
-  );
-}
-
-/**
  * One caption shape for every figure: a label, then what to look at.
  *
- * Always under the picture. The crops used to sit in a two-column figure with
- * the caption beside them, which gave the academy two different-looking figures
- * on the same page depending on how wide the crop was.
+ * Always under the picture, as the foot of its card. The crops used to sit in
+ * a two-column figure with the caption beside them, which gave the academy two
+ * different-looking figures on the same page depending on how wide the crop
+ * was.
  */
 function Caption({ label, children }) {
   return (
@@ -384,12 +362,12 @@ export function AppShot({ shot, narrow, label = "In the app", children }) {
 
   return (
     <figure className={parts.fig} ref={ref}>
-      <Frame>
+      <div className={parts.figCard}>
         <div className={parts.figWindow} style={frame}>
           <img className={parts.figCrop} style={img} src={shown.src} alt={shown.alt} loading="lazy" />
         </div>
-      </Frame>
-      <Caption label={label}>{children}</Caption>
+        <Caption label={label}>{children}</Caption>
+      </div>
     </figure>
   );
 }
@@ -453,7 +431,10 @@ export const SHOTS = {
   vaultCard: {
     src: "/img/academy-borrow.png",
     size: [3200, 2500],
-    crop: { x: 0.0944, y: 0.382, w: 0.8113, h: 0.2036 },
+    // The card with 30 capture px (15 CSS px) of the page around it on every
+    // side. The next row of cards starts 35 px under this one, so a deeper
+    // margin took their top edge in.
+    crop: { x: 312 / 3200, y: 964 / 2500, w: 2576 / 3200, h: 488 / 2500 },
     alt: "A vault card on the Borrow page: its name, APR and deposit cap, then total deposits, total debt, earmarked, and LTV 90.00%",
     narrow: {
       crop: { x: 580 / 3200, y: 1060 / 2500, w: 790 / 3200, h: 310 / 2500 },
@@ -495,7 +476,8 @@ export const SHOTS = {
   fixedYieldCard: {
     src: "/img/academy-fixed-yield.png",
     size: [3200, 2500],
-    crop: { x: 0.0944, y: 0.3712, w: 0.8113, h: 0.2252 },
+    // The same 30 px around the card as the vault card above.
+    crop: { x: 312 / 3200, y: 936 / 2500, w: 2576 / 3200, h: 552 / 2500 },
     alt: "A card on the Fixed Yield page: projected fixed APR, deposit cap, term, early exit fee, maturity date and the alUSD price it quotes against",
     narrow: {
       crop: { x: 580 / 3200, y: 1030 / 2500, w: 600 / 3200, h: 390 / 2500 },

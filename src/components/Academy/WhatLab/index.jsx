@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
-import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { positionCurve } from "../lib/model";
 import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
@@ -108,9 +107,7 @@ function Learn({ onDone }) {
         deposit back, repay the loan and withdraw.
       </Sub>
 
-      <div className={own.loop}>
-        <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
-      </div>
+      <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
 
       <Panel>
         <Question>

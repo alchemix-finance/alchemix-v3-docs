@@ -262,7 +262,7 @@ function Explore({ onDone }) {
           </Body>
           <Body>
             Your collateral earns this blend while your loan clears. A vault free to hold
-            100% Aggressive would make a high LTV genuinely dangerous, and those same
+            100% Aggressive would make a high LTV dangerous, and those same
             ceilings are what prevent it.
           </Body>
           <Body>

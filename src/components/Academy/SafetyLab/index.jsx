@@ -203,7 +203,7 @@ function Try({ onDone }) {
           <Body>
             A price move changes both sides at once. A loss inside the strategies changes
             only the deposit, so the marker slides toward your position. The lower your LTV,
-            the more loss you can absorb before it arrives. Reaching the 90% cap just stops
+            the more loss you can absorb before it arrives. Reaching the 90% cap only stops
             you borrowing more.
           </Body>
           <Body>

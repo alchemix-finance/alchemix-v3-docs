@@ -196,7 +196,8 @@ const CHECKS = [
   ["no single-tile or tile-pair crops", "gone", "crop: tiles("],
   ["no half-card crop of the vault card", "gone", "depositCap"],
   ["no half-card crop of the Fixed Yield card", "gone", "alAssetPrice"],
-  ["figures sit on the column's own edges", "present", "padding: var(--fig-inset) 0;"],
+  ["figures sit on the column's own edges", "present", `.figCard {
+  border: 1px solid rgba(245, 192, 154, 0.18);`],
   ["the stat tiles are the 2x USDC rows", "present", "const statsRow = (row) => ({"],
   ["phone-width columns get their own crop of each figure", "present", "const NARROW_PX = 640;"],
   ["the phone tab captures are in use", "present", '"/img/academy-phone-tab-deposit.png"'],
@@ -250,6 +251,26 @@ const CHECKS = [
   .stepLabel {`],
   ["the title stays until 1000px", "present", `@media (max-width: 1000px) {
   .backTitle {`],
+  // Keenan's fourth read (2026-09-22): the spacing was tight in places, and
+  // the docs' corner-mark frame around the app figures was off-putting next
+  // to a page of rounded cards.
+  ["the figure is a card like the rest of the lesson", "present", `.figCard {
+  border: 1px solid rgba(245, 192, 154, 0.18);
+  border-radius: 10px;`],
+  ["its caption is the card's foot", "present", `border-top: 1px solid rgba(245, 192, 154, 0.12);
+  min-width: 0;`],
+  ["the corner-mark frame is gone", "gone", "--fig-over"],
+  ["and so are its rules and dots", "gone", "parts.figRule"],
+  ["the figure sits at one distance under the button row and the reveal", "present", "margin: 2.5rem 0 0;"],
+  ["nothing pulls lesson 1's question panel up under the steps", "gone", "own.loop"],
+  ["the compact position card keeps the card's gap", "gone", `padding: 1rem 1.125rem 1.125rem;
+  margin-bottom: 1.25rem;`],
+  ["every block ends 2rem above the next", "present", `.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.875rem;
+  margin-bottom: 2rem;`],
+  ["the vault card crop stops short of the next row of cards", "present", "crop: { x: 312 / 3200, y: 964 / 2500, w: 2576 / 3200, h: 488 / 2500 }"],
 ];
 
 let fails = 0;

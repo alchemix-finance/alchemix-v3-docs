@@ -54,7 +54,7 @@ export default function AcademyTrack() {
   return (
     <AcademyShell
       title="Alchemix Academy"
-      description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track covers the mechanics underneath it. No wallet, no sign-in, nothing to install."
+      description="Learn how Alchemix works by using it. The beginner track follows one position from the deposit through the loan that repays itself. The intermediate track covers the mechanics underneath it. Every lesson runs in the browser, with no wallet to connect."
     >
       <main>
         <section className={styles.intro}>
@@ -63,10 +63,10 @@ export default function AcademyTrack() {
             <p className={styles.sub}>
               On most lending platforms your collateral sits idle while you pay interest on
               the loan. In Alchemix the collateral keeps earning, and redemptions clear the debt
-              for you. Both tracks below cover how that actually happens.
+              for you.
             </p>
             <p className={styles.sub}>
-              You don't need a wallet, a sign-in, or anything installed. The beginner track
+              Every lesson runs in the browser, with no wallet to connect. The beginner track
               starts from scratch and the intermediate track picks up where it ends. Read any
               lesson you like. The checkpoints open in order.
             </p>

@@ -122,7 +122,7 @@ function Predict({ price, live, onDone }) {
             {pct(ltvAfterLoss(naiveLtv, LOSS))}, past the {pct(LIQ_LTV)} threshold.
           </Body>
           <Body>
-            The cap is not a safety margin. It is the most the protocol will lend against a
+            The cap is the most the protocol will lend against a
             vault that has not lost anything yet.
           </Body>
           <Body>

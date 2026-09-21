@@ -26,7 +26,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Redemptions convert collateral already earmarked against your debt, so the balance falls out of your own position.",
-        "Yield lands on the other side of the position: it raises what your deposit is worth. Redemptions are what clear the debt.",
+        "Yield sits on the other side of the position: it raises what your deposit is worth. Redemptions are what clear the debt.",
         "The treasury funds none of this. The collateral spent on your debt is your own, which is why a redemption fee is the only charge.",
         "Leave it alone and it still falls. Redemptions run against every open loan in the market whether or not you touch yours.",
       ],
@@ -576,7 +576,7 @@ export const QUESTIONS = {
           "Exactly. The caps are relative to vault size and are enforced at allocation, so a shrinking vault can drift above one.",
           "Nothing sells automatically. Rebalancing is a DAO action.",
           "Withdrawals are never gated on composition. Your collateral stays yours to take.",
-          "The caps govern every allocation, not just the first. They are simply not re-checked on every withdrawal.",
+          "The caps govern every allocation, not just the first. They are not re-checked on every withdrawal.",
         ],
       },
     ],
@@ -595,14 +595,14 @@ export const QUESTIONS = {
         "Right. At 0.98 you need about 10,204 alUSD to walk away with 10,000, and 10,204 is the debt recorded.",
         "Debt is recorded at face value, which is exactly why you have to borrow more than you want to raise.",
         "The discount is a cost to a borrower and a gain to a buyer. You are the one selling below par.",
-        "Nothing is charged later. You simply receive less than face value when you sell.",
+        "Nothing is charged later. You receive less than face value when you sell.",
       ],
     },
     {
       prompt: "You mint 1,000 alUSD and sell it at 0.97. What debt is recorded against your position?",
       options: [
         "1,000, because debt is recorded at face value whatever you sold for",
-        "970, the amount you actually received",
+        "970, the amount you received",
         "1,030, so the discount is covered",
         "It depends on what alUSD is trading at when you repay",
       ],
@@ -708,7 +708,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Exactly. 4 ETH behind 2 alETH is a 50% LTV at any price, because the price divides out of both sides.",
-        "Nothing is paused. The ratio simply does not move when the price does.",
+        "Nothing is paused. The ratio does not move when the price does.",
         "No averaging is needed. Both sides are denominated in the same asset, so the ratio is price-independent.",
         "Room is not what saves you. Even a 90% fall would leave the LTV exactly where it started.",
       ],
@@ -767,7 +767,7 @@ export const QUESTIONS = {
       ],
     },
     {
-      prompt: "What actually backs the Transmuter's 1:1 exchange?",
+      prompt: "What backs the Transmuter's 1:1 exchange?",
       options: [
         "Borrower collateral inside the Alchemist, earmarked against the alUSD waiting in the queue",
         "A reserve the DAO funds out of protocol fees",

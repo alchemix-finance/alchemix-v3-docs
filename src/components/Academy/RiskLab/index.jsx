@@ -134,7 +134,7 @@ function Predict({ onDone }) {
           <Reveal title={`Ben only. A ${pct(MYT_LOSS)} loss of backing raises every LTV at once.`}>
             <Body>
               {guess === "ben"
-                ? "You said Ben only, and that is where the loss lands. "
+                ? "You said Ben only, and he is the one it reaches. "
                 : guess === "both"
                   ? "You said both of them. Ana survived it. "
                   : "You said neither of them. Ben was liquidated. "}
