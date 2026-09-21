@@ -14,7 +14,7 @@ import {
 } from "../kit";
 
 /**
- * Intermediate lesson 7: the capstone.
+ * Intermediate lesson 7: sizing a position.
  *
  * No new mechanism. Two earlier answers now have to be used together, because in
  * practice they constrain each other: the discount decides how much you must

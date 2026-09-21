@@ -177,6 +177,13 @@ const config = {
           from: '/resources/audits-and-reports/financial-reports',
           to: '/user/financial-reports',
           },
+          // The Academy's last intermediate lesson lived at /academy/capstone
+          // until it was named for what it teaches. The lesson keeps its id;
+          // the URL follows the title.
+          {
+            from: "/academy/capstone",
+            to: "/academy/sizing-a-position",
+          },
           // Pages removed in the 2026-06 docs pass → redirect old URLs so external/indexed links don't 404
           {
             from: "/user/tutorials/deposit-and-borrow",

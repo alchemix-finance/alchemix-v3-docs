@@ -97,10 +97,10 @@
 }
 
 /* A lesson header carries the breadcrumb, the stepper and the docs link as
-   well. With the title and the three stage labels showing, the full lockup
-   fits from about 1280px; below that the mark takes its place, and the
-   breadcrumb goes on saying where the reader is. */
-@media (max-width: 1279px) {
+   well. With the longest title and the three stage labels showing, the full
+   lockup fits from 1440px (measured on every lesson); below that the mark
+   takes its place, and the breadcrumb goes on saying where the reader is. */
+@media (max-width: 1439px) {
   .withCrumb .lockup {
     display: none;
   }

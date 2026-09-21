@@ -38,21 +38,6 @@
   text-overflow: ellipsis;
 }
 
-/* The app screen this lesson is about. Drops out with the title on a narrow
-   header, where the stepper needs the room more. */
-.surface {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #8ea9d8;
-  border: 1px solid rgba(142, 169, 216, 0.28);
-  border-radius: 4px;
-  padding: 0.1875rem 0.4375rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 /* ── Header right: the stage stepper, which replaces the TOC ── */
 .stepper {
   display: flex;
@@ -400,15 +385,37 @@
   text-decoration: none;
 }
 
-/* The chip gives up its room before the title does: the title names the lesson,
-   the chip only names the screen it is about. */
-@media (max-width: 1240px) {
-  .surface {
+/* What the header gives up, and in what order, as the row narrows.
+
+   The row holds the lockup (the mark below 1440px, see the shell's styles),
+   the back link with the track and lesson number, the title, the three stage
+   buttons and the docs link. The title is the one thing in it that can shrink,
+   so it is the first thing to go wrong. With the lockup and the stage labels
+   showing, the longest title ("What borrowing really costs") fits from 1440px;
+   with the mark and the labels, from 1280px. Below that the stage labels go
+   first, because every stage names itself again in its own eyebrow, and the
+   title goes at 1000px, where even the compact stepper leaves it no room. The
+   track and the lesson number stay to the end. Measured on every lesson.
+
+   The header used to carry the lesson's app screen as a chip after the title.
+   Once the lockup was there it never fit beside the longest titles at any
+   width, and the map's row and the lesson's own figure both name the screen,
+   so it is gone from here. */
+@media (max-width: 1279px) {
+  .stepLabel {
     display: none;
+  }
+
+  .step {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .rule {
+    width: 0.875rem;
   }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1000px) {
   .backTitle {
     display: none;
   }
@@ -429,20 +436,6 @@
     max-width: 46rem;
   }
 
-}
-
-@media (max-width: 860px) {
-  .stepLabel {
-    display: none;
-  }
-
-  .step {
-    padding: 0.5rem 0.5rem;
-  }
-
-  .rule {
-    width: 0.875rem;
-  }
 }
 
 /* The shell's header wraps to two rows at this width, so the back link has the

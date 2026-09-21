@@ -20,7 +20,7 @@
  * The intermediate track covers every important mechanic and how it
  * functions, for a learner committed to understanding the protocol: reading a
  * position, the pace of repayment, the strategy mix, the cost of borrowing,
- * choosing an LTV, the peg, and a capstone that sizes a position. Seven
+ * choosing an LTV, the peg, and sizing a position from all of it. Seven
  * lessons, all published.
  *
  * `app` is the route a learner clicks to reach the screen, written the way the
@@ -166,12 +166,15 @@ export const INTERMEDIATE = [
     ready: true,
     track: "intermediate",
   },
+  // The id is engine data (the grader keys its questions and receipts on it)
+  // and keeps its name. The title and the URL are the learner's, and they say
+  // what the lesson teaches.
   {
     n: 7,
     id: "capstone",
-    slug: "/academy/capstone",
+    slug: "/academy/sizing-a-position",
     app: "Borrow · Visualizer",
-    title: "Capstone",
+    title: "Sizing a position",
     blurb: "Raise the cash you need from a position that survives the loss you expect.",
     minutes: 10,
     ready: true,

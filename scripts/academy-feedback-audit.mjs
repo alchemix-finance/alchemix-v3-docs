@@ -230,7 +230,26 @@ const CHECKS = [
   ["the placeholder hexagon brand is gone", "gone", '<span className={styles.brandText}>Alchemix Academy</span>'],
   ["the hero no longer repeats the lockup as an eyebrow", "gone", '<div className={styles.eyebrow}>Alchemix Academy</div>'],
   ["the phone header wraps on the flex row, not its parent", "present", "@media (max-width: 480px) {\n  .headerInner {\n    flex-wrap: wrap;"],
-  ["the lesson header swaps to the mark below 1280px", "present", ".withCrumb .lockup {\n    display: none;"],
+  ["the lesson header swaps to the mark below 1440px", "present", ".withCrumb .lockup {\n    display: none;"],
+
+  // Keenan's third read (2026-09-21): the last intermediate lesson is named
+  // for what it teaches, and the map no longer carries the Visualizer sheet.
+  ["the last intermediate lesson is named for what it teaches", "present", 'title: "Sizing a position"'],
+  ["'Capstone' is gone as a lesson title", "gone", 'title: "Capstone"'],
+  ["its URL follows the title", "present", 'slug: "/academy/sizing-a-position"'],
+  ["the map's Visualizer sheet is gone", "gone", "What this track builds toward"],
+  ["and so is the component that drew it", "gone", "function VisualizerSheet("],
+  ["and its styles", "gone", ".sheetRow {"],
+
+  // The lockup left the longest lesson titles cut at every width (found on
+  // the third read): the app chip leaves the header, the lockup starts at
+  // 1440 on lesson pages, and the stage labels give way before the title.
+  ["the lesson header's app chip is gone", "gone", "{lesson.app ? <span className={styles.surface}>"],
+  ["the lesson header carries the lockup from 1440", "present", "@media (max-width: 1439px)"],
+  ["the stage labels give way at 1280, before the title", "present", `@media (max-width: 1279px) {
+  .stepLabel {`],
+  ["the title stays until 1000px", "present", `@media (max-width: 1000px) {
+  .backTitle {`],
 ];
 
 let fails = 0;

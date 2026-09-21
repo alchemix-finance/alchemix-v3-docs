@@ -8,9 +8,6 @@ import {
   isLocalCompletion, readCompletions,
 } from "@site/src/components/Academy/lib/api";
 import {
-  EXAMPLE_AL_PRICE, EXAMPLE_REDEMPTION, EXAMPLE_YIELD,
-} from "@site/src/components/Academy/lib/protocol";
-import {
   ALL_LESSONS, BEGINNER_BONUS, INTERMEDIATE_BONUS, LESSON_POINTS, TOTAL_POINTS, TRACKS,
   lessonById, trackBankedPoints, trackState, trackTotalPoints,
 } from "@site/src/components/Academy/lib/track";
@@ -331,106 +328,12 @@ function TrackSection({ track, completions, loaded, base }) {
         <GraduationPanel track={track} completions={completions} base={base} banked={banked} />
       ) : null}
 
-      {track.key === "intermediate" ? <VisualizerSheet completedIds={completedIds} /> : null}
-
       <div className={styles.track}>
         {lessons.map((lesson, i) => (
           <TrackRow key={lesson.id} lesson={lesson} last={i === lessons.length - 1} />
         ))}
       </div>
     </section>
-  );
-}
-
-/**
- * The intermediate track's sizing sheet.
- *
- * Seven lessons on separate mechanics, and a capstone that used to hand the
- * learner three fresh numbers at the end of them. The track does have a spine,
- * and two of the wrap-ups already point at it. Every vault has a Visualizer
- * tab that projects a position, and it takes four inputs. Three
- * are what this track teaches, one lesson each. The fourth depends on what the
- * learner does with the capital they raised, so no lesson can supply it, and the
- * capstone says as much.
- *
- * The figures are the lessons' own examples, which is what every other screen in
- * the academy shows. The real ones are on the vault.
- */
-const SHEET = [
-  {
-    field: "Yield APY",
-    value: `${(EXAMPLE_YIELD * 100).toFixed(2)}%`,
-    from: "where-yield-comes-from",
-    note: "what the strategies earn, inside the caps the DAO sets on them",
-  },
-  {
-    field: "Redemption",
-    value: `${(EXAMPLE_REDEMPTION * 100).toFixed(1)}%`,
-    from: "pace-of-repayment",
-    note: "the pace every loan in the market clears at",
-  },
-  {
-    field: "alAsset price",
-    value: EXAMPLE_AL_PRICE.toFixed(3),
-    from: "cost-of-borrowing",
-    note: "the discount you take when you sell what you borrowed",
-  },
-  {
-    field: "External APY",
-    value: "Yours",
-    from: null,
-    note: "what you earn on the capital you raised, which is your decision rather than the protocol's",
-  },
-];
-
-function VisualizerSheet({ completedIds }) {
-  const done = new Set(completedIds);
-  const filled = SHEET.filter((r) => r.from && done.has(r.from)).length;
-  const teachable = SHEET.filter((r) => r.from).length;
-
-  return (
-    <div className={styles.sheet}>
-      <div className={styles.sheetHead}>
-        <span className={styles.sheetLabel}>What this track builds toward</span>
-        <span className={styles.sheetCount}>
-          {filled} of {teachable} filled in
-        </span>
-      </div>
-      <p className={styles.sheetIntro}>
-        Every vault carries a <strong>Visualizer</strong> tab that projects the deposit, the
-        debt and the net value across a horizon you choose. These are the four figures it
-        asks for.
-      </p>
-
-      <dl className={styles.sheetRows}>
-        {SHEET.map((row) => {
-          const lesson = row.from ? lessonById(row.from) : null;
-          const known = !row.from || done.has(row.from);
-
-          return (
-            <div key={row.field} className={`${styles.sheetRow} ${known ? styles.sheetRowOn : ""}`}>
-              <dt className={styles.sheetField}>{row.field}</dt>
-              <dd className={styles.sheetValue}>
-                {known ? (
-                  // The input no lesson supplies is not a figure the learner
-                  // earned, so it does not get the colour that says one is.
-                  <span className={`${styles.sheetFigure} ${row.from ? "" : styles.sheetOwn}`}>
-                    {row.value}
-                  </span>
-                ) : (
-                  <Link to={lesson.slug} className={styles.sheetPending}>
-                    Lesson {lesson.n}
-                  </Link>
-                )}
-              </dd>
-              <dd className={styles.sheetNote}>{row.note}</dd>
-            </div>
-          );
-        })}
-      </dl>
-
-      
-    </div>
   );
 }
 
@@ -546,11 +449,9 @@ function GraduationPanel({ track, completions, base, banked }) {
 }
 
 /**
- * The app screen a lesson is about, where it is one screen.
- *
- * Lesson 1 and the capstone cover two, and the pace of repayment is a
- * protocol-level rate rather than a page, so those carry no surface and this
- * renders nothing rather than guessing at one.
+ * The app screen a lesson is about, written the way the app's navigation
+ * writes it. Every lesson names one today; a lesson without a screen of its
+ * own would carry none, and this renders nothing rather than guessing at one.
  */
 function Surface({ lesson }) {
   if (!lesson.app) return null;
