@@ -160,6 +160,21 @@ const CHECKS = [
   ["the capstone's Visualizer crop says why its loan cost reads zero", "present", "has no loan open, so its loan cost reads zero"],
   ["one name for the Transmuter's exit fee, in the banks too", "gone", "early transmutation fee"],
   ["the track map has a main landmark", "present", "      <main>\n        <section className={styles.intro}>"],
+
+  /* Layout pass, 2026-09-20: the strip's cards sat at their own heights. */
+  ["the strip's stops stretch to one row height", "gone", "repeat(6, minmax(0, 1fr));\n  align-items: start;"],
+  ["no source comment still describes the removed live strip", "gone", "the live strip"],
+  ["no source comment still measures a five-stop diagram", "gone", "five stops have"],
+
+  /* Accuracy and tablet layout, 2026-09-20: figures a careful reader checks against the screen, and the 768px pass. */
+  ["the peg lesson's borrower figure is what the same money buys, not the par saving", "present", "const extra = STAKE / price - STAKE;"],
+  ["the peg lesson no longer prints 10,000 x the discount as debt cleared", "gone", "STAKE * (1 - price)"],
+  ["the cost lesson's capture does not claim to quote today's price", "gone", "The app quotes the same price this lesson is charging you"],
+  ["the cost lesson's reveal has an at-par title", "present", "At par there is no discount, so this borrow costs nothing up front."],
+  ["setup-card figures are tightened from 900px, not only on phones", "present", "Tighten the padding and the figure from 900px"],
+  ["the phone-only setup-card fix is gone", "gone", "Three figures across a phone-width card leaves about 85px each"],
+  ["three controls lay out as three or one", "present", ".controls[data-count=\"3\"]"],
+  ["the Controls wrapper reports its count", "present", "data-count={React.Children.toArray(children).length}"],
 ];
 
 let fails = 0;

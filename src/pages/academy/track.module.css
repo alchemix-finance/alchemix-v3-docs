@@ -22,14 +22,13 @@
 }
 
 /* The diagram of the position the beginner track builds, on the same gutter as
-   the live strip below it and the track rails below that.
+   the track rails below it.
  *
  * It sat beside the hero text for a while, on the reasoning that the right half
- * of the viewport was going begging. In a half-width column five stops have
- * about 125px each and the diagram has to fall back to a vertical list, which
+ * of the viewport was going begging. In a half-width column six stops have
+ * about 100px each and the diagram has to fall back to a vertical list, which
  * left a tall narrow card against a short block of text. Full width it is a row
- * of five, it matches the live strip directly under it, and the hero reads as
- * one column of prose followed by two cards. */
+ * of six, and the hero reads as one column of prose followed by two cards. */
 .loopSection {
   position: relative;
   z-index: 1;

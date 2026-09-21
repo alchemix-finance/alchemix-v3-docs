@@ -21,8 +21,8 @@ import styles from "./styles.module.css";
  * boxes read as a mistake, whatever the frame was doing.
  *
  * Figures match the carried position the lessons use, and the copy says
- * "example" where a real one would vary. The live strip under the hero is what
- * carries the protocol's actual numbers.
+ * "example" where a real one would vary. Live figures belong in the lessons,
+ * beside the sentence that uses them, not on the map.
  */
 
 const STOPS = [

@@ -173,7 +173,13 @@ export function Control({ label, display, min, max, step, value, onChange, verdi
   );
 }
 
-export const Controls = ({ children }) => <div className={styles.controls}>{children}</div>;
+/* The count lets the stylesheet lay three controls out as three or one, never
+   two and an orphan. Conditional children that render nothing are not counted. */
+export const Controls = ({ children }) => (
+  <div className={styles.controls} data-count={React.Children.toArray(children).length}>
+    {children}
+  </div>
+);
 
 /* ── Setup display ───────────────────────────────────────── */
 

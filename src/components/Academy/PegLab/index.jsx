@@ -145,7 +145,7 @@ function Explore({ market, onDone }) {
 
   const annual = annualisedFromDiscount(price, weeks);
   const perTerm = termReturn(price);
-  const saved = STAKE * (1 - price);
+  const extra = STAKE / price - STAKE;
 
   const pickRole = (r) => {
     setRole(r);
@@ -192,7 +192,7 @@ function Explore({ market, onDone }) {
             <div className={own.resultBig} style={{ color: "#f5c09a" }}>{money2(STAKE / price)}</div>
             <div className={own.resultNote}>
               Every alUSD cancels exactly 1 of debt inside Alchemix, whatever you paid for
-              it. Buying at {price.toFixed(3)} clears {money2(saved)} more debt than the
+              it. Buying at {price.toFixed(3)} clears {money2(extra)} more debt than the
               same money would at par.
             </div>
           </>

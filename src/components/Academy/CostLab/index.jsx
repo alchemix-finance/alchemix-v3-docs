@@ -66,9 +66,9 @@ function Predict({ price, live, onDone }) {
       </Sub>
 
       <AppShot shot={SHOTS.alAssetPrice}>
-        The app quotes the same price this lesson is charging you. Every Fixed Yield card
-        prints what the alAsset is trading at, which is what a buyer pays and therefore
-        what you receive when you sell.
+        Every Fixed Yield card prints what the alAsset is trading at, which is what a
+        buyer pays and therefore what you receive when you sell. The price moves, so this
+        capture and today's figure can differ a little.
       </AppShot>
 
       <Panel>
@@ -183,7 +183,11 @@ function Explore({ market, onDone }) {
 
       {moved.want && moved.price ? (
         <Reveal
-          title="The discount is the cost, and it grows with the size of the borrow."
+          title={
+            price >= 0.999
+              ? "At par there is no discount, so this borrow costs nothing up front."
+              : "The discount is the cost, and it grows with the size of the borrow."
+          }
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >

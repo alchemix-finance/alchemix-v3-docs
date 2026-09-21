@@ -39,7 +39,6 @@
 .loop {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  align-items: start;
   gap: 0.5rem;
 }
 

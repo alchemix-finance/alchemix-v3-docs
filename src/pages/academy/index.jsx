@@ -319,7 +319,8 @@ function TrackSection({ track, completions, loaded, base }) {
  *
  * The figures are the lessons' own: 10,000 deposited, 5,000 borrowed, and then
  * a year of the dApp's projection at the example redemption rate the lessons
- * use. Real rates move, which is what the live strip above says.
+ * use. Real rates move; these are the lessons' example figures, like every
+ * other screen.
  */
 const CARRY_DEPOSIT = 10_000;
 const CARRY_BORROW = 5_000;
