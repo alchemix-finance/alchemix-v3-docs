@@ -157,13 +157,6 @@ function Learn({ onDone }) {
         }
       />
 
-      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
-        The rate on a live vault, reading 90.61% the day this was captured. It rises and
-        falls with how much alUSD is waiting to be redeemed, so the {RATE} above is an
-        example rather than a schedule. Earmarked, beside it, is the slice of a loan already
-        set aside for the next redemption.
-      </AppShot>
-
       <Panel>
         <Question>Two years at {RATE}, and you never touch it. How much do you owe?</Question>
         <GuessSlider
@@ -202,6 +195,13 @@ function Learn({ onDone }) {
           </Body>
         </Reveal>
       )}
+
+      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
+        The rate on a live vault, reading 90.61% the day this was captured. It rises and
+        falls with how much alUSD is waiting to be redeemed, so the {RATE} above is an
+        example rather than a schedule. Earmarked, beside it, is the slice of a loan already
+        set aside for the next redemption.
+      </AppShot>
     </Stage>
   );
 }
@@ -315,11 +315,6 @@ function Try({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.repayTab}>
-        The Repay tab, which is the second control above. Type an amount, or take the
-        balance in your wallet with MAX, and the debt falls by what you send.
-      </AppShot>
-
       <Notes>
         <Note label="Time passing">
           Every month, redemptions clear a little more of the balance for you.
@@ -349,6 +344,11 @@ function Try({ onDone }) {
       ) : (
         <Hint>Run the months forward, then repay or borrow more, to continue.</Hint>
       )}
+
+      <AppShot shot={SHOTS.repayTab}>
+        The Repay tab, which is the second control above. Type an amount, or take the
+        balance in your wallet with MAX, and the debt falls by what you send.
+      </AppShot>
     </Stage>
   );
 }

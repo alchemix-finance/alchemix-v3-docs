@@ -187,11 +187,6 @@ function Try({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.positionBar}>
-        The same bar in the app. Deposit, debt and the earmarked slice share one track, and
-        MAX LTV and LIQ LTV are the two markers the card above draws.
-      </AppShot>
-
       <Notes>
         <Note label="A loss inside the vault">
           A strategy can be exploited, or it can simply lose money. Either way the same debt
@@ -223,6 +218,11 @@ function Try({ onDone }) {
       ) : (
         <Hint>Move the price, then the loss inside the vault, to continue.</Hint>
       )}
+
+      <AppShot shot={SHOTS.positionBar}>
+        The same bar in the app. Deposit, debt and the earmarked slice share one track, and
+        MAX LTV and LIQ LTV are the two markers the card above draws.
+      </AppShot>
     </Stage>
   );
 }

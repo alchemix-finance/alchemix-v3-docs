@@ -190,7 +190,7 @@ const CHECKS = [
   // Keenan's read of lessons 1 to 3, 2026-09-21: the hero was not aligned, the
   // carried position pushed numbers at a learner who had not met them, the
   // whole-screen figures were bloat, and two crops were cut off and unaligned.
-  ["the hero's pitch is centred against the rewards panel", "present", "minmax(0, 25rem);\n  align-items: center;"],
+  ["the hero's pitch is centred against the rewards panel", "present", "37.5rem));\n  align-items: center;"],
   ["the whole-screen label is gone", "gone", "The whole screen, in the app"],
   ["the borrowing lesson shows the whole Deposit/Borrow panel", "present", '"/img/academy-tab-deposit.png"'],
   ["no single-tile or tile-pair crops", "gone", "crop: tiles("],
@@ -200,6 +200,26 @@ const CHECKS = [
   ["the stat tiles are the 2x USDC rows", "present", "const statsRow = (row) => ({"],
   ["phone-width columns get their own crop of each figure", "present", "const NARROW_PX = 640;"],
   ["the phone tab captures are in use", "present", '"/img/academy-phone-tab-deposit.png"'],
+
+  // Keenan's second read, 2026-09-21: the hero still felt awkward, the app
+  // figures sat ahead of the thing the learner was there to do, the Transmuter
+  // lesson's Try stage weighed a sale the saver has no reason to make, and a
+  // demo needed a way to show the finished map.
+  ["the rewards panel is about half again as wide", "present", "clamp(25rem, 40vw, 37.5rem)"],
+  ["the panel's two tracks sit side by side", "present", ".rewardTracks {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));"],
+  ["no figure sits ahead of the question it is not needed for", "gone", "</AppShot>\n\n      <Panel>"],
+  ["no figure sits between the controls and their notes", "gone", "</AppShot>\n\n      <Notes>"],
+  ["figures follow the stage's reveal", "present", "      )}\n\n      <AppShot"],
+  ["the Transmuter's Try no longer weighs a sale against the wait", "gone", "Weigh selling now against waiting."],
+  ["the Transmuter's Try no longer has an amount control that teaches nothing", "gone", 'label="alUSD in"'],
+  ["the Transmuter's Try builds the card's APR from the price and the term", "present", "Suppose the term is"],
+  ["the Transmuter's Try names the card's field", "present", "Projected fixed APR"],
+  ["a test-mode control finishes every lesson in development", "present", "export function completeAllLocally("],
+  ["the test-mode receipts are inert in production", "present", "if (!devFallbackEnabled()) return false;"],
+  ["the test-mode control folds out of the production bundle", "present", '{process.env.NODE_ENV !== "production" && !finished ? ('],
+  ["a finished track's mark does not wrap its label", "gone", "{complete ? <DonePill /> : null}\n              </div>\n              <div className={styles.rewardRole}>"],
+  ["the side-by-side tracks stack where they cannot fit", "present", "@media (min-width: 1001px) and (max-width: 1340px)"],
+  ["deleting local-only receipts skips the confirm", "present", "localOnly ? onReset() : setAsking(true)"],
 ];
 
 let fails = 0;

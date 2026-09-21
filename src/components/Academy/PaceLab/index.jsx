@@ -242,12 +242,6 @@ function Explore({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
-        The third control, on a real vault: Redemption Rate, second from the left. Every
-        position in that market is repaid at this one rate, so it is the figure to read
-        before you judge how fast a loan will clear.
-      </AppShot>
-
       {found ? (
         <Reveal
           title="The redemption rate sets the pace."
@@ -267,6 +261,12 @@ function Explore({ onDone }) {
       ) : (
         <Hint>Move all three inputs to continue. {tried} of 3 so far.</Hint>
       )}
+
+      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
+        The third control, on a real vault: Redemption Rate, second from the left. Every
+        position in that market is repaid at this one rate, so it is the figure to read
+        before you judge how fast a loan will clear.
+      </AppShot>
     </Stage>
   );
 }

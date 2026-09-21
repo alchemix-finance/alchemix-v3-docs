@@ -68,6 +68,30 @@ export function clearCompletions() {
 }
 
 /**
+ * Mark every lesson complete, in development only.
+ *
+ * The receipts it writes are the same unsigned `local:` tokens the dev grader
+ * issues, so they are worth exactly as much: nothing at a claim. What they are
+ * for is looking at the finished map and the finished lessons without working
+ * thirteen checkpoints first. Real receipts already stored are left alone.
+ * Inert in production, like everything behind `devFallbackEnabled`; the
+ * control that calls it is compiled out of the map page.
+ */
+export function completeAllLocally(lessonIds) {
+  if (!devFallbackEnabled()) return false;
+  try {
+    const all = readCompletions();
+    for (const id of lessonIds) {
+      if (!all[id]) all[id] = `${LOCAL_PREFIX}${id}`;
+    }
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * The stored tokens for a set of lesson ids, in the order the ids were given.
  * Ids with no stored token are skipped, so the result is what a claim can send.
  * Same rule as `readCompletions`: call it from an effect or a handler.

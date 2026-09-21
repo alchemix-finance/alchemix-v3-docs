@@ -208,11 +208,6 @@ function Try({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.withdrawTab}>
-        The Withdraw tab. Available is the figure this stage has been working out, and the
-        app has already run the arithmetic against your debt.
-      </AppShot>
-
       <Notes>
         <Note label="Withdraw now">
           Take whatever is already free and leave the loan open. It costs nothing and goes
@@ -248,6 +243,11 @@ function Try({ onDone }) {
       ) : (
         <Hint>Move the repay control to continue.</Hint>
       )}
+
+      <AppShot shot={SHOTS.withdrawTab}>
+        The Withdraw tab. Available is the figure this stage has been working out, and the
+        app has already run the arithmetic against your debt.
+      </AppShot>
     </Stage>
   );
 }

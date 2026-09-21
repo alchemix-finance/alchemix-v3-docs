@@ -76,12 +76,6 @@ function Predict({ price, live, onDone }) {
         <TradeStep label={`After ${WEEKS} weeks`} value={`${money2(bought)} USDC`} tone="#5ba88a" />
       </div>
 
-      <AppShot shot={SHOTS.fixedPositions}>
-        Two of these positions, open. APR is the annualized figure this stage asks you to
-        work out, fixed at the price each one bought in at, and Profit is what has accrued
-        against it so far.
-      </AppShot>
-
       <Panel>
         <Question>
           If you wait the full term and redeem 1:1, what is the annualized return?
@@ -122,6 +116,12 @@ function Predict({ price, live, onDone }) {
           </Body>
         </Reveal>
       )}
+
+      <AppShot shot={SHOTS.fixedPositions}>
+        Two of these positions, open. APR is the annualized figure this stage asks you to
+        work out, fixed at the price each one bought in at, and Profit is what has accrued
+        against it so far.
+      </AppShot>
     </Stage>
   );
 }

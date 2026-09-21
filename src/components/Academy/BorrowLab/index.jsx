@@ -71,12 +71,6 @@ function Learn({ onDone }) {
         note={revealed ? "In your wallet: 9,000 alUSD" : "Borrow tab open"}
       />
 
-      <AppShot shot={SHOTS.depositBorrow}>
-        The vault's Deposit/Borrow tab, with the Borrow tab beside it for a deposit already
-        made. The lower field is the alUSD you are borrowing, and MAX beside it fills in the
-        most your deposit allows.
-      </AppShot>
-
       <Panel>
         <Question>You press Max. How much alUSD does the app fill in?</Question>
         <GuessSlider
@@ -118,6 +112,12 @@ function Learn({ onDone }) {
           </Body>
         </Reveal>
       )}
+
+      <AppShot shot={SHOTS.depositBorrow}>
+        The vault's Deposit/Borrow tab, with the Borrow tab beside it for a deposit already
+        made. The lower field is the alUSD you are borrowing, and MAX beside it fills in the
+        most your deposit allows.
+      </AppShot>
     </Stage>
   );
 }
@@ -188,12 +188,6 @@ function Try({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.borrowableLtv}>
-        A vault's second row of stats, with nothing borrowed yet. LTV, at the right, is
-        written against the cap, 0.00 out of 90.00%, and the 90.00% is the same on every
-        vault in the protocol. Borrowable beside it is what the cap still allows.
-      </AppShot>
-
       <Notes>
         <Note label="What arrives">
           alUSD, minted to your wallet. On the open market it trades a little under 1.00.
@@ -219,6 +213,12 @@ function Try({ onDone }) {
       ) : (
         <Hint>Push the amount up to the cap to continue.</Hint>
       )}
+
+      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.borrowableLtv}>
+        A vault's second row of stats, with nothing borrowed yet. LTV, at the right, is
+        written against the cap, 0.00 out of 90.00%, and the 90.00% is the same on every
+        vault in the protocol. Borrowable beside it is what the cap still allows.
+      </AppShot>
     </Stage>
   );
 }

@@ -247,11 +247,6 @@ function Explore({ onDone }) {
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
 
-      <AppShot shot={SHOTS.strategies}>
-        The real allocation, on a vault's Info tab. Each strategy is listed with the risk
-        level these ceilings apply to, what it earns, and how much of the vault it holds.
-      </AppShot>
-
       {atBest || sawBreach ? (
         <Reveal
           title={`${best.toFixed(2)}% is the highest blended APR inside every cap.`}
@@ -282,6 +277,11 @@ function Explore({ onDone }) {
           {!sawBreach ? " Push a slider past a ceiling as well." : ""}
         </Hint>
       )}
+
+      <AppShot shot={SHOTS.strategies}>
+        The real allocation, on a vault's Info tab. Each strategy is listed with the risk
+        level these ceilings apply to, what it earns, and how much of the vault it holds.
+      </AppShot>
     </Stage>
   );
 }

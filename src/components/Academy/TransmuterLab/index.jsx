@@ -3,11 +3,11 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
+import { annualisedFromDiscount, termReturn } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider,
-  Hint, Note, Notes, Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money,
-  said,
+  Hint, Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
@@ -19,10 +19,14 @@ import {
  * debt inside the Alchemist, and routing it through the Transmuter would mean
  * waiting out a term for USDC while still carrying the debt.
  *
- * The learner buys at a discount, guesses what comes out after the term, then
- * sets an amount and a market price and watches the two routes side by side.
- * The one-for-one tile shows exactly the amount put in; only the sell-now tile
- * follows the price.
+ * The learner buys at a discount and guesses what comes out after the term.
+ * Then, in Try, they move the two figures the card's rate is built from, the
+ * price and the term, and the projected fixed APR follows. Try used to
+ * weigh selling the alUSD on the market against waiting, which is a decision
+ * the saver never faces: they bought at the market price, so selling back
+ * returns what they paid, and the only question they have is what the wait is
+ * worth. It also had an amount control that scaled both figures together and
+ * taught nothing.
  *
  * The lesson names the fields on the Fixed Yield card and not their values. The
  * DAO sets the term and the fees and both vary by asset and chain, but the card
@@ -35,6 +39,12 @@ import {
  */
 
 const HOLDING = 5_000;
+
+/**
+ * The term Try starts on. The intermediate peg lesson runs the same 20 weeks,
+ * which is the term the protocol constants were checked against.
+ */
+const WEEKS = 20;
 
 export default function TransmuterLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -103,11 +113,6 @@ function Learn({ price, live, onDone }) {
 
       <FlowSteps steps={steps} />
 
-      <AppShot shot={SHOTS.fixedYieldCard}>
-        One card on the Fixed Yield page. The alUSD price is what you buy at, the term is
-        how long you wait, and the projected fixed APR is the first two annualized.
-      </AppShot>
-
       <Panel>
         <Question>You wait the full term. How much USDC do you receive?</Question>
         <GuessSlider
@@ -132,7 +137,7 @@ function Learn({ price, live, onDone }) {
         <Reveal
           title={`${money(HOLDING)} USDC comes back, one for one.`}
           onNext={onDone}
-          nextLabel="Compare it with selling"
+          nextLabel="See what sets the rate"
         >
           <Body>
             {said(guess, HOLDING, money)}
@@ -150,78 +155,110 @@ function Learn({ price, live, onDone }) {
 
 /* ── Stage 2: try ────────────────────────────────────────── */
 
+/**
+ * The card's projected fixed APR, built from its two ingredients. The learner
+ * does not set either in the app: the market sets the price and the DAO sets
+ * the term. Both controls are worded as suppositions for that reason, and the
+ * figure that answers them is the one the card prints.
+ */
 function Try({ market, onDone }) {
-  const [amount, setAmount] = useState(HOLDING);
   const [price, setPrice] = useState(market);
-  const [moved, setMoved] = useState({ amount: false, price: false });
+  const [weeks, setWeeks] = useState(WEEKS);
+  const [moved, setMoved] = useState({ price: false, weeks: false });
   const mark = (k) => setMoved((m) => (m[k] ? m : { ...m, [k]: true }));
 
-  const sellNow = amount * price;
+  const cost = HOLDING * price;
+  const gain = termReturn(price);
+  const apr = annualisedFromDiscount(price, weeks);
+
+  const priceVerdict = !moved.price || price === market
+    ? null
+    : price < market ? "a wider discount, a higher rate" : "a narrower discount, a lower rate";
+  const weeksVerdict = !moved.weeks || weeks === WEEKS
+    ? null
+    : weeks < WEEKS ? "a shorter wait, a higher rate" : "a longer wait, a lower rate";
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Weigh selling now against waiting.">
+    <Stage eyebrow="Stage 2 · Try" headline="The price and the term set the rate on the card.">
       <Sub>
-        Only the sell-now figure follows the market price.
+        The same {money(HOLDING)} USDC comes back whatever the two say. What they decide is
+        what the wait is worth, and the card prints that as a projected fixed APR.
       </Sub>
 
       <div className={own.routes}>
         <div className={own.route}>
-          <div className={styles.microLabel}>Sell on the market</div>
-          <div className={own.routeValue} style={{ color: "#d4952a" }}>{money(sellNow)}</div>
-          <div className={own.routeFoot}>USDC, today</div>
+          <div className={styles.microLabel}>You pay</div>
+          <div className={own.routeValue} style={{ color: "#d4952a" }}>{money(cost)}</div>
+          <div className={own.routeFoot}>USDC, at {price.toFixed(3)} each</div>
         </div>
-        <div className={`${own.route} ${own.routeWait}`}>
-          <div className={styles.microLabel}>Transmuter</div>
-          <div className={own.routeValue} style={{ color: "#8ea9d8" }}>{money(amount)}</div>
-          <div className={own.routeFoot}>USDC, after the term</div>
+        <div className={own.route}>
+          <div className={styles.microLabel}>You receive</div>
+          <div className={own.routeValue} style={{ color: "#8ea9d8" }}>{money(HOLDING)}</div>
+          <div className={own.routeFoot}>USDC, after {weeks} weeks</div>
+        </div>
+        <div className={`${own.route} ${own.routeRate}`}>
+          <div className={styles.microLabel}>Projected fixed APR</div>
+          <div className={own.routeValue} style={{ color: "#5ba88a" }}>{apr.toFixed(2)}%</div>
+          <div className={own.routeFoot}>{gain.toFixed(2)}% over the term, as a yearly rate</div>
         </div>
       </div>
 
-      <Readout>Waiting returns {money(amount - sellNow)} more.</Readout>
+      <Readout>
+        Buying at {price.toFixed(3)} and receiving 1.00 is a gain of{" "}
+        <strong>{gain.toFixed(2)}%</strong> over {weeks} weeks. The card states that as a yearly
+        rate, <strong>{apr.toFixed(2)}%</strong>.
+      </Readout>
 
       <Controls>
         <Control
-          label="alUSD in"
-          display={`${money(amount)} alUSD`}
-          min={0} max={HOLDING} step={250}
-          value={amount}
-          onChange={(v) => { setAmount(v); mark("amount"); }}
-          accent
-        />
-        <Control
-          label="Market price of alUSD"
+          label="Suppose alUSD trades at"
           display={price.toFixed(3)}
-          min={0.9} max={1} step={0.001}
+          min={0.9} max={0.999} step={0.001}
           value={price}
           onChange={(v) => { setPrice(v); mark("price"); }}
+          accent
+          verdict={priceVerdict}
+        />
+        <Control
+          label="Suppose the term is"
+          display={`${weeks} weeks`}
+          min={4} max={40} step={1}
+          value={weeks}
+          onChange={(v) => { setWeeks(v); mark("weeks"); }}
+          verdict={weeksVerdict}
         />
       </Controls>
 
-      <Notes>
-        <Note label="Reading the card">
-          Each Fixed Yield card carries a projected fixed APR, the maturity date, the term,
-          the early exit fee, the deposit cap, and the alAsset price it is quoting against.
-          Those figures are live and the DAO changes them.
-        </Note>
-        <Note label="Leaving early">
-          You can close a Transmuter position before it matures. The early exit fee on the card is what it costs, and it exists to keep deposits committed for the term.
-        </Note>
-      </Notes>
-
-      {moved.amount && moved.price ? (
+      {moved.price && moved.weeks ? (
         <Reveal
-          title="The guarantee holds the price near 1.00."
+          title="A wide discount pays too well to last."
           onNext={onDone}
           nextLabel="Take the last check"
         >
           <Body>
-            The further alUSD trades below 1.00, the more it pays to buy it and wait out the
-            term, and that buying pulls the price back up.
+            The further alUSD trades below 1.00, the more the wait pays, so buyers step in
+            for it, and their buying pushes the price back toward 1.00. That is why the
+            discount is usually small, and why the rate on the card changes from one day to
+            the next.
+          </Body>
+          <Body>
+            The DAO sets the term. A longer wait spreads the same gain over more of the year,
+            so the rate falls, and the maturity date on the card names the day the exchange
+            opens. You can leave before that day, and the early exit fee on the card is what
+            it costs.
           </Body>
         </Reveal>
       ) : (
         <Hint>Move both controls to continue.</Hint>
       )}
+
+      <AppShot shot={SHOTS.fixedYieldCard}>
+        One card on the Fixed Yield page. Its projected fixed APR is the two controls above
+        combined: the alUSD price is what you buy at, the term is the wait, and the maturity
+        date is the day it ends. The early exit fee and the deposit cap sit on the same card.
+        The DAO sets the term and the fee, and the market sets the price, so read the card
+        before you deposit.
+      </AppShot>
     </Stage>
   );
 }

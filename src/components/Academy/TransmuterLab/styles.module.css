@@ -1,8 +1,9 @@
-/* Lesson 6: the two routes out of an alAsset, side by side. */
+/* Lesson 6: what a Transmuter deposit costs, what it returns, and the rate the
+   card makes of the two. Three tiles across, one under another on a phone. */
 
 .routes {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
   margin: 1.75rem 0 1rem;
 }
@@ -11,14 +12,16 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 0;
   padding: 1.125rem 1.25rem 1.25rem;
   background: #141618;
   border: 1px solid rgba(245, 192, 154, 0.14);
   border-radius: 4px;
 }
 
-.routeWait {
-  border-color: rgba(142, 169, 216, 0.3);
+/* The tile the controls answer: the figure the card prints. */
+.routeRate {
+  border-color: rgba(91, 168, 138, 0.35);
 }
 
 .routeValue {
@@ -31,12 +34,13 @@
 
 .routeFoot {
   font-size: 0.8125rem;
+  line-height: 1.45;
   color: #8b9098;
 }
 
 @media (max-width: 640px) {
   .routes {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem;
   }
 

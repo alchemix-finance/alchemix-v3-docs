@@ -76,11 +76,6 @@ function Learn({ onDone }) {
         compact
       />
 
-      <AppShot shot={SHOTS.vaultCard}>
-        A vault on the Borrow page. The bar under its name is the deposit cap and how full
-        it is, and the figure above the bar is what it is earning right now.
-      </AppShot>
-
       <Panel>
         <Question>
           Tomorrow you want it back. How much of the {money(DEPOSIT)} can you take out?
@@ -118,6 +113,11 @@ function Learn({ onDone }) {
           </Body>
         </Reveal>
       )}
+
+      <AppShot shot={SHOTS.vaultCard}>
+        A vault on the Borrow page. The bar under its name is the deposit cap and how full
+        it is, and the figure above the bar is what it is earning right now.
+      </AppShot>
     </Stage>
   );
 }
@@ -181,11 +181,6 @@ function Try({ onDone }) {
         />
       </Controls>
 
-      <AppShot shot={SHOTS.withdrawTab}>
-        The Withdraw tab, which is the second control above. Available is what the position
-        will release today, and MAX fills the field with all of it.
-      </AppShot>
-
       <Notes>
         <Note label="How it reaches you">
           Each MYT becomes worth more USDC as the strategies earn. Your yield shows up in
@@ -209,6 +204,11 @@ function Try({ onDone }) {
       ) : (
         <Hint>Move the rate, then withdraw all of it to continue.</Hint>
       )}
+
+      <AppShot shot={SHOTS.withdrawTab}>
+        The Withdraw tab, which is the second control above. Available is what the position
+        will release today, and MAX fills the field with all of it.
+      </AppShot>
     </Stage>
   );
 }

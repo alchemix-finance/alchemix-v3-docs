@@ -4,15 +4,15 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AcademyShell from "@site/src/components/Academy/Shell";
 import TrackLoop from "@site/src/components/Academy/TrackLoop";
 import {
-  apiBase, claimGraduation, clearCompletions, completionsFor, isLocalCompletion,
-  readCompletions,
+  apiBase, claimGraduation, clearCompletions, completeAllLocally, completionsFor,
+  isLocalCompletion, readCompletions,
 } from "@site/src/components/Academy/lib/api";
 import {
   EXAMPLE_AL_PRICE, EXAMPLE_REDEMPTION, EXAMPLE_YIELD,
 } from "@site/src/components/Academy/lib/protocol";
 import {
-  BEGINNER_BONUS, INTERMEDIATE_BONUS, LESSON_POINTS, TOTAL_POINTS, TRACKS, lessonById,
-  trackBankedPoints, trackState, trackTotalPoints,
+  ALL_LESSONS, BEGINNER_BONUS, INTERMEDIATE_BONUS, LESSON_POINTS, TOTAL_POINTS, TRACKS,
+  lessonById, trackBankedPoints, trackState, trackTotalPoints,
 } from "@site/src/components/Academy/lib/track";
 import styles from "./track.module.css";
 
@@ -35,6 +35,7 @@ const INTRO = {
 };
 
 const fmt = (n) => n.toLocaleString("en-US");
+
 
 export default function AcademyTrack() {
   const { siteConfig } = useDocusaurusContext();
@@ -94,9 +95,17 @@ export default function AcademyTrack() {
 
         <ProgressNote
           started={loaded && completedIds.length > 0}
+          finished={loaded && ALL_LESSONS.every((l) => Boolean(completions[l.id]))}
+          localOnly={
+            completedIds.length > 0 && completedIds.every((id) => isLocalCompletion(completions[id]))
+          }
           onReset={() => {
             clearCompletions();
             setCompletions({});
+          }}
+          onFinish={() => {
+            completeAllLocally(ALL_LESSONS.map((l) => l.id));
+            setCompletions(readCompletions());
           }}
         />
       </main>
@@ -181,7 +190,11 @@ function RewardCard({ completedIds, banked }) {
             <div key={track.key} className={styles.rewardTrack}>
               <div className={styles.rewardTrackHead}>
                 <span className={styles.microLabel}>{track.label}</span>
-                {complete ? <DonePill /> : null}
+                {complete ? (
+                  <span className={styles.rewardDone} role="img" aria-label="Complete">
+                    <CheckIcon />
+                  </span>
+                ) : null}
               </div>
               <div className={styles.rewardRole}>{track.roleLine}</div>
               <Meter
@@ -219,9 +232,16 @@ function RewardCard({ completedIds, banked }) {
  * the course impossible to retake and awkward to demonstrate at a community call.
  *
  * The confirm is not politeness. These receipts are the only proof of points
- * that have not been claimed, and deleting them deletes the points.
+ * that have not been claimed, and deleting them deletes the points. Receipts
+ * that are all local prove nothing, so deleting those skips it.
+ *
+ * In development a second control sits beside it and marks every lesson
+ * complete with the same unsigned `local:` receipts the dev grader issues.
+ * Showing someone the finished map used to mean working thirteen checkpoints
+ * first. The two controls swap the map between empty and finished in one
+ * click each. The control is compiled out of production: see the note on it.
  */
-function ProgressNote({ started, onReset }) {
+function ProgressNote({ started, finished, localOnly, onReset, onFinish }) {
   const [asking, setAsking] = useState(false);
 
   return (
@@ -248,10 +268,31 @@ function ProgressNote({ started, onReset }) {
             </span>
           </div>
         ) : (
-          <button type="button" className={styles.resetLink} onClick={() => setAsking(true)}>
+          <button
+            type="button"
+            className={styles.resetLink}
+            onClick={() => (localOnly ? onReset() : setAsking(true))}
+          >
             Start over
           </button>
         )
+      ) : null}
+
+      {/* Written against `process.env` inline rather than through
+          `devFallbackEnabled` or a module constant: the build replaces the
+          expression with a literal right here and drops the branch, so the
+          control and its label are absent from the production bundle. A call
+          into another module, or a constant one line up, survived minification
+          and only answered false at runtime. */}
+      {process.env.NODE_ENV !== "production" && !finished ? (
+        <button
+          type="button"
+          className={`${styles.resetLink} ${styles.testLink}`}
+          onClick={onFinish}
+          title="Development only. Marks every lesson complete with an unsigned local receipt."
+        >
+          Test mode: finish every lesson
+        </button>
       ) : null}
     </section>
   );

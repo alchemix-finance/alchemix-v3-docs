@@ -11,12 +11,18 @@
  * The pitch is centred against the panel. Top-aligned, its eyebrow sat ten
  * pixels under the panel's border and twenty-five above the panel's own
  * eyebrow, so the two columns read as almost lined up, which is worse than
- * either. */
+ * either.
+ *
+ * The panel takes about 37.5rem where the width allows and 25rem where it
+ * does not. At 25rem a third of the hero sat empty between the pitch and the
+ * panel, and a tall narrow card stood beside a short block of text. At the
+ * wider measure the panel holds its two tracks side by side and stands about
+ * as tall as the pitch. */
 .intro {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, clamp(25rem, 40vw, 37.5rem));
   align-items: center;
   gap: 2.5rem clamp(2rem, 4vw, 4rem);
   padding: clamp(2.75rem, 6vw, 4.75rem) clamp(1.25rem, 4.4vw, 4rem) clamp(2rem, 4vw, 3.4rem);
@@ -703,9 +709,14 @@
   margin: 0.625rem 0 0;
 }
 
+/* The two tracks side by side. Each needs about 230px for its role line, its
+   label and the check beside it, which the panel has from about 1340px up and
+   again under the pitch on a tablet. Between the two, and on a phone, they
+   stack. The ranges do not overlap, so the order of the rules cannot matter. */
 .rewardTracks {
   display: grid;
-  gap: 1.125rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.125rem 1.5rem;
   margin: 1.375rem 0;
 }
 
@@ -720,11 +731,33 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.625rem;
+  /* As tall as the done mark, so a finished track and an unfinished one
+     beside it keep their role lines on the same baseline. */
+  min-height: 1.125rem;
   margin-bottom: 0.3125rem;
 }
 
 .rewardTrackHead .microLabel {
   margin-bottom: 0;
+}
+
+/* A finished track's mark: the rail's done node at label size. The pill the
+   track sections use wrapped the label onto two lines inside a column. */
+.rewardDone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: rgba(91, 168, 138, 0.16);
+  border: 1px solid #5ba88a;
+  flex-shrink: 0;
+}
+
+.rewardDone svg {
+  width: 10px;
+  height: 10px;
 }
 
 .rewardRole {
@@ -780,9 +813,8 @@
   color: #a8adb6;
 }
 
-/* The rewards panel needs about 25rem to hold a role line and a bar without
-   either wrapping. Below roughly 1000px the hero gives up its second column and
-   the panel sits under the pitch, still above both tracks. */
+/* Below roughly 1000px the hero gives up its second column and the panel sits
+   under the pitch, still above both tracks. */
 /* ── Where progress lives ──────────────────────────────────
    The foot of the map, after both tracks. Deliberately quiet: it is
    housekeeping, and the one destructive control in the academy sits inside it
@@ -824,6 +856,17 @@
 
 .resetLink:hover {
   color: #e8e8ea;
+}
+
+/* The development-only control that marks every lesson complete. Amber, so
+   nobody mistakes it for part of the course. Both classes, so it wins on
+   specificity rather than on order: see .meterFill.meterDone. */
+.resetLink.testLink {
+  color: #d4952a;
+}
+
+.resetLink.testLink:hover {
+  color: #f5c09a;
 }
 
 .resetAsk {
@@ -886,6 +929,12 @@
   color: #e8e8ea;
 }
 
+@media (min-width: 1001px) and (max-width: 1340px) {
+  .rewardTracks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 1000px) {
   .intro {
     grid-template-columns: minmax(0, 1fr);
@@ -899,6 +948,10 @@
 @media (max-width: 700px) {
   .row {
     grid-template-columns: 3rem minmax(0, 1fr);
+  }
+
+  .rewardTracks {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   /* Field and figure keep their row; what it means goes underneath. */

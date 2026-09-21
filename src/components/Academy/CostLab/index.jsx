@@ -65,12 +65,6 @@ function Predict({ price, live, onDone }) {
         sell the alUSD on the open market, where it is trading at {priceText(price, live)}{live ? " today" : ""}.
       </Sub>
 
-      <AppShot shot={SHOTS.fixedYieldCard} narrow={NARROW.fixedPrice}>
-        Every Fixed Yield card prints what the alAsset is trading at, which is what a
-        buyer pays and therefore what you receive when you sell. The price moves, so this
-        capture and today's figure can differ a little.
-      </AppShot>
-
       <Panel>
         <Question>How much USDC do you receive?</Question>
         <GuessSlider
@@ -109,6 +103,12 @@ function Predict({ price, live, onDone }) {
           </Body>
         </Reveal>
       )}
+
+      <AppShot shot={SHOTS.fixedYieldCard} narrow={NARROW.fixedPrice}>
+        Every Fixed Yield card prints what the alAsset is trading at, which is what a
+        buyer pays and therefore what you receive when you sell. The price moves, so this
+        capture and today's figure can differ a little.
+      </AppShot>
     </Stage>
   );
 }

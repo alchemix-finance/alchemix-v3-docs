@@ -112,11 +112,6 @@ function Learn({ onDone }) {
         <FlowSteps steps={revealed ? LOOP_REVEALED : LOOP} />
       </div>
 
-      <AppShot shot={SHOTS.vaultCard}>
-        A vault on the Borrow page, with what the whole market has deposited against it,
-        what it has borrowed, and the 90.00% of a deposit anyone may borrow.
-      </AppShot>
-
       <Panel>
         <Question>
           You borrow 5,000 alUSD against the deposit. What interest rate does the loan
@@ -154,6 +149,11 @@ function Learn({ onDone }) {
           </Body>
         </Reveal>
       )}
+
+      <AppShot shot={SHOTS.vaultCard}>
+        A vault on the Borrow page, with what the whole market has deposited against it,
+        what it has borrowed, and the 90.00% of a deposit anyone may borrow.
+      </AppShot>
     </Stage>
   );
 }

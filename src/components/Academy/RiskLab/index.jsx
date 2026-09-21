@@ -93,11 +93,6 @@ function Predict({ onDone }) {
         <PositionCard name="Ben" ltv={RISKY_LTV} color="#f5c09a" />
       </div>
 
-      <AppShot shot={SHOTS.positionBar}>
-        The two markers the cards above draw, on a real position. MAX LTV is where
-        borrowing stops and LIQ LTV is the {pct(LIQ_LTV)} this lesson sizes against.
-      </AppShot>
-
       {!revealed ? (
         <>
           <Panel>
@@ -184,6 +179,11 @@ function Predict({ onDone }) {
           )}
         </>
       )}
+
+      <AppShot shot={SHOTS.positionBar}>
+        A real position's bar, with the two markers this lesson turns on. MAX LTV is where
+        borrowing stops, and LIQ LTV is the {pct(LIQ_LTV)} it sizes against.
+      </AppShot>
     </Stage>
   );
 }
@@ -286,13 +286,6 @@ function Explore({ onDone }) {
         <strong>{pct(ceiling)}</strong>.
       </Readout>
 
-      <AppShot shot={SHOTS.statsTop} narrow={NARROW.debtHealth}>
-        Health Factor, at the right, states the same distance the other way up: the
-        borrowing cap over your LTV. A position at 30% against the 90% cap reads 3.00, it
-        falls as you borrow, and with nothing borrowed at all it shows the infinity sign,
-        as this vault does.
-      </AppShot>
-
       {seenFail || (moved.ltv && moved.loss) ? (
         <Reveal
           title="A loss shrinks your collateral, and the 95% threshold applies to what is left."
@@ -318,6 +311,13 @@ function Explore({ onDone }) {
       ) : (
         <Hint>Move both controls. Push the LTV up until the position fails.</Hint>
       )}
+
+      <AppShot shot={SHOTS.statsTop} narrow={NARROW.debtHealth}>
+        Health Factor, at the right, states the same distance the other way up: the
+        borrowing cap over your LTV. A position at 30% against the 90% cap reads 3.00, it
+        falls as you borrow, and with nothing borrowed at all it shows the infinity sign,
+        as this vault does.
+      </AppShot>
     </Stage>
   );
 }
