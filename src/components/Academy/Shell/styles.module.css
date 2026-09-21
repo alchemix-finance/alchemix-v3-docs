@@ -41,7 +41,14 @@
   gap: 1.5rem;
   max-width: var(--academy-width);
   margin: 0 auto;
-  padding: 1.25rem clamp(1.25rem, 4.4vw, 4rem);
+  padding: 1rem clamp(1.25rem, 4.4vw, 4rem);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-width: 0;
 }
 
 /* One content column for the whole academy.
@@ -62,24 +69,45 @@
   margin: 0 auto;
 }
 
+/* The lockup is 5.1 times as wide as it is tall, so 2.25rem high it runs about
+   184px, which puts its ALCHEMIX at the size the docs navbar's logo draws it.
+   The mark is the fallback where a row cannot spare that width: see
+   `.withCrumb` below. */
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.875rem;
-  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
 }
 
 .brand:hover {
-  text-decoration: none;
+  opacity: 0.85;
 }
 
-.brandText {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #f5c09a;
-  white-space: nowrap;
+.lockup {
+  display: block;
+  height: 2.25rem;
+  width: auto;
+}
+
+.mark {
+  display: none;
+  height: 2rem;
+  width: auto;
+}
+
+/* A lesson header carries the breadcrumb, the stepper and the docs link as
+   well. With the title and the three stage labels showing, the full lockup
+   fits from about 1280px; below that the mark takes its place, and the
+   breadcrumb goes on saying where the reader is. */
+@media (max-width: 1279px) {
+  .withCrumb .lockup {
+    display: none;
+  }
+
+  .withCrumb .mark {
+    display: block;
+  }
 }
 
 .headerRight {
@@ -155,21 +183,23 @@
   .progressTrack {
     width: 56px;
   }
-
-  .brandText {
-    letter-spacing: 0.14em;
-  }
 }
 
-/* At phone widths the header becomes two rows: the brand or back link on the
-   first, progress (or the stage stepper) and the docs link on the second. One
-   row cannot hold a track label, three stage buttons at 44px each, and the
-   exit link inside 320px without clipping something. */
+/* At phone widths the header becomes two rows: the brand and the back link on
+   the first, progress (or the stage stepper) and the docs link on the second.
+   One row cannot hold the lockup, a track label, three stage buttons at 44px
+   each, and the exit link inside 390px without clipping something.
+
+   The rules go on `.headerInner`, which is the flex row. They sat on `.header`
+   for a while, where the wrap did nothing and the padding stacked on top of
+   the row's own, so the brand started 16px in from the gutter the hero text
+   sat on. */
 @media (max-width: 480px) {
-  .header {
+  .headerInner {
     flex-wrap: wrap;
-    row-gap: 0.625rem;
-    padding: 0.875rem 1rem;
+    row-gap: 0.75rem;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
   }
 
   .headerRight {
@@ -185,8 +215,7 @@
 }
 
 @media (max-width: 400px) {
-  .brandText {
-    font-size: 0.6875rem;
-    letter-spacing: 0.1em;
+  .lockup {
+    height: 2rem;
   }
 }

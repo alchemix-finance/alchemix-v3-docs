@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
+import { AcademyLogo, AcademyMark } from "../Logo";
 import { readCompletions } from "../lib/api";
 import { ALL_LESSONS, LESSON_COUNT } from "../lib/track";
 
@@ -16,6 +17,11 @@ import { ALL_LESSONS, LESSON_COUNT } from "../lib/track";
  *
  * Docusaurus still supplies the html document, the global stylesheet, and the
  * fonts, so the type and palette stay identical to the rest of the site.
+ *
+ * The header leads with the Academy lockup on every page. On the track map it
+ * is the whole left side; on a lesson page `left` follows it, and below 1280px
+ * the lockup gives way to the mark so the breadcrumb, the stepper and the docs
+ * link still share one row.
  */
 export default function AcademyShell({ title, description, children, left, right }) {
   // Counted in an effect, never during render. These pages are prerendered at
@@ -44,16 +50,14 @@ export default function AcademyShell({ title, description, children, left, right
         <div className={styles.glow} aria-hidden="true" />
 
         <header className={styles.header}>
-          <div className={styles.headerInner}>
-            {left ?? (
-              <Link to="/academy" className={styles.brand}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c09a" strokeWidth="1.5" aria-hidden="true">
-                  <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" />
-                  <path d="M12 8 L16.5 10.5 L16.5 15 L12 17.5 L7.5 15 L7.5 10.5 Z" stroke="rgba(245,192,154,0.45)" />
-                </svg>
-                <span className={styles.brandText}>Alchemix Academy</span>
+          <div className={`${styles.headerInner} ${left ? styles.withCrumb : ""}`}>
+            <div className={styles.headerLeft}>
+              <Link to="/academy" className={styles.brand} aria-label="Alchemix Academy">
+                <AcademyLogo className={styles.lockup} />
+                <AcademyMark className={styles.mark} />
               </Link>
-            )}
+              {left}
+            </div>
 
             <div className={styles.headerRight}>
               {right ?? (

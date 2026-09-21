@@ -8,6 +8,18 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+// The navbar's Academy entry: the Alchemix mark and the word. It is the `html`
+// of a navbar link item rather than its `label`, so the mark travels with the
+// word into both the desktop bar and the phone drawer; the item is still an
+// internal link with client-side routing. Styled by `.academy-link` in
+// src/css/custom.css. The mark is the one on the Academy lockup
+// (src/components/Academy/Logo), drawn with a heavier stroke for 20px.
+const ACADEMY_LINK_HTML =
+  '<svg class="academy-link__mark" width="20" height="20" viewBox="-1.5 -1.5 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<circle cx="22.5" cy="22.5" r="22"/>' +
+  '<path d="M22.5 28.8V44.4M22.5 .5V5.1M22.5 28.8 7.5 17 22.5 5.1 37.4 17 30.7 22.3M35.1 29.9 37.4 28V17M7.5 17V28L22.5 39.9 29.2 34.5M10.1 30.1 7.6 34.5H15.7M22.5 34.5H37.4L22.5 8.7 14.7 22.2"/>' +
+  "</svg><span>Academy</span>";
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Alchemix Docs",
@@ -232,11 +244,6 @@ const config = {
             label: "Developers",
           },
           {
-            to: "/academy",
-            position: "left",
-            label: "Academy",
-          },
-          {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             docsPluginId: "governance",
@@ -249,6 +256,15 @@ const config = {
             docsPluginId: "projects",
             position: "left",
             label: "Integrations",
+          },
+          // The Academy is a course with its own shell, not a fifth
+          // documentation section, so its entry sits apart from the section
+          // links: on the right, as a button carrying the mark.
+          {
+            to: "/academy",
+            position: "right",
+            className: "academy-link",
+            html: ACADEMY_LINK_HTML,
           },
           {
             href: "https://github.com/alchemix-finance/alchemix-v3-docs",

@@ -62,7 +62,6 @@ export default function AcademyTrack() {
       <main>
         <section className={styles.intro}>
           <div className={styles.introText}>
-            <div className={styles.eyebrow}>Alchemix Academy</div>
             <h1 className={styles.headline}>Learn how Alchemix works by using it.</h1>
             <p className={styles.sub}>
               On most lending platforms your collateral sits idle while you pay interest on

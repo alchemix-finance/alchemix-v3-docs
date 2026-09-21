@@ -220,6 +220,17 @@ const CHECKS = [
   ["a finished track's mark does not wrap its label", "gone", "{complete ? <DonePill /> : null}\n              </div>\n              <div className={styles.rewardRole}>"],
   ["the side-by-side tracks stack where they cannot fit", "present", "@media (min-width: 1001px) and (max-width: 1340px)"],
   ["deleting local-only receipts skips the confirm", "present", "localOnly ? onReset() : setAsking(true)"],
+
+  // Keenan's logo (2026-09-21): the Academy lockup leads the shell's header
+  // on every page, the hero no longer repeats it as an eyebrow, and the way
+  // in from the docs is a button apart from the section links.
+  ["the Academy lockup is drawn inline", "present", "export function AcademyLogo("],
+  ["the mark stands in where a row cannot spare the lockup", "present", "export function AcademyMark("],
+  ["the header leads with the lockup", "present", '<AcademyLogo className={styles.lockup} />'],
+  ["the placeholder hexagon brand is gone", "gone", '<span className={styles.brandText}>Alchemix Academy</span>'],
+  ["the hero no longer repeats the lockup as an eyebrow", "gone", '<div className={styles.eyebrow}>Alchemix Academy</div>'],
+  ["the phone header wraps on the flex row, not its parent", "present", "@media (max-width: 480px) {\n  .headerInner {\n    flex-wrap: wrap;"],
+  ["the lesson header swaps to the mark below 1280px", "present", ".withCrumb .lockup {\n    display: none;"],
 ];
 
 let fails = 0;
