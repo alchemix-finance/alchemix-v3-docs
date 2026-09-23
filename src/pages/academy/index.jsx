@@ -37,6 +37,7 @@ const fmt = (n) => n.toLocaleString("en-US");
 export default function AcademyTrack() {
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
+  const testMode = siteConfig.customFields?.academyTestMode === true;
 
   // Read after mount, never during render. These pages are prerendered at build
   // time, so localStorage does not exist when this component first runs.
@@ -99,8 +100,9 @@ export default function AcademyTrack() {
             clearCompletions();
             setCompletions({});
           }}
+          testMode={testMode}
           onFinish={() => {
-            completeAllLocally(ALL_LESSONS.map((l) => l.id));
+            completeAllLocally(ALL_LESSONS.map((l) => l.id), { testMode });
             setCompletions(readCompletions());
           }}
         />
@@ -235,9 +237,11 @@ function RewardCard({ completedIds, banked }) {
  * complete with the same unsigned `local:` receipts the dev grader issues.
  * Showing someone the finished map used to mean working thirteen checkpoints
  * first. The two controls swap the map between empty and finished in one
- * click each. The control is compiled out of production: see the note on it.
+ * click each. The control is compiled out of production unless the build set
+ * `customFields.academyTestMode`, which the share link does for the team's
+ * feel-test: see the note on it.
  */
-function ProgressNote({ started, finished, localOnly, onReset, onFinish }) {
+function ProgressNote({ started, finished, localOnly, testMode, onReset, onFinish }) {
   const [asking, setAsking] = useState(false);
 
   return (
@@ -279,13 +283,14 @@ function ProgressNote({ started, finished, localOnly, onReset, onFinish }) {
           expression with a literal right here and drops the branch, so the
           control and its label are absent from the production bundle. A call
           into another module, or a constant one line up, survived minification
-          and only answered false at runtime. */}
-      {process.env.NODE_ENV !== "production" && !finished ? (
+          and only answered false at runtime. A test-mode build keeps it on
+          purpose, from `customFields.academyTestMode`. */}
+      {(process.env.NODE_ENV !== "production" || testMode) && !finished ? (
         <button
           type="button"
           className={`${styles.resetLink} ${styles.testLink}`}
           onClick={onFinish}
-          title="Development only. Marks every lesson complete with an unsigned local receipt."
+          title="For testing. Marks every lesson complete with an unsigned local receipt."
         >
           Test mode: finish every lesson
         </button>
@@ -381,7 +386,7 @@ function GraduationPanel({ track, completions, base, banked }) {
   let tone = "";
   if (localOnly) {
     body =
-      "These completions were graded in the browser during development. They carry no signature, so the engine cannot verify them and there is nothing to claim.";
+      "These completions were marked in the browser, for testing, not graded by the season engine. They carry no signature, so there is nothing to claim.";
     tone = styles.statusWarn;
   } else if (status === "loading") {
     body = "The season engine is checking your completions.";

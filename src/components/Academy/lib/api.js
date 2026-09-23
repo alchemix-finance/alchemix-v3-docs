@@ -68,17 +68,17 @@ export function clearCompletions() {
 }
 
 /**
- * Mark every lesson complete, in development only.
+ * Mark every lesson complete, in development or a test-mode build.
  *
  * The receipts it writes are the same unsigned `local:` tokens the dev grader
  * issues, so they are worth exactly as much: nothing at a claim. What they are
  * for is looking at the finished map and the finished lessons without working
  * thirteen checkpoints first. Real receipts already stored are left alone.
- * Inert in production, like everything behind `devFallbackEnabled`; the
- * control that calls it is compiled out of the map page.
+ * Inert in production unless the build set `customFields.academyTestMode`,
+ * which the caller passes as `testMode`.
  */
-export function completeAllLocally(lessonIds) {
-  if (!devFallbackEnabled()) return false;
+export function completeAllLocally(lessonIds, { testMode = false } = {}) {
+  if (!devFallbackEnabled() && !testMode) return false;
   try {
     const all = readCompletions();
     for (const id of lessonIds) {

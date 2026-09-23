@@ -46,6 +46,11 @@ const config = {
     // leaves docs.alchemix.fi. Set an absolute origin only for local dev, when
     // the docs and the engine run on different ports.
     academyApiBase: process.env.ACADEMY_API_BASE ?? "",
+    // Shows "Test mode: finish every lesson" on the map in a production build.
+    // Only the share-link deploy sets it, for the team's feel-test:
+    //   vercel --prod --build-env ACADEMY_TEST_MODE=1
+    // Any deploy without the flag, docs.alchemix.fi included, leaves it off.
+    academyTestMode: process.env.ACADEMY_TEST_MODE === "1",
   },
 
   // Even if you don't use internationalization, you can use this field to set
