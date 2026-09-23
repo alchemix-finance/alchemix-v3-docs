@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import styles from "../lesson.module.css";
-import own from "../parts.module.css";
 import { apiBase } from "../lib/api";
-import { MAX_LTV, ltvOf, withdrawable } from "../lib/protocol";
+import { MAX_LTV, withdrawable } from "../lib/protocol";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Note,
   Notes, Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, money,
@@ -19,7 +17,10 @@ import {
  *
  * The explore stage carries the full position card, health factor and earmarked
  * band included. This is the lesson about reading the screen, and it is the one
- * place every stat the app prints should appear at once.
+ * place every stat the app prints should appear at once. A meter and a stat
+ * row under the card drew the debt, the LTV and the free figure again; they
+ * are gone, and the one figure the card does not show, what repaying has
+ * freed, is the repay control's verdict.
  */
 
 const DEPOSIT = 10_000;
@@ -138,7 +139,6 @@ function Try({ onDone }) {
 
   const debt = BORROW - repaid;
   const free = withdrawable(DEPOSIT, debt);
-  const locked = DEPOSIT - free;
   const clear = debt <= 0;
 
   return (
@@ -164,38 +164,6 @@ function Try({ onDone }) {
         compact
       />
 
-      <div className={own.meterWrap}>
-        <div className={own.meterHead}>
-          <span className={styles.microLabel}>Your {money(DEPOSIT)} deposit</span>
-          <span className={own.meterValue} style={{ color: clear ? "#5ba88a" : "#e8e8ea" }}>
-            {money(free)} free
-          </span>
-        </div>
-        <div className={own.meter}>
-          <span
-            className={own.meterFill}
-            style={{ width: `${(locked / DEPOSIT) * 100}%`, background: "#d4952a" }}
-          />
-        </div>
-        <div className={own.meterKey}>
-          <span>{money(locked)} held against the loan</span>
-          <span>{money(free)} free to withdraw</span>
-        </div>
-      </div>
-
-      <div className={own.statRow}>
-        <Stat label="Still owed" value={money(debt)} tone={clear ? "#5ba88a" : "#f5c09a"} />
-        <Stat label="LTV" value={`${(ltvOf(DEPOSIT, debt) * 100).toFixed(1)}%`} />
-        <Stat label="Can withdraw" value={money(free)} tone="#5ba88a" />
-        {/* The point of the stage, stated as a number rather than left to be
-            inferred from two figures moving at different speeds. */}
-        <Stat
-          label="Freed by repaying"
-          value={repaid > 0 ? `+${money(free - START_FREE)}` : "-"}
-          tone={repaid > 0 ? "#5ba88a" : "#6b7078"}
-        />
-      </div>
-
       <Controls>
         <Control
           label="Repay by hand"
@@ -204,7 +172,11 @@ function Try({ onDone }) {
           value={repaid}
           onChange={(v) => { setRepaid(v); setMoved(true); }}
           accent
-          verdict={clear ? "the loan is clear and the deposit is free" : null}
+          verdict={
+            clear ? "the loan is clear and the deposit is free"
+            : repaid > 0 ? `frees ${money(free - START_FREE)} more of the deposit`
+            : null
+          }
         />
       </Controls>
 
@@ -220,9 +192,9 @@ function Try({ onDone }) {
         <Note label="Which asset repays">
           You can repay with alUSD, with the asset you deposited, or with MYT, the token
           your deposit is held as. One alUSD cancels one unit of debt. Part of the loan can
-          show as earmarked in the app, meaning set aside for the next redemption cycle.
-          Earmarked debt is repaid with MYT, and the repay menu offers you only the assets
-          that are valid. Lesson 3 goes inside the MYT.
+          show as earmarked, meaning set aside for the next redemption, and alUSD cannot
+          repay that part. The Repay tab offers only the assets that can. Lesson 5 goes
+          inside the MYT.
         </Note>
       </Notes>
 
@@ -249,14 +221,5 @@ function Try({ onDone }) {
         app has already run the arithmetic against your debt.
       </AppShot>
     </Stage>
-  );
-}
-
-function Stat({ label, value, tone }) {
-  return (
-    <div className={own.stat}>
-      <div className={styles.statLabel}>{label}</div>
-      <div className={own.statValue} style={tone ? { color: tone } : undefined}>{value}</div>
-    </div>
   );
 }

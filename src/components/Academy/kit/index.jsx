@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "../lesson.module.css";
 import parts from "../parts.module.css";
 import { fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
@@ -169,7 +169,7 @@ export function GuessSlider({ label, value, onChange, disabled, color, min = 0, 
   );
 }
 
-export function Control({ label, display, min, max, step, value, onChange, verdict, accent, tone }) {
+export function Control({ label, display, min, max, step, value, onChange, verdict, accent, tone, bad }) {
   return (
     <div className={`${styles.control} ${accent ? styles.controlAccent : ""}`}>
       <div className={styles.controlHead}>
@@ -185,7 +185,7 @@ export function Control({ label, display, min, max, step, value, onChange, verdi
         aria-label={label}
       />
       {verdict !== undefined ? (
-        <div className={accent ? styles.verdictOn : styles.verdictOff}>{verdict ?? " "}</div>
+        <div className={bad ? styles.verdictBad : accent ? styles.verdictOn : styles.verdictOff}>{verdict ?? " "}</div>
       ) : null}
     </div>
   );
@@ -798,8 +798,10 @@ const KEYS = ["A", "B", "C", "D", "E"];
  * The graded stage.
  *
  * The engine decides what kind of question a lesson asks. Its `controls` carry
- * either a slider (`{ slider: { min, max, step } }`) or a list of statements
- * (`{ choices: string[] }`), and this renders whichever arrives. A slider
+ * either a slider (`{ slider: { min, max, step } }`) or a set of questions
+ * (`{ questions: [{ variant, prompt, choices }] }`), and this renders whichever
+ * arrives. A choice checkpoint asks two questions and passes only when both are
+ * right. A slider
  * lesson supplies how the value is read (`computeOf`) and what it is measured
  * against (`targetOf`). A choice lesson supplies neither.
  *
@@ -807,11 +809,10 @@ const KEYS = ["A", "B", "C", "D", "E"];
  * index picked. Which option is right is never known here, so grading stays on
  * the server.
  *
- * A miss ends the question. The learner reads why the option they picked is
- * wrong, and the next attempt draws a different variant from the bank. Leaving
- * the same four options on screen made the checkpoint answerable by elimination,
- * and handed over an explanation on every attempt while it happened. The numeric
- * checkpoints already worked this way.
+ * A miss ends the attempt. The learner reads why each option they picked is
+ * right or wrong, and the next attempt asks other questions from the bank
+ * first. Leaving the same options on screen made the checkpoint answerable by
+ * elimination. The numeric checkpoints already worked this way.
  */
 export function Checkpoint({
   base,
@@ -840,22 +841,24 @@ export function Checkpoint({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(0);
-  const [picked, setPicked] = useState(null);
+  const [picked, setPicked] = useState([]);
   const [result, setResult] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  // Which try this is, sent with each submission for the engine's answer log.
+  const attempt = useRef(0);
 
   /**
-   * Ask for a question, optionally excluding the variant just missed.
+   * Ask for questions, optionally excluding the variants just missed.
    *
-   * A choice checkpoint passes the variant it is holding, so a miss costs the
-   * learner the question rather than one of four options.
+   * A choice checkpoint passes the variants it missed, so a miss costs the
+   * learner those questions rather than one of four options.
    */
   const load = useCallback(
     (avoid) => {
       setLoading(true);
       setError(null);
       setResult(null);
-      setPicked(null);
+      setPicked([]);
       fetchChallenge(base, lessonId, avoid)
         .then((c) => {
           setChallenge(c);
@@ -879,17 +882,21 @@ export function Checkpoint({
     [fields, value, computeOf],
   );
 
-  const isChoice = Array.isArray(challenge?.controls?.choices);
+  const questions = challenge?.controls?.questions;
+  const isChoice = Array.isArray(questions);
+  const allPicked = isChoice && questions.every((_, i) => Number.isInteger(picked[i]));
 
   async function onSubmit() {
-    if (isChoice && picked == null) return;
+    if (isChoice && !allPicked) return;
     setSubmitting(true);
     setError(null);
+    attempt.current += 1;
     try {
       const res = await submitAnswer(base, {
         challenge: challenge.challenge,
         params: challenge.params,
-        answer: isChoice ? picked : value,
+        answer: isChoice ? questions.map((_, i) => picked[i]) : value,
+        attempt: attempt.current,
       });
       setResult(res);
       if (res.passed && res.completion) {
@@ -933,25 +940,27 @@ export function Checkpoint({
   const passed = Boolean(result?.passed || done);
 
   return (
-    <Stage eyebrow={eyebrow} headline={isChoice ? challenge.prompt : headline}>
-      {/* On a choice checkpoint the prompt is the headline, so a generic line
-          never sits above the real question. A numeric checkpoint keeps both:
-          the headline names the task, the prompt carries this learner's
-          figures. */}
+    <Stage eyebrow={eyebrow} headline={isChoice ? (questions.length === 2 ? "Answer both questions to finish the lesson." : `Answer all ${questions.length} questions to finish the lesson.`) : headline}>
+      {/* A numeric checkpoint keeps a headline and a prompt: the headline names
+          the task, the prompt carries this learner's figures. A choice
+          checkpoint's prompts sit above each question's options instead. */}
       {isChoice ? null : <Sub>{challenge.prompt}</Sub>}
       <LocalNotice show={challenge.local} />
       {children}
 
       {isChoice ? (
         <ChoiceAnswer
-          choices={challenge.controls.choices}
+          questions={questions}
           picked={picked}
-          onPick={setPicked}
+          onPick={(slot, i) => setPicked((p) => { const next = [...p]; next[slot] = i; return next; })}
+          allPicked={allPicked}
           result={result}
           passed={passed}
           submitting={submitting}
           onSubmit={onSubmit}
-          onRetry={() => load(fields?.variant)}
+          onRetry={() =>
+            load((result?.results ?? []).filter((r) => !r.passed).map((r) => r.variant))
+          }
         />
       ) : (
         <SliderAnswer
@@ -985,7 +994,6 @@ export function Checkpoint({
         <div className={styles.passBox}>
           <div className={`${styles.resultHead} ${styles.passHead}`}>{passTitle}</div>
           <div className={styles.resultText}>
-            {isChoice && result?.feedback ? <Body>{result.feedback}</Body> : null}
             <Body>{passBody}</Body>
           </div>
         </div>
@@ -1072,65 +1080,84 @@ function SliderAnswer({
   );
 }
 
-/** The choice body of a checkpoint: the option list and the verdict. */
-function ChoiceAnswer({ choices, picked, onPick, result, passed, submitting, onSubmit, onRetry }) {
-  // Only revealed once the answer is settled, so a miss does not hand it over.
-  const correct = passed && typeof result?.target === "number" ? result.target : null;
+/**
+ * The choice body of a checkpoint: each question with its options, then one
+ * submit for all of them.
+ *
+ * Once graded, every question shows the explanation for the option picked.
+ * A question answered right marks that option green; one answered wrong marks
+ * it amber, and which option was right stays hidden, because the next attempt
+ * may ask it again.
+ */
+function ChoiceAnswer({ questions, picked, onPick, allPicked, result, passed, submitting, onSubmit, onRetry }) {
   const missed = Boolean(result && !result.passed);
-  // A settled question, either way. The options stop taking clicks, because the
-  // way on from a miss is a new question rather than a second guess at this one.
+  // A settled attempt, either way. The options stop taking clicks, because the
+  // way on from a miss is new questions rather than a second guess at these.
   const settled = passed || missed;
+  const wrong = (result?.results ?? []).filter((r) => !r.passed).length;
 
   return (
     <>
-      <div className={styles.choices} role="radiogroup" aria-label="Answer options">
-        {choices.map((text, i) => {
-          const state =
-            correct === i ? styles.choiceRight
-            : missed && picked === i ? styles.choiceWrong
-            : picked === i ? styles.choiceOn
-            : "";
-          return (
-            <button
-              key={text}
-              type="button"
-              role="radio"
-              aria-checked={picked === i}
-              className={`${styles.choice} ${state}`}
-              disabled={settled}
-              onClick={() => onPick(i)}
-            >
-              <span className={styles.choiceKey}>{KEYS[i] ?? i + 1}</span>
-              <span>{text}</span>
-            </button>
-          );
-        })}
-      </div>
+      {questions.map((q, slot) => {
+        const graded = result?.results?.[slot];
+        return (
+          <div key={`${q.variant}-${slot}`} className={styles.checkQuestion}>
+            <div className={styles.checkQuestionHead}>
+              <span className={styles.microLabel}>Question {slot + 1} of {questions.length}</span>
+            </div>
+            <div className={styles.question}>{q.prompt}</div>
+            <div className={styles.choices} role="radiogroup" aria-label={`Question ${slot + 1} options`}>
+              {q.choices.map((text, i) => {
+                const mine = picked[slot] === i;
+                const state =
+                  graded && mine ? (graded.passed ? styles.choiceRight : styles.choiceWrong)
+                  : passed && graded?.correctIndex === i ? styles.choiceRight
+                  : mine ? styles.choiceOn
+                  : "";
+                return (
+                  <button
+                    key={text}
+                    type="button"
+                    role="radio"
+                    aria-checked={mine}
+                    className={`${styles.choice} ${state}`}
+                    disabled={settled}
+                    onClick={() => onPick(slot, i)}
+                  >
+                    <span className={styles.choiceKey}>{KEYS[i] ?? i + 1}</span>
+                    <span>{text}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {graded?.feedback ? (
+              <div className={graded.passed ? styles.rightNote : styles.missBox}>{graded.feedback}</div>
+            ) : null}
+          </div>
+        );
+      })}
 
       {!settled ? (
-        <Actions aside={picked == null ? "Choose an option." : null}>
+        <Actions aside={allPicked ? null : "Choose an option for each question."}>
           <button
             type="button"
             className={styles.primary}
             onClick={onSubmit}
-            disabled={submitting || picked == null}
+            disabled={submitting || !allPicked}
           >
-            {submitting ? "Checking..." : "Submit answer"}
+            {submitting ? "Checking..." : "Submit answers"}
           </button>
         </Actions>
       ) : null}
 
       {missed ? (
-        <>
-          <div className={styles.missBox}>
-            {result.feedback ?? "That one is wrong."}
-          </div>
-          <Actions aside="Your next question covers the same ground from another angle.">
-            <button type="button" className={styles.primary} onClick={onRetry}>
-              Try a new question
-            </button>
-          </Actions>
-        </>
+        <Actions
+          aside={`${wrong === 1 ? "One answer was" : "Both answers were"} wrong. The next attempt asks new questions on the same ground.`}
+        >
+          <button type="button" className={styles.primary} onClick={onRetry}>
+            Try new questions
+          </button>
+        </Actions>
       ) : null}
     </>
   );

@@ -355,6 +355,21 @@
   }
 }
 
+/* Four controls sit two by two rather than four across, where each head is
+   too narrow for its label and its value on one line. */
+.controls[data-count="4"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .controls[data-count="4"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A verdict that is bad news. */
+.verdictBad { color: #d4645a; }
+
 .control {
   border: 1px solid rgba(245, 192, 154, 0.16);
   border-radius: 8px;
@@ -576,6 +591,44 @@
 }
 
 /* ── Choice checkpoints ──────────────────────────────────────
+   Two questions per checkpoint, each a block of its own: a small "Question 1
+   of 2" label, the prompt, the options, and once graded the explanation for
+   the option picked. */
+
+.checkQuestion {
+  margin-bottom: 2.5rem;
+}
+
+.checkQuestionHead {
+  margin-bottom: 0.625rem;
+}
+
+.checkQuestion .question {
+  margin-bottom: 1.25rem;
+}
+
+.checkQuestion .choices {
+  margin: 0;
+}
+
+.checkQuestion .missBox,
+.checkQuestion .rightNote {
+  margin: 1.25rem 0 0;
+}
+
+/* The explanation under a question answered right: the same box as a miss,
+   in the pass colour. */
+.rightNote {
+  border-radius: 8px;
+  padding: 1.375rem 1.5rem;
+  border: 1px solid rgba(91, 168, 138, 0.35);
+  background: rgba(91, 168, 138, 0.06);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #e8e8ea;
+}
+
+/* ── Choice options ──────────────────────────────────────────
    A beginner checkpoint asks what is true rather than for a number, so it needs
    an option list instead of a slider. Options are buttons: large enough to hit
    on a phone, and readable without the reader having to hold a formula. */

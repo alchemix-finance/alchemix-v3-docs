@@ -1,39 +1,46 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import {
-  Actions, AppShot, Body, Checkpoint, Controls, Gate, GuessSlider, Panel, Primary, Question,
-  Reveal, SHOTS, Stage, Sub,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
+  Question, Reveal, SHOTS, Stage, Sub, said,
 } from "../kit";
-import { MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../lib/myt";
+import { MAX_AGGRESSIVE_PCT, maxModeratePct } from "../lib/myt";
 
 /**
- * Intermediate lesson 3: inside the Mix-Yield Token.
+ * Intermediate lesson 5: inside the Mix-Yield Token.
  *
  * Your collateral does not sit still while a loan runs. It sits in the MYT,
  * spread across strategies the DAO classifies Conservative, Moderate or
  * Aggressive, and each class carries a cap on how much of the vault it may
  * occupy.
  *
- * The caps are the lesson. They are the reason a given LTV is safe, which is what
- * the LTV lesson builds on. The learner is put in the position of someone reading
- * a governance proposal: chase the yield, hit the cap, understand why it is there.
+ * The learner reads an allocation the way the vault's Info tab shows it and
+ * works out what a failed class would cost the vault: today, and at the most
+ * the caps allow. That is the reading a borrower does before choosing an LTV,
+ * which is the next lesson.
  *
- * Allocation is a DAO decision, never a user one. The copy is careful about that:
- * the learner reasons about a proposed allocation, they do not set their own.
+ * It used to put the learner in the DAO's seat, allocating strategies to chase
+ * the highest blended APR inside the caps. No user makes that decision, and the
+ * opening question ("for the highest yield, how much goes in Aggressive?") had
+ * an obvious answer the reveal did not address.
  *
- * The Moderate ceiling shown on its control moves as Aggressive fills, because
- * the two share one. That is the rule the docs state in a footnote, and a control
- * that visibly tightens teaches it better than the footnote does.
- *
- * The stages are built from the kit. The allocator is this lesson's own control,
- * because each of its sliders carries a cap line that turns red past the ceiling,
- * which the kit's plain control has no place for.
+ * Allocation is a DAO decision, never a user one. The copy is careful about that.
  */
 
+/** Example APRs for the three class cards. Riskier pays more. */
 const DEMO = { conservative: 4.5, moderate: 9.0, aggressive: 18.0 };
+
+/** An example of today's mix, the kind the Info tab lists. Well under the caps. */
+const TODAY = { moderate: 28, aggressive: 12 };
+
+/** The riskiest mix the caps allow: Aggressive full, Moderate the rest of the shared 60%. */
+const AT_CAPS = { moderate: maxModeratePct(MAX_AGGRESSIVE_PCT), aggressive: MAX_AGGRESSIVE_PCT };
+
+/** Backing lost, in percent of the vault, when each class loses the given share of itself. */
+const lostOf = (mix, aggrLoss, modLoss) => (mix.aggressive * aggrLoss + mix.moderate * modLoss) / 100;
 
 export default function MixLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -48,8 +55,8 @@ export default function MixLab({ lessonId, stage, onStage, done, onComplete }) {
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      passTitle="Lesson 3 complete."
-      passBody="You can say what the DAO is allowed to hold, and why that ceiling is what makes a given LTV safe to borrow at."
+      passTitle="Lesson 5 complete."
+      passBody="You can read what a vault holds today, work out what a failed class would cost it, and say the most the DAO's caps allow it to put at risk."
     />
   );
 }
@@ -57,15 +64,17 @@ export default function MixLab({ lessonId, stage, onStage, done, onComplete }) {
 /* ── Stage 1: predict ────────────────────────────────────── */
 
 function Predict({ onDone }) {
-  const [guess, setGuess] = useState(50);
+  const [guess, setGuess] = useState(30);
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <Stage eyebrow="Stage 1 · Predict" headline="Your collateral keeps working while the loan runs.">
+    <Stage eyebrow="Stage 1 · Predict" headline="Your collateral is spread across three classes of strategy.">
       <Sub>
-        Deposits are held in the Mix-Yield Token, which spreads them across strategies
-        the DAO has reviewed and sorted into three classes by risk. The Aggressive
-        strategy below pays far more than the other two.
+        Deposits are held in the Mix-Yield Token, which spreads them across strategies the DAO
+        has reviewed and sorted into three classes by risk. A vault's Info tab lists each
+        strategy, its class and its share of the vault. This one holds{" "}
+        {100 - TODAY.moderate - TODAY.aggressive}% Conservative, {TODAY.moderate}% Moderate and{" "}
+        {TODAY.aggressive}% Aggressive.
       </Sub>
 
       <div className={own.strategyGrid}>
@@ -74,35 +83,45 @@ function Predict({ onDone }) {
         <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="Has Moderate's risks and one more, such as being newer or less proven." tone="aggr" />
       </div>
 
+      <MixBar mix={TODAY} />
+
       <Panel>
         <Question>
-          If the goal were the highest possible yield, what share of the vault would go
-          to the Aggressive strategy?
+          Every Aggressive strategy in this vault fails and goes to zero. How much of the
+          vault's backing is lost?
         </Question>
         <GuessSlider
-          label="Share in Aggressive"
+          label="Backing lost"
           value={guess}
           onChange={setGuess}
           disabled={revealed}
           color="#d4952a"
+          min={0}
+          max={60}
+          format={(v) => `${v}%`}
+          scale={["Nothing", "60%"]}
         />
       </Panel>
 
       {!revealed ? (
-        <Actions>
-          <Primary onClick={() => setRevealed(true)}>Commit and check the rules</Primary>
+        <Actions aside="Only the Aggressive strategies fail.">
+          <Primary onClick={() => setRevealed(true)}>Commit and fail them</Primary>
         </Actions>
       ) : (
         <Reveal
-          title={`The DAO caps Aggressive strategies at ${MAX_AGGRESSIVE_PCT}% of the vault.`}
+          title={`${TODAY.aggressive}%. A failed class costs the vault the share it holds.`}
           onNext={onDone}
-          nextLabel="Build a mix inside the caps"
+          nextLabel="Fail a class at the caps"
         >
           <Body>
-            {guess > MAX_AGGRESSIVE_PCT
-              ? `Your ${guess}% is above the cap. `
-              : `Your ${guess}% is within the cap. `}
-            The riskier the class, the less of the vault it may hold.
+            {said(guess, TODAY.aggressive, (v) => `${v}%`)}
+            Today Aggressive holds {TODAY.aggressive}% of this vault, so losing all of it costs
+            the vault {TODAY.aggressive}% of its backing, and every position in it loses the
+            same share of its collateral.
+          </Body>
+          <Body>
+            The DAO can move the mix, up to a cap on each class. The riskier the class, the
+            less of the vault it may hold:
           </Body>
 
           <div className={own.capTable}>
@@ -121,15 +140,8 @@ function Predict({ onDone }) {
           </div>
 
           <Body>
-            Fill Aggressive to its 20% and the Moderate strategy can take 40%, which is what
-            is left of the 60% the two share. That mix, 40% Conservative, 40% Moderate and
-            20% Aggressive, is the riskiest vault the DAO could allocate.
-          </Body>
-          <Body>
-            The caps are what make a high LTV safe to borrow at. Suppose the whole Aggressive
-            slice went to zero: that is a 20% loss of backing, and a position opened low
-            enough survives it. Your borrowing headroom depends on what the vault underneath
-            is allowed to hold.
+            Today's mix is what your collateral is in now. The caps are how far the DAO can
+            take it while your loan is open, without asking you.
           </Body>
         </Reveal>
       )}
@@ -147,141 +159,106 @@ function StrategyCard({ klass, apr, note, tone }) {
   );
 }
 
-/* ── Shared allocation control ───────────────────────────── */
-
-function Allocator({ aprs, mod, aggr, setMod, setAggr }) {
-  const consPct = 100 - mod - aggr;
-  // The ceiling on Moderate depends on what Aggressive already takes, because the
-  // two share one. It tightens on screen as Aggressive fills.
-  const modCap = maxModeratePct(aggr);
-  const modOver = mod > modCap;
-  const aggrOver = aggr > MAX_AGGRESSIVE_PCT;
-  const breach = capBreach(mod, aggr);
-  const legal = !breach;
-  const apr = blend(aprs, mod, aggr);
-
+/** An allocation drawn the way the Info tab lists it, as one bar with a key. */
+function MixBar({ mix }) {
+  const cons = 100 - mix.moderate - mix.aggressive;
   return (
     <>
-      <div className={own.bar} role="img" aria-label={`Conservative ${consPct}%, Moderate ${mod}%, Aggressive ${aggr}%`}>
-        <span className={`${own.seg} ${own.segCons}`} style={{ width: `${Math.max(consPct, 0)}%` }} />
-        <span className={`${own.seg} ${own.segMod}`} style={{ width: `${mod}%` }} />
-        <span className={`${own.seg} ${own.segAggr}`} style={{ width: `${aggr}%` }} />
+      <div className={own.bar} role="img" aria-label={`Conservative ${cons}%, Moderate ${mix.moderate}%, Aggressive ${mix.aggressive}%`}>
+        <span className={`${own.seg} ${own.segCons}`} style={{ width: `${cons}%` }} />
+        <span className={`${own.seg} ${own.segMod}`} style={{ width: `${mix.moderate}%` }} />
+        <span className={`${own.seg} ${own.segAggr}`} style={{ width: `${mix.aggressive}%` }} />
       </div>
       <div className={own.barKey}>
-        <span><i className={own.dotCons} />Conservative {Math.max(consPct, 0)}%</span>
-        <span><i className={own.dotMod} />Moderate {mod}%</span>
-        <span><i className={own.dotAggr} />Aggressive {aggr}%</span>
+        <span><i className={own.dotCons} />Conservative {cons}%</span>
+        <span><i className={own.dotMod} />Moderate {mix.moderate}%</span>
+        <span><i className={own.dotAggr} />Aggressive {mix.aggressive}%</span>
       </div>
-
-      <div className={own.blendRow}>
-        <div>
-          <div className={styles.microLabel}>Blended APR</div>
-          <div className={own.blendValue} style={{ color: legal ? "#5ba88a" : "#d4645a" }}>
-            {apr.toFixed(2)}%
-          </div>
-        </div>
-        <div className={legal ? own.legalOk : own.legalBad}>
-          {breach ?? "Within every cap"}
-        </div>
-      </div>
-
-      <Controls>
-        <AllocSlider
-          label="Moderate" value={mod} onChange={setMod} max={80} cap={modCap} over={modOver}
-          note="the rest of the 60% shared with Aggressive"
-        />
-        <AllocSlider
-          label="Aggressive" value={aggr} onChange={setAggr} max={40} cap={MAX_AGGRESSIVE_PCT} over={aggrOver}
-        />
-      </Controls>
     </>
-  );
-}
-
-function AllocSlider({ label, value, onChange, max, cap, note, over }) {
-  return (
-    <div className={`${styles.control} ${over ? own.controlOver : ""}`}>
-      <div className={styles.controlHead}>
-        <span className={styles.microLabel}>{label}</span>
-        <span className={styles.controlValue} style={over ? { color: "#d4645a" } : undefined}>
-          {value}%
-        </span>
-      </div>
-      <input
-        type="range" min={0} max={max} step={1} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className={styles.range}
-        style={over ? { accentColor: "#d4645a" } : undefined}
-        aria-label={`${label} allocation`}
-      />
-      {/* The slider travels past the cap on purpose. A control that simply
-          stopped would hide the rule; one that turns red teaches it. */}
-      <div className={over ? own.capWarn : own.capNote}>Cap {cap}%{note ? `, ${note}` : ""}</div>
-    </div>
   );
 }
 
 /* ── Stage 2: explore ────────────────────────────────────── */
 
 function Explore({ onDone }) {
-  const [mod, setMod] = useState(20);
-  const [aggr, setAggr] = useState(5);
-  const [sawBreach, setSawBreach] = useState(false);
+  const [aggrLoss, setAggrLoss] = useState(100);
+  const [modLoss, setModLoss] = useState(0);
+  const [moved, setMoved] = useState({ aggr: false, mod: false });
+  const mark = (k) => setMoved((m) => (m[k] ? m : { ...m, [k]: true }));
 
-  const over = capBreach(mod, aggr) !== null;
-  useEffect(() => {
-    if (over) setSawBreach(true);
-  }, [over]);
-
-  const best = useMemo(
-    () => blend(DEMO, maxModeratePct(MAX_AGGRESSIVE_PCT), MAX_AGGRESSIVE_PCT),
-    [],
-  );
-  const atBest = Math.abs(blend(DEMO, mod, aggr) - best) < 0.005 && !over;
+  const today = lostOf(TODAY, aggrLoss, modLoss);
+  const atCaps = lostOf(AT_CAPS, aggrLoss, modLoss);
 
   return (
-    <Stage eyebrow="Stage 2 · Explore" headline="Raise the yield until a ceiling stops you.">
+    <Stage eyebrow="Stage 2 · Explore" headline="Fail a class, and read what the vault loses.">
       <Sub>
-        Push a class past its cap and the DAO could not allocate that mix. Moderate and
-        Aggressive share the 60% cap, so filling one tightens the other.
+        The same two classes can fail in part or in full. Read the loss against today's mix
+        and against the riskiest mix the caps allow, {100 - AT_CAPS.moderate - AT_CAPS.aggressive}%
+        Conservative, {AT_CAPS.moderate}% Moderate and {AT_CAPS.aggressive}% Aggressive.
       </Sub>
 
-      <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
+      <div className={own.mixes}>
+        <div className={own.mixPanel}>
+          <div className={styles.microLabel}>Today's mix</div>
+          <MixBar mix={TODAY} />
+          <div className={styles.statLabel}>Backing lost</div>
+          <div className={own.mixLost}>{today.toFixed(1)}%</div>
+        </div>
+        <div className={own.mixPanel}>
+          <div className={styles.microLabel}>At the caps</div>
+          <MixBar mix={AT_CAPS} />
+          <div className={styles.statLabel}>Backing lost</div>
+          <div className={own.mixLost} style={{ color: "#d4952a" }}>{atCaps.toFixed(1)}%</div>
+        </div>
+      </div>
 
-      {atBest || sawBreach ? (
+      <Controls>
+        <Control
+          label="Aggressive strategies lose"
+          display={`${aggrLoss}% of their value`}
+          min={0} max={100} step={5}
+          value={aggrLoss}
+          onChange={(v) => { setAggrLoss(v); mark("aggr"); }}
+          accent
+        />
+        <Control
+          label="Moderate strategies lose"
+          display={`${modLoss}% of their value`}
+          min={0} max={100} step={5}
+          value={modLoss}
+          onChange={(v) => { setModLoss(v); mark("mod"); }}
+        />
+      </Controls>
+
+      {moved.aggr && moved.mod ? (
         <Reveal
-          title={`${best.toFixed(2)}% is the highest blended APR inside every cap.`}
+          title="The loss is each class's share of the vault, times how much of it failed."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
           <Body>
-            That mix fills Aggressive to its {MAX_AGGRESSIVE_PCT}% ceiling and gives Moderate
-            the {maxModeratePct(MAX_AGGRESSIVE_PCT)}% left of the 60% those two share, leaving
-            the rest in Conservative, which has no cap at all. Anything higher needs a
-            composition the DAO could not allocate.
-            {!sawBreach ? " Push either slider past a ceiling as well." : ""}
-          </Body>
-          <Body>
-            Your collateral earns this blend while your loan clears. A vault free to hold
-            100% Aggressive would make a high LTV dangerous, and those same
-            ceilings are what prevent it.
+            Today's mix is what you are exposed to now. The caps are the most the DAO can put
+            at risk while your loan is open, so they give the worst case: {MAX_AGGRESSIVE_PCT}%
+            of the vault if every Aggressive strategy fails, and 60% if the Moderate ones fail
+            with them.
           </Body>
           <Body>
             The caps are checked when the DAO allocates, and they are measured against the
-            size of the vault. A run of withdrawals can leave an existing allocation above
-            its cap until the DAO rebalances.
+            size of the vault. A run of withdrawals can leave an existing allocation above its
+            cap until the DAO rebalances.
+          </Body>
+          <Body>
+            A loss of backing is the one thing that can push a position toward liquidation.
+            The next lesson turns the loss you plan for into the highest LTV that survives it.
           </Body>
         </Reveal>
       ) : (
-        <Gate
-          label="Take the checkpoint"
-          hint={`Find the highest blended APR that stays inside every cap.${sawBreach ? "" : " Push a slider past a cap as well."}`}
-        />
+        <Gate label="Take the checkpoint" hint="Move both controls to continue." />
       )}
 
       <AppShot shot={SHOTS.strategies}>
-        The real allocation, on a vault's Info tab. Each strategy is listed with the risk
-        level these ceilings apply to, what it earns, and how much of the vault it holds.
+        A real allocation, on a vault's Info tab. Each strategy is listed with its risk level,
+        what it earns, and how much of the vault it holds.
       </AppShot>
     </Stage>
   );

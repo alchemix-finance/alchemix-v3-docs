@@ -1,3 +1,5 @@
+import SystemLoop from "../SystemLoop";
+
 ### What the Transmuter is for
 
 The Transmuter pays a fixed rate. You buy alUSD or alETH below face value,
@@ -17,7 +19,8 @@ Each position on that page states the same six things:
 - **Projected fixed APR.** The discount you are buying at, annualized over the term.
 - **Maturity date.** The day the 1:1 exchange is available to you.
 - **Term.** How long the wait is, which differs by asset and by chain.
-- **Early exit fee.** What leaving the queue before maturity costs.
+- **Early exit fee.** What leaving before maturity costs. The part that has
+  matured is paid out, and the rest comes back as alUSD less the fee.
 - **Deposit cap.** How much more the queue will take.
 - **alAsset price.** What the market is charging for the alAsset right now.
 
@@ -31,12 +34,24 @@ out the term pays more, so buyers step in and push the price back up.
 
 ### What this has to do with your loan
 
-The queue is what funds redemptions. Every alAsset waiting in the Transmuter
-earmarks an equal value of borrower collateral, and at maturity that collateral
-settles the claim and repays the borrower's debt. The saver's fixed rate and the
-borrower's repayment are the same event, seen from two sides. That is where the
-Earmarked figure on your own position came from in lesson 4.
+The queue is what funds redemptions. As each alAsset in the Transmuter matures,
+it earmarks an equal value of borrower collateral, and when the saver claims,
+that collateral settles the claim and repays the borrower's debt. The saver's
+fixed rate and the borrower's repayment are the same event, seen from two sides.
+That is where the Earmarked figure on your own position came from in lesson 4.
+
+The whole track fits in one loop. Borrowing opens the discount, and the
+Transmuter closes it:
+
+<SystemLoop />
 
 If you are the borrower and you want your collateral back, repay and withdraw.
 Inside Alchemix one alUSD always cancels one USDC of debt, so the alUSD you
 borrowed is what you repay with.
+
+### Try it in the app
+
+You have now seen every screen a borrower and a saver use. The
+[quick start](/user/quick-start) walks through a first deposit and loan, and the
+app at [alchemix.fi](https://alchemix.fi) is where you make them. The
+intermediate track goes underneath each of these screens.

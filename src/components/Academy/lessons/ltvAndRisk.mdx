@@ -7,7 +7,7 @@ The borrowing cap and the liquidation threshold do different jobs:
 - **The borrowing cap sits at 90%.** Reach it and you stop borrowing. The position
   stays open and keeps earning.
 - **The liquidation threshold sits at 95%.** Cross it and the protocol can close
-  part of the position, selling only enough to restore a healthy ratio and leaving
+  part of the position, taking only enough to restore a healthy ratio and leaving
   the rest alone.
 
 ### What can liquidate
@@ -21,6 +21,18 @@ After a loss, the 95% threshold applies to the collateral that remains, so the h
 > Survivable LTV = 95% × (1 − loss)
 
 A 12% loss leaves 83.6%. A 20% loss leaves 76%.
+
+### What a liquidation takes
+
+When a position crosses 95%, the protocol first repays any earmarked debt from its
+collateral, then takes only enough more collateral to bring the LTV back to 90%.
+The liquidator is paid a fee out of what is left, and the rest of the position
+stays open and keeps earning.
+
+A position is liquidated in full in two cases: when its debt has reached its
+collateral, or when the whole Alchemist has fallen below its minimum backing.
+Collateral taken in a liquidation goes to the Transmuter, where it backs
+redemptions.
 
 The risk caps inside the Mix-Yield Token are what bound this number. At most 20% of
 the vault may sit in Aggressive strategies, and at most 60% in Moderate and

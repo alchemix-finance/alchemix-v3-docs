@@ -22,23 +22,29 @@ The caps are checked when the DAO allocates. Because they are measured against t
 size of the vault, a run of withdrawals can leave an existing allocation above its
 cap until the DAO rebalances.
 
-A cap is a ceiling, and the live vaults sit well under it. Open
-any vault's Info tab and you get the current list: each strategy, its risk level, its
-APR, and what share of the vault it holds. That is the composition your own
-collateral is in, and the one to size against. The caps give you the worst case.
+A cap is a ceiling, and the live vaults sit well under it. Open any vault's Info
+tab and you get the current list: each strategy, its risk level, its APR, and what
+share of the vault it holds. That is the composition your collateral is in now.
+
+### Reading a loss off the mix
+
+If a class of strategy fails, the vault loses that class's share of the vault,
+times how much of it failed. A vault holding 12% in Aggressive strategies loses
+12% of its backing if every one of them goes to zero, and every position in it
+loses the same share of its collateral.
 
 ### Why the ceilings matter to a borrower
 
-The caps are what make a high LTV safe to borrow at.
-
 A price move cannot close an Alchemix position, because debt and collateral are
 like-kind. Only a loss inside the vault itself can push a position toward
-liquidation. A composition free to load up on risk would make a high LTV
-dangerous. The ceilings are what prevent that.
+liquidation. Today's mix tells you what that loss would be now. The caps set
+the most the DAO could put at risk while your loan is open, without asking you:
+20% of the vault in Aggressive strategies, and 60% across Moderate and Aggressive.
+That worst case is the safer figure to size your LTV against.
 
 The protocol takes a performance fee, a share of what the strategies earn, before
 the rest is credited to the MYT price. The current rate is read live on the
 [Fees](/user/concepts/fees) page.
 
-The Choosing an LTV lesson works out what these same caps mean for the number you
-pick.
+The next lesson, Choosing an LTV, turns the loss you plan for into the highest
+LTV that survives it.

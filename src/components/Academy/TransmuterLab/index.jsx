@@ -7,7 +7,7 @@ import { annualisedFromDiscount, termReturn } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
   Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
-  Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money, said,
+  Panel, Primary, Question, Reveal, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
@@ -61,7 +61,7 @@ export default function TransmuterLab({ lessonId, stage, onStage, done, onComple
       done={done}
       onPass={onComplete}
       passTitle="Track complete."
-      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, identify the one risk that can reach you, and earn a fixed rate through the Transmuter."
+      passBody="You can now deposit, borrow against it, leave redemptions to clear the balance, say what can liquidate you, and earn a fixed rate through the Transmuter."
     />
   );
 }
@@ -203,12 +203,6 @@ function Try({ market, onDone }) {
         </div>
       </div>
 
-      <Readout>
-        Buying at {price.toFixed(3)} and receiving 1.00 is a gain of{" "}
-        <strong>{gain.toFixed(2)}%</strong> over {weeks} weeks. The card states that as a yearly
-        rate, <strong>{apr.toFixed(2)}%</strong>.
-      </Readout>
-
       <Controls>
         <Control
           label="Suppose alUSD trades at"
@@ -244,8 +238,8 @@ function Try({ market, onDone }) {
           <Body>
             The DAO sets the term. A longer wait spreads the same gain over more of the year,
             so the rate falls, and the maturity date on the card names the day the exchange
-            opens. You can leave before that day, and the early exit fee on the card is what
-            it costs.
+            opens. You can leave before that day: the part that has matured is paid out, and
+            the rest comes back as alUSD less the early exit fee on the card.
           </Body>
         </Reveal>
       ) : (

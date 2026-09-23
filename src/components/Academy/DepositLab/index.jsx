@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import styles from "../lesson.module.css";
+import parts from "../parts.module.css";
 import { apiBase } from "../lib/api";
 import {
   Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
-  Note, Notes, Panel, PositionCard, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub,
-  money, said,
+  Note, Notes, Panel, Primary, Question, Reveal, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
  * Lesson 2: your deposit.
  *
  * The 10,000 USDC deposit the rest of the track carries. Learn shows where it
- * goes and asks how much can come back out the next day. Try applies a rate
- * once, then withdraws some or all of it, and nothing on the card holds the
- * withdrawal back. Check asks what the vault did with it.
+ * goes and asks how much can come back out the next day. Try runs the months
+ * forward: the count of MYT stays put while each one is worth more, which is
+ * the fact about yield people most often get wrong. Check asks what the vault
+ * did with it.
+ *
+ * Try used to end on a Withdraw control the learner had to push to 100%. It
+ * taught nothing the Learn stage had not, and the first outside reader stalled
+ * on it.
  *
  * The deposit is made on the Borrow page, not on Mixed Yield. Both pages hold
  * the same MYT, but this track carries one position through to a loan, and the
@@ -64,18 +70,6 @@ function Learn({ onDone }) {
 
       <FlowSteps steps={STEPS} />
 
-      <PositionCard
-        deposited={DEPOSIT}
-        borrowed={0}
-        asset="USDC"
-        earning="Earning"
-        highlight="deposited"
-        marks="none"
-        showLtv={false}
-        note={revealed ? `Free to withdraw: ${money(DEPOSIT)} USDC` : "Deposited and earning."}
-        compact
-      />
-
       <Panel>
         <Question>
           Tomorrow you want it back. How much of the {money(DEPOSIT)} can you take out?
@@ -102,8 +96,99 @@ function Learn({ onDone }) {
         <Reveal title={`All ${money(DEPOSIT)} of it is returned.`} onNext={onDone} nextLabel="Let it earn">
           <Body>
             {said(guess, DEPOSIT, money)}
-            Withdraw on any day, in any amount, and the full balance is returned to you
-            along with anything it earned. Borrowing against the deposit is optional.
+            The vault has no lock-up. Withdraw on any day and the full balance comes back
+            with everything it earned. A very large withdrawal can depend on how much the
+            strategies can release at once. Borrowing against the deposit is optional.
+          </Body>
+        </Reveal>
+      )}
+
+      <AppShot shot={SHOTS.withdrawTab}>
+        The Withdraw tab on your position. Available is what the position will release
+        today, and MAX fills the field with all of it.
+      </AppShot>
+    </Stage>
+  );
+}
+
+/* ── Stage 2: try ────────────────────────────────────────── */
+
+/**
+ * What the MYT is worth on the day of the deposit, in the example. The real
+ * figure is whatever the vault's share price reads that day; 1.000 keeps the
+ * count and the value the same number at the start, so the learner can watch
+ * them come apart.
+ */
+const START_PRICE = 1;
+
+function Try({ onDone }) {
+  const [rate, setRate] = useState(5);
+  const [months, setMonths] = useState(0);
+  // Both latch: once each control has moved, the reveal stays open whatever
+  // they are set to afterwards.
+  const [movedRate, setMovedRate] = useState(false);
+  const [movedMonths, setMovedMonths] = useState(false);
+
+  const held = DEPOSIT / START_PRICE;
+  const price = START_PRICE * Math.pow(1 + rate / 100, months / 12);
+  const value = held * price;
+
+  return (
+    <Stage eyebrow="Stage 2 · Try" headline="Let it earn, and find where the yield goes.">
+      <Sub>
+        Suppose each MYT is worth 1.000 USDC the day you deposit, so your {money(DEPOSIT)}{" "}
+        USDC buys {money(held)} MYT. Run the months forward and set what the strategies earn.
+        Real rates move from day to day.
+      </Sub>
+
+      <div className={`${parts.statRow} ${parts.statRow3}`}>
+        <div className={parts.stat}>
+          <div className={styles.statLabel}>MYT you hold</div>
+          <div className={parts.statValue}>{money(held)}</div>
+        </div>
+        <div className={parts.stat}>
+          <div className={styles.statLabel}>Each MYT is worth</div>
+          <div className={parts.statValue} style={{ color: "#5ba88a" }}>{price.toFixed(4)} USDC</div>
+        </div>
+        <div className={parts.stat}>
+          <div className={styles.statLabel}>Your deposit is worth</div>
+          <div className={parts.statValue}>{money(value)} USDC</div>
+        </div>
+      </div>
+
+      <Controls>
+        <Control
+          label="Months passed"
+          display={`${months} months`}
+          min={0} max={12} step={1}
+          value={months}
+          onChange={(v) => { setMonths(v); setMovedMonths(true); }}
+          accent
+        />
+        <Control
+          label="Suppose it earns"
+          display={`${rate.toFixed(1)}% a year`}
+          min={1} max={15} step={0.5}
+          value={rate}
+          onChange={(v) => { setRate(v); setMovedRate(true); }}
+        />
+      </Controls>
+
+      <Notes>
+        <Note label="Who runs it">
+          The Alchemix DAO chooses the strategies and rebalances them as markets move.
+        </Note>
+      </Notes>
+
+      {movedRate && movedMonths ? (
+        <Reveal
+          title="The number of MYT never moved. Each one is worth more."
+          onNext={onDone}
+          nextLabel="Take the check"
+        >
+          <Body>
+            Your yield shows up in the price of MYT, so the deposit grows without a single
+            token arriving in your wallet. Withdraw and the whole of it comes back as USDC.
           </Body>
           <Body>
             Each vault carries a <strong>deposit cap</strong>, drawn on its card as a bar with
@@ -112,102 +197,13 @@ function Learn({ onDone }) {
             wants the yield without a loan.
           </Body>
         </Reveal>
+      ) : (
+        <Gate label="Take the check" hint="Run the months forward and set a rate to continue." />
       )}
 
       <AppShot shot={SHOTS.vaultCard}>
-        A vault on the Borrow page. The bar under its name is the deposit cap and how full
-        it is, and the figure above the bar is what it is earning right now.
-      </AppShot>
-    </Stage>
-  );
-}
-
-/* ── Stage 2: try ────────────────────────────────────────── */
-
-function Try({ onDone }) {
-  const [rate, setRate] = useState(5);
-  const [share, setShare] = useState(0);
-  // Both latch: once the rate has moved and the withdrawal has reached 100%,
-  // the reveal stays open whatever the controls are set to afterwards.
-  const [movedRate, setMovedRate] = useState(false);
-  const [reachedFull, setReachedFull] = useState(false);
-
-  const value = DEPOSIT * (1 + rate / 100);
-  const remaining = value * (1 - share / 100);
-  const withdrawn = value - remaining;
-  const full = share >= 100;
-
-  return (
-    <Stage eyebrow="Stage 2 · Try" headline="Earn for a year, then take it out.">
-      <Sub>
-        The first control is what the vault earns over the year, and the second is how
-        much of the deposit you take out at the end of it. Real rates move with what the
-        strategies earn.
-      </Sub>
-
-      <PositionCard
-        deposited={remaining}
-        borrowed={0}
-        asset="USDC"
-        earning={remaining > 0 ? "Earning" : "Nothing deposited"}
-        highlight="deposited"
-        marks="none"
-        showLtv={false}
-        note={full ? "Withdrawn in full, settled immediately." : `After one year at ${rate}%`}
-      />
-
-      <Readout>
-        After a year the deposit is worth <strong>{money(value)}</strong>. You have taken out{" "}
-        <strong>{money(withdrawn)}</strong>, and <strong>{money(remaining)}</strong> is still
-        in the vault earning.
-      </Readout>
-
-      <Controls>
-        <Control
-          label="Suppose it earns"
-          display={`${rate.toFixed(1)}% a year`}
-          min={1} max={15} step={0.5}
-          value={rate}
-          onChange={(v) => { setRate(v); setMovedRate(true); }}
-          accent
-        />
-        <Control
-          label="Withdraw"
-          display={`${share}% of the deposit`}
-          min={0} max={100} step={5}
-          value={share}
-          onChange={(v) => { setShare(v); if (v >= 100) setReachedFull(true); }}
-          verdict={full ? "The whole deposit came out at once" : share > 0 ? "keep going to 100% to take all of it" : null}
-        />
-      </Controls>
-
-      <Notes>
-        <Note label="How it reaches you">
-          Each MYT becomes worth more USDC as the strategies earn. Your yield shows up in
-          the value of what you already hold.
-        </Note>
-        <Note label="Who runs it">
-          The Alchemix DAO chooses the strategies and rebalances them as markets move.
-        </Note>
-      </Notes>
-
-      {movedRate && reachedFull ? (
-        <Reveal
-          title={`${money(DEPOSIT)} at ${rate}% is ${money(value)} after a year.`}
-          onNext={onDone}
-          nextLabel="Take the check"
-        >
-          <Body>
-            The withdrawal settled immediately, and the yield came with it.
-          </Body>
-        </Reveal>
-      ) : (
-        <Gate label="Take the check" hint="Set a rate, then push Withdraw all the way to 100% to continue." />
-      )}
-
-      <AppShot shot={SHOTS.withdrawTab}>
-        The Withdraw tab, which is the second control above. Available is what the position
-        will release today, and MAX fills the field with all of it.
+        A vault on the Borrow page. The figure above the bar is what it is earning right now,
+        and the bar under its name is the deposit cap and how full it is.
       </AppShot>
     </Stage>
   );

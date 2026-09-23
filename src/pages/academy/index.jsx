@@ -28,7 +28,7 @@ const INTRO = {
   beginner:
     "Deposit USDC or ETH and it starts earning. Borrow up to 90% of it as alUSD or alETH and sell that for cash. Redemptions then pay the balance down out of your own collateral, and the rest of it keeps earning. A price crash cannot liquidate you. When you want the deposit back, repay and withdraw.",
   intermediate:
-    "Underneath the loan sits a vault with hard caps on the risk it can hold, one redemption rate that clears every loan in the market at the same pace, and a Transmuter that turns a discount on alUSD into a fixed rate. Start with the beginner track if you have not borrowed before.",
+    "Underneath the loan sit a discount on alUSD that borrowers and savers both buy, a Transmuter queue that sets one redemption rate for every loan in the market, and a vault with hard caps on the risk it can hold. Start with the beginner track if you have not borrowed before.",
 };
 
 const fmt = (n) => n.toLocaleString("en-US");

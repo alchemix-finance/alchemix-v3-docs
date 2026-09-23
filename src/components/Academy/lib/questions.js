@@ -44,7 +44,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Time is the one thing an Alchemix loan never charges for, and three years of redemptions have been clearing the balance the whole way.",
-        "The DAO sets a redemption rate, which clears debt rather than adding to it. No rate of any kind adds to an Alchemix balance.",
+        "The redemption rate on your vault clears debt rather than adding to it. No rate of any kind adds to an Alchemix balance.",
         "The yield stays with your deposit and raises what it is worth. The loan takes none of it.",
         "An Alchemix loan has no term. It stays open until you close it, and the deposit is untouched for holding it.",
       ],
@@ -112,8 +112,8 @@ export const QUESTIONS = {
       ],
       correct: 0,
       explain: [
-        "Right. The vault has no lock-up, so any amount comes out on any day, and the yield comes with it.",
-        "Withdrawals go through the moment you ask. The vault holds no notice period.",
+        "Right. The vault has no lock-up, so you can withdraw on any day and the yield comes with it. A very large withdrawal can depend on how much the strategies can release at once.",
+        "Withdrawals go through when you ask. The vault holds no notice period.",
         "The vault has no term. The whole deposit, principal and yield, is available on any day.",
         "Withdrawing from the vault is free. The early exit fee belongs to the Transmuter, which is a different product.",
       ],
@@ -235,27 +235,27 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Repaying is open on any day, and the collateral it was holding frees up immediately.",
-        "More collateral lowers your LTV and buys you borrowing room. The redemption rate is set for the whole market and does not move with one position.",
+        "More collateral lowers your LTV and buys you borrowing room. The redemption rate is one figure for the whole market, worked out from the Transmuter queue, and one position does not move it.",
         "That is the saver's route, and it would leave you waiting out a term for USDC while still carrying the debt. Inside Alchemix one alUSD cancels one of debt today.",
         "Redemptions set the pace for a position you leave alone. Repaying by hand runs alongside them and takes effect at once.",
       ],
     },
     {
       prompt:
-        "Over one year your deposit earned 5% and redemptions cleared part of your debt. " +
-        "Which side of the position moved?",
+        "Over one year your deposit earned 5% and redemptions cleared 1,500 of your debt. " +
+        "What happened to the deposit?",
       options: [
-        "Both, independently: the deposit is worth more and the debt is smaller",
-        "Only the debt, because the yield is what funded the redemptions that cleared it",
-        "Only the deposit, because the debt waits for you to repay it",
-        "Both, and by the same amount, because the yield is applied to the debt",
+        "It grew by its yield and gave up the 1,500 that repaid the debt",
+        "It grew by its full 5%, because the yield is what funded the redemptions",
+        "Nothing left it, because the Transmuter paid the 1,500",
+        "It lost the 1,500 and earned nothing, because a deposit with a loan stops earning",
       ],
       correct: 0,
       explain: [
-        "Right. Yield raises the collateral side, redemptions lower the debt side, and neither one drives the other.",
-        "Redemptions are funded by the Transmuter queue, which earmarks collateral. Your yield stays with your deposit.",
-        "The debt is paid down without you. Redemptions clear a share of it every year whether or not you act.",
-        "They are separate figures with separate causes. What the strategies earn has no bearing on how much gets repaid.",
+        "Right. Redemptions repay your debt out of your own collateral, and the collateral keeps earning the whole time. Yield and redemptions are separate flows.",
+        "Yield stays with the deposit, and redemptions spend the deposit on the debt. The 1,500 came out of the deposit itself.",
+        "The Transmuter's savers are who a redemption pays. The collateral that pays them is yours.",
+        "Every unit of the deposit keeps earning with a loan against it. The 1,500 left it to repay the debt.",
       ],
     },
   ],
@@ -376,14 +376,14 @@ export const QUESTIONS = {
       options: [
         "Backing the debt, which needs 5,556 behind it to stay under the 90% cap",
         "Covering a fee charged when collateral leaves the position",
-        "Held back until the next redemption cycle settles",
+        "Held back until the next redemption settles",
         "Earning yield that has not been credited to the position yet",
       ],
       correct: 0,
       explain: [
         "Yes. Debt can be at most 90% of collateral, so 5,000 of debt reserves 5,556. Everything above that is free.",
         "Withdrawing what is already free costs nothing. The gap is collateral the cap reserves, not a charge.",
-        "Withdrawals are not on a cycle. You can take the free collateral any day, and what stays behind is set by the cap.",
+        "Withdrawals do not wait on redemptions. You can take the free collateral any day, and what stays behind is set by the cap.",
         "Yield raises the value of the whole deposit. The gap is the collateral the 90% cap reserves against the debt.",
       ],
     },
@@ -408,14 +408,14 @@ export const QUESTIONS = {
       options: [
         "Any day, with nothing to repay first",
         "Only once the loan is repaid in full",
-        "Only at the end of a redemption cycle",
+        "Only once the next redemption settles",
         "Only once the deposit has earned enough to cover the debt",
       ],
       correct: 0,
       explain: [
         "Right. Whatever the app shows as free can leave today. Repaying first is a choice, not a requirement.",
         "Repaying frees more collateral, but whatever is already free can leave today.",
-        "Redemption cycles clear debt. They have nothing to do with when you can withdraw.",
+        "Redemptions clear debt. They have nothing to do with when you can withdraw.",
         "Yield raises what the deposit is worth. What is free to withdraw is whatever sits above what the cap reserves.",
       ],
     },
@@ -461,30 +461,32 @@ export const QUESTIONS = {
     {
       prompt: "Which of these changes how fast redemptions clear your debt?",
       options: [
-        "The redemption rate, which the protocol sets for the whole market",
+        "How much alUSD is waiting in the Transmuter",
         "The size of your loan",
         "The yield your vault earns",
         "The LTV you opened at",
       ],
       correct: 0,
       explain: [
-        "Yes. It is the one input that moves the curve, and it is the same figure for every position in the market.",
+        "Yes. More alUSD waiting means more debt repaid over a year, and the redemption rate that results is the same for every position in the market.",
         "Loan size changes the amount cleared, not the pace. The same share of a large loan and a small one goes each year.",
         "Yield raises what your MYT is worth. Redemptions are what clear the debt, and the two are separate.",
         "Your LTV sets how much room you have before a loss reaches you. It does not change the pace of repayment.",
       ],
     },
     {
-      prompt: "The protocol raises the redemption rate. What happens to a position already open?",
+      prompt:
+        "Savers deposit a large amount of alUSD into the Transmuter, and the redemption rate rises. " +
+        "What happens to a position that was already open?",
       options: [
-        "Its debt clears faster, at the new rate, along with every other position",
-        "It keeps the rate it opened at, and only new positions use the new one",
+        "Its debt clears faster, along with every other position in the market",
+        "It keeps the pace it opened at, and only new positions clear faster",
         "Its collateral is sold faster to fund the difference",
         "Nothing, unless the borrower opts in",
       ],
       correct: 0,
       explain: [
-        "Right. The rate is a protocol-level parameter applied to the whole market at once, not a term of your loan.",
+        "Right. The rate is worked out from the queue, the term and the total debt, and it applies to the whole market at once rather than being a term of your loan.",
         "There is no rate attached to a position. There is one rate, and it applies to everyone.",
         "Redemptions convert collateral already earmarked against the debt. Nothing extra is sold to keep up.",
         "There is nothing to opt in to. The rate applies to the whole market, and repaying by hand is the part you choose.",
@@ -501,9 +503,27 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Exactly. The rate is not yours to set, but repaying is always open and takes effect immediately.",
-        "The rate is a market-wide parameter. There is no per-position setting for it.",
-        "Borrowing more raises what you owe. It does not speed anything up.",
-        "The rate is fixed for everyone, but repaying by hand is not.",
+        "The rate is one figure for the whole market, worked out from the Transmuter queue. No position has a rate of its own.",
+        "Borrowing more raises what you owe, and it adds to the total debt the queue is spread across. It does not speed anything up.",
+        "The rate is the same for everyone, but repaying by hand is up to you.",
+      ],
+    },
+    {
+      prompt:
+        "1,000,000 alUSD is waiting in the Transmuter on a 13-week term, and the market owes " +
+        "8,000,000 in total. What redemption rate does the vault show?",
+      options: [
+        "50%: the queue turns over four times a year and repays 4,000,000 of the 8,000,000",
+        "12.5%: the queue is an eighth of the debt",
+        "25%: a 13-week term is a quarter of a year",
+        "It depends on the size of your own loan",
+      ],
+      correct: 0,
+      explain: [
+        "Right. 1,000,000 every 13 weeks is 4,000,000 a year, and 4,000,000 against 8,000,000 of debt is 50%.",
+        "That is one turn of the queue. A 13-week term lets it turn over four times in a year.",
+        "The term tells you how often the queue turns over. The rate compares a year of repayments with the total debt.",
+        "Every position clears at the same share. The rate comes from the queue, the term and the total debt.",
       ],
     },
   ],
@@ -545,20 +565,20 @@ export const QUESTIONS = {
       },
       {
         prompt:
-          "Three strategies are proposed: Conservative at 4%, Moderate at 7%, Aggressive at 15%. " +
-          "Which composition pays most without breaching a cap?",
+          "A vault's Info tab shows 55% of it in Conservative strategies, 30% in Moderate and 15% in " +
+          "Aggressive. Every Aggressive strategy goes to zero. How much of the vault's backing is lost?",
         options: [
-          "40% Conservative, 40% Moderate, 20% Aggressive",
-          "0% Conservative, 60% Moderate, 40% Aggressive",
-          "20% Conservative, 40% Moderate, 40% Aggressive",
-          "60% Conservative, 20% Moderate, 20% Aggressive",
+          "15%, the share Aggressive holds today",
+          "20%, the Aggressive cap",
+          "45%, everything outside Conservative",
+          "None, because the caps absorb the loss",
         ],
         correct: 0,
         explain: [
-          "Right. Aggressive fills its 20%, Moderate takes the 40% left of the shared 60%, and Conservative absorbs the rest.",
-          "Aggressive is capped at 20%, and Moderate and Aggressive together at 60%. This breaches both.",
-          "Aggressive is capped at 20%. Doubling it is not something the DAO could allocate.",
-          "This one is legal but not the best available: Moderate can go to 40% before the shared 60% cap stops it.",
+          "Right. The loss is the share the failed strategies hold, and today that is 15%.",
+          "The cap is the most Aggressive could hold. Today it holds 15%, so that is what a total loss costs.",
+          "Only the Aggressive strategies failed here. The Moderate 30% is still standing.",
+          "A cap limits how much the vault can put at risk. It does not cover a loss once it happens.",
         ],
       },
       {
@@ -577,6 +597,24 @@ export const QUESTIONS = {
           "Nothing sells automatically. Rebalancing is a DAO action.",
           "Withdrawals are never gated on composition. Your collateral stays yours to take.",
           "The caps govern every allocation, not just the first. They are not re-checked on every withdrawal.",
+        ],
+      },
+      {
+        prompt:
+          "Today a vault holds 10% in Aggressive strategies. Why size your LTV against the 20% cap " +
+          "rather than the 10%?",
+        options: [
+          "The DAO can move the vault up to its caps while your loan is open, so the cap is the worst case",
+          "The cap is what the vault holds on average over a year",
+          "A failed strategy always loses twice the share it holds",
+          "The app measures your LTV against the cap rather than the mix",
+        ],
+        correct: 0,
+        explain: [
+          "Right. Today's mix is what you hold now. The caps are how far the DAO can take it without asking you.",
+          "The cap is a ceiling on any allocation, not an average. Today's figure is on the Info tab.",
+          "A strategy can lose at most what it holds. Sizing against the cap covers the DAO raising that share.",
+          "Your LTV is your debt over your collateral. The caps bound how much of that collateral can be lost.",
         ],
       },
     ],
@@ -625,7 +663,7 @@ export const QUESTIONS = {
       correct: 0,
       explain: [
         "Right. Time only works in your favor here: redemptions clear the balance while the collateral earns.",
-        "There is no rate of any kind. What the DAO sets is the redemption rate, which clears debt rather than adding to it.",
+        "There is no rate of any kind. The redemption rate on your vault clears debt rather than adding to it.",
         "No rate is agreed. The costs are the discount when you sell and the fees tied to specific events.",
         "LTV governs your borrowing room and your distance from the threshold. It does not price the loan.",
       ],
@@ -684,16 +722,16 @@ export const QUESTIONS = {
     {
       prompt: "A position does cross the liquidation threshold. What does the protocol sell?",
       options: [
-        "Only enough to bring the position back to a safe ratio",
+        "Enough to repay its earmarked debt and bring the LTV back under 90%, plus the liquidator's fee",
         "The whole deposit, closing the position",
         "Enough to clear the debt in full",
         "Nothing, until the borrower chooses to act",
       ],
       correct: 0,
       explain: [
-        "Right. It is the minimum needed to restore a healthy LTV, and everything above that is untouched.",
-        "Nothing forces a position to close. What is sold is the minimum that restores a safe ratio.",
-        "The debt is not cleared. Enough collateral is used to bring the ratio back under the cap, and no more.",
+        "Right. It takes the minimum that restores a healthy LTV, the liquidator is paid a fee, and everything above that is untouched.",
+        "A position is closed in full only when its debt has reached its collateral, or when the whole Alchemist is short of backing. Otherwise the protocol takes the minimum.",
+        "The debt is not cleared in full. Enough collateral is used to bring the ratio back under the cap, and no more.",
         "Past the threshold the protocol acts without waiting. What it sells is the minimum, not everything.",
       ],
     },
@@ -780,6 +818,24 @@ export const QUESTIONS = {
         "There is no separate reserve. The backing is the collateral of borrowers whose debt the redemption repays.",
         "External pools give you the market price today. The 1:1 guarantee comes from collateral inside the protocol.",
         "Minting more would defeat the point. Redemptions burn alUSD, they do not create it.",
+      ],
+    },
+    {
+      prompt:
+        "You owe 5,000 and alUSD is trading at 0.96. You buy alUSD on the market and repay with it. " +
+        "What does clearing the debt cost you?",
+      options: [
+        "4,800 USDC, because each alUSD you buy cancels 1 of debt",
+        "5,000 USDC, because debt is recorded at face value",
+        "5,208 USDC, because you have to make up the discount",
+        "Nothing until the Transmuter term ends",
+      ],
+      correct: 0,
+      explain: [
+        "Right. 5,000 alUSD at 0.96 costs 4,800, and inside Alchemix each one cancels a full 1 of debt.",
+        "The debt is 5,000 alUSD, and alUSD is what repays it. At 0.96 that much alUSD costs 4,800.",
+        "The discount works for you here. You are buying below face value and repaying at face value.",
+        "Repaying with alUSD settles today. The Transmuter term applies to savers waiting to redeem.",
       ],
     },
   ],

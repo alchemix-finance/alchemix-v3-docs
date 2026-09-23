@@ -61,7 +61,10 @@ const CHECKS = [
   ["'The quick start suggests'", "gone", "quick start suggests"],
   ["'at a pace the protocol sets for the whole market'", "gone", "at a pace the protocol sets for"],
   ["wrong MYT claim 'with alUSD, MYT, or USDC'", "gone", "alUSD, MYT, or USDC"],
-  ["MYT earmark rule stated", "present", "MYT is required for"],
+  // Retired 2026-09-23: the docs disagree on whether the deposited asset can
+  // repay earmarked debt (self-repaying-loans.md says yes, transmuter.md says
+  // MYT only), so the lessons now say only that alUSD cannot.
+  ["'MYT is required' for earmarked debt is gone while the docs disagree", "gone", "MYT is required for"],
   ["two-sentence reveal title", "gone", "Time and repayment both lower it."],
   ["'climbs the moment the repayment lands'", "gone", "the moment the repayment lands"],
   ["stage direction 'watch both figures on the card'", "gone", "watch both figures"],
@@ -126,14 +129,16 @@ const CHECKS = [
   ["'all10,000' space typo", "gone", "Clear the loan and all\n        {money(DEPOSIT)}"],
   ["the withdraw rule is stated before the guess", "present", "debt can never be more than 90%"],
   ["the nearest reachable answer counts as right", "present", "as close as this slider gets"],
-  ["repaying shows what it freed", "present", 'label="Freed by repaying"'],
+  ["repaying shows what it freed", "present", 'repaid > 0 ? `frees ${money(free - START_FREE)} more of the deposit`'],
   ["'Another charge arrives later'", "gone", "Another charge arrives later"],
   ["'This is the loss to size a position against'", "gone", "loss to size a position against"],
   ["'the liquidation threshold applied to the backing that remains' as a title", "gone", "threshold applied to the backing that remains."],
   ["'The capstone puts both numbers to work'", "gone", "capstone puts both numbers to work"],
   ["liquidation described as total", "gone", "and the position is liquidated."],
   ["'the market has no effect in that one'", "gone", "in that one"],
-  ["the term gain is stated before the annualized guess", "present", "{perTerm.toFixed(2)}% over the term. The length of that term"],
+  // The annualized guess left the peg lesson on 2026-09-23 (arithmetic the
+  // beginner Transmuter lesson had already shown); it opens on the buyback now.
+  ["the peg lesson opens on the borrower buying alUSD back", "present", "You buy alUSD on the market and repay with it."],
   ["'the founding class closes when season one opens' in the heading", "gone", "the founding class closes when season"],
   ["'which is also the moment the founding class closes for good'", "gone", "closes for good"],
 
@@ -146,16 +151,17 @@ const CHECKS = [
   ["one name for the early exit fee in the peg lesson", "gone", "early transmutation fee, so"],
   ["hedge opening the deposit Try stage", "gone", "so treat this one as an"],
   ["dead slider props gone from the beginner checkpoints", "gone", 'headline="Work out what the deposit is worth."'],
-  ["health factor taught in the borrowing lab before the check asks about it", "present", 'label="Health factor"'],
+  ["health factor taught in the borrowing lab before the check asks about it", "present", 'headline="Borrow until the health factor reads 2.00."'],
   ["caps-at-allocation rule taught in the MYT lab before the check asks about it", "present", "checked when the DAO allocates, and they are measured"],
-  ["borrower collateral named as what funds the 1:1 in the peg lab", "present", "Borrower collateral is what funds that promise"],
-  ["every Try stage says how to continue", "present", "Push the amount up to the cap to continue"],
+  ["borrower collateral named as what funds the 1:1 in the peg lab", "present", "Borrower collateral is what"],
+  ["every Try stage says how to continue", "present", "Set the loan so the health factor reads 2.00 to continue"],
 
   /* The coworker's read, 2026-09-22: stuck on lesson 2's Try, blank figures,
      a two-year sum that did not add up, a page that did not scroll back,
      answers the sliders could not land on, and a last lesson with no button. */
   ["no Try stage ends in a bare hint with no button", "gone", "to continue.</Hint>"],
-  ["the lesson 2 hint names the 100% the withdraw control has to reach", "present", "push Withdraw all the way to 100%"],
+  ["the lesson 2 Try no longer asks for a withdrawal pushed to 100%", "gone", "push Withdraw all the way to 100%"],
+  ["the lesson 2 hint says what to move", "present", "Run the months forward and set a rate to continue."],
   ["a Try stage's way on is a visible, disabled button", "present", "export function Gate({ label, hint })"],
   ["figures are not lazy loaded", "gone", 'loading="lazy"'],
   ["a figure's image has its height before it loads", "present", "height: `${100 / c.h}%`"],
@@ -167,12 +173,13 @@ const CHECKS = [
   ["the beginner track draws the rate at its definition", "present", "export function simpleCurve("],
   ["lesson 1's comparison runs a year", "present", "Both are left alone for a year."],
   ["the cost lesson's answer is on its slider", "present", "step={5}\n          format={(v) => money(v)}\n          scale={[\"4,000\", \"5,500\"]}"],
-  ["the peg lesson's answer is on its slider", "present", "step={0.01}\n          format={(v) => `${v.toFixed(2)}%`}"],
+  ["the peg lesson's answer is on its slider", "present", "step={5}\n          format={(v) => money(v)}\n          scale={[\"4,500\", \"5,500\"]}"],
   ["the sizing lesson no longer forecasts a loss", "gone", "about to report a loss"],
   ["the sizing lesson's loss is the learner's own choice", "present", "the most you are willing to sit through"],
   ["the sizing lesson shows its working as steps", "present", '{ n: 3, label: "So you deposit"'],
   ["the caps are stated as limits on the vault", "present", "the less of the vault it may hold"],
-  ["the Moderate control says what its cap is left of", "present", 'note="the rest of the 60% shared with Aggressive"'],
+  // The allocator left on 2026-09-23: no user allocates a vault.
+  ["the MYT lesson no longer puts the learner in the DAO's seat", "gone", "Build a mix inside the caps"],
   ["no lesson draws the visualizer's projection, so the tracks agree on 70% a year", "gone", "import { projectSeries }"],
   ["the cap checkpoint no longer uses the dropped all-strategies wording", "gone-engine", "The all-strategies figure"],
   ["the sizing reveal says what forgetting the discount costs", "present", "Forget the discount instead and you borrow only"],
@@ -181,7 +188,7 @@ const CHECKS = [
   ["the six-lessons strip has a stop for lesson 1", "present", 'id: "what-alchemix-does",\n    label: "The idea"'],
   ["the strip no longer counts five stops under a six-lesson heading", "gone", "repeat(5, minmax(0, 1fr))"],
   ["the local-grading notice does not say 'was graded' before grading", "gone", "so this was graded in your browser"],
-  ["the pace reveal names both guesses before the truth", "present", "You said {ana}% for Ana and {ben}% for Ben."],
+  ["the pace reveal says the learner's guess before the truth", "present", "{said(guess, Math.round(NEW_RATE * 100)"],
   ["the pace reveal no longer calls two different numbers a match", "gone", "Your two answers match, and so does the projection"],
   ["the capstone's Visualizer crop says why its loan cost reads zero", "present", "has no loan open, so its loan cost reads zero"],
   ["one name for the Transmuter's exit fee, in the banks too", "gone", "early transmutation fee"],
@@ -208,7 +215,7 @@ const CHECKS = [
   ["no crop is a single 336px stat tile", "gone", "crop: tile("],
   ["the Repay and Withdraw crops come from the 2x USDC captures", "present", '"/img/academy-tab-repay.png"'],
   ["the redemption-rate caption quotes the figure in its capture", "present", "reading 90.61% the day this was captured"],
-  ["the repay lab re-runs the projection for the balance a repayment leaves", "present", "const curve = useMemo(() => curveFor(opening + moreShown)"],
+  ["the repay lab re-runs the projection for the balance a repayment leaves", "present", "const curve = useMemo(() => curveFor(opening), [opening]);"],
   ["the repay lab no longer shifts the un-repaid curve by the repayment", "gone", "y: Math.max(p.debt - repay + moreShown, 0)"],
   ["the map's carried position card is gone", "gone", "The position this track builds"],
   ["no figure is capped narrower than the column", "gone", "--fig-max"],
@@ -297,6 +304,29 @@ const CHECKS = [
   gap: 0.875rem;
   margin-bottom: 2rem;`],
   ["the vault card crop stops short of the next row of cards", "present", "crop: { x: 312 / 3200, y: 964 / 2500, w: 2576 / 3200, h: 488 / 2500 }"],
+
+  // The review pass, 2026-09-23: accuracy against the docs, lessons that
+  // taught nothing new, visuals that repeated each other, and checkpoints a
+  // guesser could pass.
+  ["no graded question says the protocol sets the redemption rate", "gone-engine", "which the protocol sets for the whole market"],
+  ["no graded question has the protocol raise the rate", "gone-engine", "The protocol raises the redemption rate"],
+  ["the pace bank asks for the rate from the queue", "present-engine", "1,000,000 alUSD is waiting in the Transmuter on a 13-week term"],
+  ["no graded question mentions redemption cycles", "gone-engine", "redemption cycle"],
+  ["the deposit question no longer says a redeemed deposit is worth more", "gone-engine", "the deposit is worth more and the debt is smaller"],
+  ["a checkpoint asks two questions", "present-engine", "export const QUESTIONS_PER_CHECKPOINT = 2;"],
+  ["the checkpoint renders every question it is sent", "present", "questions.map((q, slot) =>"],
+  ["the engine logs every graded answer", "present", "attempt: attempt.current,"],
+  ["lesson 5 is named for what can liquidate you", "present", 'title: "What can liquidate you",'],
+  ["the withdraw-any-day claim carries the liquidity caveat", "present", "A very large withdrawal can depend on how much the"],
+  ["lesson 1 says what the falling balance is worth", "present", "What\n        you keep over the other loan is the interest"],
+  ["lesson 4 says who repays the loan before it asks", "present", "const WHO_PAYS = ["],
+  ["lesson 4 says what happened to the deposit", "present", "Your deposit paid for it."],
+  ["lesson 2's Try teaches where the yield goes", "present", "The number of MYT never moved. Each one is worth more."],
+  ["the pace lesson teaches the rate from the queue", "present", "const rateOf = (queue, weeks, debt) => repaidPerYear(queue, weeks) / debt;"],
+  ["the LTV lesson shows what a liquidation takes", "present", "const taken = full ? left : (owed - MAX_LTV * left) / (1 - MAX_LTV);"],
+  ["the whole-system loop is in the beginner track", "present", 'import SystemLoop from "../SystemLoop";\n\n### What the Transmuter is for'],
+  ["the beginner track ends with a way into the app", "present", "### Try it in the app"],
+  ["the intermediate track runs the alUSD chain before the risk chain", "present", 'n: 3,\n    id: "transmuter-and-peg",'],
 ];
 
 let fails = 0;

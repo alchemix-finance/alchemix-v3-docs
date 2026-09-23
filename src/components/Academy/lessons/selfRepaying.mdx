@@ -8,10 +8,10 @@ your own collateral, so a loan you never touch is only ever paid down.
 
 Savers buy alUSD below face value and deposit it into the Transmuter, where it
 redeems for a full dollar after a set term. That queue is what funds redemptions.
-When a cycle begins, the protocol **earmarks** a slice of each open loan, meaning
-it reserves the collateral behind it for the claim ahead. The earmarked collateral
-stays in the vault earning until the claim settles, and settling it repays your
-debt. Lesson 6 takes the saver's side of the same event.
+As their alUSD matures, the protocol **earmarks** a matching slice of the open
+loans, meaning it reserves the collateral behind that slice for the claim ahead.
+The earmarked collateral stays in the vault earning until the claim settles, and
+settling it repays your debt. Lesson 6 takes the saver's side of the same event.
 
 The **Redemption Rate** on your vault is the pace this runs at, and it moves with
 how much alUSD is waiting in the queue against how much debt is in the system.
@@ -19,12 +19,13 @@ how much alUSD is waiting in the queue against how much debt is in the system.
 ### What moves it back up
 
 You do. Borrowing more is the one thing that raises what you owe. Repaying lowers
-it, and you can repay any amount whenever you like. alUSD clears standard debt, and
-MYT is required for debt already earmarked for redemption. The repay tab offers you
-only the asset that is valid for each part.
+it, and you can repay any amount whenever you like from the Repay tab, which lists
+the assets you can repay with.
 
 ### What the position card shows
 
 The card shows how much of your deposit is free to withdraw right now, and
-every repayment raises that figure immediately. The intermediate track works out
+every repayment raises that figure immediately. The deposit itself falls as
+redemptions spend it on your debt, and what is yours, the deposit less the debt,
+holds steady apart from the yield and a small redemption fee. The intermediate track works out
 the arithmetic behind it.

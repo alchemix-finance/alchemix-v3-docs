@@ -6,11 +6,11 @@ import { apiBase } from "../lib/api";
 import { LIQ_LTV, MAX_LTV, ltvAfterLoss, survivableLtv, survivesLoss } from "../lib/protocol";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
-  Question, Readout, Reveal, NARROW, SHOTS, Stage, Sub,
+  Question, Readout, Reveal, SHOTS, Stage, Sub, money,
 } from "../kit";
 
 /**
- * Intermediate lesson 5: choosing an LTV.
+ * Intermediate lesson 6: choosing an LTV.
  *
  * The misconception this exists to break is the one imported from every other
  * lending protocol: that a price crash liquidates you. It cannot here, because
@@ -19,7 +19,17 @@ import {
  * The lesson applies a large price crash first and shows nothing happening, then
  * applies a much smaller loss of MYT backing and shows a position failing. Same
  * LTV, two very different threats.
+ *
+ * The explore stage also shows what a liquidation takes, on a 10,000 deposit,
+ * which is the part the beginner track leaves out: earmarked debt first, then
+ * only enough to bring the LTV back to 90%, a fee to the liquidator, and a
+ * full liquidation only when the debt has reached the collateral. Its closing
+ * figure used to be the health factor, which measures distance to the 90%
+ * borrowing cap rather than to the 95% line this lesson is about.
  */
+
+/** The deposit the explore stage's liquidation readout is worked on. */
+const EXAMPLE_DEPOSIT = 10_000;
 
 const SAFE_LTV = 0.3;
 const RISKY_LTV = 0.85;
@@ -41,7 +51,7 @@ export default function RiskLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      passTitle="Lesson 5 complete."
+      passTitle="Lesson 6 complete."
       passBody="A loss inside the Mix-Yield Token is the only thing that can push a position past the threshold. Every loss has a highest starting LTV that survives it, and the DAO's risk caps bound how large a loss is plausible."
     />
   );
@@ -225,7 +235,14 @@ function Explore({ onDone }) {
     if (!survives) setSeenFail(true);
   }, [survives]);
 
-  const atCeiling = Math.abs(ltv - ceiling) < 0.002;
+  // What a liquidation takes on a 10,000 deposit. It repays x of debt with x
+  // of collateral, with x chosen so the LTV lands back on the 90% cap:
+  // (debt - x) / (left - x) = 0.9. Earmarked debt and the liquidator's fee are
+  // named in the copy rather than modelled, because both depend on the market.
+  const left = EXAMPLE_DEPOSIT * (1 - loss);
+  const owed = EXAMPLE_DEPOSIT * ltv;
+  const full = owed >= left;
+  const taken = full ? left : (owed - MAX_LTV * left) / (1 - MAX_LTV);
 
   return (
     <Stage
@@ -278,6 +295,7 @@ function Explore({ onDone }) {
           onChange={(v) => { setLoss(v); mark("loss"); }}
           accent
           verdict={survives ? "position survives" : "position is liquidated"}
+          bad={!survives}
         />
       </Controls>
 
@@ -285,6 +303,26 @@ function Explore({ onDone }) {
         At a {pct(loss)} loss, the highest starting LTV that survives is{" "}
         <strong>{pct(ceiling)}</strong>.
       </Readout>
+
+      {!survives ? (
+        <Readout>
+          {full ? (
+            <>
+              On a {money(EXAMPLE_DEPOSIT)} deposit, the loss leaves {money(left)} of collateral
+              against {money(owed)} of debt. The debt has reached the collateral, so the position
+              is <strong>liquidated in full</strong>.
+            </>
+          ) : (
+            <>
+              On a {money(EXAMPLE_DEPOSIT)} deposit, the loss leaves {money(left)} of collateral
+              against {money(owed)} of debt. A liquidation repays <strong>{money(taken)}</strong>{" "}
+              of the debt with the same amount of collateral, which brings the LTV back to 90%,
+              and the liquidator takes a fee from what is left. You keep about{" "}
+              {money(left - taken)} of collateral against {money(owed - taken)} of debt.
+            </>
+          )}
+        </Readout>
+      ) : null}
 
       {seenFail || (moved.ltv && moved.loss) ? (
         <Reveal
@@ -304,20 +342,17 @@ function Explore({ onDone }) {
             together, which is what gives you a worst case to size against.
           </Body>
           <Body>
-            Even then, the protocol liquidates only enough to restore a healthy ratio. The
-            rest of the position stays open and keeps earning.
+            When a position crosses 95%, the protocol first repays any earmarked debt from its
+            collateral, then takes only enough more to bring the LTV back to 90%, and the
+            liquidator is paid a fee out of what is left. The rest stays open and keeps
+            earning. A position is closed in full only when its debt has reached its
+            collateral, or when the whole Alchemist is short of backing.
           </Body>
         </Reveal>
       ) : (
         <Gate label="Take the checkpoint" hint="Move both controls. Push the LTV up until the position fails." />
       )}
 
-      <AppShot shot={SHOTS.statsTop} narrow={NARROW.debtHealth}>
-        Health Factor, at the right, states the same distance the other way up: the
-        borrowing cap over your LTV. A position at 30% against the 90% cap reads 3.00, it
-        falls as you borrow, and with nothing borrowed at all it shows the infinity sign,
-        as this vault does.
-      </AppShot>
     </Stage>
   );
 }

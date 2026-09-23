@@ -5,26 +5,38 @@ redemption takes the same value off both sides of your position. That is
 deleveraging: the debt shrinks and so does the collateral behind it, and because
 the two are like-kind it costs you only the redemption fee.
 
-The redemption rate is the share of total system debt repaid this way in a year. It
-is a protocol-level parameter, and every position in the market sits on the same
-one. Owe four times as much and four times as much gets repaid for you each year,
-which puts both positions at the same point on the curve.
+### Where the rate comes from
 
-The redemption rate sets how long a loan takes to clear, and the size of the loan
-does not enter it.
+Nobody sets the redemption rate. It is worked out from three figures:
 
-Your vault prints the current one as **Redemption Rate**, and it moves with the
-Transmuter queue. Read it before you plan around any pace.
+- **The alAssets waiting in the Transmuter.** The queue turns over once per term.
+- **The term.** A 26-week term turns the queue over twice a year.
+- **The total debt in the market.** A year of repayments is compared against it.
+
+> Redemption rate = (queue × terms in a year) ÷ total debt
+
+1,400,000 alUSD on a 26-week term repays 2,800,000 in a year. Against 4,000,000 of
+debt that is 70%. The rate rises when savers deposit more or the term shortens, and
+falls when borrowers take on more debt. It can run above 100%, which means the
+average loan clears inside a year.
+
+Every position in the market sits on the same rate. Owe four times as much and
+four times as much gets repaid for you each year, which leaves the same share of
+each loan outstanding. The size of a loan does not enter the pace, and neither
+does the vault's yield, which raises what your MYT is worth.
+
+Your vault prints the current rate as **Redemption Rate**. It is a projection
+that assumes the queue, the term and the debt stay where they are today, so read
+it again before you plan around any pace.
 
 ### What earmarking pays you
 
-Redemptions run in cycles. When a cycle begins, the protocol earmarks a slice of
-each open loan, sized to its share of total system debt. The earmarked collateral
+As each saver's alUSD matures in the Transmuter, the protocol earmarks a matching
+slice of the open loans, each sized to its share of total system debt. The earmarked collateral
 stays in the vault until the claim settles, earning yield throughout. This is **temporal leverage**: the longer the gap between earmark and
 settlement, the more yield that collateral collects for you.
 
-Earmarked debt gets repaid with MYT. The repay tab offers the right asset for each
-part of a loan.
+alUSD cannot repay an earmarked slice. The Repay tab offers the assets that can.
 
 The vault's Earmarking and Redemptions panels show both sides of this: what has
 been earmarked per day over the last month, and what is scheduled to mature next.

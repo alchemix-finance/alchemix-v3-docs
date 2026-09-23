@@ -187,15 +187,16 @@ async function withDevFallback(lessonId, run, fallback) {
 }
 
 /**
- * Ask for one question.
+ * Ask for a checkpoint's questions.
  *
- * `avoid` is the variant the learner has just missed, and the engine draws a
- * different one. It travels unsigned, which is safe in the only direction it can
+ * `avoid` lists the variants the learner has just missed, and the engine asks
+ * others first. It travels unsigned, which is safe in the only direction it can
  * be abused: the worst a caller can do with it is refuse to be asked a question
  * they have already seen.
  */
 export function fetchChallenge(base, lessonId, avoid) {
-  const not = Number.isInteger(avoid) ? `&not=${avoid}` : "";
+  const missed = (Array.isArray(avoid) ? avoid : [avoid]).filter((v) => Number.isInteger(v));
+  const not = missed.length ? `&not=${missed.join(",")}` : "";
   return withDevFallback(
     lessonId,
     () =>
@@ -206,7 +207,12 @@ export function fetchChallenge(base, lessonId, avoid) {
   );
 }
 
-export function submitAnswer(base, { challenge, params, answer }) {
+/**
+ * Send the answers for grading. `attempt` counts this learner's tries at the
+ * lesson's checkpoint; the engine logs it to find the questions people get
+ * stuck on, and it plays no part in the grade.
+ */
+export function submitAnswer(base, { challenge, params, answer, attempt }) {
   // A locally issued challenge was never signed, so there is nothing for the
   // server to verify. Grade it where it came from.
   if (devFallbackEnabled() && String(challenge).startsWith(LOCAL_PREFIX)) {
@@ -219,7 +225,7 @@ export function submitAnswer(base, { challenge, params, answer }) {
       request(`${base}/api/academy/grade`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ challenge, params, answer }),
+        body: JSON.stringify({ challenge, params, answer, attempt }),
       }),
     () => localGrade(params.lessonId, params, answer),
   );

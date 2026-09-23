@@ -7,7 +7,7 @@ export default function WhereYieldComesFromLesson() {
   return (
     <LessonPage
       lessonId="where-yield-comes-from"
-      description="Your collateral earns in a basket of strategies the DAO curates. The DAO caps how much of it can sit in the riskier ones, and those caps are what make a high LTV safe."
+      description="Your collateral earns in a basket of strategies the DAO curates. Read how much a failed strategy would cost the vault today, and the most the DAO's caps allow."
       Lab={MixLab}
       Wrap={Wrap}
       deeper={[

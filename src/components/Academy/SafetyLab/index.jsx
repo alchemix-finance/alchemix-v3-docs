@@ -9,7 +9,11 @@ import {
 } from "../kit";
 
 /**
- * Lesson 5: the one real risk.
+ * Lesson 5: what can liquidate you.
+ *
+ * Titled "The one real risk" until 2026-09-23, which claimed too much: the
+ * docs' risk page covers contract, oracle and bridge risk as well. What the
+ * lesson shows is the one thing that can liquidate a position.
  *
  * The carried position, shown in ETH so the price has something to move: 10 ETH
  * deposited, 5 alETH borrowed. Both prices are stated outright, 2,500 before and
@@ -189,8 +193,8 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="A loss inside the vault">
-          A strategy can be exploited, or it can simply lose money. Either way the same debt
-          stands against less deposit.
+          A strategy can be exploited or simply lose money, or a staked-ETH token the vault
+          holds can trade below ETH. Each way, the same debt stands against less deposit.
         </Note>
         <Note label="Past the marker">
           The protocol sells only enough to bring the position back to a safe ratio. The rest

@@ -9,8 +9,8 @@ ratio between them holds. A 40% drawdown leaves your position exactly where it w
 ### What can liquidate
 
 One thing does: a real loss inside the Mix-Yield Token. A strategy gets exploited,
-or it simply loses money, and your deposit is suddenly worth less while your debt is
-unchanged. The liquidation marker slides toward you. Cross it and the
+or it simply loses money, or a staked-ETH token the vault holds trades below ETH, and
+your deposit is suddenly worth less while your debt is unchanged. The liquidation marker slides toward you. Cross it and the
 protocol sells just enough to bring the position back to a safe ratio. The rest
 stays yours and keeps earning.
 
@@ -26,3 +26,10 @@ survives it. Open lower and you have more room than that.
 
 The intermediate track turns this into a rule for any loss you want to size
 against, and shows where the caps come from.
+
+### The rest of the risk
+
+Liquidation is the one thing that can close part of your position, and it is
+not the only way to lose money in DeFi. A bug in a contract, an oracle
+misreading a price, or a bridge failing on another chain are risks too. The
+[risk considerations](/user/safety/risk-considerations) page covers them.

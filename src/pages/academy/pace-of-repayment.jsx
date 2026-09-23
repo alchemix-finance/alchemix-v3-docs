@@ -7,7 +7,7 @@ export default function PaceOfRepaymentLesson() {
   return (
     <LessonPage
       lessonId="pace-of-repayment"
-      description="One protocol-level rate clears every position in the market, whatever its size. A bigger loan runs on exactly the same schedule."
+      description="The alUSD waiting in the Transmuter, its term and the total debt in the market set one redemption rate, and every loan clears at it, whatever its size."
       Lab={PaceLab}
       Wrap={Wrap}
       deeper={[

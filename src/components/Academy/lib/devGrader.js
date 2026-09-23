@@ -31,51 +31,72 @@ export const LOCAL_PREFIX = "local:";
 
 /* ── Multiple choice, mirrored from the engine ───────────── */
 
+/** Questions per checkpoint, and the fields each travels under. Mirrors `choice.ts`. */
+const QUESTIONS_PER_CHECKPOINT = 2;
+const SLOTS = [
+  { variant: "variant", seed: "seed" },
+  { variant: "variant2", seed: "seed2" },
+  { variant: "variant3", seed: "seed3" },
+];
+
+function shuffled(items) {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 /**
- * Build a challenge for a choice lesson.
+ * Build a challenge for a choice lesson: two different questions from the bank.
  *
- * The variant and the seed are the only state: the variant picks the question,
- * the seed fixes the order its options are shown in. Both travel in `fields`, so
- * the grader below can rebuild the same order without storing anything.
+ * Each question's variant and seed are the only state: the variant picks the
+ * question, the seed fixes the order its options are shown in. They travel in
+ * `fields`, so the grader below can rebuild the same order without storing
+ * anything.
  *
- * `avoid` names the variant the learner has just missed, and the draw excludes
- * it. Four options and unlimited attempts made a choice checkpoint answerable by
- * elimination, so a miss costs the question.
+ * `avoid` lists the variants the learner has just missed, and they are drawn
+ * last, the same rule the engine applies.
  */
 function choiceChallenge(lessonId, avoid) {
   const bank = QUESTIONS[lessonId];
-  const skip =
-    Number.isInteger(avoid) && avoid >= 0 && avoid < bank.length && bank.length > 1 ? avoid : -1;
-  // Draw from the bank with the missed entry removed, then map back. Same rule
-  // the engine applies, so a locally redrawn question behaves the deployed way.
-  const variant =
-    skip < 0
-      ? Math.floor(Math.random() * bank.length)
-      : (() => {
-          const i = Math.floor(Math.random() * (bank.length - 1));
-          return i >= skip ? i + 1 : i;
-        })();
-  const seed = 1 + Math.floor(Math.random() * 999_999);
-  const q = bank[variant];
-  const order = permutation(q.options.length, seed);
+  const missed = new Set((Array.isArray(avoid) ? avoid : [avoid]).filter((v) => Number.isInteger(v)));
+  const all = bank.map((_, i) => i);
+  const variants = [
+    ...shuffled(all.filter((i) => !missed.has(i))),
+    ...shuffled(all.filter((i) => missed.has(i))),
+  ].slice(0, QUESTIONS_PER_CHECKPOINT);
 
-  return {
-    fields: { variant, seed },
-    prompt: q.prompt,
-    controls: { choices: order.map((i) => q.options[i]) },
-  };
+  const fields = {};
+  const questions = variants.map((variant, slot) => {
+    const seed = 1 + Math.floor(Math.random() * 999_999);
+    fields[SLOTS[slot].variant] = variant;
+    fields[SLOTS[slot].seed] = seed;
+    const q = bank[variant];
+    const order = permutation(q.options.length, seed);
+    return { variant, prompt: q.prompt, choices: order.map((i) => q.options[i]) };
+  });
+
+  return { fields, prompt: questions[0].prompt, controls: { questions } };
 }
 
-function choiceGrade(lessonId, f, answer) {
-  const q = QUESTIONS[lessonId][Math.trunc(f.variant)];
-  const order = permutation(q.options.length, f.seed);
-  const correctIndex = order.indexOf(q.correct);
-
-  const offered = Number.isInteger(answer) && answer >= 0 && answer < order.length;
-  if (!offered) return [-1, correctIndex, 0, "choice", "Pick one of the options."];
-
-  const original = order[answer];
-  return [answer, correctIndex, 0, "choice", q.explain[original]];
+/** Grade every question; the checkpoint passes only when each one is right. */
+function choiceGrade(lessonId, f, answers) {
+  const bank = QUESTIONS[lessonId];
+  const given = Array.isArray(answers) ? answers : [answers];
+  const results = SLOTS.filter((s) => s.variant in f).map((s, slot) => {
+    const variant = Math.trunc(f[s.variant]);
+    const q = bank[variant];
+    const order = permutation(q.options.length, f[s.seed]);
+    const correctIndex = order.indexOf(q.correct);
+    const answer = given[slot];
+    const offered = Number.isInteger(answer) && answer >= 0 && answer < order.length;
+    if (!offered) return { variant, passed: false, correctIndex, feedback: "Pick one of the options." };
+    const original = order[answer];
+    return { variant, passed: original === q.correct, correctIndex, feedback: q.explain[original] };
+  });
+  return { passed: results.every((r) => r.passed), results };
 }
 
 /* ── Per-lesson generators ───────────────────────────────── */
@@ -103,7 +124,7 @@ const GENERATORS = {
   capstone: (avoid) => choiceChallenge("capstone", avoid),
 };
 
-/* ── Per-lesson graders. Each returns [actual, target, tolerance, unit]. ── */
+/* ── Per-lesson graders. Each returns { passed, results }. ── */
 
 const GRADERS = {
   /* Beginner track. */
@@ -145,16 +166,15 @@ export function localGrade(lessonId, params, answer) {
   const grade = GRADERS[lessonId];
   if (!grade) throw new Error(`No local grader for ${lessonId}.`);
 
-  const [actual, target, tolerance, unit, feedback] = grade(params.fields, answer);
-  const passed = Number.isFinite(actual) && Math.abs(actual - target) <= tolerance;
+  const { passed, results } = grade(params.fields, answer);
 
   return {
     passed,
-    actual: Number(actual.toFixed(2)),
-    target: Number(target.toFixed(2)),
-    tolerance: Number(tolerance.toFixed(2)),
-    unit,
-    feedback,
+    unit: "choice",
+    feedback: results[0].feedback,
+    // Same rule as the engine: which option was right only travels once every
+    // question is.
+    results: results.map((r) => ({ ...r, correctIndex: passed ? r.correctIndex : undefined })),
     local: true,
     // Never a valid signature. A locally graded lesson presented at graduation is
     // rejected, which is the correct outcome.

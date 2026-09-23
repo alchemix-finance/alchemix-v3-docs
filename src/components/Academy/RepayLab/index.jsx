@@ -3,13 +3,11 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import { apiBase } from "../lib/api";
 import { simpleCurve } from "../lib/model";
+import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD, withdrawable } from "../lib/protocol";
 import {
-  EXAMPLE_REDEMPTION, EXAMPLE_YIELD, borrowable, withdrawable,
-} from "../lib/protocol";
-import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, Gate, GuessSlider, Hint, Legend,
-  LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, NARROW, SHOTS, Stage,
-  Sub, money, said,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
+  Hint, Legend, LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, NARROW,
+  SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
@@ -17,8 +15,14 @@ import {
  *
  * The carried position, 10,000 deposited and 5,000 borrowed, is left alone for
  * a year and the card ticks through the months while both figures fall. The
- * Try stage puts the three things that move a balance on the same card: time,
- * repaying by hand, and borrowing more.
+ * Learn stage says who repays the loan before it asks about the balance:
+ * savers queueing alUSD in the Transmuter, whose claims are settled out of
+ * borrower collateral. "Redemptions" was a black box from lesson 1 until then.
+ * The reveal says what happened to the deposit, which paid for all of it.
+ *
+ * The Try stage runs time and repaying by hand on the same card. It used to
+ * carry a Borrow more control as well, which repeated lesson 3 on the busiest
+ * screen in the track; a note names it instead.
  *
  * Every falling figure is the redemption rate taken at its definition, the
  * share of the loan that redemptions clear in a year, drawn as a straight line
@@ -53,6 +57,35 @@ const curveFor = (debt) =>
 
 /** The untouched position: 5,000 borrowed and never repaid by hand. */
 const CURVE = curveFor(BORROW);
+
+/** Where the deposit ends the year, and roughly what it earned on the way. */
+const DEPOSIT_AT_END = CURVE.at(-1).collateral;
+const YIELDED = DEPOSIT * EXAMPLE_YIELD;
+
+/** Who repays the loan, drawn before the question so the answer has a cause. */
+const WHO_PAYS = [
+  {
+    n: 1,
+    label: "Savers",
+    value: "Queue alUSD",
+    note: "They buy it below a dollar and wait out a term in the Transmuter to redeem it 1:1.",
+    tone: "#8ea9d8",
+  },
+  {
+    n: 2,
+    label: "Your loan",
+    value: "Is earmarked",
+    note: "As their alUSD matures, the protocol sets a slice of every loan aside for it.",
+    tone: "#f5c09a",
+  },
+  {
+    n: 3,
+    label: "Your collateral",
+    value: "Repays the slice",
+    note: "The collateral behind that slice settles their claim, and your debt falls by the same amount.",
+    tone: "#5ba88a",
+  },
+];
 
 /**
  * The reveal figure: what is left after the year, to the nearest hundred.
@@ -132,11 +165,13 @@ function Learn({ onDone }) {
   return (
     <Stage eyebrow="Stage 1 · Learn" headline="You borrow, then do nothing.">
       <Sub>
-        Redemptions repay the loan out of your own collateral, and the redemption rate is
-        the pace they run at: the share of what you owe that they clear over a year. The
-        protocol sets one rate for every position at once, and the app prints it on your
-        vault. This example runs at {RATE}.
+        Savers queue alUSD in the Transmuter to redeem it for a full dollar, and that queue
+        is what repays your loan. The redemption rate is how fast: the share of what you owe
+        it clears over a year. Every position runs at the same rate, and the app prints it on
+        your vault. This example runs at {RATE}.
       </Sub>
+
+      <FlowSteps steps={WHO_PAYS} />
 
       <PositionCard
         deposited={at.collateral}
@@ -183,14 +218,18 @@ function Learn({ onDone }) {
           <Body>
             {said(guess, OWED_AT_END, money, 250)}
             A year went by and you never made a payment. At {RATE}, redemptions cleared{" "}
-            {RATE} of the {money(BORROW)} you borrowed, which is {money(CLEARED)}, out of
-            collateral that kept earning the whole time.
+            {RATE} of the {money(BORROW)} you borrowed, which is {money(CLEARED)}.
+          </Body>
+          <Body>
+            Your deposit paid for it. It earned about {money(YIELDED)} and gave{" "}
+            {money(CLEARED)} to the redemptions, so it reads about {money(DEPOSIT_AT_END)}. What
+            is yours, the deposit less what you owe, is where it started plus the yield, less a
+            small redemption fee.
           </Body>
           <Body>
             The band inside the bar is <strong>earmarked</strong> debt: the slice already set
             aside for the next redemption. That collateral stays in the vault earning until
-            the claim settles, and it is repaid with MYT rather than alUSD. The app shows the
-            same figure on your position.
+            the claim settles. The app shows the same figure on your position.
           </Body>
         </Reveal>
       )}
@@ -210,34 +249,19 @@ function Learn({ onDone }) {
 function Try({ onDone }) {
   const [m, setM] = useState(0);
   const [repay, setRepay] = useState(0);
-  const [more, setMore] = useState(0);
   const [unlocked, setUnlocked] = useState(false);
 
-  // Repaying by hand and borrowing more change what redemptions have left to
-  // work on, so the projection is re-run for the balance they leave rather
-  // than shifted after the fact. Shifting the 5,000 curve down by the
-  // repayment kept redeeming collateral for debt that no longer existed: at
-  // 24 months with 2,000 repaid the chart sat at zero while the card showed
-  // the deposit still falling, 6,350 against a loan that had been 3,000.
+  // Repaying by hand changes what redemptions have left to work on, so the
+  // projection is re-run for the balance it leaves rather than shifted after
+  // the fact. Shifting the 5,000 curve down by the repayment kept redeeming
+  // collateral for debt that no longer existed.
   const opening = Math.max(BORROW - repay, 0);
-  const baseCurve = useMemo(() => curveFor(opening), [opening]);
-  const atBase = nearestMonth(baseCurve, m);
-
-  // The cap from lesson 3, seen again: at month 0 with nothing repaid the
-  // Borrow more thumb stops at 4,000. The cap is re-derived every render, so
-  // a stored value the months or repay controls have since outgrown is
-  // clamped back down rather than drawn past the cap.
-  const cap = borrowable(atBase.collateral, atBase.debt);
-  const moreShown = Math.min(more, cap);
-  const capped = moreShown >= cap - 1e-9;
-
-  const curve = useMemo(() => curveFor(opening + moreShown), [opening, moreShown]);
+  const curve = useMemo(() => curveFor(opening), [opening]);
   const at = nearestMonth(curve, m);
   const balance = at.debt;
   const free = withdrawable(at.collateral, balance);
 
-  // The line extends as the months slider moves, drawn from the projection
-  // that already carries the current repayment and extra borrow.
+  // The line extends as the months slider moves.
   const points = curve
     .filter((p) => p.month <= m + 1e-9)
     .map((p) => ({ x: p.month, y: p.debt }));
@@ -247,16 +271,15 @@ function Try({ onDone }) {
   // months slider moves.
   if (points.length === 1) points.push({ ...points[0] });
 
-  const enough = m >= 6 && (repay > 0 || moreShown > 0);
+  const enough = m >= 6 && repay > 0;
   useEffect(() => {
     if (enough) setUnlocked(true);
   }, [enough]);
 
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Run the months, then move the balance yourself.">
+    <Stage eyebrow="Stage 2 · Try" headline="Run the months, then repay some of it yourself.">
       <Sub>
-        The two amounts below are the same fields you use on the Repay tab and the
-        Borrow tab.
+        The repay amount is the same field you use on the Repay tab.
       </Sub>
 
       <PositionCard
@@ -279,8 +302,8 @@ function Try({ onDone }) {
           xMax={MONTHS}
           xTicks={4}
           xLabel="months"
-          yMax={10_000}
-          yTicks={4}
+          yMax={7_500}
+          yTicks={3}
           formatY={money}
         />
         <Legend items={[{ label: "Balance", color: "#f5c09a" }]} />
@@ -304,28 +327,17 @@ function Try({ onDone }) {
           onChange={setRepay}
           verdict={repay > 0 ? "this frees more of your deposit" : null}
         />
-        <Control
-          label="Borrow more"
-          display={`${money(moreShown)} alUSD`}
-          min={0} max={5_000} step={250}
-          value={moreShown}
-          onChange={(raw) => setMore(Math.min(raw, cap))}
-          verdict={capped ? "the cap stops you here" : null}
-        />
       </Controls>
 
       <Notes>
         <Note label="Time passing">
           Every month, redemptions clear a little more of the balance for you.
         </Note>
-        <Note label="Where the money comes from">
-          Savers deposit alUSD into the Transmuter and wait out a term. Their queue earmarks
-          your collateral, and when it matures that collateral settles their claim and
-          clears your debt. Lesson 6 takes the saver's side.
-        </Note>
         <Note label="Repaying by hand">
-          Repay at any time, in any amount. alUSD clears standard debt, and MYT is required
-          for any debt already earmarked for redemption.
+          Repay at any time, in any amount, from the Repay tab. It takes effect at once.
+        </Note>
+        <Note label="Borrowing more">
+          The one thing that raises the balance. It is the Borrow tab from lesson 3.
         </Note>
       </Notes>
 
@@ -341,7 +353,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Gate label="Take the check" hint="Run the months forward, then repay or borrow more, to continue." />
+        <Gate label="Take the check" hint="Run the months forward, then repay some of the loan, to continue." />
       )}
 
       <AppShot shot={SHOTS.repayTab}>

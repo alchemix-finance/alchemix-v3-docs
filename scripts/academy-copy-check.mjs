@@ -196,10 +196,14 @@ const STAGE_DIRECTION = [
 ];
 
 /**
- * The two mechanisms that keep getting restated wrongly.
+ * The mechanisms that keep getting restated wrongly.
  * Redemptions repay debt out of the borrower's own collateral; yield raises the
  * MYT's value instead. The Transmuter is a fixed-yield product, and a borrower
  * who wants out repays and withdraws.
+ * Nobody sets the redemption rate: it is worked out from the Transmuter queue,
+ * the term and the total debt, and two graded questions taught otherwise until
+ * 2026-09-23. Earmarking accrues as Transmuter deposits vest block by block;
+ * there are no redemption cycles.
  * See docs/user/concepts/redemption-rate.md, transmuter.md, tutorials/repay-loan.md.
  */
 const WRONG_MECHANISM = [
@@ -209,6 +213,10 @@ const WRONG_MECHANISM = [
    "name whose capital is spent: redemptions draw on the borrower's own collateral"],
   [/\bTransmuter\b[^.]{0,40}\b(takes|returns) (your|the) (alUSD|alETH)\b[^.]{0,30}\b(back|for USDC|1:1)\b/i,
    "the Transmuter is a fixed-yield product; a borrower repays and withdraws instead"],
+  [/(protocol|DAO|governance)[^.]{0,30}(sets|raises|lowers|picks|chooses)[^.]{0,20}redemption rate|redemption rate[^.]{0,40}(parameter|the protocol sets|set by the (protocol|DAO))/i,
+   "nobody sets the redemption rate: it comes from the Transmuter queue, the term and the total debt"],
+  [/(redemption|earmark(ing)?)s? cycles?|cycles? (begins?|starts?|is under way)|in cycles/i,
+   "earmarking accrues as Transmuter deposits vest; there are no redemption cycles"],
 ];
 
 for (const { file, s } of rows) {

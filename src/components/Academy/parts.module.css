@@ -184,6 +184,18 @@
   padding: 1rem 1.125rem;
 }
 
+/* Three figures instead of four. Both classes, so it beats the base rule and
+   the base rule's tablet override. */
+.statRow.statRow3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .statRow.statRow3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .statValue {
   font-size: 1.25rem;
   font-weight: 700;

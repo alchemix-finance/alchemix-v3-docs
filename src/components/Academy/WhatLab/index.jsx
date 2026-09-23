@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import { apiBase } from "../lib/api";
-import { simpleCurve } from "../lib/model";
+import { PROTOCOL_FEE, simpleCurve } from "../lib/model";
 import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
-  Hint, Legend, LineChart, Note, Notes, Panel, Primary, Question, Reveal, SHOTS, Stage,
+  Actions, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
+  Hint, Legend, LineChart, Note, Notes, Panel, Primary, Question, Readout, Reveal, Stage,
   Sub, money, said,
 } from "../kit";
 
@@ -28,6 +28,13 @@ import {
  * share of the loan cleared in a year, drawn as a straight line over one year
  * (`simpleCurve`). It runs at an example rate, and nothing on screen implies a
  * payoff date.
+ *
+ * The Try stage also says what the falling balance is worth. Comparing only
+ * what you owe flattered the product: the Alchemix balance falls because your
+ * own deposit pays it, so the deposit falls by the same amount, and what you
+ * actually keep over a loan with interest is the interest. The readout under
+ * the rate control states that saving, which is also what makes the control
+ * worth moving.
  *
  * This lesson owns the direction and lesson 4 owns the quantity. It used to own
  * both: it projected the same 10,000 / 5,000 position over the same two years
@@ -148,11 +155,6 @@ function Learn({ onDone }) {
           </Body>
         </Reveal>
       )}
-
-      <AppShot shot={SHOTS.vaultCard}>
-        A vault on the Borrow page, with what the whole market has deposited against it,
-        what it has borrowed, and the 90.00% of a deposit anyone may borrow.
-      </AppShot>
     </Stage>
   );
 }
@@ -168,6 +170,12 @@ function Try({ onDone }) {
   const interestAt = (m) => BORROW * Math.pow(1 + rate / 100, m / 12);
   const interest = Array.from({ length: MONTHS + 1 }, (_, m) => ({ x: m, y: interestAt(m) }));
   const alchemix = ALCHEMIX.map((p) => ({ x: p.month, y: p.debt }));
+
+  // What you keep over the loan with interest, after a year: both deposits earn
+  // the same, the Alchemix one pays its balance down (plus the redemption fee)
+  // out of itself, so the difference is the interest less that fee.
+  const repaid = BORROW - ALCHEMIX.at(-1).debt;
+  const saved = interestAt(MONTHS) - BORROW - repaid * PROTOCOL_FEE;
 
   return (
     <Stage eyebrow="Stage 2 · Try" headline="Put the same 5,000 next to a loan that charges interest.">
@@ -214,14 +222,20 @@ function Try({ onDone }) {
         />
       </Controls>
 
+      <Readout>
+        Your deposit pays the Alchemix balance down, so it shrinks by what it repays. What
+        you keep over the other loan is the interest: <strong>{money(saved)}</strong> after a
+        year at {rate}%.
+      </Readout>
+
       <Notes>
         <Note label="With interest">
           A year at {rate}% and you owe {money(interestAt(MONTHS))}, having never made a
           payment.
         </Note>
         <Note label="Alchemix">
-          A year and you owe less than you borrowed, having never made a payment either.
-          Lesson 4 works out how much less.
+          A year and you owe less than you borrowed, and your deposit is smaller by the same
+          amount. Lesson 4 works out how much.
         </Note>
       </Notes>
 
@@ -233,8 +247,9 @@ function Try({ onDone }) {
         >
           <Body>
             A loan with interest grows until you pay it down. An Alchemix balance is repaid
-            out of your own collateral instead, and that collateral earns the whole time it
-            is doing so. The redemption rate sets the pace, and the app prints it on your vault.
+            out of your own collateral instead, so the deposit shrinks by what it repays
+            while the rest of it keeps earning. What you save is the interest. The redemption
+            rate sets the pace, and the app prints it on your vault.
           </Body>
         </Reveal>
       ) : (

@@ -11,7 +11,7 @@ import {
 } from "../kit";
 
 /**
- * Intermediate lesson 4: what borrowing really costs.
+ * Intermediate lesson 2: what borrowing really costs.
  *
  * There is no interest rate, which regularly gets read as "there is no cost".
  * There is one, it is just charged differently: alAssets are minted at face value
@@ -39,7 +39,7 @@ export default function CostLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      passTitle="Lesson 4 complete."
+      passTitle="Lesson 2 complete."
       passBody="You can size a borrow against the price you will sell it at, so the amount you receive matches what you needed. You owe the larger number as debt, and the gap between the two is what borrowing costs you."
     />
   );

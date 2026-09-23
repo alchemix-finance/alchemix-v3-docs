@@ -18,10 +18,13 @@
  * screen in the app, and the learner pushes on it before being told the answer.
  *
  * The intermediate track covers every important mechanic and how it
- * functions, for a learner committed to understanding the protocol: reading a
- * position, the pace of repayment, the strategy mix, the cost of borrowing,
- * choosing an LTV, the peg, and sizing a position from all of it. Seven
- * lessons, all published.
+ * functions, for a learner committed to understanding the protocol. After
+ * reading a position it runs two chains. The alUSD chain: what selling it
+ * costs, who buys it back and why the price returns, and how the alUSD waiting
+ * in the Transmuter sets the pace of repayment. The risk chain: what the vault
+ * holds, and the LTV that survives losing it. Sizing a position uses both.
+ * Seven lessons, all published. Reordered on 2026-09-23; the ids did not
+ * change, so stored progress still counts.
  *
  * `app` is the route a learner clicks to reach the screen, written the way the
  * app's own navigation writes it. The app renamed Vaults to Borrow and moved
@@ -80,7 +83,7 @@ export const BEGINNER = [
     id: "what-can-go-wrong",
     slug: "/academy/what-can-go-wrong",
     app: "Borrow",
-    title: "The one real risk",
+    title: "What can liquidate you",
     blurb: "A price crash leaves your position exactly where it was. A loss inside the vault is the one thing that moves it.",
     minutes: 7,
     ready: true,
@@ -113,28 +116,6 @@ export const INTERMEDIATE = [
   },
   {
     n: 2,
-    id: "pace-of-repayment",
-    slug: "/academy/pace-of-repayment",
-    app: "Borrow · Earmarking",
-    title: "The pace of repayment",
-    blurb: "The protocol clears every loan in the market at one rate, whatever its size. Find that rate.",
-    minutes: 8,
-    ready: true,
-    track: "intermediate",
-  },
-  {
-    n: 3,
-    id: "where-yield-comes-from",
-    slug: "/academy/where-yield-comes-from",
-    app: "Earn · Variable Rate",
-    title: "Inside the Mix-Yield Token",
-    blurb: "The DAO caps how much of your collateral can sit in riskier strategies. Those caps are what make a high LTV safe.",
-    minutes: 8,
-    ready: true,
-    track: "intermediate",
-  },
-  {
-    n: 4,
     id: "cost-of-borrowing",
     slug: "/academy/cost-of-borrowing",
     app: "Borrow",
@@ -145,23 +126,45 @@ export const INTERMEDIATE = [
     track: "intermediate",
   },
   {
-    n: 5,
-    id: "ltv-and-risk",
-    slug: "/academy/ltv-and-risk",
-    app: "Borrow",
-    title: "Choosing an LTV",
-    blurb: "Every loss of backing has a starting LTV that survives it. Find yours.",
+    n: 3,
+    id: "transmuter-and-peg",
+    slug: "/academy/transmuter-and-peg",
+    app: "Earn · Fixed Rate",
+    title: "The peg and the discount",
+    blurb: "The alUSD you sold below a dollar is worth buying back. See who buys it, and why the price returns.",
     minutes: 9,
     ready: true,
     track: "intermediate",
   },
   {
+    n: 4,
+    id: "pace-of-repayment",
+    slug: "/academy/pace-of-repayment",
+    app: "Borrow · Earmarking",
+    title: "The pace of repayment",
+    blurb: "The alUSD waiting in the Transmuter sets one repayment rate for every loan. Find what moves it.",
+    minutes: 8,
+    ready: true,
+    track: "intermediate",
+  },
+  {
+    n: 5,
+    id: "where-yield-comes-from",
+    slug: "/academy/where-yield-comes-from",
+    app: "Earn · Variable Rate",
+    title: "Inside the Mix-Yield Token",
+    blurb: "Read what your collateral is held in, and the most the DAO's caps let it put at risk.",
+    minutes: 8,
+    ready: true,
+    track: "intermediate",
+  },
+  {
     n: 6,
-    id: "transmuter-and-peg",
-    slug: "/academy/transmuter-and-peg",
-    app: "Earn · Fixed Rate",
-    title: "The peg and the discount",
-    blurb: "An alUSD below a dollar pays whoever is willing to wait. Price the wait.",
+    id: "ltv-and-risk",
+    slug: "/academy/ltv-and-risk",
+    app: "Borrow",
+    title: "Choosing an LTV",
+    blurb: "Every loss of backing has a starting LTV that survives it. Find yours, and what a liquidation takes.",
     minutes: 9,
     ready: true,
     track: "intermediate",

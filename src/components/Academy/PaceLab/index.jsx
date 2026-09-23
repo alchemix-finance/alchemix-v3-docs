@@ -2,46 +2,59 @@ import React, { useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import styles from "../lesson.module.css";
+import parts from "../parts.module.css";
 import { debtCurve, debtRemainingPct } from "../lib/model";
-import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
+import { WEEKS_PER_YEAR } from "../lib/protocol";
 import useElementWidth from "../lib/useElementWidth";
 import {
   Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
-  Question, Readout, Reveal, NARROW, SHOTS, SetupCard, SetupGrid, Stage, Sub,
+  Question, Reveal, NARROW, SHOTS, Stage, Sub, said,
 } from "../kit";
 
 /**
- * Intermediate lesson 2: the pace of repayment.
+ * Intermediate lesson 4: the pace of repayment.
  *
- * Three stages. The learner commits to a prediction before seeing anything, then
- * explores freely, then answers a server-set question to complete the lesson.
+ * What sets the redemption rate. Nobody does: the docs work it out from three
+ * figures (`docs/user/concepts/redemption-rate.md`). The alUSD waiting in the
+ * Transmuter turns over once per term, so a year of repayments is the queue
+ * times the terms in a year, and the rate is that against the total debt in
+ * the market.
  *
- * The prediction stage does the teaching. The common assumption is that a smaller
- * loan clears sooner, and watching two very different loans trace the same curve
- * is what makes the mechanism stick.
+ * The lesson used to ask Ana and Ben how much of two loans was left after a
+ * year at 70%. Once the beginner track drew the rate at its definition, the
+ * question answered itself (30%, for both), and the Explore stage's labels
+ * announced the answer the moment a control moved. It also taught the rate as
+ * something "the protocol sets", which the docs do not say. It comes right
+ * after the peg lesson now, so the learner has just met the savers whose queue
+ * this is.
  *
- * Built from the kit's shared parts. Only the chart is its own, because it draws
- * two curves with the learner's guesses marked on them, which the kit's line
- * chart does not do.
+ * The size-of-loan point survives: every position clears at the same share,
+ * because redemptions are spread in proportion to what each owes. It is in the
+ * Predict reveal and on the Explore stage's fourth control.
  *
  * Stage state lives on the page, not here, because the header stepper is the
  * progress indicator for the whole lesson and the two must never disagree.
  */
 
-const COLLATERAL = 10_000;
-const ANA_DEBT = 2_000;
-const BEN_DEBT = 8_000;
-// Both come from protocol.js. This lab used to declare its own 80% while the
-// beginner track projected at 70%, so the two tracks described loans clearing at
-// different speeds.
-const YIELD = EXAMPLE_YIELD;
-const REDEMPTION = EXAMPLE_REDEMPTION;
-// Two years: at the example 70% the loan is gone by month 18, and at the
-// slowest rate the Explore stage allows, 20%, most of it is still owed at 24.
+/* The example market. 1,400,000 turning over twice a year repays 2,800,000,
+   which is 70% of 4,000,000: the example rate the beginner track uses. */
+const QUEUE = 1_400_000;
+const TERM_WEEKS = 26;
+const TOTAL_DEBT = 4_000_000;
+const ADDED = 700_000;
+
 const HORIZON = 24;
 const CHECK_MONTH = 12;
 
-const fmt = (n) => n.toLocaleString("en-US");
+const fmt = (n) => Math.round(n).toLocaleString("en-US");
+const pct = (r) => `${Math.round(r * 100)}%`;
+
+/** A year of repayments from the queue, and the rate that makes against the debt. */
+const repaidPerYear = (queue, weeks) => queue * (WEEKS_PER_YEAR / weeks);
+const rateOf = (queue, weeks, debt) => repaidPerYear(queue, weeks) / debt;
+
+const BASE_RATE = rateOf(QUEUE, TERM_WEEKS, TOTAL_DEBT);
+const NEW_RATE = rateOf(QUEUE + ADDED, TERM_WEEKS, TOTAL_DEBT);
 
 export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -56,124 +69,106 @@ export default function PaceLab({ lessonId, stage, onStage, done, onComplete }) 
       lessonId={lessonId}
       done={done}
       onPass={onComplete}
-      passTitle="Lesson 2 complete."
-      passBody="You can read the pace of repayment off the redemption rate. It is the one input that moves the curve, and the protocol sets it for the whole market at once."
+      passTitle="Lesson 4 complete."
+      passBody="The redemption rate is a year of repayments from the Transmuter queue, against the total debt in the market. The queue, the term and the total debt move it, and every loan clears at it, whatever its size."
     />
   );
 }
 
 /* ── Stage 1: predict ────────────────────────────────────── */
 
-/** The three figures a setup card shows for one position. */
-function positionStats(deposit, borrow, color) {
-  return [
-    { label: "Deposited", value: fmt(deposit) },
-    { label: "Borrowed", value: fmt(borrow), color },
-    { label: "LTV", value: `${Math.round((borrow / deposit) * 100)}%`, color: "#a8adb6" },
-  ];
+function MarketTiles({ queue, weeks, debt }) {
+  return (
+    <div className={`${parts.statRow} ${parts.statRow3}`}>
+      <div className={parts.stat}>
+        <div className={styles.statLabel}>alUSD in the Transmuter</div>
+        <div className={parts.statValue} style={{ color: "#8ea9d8" }}>{fmt(queue)}</div>
+      </div>
+      <div className={parts.stat}>
+        <div className={styles.statLabel}>Term</div>
+        <div className={parts.statValue}>{weeks} weeks</div>
+      </div>
+      <div className={parts.stat}>
+        <div className={styles.statLabel}>Total debt in the market</div>
+        <div className={parts.statValue} style={{ color: "#f5c09a" }}>{fmt(debt)}</div>
+      </div>
+    </div>
+  );
 }
 
-const GUESS_SCALE = ["All repaid", "Nothing repaid"];
-
 function Predict({ onDone }) {
-  const [ana, setAna] = useState(50);
-  const [ben, setBen] = useState(50);
+  const [guess, setGuess] = useState(Math.round(BASE_RATE * 100));
   const [revealed, setRevealed] = useState(false);
 
-  const truth = useMemo(
-    () =>
-      debtRemainingPct({
-        collateral: COLLATERAL,
-        debt: ANA_DEBT,
-        yieldAnnual: YIELD,
-        redemptionAnnual: REDEMPTION,
-        months: CHECK_MONTH,
-      }),
+  const curves = useMemo(
+    () => [
+      { id: "after", label: `${pct(NEW_RATE)} a year`, color: "#5ba88a", width: 3.5, points: debtCurve({ redemptionAnnual: NEW_RATE, months: HORIZON }) },
+      { id: "before", label: `${pct(BASE_RATE)} a year`, color: "#f5c09a", width: 2, dashed: true, points: debtCurve({ redemptionAnnual: BASE_RATE, months: HORIZON }) },
+    ],
     [],
   );
 
-  const curves = useMemo(() => {
-    const shape = { collateral: COLLATERAL, yieldAnnual: YIELD, redemptionAnnual: REDEMPTION, months: HORIZON };
-    return [
-      { id: "ben", label: `Ben, borrowed ${fmt(BEN_DEBT)}`, color: "#f5c09a", width: 3.5, points: debtCurve({ ...shape, debt: BEN_DEBT }) },
-      { id: "ana", label: `Ana, borrowed ${fmt(ANA_DEBT)}`, color: "#5ba88a", width: 2, dashed: true, points: debtCurve({ ...shape, debt: ANA_DEBT }) },
-    ];
-  }, []);
-
-  const spread = Math.abs(ana - ben);
-
   return (
-    <Stage eyebrow="Stage 1 · Predict" headline="Ana and Ben open positions in the same vault on the same day.">
+    <Stage eyebrow="Stage 1 · Predict" headline="Your loan is repaid out of the Transmuter queue.">
       <Sub>
-        They deposit the same amount, and Ben borrows four times what Ana does. Both then
-        leave the position alone, and redemptions run at {Math.round(REDEMPTION * 100)}% a
-        year. Set both answers before the projection runs.
+        Savers have {fmt(QUEUE)} alUSD waiting in the Transmuter on a {TERM_WEEKS}-week term,
+        so the queue turns over twice a year and repays {fmt(repaidPerYear(QUEUE, TERM_WEEKS))}.
+        Every loan in the market adds up to {fmt(TOTAL_DEBT)}, so a year of redemptions clears{" "}
+        {pct(BASE_RATE)} of it. That share is the redemption rate.
       </Sub>
 
-      <SetupGrid>
-        <SetupCard name="Ana" color="#5ba88a" stats={positionStats(COLLATERAL, ANA_DEBT, "#5ba88a")} />
-        <SetupCard name="Ben" color="#f5c09a" stats={positionStats(COLLATERAL, BEN_DEBT, "#f5c09a")} />
-      </SetupGrid>
+      <MarketTiles queue={QUEUE} weeks={TERM_WEEKS} debt={TOTAL_DEBT} />
 
       <Panel>
-        <Question>After {CHECK_MONTH} months, how much of each loan is still outstanding?</Question>
-        <div className={styles.guessGrid}>
-          <GuessSlider label="Ana's debt left" value={ana} onChange={setAna} disabled={revealed} color="#5ba88a" scale={GUESS_SCALE} />
-          <GuessSlider label="Ben's debt left" value={ben} onChange={setBen} disabled={revealed} color="#f5c09a" scale={GUESS_SCALE} />
-        </div>
+        <Question>
+          Savers add another {fmt(ADDED)} alUSD to the queue. What redemption rate does your
+          vault show now?
+        </Question>
+        <GuessSlider
+          label="Redemption rate"
+          value={guess}
+          onChange={setGuess}
+          disabled={revealed}
+          color="#5ba88a"
+          min={0}
+          max={150}
+          step={5}
+          format={(v) => `${v}% a year`}
+          scale={["0%", "150%"]}
+        />
       </Panel>
 
       {!revealed ? (
-        <Actions aside="You can adjust either answer until you commit.">
-          <Primary onClick={() => setRevealed(true)}>Commit and run the projection</Primary>
+        <Actions aside="Nothing else in the market changes.">
+          <Primary onClick={() => setRevealed(true)}>Commit and run it</Primary>
         </Actions>
       ) : null}
 
       <div className={revealed ? styles.chartLive : styles.chartDimmed} aria-hidden={!revealed}>
         <div className={styles.chartHead}>
-          <span className={styles.microLabel}>Debt remaining, months 0 to {HORIZON}</span>
+          <span className={styles.microLabel}>Your loan left, months 0 to {HORIZON}</span>
           {!revealed ? <span className={styles.aside}>Revealed after you commit</span> : null}
         </div>
-        <Chart
-          curves={curves}
-          horizon={HORIZON}
-          highlightMonth={CHECK_MONTH}
-          markers={
-            revealed
-              ? [
-                  { month: CHECK_MONTH, pct: ana, color: "#5ba88a" },
-                  { month: CHECK_MONTH, pct: ben, color: "#f5c09a" },
-                ]
-              : []
-          }
-        />
+        <Chart curves={curves} horizon={HORIZON} highlightMonth={CHECK_MONTH} />
       </div>
 
       {revealed ? (
         <Reveal
-          title={
-            <>
-              After {CHECK_MONTH} months, both positions have{" "}
-              <strong>{Math.round(truth)}%</strong> of their debt left.
-            </>
-          }
+          title={`${pct(NEW_RATE)}. More alUSD waiting repays more debt in a year.`}
           onNext={onDone}
-          nextLabel="Find what sets the pace"
+          nextLabel="Find what else moves it"
         >
           <Body>
-            You said {ana}% for Ana and {ben}% for Ben.{" "}
-            {spread === 0
-              ? "You had them level, and so does the projection, "
-              : spread <= 5
-                ? "You had them close, and the projection has them level, "
-                : `You put them ${spread} points apart, and the projection has them level, `}
-            with the two curves exactly on top of each other. Ben borrowed four times what
-            Ana did, and after {CHECK_MONTH} months the same share of each loan remains.
+            {said(guess, Math.round(NEW_RATE * 100), (v) => `${v}%`, 5)}
+            {fmt(QUEUE + ADDED)} alUSD turning over twice a year repays{" "}
+            {fmt(repaidPerYear(QUEUE + ADDED, TERM_WEEKS))}, which is {pct(NEW_RATE)} of the{" "}
+            {fmt(TOTAL_DEBT)} owed, so your loan clears within the year. No one set that
+            figure: the rate is worked out from the queue, and it moved because savers deposited.
           </Body>
           <Body>
-            On a conventional loan, interest accrues on the balance, so a larger balance
-            takes longer to clear. Alchemix debt carries no interest at all. It clears at a
-            rate the protocol sets, and that rate is the same for everyone in the market.
+            Every loan clears at the same rate, whatever its size. Redemptions are spread across
+            positions in proportion to what each one owes, so a loan four times the size has four
+            times as much repaid, and the same share of it is left.
           </Body>
         </Reveal>
       ) : null}
@@ -184,90 +179,116 @@ function Predict({ onDone }) {
 /* ── Stage 2: explore ────────────────────────────────────── */
 
 function Explore({ onDone }) {
-  const [debt, setDebt] = useState(2_000);
-  const [yieldAnnual, setYield] = useState(YIELD);
-  const [redemptionAnnual, setRedemption] = useState(REDEMPTION);
+  const [queue, setQueue] = useState(QUEUE);
+  const [weeks, setWeeks] = useState(TERM_WEEKS);
+  const [debt, setDebt] = useState(TOTAL_DEBT);
+  const [loan, setLoan] = useState(2_000);
 
-  // Which levers the learner has tried. The reveal waits until all three have
-  // moved, so the two that leave the curve alone get pushed as well.
-  const [touched, setTouched] = useState({ debt: false, yield: false, redemption: false });
+  // Which inputs the learner has tried. The reveal waits until all four have
+  // moved, so the one that leaves the pace alone gets pushed as well.
+  const [touched, setTouched] = useState({ queue: false, weeks: false, debt: false, loan: false });
   const mark = (k) => setTouched((t) => (t[k] ? t : { ...t, [k]: true }));
 
-  const shape = { collateral: COLLATERAL, debt, yieldAnnual, redemptionAnnual };
-  const curve = useMemo(() => debtCurve({ ...shape, months: HORIZON }), [debt, yieldAnnual, redemptionAnnual]);
-  const atCheck = useMemo(() => debtRemainingPct({ ...shape, months: CHECK_MONTH }), [debt, yieldAnnual, redemptionAnnual]);
+  const rate = rateOf(queue, weeks, debt);
+  const curve = useMemo(() => debtCurve({ redemptionAnnual: rate, months: HORIZON }), [rate]);
+  const leftPct = debtRemainingPct({ redemptionAnnual: rate, months: CHECK_MONTH });
+  const left = (loan * leftPct) / 100;
 
   const tried = Object.values(touched).filter(Boolean).length;
-  const found = tried === 3;
+  const found = tried === 4;
 
   return (
-    <Stage eyebrow="Stage 2 · Explore" headline="Push each input and find the one that moves the curve.">
-      <Sub>The position is the same one Ana opened.</Sub>
+    <Stage eyebrow="Stage 2 · Explore" headline="Push each input and find what moves the rate.">
+      <Sub>
+        The same market, and a loan of your own in it. The rate is a year of repayments from the
+        queue against the total debt.
+      </Sub>
+
+      <div className={`${parts.statRow} ${parts.statRow3}`}>
+        <div className={parts.stat}>
+          <div className={styles.statLabel}>Repaid in a year</div>
+          <div className={parts.statValue} style={{ color: "#8ea9d8" }}>{fmt(repaidPerYear(queue, weeks))}</div>
+        </div>
+        <div className={parts.stat}>
+          <div className={styles.statLabel}>Redemption rate</div>
+          <div className={parts.statValue} style={{ color: "#5ba88a" }}>{pct(rate)}</div>
+        </div>
+        <div className={parts.stat}>
+          <div className={styles.statLabel}>Your loan after a year</div>
+          <div className={parts.statValue} style={{ color: "#f5c09a" }}>{fmt(left)} of {fmt(loan)}</div>
+        </div>
+      </div>
 
       <div className={styles.chartLive}>
         <div className={styles.chartHead}>
-          <span className={styles.microLabel}>Debt remaining, months 0 to {HORIZON}</span>
+          <span className={styles.microLabel}>Your loan left, months 0 to {HORIZON}</span>
         </div>
         <Chart
-          curves={[{ id: "debt", label: "Debt remaining", color: "#f5c09a", width: 3.5, points: curve }]}
+          curves={[{ id: "debt", label: "Your loan left", color: "#f5c09a", width: 3.5, points: curve }]}
           horizon={HORIZON}
           highlightMonth={CHECK_MONTH}
         />
       </div>
 
-      <Readout>
-        After {CHECK_MONTH} months, <strong>{Math.round(atCheck)}%</strong> of the debt is left.
-      </Readout>
-
       <Controls>
         <Control
-          label="Borrowed"
-          display={fmt(debt)}
-          min={1_000} max={9_000} step={500} value={debt}
-          onChange={(v) => { setDebt(v); mark("debt"); }}
-          verdict={touched.debt ? "no change" : null}
-        />
-        <Control
-          label="Vault yield"
-          display={`${(yieldAnnual * 100).toFixed(0)}% a year`}
-          min={0} max={0.2} step={0.01} value={yieldAnnual}
-          onChange={(v) => { setYield(v); mark("yield"); }}
-          verdict={touched.yield ? "no change" : null}
-        />
-        <Control
-          label="Redemption rate"
-          display={`${(redemptionAnnual * 100).toFixed(0)}% a year`}
-          min={0.2} max={2} step={0.05} value={redemptionAnnual}
-          onChange={(v) => { setRedemption(v); mark("redemption"); }}
-          verdict={touched.redemption ? "sets the pace" : null}
+          label="alUSD waiting"
+          display={fmt(queue)}
+          min={200_000} max={3_000_000} step={100_000} value={queue}
+          onChange={(v) => { setQueue(v); mark("queue"); }}
           accent
+          verdict={touched.queue ? (queue > QUEUE ? "more waiting, faster" : queue < QUEUE ? "less waiting, slower" : null) : null}
+        />
+        <Control
+          label="Term"
+          display={`${weeks} weeks`}
+          min={4} max={52} step={1} value={weeks}
+          onChange={(v) => { setWeeks(v); mark("weeks"); }}
+          verdict={touched.weeks ? (weeks < TERM_WEEKS ? "shorter term, faster" : weeks > TERM_WEEKS ? "longer term, slower" : null) : null}
+        />
+        <Control
+          label="Total debt"
+          display={fmt(debt)}
+          min={1_000_000} max={8_000_000} step={250_000} value={debt}
+          onChange={(v) => { setDebt(v); mark("debt"); }}
+          verdict={touched.debt ? (debt > TOTAL_DEBT ? "more debt, slower" : debt < TOTAL_DEBT ? "less debt, faster" : null) : null}
+        />
+        <Control
+          label="Your loan"
+          display={fmt(loan)}
+          min={1_000} max={9_000} step={500} value={loan}
+          onChange={(v) => { setLoan(v); mark("loan"); }}
+          verdict={touched.loan ? "same share left" : null}
         />
       </Controls>
 
       {found ? (
         <Reveal
-          title="The redemption rate sets the pace."
+          title="The queue, the term and the total debt set the pace. Your loan does not."
           onNext={onDone}
           nextLabel="Take the checkpoint"
         >
           <Body>
-            Redemptions repay a share of total system debt each year, and every position
-            is repaid at that rate whatever its size. One rate applied to Ana and Ben alike,
-            so their loans cleared in lockstep even though one was four times the other.
+            More alUSD waiting, or a shorter term, repays more in a year. More debt in the
+            market spreads the same repayments thinner. The size of your own loan changes how
+            much is repaid, never the share, and the vault's yield plays no part: it raises what
+            your MYT is worth.
           </Body>
           <Body>
-            What you do control is repaying by hand, which clears debt the moment you
-            choose to.
+            The rate on your vault is a projection that assumes all three stay where they are
+            today, and they move as savers deposit, as borrowers borrow and as the DAO sets the
+            term. What you control is repaying by hand, which clears debt the moment you choose
+            to.
           </Body>
         </Reveal>
       ) : (
-        <Gate label="Take the checkpoint" hint={`Move all three inputs to continue. ${tried} of 3 so far.`} />
+        <Gate label="Take the checkpoint" hint={`Move all four inputs to continue. ${tried} of 4 so far.`} />
       )}
 
       <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>
-        The third control, on a real vault: Redemption Rate, second from the left. Every
-        position in that market is repaid at this one rate, so it is the figure to read
-        before you judge how fast a loan will clear.
+        Redemption Rate, second from the left, on a real vault: this stage's figure, worked out
+        from that market's queue, term and debt. Earmarked, beside it, is the slice of a loan
+        already set aside for savers whose alUSD has matured.
       </AppShot>
     </Stage>
   );

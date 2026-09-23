@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { MAX_LTV } from "../lib/protocol";
@@ -12,22 +12,20 @@ import {
  * Lesson 3: borrowing against the deposit.
  *
  * The carried position, 10,000 USDC deposited, takes its loan here. The learner
- * guesses what the Borrow tab's Max button fills in, watches the card fill to
- * the 90% cap, then pushes the Borrow control to the cap and feels it stop.
- * The Try reveal returns the position to 5,000 borrowed, which is where
- * lesson 4 picks it up.
+ * guesses what the Borrow tab's Max button fills in and watches the card fill
+ * to the 90% cap. Try then puts the health factor to work: borrow until it
+ * reads 2.00. It used to ask the learner to push the loan to the cap, which the
+ * Learn reveal had just shown them, so the stage repeated itself and the health
+ * factor only ever appeared in a note.
  */
 
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
 const CAP = DEPOSIT * MAX_LTV;
 
-/* Once the cap has been reached, the position returns to 5,000 after the
-   control has rested at the cap for this long. Returning in the same event
-   that hit the cap would hide the cap state the stage exists to show, and
-   would fight a drag still in progress. Moving below the cap cancels the
-   pending return, so a value the learner settles on is kept. */
-const RETURN_AFTER_MS = 1_200;
+/** The health factor Try asks for, and the loan that gives it: 90% / 45% = 2.00. */
+const TARGET_HEALTH = 2;
+const TARGET_BORROW = (DEPOSIT * MAX_LTV) / TARGET_HEALTH;
 
 export default function BorrowLab({ lessonId, stage, onStage, done, onComplete }) {
   const { siteConfig } = useDocusaurusContext();
@@ -126,43 +124,24 @@ function Learn({ onDone }) {
 
 function Try({ onDone }) {
   const [borrow, setBorrow] = useState(BORROW);
-  const [reached, setReached] = useState(false);
-  const [returned, setReturned] = useState(false);
-  const [justReturned, setJustReturned] = useState(false);
-  const timer = useRef(null);
-
-  useEffect(() => () => clearTimeout(timer.current), []);
+  const [found, setFound] = useState(false);
 
   const atCap = borrow >= CAP - 1e-9;
+  const health = borrow > 0 ? (MAX_LTV * DEPOSIT) / borrow : Infinity;
+  const onTarget = Math.abs(borrow - TARGET_BORROW) < 1e-9;
 
   function onChange(raw) {
     const next = Math.min(raw, CAP);
     setBorrow(next);
-    setJustReturned(false);
-    if (returned) return;
-    if (next >= CAP - 1e-9) {
-      setReached(true);
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => {
-        setBorrow(BORROW);
-        setReturned(true);
-        setJustReturned(true);
-      }, RETURN_AFTER_MS);
-    } else {
-      clearTimeout(timer.current);
-    }
+    if (Math.abs(next - TARGET_BORROW) < 1e-9) setFound(true);
   }
 
-  const note = atCap
-    ? "Borrowing stops here. The position keeps earning."
-    : justReturned
-      ? "The loan is back at 5,000 alUSD."
-      : `In your wallet: ${money(borrow)} alUSD`;
-
   return (
-    <Stage eyebrow="Stage 2 · Try" headline="Push the borrow to the cap.">
+    <Stage eyebrow="Stage 2 · Try" headline="Borrow until the health factor reads 2.00.">
       <Sub>
-        Move the amount the way you would type it into the Borrow tab.
+        The health factor is the 90% borrowing cap divided by your LTV. It reads 1.80 at 5,000
+        borrowed and 1.00 at the cap. Move the amount the way you would type it into the Borrow
+        tab.
       </Sub>
 
       <PositionCard
@@ -173,7 +152,7 @@ function Try({ onDone }) {
         showHealth
         marks="cap"
         highlight="borrowed"
-        note={note}
+        note={atCap ? "Borrowing stops here. The position keeps earning." : `In your wallet: ${money(borrow)} alUSD`}
       />
 
       <Controls>
@@ -184,7 +163,12 @@ function Try({ onDone }) {
           value={borrow}
           onChange={onChange}
           accent
-          verdict={atCap ? "Borrowing stops at 9,000" : null}
+          verdict={
+            atCap ? "Borrowing stops at 9,000"
+            : onTarget ? "health factor 2.00"
+            : borrow > 0 ? `health factor ${health.toFixed(2)}`
+            : null
+          }
         />
       </Controls>
 
@@ -192,32 +176,31 @@ function Try({ onDone }) {
         <Note label="What arrives">
           alUSD, minted to your wallet. On the open market it trades a little under 1.00.
         </Note>
-        <Note label="Health factor">
-          The borrowing cap divided by your LTV. It reads 1.80 at 5,000 borrowed and 1.00 at
-          the cap, and the app prints it beside your LTV.
-        </Note>
       </Notes>
 
-      {reached ? (
+      {found ? (
         <Reveal
-          title="The cap is 90% of whatever you deposit."
+          title={`${money(TARGET_BORROW)} borrowed is a 45% LTV, and 90% divided by 45% is 2.00.`}
           onNext={onDone}
           nextLabel="Take the check"
         >
           <Body>
-            On 10,000 that is 9,000. On 4,000 it would be 3,600. Reaching the cap stops you
-            borrowing more, and the deposit keeps earning. The health factor on the card is
-            the same distance written as a multiple: 3.00 at 30% LTV, 1.00 at the cap.
+            Borrow more and the health factor falls toward 1.00, where borrowing stops. It
+            measures how far you sit under the borrowing cap. Liquidation sits further out, at
+            95%, and lesson 5 covers what can carry a position there.
+          </Body>
+          <Body>
+            The next lesson picks the position up at 5,000 borrowed, a health factor of 1.80.
           </Body>
         </Reveal>
       ) : (
-        <Gate label="Take the check" hint="Push the amount up to the cap to continue." />
+        <Gate label="Take the check" hint="Set the loan so the health factor reads 2.00 to continue." />
       )}
 
-      <AppShot shot={SHOTS.statsBottom} narrow={NARROW.borrowableLtv}>
-        A vault's second row of stats, with nothing borrowed yet. LTV, at the right, is
-        written against the cap, 0.00 out of 90.00%, and the 90.00% is the same on every
-        vault in the protocol. Borrowable beside it is what the cap still allows.
+      <AppShot shot={SHOTS.statsTop} narrow={NARROW.debtHealth}>
+        A vault's first row of stats. Health Factor, at the right, is the borrowing cap over
+        your LTV: 2.00 at 45%, 1.00 at the cap, and the infinity sign with nothing borrowed,
+        as this vault shows.
       </AppShot>
     </Stage>
   );

@@ -7,7 +7,7 @@ export default function Lesson() {
   return (
     <LessonPage
       lessonId="transmuter-and-peg"
-      description="An alUSD below a dollar pays whoever is willing to wait for the Transmuter to exchange it 1:1. Work out what that wait is worth."
+      description="An alUSD below a dollar pays the borrower who repays with it and the saver who waits for the Transmuter to exchange it 1:1. Their buying pulls the price back up."
       Lab={Lab}
       Wrap={Wrap}
       deeper={[
