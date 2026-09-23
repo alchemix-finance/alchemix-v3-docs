@@ -3,7 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { AGGRESSIVE_CAP, LIQ_LTV, survivableLtv } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, Gate, GuessSlider, Note, Notes,
   Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, assetAmount, money,
   said,
 } from "../kit";
@@ -216,7 +216,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move the price, then the loss inside the vault, to continue.</Hint>
+        <Gate label="Take the check" hint="Move the price, then the loss inside the vault, to continue." />
       )}
 
       <AppShot shot={SHOTS.positionBar}>

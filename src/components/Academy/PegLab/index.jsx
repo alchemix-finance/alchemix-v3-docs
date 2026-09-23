@@ -6,7 +6,7 @@ import { apiBase } from "../lib/api";
 import { annualisedFromDiscount, termReturn } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
   Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
@@ -54,6 +54,10 @@ function Predict({ price, live, onDone }) {
 
   const perTerm = termReturn(price);
   const annual = annualisedFromDiscount(price, WEEKS);
+  // The reveal quotes two decimals, so the slider moves in hundredths and the
+  // guess is judged against the same two decimals. At tenths, 11.68% sat
+  // between two positions and could not be chosen.
+  const annualShown = Math.round(annual * 100) / 100;
   const bought = STAKE / price;
 
   return (
@@ -88,8 +92,8 @@ function Predict({ price, live, onDone }) {
           color="#5ba88a"
           min={0}
           max={30}
-          step={0.1}
-          format={(v) => `${v.toFixed(1)}%`}
+          step={0.01}
+          format={(v) => `${v.toFixed(2)}%`}
           scale={["0%", "30%"]}
         />
       </Panel>
@@ -105,7 +109,7 @@ function Predict({ price, live, onDone }) {
           nextLabel="See who buys the discount"
         >
           <Body>
-            {said(guess, annual, (v) => `${v.toFixed(1)}%`, 1.5)}
+            {said(guess, annualShown, (v) => `${v.toFixed(2)}%`, 1.5)}
             Buying at {priceText(price, live)} and receiving 1.00 is a gain of{" "}
             {perTerm.toFixed(2)}% on what you put in. That gain arrives in {WEEKS} weeks,
             which is {annual.toFixed(2)}% annualized.
@@ -244,7 +248,7 @@ function Explore({ market, onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Open the other role to continue.</Hint>
+        <Gate label="Take the checkpoint" hint="Open the other role to continue." />
       )}
     </Stage>
   );

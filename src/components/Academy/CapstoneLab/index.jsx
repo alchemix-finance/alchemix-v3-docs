@@ -9,7 +9,7 @@ import {
 } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, FlowSteps, Gate, GuessSlider, Panel, Primary,
   Question, Readout, Reveal, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
@@ -18,12 +18,19 @@ import {
  *
  * No new mechanism. Two earlier answers now have to be used together, because in
  * practice they constrain each other: the discount decides how much you must
- * borrow, and the coming loss decides how much collateral that borrow needs
- * behind it.
+ * borrow, and the loss you size against decides how much collateral that borrow
+ * needs behind it.
  *
  * A learner who only sizes the borrow against the discount gets liquidated. One
  * who only picks a safe LTV comes up short of the capital. Neither half is
  * sufficient on its own.
+ *
+ * The scenario is the one every borrower faces before the first deposit: how
+ * much to put in. It used to be worded as a loss the vault was "about to
+ * report", which nobody can know in advance, and the first reviewer could not
+ * see when it would ever come up. The loss is now the learner's own choice of
+ * how much they are willing to sit through, which is what the LTV lesson
+ * before it taught them to pick.
  */
 
 const WANT = 10_000;
@@ -58,6 +65,7 @@ function Predict({ price, live, onDone }) {
   const [revealed, setRevealed] = useState(false);
 
   const borrow = borrowNeededFor(WANT, price);
+  const ceiling = survivableLtv(LOSS);
   /**
    * The deposit someone lands on who sizes against the cap and forgets the loss.
    *
@@ -69,26 +77,32 @@ function Predict({ price, live, onDone }) {
   const truth = minimumCollateral(WANT, price, LOSS);
   const naiveLtv = borrow / naive;
 
+  // The working, as three stops, shown once the learner has committed.
+  const working = [
+    { n: 1, label: "You must borrow", value: `${money2(borrow)} alUSD`, note: `${money(WANT)} divided by ${priceText(price, live)}, the price it sells at.`, tone: "#f5c09a" },
+    { n: 2, label: "Highest LTV that survives", value: pct(ceiling), note: `${pct(LIQ_LTV)} of the ${pct(1 - LOSS)} of backing left after the loss.`, tone: "#d4645a" },
+    { n: 3, label: "So you deposit", value: `${money2(truth)} USDC`, note: `${money2(borrow)} divided by ${pct(ceiling)}.`, tone: "#5ba88a" },
+  ];
+
   return (
-    <Stage
-      eyebrow="Stage 1 · Predict"
-      headline="One deposit has to raise the capital and survive the loss."
-    >
+    <Stage eyebrow="Stage 1 · Predict" headline="How much do you deposit?">
       <Sub>
-        You need {money(WANT)} of spendable capital. alUSD is trading at{" "}
-        {priceText(price, live)}{live ? " today" : ""}, and the MYT is about to report a loss of{" "}
-        {pct(LOSS)} of its backing. You get to
-        choose one number, the size of the deposit.
+        You are about to open a position, and the one number you choose is the size of the
+        deposit. You need {money(WANT)} of spendable capital, and alUSD is trading at{" "}
+        {priceText(price, live)}{live ? " today" : ""}, so the alUSD you borrow sells for
+        less than face value. You have also decided the position must survive a{" "}
+        {pct(LOSS)} loss of backing inside the vault, the most you are willing to sit
+        through.
       </Sub>
 
       <div className={own.brief}>
         <BriefRow label="Capital required" value={`${money(WANT)} USDC`} note="what you need in hand after selling" />
         <BriefRow label="alUSD price" value={priceText(price, live)} note="what the market will pay you" tone="#f5c09a" />
-        <BriefRow label="Coming loss of backing" value={pct(LOSS)} note="the vault is about to report it" tone="#d4645a" />
+        <BriefRow label="Loss to survive" value={pct(LOSS)} note="the most you are willing to sit through" tone="#d4645a" />
       </div>
 
       <Panel>
-        <Question>What is the smallest deposit that gets you the capital and survives the loss?</Question>
+        <Question>What is the smallest deposit that raises the capital and survives that loss?</Question>
         <GuessSlider
           label="Deposit"
           value={guess}
@@ -108,30 +122,32 @@ function Predict({ price, live, onDone }) {
           <Primary onClick={() => setRevealed(true)}>Commit and stress it</Primary>
         </Actions>
       ) : (
-        <Reveal
-          title={`The smallest deposit is ${money2(truth)}.`}
-          onNext={onDone}
-          nextLabel="Work both checks at once"
-        >
-          <Body>
-            {said(guess, truth, money, 100)}
-            Raising {money(WANT)} at {priceText(price, live)} means borrowing {money2(borrow)},
-            which is the capital divided by the price. The cap will let you open that
-            against {money2(naive)}, right at {pct(naiveLtv)} LTV. Take the smallest
-            deposit the cap allows and a {pct(LOSS)} loss carries you to{" "}
-            {pct(ltvAfterLoss(naiveLtv, LOSS))}, past the {pct(LIQ_LTV)} threshold.
-          </Body>
-          <Body>
-            The cap is the most the protocol will lend against a
-            vault that has not lost anything yet.
-          </Body>
-          <Body>
-            The loss sets the ceiling. At a {pct(LOSS)} loss, the highest starting LTV
-            that survives is {pct(survivableLtv(LOSS))}. The deposit has to be large enough
-            that {money2(borrow)} of debt sits at or under that LTV, which puts the floor
-            at {money2(truth)}.
-          </Body>
-        </Reveal>
+        <>
+          <FlowSteps steps={working} />
+          <Reveal
+            title={`The smallest deposit is ${money2(truth)}.`}
+            onNext={onDone}
+            nextLabel="Work both checks at once"
+          >
+            <Body>
+              {said(guess, truth, money, 100)}
+              Two steps. Raising {money(WANT)} at {priceText(price, live)} means borrowing{" "}
+              {money2(borrow)}, because each alUSD sells for {priceText(price, live)}. Then
+              the deposit has to be large enough that {money2(borrow)} of debt survives the
+              loss: liquidation starts at {pct(LIQ_LTV)} LTV, a {pct(LOSS)} loss leaves{" "}
+              {pct(1 - LOSS)} of the backing, so the debt can be at most {pct(ceiling)} of
+              the deposit to begin with. {money2(borrow)} divided by {pct(ceiling)} is{" "}
+              {money2(truth)}.
+            </Body>
+            <Body>
+              Size against the cap alone and you get liquidated: the cap lets you borrow{" "}
+              {money2(borrow)} against {money2(naive)}, at {pct(naiveLtv)} LTV, and the{" "}
+              {pct(LOSS)} loss moves that to {pct(ltvAfterLoss(naiveLtv, LOSS))}, past the
+              threshold. Forget the discount instead and you borrow only {money(WANT)}, which
+              sells for {money(WANT * price)}, short of the {money(WANT)} you need.
+            </Body>
+          </Reveal>
+        </>
       )}
 
       <AppShot shot={SHOTS.visualizer}>
@@ -225,7 +241,7 @@ function Explore({ market, onDone }) {
           onChange={setPrice}
         />
         <Control
-          label="Loss of backing"
+          label="Loss to survive"
           display={pct(loss)}
           min={0.05} max={0.3} step={0.005}
           value={loss}
@@ -246,8 +262,8 @@ function Explore({ market, onDone }) {
         >
           <Body>
             How much you must borrow is set by the price you can sell at. How much collateral
-            that borrow needs behind it is set by the loss you have to absorb, and the market
-            has no bearing on it. Divide the borrow by that LTV and you have the deposit.
+            that borrow needs behind it is set by the loss you want to survive, and the market
+            price has no bearing on it. Divide the borrow by that LTV and you have the deposit.
           </Body>
           <Body>
             Push the price down and both checks respond. A worse discount means borrowing
@@ -257,7 +273,7 @@ function Explore({ market, onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Raise the deposit until both checks turn green.</Hint>
+        <Gate label="Take the checkpoint" hint="Raise the deposit until both checks turn green." />
       )}
     </Stage>
   );

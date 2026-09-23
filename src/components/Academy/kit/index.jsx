@@ -61,6 +61,24 @@ export function Primary({ onClick, disabled, children }) {
   );
 }
 
+/**
+ * The way on from a Try stage before its condition is met: the button the
+ * reveal will carry, switched off, with the condition beside it.
+ *
+ * These stages used to show a grey one-line hint and no button at all until the
+ * learner had done what the hint asked. A tester stuck on lesson 2 read that as
+ * a page with no way forward. A button that is there and visibly off says the
+ * way forward exists and that something still has to happen first, and the
+ * hint beside it says what.
+ */
+export function Gate({ label, hint }) {
+  return (
+    <Actions aside={hint}>
+      <Primary disabled>{label}</Primary>
+    </Actions>
+  );
+}
+
 export function Arrow() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -308,6 +326,15 @@ export function FlowArrow() {
  * (`src/components/FramedImage`: hairlines overhanging each corner, a dot
  * where they cross). That was the one element on the page not drawn as a
  * card, and its rules stuck out past the column edge everything else sits on.
+ *
+ * The image is given its height as well as its width, and it is not lazy
+ * loaded. Until a lazy image has loaded it has no height of its own, and one
+ * shifted up inside a clipped window then has no box in view for the browser
+ * to test against, so it never loads: Safari showed every figure as an empty
+ * card on that account while Chrome, which reads ahead of the viewport, loaded
+ * them anyway. The frame already knows the crop's proportions, so the image's
+ * box is written down before the file arrives, and each stage mounts one
+ * figure, so lazy loading had nothing to save.
  */
 function cropStyle(shot) {
   const [W, H] = shot.size;
@@ -316,6 +343,7 @@ function cropStyle(shot) {
     frame: { aspectRatio: `${(c.w * W) / (c.h * H)}` },
     img: {
       width: `${100 / c.w}%`,
+      height: `${100 / c.h}%`,
       left: `${(-c.x / c.w) * 100}%`,
       top: `${(-c.y / c.h) * 100}%`,
     },
@@ -364,7 +392,7 @@ export function AppShot({ shot, narrow, label = "In the app", children }) {
     <figure className={parts.fig} ref={ref}>
       <div className={parts.figCard}>
         <div className={parts.figWindow} style={frame}>
-          <img className={parts.figCrop} style={img} src={shown.src} alt={shown.alt} loading="lazy" />
+          <img className={parts.figCrop} style={img} src={shown.src} alt={shown.alt} />
         </div>
         <Caption label={label}>{children}</Caption>
       </div>

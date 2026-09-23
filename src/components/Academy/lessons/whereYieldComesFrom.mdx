@@ -3,21 +3,20 @@ routes deposits into several yield sources at once. You hold one token. The DAO
 selects the strategies behind it, sets their target weights, and rebalances as
 markets shift.
 
-Every strategy carries a risk classification, and that classification sets a
-ceiling on how much of the vault it may occupy.
+Every strategy is sorted into one of three classes by risk, and the riskier the
+class, the less of the vault it may hold.
 
-- **Conservative.** Free to fill the entire vault. The class is reserved for
-  strategies that wrap and unwrap on contract, price off their own backing, and
-  carry no duration risk.
-- **Moderate.** Any single strategy is capped at 40%, and Moderate and Aggressive
-  together at 60%.
-- **Aggressive.** Any single strategy is capped at 20%, and the class at 20% in
-  total.
+- **Aggressive.** At most 20% of the vault, and no single Aggressive strategy
+  above 20%.
+- **Moderate and Aggressive together.** At most 60% of the vault, and no single
+  Moderate strategy above 40%.
+- **Conservative.** No limit, so at least 40% of the vault is always
+  Conservative. The class is reserved for strategies that wrap and unwrap on
+  contract, price off their own backing, and carry no duration risk.
 
-The second figure in each line counts that class and every riskier one. Fill
-Aggressive to 20% and Moderate has 40% of the 60% they share left to it, so the
-riskiest vault the DAO could allocate is 40% Conservative, 40% Moderate and 20%
-Aggressive.
+Fill Aggressive to 20% and Moderate has 40% of the 60% they share left to it, so
+the riskiest vault the DAO could allocate is 40% Conservative, 40% Moderate and
+20% Aggressive.
 
 The caps are checked when the DAO allocates. Because they are measured against the
 size of the vault, a run of withdrawals can leave an existing allocation above its

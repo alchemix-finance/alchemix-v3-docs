@@ -5,7 +5,7 @@ import own from "../parts.module.css";
 import { apiBase } from "../lib/api";
 import { MAX_LTV, ltvOf, withdrawable } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Note,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Note,
   Notes, Panel, PositionCard, Primary, Question, Reveal, SHOTS, Stage, Sub, money,
 } from "../kit";
 
@@ -241,7 +241,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move the repay control to continue.</Hint>
+        <Gate label="Take the checkpoint" hint="Move the repay control to continue." />
       )}
 
       <AppShot shot={SHOTS.withdrawTab}>

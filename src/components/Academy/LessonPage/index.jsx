@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "@docusaurus/Link";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import AcademyShell from "../Shell";
@@ -67,6 +67,20 @@ export default function LessonPage({
   }, [isBrowser, lessonId]);
 
   const preview = Boolean(ahead);
+
+  // Each stage starts at the top of the page. The stages replace one another
+  // in place, so a learner who pressed "Take the check" at the foot of a long
+  // Try stage was left at the foot of the checkpoint, with its question out of
+  // view above them. The first render is left alone, so a reload keeps the
+  // position the browser restored.
+  const firstStage = useRef(true);
+  useEffect(() => {
+    if (firstStage.current) {
+      firstStage.current = false;
+      return;
+    }
+    window.scrollTo(0, 0);
+  }, [stage]);
 
   // The wrap-up prose is where the lesson is actually written down. It shows
   // for a reader who is previewing, for a learner who has passed, and for a
@@ -190,17 +204,28 @@ export default function LessonPage({
               ) : null}
             </div>
 
+            {/* On the last lesson there is no next one, and the track map's
+                graduation panel is where to go, so the way back takes the
+                button. As a text link it was the one lesson that ended with
+                nothing to press. */}
             {done ? (
               <div className={styles.wrapActions}>
                 {next ? (
-                  <Link to={next.slug} className={styles.wrapNext}>
-                    Next: {next.title}
+                  <>
+                    <Link to={next.slug} className={styles.wrapNext}>
+                      Next: {next.title}
+                      <ArrowIcon />
+                    </Link>
+                    <Link to="/academy" className={styles.wrapBack}>
+                      Back to the track
+                    </Link>
+                  </>
+                ) : (
+                  <Link to="/academy" className={styles.wrapNext}>
+                    Back to the track
                     <ArrowIcon />
                   </Link>
-                ) : null}
-                <Link to="/academy" className={styles.wrapBack}>
-                  Back to the track
-                </Link>
+                )}
               </div>
             ) : null}
           </section>

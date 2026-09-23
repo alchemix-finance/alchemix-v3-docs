@@ -3,7 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import { MAX_LTV } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Note, Notes,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, Gate, GuessSlider, Note, Notes,
   Panel,
   PositionCard, Primary, Question, Reveal, NARROW, SHOTS, Stage, Sub, money, said,
 } from "../kit";
@@ -211,7 +211,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Push the amount up to the cap to continue.</Hint>
+        <Gate label="Take the check" hint="Push the amount up to the cap to continue." />
       )}
 
       <AppShot shot={SHOTS.statsBottom} narrow={NARROW.borrowableLtv}>

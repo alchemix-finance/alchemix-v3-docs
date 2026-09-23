@@ -6,7 +6,7 @@ import { debtCurve, debtRemainingPct } from "../lib/model";
 import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import useElementWidth from "../lib/useElementWidth";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
   Question, Readout, Reveal, NARROW, SHOTS, SetupCard, SetupGrid, Stage, Sub,
 } from "../kit";
 
@@ -36,7 +36,9 @@ const BEN_DEBT = 8_000;
 // different speeds.
 const YIELD = EXAMPLE_YIELD;
 const REDEMPTION = EXAMPLE_REDEMPTION;
-const HORIZON = 36;
+// Two years: at the example 70% the loan is gone by month 18, and at the
+// slowest rate the Explore stage allows, 20%, most of it is still owed at 24.
+const HORIZON = 24;
 const CHECK_MONTH = 12;
 
 const fmt = (n) => n.toLocaleString("en-US");
@@ -152,7 +154,7 @@ function Predict({ onDone }) {
           title={
             <>
               After {CHECK_MONTH} months, both positions have{" "}
-              <strong>{truth.toFixed(1)}%</strong> of their debt left.
+              <strong>{Math.round(truth)}%</strong> of their debt left.
             </>
           }
           onNext={onDone}
@@ -214,7 +216,7 @@ function Explore({ onDone }) {
       </div>
 
       <Readout>
-        After {CHECK_MONTH} months, <strong>{atCheck.toFixed(1)}%</strong> of the debt is left.
+        After {CHECK_MONTH} months, <strong>{Math.round(atCheck)}%</strong> of the debt is left.
       </Readout>
 
       <Controls>
@@ -259,7 +261,7 @@ function Explore({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move all three inputs to continue. {tried} of 3 so far.</Hint>
+        <Gate label="Take the checkpoint" hint={`Move all three inputs to continue. ${tried} of 3 so far.`} />
       )}
 
       <AppShot shot={SHOTS.statsBottom} narrow={NARROW.earmarkedRedemption}>

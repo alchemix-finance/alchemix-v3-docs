@@ -6,8 +6,8 @@ import { apiBase } from "../lib/api";
 import { annualisedFromDiscount, termReturn } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider,
-  Hint, Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money, said,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
+  Panel, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub, money, said,
 } from "../kit";
 
 /**
@@ -249,7 +249,7 @@ function Try({ market, onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move both controls to continue.</Hint>
+        <Gate label="Take the last check" hint="Move both controls to continue." />
       )}
 
       <AppShot shot={SHOTS.fixedYieldCard}>

@@ -4,7 +4,7 @@ import styles from "../lesson.module.css";
 import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import {
-  Actions, AppShot, Body, Checkpoint, Controls, GuessSlider, Hint, Panel, Primary, Question,
+  Actions, AppShot, Body, Checkpoint, Controls, Gate, GuessSlider, Panel, Primary, Question,
   Reveal, SHOTS, Stage, Sub,
 } from "../kit";
 import { MAX_AGGRESSIVE_PCT, blend, capBreach, maxModeratePct } from "../lib/myt";
@@ -64,14 +64,14 @@ function Predict({ onDone }) {
     <Stage eyebrow="Stage 1 · Predict" headline="Your collateral keeps working while the loan runs.">
       <Sub>
         Deposits are held in the Mix-Yield Token, which spreads them across strategies
-        the DAO has reviewed and classified. The Aggressive strategy below pays far more
-        than the other two.
+        the DAO has reviewed and sorted into three classes by risk. The Aggressive
+        strategy below pays far more than the other two.
       </Sub>
 
       <div className={own.strategyGrid}>
-        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Enters and exits on contract, is priced off its own backing, and withdraws on demand." tone="cons" />
-        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="It depends on an outside market to price or to exit, or it can lock withdrawals for a time." tone="mod" />
-        <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="It passes the Moderate tests and carries one factor more, such as being newer or less proven." tone="aggr" />
+        <StrategyCard klass="Conservative" apr={DEMO.conservative} note="Simple to enter and exit, priced off its own backing, and withdrawable on demand." tone="cons" />
+        <StrategyCard klass="Moderate" apr={DEMO.moderate} note="Depends on an outside market to price or to exit, or can lock withdrawals for a time." tone="mod" />
+        <StrategyCard klass="Aggressive" apr={DEMO.aggressive} note="Has Moderate's risks and one more, such as being newer or less proven." tone="aggr" />
       </div>
 
       <Panel>
@@ -102,34 +102,34 @@ function Predict({ onDone }) {
             {guess > MAX_AGGRESSIVE_PCT
               ? `Your ${guess}% is above the cap. `
               : `Your ${guess}% is within the cap. `}
-            Every strategy is classified Conservative, Moderate or Aggressive, and each
-            class carries two ceilings: one on a single strategy, and one on everything at
-            that risk level and above.
+            The riskier the class, the less of the vault it may hold.
           </Body>
 
           <div className={own.capTable}>
             <div className={own.capRow}>
-              <span className={own.capName}>Conservative</span>
-              <span className={own.capValue}>No cap</span>
-            </div>
-            <div className={own.capRow}>
-              <span className={own.capName}>Moderate</span>
-              <span className={own.capValue}>40% per strategy, 60% with Aggressive</span>
-            </div>
-            <div className={own.capRow}>
               <span className={own.capName}>Aggressive</span>
-              <span className={own.capValue}>20% per strategy, 20% in total</span>
+              <span className={own.capValue}>At most 20% of the vault</span>
+            </div>
+            <div className={own.capRow}>
+              <span className={own.capName}>Moderate and Aggressive together</span>
+              <span className={own.capValue}>At most 60% of the vault, and no single Moderate strategy above 40%</span>
+            </div>
+            <div className={own.capRow}>
+              <span className={own.capName}>Conservative</span>
+              <span className={own.capValue}>No limit, so at least 40% of the vault is always Conservative</span>
             </div>
           </div>
 
           <Body>
-            The second figure counts everything at that level and riskier. Moderate's 60%
-            covers Moderate and Aggressive together, so filling Aggressive to 20% leaves
-            Moderate 40% of the 60% they share.
+            Fill Aggressive to its 20% and the Moderate strategy can take 40%, which is what
+            is left of the 60% the two share. That mix, 40% Conservative, 40% Moderate and
+            20% Aggressive, is the riskiest vault the DAO could allocate.
           </Body>
           <Body>
-            The caps are what make a high LTV safe to borrow at. Your borrowing headroom
-            depends on what the vault underneath is allowed to hold.
+            The caps are what make a high LTV safe to borrow at. Suppose the whole Aggressive
+            slice went to zero: that is a 20% loss of backing, and a position opened low
+            enough survives it. Your borrowing headroom depends on what the vault underneath
+            is allowed to hold.
           </Body>
         </Reveal>
       )}
@@ -188,6 +188,7 @@ function Allocator({ aprs, mod, aggr, setMod, setAggr }) {
       <Controls>
         <AllocSlider
           label="Moderate" value={mod} onChange={setMod} max={80} cap={modCap} over={modOver}
+          note="the rest of the 60% shared with Aggressive"
         />
         <AllocSlider
           label="Aggressive" value={aggr} onChange={setAggr} max={40} cap={MAX_AGGRESSIVE_PCT} over={aggrOver}
@@ -197,7 +198,7 @@ function Allocator({ aprs, mod, aggr, setMod, setAggr }) {
   );
 }
 
-function AllocSlider({ label, value, onChange, max, cap, over }) {
+function AllocSlider({ label, value, onChange, max, cap, note, over }) {
   return (
     <div className={`${styles.control} ${over ? own.controlOver : ""}`}>
       <div className={styles.controlHead}>
@@ -215,7 +216,7 @@ function AllocSlider({ label, value, onChange, max, cap, over }) {
       />
       {/* The slider travels past the cap on purpose. A control that simply
           stopped would hide the rule; one that turns red teaches it. */}
-      <div className={over ? own.capWarn : own.capNote}>Cap {cap}%</div>
+      <div className={over ? own.capWarn : own.capNote}>Cap {cap}%{note ? `, ${note}` : ""}</div>
     </div>
   );
 }
@@ -241,8 +242,8 @@ function Explore({ onDone }) {
   return (
     <Stage eyebrow="Stage 2 · Explore" headline="Raise the yield until a ceiling stops you.">
       <Sub>
-        Push a class past its ceiling and the DAO could not allocate that mix. Moderate and
-        Aggressive share a ceiling, so filling one tightens the other.
+        Push a class past its cap and the DAO could not allocate that mix. Moderate and
+        Aggressive share the 60% cap, so filling one tightens the other.
       </Sub>
 
       <Allocator aprs={DEMO} mod={mod} aggr={aggr} setMod={setMod} setAggr={setAggr} />
@@ -272,10 +273,10 @@ function Explore({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>
-          Find the highest blended APR that stays inside every cap.
-          {!sawBreach ? " Push a slider past a ceiling as well." : ""}
-        </Hint>
+        <Gate
+          label="Take the checkpoint"
+          hint={`Find the highest blended APR that stays inside every cap.${sawBreach ? "" : " Push a slider past a cap as well."}`}
+        />
       )}
 
       <AppShot shot={SHOTS.strategies}>

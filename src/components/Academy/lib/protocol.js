@@ -28,9 +28,10 @@ export const LIQ_LTV = 0.95;
  * earmarking rate was 77.02%, and the capture in the borrowing tutorial shows
  * 58.61%. 70% sits in the middle of that band.
  *
- * The difference is not cosmetic. Left alone for two years, a 5,000 loan has
- * about 2,000 outstanding at 35% and about 600 at 70%, so the old figure
- * described a product that repays itself roughly half as fast as this one does.
+ * The difference is not cosmetic. Left alone for a year, a 5,000 loan has 3,250
+ * outstanding at 35% and 1,500 at 70% (the beginner track draws the rate at its
+ * definition, see `simpleCurve` in model.js), so the old figure described a
+ * product that repays itself half as fast as this one does.
  *
  * Any lesson that projects a balance reads this rather than declaring its own,
  * so the beginner and intermediate tracks cannot drift to different paces. It

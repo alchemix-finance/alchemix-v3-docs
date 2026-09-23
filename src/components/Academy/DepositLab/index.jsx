@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { apiBase } from "../lib/api";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider, Hint,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
   Note, Notes, Panel, PositionCard, Primary, Question, Readout, Reveal, SHOTS, Stage, Sub,
   money, said,
 } from "../kit";
@@ -177,7 +177,7 @@ function Try({ onDone }) {
           min={0} max={100} step={5}
           value={share}
           onChange={(v) => { setShare(v); if (v >= 100) setReachedFull(true); }}
-          verdict={full ? "The whole deposit came out at once" : null}
+          verdict={full ? "The whole deposit came out at once" : share > 0 ? "keep going to 100% to take all of it" : null}
         />
       </Controls>
 
@@ -202,7 +202,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move the rate, then withdraw all of it to continue.</Hint>
+        <Gate label="Take the check" hint="Set a rate, then push Withdraw all the way to 100% to continue." />
       )}
 
       <AppShot shot={SHOTS.withdrawTab}>

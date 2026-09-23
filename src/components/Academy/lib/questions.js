@@ -527,17 +527,17 @@ export const QUESTIONS = {
       },
       {
         prompt:
-          "An MYT holds one strategy of each class, and Aggressive is filled to its 20% ceiling. " +
+          "An MYT holds one strategy of each class, and Aggressive is filled to its 20% cap. " +
           "How much can the Moderate strategy hold?",
         options: [
-          "40%, because Moderate and Aggressive share a 60% ceiling",
-          "60%, because that is the Moderate ceiling",
+          "40%, because Moderate and Aggressive may hold at most 60% together",
+          "60%, because that is the Moderate cap",
           "20%, because Moderate can never hold more than Aggressive",
           "80%, because only Aggressive carries a cap",
         ],
         correct: 0,
         explain: [
-          "Yes. The all-strategies figure covers that class and every riskier one, so the 60% is Moderate plus Aggressive.",
+          "Yes. Moderate and Aggressive together may hold at most 60% of the vault. Aggressive already has 20% of it, so 40% is left for Moderate.",
           "The 60% is shared. Aggressive is already inside it, so 40% is what remains for Moderate.",
           "There is no rule ordering the two. Moderate is bounded by its own 40% and by the 60% it shares with Aggressive.",
           "Both carry caps. Moderate is capped at 40% on its own and at 60% together with Aggressive.",
@@ -558,7 +558,7 @@ export const QUESTIONS = {
           "Right. Aggressive fills its 20%, Moderate takes the 40% left of the shared 60%, and Conservative absorbs the rest.",
           "Aggressive is capped at 20%, and Moderate and Aggressive together at 60%. This breaches both.",
           "Aggressive is capped at 20%. Doubling it is not something the DAO could allocate.",
-          "This one is legal but not the best available: Moderate can go to 40% before the shared ceiling binds.",
+          "This one is legal but not the best available: Moderate can go to 40% before the shared 60% cap stops it.",
         ],
       },
       {

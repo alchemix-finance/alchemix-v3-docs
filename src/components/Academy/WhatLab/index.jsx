@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import { apiBase } from "../lib/api";
-import { positionCurve } from "../lib/model";
+import { simpleCurve } from "../lib/model";
 import { EXAMPLE_REDEMPTION, EXAMPLE_YIELD } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, GuessSlider,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, FlowSteps, Gate, GuessSlider,
   Hint, Legend, LineChart, Note, Notes, Panel, Primary, Question, Reveal, SHOTS, Stage,
   Sub, money, said,
 } from "../kit";
@@ -24,8 +24,10 @@ import {
  * out a term for USDC while still carrying the debt. The Transmuter is a
  * fixed-yield product and gets its own lesson.
  *
- * The falling balance is the dApp's own projection, run at an example
- * redemption rate, and nothing on screen implies a payoff date.
+ * The falling balance is the redemption rate taken at its definition, the
+ * share of the loan cleared in a year, drawn as a straight line over one year
+ * (`simpleCurve`). It runs at an example rate, and nothing on screen implies a
+ * payoff date.
  *
  * This lesson owns the direction and lesson 4 owns the quantity. It used to own
  * both: it projected the same 10,000 / 5,000 position over the same two years
@@ -36,10 +38,10 @@ import {
 
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
-const MONTHS = 24;
+const MONTHS = 12;
 
-/** The Alchemix balance, sampled weekly with a final point on month 24. */
-const ALCHEMIX = positionCurve({
+/** The Alchemix balance, sampled monthly over the year. */
+const ALCHEMIX = simpleCurve({
   collateral: DEPOSIT,
   debt: BORROW,
   yieldAnnual: EXAMPLE_YIELD,
@@ -172,7 +174,7 @@ function Try({ onDone }) {
       <Sub>
         The amber line is 5,000 borrowed from a lender that charges interest. Set the rate
         it charges. The green line is your Alchemix loan, and nothing on this screen moves
-        it. Both are left alone for two years.
+        it. Both are left alone for a year.
       </Sub>
 
       <div className={styles.chartLive}>
@@ -214,11 +216,11 @@ function Try({ onDone }) {
 
       <Notes>
         <Note label="With interest">
-          Two years at {rate}% and you owe {money(interestAt(MONTHS))}, having never made a
+          A year at {rate}% and you owe {money(interestAt(MONTHS))}, having never made a
           payment.
         </Note>
         <Note label="Alchemix">
-          Two years and you owe less than you borrowed, having never made a payment either.
+          A year and you owe less than you borrowed, having never made a payment either.
           Lesson 4 works out how much less.
         </Note>
       </Notes>
@@ -236,7 +238,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move the rate control to continue.</Hint>
+        <Gate label="Take the check" hint="Move the rate control to continue." />
       )}
     </Stage>
   );

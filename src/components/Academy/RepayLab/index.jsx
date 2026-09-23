@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "../lesson.module.css";
 import { apiBase } from "../lib/api";
-import { positionCurve } from "../lib/model";
+import { simpleCurve } from "../lib/model";
 import {
   EXAMPLE_REDEMPTION, EXAMPLE_YIELD, borrowable, withdrawable,
 } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, GuessSlider, Hint, Legend,
+  Actions, AppShot, Body, ChoiceCheckpoint, Control, Controls, Gate, GuessSlider, Hint, Legend,
   LineChart, Note, Notes, Panel, PositionCard, Primary, Question, Reveal, NARROW, SHOTS, Stage,
   Sub, money, said,
 } from "../kit";
@@ -16,14 +16,18 @@ import {
  * Lesson 4: the loan repays itself.
  *
  * The carried position, 10,000 deposited and 5,000 borrowed, is left alone for
- * two years and the card ticks through the months while both figures fall. The
+ * a year and the card ticks through the months while both figures fall. The
  * Try stage puts the three things that move a balance on the same card: time,
  * repaying by hand, and borrowing more.
  *
- * Every falling figure comes from the dApp's own projection, run at the example
- * redemption rate in `protocol.js`, and the copy says so on every screen that
- * shows one. A rate is not a schedule: the app reads the live one on the vault,
- * and nothing here implies a payoff date.
+ * Every falling figure is the redemption rate taken at its definition, the
+ * share of the loan that redemptions clear in a year, drawn as a straight line
+ * (`simpleCurve`, which says why the app's own projection is not used here).
+ * It runs at the example rate in `protocol.js`, and the copy says so on every
+ * screen that shows one. A rate is not a schedule: the app reads the live one
+ * on the vault, and nothing here implies a payoff date. One year, not two: a
+ * second year at the same rate invites compounding the rate against itself,
+ * and the first reviewer did exactly that.
  *
  * This lesson owns the number. Lesson 1 shows the same balance falling but
  * never says where it lands, so the prediction here is still a prediction.
@@ -31,16 +35,15 @@ import {
 
 const DEPOSIT = 10_000;
 const BORROW = 5_000;
-const MONTHS = 24;
+const MONTHS = 12;
 
 /**
- * The position over two years for a given opening balance, sampled weekly
- * with a final point on month 24. The Try stage re-runs it for whatever the
- * repay and borrow-more controls leave, so the deposit, the balance and the
- * chart all come from one projection.
+ * The position over the year for a given opening balance, sampled monthly.
+ * The Try stage re-runs it for whatever the repay and borrow-more controls
+ * leave, so the deposit, the balance and the chart all come from one line.
  */
 const curveFor = (debt) =>
-  positionCurve({
+  simpleCurve({
     collateral: DEPOSIT,
     debt,
     yieldAnnual: EXAMPLE_YIELD,
@@ -52,11 +55,13 @@ const curveFor = (debt) =>
 const CURVE = curveFor(BORROW);
 
 /**
- * The reveal figure, rounded to the nearest hundred so the sentence reads like
- * a person said it. Derived rather than written down, because the example rate
- * is a constant someone may reasonably change again.
+ * The reveal figure: what is left after the year, to the nearest hundred.
+ * Derived rather than written down, because the example rate is a constant
+ * someone may reasonably change again. At 70% it is 1,500, which is the
+ * arithmetic a learner who has just read "70% a year" will do.
  */
 const OWED_AT_END = Math.round(CURVE.at(-1).debt / 100) * 100;
+const CLEARED = BORROW - OWED_AT_END;
 
 /**
  * An example earmark: a fifth of the balance set aside for the next
@@ -70,14 +75,6 @@ const EARMARK_SHARE = 0.2;
 const nearestMonth = (curve, m) =>
   curve.reduce((best, p) => (Math.abs(p.month - m) < Math.abs(best.month - m) ? p : best));
 const sampleAt = (m) => nearestMonth(CURVE, m);
-
-/**
- * Where the balance stands after the first year, to the nearest hundred.
- *
- * The reveal needs it. A learner told the rate and then shown only the two-year
- * figure has no way to check the shape of the fall against what they guessed.
- */
-const OWED_AT_YEAR = Math.round(sampleAt(12).debt / 100) * 100;
 
 /** The example rate, written the way the app writes it. */
 const RATE = `${+(EXAMPLE_REDEMPTION * 100).toFixed(1)}%`;
@@ -111,7 +108,7 @@ function Learn({ onDone }) {
   const [month, setMonth] = useState(0);
 
   // The reveal appears at once; only the card waits on the tick. Reduced
-  // motion goes straight to month 24.
+  // motion goes straight to month 12.
   useEffect(() => {
     if (!revealed) return undefined;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -158,9 +155,9 @@ function Learn({ onDone }) {
       />
 
       <Panel>
-        <Question>Two years at {RATE}, and you never touch it. How much do you owe?</Question>
+        <Question>One year at {RATE}, and you never touch it. How much do you owe?</Question>
         <GuessSlider
-          label="Owed after two years"
+          label="Owed after a year"
           value={guess}
           onChange={setGuess}
           disabled={revealed}
@@ -174,18 +171,20 @@ function Learn({ onDone }) {
       </Panel>
 
       {!revealed ? (
-        <Actions aside="You do nothing at all for two years.">
+        <Actions aside="You do nothing at all for a year.">
           <Primary onClick={() => setRevealed(true)}>Check my answer</Primary>
         </Actions>
       ) : (
         <Reveal
-          title={`You owe about ${money(OWED_AT_END)}. You paid none of it.`}
+          title={`You owe ${money(OWED_AT_END)}. You paid none of it.`}
           onNext={onDone}
           nextLabel="See what moves it"
         >
           <Body>
             {said(guess, OWED_AT_END, money, 250)}
-            Two years went by and you never made a payment. The rate applies to whatever is still owed, so the balance falls fastest early on: about {money(OWED_AT_YEAR)} was outstanding after the first year, and the second year took most of what was left, out of collateral that kept earning the whole time.
+            A year went by and you never made a payment. At {RATE}, redemptions cleared{" "}
+            {RATE} of the {money(BORROW)} you borrowed, which is {money(CLEARED)}, out of
+            collateral that kept earning the whole time.
           </Body>
           <Body>
             The band inside the bar is <strong>earmarked</strong> debt: the slice already set
@@ -342,7 +341,7 @@ function Try({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Run the months forward, then repay or borrow more, to continue.</Hint>
+        <Gate label="Take the check" hint="Run the months forward, then repay or borrow more, to continue." />
       )}
 
       <AppShot shot={SHOTS.repayTab}>

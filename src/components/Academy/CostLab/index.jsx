@@ -6,7 +6,7 @@ import { apiBase } from "../lib/api";
 import { borrowNeededFor, discountCost } from "../lib/protocol";
 import { priceText, useAlUsdPrice } from "../lib/useAlUsdPrice";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
   Question, Readout, Reveal, NARROW, SHOTS, Stage, Sub, money, money2, said,
 } from "../kit";
 
@@ -75,7 +75,9 @@ function Predict({ price, live, onDone }) {
           color="#f5c09a"
           min={4_000}
           max={5_500}
-          step={10}
+          /* The price is quoted to three decimals, so 5,000 times it is a
+             multiple of 5. A step of 10 left the exact answer off the slider. */
+          step={5}
           format={(v) => money(v)}
           scale={["4,000", "5,500"]}
         />
@@ -203,7 +205,7 @@ function Explore({ market, onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move both controls to continue.</Hint>
+        <Gate label="Take the checkpoint" hint="Move both controls to continue." />
       )}
     </Stage>
   );

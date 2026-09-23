@@ -59,7 +59,7 @@ function sourceFiles() {
 
 const PROSE = /<(Body|Sub|Hint|Question|Readout|Note)\b[^>]*>([\s\S]*?)<\/\1>/g;
 const PROPS = new RegExp(
-  '\\b(headline|title|passBody|passTitle|aside|note|detail|verdict|blurb|description|controlLabel|label|value|text)\\s*[=:]\\s*"([^"]{10,})"',
+  '\\b(headline|title|passBody|passTitle|aside|hint|note|detail|verdict|blurb|description|controlLabel|label|value|text)\\s*[=:]\\s*"([^"]{10,})"',
   "g",
 );
 const REVEAL = /className=\{styles\.(revealBody|revealHead|sub|headline|hint|question|readout|missBox|passHead)\}>([\s\S]*?)</g;

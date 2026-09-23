@@ -175,7 +175,7 @@ export const INTERMEDIATE = [
     slug: "/academy/sizing-a-position",
     app: "Borrow · Visualizer",
     title: "Sizing a position",
-    blurb: "Raise the cash you need from a position that survives the loss you expect.",
+    blurb: "How much to deposit: enough to raise the cash you need, and enough to survive a loss you can live with.",
     minutes: 10,
     ready: true,
     track: "intermediate",

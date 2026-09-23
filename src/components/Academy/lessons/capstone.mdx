@@ -1,15 +1,16 @@
 import SystemLoop from "../SystemLoop";
 
-A deposit big enough to raise the capital you need can still be too small to
-survive the loss you expect. Both have to hold at once.
+Every position starts with the same decision: how much to deposit. A deposit big
+enough to raise the capital you need can still be too small to survive a loss you
+want to be able to sit through. Both have to hold at once.
 
 **How much you must borrow** is set by the price you can sell at. Raising a given
 amount of spendable capital means borrowing that amount divided by the market
 price.
 
-**How much collateral that borrow needs behind it** is set by the loss you have to
-be able to absorb. The highest starting LTV that survives a loss is 95% of whatever
-backing remains.
+**How much collateral that borrow needs behind it** is set by the loss you want
+the position to survive. The highest starting LTV that survives a loss is 95% of
+whatever backing remains.
 
 Put together, the smallest deposit that does both is:
 

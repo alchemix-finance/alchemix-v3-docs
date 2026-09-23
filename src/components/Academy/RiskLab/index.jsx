@@ -5,7 +5,7 @@ import own from "./styles.module.css";
 import { apiBase } from "../lib/api";
 import { LIQ_LTV, MAX_LTV, ltvAfterLoss, survivableLtv, survivesLoss } from "../lib/protocol";
 import {
-  Actions, AppShot, Body, Checkpoint, Control, Controls, GuessSlider, Hint, Panel, Primary,
+  Actions, AppShot, Body, Checkpoint, Control, Controls, Gate, GuessSlider, Panel, Primary,
   Question, Readout, Reveal, NARROW, SHOTS, Stage, Sub,
 } from "../kit";
 
@@ -309,7 +309,7 @@ function Explore({ onDone }) {
           </Body>
         </Reveal>
       ) : (
-        <Hint>Move both controls. Push the LTV up until the position fails.</Hint>
+        <Gate label="Take the checkpoint" hint="Move both controls. Push the LTV up until the position fails." />
       )}
 
       <AppShot shot={SHOTS.statsTop} narrow={NARROW.debtHealth}>
