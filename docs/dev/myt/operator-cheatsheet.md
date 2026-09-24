@@ -21,7 +21,7 @@ Quick reference for admins, curators, allocators, and sentinels operating an MYT
 There are four contract layers:
 
 - **MYT Vault** (Morpho V2) – holds funds, enforces caps, manages roles
-- **Curator Contract** – manages strategy registration and cap configuration (one per chain, shared by both MYTs)
+- **Curator Contract** – manages strategy registration and cap configuration (one per chain, shared by the MYTs on that chain)
 - **Allocator Contract** – moves funds between the vault and strategy adapters (one per MYT)
 - **MYT Strategy** – individual yield strategy adapters (one per yield source per MYT)
 
@@ -31,11 +31,12 @@ Each layer has its own role system. Holding a role on one contract does **not** 
 
 | Address | Roles Held |
 |---|---|
-| **DAO Multisig** | MYT Owner · MYT Sentinel · Curator Admin · Curator Operator · Allocator Admin · Allocator Operator · Strategy Owner |
+| **v3 admin Safe** | MYT Owner · Curator Admin · Curator Operator · Allocator Admin · Allocator Operator · Strategy Owner (every adapter) |
+| **DAO treasury multisig** | MYT Sentinel · Alchemist Guardian · Protocol fee receiver |
 | **Alchemix Association** | MYT Sentinel |
 | **EOA** | MYT Sentinel |
 
-> **Note:** The DAO Multisig is **not** set as a direct Allocator on either MYT vault. Allocator-level MYT functions like `setMaxRate()` must be called via the Allocator Contract's proxy mechanism (see [Proxy Forwarding](#proxy-forwarding)).
+> **Note:** The admin Safe is **not** set as a direct Allocator on either MYT vault. Allocator-level MYT functions are called through the Allocator Contract: `allocate`, `deallocate`, the swap variants and `setLiquidityAdapter` by the admin or an operator, and `setMaxRate` by the admin. Only vault functions the Allocator does not wrap need [proxy forwarding](#proxy-forwarding).
 
 <iframe src="/diagrams/myt-operator-diagram.html" width="100%" height="1100" scrolling="no" style={{border:'none',display:'block'}} onLoad={(e)=>setTimeout(()=>{try{e.target.style.height=e.target.contentWindow.document.body.scrollHeight+'px'}catch(x){}},300)} />
 
@@ -72,7 +73,7 @@ All amounts are `uint256`.
 
 ## Liquidity Adapter
 
-The liquidity adapter is the default strategy the vault uses to service user deposits and withdrawals. It is set via `setLiquidityAdapterAndData()` (Allocator-level, via proxy).
+The liquidity adapter is the default strategy the vault uses to service user deposits and withdrawals. It is set with `setLiquidityAdapter(adapter, data)` on the Allocator Contract (admin or operator), which calls the vault's `setLiquidityAdapterAndData`.
 
 **Critical:** The liquidity adapter **must** be a strategy that supports direct (non-swap) deposit and withdrawal paths. Swap-only strategies (e.g., sfrxETH) cannot be set as the liquidity adapter, because user `withdraw()`/`redeem()` calls do not pass swap calldata. If no strategy on a given chain supports direct paths, leave the liquidity adapter unset; the vault will operate with idle assets only.
 
@@ -101,26 +102,23 @@ For a detailed walkthrough of the unwrap+swap path, see the [deallocateWithUnwra
 
 ## Proxy Forwarding
 
-The Curator and Allocator contracts inherit from `PermissionedProxy`, which allows the admin to forward arbitrary calls to the MYT vault via `proxy()`. This is needed for MYT functions that are not natively wrapped by the utility contracts.
+The Curator and Allocator contracts inherit from `PermissionedProxy`. The admin enables a vault function selector with `setPermissionedCall(selector, true)`, and an operator can then forward a call to the MYT vault with `proxy(vault, data)`. This is only needed for MYT functions that the utility contracts do not wrap natively.
 
-**Allocator proxy candidates:**
+**Natively wrapped (no proxy needed):** the Allocator exposes `setMaxRate(uint256)` (admin only) and `setLiquidityAdapter(address, bytes)` (admin or operator), which calls the vault's `setLiquidityAdapterAndData`. See the [Allocator reference](/dev/myt/alchemist-allocator-contract).
 
-- `setMaxRate(uint256)` – [Morpho Vaults V2 docs](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#setmaxrate)
-- `setLiquidityAdapterAndData(address, bytes)` – [Morpho Vaults V2 docs](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#setliquidityadapteranddata)
+**Curator proxy:** Any [Morpho V2 curator function](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#curator-functions) not already wrapped by the AlchemistCurator contract (for example the timelock functions) can be forwarded via `proxy()` after the admin has enabled its selector.
 
-**Curator proxy:** Any [Morpho V2 curator function](https://docs.morpho.org/get-started/resources/contracts/morpho-vaults-v2/#curator-functions) not already wrapped by the AlchemistCurator contract can be forwarded via `proxy()` after whitelisting.
-
-### Example: calling `setMaxRate()` via proxy
+### Example: forwarding an unwrapped call
 
 ```solidity
-// Step 1: Whitelist the setMaxRate selector on the proxy
-allocator.setPermittedCall(0xa69fc423, true);  // 0xa69fc423 = setMaxRate(uint256) selector
+// Step 1 (admin): enable the selector on the proxy
+curator.setPermissionedCall(selector, true);
 
-// Step 2: Forward the call to the vault
-allocator.proxy(abi.encodeWithSelector(bytes4(0xa69fc423), newMaxRate));
+// Step 2 (operator): forward the call to the vault
+curator.proxy(mytVault, abi.encodeWithSelector(selector, args));
 ```
 
-> Only the **admin** on the Allocator/Curator contract can call `setPermittedCall()` and `proxy()`.
+> `setPermissionedCall()` is admin-only. `proxy()` is operator-only; the admin can use it only if it is also set as an operator.
 
 ---
 
@@ -130,9 +128,9 @@ allocator.proxy(abi.encodeWithSelector(bytes4(0xa69fc423), newMaxRate));
 |---|---|---|
 | Reverts with `"PD"` on Allocator Contract | Caller is not admin or operator on the Allocator Contract | Allocator Admin calls `setOperator(yourAddress, true)` |
 | Reverts with `"PD"` on Curator Contract | Caller is not admin or operator on the Curator Contract | Curator Admin calls `setOperator(yourAddress, true)` |
-| `EffectiveCap` revert on allocation | Allocation would exceed absolute, relative, or risk cap | Raise caps via Curator Contract admin functions, or reduce allocation amount |
+| `EffectiveCap` revert on allocation | Allocation would exceed absolute, relative, or risk cap | Raise the absolute or relative cap via the Curator admin (submit, then execute), raise the risk-class cap via the StrategyClassifier admin, or reduce the amount. Local risk caps bind operators only |
 | `StrategyAllocationPaused` on allocate | Strategy killSwitch is enabled | Strategy Owner calls `setKillSwitch(false)` on the MYT Strategy contract |
 | `ActionNotSupported` on allocate/deallocate | Using a route not configured for this strategy | Check the documentation for which direct / swap paths are enabled for this strategy |
-| Can't call `setMaxRate()` on MYT | Not a native Allocator Contract function | Use proxy forwarding: whitelist the selector, then call `proxy()` (see above) |
-| Can't call `setCurator()` or `setIsSentinel()` | Caller is not the MYT Owner | Must be called by the DAO Multisig as MYT Owner directly on the MYT |
+| Can't call `setMaxRate()` | Caller is not the Allocator admin, or is calling the vault directly | Allocator admin calls `allocator.setMaxRate(rate)` |
+| Can't call `setCurator()` or `setIsSentinel()` | Caller is not the MYT Owner | Must be called by the v3 admin Safe as MYT Owner directly on the MYT |
 | Timelocked function won't execute | `submit()` was not called first | Call the corresponding `submit*` function first, then the execution function |

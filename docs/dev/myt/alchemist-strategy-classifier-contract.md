@@ -19,7 +19,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details>
   <summary>globalCap</summary>
 
-  - **Description** - Max combined allocation across all strategies of this risk class.
+  - **Description** - Max combined allocation across all strategies of this risk class, expressed as a WAD percentage of the vault's `totalAssets` (1e18 = 100%).
   - **Type** - `uint256`
   - **Used By**
     - `getGlobalCap()`
@@ -27,7 +27,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details>
   <summary>localCap</summary>
 
-  - **Description** - Max allocation for a single strategy in the risk class.
+  - **Description** - Max allocation for a single strategy in the risk class, expressed as a WAD percentage of the vault's `totalAssets` (1e18 = 100%).
   - **Type** - `uint256`
   - **Used By**
     - `getIndividualCap()`
@@ -59,11 +59,12 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details>
   <summary>riskClasses</summary>
 
-  - **Description** - Mapping from riskLevel ID to a Risk Class. Initialized on deployment with three default risk levels (0 = Low, 1 = Medium, 2 = High), each with caps set to `type(uint256).max`.
+  - **Description** - Mapping from riskLevel ID to a Risk Class. The constructor seeds three default risk levels, each as a WAD percentage of vault `totalAssets` (1e18 = 100%): 0 = Low with `globalCap` 1e18 and `localCap` 1e18 (100% / 100%), 1 = Medium with `globalCap` 4e17 and `localCap` 25e16 (40% global / 25% local), and 2 = High with `globalCap` 1e17 and `localCap` 1e17 (10% / 10%). The admin can change any of these with `setRiskClass`.
   - **Type** - `mapping(uint8 => RiskClass)`
   - **Updated By**
     - [`setRiskClass(uint8 classId, uint256 globalCap, uint256 localCap)`](/dev/myt/alchemist-strategy-classifier-contract#RiskClassManagement_setRiskClass)
   - **Read By**
+    - `riskClasses(uint8)` - public getter, returns `(uint256 globalCap, uint256 localCap)`
     - [`getGlobalCap(uint8 riskLevel)`](/dev/myt/alchemist-strategy-classifier-contract#ReadingState_getGlobalCap)
     - [`getIndividualCap(uint256 strategyId)`](/dev/myt/alchemist-strategy-classifier-contract#ReadingState_getIndividualCap)
 </details>
@@ -75,6 +76,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
   - **Updated By**
     - [`assignStrategyRiskLevel(uint256 strategyId, uint8 riskLevel)`](/dev/myt/alchemist-strategy-classifier-contract#RiskClassManagement_assignStrategyRiskLevel)
   - **Read By**
+    - `strategyRiskLevel(uint256)` - public getter, returns `uint8`
     - [`getStrategyRiskLevel(uint256 strategyId)`](/dev/myt/alchemist-strategy-classifier-contract#ReadingState_getStrategyRiskLevel)
     - [`getIndividualCap(uint256 strategyId)`](/dev/myt/alchemist-strategy-classifier-contract#ReadingState_getIndividualCap)
 </details>
@@ -112,8 +114,8 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 
   - **Description** - Sets caps for a given risk class.  
     - `@param classId` - The risk class ID.  
-    - `@param globalCap` - Max combined allocation for all strategies in this class.  
-    - `@param localCap` - Max allocation for a single strategy in this class.  
+    - `@param globalCap` - Max combined allocation for all strategies in this class, as a WAD percentage of vault `totalAssets` (1e18 = 100%).  
+    - `@param localCap` - Max allocation for a single strategy in this class, as a WAD percentage of vault `totalAssets` (1e18 = 100%).  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
@@ -141,18 +143,20 @@ This contract defines risk classes and their caps, and maps each strategy to a r
 <details id="ReadingState_getIndividualCap">
   <summary>getIndividualCap(uint256 strategyId)</summary>
 
-  - **Description** - Returns the local cap for the strategy's assigned risk class. The local cap is the max allocation for a single strategy in the risk class.
+  - **Description** - Returns the local cap for the strategy's assigned risk class. The local cap is the max allocation for a single strategy in the risk class, as a WAD percentage of the vault's `totalAssets` (1e18 = 100%).
     - `@param strategyId` - The strategy identifier.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view
+  - **Returns** - `uint256` - the local cap, WAD-scaled (1e18 = 100%)
 </details>
 <details id="ReadingState_getGlobalCap">
   <summary>getGlobalCap(uint8 riskLevel)</summary>
 
-  - **Description** - Returns the global cap for the specified risk class. The global cap is the max combined allocation for strategies in a risk class.
+  - **Description** - Returns the global cap for the specified risk class. The global cap is the max combined allocation for strategies in a risk class, as a WAD percentage of the vault's `totalAssets` (1e18 = 100%).
     - `@param riskLevel` - Risk class ID.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view
+  - **Returns** - `uint256` - the global cap, WAD-scaled (1e18 = 100%)
 </details>
 <details id="ReadingState_getStrategyRiskLevel">
   <summary>getStrategyRiskLevel(uint256 strategyId)</summary>
@@ -161,6 +165,7 @@ This contract defines risk classes and their caps, and maps each strategy to a r
     - `@param strategyId` - The strategy identifier.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - view
+  - **Returns** - `uint8` - the assigned risk level (0 = Low, 1 = Medium, 2 = High by default; unassigned strategies return 0)
 </details>
 
 ## Events

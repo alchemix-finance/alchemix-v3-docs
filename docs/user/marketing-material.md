@@ -130,6 +130,18 @@ The standalone Alchemix mark, for avatars, favicons, and tight spaces where the 
     </div>
   </div>
 
+  <div>
+    <div style={{fontWeight: 600, marginBottom: '0.5rem'}}>alUSDb</div>
+    <div style={{marginBottom: '0.75rem'}}>
+      <img src="/img/BrandAssets/Svg/alUSDb_01.svg" alt="alUSDb logo" style={{maxHeight: '80px', display: 'block'}} />
+    </div>
+    <div>
+      {/* PNG placeholder: add static/img/BrandAssets/Png/alUSDb_01.png, then uncomment the button below */}
+      {/* <a class="button button--primary button--sm" href="/img/BrandAssets/Png/alUSDb_01.png" download="alUSDb_01.png" style={{marginRight: '0.5rem'}}>PNG</a> */}
+      <a class="button button--secondary button--sm" href="/img/BrandAssets/Svg/alUSDb_01.svg" download="alUSDb_01.svg">SVG</a>
+    </div>
+  </div>
+
 </div>
 
 ### Mix-Yield Token Logos

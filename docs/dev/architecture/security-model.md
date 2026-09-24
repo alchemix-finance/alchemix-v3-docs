@@ -14,19 +14,19 @@ Alchemix V3 uses a layered approach to access control, emergency response, and r
 
 ### Alchemist
 
-The Alchemist uses a two-step admin transfer pattern (`setPendingAdmin` + `acceptAdmin`) to prevent accidental or malicious ownership transfers. Admin functions control protocol parameters like collateralization ratios, fees, and contract references. Guardians are a secondary role set by the admin. They can pause deposits and loans but cannot change protocol parameters, access funds, or unpause without the admin.
+The Alchemist uses a two-step admin transfer pattern (`setPendingAdmin` + `acceptAdmin`) to prevent accidental or malicious ownership transfers. Admin functions control protocol parameters like collateralization ratios, fees, and contract references. Guardians are a secondary role set by the admin. They can pause and unpause deposits and loans but cannot change protocol parameters or access funds.
 
-### MYT Management
+### MYT management
 
 The MYT management layer (AlchemistCurator and AlchemistAllocator) inherits from PermissionedProxy, which defines two roles: admin and operator. The admin manages the operator set and controls which function selectors operators can forward via `proxy()`. Operators handle day-to-day operations like allocating funds between strategies.
 
 The Curator uses the admin role for cap adjustments and the operator role for strategy additions and removals. The Allocator allows both admins and operators to move funds, but operators are further constrained by local risk caps from the StrategyClassifier. The admin can allocate up to the full cap limits, while operators are capped per-strategy based on their risk classification.
 
-Individual MYTStrategy contracts use an `onlyOwner` pattern (via OpenZeppelin's Ownable) for configuration like setting the kill switch, managing whitelisted allocators, and claiming rewards.
+Individual MYTStrategy contracts use an `onlyOwner` pattern (via OpenZeppelin's Ownable) for configuration like setting the kill switch, adjusting slippage tolerance, rescuing stray tokens, and claiming rewards.
 
 ### Timelocks
 
-Cap increases and strategy additions/removals on the MYT vault go through the Morpho VaultV2 timelock system. The Curator must first submit a change, wait for the timelock period to elapse, then execute it in a second transaction. Cap decreases bypass the timelock since they only restrict exposure, never expand it.
+Cap increases and strategy additions/removals on the MYT vault go through the Morpho VaultV2 timelock system. The Curator submits a change in one transaction and executes it in a second, and both must carry the same parameters. Every timelock duration is currently set to zero, so no waiting period separates the two steps. The two-step flow still provides a double confirmation: a change only takes effect if it is executed exactly as it was submitted. Durations are set per function and can be raised on-chain through `increaseTimelock`. Lowering one again is subject to whatever duration is currently in place. Cap decreases bypass the timelock since they only restrict exposure, never expand it.
 
 ## Emergency response
 
@@ -34,9 +34,9 @@ Cap increases and strategy additions/removals on the MYT vault go through the Mo
 
 The Alchemist has two independent pause flags: `depositsPaused` and `loansPaused`. Both can be toggled by the admin or any active guardian. Pausing deposits prevents new collateral from entering the system. Pausing loans prevents new borrowing. Neither pause affects withdrawals, repayments, or liquidations. Users can always exit and positions can always be made healthy.
 
-### MYT Kill Switch
+### MYT kill switch
 
-Each MYT strategy has a `killSwitch` that can be toggled by the strategy owner. When enabled, allocations to the strategy revert and reward claims are blocked. Deallocations are not affected, which means funds can always be pulled out of a strategy in emergency mode. The kill switch is a circuit breaker, but not an unwinder. It stops new capital from flowing in but doesn't automatically withdraw anything.
+Each MYT strategy has a `killSwitch` that can be toggled by the strategy owner. When enabled, allocations to the strategy revert and reward claims are blocked. Deallocations are not affected, which means funds can always be pulled out of a strategy in emergency mode. The kill switch is a circuit breaker. It stops new capital from flowing in but doesn't automatically withdraw anything.
 
 ### Transmuter
 
@@ -46,9 +46,9 @@ The Transmuter has no pause mechanism. Positions continue to vest regardless of 
 
 ### Collateralization
 
-The Alchemist enforces multiple collateralization layers. The `minimumCollateralization` is the per-instance ratio below which positions can be liquidated. The `globalMinimumCollateralization` is a protocol-wide floor that the per-instance minimum can never drop below. The `collateralizationLowerBound` defines the lowest ratio at which deposits can still be made. Once the system reaches this threshold, new deposits are rejected. The `liquidationTargetCollateralization` is the ratio that liquidations restore positions to, which must always be at or above the minimum.
+The Alchemist enforces several collateralization parameters. `minimumCollateralization` is the borrowing limit: `mint` and `withdraw` revert if they would leave a position below it (the inverse of the 90% maximum LTV). `collateralizationLowerBound` is the liquidation threshold: a position whose collateral to debt ratio is at or below it is unhealthy and can be liquidated by anyone (the inverse of the 95% liquidation LTV). `globalMinimumCollateralization` is a system-wide ratio: when the Alchemist as a whole is below it, positions that are already liquidatable are liquidated in full instead of partially, and the per-position minimum cannot be set above it. `liquidationTargetCollateralization` is the ratio a partial liquidation restores a position to, and must be at or above the minimum.
 
-### MYT Cap Enforcement
+### MYT cap enforcement
 
 The AlchemistAllocator validates allocations against four layers of caps before any capital moves into a strategy: the vault's absolute cap (max assets per strategy), the vault's relative cap (max percentage of total vault assets), the global risk cap (max combined allocation across all strategies in a risk class), and the local risk cap (per-strategy limit, applied only to operators). Deallocations bypass cap validation entirely since removing funds can only reduce risk.
 
@@ -58,4 +58,4 @@ The Transmuter accounts for bad debt when settling claims. If the Alchemist's to
 
 ### Fee vaults
 
-The AlchemistETHVault and AlchemistTokenVault escrow funds outside of the Alchemist that can be drawn on to cover obligations to liquidators and redeemers when the Alchemist's own balance is insufficient. Only authorized addresses (the Alchemist and the owner) can withdraw from these vaults.
+The AlchemistETHVault and AlchemistTokenVault escrow funds outside of the Alchemist that the Alchemist draws on to pay liquidator fees when a position's collateral or the Alchemist's own balance cannot cover them. Only authorized addresses (the Alchemist and the owner) can withdraw from these vaults.

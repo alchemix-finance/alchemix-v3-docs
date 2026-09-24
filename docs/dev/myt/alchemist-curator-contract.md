@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 ## Description
 
-AlchemistCurator is the governance and configuration contract for MYT vaults. It allows admins and operators to register or remove strategy adapters for a given MYT and to adjust their absolute and relative caps. In short, it defines which strategies exist within the MYT and how much capital each can hold.
+AlchemistCurator is the governance and configuration contract for MYT vaults. Operators register or remove strategy adapters for a given MYT. The admin adjusts their absolute and relative caps and submits vault-level settings such as allocator permissions, the force-deallocate penalty, and the performance fee. In short, it defines which strategies exist within the MYT and how much capital each can hold. The `onlyOperator` check reads the `operators` mapping only, so the admin can call operator functions only if it is also enabled as an operator.
 
 **Note:** AlchemistCurator inherits from PermissionedProxy, which provides it's access control system for operator roles, and the selector allowlist used to control which calls can be forwarded. The admin role is set using the same pending/accept admin system as the Alchemist and is inherited from PermissionedProxy. For details on the operator role and logic, see PermissionedProxy.
 
@@ -23,9 +23,11 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Type** - `mapping(address => address)`  
   - **Used By**
     - [`_vault(address adapter)`](/dev/myt/alchemist-curator-contract#InternalOperations_vault)
-    - [`_setStrategy(address adapter, address myt, bool remove)`](/dev/myt/alchemist-curator-contract#InternalOperations_setStrategy)
+    - [`_addStrategy(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_addStrategy)
+    - [`_removeStrategy(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_removeStrategy)
   - **Updated By**
-    - `setStrategy(address adapter, address myt, bool remove)` - cannot use the zero address for the adapter or myt
+    - [`_addStrategy(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_addStrategy) - via `setStrategy(adapter, myt)`, which rejects the zero address for either argument
+    - [`_removeStrategy(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#InternalOperations_removeStrategy) - via `removeStrategy(adapter, myt)`, which deletes the entry
   - **Read By**
     - `adapterToMYT(address)`
 </details>
@@ -44,6 +46,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 ## Functions
 
 ### Admin Actions
+
+> Functions guarded by the onlyAdmin modifier, inherited from PermissionedProxy. Calls from any other address revert with `"PD"`. The exception is `acceptAdminOwnership()`, which is restricted to the current `pendingAdmin`.
 
 <details id="AdminActions_transferAdminOwnerShip">
   <summary>transferAdminOwnerShip(address _newAdmin)</summary>
@@ -65,31 +69,34 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Reverts**  
     - With `"PD"` if `msg.sender` is not the current `pendingAdmin`.
   - **Emits**  
-    - [`AdminChanged(address newAdmin)`](/dev/myt/alchemist-curator-contract#Events_AdminChanged)  
+    - [`AdminUpdated(address admin)`](/dev/myt/alchemist-curator-contract#Events_AdminUpdated)  
 </details>
 <details id="AdminActions_submitSetAllocator">
   <summary>submitSetAllocator(address myt, address allocator, bool v)</summary>
 
   - **Description** - Queues a change to a vault's allocator permissions via the vault's timelock mechanism. Encodes `IVaultV2.setIsAllocator(allocator, v)` and submits it directly to the specified MYT vault.<br/><br/>
-    Unlike other submit functions in this contract, there is no corresponding execution function here. Once the vault's timelock elapses, anyone can call `setIsAllocator` directly on the MYT vault to finalize the change.
+    Like `submitSetForceDeallocatePenalty`, `submitSetPerformanceFeeRecipient`, and `submitSetPerformanceFee`, this function has no corresponding execution function in the curator. Once the submission is executable on the vault, anyone can call `setIsAllocator` directly on the MYT vault with matching calldata to finalize the change.
     - `@param myt` - The MYT vault address to submit the allocator change to.
     - `@param allocator` - The address to set or unset as a vault allocator.
     - `@param v` - `true` to enable as an allocator, `false` to disable.
   - **Visibility Specifier** - external
   - **State Mutability Specifier** - nonpayable
-  - **Reverts** - none
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
   - **Emits**
     - [`SubmitSetAllocator(address allocator, bool v)`](/dev/myt/alchemist-curator-contract#Events_SubmitSetAllocator)
 </details>
 <details id="AdminActions_decreaseAbsoluteCap">
   <summary>decreaseAbsoluteCap(address adapter, uint256 amount)</summary>
 
-  - **Description** - Delegates to the internal [`_decreaseAbsoluteCap(adapter, id, amount)`](/dev/myt/alchemist-curator-contract#InternalOperations_decreaseAbosluteCap) to immediately lowers the absolute cap for a given strategy on its MYT vault. The absolute cap is the maximum quanitity of underlying assets that may be allocated to the strategy.
+  - **Description** - Delegates to the internal [`_decreaseAbsoluteCap(adapter, id, amount)`](/dev/myt/alchemist-curator-contract#InternalOperations_decreaseAbsoluteCap) to immediately lowers the absolute cap for a given strategy on its MYT vault. The absolute cap is the maximum quanitity of underlying assets that may be allocated to the strategy.
     - `@param adapter` - The strategy adapter address.
-    - `@param amount` - The amount denominated in underlying assets to decrease the absolute cap by.
+    - `@param amount` - The new absolute cap, denominated in underlying asset units. Must not be higher than the current absolute cap.
   - **Visibility Specifier** - external
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `AbsoluteCapNotDecreasing()` - if the new cap is higher than the previous. Propgated from the MorphoV2 vault call.
   - **Emits**
     - [`DecreaseAbsoluteCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_DecreaseAbsoluteCap)
@@ -104,6 +111,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `RelativeCapNotDecreasing()` - if the new cap is higher than the previous. Propgated from the MorphoV2 vault call.
   - **Emits**
     - [`DecreaseRelativeCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_DecreaseRelativeCap)
@@ -114,10 +123,12 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Description** - Executes a previously submitted and timelocked absolute cap increase for a given strategy on its MYT vault. Must be called after [`submitIncreaseAbsoluteCap()`](/dev/myt/alchemist-curator-contract#AdminActions_submitIncreaseAbsoluteCap) has been called and the vault's timelock period has elapsed.  
     The absolute cap is the maximum quantity of underlying assets that may be allocated to the strategy. 
     - `@param adapter` - The strategy adapter address.  
-    - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.  
+    - `@param amount` - The new absolute cap, denominated in underlying asset units. Must not be lower than the current absolute cap.  
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `AbsoluteCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call. 
     - Reverts if the corresponding `submitIncreaseAbsoluteCap` has not been called, or if the vault's timelock has not yet elapsed. 
   - **Emits**
@@ -135,6 +146,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `RelativeCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.  
     - Reverts if the corresponding `submitIncreaseRelativeCap` has not been called, or if the vault's timelock has not yet elapsed.
   - **Emits**
@@ -146,10 +159,12 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Description** - Queues up an increase of a strategy’s absolute cap on the MYT vault via the vault’s timelock, to be executed at a later date.
     Calls the internal `_submitIncreaseAbsoluteCap(adapter, id, amount)` to queue the change.
     - `@param adapter` - The strategy adapter address.
-    - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.
+    - `@param amount` - The new absolute cap, denominated in underlying asset units. Must not be lower than the current absolute cap.
   - **Visibility Specifier** - external
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `AbsoluteCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.
   - **Emits**
     - [`SubmitIncreaseAbsoluteCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_SubmitIncreaseAbsoluteCap)
@@ -164,14 +179,56 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Visibility Specifier** - external  
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `RelativeCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.
   - **Emits**
     - [`SubmitIncreaseRelativeCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_SubmitIncreaseRelativeCap)
 </details>
+<details id="AdminActions_submitSetForceDeallocatePenalty">
+  <summary>submitSetForceDeallocatePenalty(address adapter, address myt, uint256 penalty)</summary>
+
+  - **Description** - Queues a change to the force-deallocate penalty for a strategy adapter on the specified MYT vault. Encodes `IVaultV2.setForceDeallocatePenalty(adapter, penalty)` and submits it directly to the vault. There is no corresponding execution function in the curator; once the submission is executable, anyone can call `setForceDeallocatePenalty` on the vault with matching calldata to finalize the change. The vault rejects penalties above its `MAX_FORCE_DEALLOCATE_PENALTY` (2%) at execution.
+    - `@param adapter` - The strategy adapter address the penalty applies to.
+    - `@param myt` - The MYT vault address to submit the change to.
+    - `@param penalty` - The new force-deallocate penalty, expressed as an 18-decimal scaled fraction of the deallocated amount (1e18 = 100%).
+  - **Visibility Specifier** - external
+  - **State Mutability Specifier** - nonpayable
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+  - **Emits**
+    - [`SubmitSetForceDeallocatePenalty(address adapter, address myt, uint256 penalty)`](/dev/myt/alchemist-curator-contract#Events_SubmitSetForceDeallocatePenalty)
+</details>
+<details id="AdminActions_submitSetPerformanceFeeRecipient">
+  <summary>submitSetPerformanceFeeRecipient(address myt, address recipient)</summary>
+
+  - **Description** - Queues a change to the performance fee recipient on the specified MYT vault. Encodes `IVaultV2.setPerformanceFeeRecipient(recipient)` and submits it directly to the vault. There is no corresponding execution function in the curator; once the submission is executable, anyone can call `setPerformanceFeeRecipient` on the vault with matching calldata to finalize the change. The vault rejects the zero address while a non-zero performance fee is set.
+    - `@param myt` - The MYT vault address to submit the change to.
+    - `@param recipient` - The address that receives the vault's performance fee.
+  - **Visibility Specifier** - external
+  - **State Mutability Specifier** - nonpayable
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+  - **Emits**
+    - [`SubmitSetPerformanceFeeRecipient(address myt, address recipient)`](/dev/myt/alchemist-curator-contract#Events_SubmitSetPerformanceFeeRecipient)
+</details>
+<details id="AdminActions_submitSetPerformanceFee">
+  <summary>submitSetPerformanceFee(address myt, uint256 fee)</summary>
+
+  - **Description** - Queues a change to the performance fee on the specified MYT vault. Encodes `IVaultV2.setPerformanceFee(fee)` and submits it directly to the vault. There is no corresponding execution function in the curator; once the submission is executable, anyone can call `setPerformanceFee` on the vault with matching calldata to finalize the change. The vault rejects fees above its `MAX_PERFORMANCE_FEE` (50%) and rejects a non-zero fee while no recipient is set.
+    - `@param myt` - The MYT vault address to submit the change to.
+    - `@param fee` - The new performance fee, expressed as an 18-decimal scaled fraction of accrued interest (1e18 = 100%).
+  - **Visibility Specifier** - external
+  - **State Mutability Specifier** - nonpayable
+  - **Reverts**
+    - With `"PD"` if `msg.sender` is not the current admin.
+  - **Emits**
+    - [`SubmitSetPerformanceFee(address myt, uint256 fee)`](/dev/myt/alchemist-curator-contract#Events_SubmitSetPerformanceFee)
+</details>
 
 ### Operator Actions
 
-> Functions guarded by the onlyOperator modifier.
+> Functions guarded by the onlyOperator modifier. Calls from any other address revert with `"PD"`. The check reads the `operators` mapping only, so the admin cannot call these unless it is also enabled as an operator.
 
 <details id="OperatorActions_setStrategy">
   <summary>setStrategy(address adapter, address myt)</summary>
@@ -197,6 +254,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **State Mutability Specifier** - nonpayable 
   - **Reverts**  
     - With `"INVALID_ADDRESS"` if either `adapter` or `myt` is the zero address.
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping. Propagated from `_removeStrategy`.
     - Reverts if the corresponding `submitRemoveStrategy` has not been called, or if the vault's timelock has not yet elapsed.
   - **Emits**  
     - [`StrategyRemoved(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#Events_StrategyRemoved) - emitted in the internal `_removeStrategy()` call.
@@ -252,7 +310,8 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
     - `@param myt` - The address of the MYT vault that the adapter is being removed from.
   - **Visibility Specifier** - internal
   - **State Mutability Specifier** - nonpayable
-  - **Reverts** - none
+  - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
   - **Emits**
     - [`StrategyRemoved(address adapter, address myt)`](/dev/myt/alchemist-curator-contract#Events_StrategyRemoved)
 </details>
@@ -286,10 +345,11 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Description** - Internal helper that immediately calls decreases a strategy’s absolute cap on the vault.
     - `@param adapter` - The strategy adapter address.
     - `@param id` - The encoded MYT strategy ID.
-    - `@param amount` - The amount denominated in underlying units to decrease the absolute cap by.
+    - `@param amount` - The new absolute cap, denominated in underlying asset units. Must not be higher than the current absolute cap.
   - **Visibility Specifier** - internal
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `AbsoluteCapNotDecreasing()` - if the new cap is higher than the previous. Propgated from the MorphoV2 vault call.
   - **Emits**
     - [`DecreaseAbsoluteCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_DecreaseAbsoluteCap)
@@ -304,6 +364,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Visibility Specifier** - internal  
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `RelativeCapNotDecreasing()` - if the new cap is higher than the previous. Propgated from the MorphoV2 vault call.
   - **Emits**
     - [`DecreaseRelativeCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_DecreaseRelativeCap)
@@ -314,10 +375,11 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Description** - Internal helper that immediately calls `vault.increaseAbsoluteCap(id, amount)` to raise a strategy’s absolute cap. The absolute cap is the maximum quantity of underlying assets that may be allocated to the strategy.  
     - `@param adapter` - The strategy adapter address.  
     - `@param id` - The encoded MYT strategy ID.  
-    - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.  
+    - `@param amount` - The new absolute cap, denominated in underlying asset units. Must not be lower than the current absolute cap.  
   - **Visibility Specifier** - internal  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `AbsoluteCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.  
   - **Emits**
     - [`IncreaseAbsoluteCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_IncreaseAbsoluteCap)
@@ -332,6 +394,7 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Visibility Specifier** - internal  
   - **State Mutability Specifier** - nonpayable  
   - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `RelativeCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.  
   - **Emits**
     - [`IncreaseRelativeCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_IncreaseRelativeCap)
@@ -342,13 +405,28 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
   - **Description** - Internal helper that enqueues a cap increase on the MYT vault by encoding `IVaultV2.increaseAbsoluteCap(id, amount)` and delegating to the internal [`_vaultSubmit(data)`](/dev/myt/alchemist-curator-contract#InternalOperations_vaultSubmit). After the vault's timelock period elapses, the corresponding non-submit version of this function must be called to execute the change.
     - `@param adapter` - The strategy adapter address.
     - `@param id` - The encoded MYT strategy ID.
-    - `@param amount` - The amount denominated in underlying asset units to increase the absolute cap by.
+    - `@param amount` - The new absolute cap, denominated in underlying asset units. Must not be lower than the current absolute cap.
   - **Visibility Specifier** - internal
   - **State Mutability Specifier** - nonpayable
   - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
     - `AbsoluteCapNotIncreasing()` - if the new cap is lower than the previous. Propagated from the MorphoV2 vault call.
   - **Emits**
     - [`SubmitIncreaseAbsoluteCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_SubmitIncreaseAbsoluteCap)
+</details>
+<details id="InternalOperations_submitIncreaseRelativeCap">
+  <summary>_submitIncreaseRelativeCap(address adapter, bytes id, uint256 amount)</summary>
+
+  - **Description** - Internal helper that enqueues a relative cap increase on the MYT vault by encoding `IVaultV2.increaseRelativeCap(id, amount)` and delegating to the internal [`_vaultSubmit(adapter, data)`](/dev/myt/alchemist-curator-contract#InternalOperations_vaultSubmit). After the vault's timelock period elapses, the corresponding non-submit version of this function must be called to execute the change.
+    - `@param adapter` - The strategy adapter address.
+    - `@param id` - The encoded MYT strategy ID.
+    - `@param amount` - The new percentage, expressed as an 18-decimal scaled number (1e18 = 100%), to set as the relative cap.
+  - **Visibility Specifier** - internal
+  - **State Mutability Specifier** - nonpayable
+  - **Reverts**
+    - With `"INVALID_ADDRESS"` if the adapter has no registered MYT vault in the `adapterToMYT` mapping.
+  - **Emits**
+    - [`SubmitIncreaseRelativeCap(address adapter, uint256 amount, bytes id)`](/dev/myt/alchemist-curator-contract#Events_SubmitIncreaseRelativeCap)
 </details>
 <details id="InternalOperations_vaultSubmit">
   <summary>_vaultSubmit(address adapter, bytes data)</summary>
@@ -382,11 +460,14 @@ AlchemistCurator is the governance and configuration contract for MYT vaults. It
 * <span id="Events_SubmitIncreaseRelativeCap"><strong><code>SubmitIncreaseRelativeCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - emitted when an increase to the strategy’s relative cap has been queued via the vault’s timelock, to be executed later.</span>  
 * <span id="Events_AdminUpdated"><strong><code>AdminUpdated(address indexed admin)</code></strong> - emitted when the contract's admin address is updated. Inherited from PermissionedProxy.</span>
 * <span id="Events_DecreaseRelativeCap"><strong><code>DecreaseRelativeCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - emitted when the relative cap for a strategy has been decreased. The relative cap defines the maximum percentage of the vault’s total assets that the strategy can hold, scaled by 1e18 (1e18 = 100%).</span>  
-* <span id="Events_SubmitDecreaseRelativeCap"><strong><code>SubmitDecreaseRelativeCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - emitted when a decrease to the strategy’s relative cap has been queued via the vault’s timelock, to be executed later.</span>  
+* <span id="Events_SubmitDecreaseRelativeCap"><strong><code>SubmitDecreaseRelativeCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - declared in the interface but never emitted. Relative cap decreases take effect immediately through `decreaseRelativeCap`, so there is no submit step.</span>  
 * <span id="Events_SubmitSetStrategy"><strong><code>SubmitSetStrategy(address indexed strategy, address indexed myt)</code></strong> - emitted when a strategy adapter has been queued for addition to a MYT vault via the vault’s timelock mechanism.</span>  
 * <span id="Events_DecreaseAbsoluteCap"><strong><code>DecreaseAbsoluteCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - emitted when the absolute cap for a strategy has been decreased. The absolute cap represents the maximum quantity of underlying assets that may be allocated to the strategy.</span>  
-* <span id="Events_SubmitDecreaseAbsoluteCap"><strong><code>SubmitDecreaseAbsoluteCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - emitted when a decrease to the strategy’s absolute cap has been queued via the vault’s timelock, to be executed later.</span>
+* <span id="Events_SubmitDecreaseAbsoluteCap"><strong><code>SubmitDecreaseAbsoluteCap(address indexed strategy, uint256 amount, bytes indexed id)</code></strong> - declared in the interface but never emitted. Absolute cap decreases take effect immediately through `decreaseAbsoluteCap`, so there is no submit step.</span>
 * <span id="Events_StrategyAdded"><strong><code>StrategyAdded(address indexed strategy, address indexed myt)</code></strong> - emitted when a strategy adapter has been registered to the specified MYT vault.</span>
 * <span id="Events_StrategyRemoved"><strong><code>StrategyRemoved(address indexed strategy, address indexed myt)</code></strong> - emitted when a strategy adapter has been deregistered from the specified MYT vault.</span>
 * <span id="Events_SubmitRemoveStrategy"><strong><code>SubmitRemoveStrategy(address indexed strategy, address indexed myt)</code></strong> - emitted when a strategy adapter removal has been queued via the vault's timelock mechanism.</span>
 * <span id="Events_SubmitSetAllocator"><strong><code>SubmitSetAllocator(address indexed allocator, bool indexed v)</code></strong> - emitted when a vault allocator permission change has been queued via the vault's timelock mechanism.</span>
+* <span id="Events_SubmitSetForceDeallocatePenalty"><strong><code>SubmitSetForceDeallocatePenalty(address indexed adapter, address indexed myt, uint256 penalty)</code></strong> - emitted when a force-deallocate penalty change for a strategy adapter has been submitted to the vault.</span>
+* <span id="Events_SubmitSetPerformanceFeeRecipient"><strong><code>SubmitSetPerformanceFeeRecipient(address indexed myt, address indexed recipient)</code></strong> - emitted when a performance fee recipient change has been submitted to the vault.</span>
+* <span id="Events_SubmitSetPerformanceFee"><strong><code>SubmitSetPerformanceFee(address indexed myt, uint256 fee)</code></strong> - emitted when a performance fee change has been submitted to the vault.</span>
