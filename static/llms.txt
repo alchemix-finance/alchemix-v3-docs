@@ -1,7 +1,7 @@
 # Alchemix Documentation
 
 > Alchemix is a DeFi protocol offering self-repaying loans. Deposit ETH or USDC, borrow up to 90% LTV at 0% interest, and scheduled Transmuter redemptions repay the debt from your collateral while it keeps earning yield. No price-based liquidations. Live on Ethereum, Optimism, Arbitrum, and Base.
-> Generated: 2026-09-11
+> Generated: 2026-09-24
 
 ---
 

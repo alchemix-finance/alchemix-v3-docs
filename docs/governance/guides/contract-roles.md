@@ -21,7 +21,7 @@ On Ethereum, Optimism, and Arbitrum, two multisigs hold roles. The **v3 admin Sa
 | Arbitrum | [0xeE1Aa1C3D0622fCeD823c7720cf9E8079558484b](https://arbiscan.io/address/0xeE1Aa1C3D0622fCeD823c7720cf9E8079558484b) | [0x7e108711771DfdB10743F016D46d75A9379cA043](https://arbiscan.io/address/0x7e108711771DfdB10743F016D46d75A9379cA043) |
 | Base | [0x24E9cbB9DdDa1247ae4b4eEEE3C569A2190ac401](https://basescan.org/address/0x24E9cbB9DdDa1247ae4b4eEEE3C569A2190ac401) | None. The v3 admin Safe is the fee receiver. |
 
-Contract addresses for each chain are listed in the developer docs: [Ethereum](/dev/contracts/ethereum), [Optimism](/dev/contracts/optimism), [Arbitrum](/dev/contracts/arbitrum).
+Contract addresses for each chain are listed in the developer docs: [Ethereum](/dev/contracts/ethereum), [Optimism](/dev/contracts/optimism), [Arbitrum](/dev/contracts/arbitrum), [Base](/dev/contracts/base).
 
 ### Role 1: Admin (Alchemist and Transmuter)
 
