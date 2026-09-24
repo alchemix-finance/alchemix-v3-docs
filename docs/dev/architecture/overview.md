@@ -16,7 +16,7 @@ Each of these core components have their own contract, and surrounding contracts
 
 ## Mix-Yield Token (MYT)
 
-There are two instances of Morpho's [`Vault2 contract`](https://github.com/morpho-org/vault-v2/blob/main/src/VaultV2.sol) on each chain today. One (Mix ETH) is a collection of ETH-denominated yield strategies, and the other (Mix USDC) is a collection of USDC-denominated yield strategies.
+There are two instances of Morpho's [`Vault2 contract`](https://github.com/morpho-org/vault-v2/blob/main/src/VaultV2.sol) on Ethereum, Optimism, and Arbitrum today. One (Mix ETH) is a collection of ETH-denominated yield strategies, and the other (Mix USDC) is a collection of USDC-denominated yield strategies. Base has a single Mix USDC instance.
 Each strategy within an MYT has its own strategy adapter contract derived from our base [`MYTStrategy contract`](/dev/myt/myt-contract). These contracts define how individual allocation to, and deallocation from, the underlying strategy occur. It also reports back how many assets are held by the strategy so our vaults can track total value and calculate share price.
 To interact with the MYT in a permissioned way, we have two utility contracts: the [`AlchemistCurator`](/dev/myt/alchemist-curator-contract), and the  [`AlchemistAllocator`](/dev/myt/alchemist-allocator-contract).
 The AlchemistCurator manages which strategies exist on the vault in the first place, and how much capital they may hold. This can be thought of as the governance layer, and allows operators to add and remove strategies, and its admin to raise or lower caps on a per-strategy basis.
@@ -25,7 +25,7 @@ The [`AlchemistStrategyClassifier`](/dev/myt/alchemist-strategy-classifier-contr
 
 ## Alchemist
 
-There are two [`Alchemist contract`](/dev/alchemist/alchemist-contract) instances deployed on each chain today. One accepts deposits of Mix ETH and mints alETH, and the other accepts deposits of Mix USDC and allows minting of alUSD. The Alchemist contracts are interacted directly by users.
+There are two [`Alchemist contract`](/dev/alchemist/alchemist-contract) instances deployed on Ethereum, Optimism, and Arbitrum today. One accepts deposits of Mix ETH and mints alETH, and the other accepts deposits of Mix USDC and allows minting of alUSD. Base has a single Alchemist, which accepts deposits of Mix USDC and mints alUSDb. The Alchemist contracts are interacted directly by users.
 The [`AlchemistRouter`](/dev/alchemist/alchemist-router-contract) is a convenience contract that can be used to batch multi-step flows within the Alchemist. It allows users to bundle the wrapping of ETH, depositing into a mix-yield-token, depositing mix-yield-token into the Alchemist, and borrowing; all in one transaction. It also handles repayments, withdrawals, and claims with a similar batching approach.
 The [`AlchemistV3Position`](/dev/alchemist/alchemist-v3-position-contract) is an ERC721 NFT contract that represents users positions in the Alchemist. The Alchemist mints an NFT when the user opens a position. The NFT is not burned when a position is emptied or self-liquidated; its tokenID keeps mapping to the user's Account struct in the Alchemist contract and can receive new deposits.
 The fee vaults: [`AlchemistETHVault`](/dev/alchemist/alchemist-eth-vault-contract) and [`AlchemistTokenVault`](/dev/alchemist/alchemist-token-vault-contract) are used to escrow funds which cover the Alchemist's liquidator-fee obligations when a position's collateral or the Alchemist's balance is insufficient.

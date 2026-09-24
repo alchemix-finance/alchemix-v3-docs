@@ -118,7 +118,7 @@ For more specific operations tailored to individual strategies, see the contract
 
 - **Description** - An enum selecting which internal route a call takes.
   - `direct` - allocate or deallocate through the protocol's own wrap or unwrap path, with no DEX swap.
-  - `swap` - allocate or deallocate through a 0x DEX swap using `SwapParams.txData`.
+  - `swap` - allocate or deallocate through a DEX swap using `SwapParams.txData` (0x for most strategies, an Enso route for the Stake DAO strategy).
   - `unwrapAndSwap` - deallocate only. Unwraps the protocol token to an intermediate asset, then swaps that to the vault asset via 0x.
 - **Type** - enum (`direct`, `swap`, `unwrapAndSwap`)
 - **Used By**
@@ -139,7 +139,7 @@ For more specific operations tailored to individual strategies, see the contract
   <summary>SwapParams</summary>
 
 - **Description** - Swap details for the `swap` and `unwrapAndSwap` action types.
-  - `txData` - the 0x swap calldata that the strategy forwards to the AllowanceHolder.
+  - `txData` - the swap calldata the strategy forwards to its swap router: 0x AllowanceHolder calldata for most strategies, or an Enso route for the Stake DAO strategy.
   - `minIntermediateOut` - the minimum amount of the intermediate token (for example stETH from an unwrap) that must be received before the swap. Only used for `unwrapAndSwap`.
 - **Type** - struct with fields `bytes txData` and `uint256 minIntermediateOut`
 - **Used By**
@@ -550,7 +550,7 @@ For more specific operations tailored to individual strategies, see the contract
 <details id="InternalOperations_canForceDeallocate">
   <summary>_canForceDeallocate()</summary>
 
-- **Description** - Virtual opt-in hook read by `_validateDeallocateAction()`. It reports whether this strategy supports direct withdrawals on the vault's force-deallocate path. Returns true by default. Derived contracts override it to return false when a forced direct withdrawal is unsafe or unsupported for their protocol.
+- **Description** - Virtual opt-in hook read by `_validateDeallocateAction()`. It reports whether this strategy supports direct withdrawals on the vault's force-deallocate path. Returns true in the base contract. Most deployed adapters (the ERC-4626, Ether.fi, Stake DAO, and Auto Finance strategies) override it with an owner-set flag that starts as false, so the force-deallocate path reverts on them until the strategy owner enables it.
 - **Visibility Specifier** - internal
 - **State Mutability Specifier** - view
 - **Returns** - `bool` - true if the strategy allows force deallocation

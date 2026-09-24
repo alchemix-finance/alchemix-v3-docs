@@ -76,7 +76,7 @@ module.exports = {
       label: "Deployed Contracts",
       collapsed: true,
       className: "sidebarBold",
-      items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum"],
+      items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum", "contracts/base"],
     },
 
     // Integrating Alchemix

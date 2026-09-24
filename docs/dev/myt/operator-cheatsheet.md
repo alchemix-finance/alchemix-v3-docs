@@ -21,7 +21,7 @@ Quick reference for admins, curators, allocators, and sentinels operating an MYT
 There are four contract layers:
 
 - **MYT Vault** (Morpho V2) – holds funds, enforces caps, manages roles
-- **Curator Contract** – manages strategy registration and cap configuration (one per chain, shared by both MYTs)
+- **Curator Contract** – manages strategy registration and cap configuration (one per chain, shared by the MYTs on that chain)
 - **Allocator Contract** – moves funds between the vault and strategy adapters (one per MYT)
 - **MYT Strategy** – individual yield strategy adapters (one per yield source per MYT)
 

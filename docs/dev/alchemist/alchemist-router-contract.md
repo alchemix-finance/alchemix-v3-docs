@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 The AlchemistRouter is a convenience contract that batches multi-step user interactions with the Alchemist into single transactions. Each router is bound to one Alchemist at deployment: the address is stored in the `alchemist` immutable and cannot be changed afterwards, so no router function takes an Alchemist address. It handles wrapping ETH to WETH, depositing into the MYT vault, depositing MYT shares into the Alchemist, borrowing, repaying, withdrawing, self-liquidating, and claiming transmuter positions all in one call. The router never holds tokens or NFTs between transactions.
 
-All functions include a `deadline` parameter for transaction expiration, and deposit/withdraw functions include `minSharesOut` or `minAmountOut` parameters for slippage protection. Every external function is `nonReentrant` (OpenZeppelin `ReentrancyGuardTransient`).
+All functions include a `deadline` parameter for transaction expiration, and deposit/withdraw functions include `minSharesOut` or `minAmountOut` parameters for slippage protection. Every user-facing function is `nonReentrant` (OpenZeppelin `ReentrancyGuardTransient`).
 
 ## Functions
 
