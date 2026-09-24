@@ -9,19 +9,27 @@ import LtvSensitivity from "@site/src/components/LtvSensitivity";
 
 <PageBanner title="alAssets" />
 
-alAssets (alUSD, alETH) are synthetic tokens that mirror the value of their underlying asset.
+alAssets (alUSD, alETH, and alUSDb on Base) are synthetic tokens that mirror the value of their underlying asset.
 
 They serve two purposes:
 
 1. **Borrowing unit:** When you open a loan, new alAssets are minted to you.
 
-2. **Redemption instrument:** Anyone can deposit alAssets into the <Term id="transmuter">Transmuter</Term> to redeem 1 alAsset for its underlying asset (alUSD → USDC, alETH → ETH) 1:1 after a fixed term.
+2. **Redemption instrument:** Anyone can deposit alAssets into the <Term id="transmuter">Transmuter</Term> to redeem 1 alAsset for its underlying asset (alUSD and alUSDb → USDC, alETH → ETH) 1:1 after a fixed term.
 
 The protocol values 1 alAsset at 1 unit of its underlying, but market price can drift below that. Borrowing and redemption both create opportunities around that gap.
 
 :::note Not an algorithmic stablecoin
 alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every alAsset is minted against MYT collateral worth at least 1.11 times the debt (90% maximum LTV). If that collateral ever loses value, liquidations and pro-rata Transmuter payouts restore the balance. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
 :::
+
+### alUSDb on Base
+
+Alchemix on Base is a separate market with its own USD alAsset, **alUSDb**, approved by [AIP-125](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0x79a8784ce547f9777044bcfe73b5017828b22727e37d333f3e6d6d4f4fd97b5f). You deposit USDC into the Base MYT (Risk-adjusted Mix USDC in the app) and borrow alUSDb against it. alUSDb is minted and burned only by the Alchemist and Transmuter on Base, and it cannot be bridged to or from any other chain.
+
+alUSD that reached Base through the Alchemix Bridge is a different token. It cannot repay alUSDb debt or be deposited into the Base Transmuter, so check which token you hold before you buy an alAsset on Base. The main alUSDb market is the USDC/alUSDb pool on Aerodrome.
+
+The Base Transmuter redeems alUSDb for USDC 1:1 after a four-week term, shorter than the terms on the other chains. Some Base fees also differ from the other chains; see [Fees](./fees.md).
 
 ### Borrowing, selling, and the market discount
 

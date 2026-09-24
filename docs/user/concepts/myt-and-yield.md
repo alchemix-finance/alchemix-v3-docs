@@ -15,7 +15,7 @@ Mix-Yield Token (MYT) gives you passive exposure to a curated set of yield strat
 
 ### What is the MYT?
 
-- **Open-source core** – MYT is a customized vault token built on Morpho Vaults V2 (ERC-4626). It holds deposits of ETH or USDC and routes them into several yield sources.
+- **Open-source core** – MYT is a Morpho Vaults V2 vault (ERC-4626) with Alchemix's own curator, allocator, and strategy adapters around it. It holds deposits of ETH or USDC and routes them into several yield sources.
 
 - **DAO-managed allocation** – The Alchemix DAO selects strategies, sets target weights, and rebalances as markets shift. Allocation is currently executed by the Alchemix DAO Multisig and is transitioning to full on-chain DAO governance.
 
@@ -83,7 +83,7 @@ flowchart LR
 
 ### Per-chain variants
 
-There is one ETH-denominated and one USDC-denominated MYT on every supported chain (on Mainnet these are branded **mixETH** and **mixUSD**). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
+There is one ETH-denominated and one USDC-denominated MYT on Ethereum, Optimism, and Arbitrum (on Mainnet these are branded **mixETH** and **mixUSD**). Base has a single USDC-denominated MYT, shown in the app as Risk-adjusted Mix USDC, which backs [alUSDb](./alAssets.md#alusdb-on-base). The strategies inside each MYT differ by chain, and the DAO can revote strategy weights at any time.
 
 :::info Compositions change, verify in the app
 The exact strategies, weights, and allocations inside each MYT are a point-in-time configuration. Always check the live composition, risk tiers, and allocations [on the Mixed Yield page →](https://alchemix.fi/mixed-yield), under Earn → Variable Rate

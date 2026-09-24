@@ -1,6 +1,6 @@
 # Alchemix Documentation
 
-> Alchemix is a DeFi protocol offering self-repaying loans. Deposit ETH or USDC, borrow up to 90% LTV at 0% interest, and scheduled Transmuter redemptions repay the debt from your collateral while it keeps earning yield. No price-based liquidations. Live on Ethereum, Optimism, and Arbitrum.
+> Alchemix is a DeFi protocol offering self-repaying loans. Deposit ETH or USDC, borrow up to 90% LTV at 0% interest, and scheduled Transmuter redemptions repay the debt from your collateral while it keeps earning yield. No price-based liquidations. Live on Ethereum, Optimism, Arbitrum, and Base.
 > Generated: 2026-09-11
 
 ---
@@ -83,6 +83,7 @@
 - [Ethereum](https://docs.alchemix.fi/dev/contracts/ethereum): Mainnet contract addresses
 - [Optimism](https://docs.alchemix.fi/dev/contracts/optimism): OP Mainnet contract addresses
 - [Arbitrum](https://docs.alchemix.fi/dev/contracts/arbitrum): Arbitrum One contract addresses
+- [Base](https://docs.alchemix.fi/dev/contracts/base): Base contract addresses (USDC market, alUSDb)
 
 ### Reference
 

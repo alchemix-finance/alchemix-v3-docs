@@ -32,7 +32,7 @@ Open **Borrow**, choose a Risk Adjusted Mix vault for ETH or USDC on your chain,
 
 ### Step 2 – Borrow at 20% LTV
 
-<FramedImage src="/img/quick-start-02.png" alt="Borrow at 20% LTV" />
+<FramedImage src="/img/quick-start-02.png" alt="Deposit/Borrow tab with a 1 WETH deposit and a 0.20 alETH borrow entered, a 20% LTV" />
 
 :::tip Check the alAsset market price first
 alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.99 USDC, selling 200 alUSD yields ~198 USDC, which is a ~$2 upfront cost relative to your 200 alUSD of recorded debt. The Trade → Swap page shows the current price and estimated proceeds before you confirm.
@@ -40,7 +40,7 @@ alAssets can trade slightly below 1:1 on the open market. If alUSD trades at 0.9
 
 On the same vault page stay on Deposit/Borrow. Enter a borrow near 20% LTV, then mint [alETH or alUSD](./concepts/alAssets.md), respectively.
 
-If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in the UI will apply when redemptions occur.
+If you need spendable funds, swap the alAsset to USDC, or choose USDC as the borrow asset and the app swaps it for you in the same flow. Each redemption charges a small borrower fee on the amount redeemed, and on that amount only. See [Fees](./concepts/fees.md).
 
 :::warning Before you confirm
 
@@ -50,7 +50,9 @@ If you need spendable funds, swap the alAsset to USDC. The borrower fee shown in
 
 ### Step 3 – Let it run
 
-The visualizer below projects how the position plays out. It tracks three lines over the term: your **Deposit** (collateral, earning yield), your **Debt** (paid down by scheduled redemptions), and your **Net Value** (deposit minus debt). Adjust the yield, redemption rate, alAsset price, and duration to see how the loan settles itself. No repayments, no interest, no action required.
+The visualizer below projects how the position plays out. It tracks three lines over the term: your **Deposit** (collateral, earning yield), your **Debt** (paid down by scheduled redemptions), and your **Net Value**, which here is simply deposit minus debt. Adjust the yield, redemption rate, alAsset price, and duration to see how the loan settles itself. No repayments, no interest, no action required.
+
+The live version on a vault's **Visualizer** tab runs on your own position and the Transmuter's real near-term redemption schedule, and adds an **External APY** input for modeling the loan earning yield outside Alchemix. With that above zero, which is its default, Net Value counts those returns as well.
 
 <VaultVisualizer />
 

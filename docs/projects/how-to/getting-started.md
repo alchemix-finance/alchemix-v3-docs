@@ -14,7 +14,7 @@ Most integrations follow one of four paths. Every integration gets a direct line
 
 **For:** wallets, yield aggregators, onboarding platforms.
 
-The Mix-Yield Token is a customized vault token built on Morpho Vaults V2 (ERC-4626). It holds ETH or USDC deposits and spreads them across DAO-curated strategies, compounding continuously with no lock-ups. If your product can hold or route into an ERC-4626-style vault, it can offer Alchemix yield as a single standardized asset.
+The Mix-Yield Token is a Morpho Vaults V2 vault (ERC-4626) with an Alchemix-built curator, allocator, and strategy layer. It holds ETH or USDC deposits and spreads them across DAO-curated strategies, compounding continuously with no lock-ups. If your product can hold or route into an ERC-4626-style vault, it can offer Alchemix yield as a single standardized asset.
 
 - [How MYT works →](/user/concepts/myt-and-yield)
 - [Live vaults and current strategy mix →](https://alchemix.fi/mixed-yield)

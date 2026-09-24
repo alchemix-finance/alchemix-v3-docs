@@ -22,7 +22,7 @@ export const GLOSSARY = [
     id: "alasset",
     term: "alAsset",
     definition:
-      "A synthetic token minted by borrowing against collateral in Alchemix. alUSD mirrors USDC; alETH mirrors ETH. Inside the protocol, 1 alAsset cancels 1 unit of unearmarked debt at face value regardless of its external market price; earmarked debt is repaid with MYT instead.",
+      "A synthetic token minted by borrowing against collateral in Alchemix. alUSD mirrors USDC; alETH mirrors ETH; alUSDb mirrors USDC on Base. Inside the protocol, 1 alAsset cancels 1 unit of unearmarked debt at face value regardless of its external market price; earmarked debt is repaid with MYT instead.",
     href: "/user/concepts/alAssets",
     linkLabel: "alAssets",
   },

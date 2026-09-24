@@ -46,7 +46,7 @@ Alchemix does not use price-based liquidations. Liquidation risk comes from a yi
 
 ### Step 4 – Enter a borrow amount
 
-Type the alAsset amount you want to borrow, or click MAX to borrow the maximum within the current LTV limit.
+Type the alAsset amount you want to borrow, or click MAX to borrow the maximum within the current LTV limit. The token dropdown also offers the underlying asset (USDC, or ETH and WETH). Pick it and the app swaps the minted alAsset for it in the same flow, with the button reading **Borrow & Swap**. Your debt is still recorded in the alAsset.
 
 ### Step 5 – Confirm
 
@@ -55,6 +55,19 @@ Approve the transaction in your wallet. Once it completes, the position stats up
 ### Step 6 – Track your position
 
 The position is visible on the vault detail page and from your Dashboard. Use the alAsset however you like. Swap it for stablecoins, provide liquidity, or loop it back into the vault for further leverage from the Yield Looping tab on the vault page.
+
+### Reading the vault page
+
+The right-hand panel has six tabs:
+
+- **Info** – the strategies the MYT is currently deployed in, with each one's risk level, APR, and allocation, and a 30-day APR chart. View all strategies lists every strategy the vault can use, including those holding nothing right now.
+- **Visualizer** – a projection of your position over time, built from your live position and the Transmuter's schedule. The [Quick Start](../quick-start.md#step-3--let-it-run) explains how to read it.
+- **Earmarking** – the annualized rate at which debt has been earmarked over the last 30 days.
+- **Redemptions** – Schedule shows the redemptions maturing over the next three months. Realized shows the rate at which debt was actually redeemed over the last 30 days.
+- **History** – the activity on your position, with yield earned, the amount redeemed, and the realized APR, and a CSV export. Recent transactions can take up to 24 hours to appear.
+- **Contracts** – the addresses of the Alchemist, the MYT, the alAsset, the Transmuter, and each strategy, plus your position ID.
+
+The left-hand tabs hold the actions: Deposit/Borrow, Borrow, Withdraw, Repay, Liquidate, and Yield Looping. Liquidate is a self-liquidation. It repays your debt from your own collateral and returns the remainder to you in one transaction.
 
 ### What repays the debt
 

@@ -46,19 +46,21 @@ Click a term to select it.
 
 ### Step 3 – Choose a deposit asset
 
-Use the dropdown on the right side of the panel to choose either alAsset, or its respective underlying asset. If you pick ETH or USDC, the interface swaps it to the matching alAsset before depositing automatically.
+Use the dropdown on the right side of the panel to choose either alAsset, or its respective underlying asset. If you pick ETH or USDC, the interface swaps it to the matching alAsset before depositing automatically. A Slippage setting appears for that swap, set to 0.1% by default, which you can change before you confirm.
 
 ### Step 4 – Enter your amount
 
 Type how much of the selected asset you want to commit. The panel instantly shows:
 
-- Estimated percentage return
+- Expected Output, the alAsset amount that will redeem 1:1 at maturity (the swap output when you deposit ETH or USDC)
 
-- Estimated asset return at maturity
+- Percentage Return over the term
+
+- Asset Gain, the ETH or USDC you stand to gain at maturity
 
 ### Step 5 – Submit
 
-Click Deposit and approve the transaction in your wallet.
+Click **Deposit**, or **Swap & Deposit** if you chose ETH or USDC, and approve the transaction in your wallet.
 
 ### Manage or exit a position
 

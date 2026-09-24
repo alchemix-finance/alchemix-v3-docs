@@ -55,6 +55,7 @@ In short: **15%** pre-mine for the DAO, **5%** for bug bounties, and **80%** of 
 | **Arbitrum** | `0x27b58D226fe8f792730a795764945Cf146815AA7` |
 | **Linea** | `0x303c4F39EA359155C698807168e9Dc3aA1dF2b95` |
 | **Metis** | `0x303c4F39EA359155C698807168e9Dc3aA1dF2b95` |
+| **Base** | `0x303c4F39EA359155C698807168e9Dc3aA1dF2b95` |
 
 :::info
 ALCX is minted exclusively on Ethereum Mainnet. The circulating supply on L2s is purely bridge-derived and cannot exceed the Ethereum-side ceiling. See [Risk Considerations](/user/safety/risk-considerations) for details on the bridge model.

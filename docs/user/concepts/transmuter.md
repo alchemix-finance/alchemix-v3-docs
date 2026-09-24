@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Transmuter" />
 
-The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH) at a 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of <Term id="myt">MYT</Term> that normally unwraps to the underlying asset immediately.
+The Transmuter lets you redeem <Term id="alasset">alAssets</Term> (alUSD, alETH, and alUSDb on Base) at a 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of <Term id="myt">MYT</Term> that normally unwraps to the underlying asset immediately.
 
 :::tip Instant vs. fixed-rate liquidity
 The Transmuter pays out at a **1:1 exchange rate** (no market slippage) but works over time as positions vest. Payouts are scaled down only if the Alchemist carries bad debt (see Edge-case handling below).

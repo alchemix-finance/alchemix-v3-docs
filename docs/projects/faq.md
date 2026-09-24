@@ -24,7 +24,7 @@ Alchemix V3 is a protocol for saving, borrowing, and earning fixed-yield returns
 
 <summary>Which assets and chains does V3 support?</summary>
 
-V3 accepts ETH and USDC deposits and issues alETH and alUSD against them. The protocol is live on Ethereum Mainnet, Optimism, and Arbitrum, with alAssets bridgeable across supported chains (including Linea and Metis) via the Alchemix Bridge, a custom implementation of the LayerZero OFT standard.
+V3 accepts ETH and USDC deposits and issues alETH and alUSD against them. The protocol is live on Ethereum Mainnet, Optimism, and Arbitrum, with alAssets bridgeable across supported chains (including Linea and Metis) via the Alchemix Bridge, a custom implementation of the LayerZero OFT standard. Base runs as a separate USDC-only market that issues its own alAsset, alUSDb, which cannot be bridged. [AIP-124](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0x44b245b8062c89552ec623e291f9c6216062893d837c11767b9bd20086354cf8) approved deprecating alAsset bridging and winding down v3 on Arbitrum; the steps will be announced by the team.
 
 An up-to-date list of networks is always visible in the [app](https://alchemix.fi).
 

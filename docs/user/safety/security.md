@@ -40,6 +40,10 @@ MYT access control and strategy contracts received dedicated reviews:
   - Reviewed: February 2026, final report August 2026
   - Focus: MYT access-control logic and the yield-strategy adapter contracts.
   - [View Report](/audits/v3-nethermind.pdf)
+- **Nethermind**
+  - Reviewed: July–August 2026, final report August 10, 2026
+  - Focus: the ERC-4626 adapter used for Fluid USDC, and the Stake DAO WETH strategy (WETH into the Curve ETH+/WETH pool, LP staked in a Stake DAO RewardVault).
+  - [View Report](/audits/v3-nethermind-stakedao-fluid.pdf)
 - **yAudit (yAuditDAO)**
   - Reviewed: April 2026
   - [Strategies report (April 15–17, 2026)](/audits/v3-strategies-yaudit.pdf)
@@ -53,14 +57,16 @@ The table below maps every whitelisted MYT strategy to the audit that reviewed i
 | :--------------------- | :------------------------------------ | :-------------------------------------- |
 | Aave V3                | Mainnet (ETH), Arbitrum (USDC, ETH), Optimism (ETH, USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Euler                  | Mainnet (USDC), Arbitrum (USDC, ETH)  | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
-| Fluid                  | Mainnet (USDC), Arbitrum (USDC)       | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Fluid                  | Mainnet (USDC), Arbitrum (USDC), Base (USDC) | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf), [Nethermind (Aug 2026)](/audits/v3-nethermind-stakedao-fluid.pdf) |
 | Auto Finance (Tokemak) | Mainnet (USDC, ETH)                   | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
 | Yearn (yvWETH)         | Mainnet (ETH)                         | [Nethermind (Feb 2026)](/audits/v3-nethermind.pdf), [yAudit (Mar 2026)](/audits/v3-yearn.pdf) |
+| Stake DAO (ETH+/WETH)  | Mainnet (ETH)                         | [Nethermind (Aug 2026)](/audits/v3-nethermind-stakedao-fluid.pdf) |
 | Lido (wstETH)          | Mainnet (ETH), Optimism (ETH)         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
 | Ether.fi (weETH)       | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
 | Frax (sfrxETH)         | Mainnet (ETH)                         | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
 | InfiniFi (siUSD)       | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
 | Yearn (yvUSD)\*        | Mainnet (USDC)                        | [yAudit strategies (Apr 2026)](/audits/v3-strategies-yaudit.pdf) |
+| Morpho Vaults V2 (Steakhouse, Gauntlet, Yearn OG, Re7) | Base (USDC), Optimism (ETH) | Covered by the Fluid audits above (same ERC-4626 adapter) |
 
 \* Yearn's yvUSD held iUSD in the past but no longer does.
 

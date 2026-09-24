@@ -16,6 +16,7 @@ This is a summary of Alchemix security. Full reports, bug bounty details, intern
 - **Immunefi audit competition**, October to November 2025: core Alchemist, Transmuter, and MYT contracts.
 - **alpeh_v** (independent researcher), October to November 2025: earmarking and transmutation accounting.
 - **Nethermind**, February 2026 with a final report in August 2026: MYT access control and yield-strategy adapters.
+- **Nethermind**, July to August 2026: the ERC-4626 adapter used for Fluid USDC and the Stake DAO WETH strategy.
 - **yAudit**, March and April 2026: core contracts and the strategy adapters.
 
 Every yield strategy is independently audited before it is whitelisted on a Mix-Yield Token. The [strategy audit coverage](/user/safety/security#strategy-audit-coverage) table maps each whitelisted strategy to its report.

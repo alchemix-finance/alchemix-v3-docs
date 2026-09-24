@@ -19,7 +19,8 @@ This documentation is the most complete learning resource, but it may lag behind
 | [**Snapshot**](https://snapshot.org/#/alchemixstakers.eth) | Governance voting hub.                                    |
 | [**Github**](https://github.com/alchemix-finance)            | Parent Alchemix Github account.                           |
 | [**Developer Docs**](/dev)                                   | All development resources for the Alchemix ecosystem.     |
-| Dune Dashboard                                               | Live protocol metrics and analytics. Coming soon.         |
+| [**Stats**](https://alchemix-stats.com/)                     | Live protocol metrics and analytics, as linked from the app footer. |
+| [**Treasury**](https://alchemix.octav.fi/app/alchemixtreasury) | DAO treasury holdings, tracked on Octav.                |
 | Gov Dashboard                                                | Live protocol parameters. Coming soon.                    |
 | [**ALCX Token**](/governance/onchain/alcx-token)             | Token utility, emissions schedule, distribution and contract addresses. |
 | [**Financial Reports**](financial-reports)                   | Quarterly financial reports, 2022–present.                |

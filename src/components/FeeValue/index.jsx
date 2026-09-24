@@ -3,7 +3,7 @@ import { useAlchemixFees } from "./useAlchemixFees";
 
 const pct = (v) => (v == null ? "—" : (v * 100).toFixed(2) + "%");
 
-const CHAIN_LABELS = { ethereum: "Ethereum", optimism: "Optimism", arbitrum: "Arbitrum" };
+const CHAIN_LABELS = { ethereum: "Ethereum", optimism: "Optimism", arbitrum: "Arbitrum", base: "Base" };
 const ASSET_LABELS = { eth: "ETH", usdc: "USDC" };
 
 // Inline live fee value.
@@ -21,6 +21,8 @@ export function FeeValue({ metric, chain = "ethereum", asset }) {
 
   const ethVal = row.eth?.[metric];
   const usdcVal = row.usdc?.[metric];
+  // Base has a USDC market only.
+  if (ethVal === undefined) return <span>{pct(usdcVal)}</span>;
   if (ethVal === usdcVal) return <span>{pct(ethVal)}</span>;
   return (
     <span>
@@ -33,7 +35,7 @@ export function FeeValue({ metric, chain = "ethereum", asset }) {
 export function FeeSchedule() {
   const fees = useAlchemixFees();
   const rows = [];
-  for (const chain of ["ethereum", "optimism", "arbitrum"]) {
+  for (const chain of ["ethereum", "optimism", "arbitrum", "base"]) {
     for (const asset of ["eth", "usdc"]) {
       const cell = fees[chain]?.[asset];
       if (!cell) continue;
@@ -47,6 +49,7 @@ export function FeeSchedule() {
           <th style={{ textAlign: "left" }}>Chain</th>
           <th style={{ textAlign: "left" }}>Base Asset</th>
           <th style={{ textAlign: "left" }}>Redemption Fee</th>
+          <th style={{ textAlign: "left" }}>Liquidator Fee</th>
           <th style={{ textAlign: "left" }}>Transmuter Fee</th>
           <th style={{ textAlign: "left" }}>Early Transmutation Fee</th>
           <th style={{ textAlign: "left" }}>MYT Yield Fee</th>
@@ -60,6 +63,7 @@ export function FeeSchedule() {
             </td>
             <td>{ASSET_LABELS[r.asset]}</td>
             <td>{pct(r.redemption)}</td>
+            <td>{pct(r.liquidator)}</td>
             <td>{pct(r.transmuter)}</td>
             <td>{pct(r.earlyExit)}</td>
             <td>{pct(r.myt)}</td>

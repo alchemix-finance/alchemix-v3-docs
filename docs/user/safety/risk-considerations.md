@@ -115,6 +115,12 @@ All core Alchemix V3 contracts have been audited by top-tier security firms, and
 
 The Alchemix Bridge is a custom implementation of the LayerZero OFT standard for cross-chain messaging. alAssets can be bridged between supported chains, subject to the rate limits above. Repaying debt and depositing into the Transmuter are possible on Ethereum, Optimism, and Arbitrum, where an Alchemist and Transmuter are deployed. Each Alchemist only accepts alAsset repayments and Transmuter deposits up to the amount it has itself issued, so alAssets bridged in from another chain may exceed what can be burned there. More context on the bridging system can be found in [AIP-120](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0xc1712a76c189e1188118e18a1ed90182360638f5ba7476ce36aa7f1ad4dc5347).
 
+Base is a separate market and is not part of the bridge. Its alAsset, [alUSDb](../concepts/alAssets.md#alusdb-on-base), is minted and burned only on Base and cannot be bridged. alUSD that reached Base through the bridge cannot repay alUSDb debt or enter the Base Transmuter.
+
+:::info Bridging and Arbitrum are being wound down
+[AIP-124](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0x44b245b8062c89552ec623e291f9c6216062893d837c11767b9bd20086354cf8) passed on September 17, 2026. It deprecates alUSD and alETH bridging and winds down v3 on Arbitrum, with each chain’s alAssets becoming independent of the others. The team will announce the steps and timing. Until then the routes above stay open, and new alUSD borrowing on Arbitrum is paused.
+:::
+
 :::warning Bridging alAssets back to Mainnet is not guaranteed
 Bridge capacity back to Mainnet is rate-limited. If that capacity is saturated, alAssets may become stranded on L2 and trade at a discount relative to Mainnet prices. Verify available bridge capacity before building a large cross-chain position.
 :::

@@ -12,13 +12,14 @@ This section is meant to describe all roles with access to call private function
 
 ### Who holds the roles
 
-Two multisigs hold roles on each chain. The **v3 admin Safe** (3-of-7) administers the Alchemist, the Transmuter, the Mix-Yield Token vault, and the MYT management contracts. The **DAO treasury multisig** on each chain holds the Guardian and Sentinel circuit-breaker roles and receives protocol fees.
+On Ethereum, Optimism, and Arbitrum, two multisigs hold roles. The **v3 admin Safe** (3-of-7) administers the Alchemist, the Transmuter, the Mix-Yield Token vault, and the MYT management contracts. The **DAO treasury multisig** on each of those chains holds the Guardian and Sentinel circuit-breaker roles and receives protocol fees. On Base, the v3 admin Safe holds the admin roles and also receives protocol fees, and no Guardian or Sentinel is set.
 
 | Chain | v3 admin Safe | DAO treasury multisig (Guardian, Sentinel, fee receiver) |
 | :---- | :------------ | :------------------------------------------------------- |
 | Ethereum | [0xF56D660138815fC5d7a06cd0E1630225E788293D](https://etherscan.io/address/0xF56D660138815fC5d7a06cd0E1630225E788293D) | [0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9](https://etherscan.io/address/0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9) |
 | Optimism | [0x3Dda174aa9E897e18b8E10e6Ce39c2a52398181d](https://optimistic.etherscan.io/address/0x3Dda174aa9E897e18b8E10e6Ce39c2a52398181d) | [0xC224bf25Dcc99236F00843c7D8C4194abE8AA94a](https://optimistic.etherscan.io/address/0xC224bf25Dcc99236F00843c7D8C4194abE8AA94a) |
 | Arbitrum | [0xeE1Aa1C3D0622fCeD823c7720cf9E8079558484b](https://arbiscan.io/address/0xeE1Aa1C3D0622fCeD823c7720cf9E8079558484b) | [0x7e108711771DfdB10743F016D46d75A9379cA043](https://arbiscan.io/address/0x7e108711771DfdB10743F016D46d75A9379cA043) |
+| Base | [0x24E9cbB9DdDa1247ae4b4eEEE3C569A2190ac401](https://basescan.org/address/0x24E9cbB9DdDa1247ae4b4eEEE3C569A2190ac401) | None. The v3 admin Safe is the fee receiver. |
 
 Contract addresses for each chain are listed in the developer docs: [Ethereum](/dev/contracts/ethereum), [Optimism](/dev/contracts/optimism), [Arbitrum](/dev/contracts/arbitrum).
 
@@ -30,7 +31,7 @@ An Admin can call every admin and guardian function on the Alchemist (fees, coll
 
 ### Role 2: Guardian (Alchemist)
 
-**Addresses with this role:** the DAO treasury multisig on each chain (see the table above).
+**Addresses with this role:** the DAO treasury multisig on Ethereum, Optimism, and Arbitrum (see the table above). No Guardian is set on Base.
 
 | Function      | What it Does                                                                                                              | Link                        |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------ | :-------------------------- |
@@ -47,7 +48,7 @@ An Admin can call every admin and guardian function on the Alchemist (fees, coll
 
 ### Role 4: Curator (Mix Yield Token Access Control)
 
-**Addresses with this role:** the [AlchemistCurator](/dev/myt/alchemist-curator-contract) contract on each chain (one per chain, shared by both MYTs). The v3 admin Safe is its admin and operator.
+**Addresses with this role:** the [AlchemistCurator](/dev/myt/alchemist-curator-contract) contract on each chain (one per chain, shared by the MYTs on that chain). The v3 admin Safe is its admin and operator.
 
 | Function      | What it Does                                                                                                | Link                                             |
 | :------------ | :---------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
@@ -77,7 +78,7 @@ This role has a “middleman” contract by Alchemix that further restricts what
 
 ### Role 6: Sentinel (Mix Yield Token Access Control)
 
-**Addresses with this role:** the DAO treasury multisig on each chain, plus the additional sentinels listed in the [MYT operator cheatsheet](/dev/myt/operator-cheatsheet#addresses-summary).
+**Addresses with this role:** the DAO treasury multisig on Ethereum, Optimism, and Arbitrum, plus the additional sentinels listed in the [MYT operator cheatsheet](/dev/myt/operator-cheatsheet#addresses-summary).
 
 | Function                                                           | What it Does                                                                                                                            | Link                                             |
 | :----------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |

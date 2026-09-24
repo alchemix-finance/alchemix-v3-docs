@@ -142,6 +142,14 @@ At that rate, the scheduled redemptions would repay roughly 2.67 times the curre
 | Total system debt  | ↓ More debt → lower rate     | A bigger denominator dilutes the impact of a fixed queue.                                                                                          |
 | Transmutation time | ↑ Shorter term → higher rate | Each unit of queued alAsset cycles more often over a year.                                                                                         |
 
+#### Cover
+
+MYT reaches the Transmuter outside of redemptions as well: when a borrower repays debt that has not been earmarked using MYT or the underlying asset, and when collateral is used to clear debt in a liquidation or self-liquidation. The Alchemist counts that balance as cover. Each time it earmarks, it settles matured redemptions from cover first and only earmarks borrower debt for whatever remains.
+
+While cover is absorbing every matured redemption, the vault page shows a live rate of 0% with the rate that applies afterwards marked as future, along with an estimate of how long the cover will last.
+
+The app also reads the Transmuter's real schedule: it takes the redemptions maturing over the next seven days, annualizes them, and divides by total debt. The formula above is the same calculation in steady state.
+
 ### Temporal leverage
 
 Earmarking in Alchemix v3 differs from typical redemption systems. In many protocols, once debt is queued for repayment the matching collateral is sold immediately and stops earning. In v3, the system only flags (earmarks) the portion of collateral needed, but leaves it earning until the Transmuter position is actually claimed. The transfer out of the vault happens at that claim, which the position holder can trigger for the vested portion at any time, including well after maturity.

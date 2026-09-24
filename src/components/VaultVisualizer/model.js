@@ -1,5 +1,9 @@
-// Faithful port of the dApp vault visualizer model.
+// Simplified port of the dApp vault visualizer model.
 // Source: alchemix-v3-fe VaultVisualizationChart/calculations.ts
+//
+// Not a full port. The live tool also models External APY, the yield earned on
+// the borrowed alAsset once it is deployed outside Alchemix, and adds it to Net
+// Value. This version omits it, so Net Value here is always collateral - debt.
 //
 // Docs illustration note: the live tool overlays the real near-term redemption
 // schedule from the Transmuter ("on chain data") before switching to the
@@ -15,7 +19,7 @@ const DAYS_PER_YEAR = 365;
 export function projectSeries({
   collateral, // initial deposit value
   debt, // initial borrowed amount
-  leverage, // boost multiplier (1 = no looping)
+  leverage, // loop multiplier (1 = no looping)
   yieldAnnual, // e.g. 0.05
   redemptionAnnual, // e.g. 0.80
   months,

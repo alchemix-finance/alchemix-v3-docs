@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 // Fees are governance parameters stored on-chain. Each one is read directly from
 // its contract so the docs cannot drift out of date:
 //   redemption  -> Alchemist.protocolFee()        (BPS, /10000)
+//   liquidator  -> Alchemist.liquidatorFee()      (BPS, /10000)
 //   transmuter  -> Transmuter.transmutationFee()  (BPS, /10000)
 //   earlyExit   -> Transmuter.exitFee()           (BPS, /10000)
 //   myt         -> MYT Vault.performanceFee()     (WAD, /1e18)
@@ -15,19 +16,16 @@ import { useState, useEffect } from "react";
 
 const SELECTORS = {
   protocolFee: "0xb0e21e8a",
+  liquidatorFee: "0xf3803f7f",
   transmutationFee: "0x05a909d4",
   exitFee: "0x6284ae41",
   performanceFee: "0x87788782",
 };
 
-// BASE LAUNCH: add a `base` entry (USDC only) here and to FALLBACK, then add
-// base to CHAIN_LABELS and the FeeSchedule chain list in index.jsx. Take the
-// addresses from the real deployment log, not from the broadcast log in the v3
-// repo, which records a dry run. Two cautions: Base fee parameters do not match
-// the other chains, so read every FALLBACK value off Base rather than copying a
-// row above; and the deployer reused one address across chains, so several Base
-// addresses collide with contracts of a different type on Ethereum, Optimism
-// and Arbitrum. Verify each address on Base before adding it.
+// Base runs a single USDC market (alUSDb), so it has no `eth` entry. The v3
+// deployer reused one address across chains, so several Base addresses match
+// contracts of a different type on Ethereum, Optimism and Arbitrum. Verify any
+// new Base address on Base itself rather than copying it from another chain.
 const CHAINS = {
   ethereum: {
     rpcs: [
@@ -86,23 +84,44 @@ const CHAINS = {
       },
     },
   },
+  base: {
+    rpcs: [
+      "https://mainnet.base.org",
+      "https://base-rpc.publicnode.com",
+      "https://base.llamarpc.com",
+    ],
+    assets: {
+      usdc: {
+        alchemist: "0xEb380d86EeD275C9F2eD77745aB1B2ccf364BF7A",
+        transmuter: "0x5B1c7180C630d3B2b6782Df70f43aE5Ea80425ba",
+        myt: "0xb8BeFE5a6941ca4022a52042075ff269C3C67467",
+      },
+    },
+  },
 };
 
 // Confirmed on-chain values (fractions of 1). Used as seed + fallback.
 // Re-verified 2026-09-02: exitFee() is 100 bps on Ethereum and Optimism and
 // 250 bps on Arbitrum, for both the alETH and alUSD transmuters.
+// Re-verified 2026-09-15: liquidatorFee() is 150 bps on every Alchemist;
+// performanceFee() is 5% on the Ethereum alETH MYT and 15% on the other five.
+// Base read 2026-09-24: protocolFee() 10 bps, exitFee() 100 bps and
+// performanceFee() 17.5%, which differ from the other chains.
 const FALLBACK = {
   ethereum: {
-    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
-    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
+    eth: { redemption: 0.0025, liquidator: 0.015, transmuter: 0, earlyExit: 0.01, myt: 0.05 },
+    usdc: { redemption: 0.0025, liquidator: 0.015, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
   },
   optimism: {
-    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
-    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
+    eth: { redemption: 0.0025, liquidator: 0.015, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
+    usdc: { redemption: 0.0025, liquidator: 0.015, transmuter: 0, earlyExit: 0.01, myt: 0.15 },
   },
   arbitrum: {
-    eth: { redemption: 0.0025, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
-    usdc: { redemption: 0.0025, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
+    eth: { redemption: 0.0025, liquidator: 0.015, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
+    usdc: { redemption: 0.0025, liquidator: 0.015, transmuter: 0, earlyExit: 0.025, myt: 0.15 },
+  },
+  base: {
+    usdc: { redemption: 0.001, liquidator: 0.015, transmuter: 0, earlyExit: 0.01, myt: 0.175 },
   },
 };
 
@@ -144,14 +163,16 @@ async function fetchFees() {
     Object.entries(CHAINS).map(async ([chain, cfg]) => {
       await Promise.all(
         Object.entries(cfg.assets).map(async ([asset, addrs]) => {
-          const [redemption, transmuter, earlyExit, myt] = await Promise.all([
+          const [redemption, liquidator, transmuter, earlyExit, myt] = await Promise.all([
             ethCall(cfg.rpcs, addrs.alchemist, SELECTORS.protocolFee).then(bps),
+            ethCall(cfg.rpcs, addrs.alchemist, SELECTORS.liquidatorFee).then(bps),
             ethCall(cfg.rpcs, addrs.transmuter, SELECTORS.transmutationFee).then(bps),
             ethCall(cfg.rpcs, addrs.transmuter, SELECTORS.exitFee).then(bps),
             ethCall(cfg.rpcs, addrs.myt, SELECTORS.performanceFee).then(wad),
           ]);
           const cell = out[chain][asset];
           if (redemption != null) cell.redemption = redemption;
+          if (liquidator != null) cell.liquidator = liquidator;
           if (transmuter != null) cell.transmuter = transmuter;
           if (earlyExit != null) cell.earlyExit = earlyExit;
           if (myt != null) cell.myt = myt;

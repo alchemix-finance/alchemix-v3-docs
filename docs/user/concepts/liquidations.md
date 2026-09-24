@@ -7,6 +7,7 @@ title: Liquidations
 import PageBanner from "@site/src/components/PageBanner";
 import StatStrip from "@site/src/components/StatStrip";
 import HealthBar from "@site/src/components/HealthBar";
+import { FeeValue } from "@site/src/components/FeeValue";
 
 <PageBanner title="Liquidations" />
 
@@ -37,7 +38,7 @@ The colored bar in the vault UI gives an at-a-glance view of your position. Keep
 
 <HealthBar currentLtv={62} maxLtv={90} liqLtv={95} />
 
-In a normal liquidation, any earmarked debt is first repaid from your collateral, then only enough additional collateral is taken to restore the position to the target ratio, at or below the 90% maximum. The rest of your position is untouched. If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee. In a partial liquidation that fee comes from the position’s surplus collateral. In a full liquidation, or when the position cannot safely cover the fee, the whole fee is paid from a separate fee vault that the DAO or anyone can fund.
+In a normal liquidation, any earmarked debt is first repaid from your collateral, then only enough additional collateral is taken to restore the position to the target ratio, at or below the 90% maximum. The rest of your position is untouched. If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee, currently <FeeValue metric="liquidator" />. In a partial liquidation that fee is charged on the position’s surplus collateral, the value above the debt, and comes out of the position. In a full liquidation it is charged on the debt instead, and, as with any fee the position cannot safely cover itself, it is paid from a separate fee vault that the DAO or anyone can fund.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 
