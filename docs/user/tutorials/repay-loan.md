@@ -49,7 +49,7 @@ Go to the Dashboard, click Manage on your vault position, and select the Repay t
 | MYT (Mix-Yield Token)    | Earmarked debt and/or standard debt  | Required for any debt already earmarked for a redemption cycle.         |
 | Underlying (ETH or USDC) | Convenience                          | Interface swaps to MYT behind the scenes before applying the repayment. |
 
-The asset-selector dropdown (left side of the entry box) will only list what is valid for the current vault state.
+The asset-selector dropdown (left side of the entry box) lists the alAsset, the underlying asset, and MYT, plus ETH on WETH vaults. If all of your debt is earmarked, the panel says so, and only MYT or the underlying asset will clear it.
 
 :::tip Pro tip: repaying with alAssets
 You can often buy alUSD or alETH on secondary markets (like Curve) for slightly less than $1.00. Using these discounted tokens to repay your loan allows you to clear your debt cheaper than 1:1!
@@ -57,7 +57,7 @@ You can often buy alUSD or alETH on secondary markets (like Curve) for slightly 
 
 ### Step 3 – Enter the amount
 
-Type the number of tokens you want to use to repay debt. The “Max” function will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
+Type the number of tokens you want to use to repay debt. MAX will attempt to use your entire wallet balance, or the remainder of the debt balance, whichever is lower.
 
 ### Step 4 – Send the transaction
 

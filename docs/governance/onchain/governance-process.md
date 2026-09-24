@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Governance Process" />
 
-The Alchemix DAO is currently run through a developer multisig that executes decisions, with the community signaling through the Snapshot app. On-chain voting is being introduced incrementally; see [On-chain Governance](../intro.md) for the broader framework.
+The Alchemix DAO is currently run through a developer multisig that executes decisions, with the community signaling through the Snapshot app. Proposals and their results are also viewable in the app at [alchemix.fi/governance](https://alchemix.fi/governance). On-chain voting is being introduced incrementally; see [On-chain Governance](../intro.md) for the broader framework.
 
 ALCX Tokens give holders governance rights over the direction of the protocol and use of the treasury. Community members may create proposals by following the community governance process. If you are interested in submitting a proposal to the Alchemix DAO, you must follow the process below. If you want to apply directly for a grant, please see [Questbook](https://alchemix.questbook.app/).
 
@@ -51,7 +51,7 @@ Official AIPs will have a quorum of 35k ALCX. If the quorum is met, then the mul
 ### Common proposal types
 
 1. A change to the protocol treasury and how it is utilized.
-2. A change to protocol parameters (such as Transmuter flow rate).
+2. A change to protocol parameters (such as the Transmuter’s transmutation time or fees, or the Alchemist’s LTV and fee settings).
 3. A grant, donation, or funding request for a specific feature.
 4. Deploying a new protocol-related contract or upgrading an existing one by the core team (e.g., introducing a new yield strategy or launching on a new chain).
 

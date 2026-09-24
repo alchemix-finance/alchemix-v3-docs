@@ -72,7 +72,8 @@ export default function VaultVisualizer() {
   const y = Math.max(0, parseFloat(yieldPct) || 0) / 100;
   const r = Math.max(0, parseFloat(redemptionPct) || 0) / 100;
   const p = Math.min(1, Math.max(0, parseFloat(price) || 0));
-  const mo = Math.min(120, Math.max(1, Math.round(parseFloat(months) || 12)));
+  // Capped at 24 to match the dApp's Duration slider range.
+  const mo = Math.min(24, Math.max(1, Math.round(parseFloat(months) || 12)));
 
   const { points, metrics } = useMemo(() => {
     const pts = projectSeries({
@@ -131,16 +132,16 @@ export default function VaultVisualizer() {
         <NumberField label="Yield APY (%)" value={yieldPct} onChange={setYieldPct} step="0.5" min="0"
           hint="The assumed APY earned from collateral deposited into the MYT." />
         <NumberField label="Redemption (%)" value={redemptionPct} onChange={setRedemptionPct} step="5" min="0"
-          hint="The assumed yearly rate at which your collateral repays your debt." />
+          hint="The assumed yearly rate at which your collateral repays your debt beyond the near-term redemption schedule. In the dApp this defaults to the current redemption rate, and near-term redemptions use the real on-chain schedule instead." />
         <NumberField label={`${SYNTH}:${UNDERLYING}`} value={price} onChange={setPrice} step="0.01" min="0" max="1"
           hint="The market price of alUSD. Below 1.00 means a discount when you sell the loan." />
-        <NumberField label="Months" value={months} onChange={setMonths} step="1" min="1" max="120"
-          hint="The duration in months to track vault performance." />
+        <NumberField label="Duration (Months)" value={months} onChange={setMonths} step="1" min="1" max="24"
+          hint="The duration of time in months that you wish to track vault performance for." />
       </div>
 
       <div className={styles.boostRow}>
-        <span className={styles.fieldLabel} title="Simulates levering up: sell debt for underlying, redeposit, borrow again at the same LTV, and repeat.">
-          Boost Multiplier
+        <span className={styles.fieldLabel} title="Simulates levering up: sell debt for underlying, redeposit, borrow again at the same LTV, and repeat. In the dApp this is the Loop Multiplier slider on a vault's Yield Looping tab rather than on the Visualizer tab, and its maximum depends on the LTV you loop at.">
+          Loop Multiplier
         </span>
         <input className={styles.slider} type="range" min="1" max="5" step="0.1" value={boost}
           onChange={(e) => setBoost(parseFloat(e.target.value))} />
@@ -212,7 +213,7 @@ export default function VaultVisualizer() {
           </span>
         </div>
         <div className={styles.metric}>
-          <span className={styles.metricLabel}>Projected Profit</span>
+          <span className={styles.metricLabel}>{boost > 1 ? "Projected Profit" : "Expected Value"}</span>
           <span className={`${styles.metricVal} ${metrics.profit >= 0 ? styles.pos : styles.neg}`}>
             {fmtFull(metrics.profit)} {UNDERLYING} ({metrics.profitPercent >= 0 ? "+" : ""}
             {metrics.profitPercent.toFixed(2)}%)
@@ -221,18 +222,20 @@ export default function VaultVisualizer() {
       </div>
 
       <div className={styles.warning}>
-        <strong>Educational illustration only.</strong> The defaults reflect protocol state as of July 27, 2026
-        and will drift over time. For an accurate, position-aware projection, always use the live visualizer in
-        the{" "}
+        <strong>Educational illustration only.</strong> Fixed example inputs, no live protocol state, and the
+        loan is modeled as spent rather than redeployed for yield elsewhere. The live visualizer on a vault's
+        Visualizer tab in the{" "}
         <a href="https://alchemix.fi" target="_blank" rel="noreferrer">
           Alchemix dApp
-        </a>
-        , which will always be the most accurate if you are looking to build a position.
+        </a>{" "}
+        uses your own position and the Transmuter's real near-term redemption schedule. Always check there
+        before building a position.
       </div>
 
       <div className={styles.note}>
-        Deposit and Debt use the left axis; Net Value (deposit minus debt) uses the right. Adjust the inputs to
-        explore.
+        Deposit and Debt use the left axis; Net Value (deposit minus debt) uses the right. The dApp adds an
+        External APY input for yield earned on the loan outside Alchemix; with it above zero, Net Value counts
+        those returns too. Adjust the inputs to explore.
       </div>
     </div>
   );

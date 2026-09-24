@@ -9,19 +9,27 @@ import LtvSensitivity from "@site/src/components/LtvSensitivity";
 
 <PageBanner title="alAssets" />
 
-alAssets (alUSD, alETH) are synthetic tokens that mirror the value of their underlying asset.
+alAssets (alUSD, alETH, and alUSDb on Base) are synthetic tokens that mirror the value of their underlying asset.
 
 They serve two purposes:
 
 1. **Borrowing unit:** When you open a loan, new alAssets are minted to you.
 
-2. **Redemption instrument:** Anyone can deposit alAssets into the <Term id="transmuter">Transmuter</Term> to redeem 1 alAsset for its underlying asset (alUSD → USDC, alETH → ETH) 1:1 after a fixed term.
+2. **Redemption instrument:** Anyone can deposit alAssets into the <Term id="transmuter">Transmuter</Term> to redeem 1 alAsset for its underlying asset (alUSD and alUSDb → USDC, alETH → ETH) 1:1 after a fixed term.
 
 The protocol values 1 alAsset at 1 unit of its underlying, but market price can drift below that. Borrowing and redemption both create opportunities around that gap.
 
 :::note Not an algorithmic stablecoin
-alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every 1 alAsset in circulation is backed by at least 1 unit of collateral in the Alchemist system. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
+alAssets are **synthetic debt tokens**, not algorithmic stablecoins. Every alAsset is minted against MYT collateral worth at least 1.11 times the debt (90% maximum LTV). If that collateral ever loses value, liquidations and pro-rata Transmuter payouts restore the balance. The soft peg is maintained via the Transmuter’s 1:1 exchange mechanism, not by minting/burning algorithms.<br/><br/> [Learn more about the Transmuter](./transmuter.md).
 :::
+
+### alUSDb on Base
+
+Alchemix on Base is a separate market with its own USD alAsset, **alUSDb**, approved by [AIP-125](https://snapshot.org/#/s:alchemixstakers.eth/proposal/0x79a8784ce547f9777044bcfe73b5017828b22727e37d333f3e6d6d4f4fd97b5f). You deposit USDC into the Base MYT (Risk-adjusted Mix USDC in the app) and borrow alUSDb against it. alUSDb is minted and burned only by the Alchemist and Transmuter on Base, and it cannot be bridged to or from any other chain.
+
+alUSD that reached Base through the Alchemix Bridge is a different token. It cannot repay alUSDb debt or be deposited into the Base Transmuter, so check which token you hold before you buy an alAsset on Base. The main alUSDb market is the USDC/alUSDb pool on Aerodrome.
+
+The Base Transmuter redeems alUSDb for USDC 1:1 after a four-week term, shorter than the terms on the other chains. Some Base fees also differ from the other chains; see [Fees](./fees.md).
 
 ### Borrowing, selling, and the market discount
 
@@ -51,8 +59,8 @@ A small, predictable discount is healthy; large discrepancies invite arbitrage.
 
 | Mechanism           | How it helps                                                                                                  |
 | ------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets at maturity. |
-| Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value.                      |
+| Transmuter          | Fixed-duration redemptions let traders lock in the spread as a bond-like yield, burning alAssets when claimed. |
+| Repayment arbitrage | Borrowers can buy alAssets cheaply on secondary markets and repay debt below face value, up to the amount of alAssets the Alchemist on that chain has issued. |
 
 Together these forces pull market price toward 1.00 and keep borrowing capital-efficient.
 
@@ -62,7 +70,7 @@ Historically alAssets were used primarily inside the Alchemix ecosystem, because
 
 In practice this means you can hold an alAsset and put it to work elsewhere rather than selling it: for example, supplying alETH to an external lending market to borrow against it. Because holders can deploy alAssets instead of selling them, sell pressure drops, which reinforces the price and strengthens the soft peg for everyone.
 
-See where alAssets can be put to work, including external lending markets like the Euler alAsset market, on the [Alchemix ecosystem page →](https://alchemix.fi/ecosystem).
+See where alAssets can be put to work in external lending markets like the Euler 4-way market on the app's Lending page, under Ecosystem → Lending. The [Lending tutorial →](../tutorials/lending.md) walks through supplying and borrowing there.
 
 ### LTV sensitivity
 
@@ -70,7 +78,7 @@ A higher LTV does not, by itself, change the percentage discount an alAsset trad
 
 Higher LTV means more capital deployed upfront. At 90% LTV on a $1,000 deposit you receive $900 in alAssets, twice what you’d get at 45%. That capital is yours to use anywhere: yield strategies, liquidity pools, purchases, or working capital. Whether high LTV makes sense depends on whether your deployed capital earns more than the collateral erosion it costs you over time.
 
-Inside Alchemix, high LTV positions erode more collateral per redemption cycle than the vault yield replaces. Collateral and debt both fall, but the collateral falls faster, so you’ll need to re-borrow more often to maintain leverage. At lower LTV, vault yield can outpace redemptions entirely, letting collateral grow while debt falls.
+Inside Alchemix, high LTV positions erode more collateral per redemption cycle than the vault yield replaces. Each redemption cancels the same value of debt as it removes in collateral, so your LTV drifts down and you’ll need to re-borrow more often to maintain leverage. At lower LTV, vault yield can outpace redemptions entirely, so collateral grows while debt falls.
 
 The visualizer below shows only the internal Alchemix view. Returns on capital deployed outside the protocol are not included, and those returns are often the primary reason to borrow at higher leverage.
 

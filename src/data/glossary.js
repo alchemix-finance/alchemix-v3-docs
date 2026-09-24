@@ -22,7 +22,7 @@ export const GLOSSARY = [
     id: "alasset",
     term: "alAsset",
     definition:
-      "A synthetic token minted by borrowing against collateral in Alchemix. alUSD mirrors USDC; alETH mirrors ETH. Inside the protocol, 1 alAsset always cancels 1 unit of debt regardless of its external market price.",
+      "A synthetic token minted by borrowing against collateral in Alchemix. alUSD mirrors USDC; alETH mirrors ETH; alUSDb mirrors USDC on Base. Inside the protocol, 1 alAsset cancels 1 unit of unearmarked debt at face value regardless of its external market price; earmarked debt is repaid with MYT instead.",
     href: "/user/concepts/alAssets",
     linkLabel: "alAssets",
   },
@@ -38,7 +38,7 @@ export const GLOSSARY = [
     id: "earmarked-debt",
     term: "Earmarked debt",
     definition:
-      "A fixed slice of a borrower's outstanding loan that the protocol reserves during a redemption cycle. Earmarked collateral continues earning yield until the moment of settlement. Earmarked debt must be repaid with MYT rather than alAssets.",
+      "A slice of a borrower's outstanding debt that the protocol reserves as Transmuter positions vest. The collateral behind it continues earning yield until the moment of settlement. Earmarked debt must be repaid with MYT and cannot be cleared with alAssets.",
     href: "/user/concepts/redemption-rate",
     linkLabel: "Redemption Rate",
   },
@@ -62,7 +62,7 @@ export const GLOSSARY = [
     id: "ltv",
     term: "LTV (Loan-to-Value)",
     definition:
-      "The ratio of outstanding debt to collateral value, expressed as a percentage. Alchemix allows borrowing up to 90% LTV. Liquidation is triggered at 95% LTV.",
+      "The ratio of outstanding debt to collateral value, expressed as a percentage. Alchemix allows borrowing up to 90% LTV. Positions at or above 95% LTV become eligible for liquidation.",
     href: "/user/concepts/liquidations",
     linkLabel: "Liquidations",
   },
@@ -70,7 +70,7 @@ export const GLOSSARY = [
     id: "myt",
     term: "Mix-Yield Token (MYT)",
     definition:
-      "An ERC-20 token representing a share of a diversified portfolio of yield strategies managed by the Alchemix DAO. MYT is the collateral accepted by the Alchemist. Its redemption value grows continuously as underlying strategies earn yield.",
+      "An ERC-20 token representing a share of a diversified portfolio of yield strategies managed by the Alchemix DAO. MYT is the collateral accepted by the Alchemist. Its redemption value rises as underlying strategies earn yield, and falls if a strategy records a loss.",
     href: "/user/concepts/myt-and-yield",
     linkLabel: "Mix-Yield Token",
   },
@@ -86,7 +86,7 @@ export const GLOSSARY = [
     id: "self-repaying-loan",
     term: "Self-repaying loan",
     definition:
-      "An Alchemix loan whose balance decreases over time without the borrower taking action, as vault yield and scheduled Transmuter redemptions service the debt. Interest rate is 0%; debt only moves downward unless the borrower mints more.",
+      "An Alchemix loan whose balance decreases over time without the borrower taking action. Scheduled Transmuter redemptions draw MYT from the borrower's collateral and cancel the same amount of debt, while the remaining collateral keeps earning yield. Interest rate is 0%; debt only moves downward unless the borrower mints more.",
     href: "/user/concepts/self-repaying-loans",
     linkLabel: "Self-Repaying Loans",
   },

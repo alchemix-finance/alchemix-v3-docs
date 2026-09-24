@@ -118,10 +118,16 @@ function cleanDoc(raw, glossary) {
   return { title, body: s };
 }
 
-/* Rewrite relative .md links to absolute site URLs so they work out of context */
-function absolutizeLinks(body, pageUrl) {
+/* Rewrite relative .md links to absolute site URLs so they work out of context.
+ *
+ * Markdown links resolve against the *directory* the file sits in, not the page
+ * itself, so the base must be the directory URL with a trailing slash. Resolving
+ * against the page URL instead (pageUrl + "/") treats the page as a folder and
+ * pushes every link one level too deep — "../concepts/fees.md" on a tutorials
+ * page came out as /user/tutorials/concepts/fees rather than /user/concepts/fees. */
+function absolutizeLinks(body, dirUrl) {
   return body.replace(/\]\((\.\.?\/[^)#]+?)\.md(#[^)]*)?\)/g, (_, rel, hash) => {
-    const resolved = new URL(rel, pageUrl + "/").href;
+    const resolved = new URL(rel, dirUrl).href;
     return `](${resolved}${hash || ""})`;
   });
 }
@@ -163,6 +169,14 @@ function routeFor(file, section) {
   return `${SITE}${section.route}${rel ? "/" + rel : ""}`;
 }
 
+/* URL of the directory a file lives in — the base relative links resolve against */
+function dirUrlFor(file, section) {
+  const rel = path
+    .relative(path.join(ROOT, section.dir), path.dirname(file))
+    .replace(/\\/g, "/");
+  return `${SITE}${section.route}${rel ? "/" + rel : ""}/`;
+}
+
 /* ── Main ── */
 const glossary = loadGlossary();
 const today = new Date().toISOString().slice(0, 10);
@@ -181,7 +195,7 @@ for (const section of SECTIONS) {
     const { title, body } = cleanDoc(fs.readFileSync(file, "utf8"), glossary);
     const name = title || path.basename(file, ".md");
     const url = routeFor(file, section);
-    out += `\n\n---\n\n## ${name}\n\nSource: ${url}\n\n${absolutizeLinks(body, url)}\n`;
+    out += `\n\n---\n\n## ${name}\n\nSource: ${url}\n\n${absolutizeLinks(body, dirUrlFor(file, section))}\n`;
   }
 }
 

@@ -44,7 +44,7 @@ You can borrow up to 90% loan-to-value (LTV) of your deposited collateral. The e
 
 Your MYT collateral grows in value as its underlying strategies earn yield. When a redemption occurs, the Transmuter swaps a portion of that collateral, equal in value to the queued alAssets earmarked for your position, and applies the proceeds to your outstanding debt.
 
-Each position has a maturity date, but redemptions can happen earlier or later depending on user activity. Until a redemption takes place, your full collateral balance continues compounding, and your debt remains unchanged unless you choose to borrow more.
+Transmuter positions have maturity dates, but their owners can claim earlier or later, so the timing of redemptions against your loan varies with their activity. Until a redemption takes place, your full collateral balance continues compounding, and your debt remains unchanged unless you choose to borrow more.
 
 [Learn more about Self-Repaying Loans →](./concepts/self-repaying-loans.md)
 
@@ -54,7 +54,7 @@ Each position has a maturity date, but redemptions can happen earlier or later d
 
 <summary>What is earmarked debt?</summary>
 
-When a redemption cycle begins, the protocol gradually reserves (earmarks) a portion of each open loan based on the borrower’s share of total system debt. This earmarked amount is fixed once assigned for the remainder of the cycle and continues earning yield until settlement. If you choose to repay an earmarked slice early, repayment must be made in MYT.
+As Transmuter deposits vest, the protocol continuously reserves (earmarks) a matching amount of debt across all open loans, in proportion to each loan’s unearmarked debt. Earmarked debt stays earmarked until it is redeemed, and the collateral behind it continues earning yield until settlement. If you choose to repay an earmarked slice early, repayment must be made in MYT.
 
 [Learn more about redemptions →](./concepts/redemption-rate.md)
 
@@ -66,7 +66,7 @@ When a redemption cycle begins, the protocol gradually reserves (earmarks) a por
   Is it possible to exit or repay my loan before it is fully repaid?
 </summary>
 
-Yes. Alchemix allows you to exit or repay your loan at any time, even before it is fully self-repaid. We offer a self-liquidation feature that can only be triggered by the depositor that enables you to repay outstanding loans by using a portion of your deposited collateral. Once the loan is repaid, you can withdraw the remaining collateral. There are no lock-in periods or penalties at all with Alchemix.
+Yes. Alchemix allows you to exit or repay your loan at any time, even before it is fully self-repaid. A self-liquidation feature, which only the position owner can trigger, repays the outstanding loan from your deposited collateral and returns the remaining collateral to you in the same transaction. There are no lock-in periods and no early repayment penalty. The standard 0.25% borrower fee still applies to any earmarked portion of the debt settled from collateral.
 
 </details>
 
@@ -75,6 +75,8 @@ Yes. Alchemix allows you to exit or repay your loan at any time, even before it 
 <summary>What is the redemption rate?</summary>
 
 Redemptions in Alchemix v3 deleverage your position by using collateral to repay debt without the cost of traditional interest rates. The Redemption Rate projects how quickly this occurs by comparing annualized Transmuter volume against total system debt, with a higher rate indicating faster loan clearance.
+
+A vault page can show a live rate of 0% with a “future” rate beside it. That means MYT the Transmuter already holds, from repayments and liquidations, is covering matured redemptions, so no new debt is being earmarked. The rate steps up to the future figure once that cover is used up.
 
 A key benefit is <Term id="temporal-leverage">Temporal Leverage</Term>, where earmarked collateral continues earning yield until the exact moment of settlement, maximizing total returns during the waiting period.
 
@@ -116,9 +118,9 @@ Most of the time, the cost and reward cancel out, so the net effect is similar t
 
 <summary>Can I withdraw from the Transmuter early?</summary>
 
-Yes, but an early exit applies a penalty that reduces your return. The pop-up shows the exact amount before you confirm.
+Yes. An early exit pays out the share that has already vested in full and charges the early exit penalty on the unvested share only, which is returned to you as alAssets. The pop-up shows the exact amount before you confirm.
 
-[Learn more about early exits →](./tutorials/redeem-alassets.md#manage-or-close-a-position)
+[Learn more about early exits →](./tutorials/redeem-alassets.md#manage-or-exit-a-position)
 
 </details>
 
@@ -126,15 +128,17 @@ Yes, but an early exit applies a penalty that reduces your return. The pop-up sh
 
 <summary>What fees does Alchemix charge?</summary>
 
-Alchemix V3 utilizes four primary fee parameters:
+Alchemix V3 utilizes five primary fee parameters:
 
-- Borrower Redemption Fee: 0.25% (applied when collateral is used to reconcile your earmarked debt, whether through a Transmuter redemption or a force-repay).
+- Borrower Redemption Fee: 0.25% (0.10% on Base) of each amount of earmarked debt that is settled, whether through a Transmuter redemption, a force-repay during liquidation or self-liquidation, or your own MYT repayment of an earmarked amount. It is charged on that amount only. The rest of your collateral and debt carry no fee.
 
-- MYT Yield Fee: 15.00% (a performance fee on gross yield generated by strategies).
+- MYT Yield Fee: 5.00% to 17.50%, set per vault (a performance fee on gross yield generated by strategies).
 
-- Early Transmutation Fee: 1.00% (applied if you withdraw assets from the Transmuter queue early).
+- Early Transmutation Fee: 1.00% on Ethereum, Optimism, and Base, 2.50% on Arbitrum (charged only on the unvested portion if you withdraw from the Transmuter queue before maturity; the vested portion is paid out in full; set per chain).
 
 - Transmuter Fee: 0.00% (charged when claiming transmuted assets).
+
+- Liquidator Fee: 1.50% (paid to whoever liquidates an unhealthy position, from the position’s surplus collateral in a partial liquidation and from the fee vault in a full one).
 
 [Learn more about fees →](./concepts/fees.md)
 
@@ -177,7 +181,7 @@ The system is secured by cross-chain bridge controls using multiple decentralize
 
 <summary>Is Alchemix audited?</summary>
 
-Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/Cantina, Nethermind, yAudit, Immunefi, and alpeh_v), alongside an extensive in-house security suite. A bug bounty of up to $300,000 is active on Immunefi, and the protocol is monitored in real time by Hypernative, which can auto-pause it if suspicious activity is detected.
+Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/Cantina, Nethermind, yAudit, Immunefi, and alpeh_v), alongside an extensive in-house security suite. A bug bounty of up to $150,000 is active on Immunefi, and the protocol is monitored in real time by Hypernative, with the Guardian multisig able to pause new deposits and loans if suspicious activity is detected.
 
 [Audit reports, bounty details, and security practices →](./safety/security.md)
 
@@ -189,7 +193,7 @@ Yes. Alchemix V3 underwent its most comprehensive audit suite to date (Spearbit/
   Where can I see live data?
 </summary>
 
-Current redemption rate, queued alAssets, vault APRs, and historic term stats are displayed directly in the main dashboard and the Fixed Yield page.
+Vault APRs appear on the Borrow page and on your Dashboard. A vault's current redemption rate and earmarked balance sit at the top of that vault's own page, with fuller detail under its Earmarking, Redemptions, and History tabs. Fixed-rate terms and their projected APRs are on the Fixed Yield page, under Earn → Fixed Rate.
 
 [View live data →](https://alchemix.fi/)
 

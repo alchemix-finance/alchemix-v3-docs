@@ -15,7 +15,7 @@ import VideoEmbed from "@site/src/components/VideoEmbed";
 You can withdraw collateral from Alchemix at any time.
 
 - **Vault deposits with a loan** – withdrawing reduces your collateral and raises your LTV. Check your position before pulling funds out.
-- **Mixed Yield deposits without a loan** – there is no LTV to manage. Withdraw any amount up to your full balance.
+- **Mixed Yield deposits without a loan** – there is no LTV to manage. Withdraw any amount up to your full balance. These deposits are not vault positions, so they are managed from a different place. See [Withdrawing an MYT deposit that has no loan](#withdrawing-an-myt-deposit-that-has-no-loan) below.
 
 ### Prerequisites
 
@@ -24,9 +24,9 @@ You can withdraw collateral from Alchemix at any time.
 
 ### Step 1 – Open the vault
 
-<FramedImage src="/img/withdraw-01.png" alt="Vault detail page" />
+<FramedImage src="/img/withdraw-01.png" alt="Dashboard showing open vault positions" />
 
-Click Dashboard in the top navigation, then click the vault you want to withdraw from.
+Click Dashboard in the top navigation, then click **Manage** on the vault position you want to withdraw from.
 
 ### Step 2 – Open the Withdraw tab
 
@@ -49,3 +49,9 @@ Type the amount you want to withdraw into the input field. The vault returns you
 ### Step 5 – Confirm
 
 Click Withdraw. Your wallet shows the network, gas estimate, and amounts. Approve the transaction.
+
+### Withdrawing an MYT deposit that has no loan
+
+Deposits made on the Mixed Yield page do not appear under Open Vault Positions. On the Dashboard, scroll to Mixed Yield Token Holdings and click **Manage** on the row you want. The Manage MYT Position window has Deposit and Withdraw tabs. Open Withdraw, enter the amount, and confirm.
+
+The expanded vault card on the Mixed Yield page, under Earn → Variable Rate, has the same Withdraw tab. Choosing ETH instead of WETH adds an unwrap step to the transaction flow.

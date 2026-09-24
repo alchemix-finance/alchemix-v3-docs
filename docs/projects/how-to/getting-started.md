@@ -8,13 +8,13 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Getting Started" />
 
-Most integrations follow one of four paths. Find yours below, then reach out — every integration gets a direct line to the core team, so you never have to reverse-engineer the protocol alone.
+Most integrations follow one of four paths. Every integration gets a direct line to the core team.
 
 ### 1. Route deposits into the MYT
 
 **For:** wallets, yield aggregators, onboarding platforms.
 
-The Mix-Yield Token is a customized vault token built on Morpho Vaults V2 (ERC-4626). It holds ETH or USDC deposits and spreads them across DAO-curated strategies, compounding continuously with no lock-ups. If your product can hold or route into an ERC-4626-style vault, it can offer Alchemix yield as a single standardized asset.
+The Mix-Yield Token is a Morpho Vaults V2 vault (ERC-4626) with an Alchemix-built curator, allocator, and strategy layer. It holds ETH or USDC deposits and spreads them across DAO-curated strategies, compounding continuously with no lock-ups. If your product can hold or route into an ERC-4626-style vault, it can offer Alchemix yield as a single standardized asset.
 
 - [How MYT works →](/user/concepts/myt-and-yield)
 - [Live vaults and current strategy mix →](https://alchemix.fi/mixed-yield)
@@ -23,7 +23,7 @@ The Mix-Yield Token is a customized vault token built on Morpho Vaults V2 (ERC-4
 
 **For:** money markets, DEXs, liquidity managers.
 
-alUSD and alETH each have a dedicated Chronicle Labs oracle feed, so external protocols can price them verifiably. Like-for-like pools (alETH/ETH-family pairs) avoid impermanent loss on the alAsset side because the Transmuter redeems 1:1 at maturity.
+alUSD and alETH each have a dedicated Chronicle Labs oracle feed, so external protocols can price them verifiably. Like-for-like pools (alETH/ETH-family pairs) carry low impermanent loss on the alAsset side because the Transmuter's 1:1 redemption path keeps alAssets close to their underlying.
 
 - [alAssets and external pricing →](/user/concepts/alAssets#using-alassets-across-defi)
 - [How the peg holds →](/user/concepts/how-peg-is-maintained)
@@ -32,7 +32,7 @@ alUSD and alETH each have a dedicated Chronicle Labs oracle feed, so external pr
 
 **For:** treasuries, structured-product designers, fixed-income desks.
 
-Deposit alAssets into the Transmuter and receive a guaranteed 1:1 redemption at a known maturity date. Acquiring alAssets below par turns that into a fixed rate known at entry — a bond-like primitive that can be wrapped, tranched, or laddered.
+Deposit alAssets into the Transmuter and receive a 1:1 redemption in MYT that vests to a known maturity date, backed by borrower collateral. Acquiring alAssets below par turns that into a fixed rate known at entry, a bond-like primitive that can be wrapped, tranched, or laddered.
 
 - [Transmuter mechanics →](/user/concepts/transmuter)
 - [Live terms and rates →](https://alchemix.fi/fixed-yield)
@@ -47,7 +47,7 @@ Alchemix V3 is source-available under BUSL 1.1. The Friendly Fork Initiative lic
 
 ### Before you build
 
-- **Read the protocol docs.** The [user documentation](/user) covers mechanics; the [developer section](/dev) covers contracts and is being expanded.
+- **Read the protocol docs.** The [user documentation](/user) covers mechanics; the [developer section](/dev) covers the contracts.
 - **Check the code.** The V3 contracts are public at [github.com/alchemix-finance/v3](https://github.com/alchemix-finance/v3).
 - **Understand the risk model.** [Risk considerations](/user/safety/risk-considerations) explains counterparty exposure for each role in the system, and [Security & audits](/user/safety/security) covers the audit suite and monitoring.
 

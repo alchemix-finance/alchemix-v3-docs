@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <Term id="alasset">alAssets</Term> are the tokens you borrow against your collateral. Their price floats near 1.00, but the protocol never forcibly pins it there. Market incentives and redemption mechanics do the work of pulling price back to parity after short-term drifts.
 
-**How the soft-peg works:** Inside the vault 1 alAsset always cancels 1 unit of debt, even if that token trades at a discount on exchanges. Fixed-duration redemptions and arbitrage tighten the gap, so price tends to revert without an explicit hard-peg.
+**How the soft-peg works:** Inside the vault 1 alAsset cancels 1 unit of debt at face value, even if that token trades at a discount on exchanges. Fixed-duration redemptions and arbitrage tighten the gap, so price tends to revert without an explicit hard-peg.
 
 ### Why price drifts happen
 
@@ -48,7 +48,7 @@ flowchart LR
 
 #### Contraction – Transmuter demand
 
-A wider discount plus a fixed-term <Term id="transmuter">Transmuter</Term> deposit produces a bond-like APR. Traders buy cheap alAssets, deposit them. The protocol earmarks an equal slice of collateral, transfers it to the Transmuter, and burns the alAssets at maturity. Supply contracts and price moves back towards peg.
+A wider discount plus a fixed-term <Term id="transmuter">Transmuter</Term> deposit produces a bond-like APR. Traders buy cheap alAssets and deposit them. As those deposits vest, the protocol earmarks a matching amount of borrower debt. When the depositor claims, the Alchemist pulls that value in MYT from borrower collateral, sends it to the Transmuter, and the claimed alAssets are burned. Supply contracts and price moves back towards peg.
 
 ```mermaid
 %%{init: {

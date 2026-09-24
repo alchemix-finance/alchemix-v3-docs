@@ -125,7 +125,7 @@ export default function CopyForLLMButton() {
     const preamble =
       `This is a page from the Alchemix v3 documentation (https://docs.alchemix.fi).\n` +
       `Alchemix is a DeFi protocol that lets users deposit collateral into yield strategies ` +
-      `and take out self-repaying loans backed by future yield.\n\n` +
+      `and take out self-repaying loans that Transmuter redemptions pay down from that collateral while it keeps earning.\n\n` +
       `Source: ${url}\n\n---\n\n`;
 
     const content = preamble + "# " + title + "\n\n" + getPageMarkdown();
