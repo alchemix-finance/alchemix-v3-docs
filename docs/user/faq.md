@@ -98,6 +98,16 @@ Yes. Open the Repay tab in a vault and choose:
 
 <details>
 
+<summary>How does Flash Repay work, and why doesn’t it return my collateral?</summary>
+
+Flash Repay flashloans the underlying asset, buys the alAsset below 1.00, burns it to clear your debt at 1:1, and withdraws collateral worth the cleared debt to repay the flashloan. What is left over after the flashloan is repaid goes to your wallet as the recovered part of your loan cost.
+
+It only withdraws the collateral backing the debt it clears. The rest of your collateral stays deposited in your position, and you can take it out from the Withdraw tab. [Read the full walkthrough →](./tutorials/repay-loan.md#flash-repay)
+
+</details>
+
+<details>
+
 <summary>What happens if I borrow alAssets and immediately deposit them in the Transmuter?</summary>
 
 In this case, you interact with both sides of the system at once:

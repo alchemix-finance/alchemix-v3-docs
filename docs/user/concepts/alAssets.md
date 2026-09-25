@@ -43,7 +43,7 @@ When you borrow, the protocol mints alAssets at face value. 1 alAsset offsets ex
 
 #### Example
 
-Deposit 1,000 USDC, mint 900 alUSD (90% <Term id="ltv">LTV</Term>). If alUSD trades at 0.97 USDC, selling yields 873 USDC (a 27 USDC market discount) while your recorded debt inside the vault remains 900 USDC.
+Deposit 1,000 USDC, mint 900 alUSD (90% <Term id="ltv">LTV</Term>). If alUSD trades at 0.97 USDC, selling yields 873 USDC (a 27 USDC market discount) while your recorded debt inside the vault remains 900 USDC. That 27 USDC is the cost of the loan. If alUSD still trades below 1.00 when you repay, [Flash Repay](../tutorials/repay-loan.md#flash-repay) can recover part or all of it.
 
 ### Why alAssets trade below par
 
