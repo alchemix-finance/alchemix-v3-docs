@@ -3,7 +3,7 @@
 > This file contains the Alchemix V3 user and integrator documentation concatenated for AI consumption.
 > Developer and governance sections are still being expanded and are indexed at https://docs.alchemix.fi/llms.txt.
 > Source: https://docs.alchemix.fi
-> Generated: 2026-09-24
+> Generated: 2026-09-25
 
 
 ---
@@ -1941,11 +1941,16 @@ Later, alUSD trades at 0.99 and none of your debt is earmarked. A Flash Repay of
 - Withdraws 900 USDC worth of collateral and repays the flashloan.
 - Sends about 8.55 USDC to your wallet.
 
-Your loan cost falls from 27 USDC to about 18.45 USDC. The remaining 100 USDC of collateral, plus any yield it has earned, stays in the vault for you to withdraw.
+Your loan cost falls from 27 USDC to about 18.45 USDC, or 2.05% of the debt. That 2.05% is the total you paid to borrow, the Alchemix equivalent of the interest on a loan elsewhere, and it did not grow while the loan was open. The remaining 100 USDC of collateral, plus any yield it has earned, stays in the vault for you to withdraw.
 
-If alUSD trades at a deeper discount when you repay than when you sold, the recovery is larger than the original cost and you come out ahead.
+If you time the repayment for when alUSD trades lower than it did when you borrowed, the recovery covers the whole loan cost and then some, so you were in effect paid to borrow. In the same example, a Flash Repay with alUSD at 0.96:
 
-These figures use example prices. The app quotes the real ones before you confirm.
+- Flashloans about 864.43 USDC to buy the 900 alUSD.
+- Sends about 35.57 USDC to your wallet.
+
+The 27 USDC loan cost becomes a gain of about 8.57 USDC, or 0.95% of the debt, and **Loan Cost After Repay** turns green.
+
+These figures use example prices. The app quotes real ones before you confirm.
 
 #### Limits
 
