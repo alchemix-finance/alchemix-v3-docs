@@ -76,21 +76,52 @@ Every row carries a `chain` field. Filter on these exact values:
 
 Each chain has one Alchemist per alAsset, and each Alchemist has its own Transmuter and Mix-Yield Token (MYT) vault. Base has a single alUSDb market. Full address lists for each chain are on the [Deployed Contracts](/dev/contracts/ethereum) pages.
 
-| Chain         | alAsset | Alchemist                                    | Transmuter                                   | MYT vault                                    |
-| ------------- | ------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
-| `mainnet`     | alETH   | `0xfa995b6abc387376c3e7de5f6d394ab5b6bee26b` | `0x073598132f37756a7e665fb52f1757463120bd3c` | `0x29bcfed246ce37319d94eba107db90c453d4c43d` |
-| `mainnet`     | alUSD   | `0xeb83112d925268bede86654c13d423a987587e3e` | `0x2584e8b0616b3e750492c9629a3b27679c410cb9` | `0x9b44efca3e2a707b63dc00ce79d646e5e5d24ba5` |
-| `optimism`    | alETH   | `0xded3a04612ff12b57317abe38e68026fc9d28114` | `0x2584e8b0616b3e750492c9629a3b27679c410cb9` | `0x91b8657aea26caa8a0e9d6dd4e24727ccf32f822` |
-| `optimism`    | alUSD   | `0x930750a3510e703535e943e826aba3c364ffc1de` | `0x693b7594ae0633d9c5574d0da46a040f92f5b281` | `0xaf510a560744880410f0f65e3341a020fbc2ca41` |
-| `arbitrumOne` | alETH   | `0xded3a04612ff12b57317abe38e68026fc9d28114` | `0x2584e8b0616b3e750492c9629a3b27679c410cb9` | `0xfe8f223f3d81462f55bf8609897b8cecfa4b195c` |
-| `arbitrumOne` | alUSD   | `0x930750a3510e703535e943e826aba3c364ffc1de` | `0x693b7594ae0633d9c5574d0da46a040f92f5b281` | `0xeba62b842081cef5a8184318dc5c4e4aaca9f651` |
-| `base`        | alUSDb  | `0xeb380d86eed275c9f2ed77745ab1b2ccf364bf7a` | `0x5b1c7180c630d3b2b6782df70f43ae5ea80425ba` | `0xb8befe5a6941ca4022a52042075ff269c3c67467` |
+**`mainnet`**
+
+| Contract          | Address                                      |
+| ----------------- | -------------------------------------------- |
+| alETH Alchemist   | `0xfa995b6abc387376c3e7de5f6d394ab5b6bee26b` |
+| alETH Transmuter  | `0x073598132f37756a7e665fb52f1757463120bd3c` |
+| alETH MYT vault   | `0x29bcfed246ce37319d94eba107db90c453d4c43d` |
+| alUSD Alchemist   | `0xeb83112d925268bede86654c13d423a987587e3e` |
+| alUSD Transmuter  | `0x2584e8b0616b3e750492c9629a3b27679c410cb9` |
+| alUSD MYT vault   | `0x9b44efca3e2a707b63dc00ce79d646e5e5d24ba5` |
+
+**`optimism`**
+
+| Contract          | Address                                      |
+| ----------------- | -------------------------------------------- |
+| alETH Alchemist   | `0xded3a04612ff12b57317abe38e68026fc9d28114` |
+| alETH Transmuter  | `0x2584e8b0616b3e750492c9629a3b27679c410cb9` |
+| alETH MYT vault   | `0x91b8657aea26caa8a0e9d6dd4e24727ccf32f822` |
+| alUSD Alchemist   | `0x930750a3510e703535e943e826aba3c364ffc1de` |
+| alUSD Transmuter  | `0x693b7594ae0633d9c5574d0da46a040f92f5b281` |
+| alUSD MYT vault   | `0xaf510a560744880410f0f65e3341a020fbc2ca41` |
+
+**`arbitrumOne`**
+
+| Contract          | Address                                      |
+| ----------------- | -------------------------------------------- |
+| alETH Alchemist   | `0xded3a04612ff12b57317abe38e68026fc9d28114` |
+| alETH Transmuter  | `0x2584e8b0616b3e750492c9629a3b27679c410cb9` |
+| alETH MYT vault   | `0xfe8f223f3d81462f55bf8609897b8cecfa4b195c` |
+| alUSD Alchemist   | `0x930750a3510e703535e943e826aba3c364ffc1de` |
+| alUSD Transmuter  | `0x693b7594ae0633d9c5574d0da46a040f92f5b281` |
+| alUSD MYT vault   | `0xeba62b842081cef5a8184318dc5c4e4aaca9f651` |
+
+**`base`**
+
+| Contract          | Address                                      |
+| ----------------- | -------------------------------------------- |
+| alUSDb Alchemist  | `0xeb380d86eed275c9f2ed77745ab1b2ccf364bf7a` |
+| alUSDb Transmuter | `0x5b1c7180c630d3b2b6782df70f43ae5ea80425ba` |
+| alUSDb MYT vault  | `0xb8befe5a6941ca4022a52042075ff269c3c67467` |
 
 :::warning
 The same address can belong to different contracts on different chains. `0xded3…` is the alETH Alchemist on both Optimism and Arbitrum, and `0x2584…` is the alUSD Transmuter on Ethereum and the alETH Transmuter on Optimism and Arbitrum. Always filter on `chain` as well as the address.
 :::
 
-The `alchemistMetadatas` query returns this table from the indexer itself, including the debt token, underlying token, MYT and Transmuter for each Alchemist:
+The `alchemistMetadatas` query returns the same addresses from the indexer itself, including the debt token, underlying token, MYT and Transmuter for each Alchemist:
 
 ```graphql
 {
