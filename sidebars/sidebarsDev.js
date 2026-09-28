@@ -78,6 +78,12 @@ module.exports = {
       className: "sidebarBold",
       items: ["contracts/ethereum", "contracts/optimism", "contracts/arbitrum", "contracts/base"],
     },
+    {
+      type: "doc",
+      id: "indexer-api",
+      label: "Indexer API",
+      className: "sidebarBold",
+    },
 
     // Integrating Alchemix
     // {
