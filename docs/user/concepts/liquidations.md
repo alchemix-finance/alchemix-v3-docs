@@ -38,7 +38,16 @@ The colored bar in the vault UI gives an at-a-glance view of your position. Keep
 
 <HealthBar currentLtv={62} maxLtv={90} liqLtv={95} />
 
-In a normal liquidation, any earmarked debt is first repaid from your collateral, then only enough additional collateral is taken to restore the position to the target ratio, at or below the 90% maximum. The rest of your position is untouched. If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee, currently <FeeValue metric="liquidator" />. In a partial liquidation that fee is charged on the position’s surplus collateral, the value above the debt, and comes out of the position. In a full liquidation it is charged on the debt instead, and, as with any fee the position cannot safely cover itself, it is paid from a separate fee vault that the DAO or anyone can fund.
+### How a liquidation runs
+
+A liquidation runs in two steps. The second runs only if the first leaves the position over the 95% threshold.
+
+1. **Earmarked debt repayment:** Any <Term id="earmarked-debt">earmarked debt</Term> on the position is repaid 1:1 from its own collateral, and the only cost is the [borrower redemption fee](./fees.md#borrower-redemption-fee) on that amount, currently <FeeValue metric="redemption" />. That collateral was already due to leave the position through redemptions. If the repayment brings the position back under the 95% threshold, the process stops here. The rest of the collateral stays in the position and keeps earning, and redemptions continue to pay down the remaining debt.
+2. **Liquidation:** If the position has no earmarked debt, or is still over the threshold after step 1, enough additional collateral is taken to bring it back to the target ratio, at or below the 90% maximum. The rest of your position is untouched.
+
+If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee, currently <FeeValue metric="liquidator" />. In a partial liquidation that fee is charged on the position’s surplus collateral, the value above the debt, and comes out of the position. In a full liquidation it is charged on the debt instead, and, as with any fee the position cannot safely cover itself, it is paid from a separate fee vault that the DAO or anyone can fund.
+
+You can clear earmarked debt yourself at any time. A repayment with MYT or the underlying asset on the [Repay tab](../tutorials/repay-loan.md) settles earmarked debt first and lowers your LTV. Any wallet can repay a position, so someone else can also repay on your behalf.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 

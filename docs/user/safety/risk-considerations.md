@@ -28,7 +28,7 @@ The primary risks a borrower takes are liquidation risk and redemption risk.
 
 ### Liquidation risk
 
-If the MYT suffers a loss then the <Term id="ltv">LTV</Term> of a borrower's position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation, which will use collateral to repay debt, and pay the liquidator, until the user’s position is down to the target LTV.
+If the MYT suffers a loss then the <Term id="ltv">LTV</Term> of a borrower’s position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation. A liquidation first repays any earmarked debt from collateral and stops there if that brings the position back under the threshold. Otherwise it uses collateral to repay debt, and pays the liquidator, until the user’s position is down to the target LTV. See [How a liquidation runs](../concepts/liquidations.md#how-a-liquidation-runs).
 
 Users can mitigate liquidation risk by using a conservative LTV based on the risk levels of the strategies that make up each MYT. Moderate and Aggressive risk strategies together are capped at 60% of an MYT, and Aggressive strategies alone at 20% (see the [risk caps](../concepts/myt-and-yield.md#risk-caps) table). If the liquidation LTV is 95% then a user can take a 36% LTV. In this scenario, even if all of the Moderate and Aggressive risk strategies suffer 100% losses, the user will still have a 90% LTV and therefore not be subject to liquidation.
 

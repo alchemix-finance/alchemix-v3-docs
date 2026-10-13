@@ -82,7 +82,7 @@ The Alchemix Ecosystem Vault is a curated vault that deploys deposited WETH acro
 
 ### Liquidator fee
 
-Whoever liquidates an unhealthy position is paid a fee for doing so. In a partial liquidation the fee is a percentage of the position’s surplus collateral, meaning the collateral value above the debt, and it comes out of the position together with the collateral seized. In a full liquidation the fee is the same percentage of the position’s debt and is paid from a separate fee vault, so nothing beyond the seized collateral is taken from the position. A self-liquidation pays no liquidator fee. See [Liquidations](./liquidations.md) for when each case applies.
+Whoever liquidates an unhealthy position is paid a fee for doing so. In a partial liquidation the fee is a percentage of the position’s surplus collateral, meaning the collateral value above the debt, and it comes out of the position together with the collateral seized. In a full liquidation the fee is the same percentage of the position’s debt and is paid from a separate fee vault, so nothing beyond the seized collateral is taken from the position. A self-liquidation pays no liquidator fee. A liquidation that ends once the position’s earmarked debt is repaid costs only the borrower redemption fee on that amount. See [Liquidations](./liquidations.md#how-a-liquidation-runs) for when each case applies.
 
 - **Current Rate:** <FeeValue metric="liquidator" />
 

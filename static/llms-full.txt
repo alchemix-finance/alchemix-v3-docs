@@ -3,7 +3,7 @@
 > This file contains the Alchemix V3 user and integrator documentation concatenated for AI consumption.
 > Developer and governance sections are still being expanded and are indexed at https://docs.alchemix.fi/llms.txt.
 > Source: https://docs.alchemix.fi
-> Generated: 2026-09-25
+> Generated: 2026-10-13
 
 
 ---
@@ -251,6 +251,11 @@ Each quarter, Alchemix publishes a financial report covering the full state of t
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td>Q2 2026</td>
+      <td><a class="button button--primary button--sm" href="/Alchemix_Q2_2026_Financial_Report.pdf" download>Download</a></td>
+      <td><a class="button button--secondary button--sm" href="/Alchemix_Q2_2026_Financial_Report.pdf" target="_blank" rel="noopener noreferrer">View</a></td>
+    </tr>
     <tr>
       <td>Q1 2026</td>
       <td><a class="button button--primary button--sm" href="/Alchemix_Q1_2026_Financial_Report.pdf" download>Download</a></td>
@@ -1123,7 +1128,7 @@ flowchart LR
 
 Source: https://docs.alchemix.fi/user/concepts/alAssets
 
-alAssets (alUSD, alETH, and alUSDb on Base) are synthetic tokens that mirror the value of their underlying asset.
+alAssets are synthetic tokens that mirror the value of their underlying asset. alUSD and alETH are minted on Ethereum, Optimism, and Arbitrum. Base has one alAsset of its own, [alUSDb](#alusdb-on-base).
 
 They serve two purposes:
 
@@ -1211,7 +1216,7 @@ The visualizer below shows only the internal Alchemix view. Returns on capital d
 
 Source: https://docs.alchemix.fi/user/concepts/transmuter
 
-The Transmuter lets you redeem alAssets (alUSD, alETH, and alUSDb on Base) at a 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of MYT that normally unwraps to the underlying asset immediately.
+The Transmuter lets you redeem alAssets (alUSD and alETH, or alUSDb on Base) at a 1:1 rate after a known waiting period. You buy below face value and receive the full value on the maturity date, paid as an equal value of MYT that normally unwraps to the underlying asset immediately.
 
 :::tip Instant vs. fixed-rate liquidity
 The Transmuter pays out at a **1:1 exchange rate** (no market slippage) but works over time as positions vest. Payouts are scaled down only if the Alchemist carries bad debt (see Edge-case handling below).
@@ -1359,7 +1364,7 @@ The Alchemix Ecosystem Vault is a curated vault that deploys deposited WETH acro
 
 ### Liquidator fee
 
-Whoever liquidates an unhealthy position is paid a fee for doing so. In a partial liquidation the fee is a percentage of the position’s surplus collateral, meaning the collateral value above the debt, and it comes out of the position together with the collateral seized. In a full liquidation the fee is the same percentage of the position’s debt and is paid from a separate fee vault, so nothing beyond the seized collateral is taken from the position. A self-liquidation pays no liquidator fee. See [Liquidations](https://docs.alchemix.fi/user/concepts/liquidations) for when each case applies.
+Whoever liquidates an unhealthy position is paid a fee for doing so. In a partial liquidation the fee is a percentage of the position’s surplus collateral, meaning the collateral value above the debt, and it comes out of the position together with the collateral seized. In a full liquidation the fee is the same percentage of the position’s debt and is paid from a separate fee vault, so nothing beyond the seized collateral is taken from the position. A self-liquidation pays no liquidator fee. A liquidation that ends once the position’s earmarked debt is repaid costs only the borrower redemption fee on that amount. See [Liquidations](https://docs.alchemix.fi/user/concepts/liquidations#how-a-liquidation-runs) for when each case applies.
 
 - **Current Rate:** <FeeValue metric="liquidator" />
 
@@ -1403,7 +1408,16 @@ The colored bar in the vault UI gives an at-a-glance view of your position. Keep
 
 *(An interactive HealthBar illustration appears here in the web version.)*
 
-In a normal liquidation, any earmarked debt is first repaid from your collateral, then only enough additional collateral is taken to restore the position to the target ratio, at or below the 90% maximum. The rest of your position is untouched. If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee, currently <FeeValue metric="liquidator" />. In a partial liquidation that fee is charged on the position’s surplus collateral, the value above the debt, and comes out of the position. In a full liquidation it is charged on the debt instead, and, as with any fee the position cannot safely cover itself, it is paid from a separate fee vault that the DAO or anyone can fund.
+### How a liquidation runs
+
+A liquidation runs in two steps. The second runs only if the first leaves the position over the 95% threshold.
+
+1. **Earmarked debt repayment:** Any earmarked debt on the position is repaid 1:1 from its own collateral, and the only cost is the [borrower redemption fee](https://docs.alchemix.fi/user/concepts/fees#borrower-redemption-fee) on that amount, currently <FeeValue metric="redemption" />. That collateral was already due to leave the position through redemptions. If the repayment brings the position back under the 95% threshold, the process stops here. The rest of the collateral stays in the position and keeps earning, and redemptions continue to pay down the remaining debt.
+2. **Liquidation:** If the position has no earmarked debt, or is still over the threshold after step 1, enough additional collateral is taken to bring it back to the target ratio, at or below the 90% maximum. The rest of your position is untouched.
+
+If a position’s debt is at or above its collateral value, or the whole Alchemist has fallen below its global minimum collateralization, the position is liquidated in full. Collateral taken in a liquidation is sent to the Transmuter, where it backs redemptions, while the liquidator receives only the fee, currently <FeeValue metric="liquidator" />. In a partial liquidation that fee is charged on the position’s surplus collateral, the value above the debt, and comes out of the position. In a full liquidation it is charged on the debt instead, and, as with any fee the position cannot safely cover itself, it is paid from a separate fee vault that the DAO or anyone can fund.
+
+You can clear earmarked debt yourself at any time. A repayment with MYT or the underlying asset on the [Repay tab](https://docs.alchemix.fi/user/tutorials/repay-loan) settles earmarked debt first and lowers your LTV. Any wallet can repay a position, so someone else can also repay on your behalf.
 
 Day-to-day most users will never see a liquidation. If MYT vaults experience a loss, these mechanisms ensure losses are covered in a transparent and proportional way.
 
@@ -1436,7 +1450,7 @@ The primary risks a borrower takes are liquidation risk and redemption risk.
 
 ### Liquidation risk
 
-If the MYT suffers a loss then the LTV of a borrower's position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation, which will use collateral to repay debt, and pay the liquidator, until the user’s position is down to the target LTV.
+If the MYT suffers a loss then the LTV of a borrower’s position may increase beyond the maximum LTV. Each Alchemist has a set liquidation LTV at which the user’s position is eligible for liquidation. A liquidation first repays any earmarked debt from collateral and stops there if that brings the position back under the threshold. Otherwise it uses collateral to repay debt, and pays the liquidator, until the user’s position is down to the target LTV. See [How a liquidation runs](https://docs.alchemix.fi/user/concepts/liquidations#how-a-liquidation-runs).
 
 Users can mitigate liquidation risk by using a conservative LTV based on the risk levels of the strategies that make up each MYT. Moderate and Aggressive risk strategies together are capped at 60% of an MYT, and Aggressive strategies alone at 20% (see the [risk caps](https://docs.alchemix.fi/user/concepts/myt-and-yield#risk-caps) table). If the liquidation LTV is 95% then a user can take a 36% LTV. In this scenario, even if all of the Moderate and Aggressive risk strategies suffer 100% losses, the user will still have a 90% LTV and therefore not be subject to liquidation.
 
@@ -1861,7 +1875,7 @@ The Repay tab accepts three asset types: alAssets, MYT, or the underlying token.
 | Non-earmarked | “Earmarked” counter = 0 in the UI | alAsset         | Reduces debt immediately.                  |
 | Earmarked     | “Earmarked” shows a token amount  | MYT             | Repays the reserved slice and frees the earmarked collateral. |
 
-Repaying earmarked debt before maturity can keep your health factor higher.
+Repaying earmarked debt before maturity can keep your health factor higher. MYT and underlying repayments settle earmarked debt first. If a position crosses the liquidation threshold, [its earmarked debt is repaid from collateral first](https://docs.alchemix.fi/user/concepts/liquidations#how-a-liquidation-runs). Any wallet can repay a position, so someone else can also repay on your behalf.
 
 ### Step 1 – Open the Repay tab
 
