@@ -20,6 +20,11 @@ Each quarter, Alchemix publishes a financial report covering the full state of t
   </thead>
   <tbody>
     <tr>
+      <td>Q2 2026</td>
+      <td><a class="button button--primary button--sm" href="/Alchemix_Q2_2026_Financial_Report.pdf" download>Download</a></td>
+      <td><a class="button button--secondary button--sm" href="/Alchemix_Q2_2026_Financial_Report.pdf" target="_blank" rel="noopener noreferrer">View</a></td>
+    </tr>
+    <tr>
       <td>Q1 2026</td>
       <td><a class="button button--primary button--sm" href="/Alchemix_Q1_2026_Financial_Report.pdf" download>Download</a></td>
       <td><a class="button button--secondary button--sm" href="/Alchemix_Q1_2026_Financial_Report.pdf" target="_blank" rel="noopener noreferrer">View</a></td>

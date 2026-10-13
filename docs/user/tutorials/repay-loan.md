@@ -33,7 +33,7 @@ The Repay tab accepts three asset types: alAssets, MYT, or the underlying token.
 | Non-earmarked | “Earmarked” counter = 0 in the UI | alAsset         | Reduces debt immediately.                  |
 | Earmarked     | “Earmarked” shows a token amount  | MYT             | Repays the reserved slice and frees the earmarked collateral. |
 
-Repaying earmarked debt before maturity can keep your health factor higher.
+Repaying earmarked debt before maturity can keep your health factor higher. MYT and underlying repayments settle earmarked debt first. If a position crosses the liquidation threshold, [its earmarked debt is repaid from collateral first](../concepts/liquidations.md#how-a-liquidation-runs). Any wallet can repay a position, so someone else can also repay on your behalf.
 
 ### Step 1 – Open the Repay tab
 

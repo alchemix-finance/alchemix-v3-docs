@@ -9,7 +9,7 @@ import LtvSensitivity from "@site/src/components/LtvSensitivity";
 
 <PageBanner title="alAssets" />
 
-alAssets (alUSD, alETH, and alUSDb on Base) are synthetic tokens that mirror the value of their underlying asset.
+alAssets are synthetic tokens that mirror the value of their underlying asset. alUSD and alETH are minted on Ethereum, Optimism, and Arbitrum. Base has one alAsset of its own, [alUSDb](#alusdb-on-base).
 
 They serve two purposes:
 
