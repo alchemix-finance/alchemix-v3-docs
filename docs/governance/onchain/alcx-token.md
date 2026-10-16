@@ -22,10 +22,10 @@ As Alchemix moves toward fully on-chain governance, ALCX will be staked into vqA
 
 Emissions are the rate at which new ALCX tokens are minted. They are distributed to liquidity providers, the treasury, and contributors to the protocol.
 
-ALCX emissions (slow minting) gradually reduced issuance over three years, continuing with a long tail of fixed weekly emissions. Alchemix is now in the **long-tail period**, where **2,200 ALCX are minted per week** indefinitely, increasing total supply by **114,400 ALCX annually**.
+ALCX emissions (slow minting) gradually reduced issuance over three years, continuing with a long tail of fixed weekly emissions. Alchemix has been in the **long-tail period** since March 2024, where **2,200 ALCX are minted per week** indefinitely, increasing total supply by **114,400 ALCX annually**.
 
 - During the first three years, the staking pools distributed approximately **22,344 ALCX** in their first week, with a **130 ALCX weekly decrease**. Calculations are approximate, as ALCX rewards are computed per block and network conditions, though negligible, may slightly affect the schedule.
-- At the three-year point, this represented roughly **4.5% annual inflation** of supply, which has gradually decreased over time as total supply grows against a fixed weekly emission.
+- At the three-year point in March 2024, total supply was about 2.89 million ALCX, so the long tail represented roughly **4% annual inflation**. The rate falls each year as total supply grows against a fixed weekly emission.
 
 :::note No hard cap
 ALCX has no protocol-level hard cap. Instead, the fixed long-tail emission means percentage inflation continues to fall as total supply increases.
@@ -40,7 +40,7 @@ An initial supply of **478,612 ALCX** was minted as a pre-mine. Alchemix calcula
 | Allocation | Share | Tokens (after 3 yrs) | Notes |
 | --- | --- | --- | --- |
 | LP staking & stakers | 80% of emissions | ~64% of supply | Stakers and liquidity providers earn 80% of the ALCX block reward; a portion is redirected to the treasury. |
-| Founders, devs & contributors | 20% of emissions | ~16% of supply | An exclusive staking pool for founders, developers, and community contributors. |
+| Founders, devs & contributors | 20% of emissions | ~16% of supply | An exclusive staking pool for founders, developers, and community contributors. Today it funds the core development team, along with business development, governance, reporting, and support contributors. These tokens are liquid when emitted, with no cliff or vesting. |
 | DAO treasury | 15% pre-mine | 358,959 | Pre-mined for the Alchemix DAO. |
 | Bug bounties | 5% pre-mine | 119,653 | Reserved for the bug bounty program. |
 
@@ -58,5 +58,5 @@ In short: **15%** pre-mine for the DAO, **5%** for bug bounties, and **80%** of 
 | **Base** | `0x303c4F39EA359155C698807168e9Dc3aA1dF2b95` |
 
 :::info
-ALCX is minted exclusively on Ethereum Mainnet. The circulating supply on L2s is purely bridge-derived and cannot exceed the Ethereum-side ceiling. See [Risk Considerations](/user/safety/risk-considerations) for details on the bridge model.
+ALCX is minted exclusively on Ethereum Mainnet, and the staking pool contract (`0xAB8e74017a8Cc7c15FFcCd726603790d26d7DeCa`) is the only address with the minter role. The circulating supply on L2s is purely bridge-derived and cannot exceed the Ethereum-side ceiling. See [Risk Considerations](/user/safety/risk-considerations) for details on the bridge model.
 :::

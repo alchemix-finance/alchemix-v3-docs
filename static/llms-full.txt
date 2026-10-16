@@ -3,7 +3,7 @@
 > This file contains the Alchemix V3 user and integrator documentation concatenated for AI consumption.
 > Developer and governance sections are still being expanded and are indexed at https://docs.alchemix.fi/llms.txt.
 > Source: https://docs.alchemix.fi
-> Generated: 2026-10-13
+> Generated: 2026-10-15
 
 
 ---
@@ -1704,7 +1704,7 @@ Protocol changes go through DAO governance (Snapshot vote, multisig execution). 
 - **Upgradeability:** The Transmuter and the MYT vaults are not upgradeable; their code is fixed at deployment. The Alchemist runs behind an upgradeable proxy whose ProxyAdmin is held by the v3 admin multisig, acting under DAO governance.
 - **Two-Step Confirmation:** Management actions on the MYT vault, such as adding a strategy or raising a cap, must be submitted in one transaction and executed in a second, and the parameters of both must match. This double confirmation guards against mistaken or malformed changes.
 - **Timelock Durations:** The MYT vault inherits Morpho Vault V2’s timelock system, but all timelock durations are currently set to zero, so there is no enforced waiting period between submitting and executing a change. Governance can raise these durations on-chain if a delay is ever needed.
-- **Guardian Role:** A dedicated Guardian address can pause and unpause deposits and new loans in an emergency. It cannot change protocol parameters, access funds, or affect withdrawals, repayments, or liquidations, so it is a circuit breaker only.
+- **Guardian Role:** The DAO multisig on each chain and seven individual contributor wallets hold the Guardian role. Any one of them can pause and unpause deposits and new loans in an emergency. A Guardian cannot change protocol parameters, access funds, or affect withdrawals, repayments, or liquidations, so the role is a circuit breaker only.
 
 ### Learn more
 
