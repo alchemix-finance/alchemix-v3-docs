@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 ## Description
 
-A minimal ETH/WETH  holding contract. It accepts native ETH or WETH, but always holds the balance as ETH, unwrapping the WETH if need be. Anyone can deposit, but only authorized callers can withdraw. It is used to escrow extra funds that may be used to cover obligations to liquidators and redeemers on the Alchemist. 
+A minimal ETH/WETH  holding contract. It accepts native ETH or WETH, but always holds the balance as ETH, unwrapping the WETH if need be. Anyone can deposit, but only authorized callers can withdraw. It holds funds that pay the Alchemist's liquidator fee when a liquidated account cannot cover it from its own collateral, or when the Alchemist is globally undercollateralized. 
 Inherits from `AbstractFeeVault` for authorization and helpers.
 
 ## Functions
