@@ -33,4 +33,4 @@ When this design flow is followed, then protocol users are primarily trusting th
 
 This approach maximizes what DeFi is good at, without creating scenarios that are worse for users than the traditional finance system.
 
-The on-chain governance system for the Alchemix DAO is being built on the Aragon OSx DAO framework, with a new ALCX staking system that administers the contracts.
+The on-chain governance system for the Alchemix DAO is being built on the Aragon OSx DAO framework, with a new ALCX staking system, vqALCX, that administers the contracts. The system entered audit in September 2026. Once it is live, the multisig’s on-chain powers will move to on-chain governance in stages.

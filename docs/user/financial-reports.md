@@ -9,6 +9,8 @@ import PageBanner from "@site/src/components/PageBanner";
 
 Each quarter, Alchemix publishes a financial report covering the full state of the protocol. Reports include treasury contents and revenue, protocol metrics across all supported networks, alAsset liquidity and peg data, yield harvest activity, deposit and user statistics, ALCX governance token metrics, grant activity, and governance summaries, with an archive available from Q1 2022.
 
+Alchemix also files a [Token Transparency Filing](#token-transparency-filing) with Blockworks, which sets the same kind of information out in a standard format shared across projects.
+
 ### 2026
 
 <table>
@@ -163,3 +165,17 @@ Each quarter, Alchemix publishes a financial report covering the full state of t
     </tr>
   </tbody>
 </table>
+
+### Token Transparency Filing
+
+A Token Transparency Filing (TTF) is a free, standardized disclosure that token projects publish through Blockworks. Each filing puts a project’s token supply and allocations, market structure, entity structure, financial disclosures, and agreements on the record in one format, so filings can be compared across projects. Every filing is public.
+
+Alchemix’s filing is a B-2. Filings come in two types:
+
+- **B-1** – a one-time launch disclosure: the project and team, its DAO, foundation or development company structure, token supply and allocations, airdrop process, market maker and exchange agreements, prior fundraising, previous exploits, and material risk factors.
+- **B-2** – a continuously updated filing for projects past launch. It covers everything in a B-1 and adds ongoing disclosures.
+
+You can read a filing in two places:
+
+- **Blockworks** – go to [blockworks.com/token-transparency](https://blockworks.com/token-transparency), or open the Investor Relations tab on blockworks.com and select Token Transparency. Filings are listed by protocol, with the ticker, filing type, and filing status.
+- **Bloomberg Terminal** – open Document Search and search for Blockworks ALCX. Filings appear under the provider Blockworks Research, titled Blockworks, then the ticker, filing type, and year.

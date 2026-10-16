@@ -8,7 +8,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 <PageBanner title="Governance Process" />
 
-The Alchemix DAO is currently run through a developer multisig that executes decisions, with the community signaling through the Snapshot app. Proposals and their results are also viewable in the app at [alchemix.fi/governance](https://alchemix.fi/governance). On-chain voting is being introduced incrementally; see [On-chain Governance](../intro.md) for the broader framework.
+The Alchemix DAO is currently run through a multisig of founders, contributors, and community members that executes decisions, with the community signaling through the Snapshot app. Proposals and their results are also viewable in the app at [alchemix.fi/governance](https://alchemix.fi/governance). On-chain voting is being introduced incrementally; see [On-chain Governance](../intro.md) for the broader framework.
 
 ALCX Tokens give holders governance rights over the direction of the protocol and use of the treasury. Community members may create proposals by following the community governance process. If you are interested in submitting a proposal to the Alchemix DAO, you must follow the process below. If you want to apply directly for a grant, please see [Questbook](https://alchemix.questbook.app/).
 
@@ -42,11 +42,15 @@ If greater than 50% of the non-abstain vote is “For” and a quorum of 5k ALCX
 
 ### Step 5 - AIP vote
 
-Official AIPs will have a quorum of 35k ALCX. If the quorum is met, then the multisig will be directed to execute the most popular voting option unless directed otherwise by the voting parameters.
+Official AIPs have a quorum of 35k ALCX and pass with more than 50% of the vote For. The result is a non-binding signal: the DAO multisig executes passed proposals at its discretion.
 
 ---
 
 ## Supplementary information
+
+### The Alchemix Association
+
+Under AIP-113, the DAO moved some operational work, including payroll, signing agreements, and marketing, to the Alchemix Association, a Swiss association funded by DAO grants. The Association holds no admin, pause, or upgrade powers over the protocol and cannot execute DAO proposals. Its own operations require 2 of 3 board signers.
 
 ### Common proposal types
 
