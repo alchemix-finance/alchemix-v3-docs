@@ -58,4 +58,4 @@ The Transmuter accounts for bad debt when settling claims. If the Alchemist's to
 
 ### Fee vaults
 
-The AlchemistETHVault and AlchemistTokenVault escrow funds outside of the Alchemist that the Alchemist draws on to pay liquidator fees when a position's collateral or the Alchemist's own balance cannot cover them. Only authorized addresses (the Alchemist and the owner) can withdraw from these vaults.
+The AlchemistETHVault and AlchemistTokenVault hold funds outside of the Alchemist that pay the liquidator fee when a liquidated account cannot cover it from its own collateral, or when the Alchemist is globally undercollateralized. Neither condition requires the other, so a vault can pay while the Alchemist as a whole is healthy. Only authorized addresses (the Alchemist and the owner) can withdraw from these vaults.

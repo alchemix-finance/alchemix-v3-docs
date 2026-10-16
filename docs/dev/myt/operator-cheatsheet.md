@@ -33,8 +33,8 @@ Each layer has its own role system. Holding a role on one contract does **not** 
 |---|---|
 | **v3 admin Safe** | MYT Owner · Curator Admin · Curator Operator · Allocator Admin · Allocator Operator · Strategy Owner (every adapter) |
 | **DAO treasury multisig** | MYT Sentinel · Alchemist Guardian · Protocol fee receiver |
-| **Alchemix Association** | MYT Sentinel |
-| **EOA** | MYT Sentinel |
+| **Seven individual contributor wallets** | Alchemist Guardian (every chain) |
+| **Two individual wallets** (`0xc2A9…0cde`, `0xD5D6…Ad14`) | MYT Sentinel (Ethereum ETH MYT only) |
 
 > **Note:** The admin Safe is **not** set as a direct Allocator on either MYT vault. Allocator-level MYT functions are called through the Allocator Contract: `allocate`, `deallocate`, the swap variants and `setLiquidityAdapter` by the admin or an operator, and `setMaxRate` by the admin. Only vault functions the Allocator does not wrap need [proxy forwarding](#proxy-forwarding).
 

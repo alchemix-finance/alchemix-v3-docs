@@ -10,7 +10,7 @@ import PageBanner from "@site/src/components/PageBanner";
 
 ## Description
 
-A minimal ERC-20 holding contract. Anyone can deposit, but only authorized callers can withdraw. It is used to escrow extra funds that may be used to cover obligations to liquidators and redeemers on the Alchemist. 
+A minimal ERC-20 holding contract. Anyone can deposit, but only authorized callers can withdraw. It holds funds that pay the Alchemist's liquidator fee when a liquidated account cannot cover it from its own collateral, or when the Alchemist is globally undercollateralized. 
 Inherits from `AbstractFeeVault` for authorization and helpers.
 
 ## Functions
