@@ -13,10 +13,6 @@ Ecosystem vaults are curated by the Alchemix team and sit alongside the core pro
 
 Open it from the top navigation under **Ecosystem → Vaults**, or go directly to [alchemix.fi/ecosystem](https://alchemix.fi/ecosystem), then click the card to expand it.
 
-:::note Looking for the Euler market?
-Third-party lending markets are not on this page. The Euler 4-way market has its own page under **Ecosystem → Lending**. See [Lending →](./lending.md).
-:::
-
 ### Prerequisites
 
 - Connect your wallet.

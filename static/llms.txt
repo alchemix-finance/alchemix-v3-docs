@@ -30,7 +30,6 @@
 - [Withdraw](https://docs.alchemix.fi/user/tutorials/withdraw): Withdrawing collateral and managing LTV headroom
 - [Use Passive MYT](https://docs.alchemix.fi/user/tutorials/use-passive-myt): Earning yield without borrowing
 - [Ecosystem Vaults](https://docs.alchemix.fi/user/tutorials/ecosystem-vaults): Depositing WETH into the team-curated Alchemix Ecosystem ETH vault (Ecosystem → Vaults)
-- [Lending](https://docs.alchemix.fi/user/tutorials/lending): Supplying and borrowing on the third-party Euler 4-way market (Ecosystem → Lending)
 
 ### Safety
 - [Risk Considerations](https://docs.alchemix.fi/user/safety/risk-considerations): Understanding protocol risks
