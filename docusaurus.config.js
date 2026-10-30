@@ -172,6 +172,11 @@ const config = {
             from: "/dev/faq",
             to: "/user/faq",
           },
+          {
+            // Lending tutorial deleted 2026-10-30 with the Euler 4-way market copy
+            from: "/user/tutorials/lending",
+            to: "/user/tutorials/ecosystem-vaults",
+          },
         ],
       },
     ],
