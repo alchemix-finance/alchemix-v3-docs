@@ -1,0 +1,76 @@
+import { Do, PageBreak, Shot, StripAt } from "../ArticleLesson";
+import { BuyFixedMoment, ClaimEarlyMoment, ClaimMoment, LoopSequence } from "../ArticleLesson/moments-3-8";
+import { Term } from "../kit";
+
+In this lesson you take the other side of a loan like yours, as a buyer of alUSD rather than a borrower. Your practice wallet starts with 4,850 USDC and no vault position.
+
+On <Term id="fixedYield">Fixed Yield</Term>, you deposit <Term id="alusd">alUSD</Term> for a set term and receive one USDC for each alUSD when the term ends. Since alUSD typically trades for slightly less than a dollar, you can lock in a fixed return, knowing the exact cost, the return and the maturity date on the day you deposit.
+
+Each offer on the Fixed Yield page is a card showing its alUSD price, term, maturity date and Projected Fixed APR. The term is how long your deposit vests, and the maturity date, the day it ends, is when you can claim. The Projected Fixed APR is the return you lock in, scaled to a yearly rate so you can compare it with other yields. It is projected from the card's current alUSD price, which moves with the market until you deposit. Once you deposit, the payout is scaled down only if the vault carries bad debt, a loss its borrowers' deposits cannot cover, as the intermediate track explains.
+
+<Shot name="fixedYieldCard">A Fixed Yield card in the app, with a 4-month term maturing Mar 13, 2027 and a Projected Fixed APR of 9.10%. ETH alUSD Price is alUSD's price on Ethereum.</Shot>
+
+<PageBreak title="Buy and deposit" />
+
+The practice card below offers a 4-month term at an alUSD price of 0.97, alUSD's market price with the app's 0.05% swap fee included, since you pay in USDC. With Swap & Deposit, the app swaps your USDC for alUSD at that market price and deposits it in one step, so you skip a separate swap on the Trade page.
+
+<Do moment="buy">
+
+Type 4,850 in the practice card's USDC field and press Swap & Deposit.
+
+</Do>
+
+<BuyFixedMoment />
+
+Your 4,850 USDC bought 5,000 alUSD at 0.97, now deposited on a 4-month term that matures on Mar 04, 2027. The card's Expected Output reads 5,000 USDC, one for each alUSD, which you can claim on that date. Its Asset Gain is 150 USDC, the gap between the 5,000 you will receive and the 4,850 you paid, a Percentage Return of about 3% over 4 months. Scaled to a year over the 120 days to maturity, that is the 9.40% the card shows as its Projected Fixed APR.
+
+<PageBreak title="Claim at maturity" />
+
+The Dashboard lists your deposit under Open Fixed Yield Positions from the day you make it. The practice Dashboard below shows the maturity date, Mar 04, 2027, when you can claim.
+
+<Do moment="claim">
+
+Press Claim.
+
+</Do>
+
+<ClaimMoment />
+
+You received 5,000 USDC, one for each alUSD you deposited, and the 5,000 alUSD was burned, since the same amount of borrowers' debt has been canceled.
+
+Most of that USDC came out of borrowers' deposits, through a <Term id="redemption">redemption</Term>, the same process that paid your loan down earlier in this track. The <Term id="transmuter">Transmuter</Term> is the Alchemix contract that holds Fixed Yield deposits while they vest and pays depositors when they claim. As your alUSD vested over the term, the same amount of borrowers' debt was earmarked to pay it.
+
+When you claim, the Transmuter first uses any MYT it already holds from borrowers' repayments and from liquidations. It removes the rest in MYT from borrowers' deposits and cancels the same amount of their debt. It pays you in MYT, which the app unwraps to USDC for you while the "Receive USDC upon claim" switch in the claim window is on, as it is by default.
+
+Step through how a borrower's loan and your deposit connect.
+
+<LoopSequence>
+
+1. A borrower borrows 5,000 alUSD and swaps it for 4,850 USDC, paying a 150 discount.
+2. You buy that 5,000 alUSD for 4,850 USDC and deposit it on the Fixed Yield page.
+3. As your deposit vests, the vault earmarks 5,000 of borrowers' debt, spread across borrowers in proportion to the debt each has not yet had earmarked, while their deposits keep earning.
+4. You claim. The Transmuter removes 5,000 in MYT from borrowers' deposits, plus their 12.50 redemption fee (0.25% of the 5,000 redeemed), which goes to the protocol. It cancels 5,000 of their debt and pays you 5,000 USDC. The alUSD is burned, and your 150 return matches the 150 discount the borrower paid when they sold their alUSD.
+
+</LoopSequence>
+
+<PageBreak title="Claim early" />
+
+<StripAt id="early-start" set={{ wallet: 0, walletAl: 0, fixedYield: 5000 }} />
+
+If you need the money before the maturity date, you can claim early. Your deposit vests evenly over the term, so an early claim pays the vested share as USDC and returns the unvested remainder as alUSD. The <Term id="earlyExitFee">early exit fee</Term>, 1.00% on Ethereum at the time of writing, comes off that unvested remainder, and the button for an early claim reads Claim with Penalty. The fee discourages depositors from leaving before the term ends.
+
+Say instead that you needed the money halfway through the term, on Jan 03, 2027, before you had claimed anything. On that day your 5,000 alUSD is still deposited and your wallet is empty.
+
+<Do moment="claim-early">
+
+Press Claim with Penalty.
+
+</Do>
+
+<ClaimEarlyMoment />
+
+You received 2,500 USDC and 2,475 alUSD. Half the term had passed, so half your deposit had vested and was paid as USDC. The unvested 2,500 came back as alUSD, less the 25 early exit fee. You can swap that alUSD on the Trade page, or deposit it on a new card.
+
+If you swap the 2,475 alUSD at 0.97, you get about 2,401 USDC, so the early claim leaves you with about 4,901 USDC for the 4,850 you paid. That is a gain of about 51, against 150 if you had waited for the maturity date. The vested half earned its full 75, but the unvested half came back as alUSD worth about 2,401 at 0.97 after the fee, about 24 less than the 2,425 you paid for it.
+
+0.97, 4 months and 9.40% are examples. Each card in the app shows its own price, term and early exit fee. DAO governance sets the term and the fee. The term differs by asset and chain, and today the fee is the same for alUSD and alETH on each chain.

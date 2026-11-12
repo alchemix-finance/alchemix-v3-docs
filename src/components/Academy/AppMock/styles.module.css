@@ -1,0 +1,2232 @@
+/* The app's own colors, from `src/styles/index.css` in its repo (dark theme),
+   kept here so they stay inside the practice vault. The Academy's tokens do not
+   apply in this file, on purpose: this block matches the app. */
+.frame {
+  --app-card: oklch(0.2964 0.0247 236.77);
+  --app-ground: oklch(0.255 0.016 236);
+  --app-border: oklch(1 0 0 / 10%);
+  --app-input: oklch(1 0 0 / 15%);
+  --app-field: oklch(1 0 0 / 4.5%);
+  --app-muted: oklch(0.708 0 0);
+  --app-fg: oklch(0.985 0 0);
+  --app-outline: oklch(0.6 0.05 240);
+  --app-deposit: oklch(0.65 0.1925 283.02);
+  --app-debt: oklch(0.78 0.15 228);
+  --app-earmark: oklch(0.85 0.0792 57.05);
+  --app-alchemix: oklch(0.8461 0.0792 57.05);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 0 2rem;
+  padding: 1.25rem;
+  background: var(--app-ground);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  color: var(--app-fg);
+  font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  min-width: 0;
+}
+
+/* A line of working directly under the frame reads as part of it. */
+.frameTight {
+  margin-bottom: 1rem;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.vault {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.vaultIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+}
+
+.vaultName {
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.vaultChain {
+  font-size: 0.8125rem;
+}
+
+.practice {
+  flex-shrink: 0;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--app-outline);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+/* Flex, so a row with fewer tiles than the one above still fills the width. */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tile {
+  flex: 1 1 calc(100% / var(--app-tiles, 4) - 0.75rem);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 10.5rem;
+  padding: 0.875rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+}
+
+.tileOn {
+  border-color: var(--app-alchemix);
+}
+
+/* The wash over a tile the last action changed: a soft copper fill held while
+   the number tweens, then a gentle fade, 3 seconds in all (a shorter glow
+   was gone before the reader saw the change). The tile's container
+   type already makes it the box this sits in. Nothing under reduced motion:
+   the chip says what changed. */
+.tile {
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(245, 192, 154, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(245, 192, 154, 0.55);
+  pointer-events: none;
+  animation: washFade 3s ease-in-out forwards;
+}
+
+@keyframes washFade {
+  0%,
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A tile the reader is pointing at in the text (`<Stat>`): the lit outline
+   with a soft copper glow. */
+.pointed {
+  background: rgba(245, 192, 154, 0.08);
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 16px rgba(245, 192, 154, 0.4);
+}
+
+/* The bar's MAX LTV or LIQ LTV marker, pointed at from the text. */
+.markPointed {
+  box-shadow: 0 0 0 2px var(--app-alchemix), 0 0 12px rgba(245, 192, 154, 0.55);
+}
+
+.tagPointed {
+  color: var(--app-alchemix);
+  font-weight: 600;
+}
+
+/* The Withdraw tab's Available line, pointed at from the text. */
+.limitPointed {
+  padding: 0 0.375rem;
+  margin: 0 -0.375rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 12px rgba(245, 192, 154, 0.35);
+  color: var(--app-fg);
+}
+
+/* A button the screen is about (the Dashboard row's Manage), outlined in
+   copper like a lit tile, at full strength even where it cannot be pressed.
+   Doubled class, so it beats `.cta:disabled` on specificity. */
+.cta.ctaLit,
+.cta.ctaLit:disabled {
+  opacity: 1;
+  border-color: var(--app-alchemix);
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 14px rgba(245, 192, 154, 0.3);
+}
+
+/* `Grow`: a part that appears after an action eases to its height. The
+   pull-up and the padding carry the frame's 1rem gap inside the box, so an
+   empty one adds no gap and the gap grows in with what arrives. */
+.grow {
+  margin-top: -1rem;
+}
+
+.growInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.growInner:empty {
+  padding-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wash {
+    display: none;
+  }
+}
+
+/* A tile too narrow for its icon and a five-figure amount drops the icon, so
+   "10,000.00 USDC" keeps one line. */
+.tile {
+  container-type: inline-size;
+}
+
+@container (max-width: 12.5rem) {
+  .tileIcon {
+    display: none;
+  }
+}
+
+.tileIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+}
+
+.tileLabel {
+  font-size: 0.8125rem;
+  opacity: 0.6;
+}
+
+.tileText {
+  min-width: 0;
+}
+
+.tileValue {
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The line under a value: the app's projected arrow while an amount is typed,
+   then the change the last action made. Reserved when a lab shows changes, so
+   the frame does not grow when the first one appears. */
+.tileNote {
+  /* A fixed height, not a minimum: a chip or the arrow's icon would make
+     the line a pixel taller and the frame would move (2026-11-07). */
+  display: flex;
+  align-items: center;
+  height: 1.125rem;
+  min-height: 1.125rem;
+  margin-top: 0.125rem;
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ahead {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+/* A change that stays after an action: grey, with its sign, unless a lab asks
+   for the app's green and red (`chipTone="app"`, or `AppDelta`'s `tone`).
+   The grey falls back to the same value outside a frame, where `--app-muted`
+   is not set, so an `AppDelta` under a lab's own figure reads the same as one
+   on a tile. */
+.delta {
+  display: inline-block;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--app-muted, oklch(0.708 0 0));
+  white-space: nowrap;
+}
+
+/* The app's text-green-500 and text-destructive. */
+.good {
+  color: #22c55e;
+}
+
+.bad {
+  color: oklch(0.704 0.191 22.216);
+}
+
+.delta.good {
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.delta.bad {
+  background: rgba(255, 100, 103, 0.12);
+}
+
+/* The Fixed Yield card's starting value: the same grey chip as the tiles',
+   on its own line under the figure. */
+.was {
+  display: block;
+  width: fit-content;
+  margin-top: 0.125rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ltvCap {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.barWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.bar {
+  position: relative;
+  height: 1.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--app-deposit) 62%, transparent);
+}
+
+.barEmpty {
+  opacity: 0.5;
+}
+
+.barDebt {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--app-debt);
+}
+
+.barEarmark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--app-earmark);
+}
+
+/* Where the fill stood before the last action. */
+.barGhost {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border: 1.5px dashed rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.barMax,
+.barLiq {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+}
+
+.barMax {
+  background: #22c55e;
+}
+
+.barLiq {
+  background: #ef4444;
+}
+
+.barTags {
+  position: relative;
+  height: 1rem;
+  font-size: 0.6875rem;
+  color: var(--app-muted);
+}
+
+.barTags span {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+}
+
+/* The two marks sit 5% apart. Under about 30rem their tags would touch, so
+   LIQ LTV takes a second line. */
+@container (max-width: 30rem) {
+  .barTagsBoth {
+    height: 2rem;
+  }
+
+  .barTagsBoth .tagLiq {
+    top: 1rem;
+  }
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.legend i {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+}
+
+.dotDeposit {
+  background: var(--app-deposit);
+}
+
+.dotDebt {
+  background: var(--app-debt);
+}
+
+.dotEarmark {
+  background: var(--app-earmark);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+}
+
+.tab {
+  appearance: none;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--app-fg);
+}
+
+.tabOn {
+  color: var(--app-fg);
+}
+
+.tab:focus-visible,
+.max:focus-visible,
+.cta:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--app-card);
+  border-radius: 0.75rem;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.token {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 1 12.5rem;
+  min-width: 0;
+  height: 3.5rem;
+  padding: 0 0.75rem;
+  background: var(--app-field);
+  border: 1px solid var(--app-input);
+  border-radius: 0.75rem;
+  font-size: 1.375rem;
+}
+
+.tokenIcon {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+}
+
+.chev {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--app-muted);
+}
+
+.amount {
+  flex: 0 1 50%;
+  min-width: 0;
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 1rem;
+  background: var(--app-field);
+  border: 1px solid var(--app-input);
+  border-radius: 0.5rem;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 1.25rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.amount::placeholder {
+  color: var(--app-muted);
+}
+
+.amount:focus {
+  outline: none;
+  border-color: var(--app-outline);
+}
+
+.amountOver {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.inputFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+/* Each part keeps its own line whole: on a phone a change chip moves under the
+   balance before "Balance: 4,000.00" is split. */
+.inputLimit {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.inputLimit > * {
+  white-space: nowrap;
+}
+
+.max {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--app-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.cta {
+  appearance: none;
+  width: 100%;
+  height: 2.5rem;
+  background: transparent;
+  border: 1px solid var(--app-outline);
+  border-radius: 0.375rem;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.cta:hover:not(:disabled) {
+  background: oklch(0.35 0.04 231.64);
+}
+
+.cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Under a switched-off button: why ("Pick USDC first"). One muted line, no
+   icon. The panel's gap already stands it off the button; it tucks up a
+   little so it reads as the button's. */
+.ctaHint {
+  margin: -0.5rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--app-muted);
+}
+
+.swap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.swap > div,
+.fixedRows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.swap dt,
+.fixedRows dt {
+  font-weight: 400;
+  color: var(--app-muted);
+}
+
+.swap dd,
+.fixedRows dd {
+  margin: 0;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* The card as it was drawn before 2026-11-10. The advanced track's own
+   Fixed Yield card (moments-i7), with its price slider, still uses these
+   names. The card on the app's layout is `.fxCard`, further down. */
+/* The Fixed Yield card: name and rate, the figures, then the amount. */
+.fixed {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  grid-template-areas: "left right" "amount amount";
+  gap: 1rem 1.5rem;
+  background: var(--app-card);
+}
+
+.fixedLeft {
+  grid-area: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.fixedHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.fixedIcons {
+  display: inline-flex;
+}
+
+.fixedIcons img {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.fixedIcons img + img {
+  margin-left: -0.625rem;
+}
+
+.fixedApr {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.fixedAprLabel {
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.fixedRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.fixedRight {
+  grid-area: right;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.fixedAmount {
+  grid-area: amount;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.fixedRows dd .was {
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .frame {
+    padding: 1rem;
+  }
+
+  .fixed {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "left" "right" "amount";
+  }
+
+  /* Two to a row, as the app lays them out at this width. */
+  .stats {
+    gap: 0.5rem;
+  }
+
+  .tile {
+    flex-basis: calc(50% - 0.25rem);
+    min-width: 0;
+  }
+
+  /* A tile the course has not taught takes no room on a phone. */
+  .tileDim {
+    display: none;
+  }
+
+  .tileValue {
+    font-size: 0.875rem;
+  }
+
+  .tileNote {
+    font-size: 0.75rem;
+  }
+
+  .panel {
+    padding: 0.75rem;
+  }
+
+  .input {
+    padding: 0.75rem;
+  }
+
+  .token,
+  .amount {
+    height: 3rem;
+  }
+
+  .token {
+    flex-basis: 9rem;
+    font-size: 1.125rem;
+  }
+
+  .tokenIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .amount {
+    font-size: 1.0625rem;
+    padding: 0 0.75rem;
+  }
+
+  .tile {
+    padding: 0.75rem 0.625rem;
+  }
+
+  .tileValue {
+    white-space: nowrap;
+  }
+
+  /* The value keeps one line. With the icon beside it, 10,000.00 USDC wraps. */
+  .tileIcon {
+    display: none;
+  }
+}
+
+/* ── The beginner track's practice vault and app figures ─────────────── */
+
+/* The tag on the beginner track's practice vault: copper, so the first look
+   at it says it is not the app. */
+.practiceStrong {
+  border-color: var(--app-alchemix, #f5c09a);
+  color: var(--app-alchemix, #f5c09a);
+  font-weight: 600;
+}
+
+/* A tile the course has not taught yet: its place, no label, no figure. */
+.tileDim {
+  opacity: 0.35;
+}
+
+.blankLabel,
+.blankValue {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.blankLabel {
+  width: 3.5rem;
+  margin: 0.3rem 0 0.6rem;
+}
+
+.blankValue {
+  width: 5rem;
+  height: 0.625rem;
+  margin-bottom: 0.25rem;
+}
+
+/* A part of a figure the screen is not about. */
+.fade {
+  opacity: 0.3;
+}
+
+.barFade {
+  opacity: 0.3;
+}
+
+.barTrackFade {
+  background: color-mix(in oklch, var(--app-deposit) 25%, transparent);
+}
+
+/* A marker the course has not taught yet: drawn where the app draws it,
+   faint, with no tag. */
+.barMarkDim {
+  opacity: 0.3;
+}
+
+.tabQuiet {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* The tab a practice screen is on, outlined in copper as a lit tile is
+   (without it the reader could not see which tab they were on).
+   The padding is made up by the margin, so the row's spacing holds. */
+.tabLit {
+  padding: 0.25rem 0.625rem;
+  margin-inline: -0.625rem;
+  border-radius: 0.375rem;
+  box-shadow: inset 0 0 0 1px var(--app-alchemix);
+}
+
+.tabQuiet:hover {
+  color: var(--app-muted);
+}
+
+.inputDim {
+  opacity: 0.4;
+}
+
+.inputTag {
+  padding: 0 0.5rem;
+  border: 1px dashed var(--app-outline);
+  border-radius: 999px;
+  color: var(--app-fg);
+}
+
+.wallet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.875rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.walletLabel {
+  color: var(--app-muted);
+  font-size: 0.8125rem;
+}
+
+.walletItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+
+.walletValue {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The top menu. */
+.menuFrame {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem 2rem;
+}
+
+.menuBrand {
+  padding-top: 0.375rem;
+  font-size: 1.125rem;
+  letter-spacing: 0.18em;
+  color: var(--app-alchemix);
+}
+
+.menuItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.25rem;
+}
+
+/* Room under the row for the open menu, which hangs below its item. */
+.menuItemsOpen {
+  padding-bottom: 5.5rem;
+}
+
+.menuWrap {
+  position: relative;
+}
+
+.menuItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--app-fg);
+  white-space: nowrap;
+}
+
+.menuLit {
+  background: oklch(0.35 0.06 236);
+  color: var(--app-fg);
+  box-shadow: inset 0 0 0 1px var(--app-alchemix);
+}
+
+.menuDim {
+  opacity: 0.3;
+}
+
+.menuDrop {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 9.5rem;
+  padding: 0.375rem;
+  background: var(--app-card);
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+}
+
+.menuSub {
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+/* The Borrow page's vault card. */
+.vcard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 1rem 1.5rem;
+  background: var(--app-card);
+}
+
+.vcardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.vcardName {
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+
+.vcardApr {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.vcardApr span {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--app-muted);
+}
+
+.vcardCap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+}
+
+.capBar {
+  display: block;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--app-deposit) 55%, transparent);
+  overflow: hidden;
+}
+
+.capBar i {
+  display: block;
+  height: 100%;
+  background: var(--app-debt);
+}
+
+.vcardCapRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.vcardCapRow b {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.vcardRight {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.vcardStrats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+}
+
+.vcardStratHead {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--app-muted);
+}
+
+.vcardStrat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vcardStrat i,
+.infoTable td i {
+  flex-shrink: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+}
+
+/* The Info tab. */
+.info {
+  background: var(--app-ground);
+}
+
+.infoBody {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: var(--app-card);
+  border-radius: 0.75rem;
+}
+
+.ring {
+  flex-shrink: 0;
+}
+
+.infoScroll {
+  min-width: 0;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.infoTable {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.infoTable th,
+.infoTable td {
+  padding: 0.3rem 0.625rem 0.3rem 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.infoTable thead,
+.infoTable tr {
+  border: 0;
+  background: none !important;
+}
+
+.infoTable th {
+  font-weight: 600;
+}
+
+.infoTable td i {
+  display: inline-block;
+  margin-right: 0.5rem;
+  vertical-align: -0.0625rem;
+}
+
+.example {
+  margin-left: 0.125rem;
+  padding: 0 0.375rem;
+  border: 1px dashed var(--app-outline);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  color: var(--app-muted);
+}
+
+/* The Trade page's Swap card. */
+.swapCard {
+  max-width: 34rem;
+  background: var(--app-card);
+}
+
+.swapLabel {
+  margin-bottom: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.swapArrow {
+  display: flex;
+  justify-content: center;
+  margin: 0.25rem 0;
+  color: var(--app-fg);
+}
+
+/* The rate, stated for the lesson: the app's card has no such line, so it is
+   drawn as a note (dashed, like the Info tab's "example" mark), not as part
+   of the card. */
+.swapPrice {
+  align-self: center;
+  width: fit-content;
+  padding: 0.125rem 0.75rem;
+  border: 1px dashed var(--app-outline);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* The line under the Fixed Yield card's amount: what the USDC buys. */
+.buys {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.buys span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+
+/* The Dashboard's Open Fixed Yield Positions row. */
+.fixedRowFrame {
+  background: var(--app-ground);
+}
+
+.topRight {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dateChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.fixedRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding: 1rem;
+  background: var(--app-card);
+  border-radius: 0.75rem;
+}
+
+.rowCell {
+  min-width: 0;
+}
+
+.rowLabel {
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.rowValue {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowAction {
+  flex: 1 0 10rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rowAction .cta {
+  width: auto;
+  padding: 0 1.25rem;
+}
+
+/* A row's button sits on the right; its hint takes the line under it. */
+.rowAction {
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.rowAction .ctaHint {
+  flex-basis: 100%;
+  margin: 0;
+  text-align: right;
+}
+
+/* The Dashboard's Open Vault Positions row: the vault's name with its icon. */
+.rowVault {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* The Repay tab's token picker. */
+.pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pickToken {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem 0.375rem 0.5rem;
+  background: var(--app-field);
+  border: 1px solid var(--app-input);
+  border-radius: 0.5rem;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.pickOn {
+  border-color: var(--app-alchemix);
+}
+
+.pickToken:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .vcard,
+  .vcardRight {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .infoBody {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ring {
+    align-self: center;
+  }
+
+  /* The app's phone menu is a list, so the open menu sits under its item
+     inside the frame instead of hanging over the items beside it. */
+  .menuFrame {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menuItems {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+
+  .menuItemsOpen {
+    padding-bottom: 0;
+  }
+
+  .menuDrop {
+    position: static;
+    margin: 0.25rem 0 0.25rem 1rem;
+  }
+
+  /* The four columns fit the phone's column: names may wrap, the type steps
+     down, and an example mark sits under its figure. */
+  .infoTable {
+    font-size: 0.75rem;
+  }
+
+  .infoTable th,
+  .infoTable td {
+    padding-right: 0.5rem;
+    white-space: normal;
+    vertical-align: top;
+  }
+
+  .infoTable td:last-child,
+  .infoTable th:last-child {
+    padding-right: 0;
+    white-space: nowrap;
+  }
+
+  .infoTable td i {
+    display: none;
+  }
+
+  .example {
+    display: block;
+    width: fit-content;
+    margin: 0.125rem 0 0;
+  }
+
+  .rowAction {
+    flex-basis: 100%;
+  }
+
+  .rowAction .cta {
+    width: 100%;
+  }
+}
+
+/* The token box as the app's picker (AppInput with `tokens`). */
+.tokenWrap {
+  position: relative;
+  flex: 0 1 12.5rem;
+  min-width: 0;
+  display: flex;
+}
+
+.tokenButton {
+  appearance: none;
+  flex: 1 1 auto;
+  color: var(--app-fg);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tokenButton:focus-visible,
+.tokenOption:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+.tokenMenu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--app-field);
+  border: 1px solid var(--app-input);
+  border-radius: 0.5rem;
+}
+
+.tokenOption {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+/* ── Parts checked against the live app, 2026-11-10 ──────────────────── */
+
+/* The chain flag at a card's top left corner (40 by 24, the chain's color). */
+.flag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.125rem 0;
+  border-top-left-radius: 0.75rem;
+  background: oklch(0.62 0.16 270.14);
+}
+
+.chainLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.chainDot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: oklch(0.62 0.16 270.14);
+}
+
+/* The app's "i" beside a label with a tooltip, in its copper. */
+.infoIcon {
+  flex-shrink: 0;
+  color: var(--app-alchemix);
+}
+
+/* The Slippage line under an amount box. */
+.slip {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--app-muted);
+}
+
+.slip b {
+  font-weight: 500;
+}
+
+/* What an amount box holds under its balance line: the Slippage line and the
+   action button, 16px apart as in the app, the Slippage line 8px under the
+   balance. */
+.inputExtra {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  min-width: 0;
+}
+
+.inputExtra > .slip:first-child {
+  margin-top: -0.5rem;
+}
+
+.inputBare {
+  padding: 0;
+  border: 0;
+}
+
+.inputDimPart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* A Dashboard section's heading (the app's text-xl). */
+.dashTitle {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+/* ── The Dashboard's Open Vault Positions ─────────────────────────────── */
+
+.dashFrame {
+  background: var(--app-ground);
+  container-type: inline-size;
+}
+
+/* The summary bar: four figures in dollars, on the columns the cards under
+   it stand on, the third ruled off from Net Value. */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 1.25rem 0;
+  background: var(--app-card);
+  border-radius: 0.75rem;
+}
+
+.summary > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  min-width: 0;
+  text-align: center;
+}
+
+.summary > div:nth-child(3) {
+  border-right: 1px solid var(--app-border);
+}
+
+.summary dt {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--app-fg) 50%, transparent);
+}
+
+.summary dd {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.posCards {
+  display: grid;
+  /* As many cards across as fit at 17rem or more each (the app's card is
+     about 19rem). Four fixed columns made each card too narrow for
+     "Deposit: 10,000 USDC" in the lessons' 60rem column (2026-11-10). */
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+
+/* One position's card: 302 by 384 in the app. */
+.posCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 24rem;
+  padding: 2rem 1.5rem 1.5rem;
+  background: var(--app-card);
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+}
+
+.posCardOn {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.posMenu {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--app-muted);
+}
+
+.posToken {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.posToken img {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.posName {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.posPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.posRows {
+  margin: 0;
+}
+
+.posRows > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.posRows dt {
+  font-weight: 400;
+}
+
+.posRows dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.posRowLit {
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+.posRowDim {
+  opacity: 0.35;
+}
+
+.posBarWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.posBar {
+  position: relative;
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--app-deposit);
+}
+
+.posBar i,
+.posBar b {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.posBar i {
+  left: 0;
+  background: var(--app-debt);
+}
+
+.posBar b {
+  background: var(--app-earmark);
+}
+
+.posLegend {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 300;
+}
+
+.posLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.posLegend i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+}
+
+.posManage {
+  margin-top: auto;
+}
+
+/* The dashed card that opens a new position. */
+.posNew {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24rem;
+  color: var(--app-outline);
+}
+
+.posNewRing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.posNew span {
+  display: none;
+}
+
+@container (max-width: 56rem) {
+  .summary {
+    padding: 1.25rem;
+  }
+
+  .posCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* A phone: the summary is a list, the card runs the width, and the dashed
+   card is the app's "Open New Position" button. */
+@container (max-width: 36rem) {
+  .summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .summary > div {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .summary > div:nth-child(3) {
+    border-right: 0;
+  }
+
+  .posCards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .posNew {
+    height: 2.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.375rem;
+    color: var(--app-fg);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .posNew svg {
+    display: none;
+  }
+
+  .posNew span {
+    display: inline;
+  }
+}
+
+/* ── The Fixed Yield card ─────────────────────────────────────────────── */
+
+/* The card. Its top padding is 20px more than the app's 24, for the Practice
+   tag, which the app's card has no row for. */
+.fxCard {
+  position: relative;
+  padding: 2.75rem 1.5rem 1.5rem;
+  background: var(--app-card);
+  container-type: inline-size;
+  overflow-x: clip;
+}
+
+.fxTag {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+}
+
+.fxBody {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.fxBigAl,
+.fxBigAsset {
+  display: none;
+}
+
+.fxLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.fxLeft .fxIcons img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.fxLeft .fxIcons img + img {
+  margin-left: -0.67rem;
+}
+
+.fxCapBar {
+  height: 0.75rem;
+}
+
+.fxLeft dt,
+.fxGrid dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  color: var(--app-fg);
+}
+
+.fxLeft dd,
+.fxGrid dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The panel: the five figures, each label with its value beside it, and the
+   amount box. */
+.fxPanel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.fxGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.fxGrid > div {
+  display: grid;
+  grid-template-columns: 9.25rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.fxGrid dd {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.fxAmount {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1rem;
+}
+
+/* The app's sm: the name and rate beside the panel. */
+@container (min-width: 36rem) {
+  .fxBody {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .fxLeft {
+    flex: 0 0 calc(50% - 0.5rem);
+  }
+
+  .fxPanel {
+    flex: 1 1 0;
+  }
+}
+
+/* The app's lg: the panel's figures beside its amount box. This is the
+   layout the card has in the lessons' 60rem column. The figures' column is
+   as wide as its longest label and value, with less padding than at xl: at
+   40% of the panel a value ran out of its cell and under the token picker
+   (2026-11-10; the same at any window about 1000px wide before that). */
+@container (min-width: 56rem) {
+  .fxLeft {
+    flex-basis: 29%;
+  }
+
+  .fxPanel {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .fxGrid {
+    flex: 0 0 auto;
+    padding: 1rem 0.75rem;
+  }
+
+  .fxGrid > div {
+    grid-template-columns: 9.5rem max-content;
+    gap: 0.75rem;
+  }
+
+  .fxAmount {
+    flex: 1 1 0;
+    padding: 0.75rem;
+  }
+}
+
+/* The app's xl: the two icons large at the card's left, the alAsset's half
+   off the edge, and the figures' column at 40% of the panel. */
+@container (min-width: 68rem) {
+  .fxLeft {
+    flex-basis: 25%;
+  }
+
+  .fxGrid {
+    flex: 0 0 40%;
+    padding: 1.5rem;
+  }
+
+  .fxGrid > div {
+    grid-template-columns: 9.25rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .fxAmount {
+    padding: 1rem;
+  }
+
+  .fxBody {
+    gap: 2.5rem;
+  }
+
+  .fxBigAl {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: -3.75rem;
+    z-index: 1;
+    width: 6rem;
+    height: 6rem;
+    transform: translateY(-50%);
+  }
+
+  .fxBigAsset {
+    display: block;
+    position: relative;
+    flex: 0 0 auto;
+    width: 6rem;
+    height: 6rem;
+    margin-right: -1.25rem;
+  }
+
+  .fxLeft .fxIcons {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .fxCard {
+    padding: 2.75rem 1rem 1rem;
+  }
+
+  .fxGrid {
+    padding: 1rem;
+  }
+
+  .fxAmount {
+    padding: 0.75rem;
+  }
+}
+
+.fxIcons {
+  display: inline-flex;
+}
+
+.fxApr {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.fxAprLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.fxRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.fxRows > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* ── The Dashboard's Open Fixed Yield Positions ───────────────────────── */
+
+/* The section is one card in the app, the table straight on it. */
+.fyFrame {
+  padding: 1.5rem;
+  background: var(--app-card);
+  container-type: inline-size;
+}
+
+.fyTable {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.fyHead,
+.fyRow {
+  display: grid;
+  /* The first column stops at 14rem so the four value columns keep room for
+     a date on one line in the lessons' 60rem column (at 18rem "Mar 04, 2027"
+     ran 6px out of its cell there, 2026-11-10). */
+  grid-template-columns: minmax(9rem, 14rem) repeat(4, minmax(0, 1fr)) minmax(9rem, 11rem);
+  align-items: center;
+}
+
+.fyHead {
+  min-height: 2.5rem;
+  border-bottom: 1px solid oklch(0.35 0.04 231.64);
+  font-weight: 500;
+}
+
+.fyHead > span {
+  padding: 0 0.5rem;
+  white-space: nowrap;
+}
+
+.fyCell {
+  min-width: 0;
+  padding: 0.5rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.fyLabel {
+  display: none;
+}
+
+.fyToken {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.fyIcons {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.fyIcons img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.fyIcons img + img {
+  margin-left: -0.5rem;
+}
+
+.fyName {
+  display: block;
+  line-height: 1;
+}
+
+.fyToken .chainLine {
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.fyToken .chainDot {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.fyToken .chainDot svg {
+  width: 0.5625rem;
+  height: 0.5625rem;
+}
+
+.fyRow .rowAction {
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+/* One line, always: "Claim with Penalty" wrapped to two lines and ran out of
+   the button's fixed height at every desktop width (seen on a
+   15-inch laptop; reproduced at 1280, 1366 and 1536). The column is 11rem at
+   most, so the side padding gives way to the label. */
+.fyRow .rowAction .cta {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  white-space: nowrap;
+}
+
+.fyRow .rowAction .ctaHint {
+  text-align: center;
+}
+
+/* A narrow frame: each value under its own column name, the button on the
+   last line. The app's table scrolls sideways here instead. From 50rem down,
+   which is where six columns stop holding a date on one line. */
+@container (max-width: 50rem) {
+  .fyHead {
+    display: none;
+  }
+
+  .fyRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    align-items: start;
+  }
+
+  .fyCell {
+    padding: 0;
+    white-space: normal;
+  }
+
+  .fyCell:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .fyLabel {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--app-muted);
+  }
+
+  .fyRow .rowAction {
+    grid-column: 1 / -1;
+    padding: 0;
+  }
+
+  .fyRow .rowAction .cta {
+    width: 100%;
+    height: 2.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .fyFrame {
+    padding: 1rem;
+  }
+}
+
+/* A lesson's own menu button, where the card's menu is. */
+.posMenuSlot {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+}
+
+/* The card at its content's height, for a figure that shows it beside other
+   things: the same parts in the same order, set a little closer. */
+.posCardCompact {
+  height: auto;
+  padding: 1.25rem 1rem 1rem;
+}
+
+.posCardCompact .posToken {
+  margin-bottom: 0.25rem;
+}
+
+.posCardCompact .posToken img {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.posCardCompact .posName {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.posCardCompact .posPanel {
+  padding: 0.75rem;
+  line-height: 1.125rem;
+}
+
+.posCardCompact .posManage {
+  margin-top: 0.75rem;
+}

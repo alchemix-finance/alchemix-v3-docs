@@ -1,0 +1,893 @@
+/* Figures the intermediate labs add, in the lesson's own style. */
+
+/* A formula on its own line, set apart from the body, with the learner's
+   numbers beneath it. */
+.formula {
+  margin: -0.5rem 0 2rem;
+  padding: 1rem 1.25rem;
+  border-left: 2px solid var(--m-copper);
+  border-radius: 0 var(--m-r-xl) var(--m-r-xl) 0;
+  background: var(--m-copper-fill);
+  max-width: 45rem;
+}
+
+.rule {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.worked {
+  margin-top: 0.375rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A body that is a list. */
+.points {
+  margin: -1rem 0 2rem;
+  padding-left: 1.25rem;
+  max-width: 45rem;
+  font-size: var(--m-t-lead);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--m-ink);
+}
+
+.points li + li {
+  margin-top: 0.375rem;
+}
+
+/* A line of figures under a figure. */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: -1rem 0 2rem;
+}
+
+.fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-md);
+  background: var(--m-card);
+  white-space: nowrap;
+}
+
+.factOn {
+  border-color: var(--m-copper-line);
+}
+
+.factDim {
+  opacity: 0.45;
+}
+
+.factLabel {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.factValue {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Big figures side by side. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+}
+
+.stat {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.statOn {
+  border-color: var(--m-copper-line);
+}
+
+.statLabel {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.statValue {
+  margin-top: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bad {
+  color: oklch(0.704 0.191 22.216);
+}
+
+.good {
+  color: #5ba88a;
+}
+
+/* A lesson slider: dashed copper, like the lesson's other controls. */
+.slider {
+  margin: 0 0 2rem;
+  padding: 0.875rem 1.125rem 0.625rem;
+  border: 1.5px dashed var(--m-copper);
+  border-radius: var(--m-r-xl);
+  max-width: 34rem;
+}
+
+.sliderHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.sliderLabel {
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-copper);
+}
+
+.sliderValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.range {
+  width: 100%;
+  height: 44px;
+  margin: -0.5rem 0 -0.375rem;
+  accent-color: var(--m-copper);
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+/* A figure in a card, in the lesson's style. */
+.card {
+  margin: 0 0 2rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  min-width: 0;
+}
+
+.cardHead {
+  margin-bottom: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.dim {
+  opacity: 0.4;
+}
+
+/* The cap table. */
+.capTable {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.capTable thead,
+.capTable tr {
+  border: 0;
+  background: none !important;
+}
+
+.capTable th,
+.capTable td {
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--m-line);
+  background: none;
+  text-align: left;
+  color: var(--m-ink);
+}
+
+.capTable th {
+  font-size: var(--m-t-xs);
+  font-weight: 600;
+  color: var(--m-muted);
+}
+
+.capTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.capTable td:first-child {
+  color: var(--m-text);
+  font-weight: 600;
+}
+
+.inside {
+  color: #5ba88a !important;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tick {
+  margin-left: 0.375rem;
+  vertical-align: -0.125rem;
+}
+
+/* The LTV bar with its point. */
+.ltvTrack {
+  position: relative;
+  height: 0.875rem;
+  margin: 0.5rem 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: visible;
+}
+
+.zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.zone.zoneOk {
+  border-radius: 999px 0 0 999px;
+}
+
+.zone.zoneLiq {
+  border-radius: 0 999px 999px 0;
+}
+
+.zoneOk {
+  background: rgba(91, 168, 138, 0.45);
+}
+
+.zoneCap {
+  background: rgba(212, 149, 42, 0.6);
+}
+
+.zoneLiq {
+  background: rgba(212, 100, 90, 0.7);
+}
+
+.line {
+  position: absolute;
+  top: -0.25rem;
+  bottom: -0.25rem;
+  width: 2px;
+  margin-left: -1px;
+}
+
+.lineMax {
+  background: #d4952a;
+}
+
+.lineLiq {
+  background: #d4645a;
+}
+
+.point {
+  position: absolute;
+  top: 50%;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: -0.5625rem 0 0 -0.5625rem;
+  border: 2px solid var(--m-card);
+  border-radius: 999px;
+  background: var(--m-copper);
+  box-shadow: 0 0 0 1px var(--m-copper);
+  transition: left 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .point {
+    transition: none;
+  }
+}
+
+.ltvTags {
+  position: relative;
+  height: 2.5rem;
+  font-size: var(--m-t-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.pointTag {
+  position: absolute;
+  top: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-copper);
+  white-space: nowrap;
+  transition: left 0.25s ease;
+}
+
+.markTag {
+  position: absolute;
+  top: 1.375rem;
+  color: #d4952a;
+  white-space: nowrap;
+}
+
+.markLiq {
+  color: #d4645a;
+}
+
+.zoneKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-ink);
+}
+
+.zoneKey span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.zoneKey i {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 3px;
+}
+
+/* The Redemption Rate's three inputs feeding its tile. */
+.rateFlow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+}
+
+.rateInputs {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.input {
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  min-width: 0;
+}
+
+.inputOn {
+  border-color: var(--m-copper-line);
+}
+
+.inputLabel {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.inputValue {
+  margin-top: 0.125rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.was {
+  margin-top: 0.125rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.rateArrow {
+  flex-shrink: 0;
+  color: var(--m-copper);
+}
+
+/* The tile keeps the practice vault's look, lit as the app lights a tile; it
+   sits outside a frame here, so it carries the app's colors itself. */
+.rateTile {
+  flex: 0 0 13rem;
+  min-width: 0;
+  padding: 0.875rem 1rem;
+  border: 1px solid oklch(0.8461 0.0792 57.05);
+  border-radius: 0.5rem;
+  color: oklch(0.985 0 0);
+  background: oklch(0.255 0.016 236);
+  font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+.rateTileLabel {
+  font-size: 0.8125rem;
+  opacity: 0.6;
+}
+
+.rateTileValue {
+  font-size: 1.375rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.wasApp {
+  margin-top: 0.125rem;
+  font-size: 0.8125rem;
+  color: oklch(0.708 0 0);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .rateFlow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rateInputs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rateArrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+
+  .rateTile {
+    flex-basis: auto;
+  }
+}
+
+/* An info tab's body (Earmarking, Redemptions, Visualizer). */
+.tabBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: oklch(0.2964 0.0247 236.77);
+  border-radius: 0.75rem;
+  min-width: 0;
+}
+
+.tabTitle {
+  font-size: 0.875rem;
+  color: oklch(0.708 0 0);
+}
+
+.schedule {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule thead,
+.schedule tr {
+  border: 0;
+  background: none !important;
+}
+
+.schedule th,
+.schedule td {
+  padding: 0.4rem 0.75rem 0.4rem 0;
+  border: 0;
+  border-bottom: 1px solid oklch(1 0 0 / 10%);
+  background: none;
+  text-align: left;
+}
+
+.schedule th {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: oklch(0.708 0 0);
+}
+
+.scheduleFoot {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 0.875rem;
+  color: oklch(0.708 0 0);
+  font-variant-numeric: tabular-nums;
+}
+
+.scheduleFoot b {
+  color: oklch(0.985 0 0);
+}
+
+/* The Visualizer's controls: the app's slider, so drawn in the app's style. */
+.vizControls {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.vizSlider,
+.vizStatic {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid oklch(1 0 0 / 15%);
+  border-radius: 0.5rem;
+  background: oklch(1 0 0 / 4.5%);
+  font-size: 0.875rem;
+}
+
+.vizHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.vizStatic {
+  justify-content: space-between;
+}
+
+.vizRange {
+  width: 100%;
+  height: 32px;
+  margin: -0.25rem 0;
+  accent-color: oklch(0.78 0.15 228);
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+@media (max-width: 640px) {
+  .vizControls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Steps that light in turn. */
+.litSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.litSteps li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-card);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--m-ink);
+  opacity: 0.4;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.litSteps li.litOn {
+  opacity: 1;
+  border-color: var(--m-copper-line);
+}
+
+.litNum {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: 999px;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-copper);
+}
+
+/* Two named cards side by side. */
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  min-width: 0;
+}
+
+.personHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+}
+
+.personName {
+  font-family: var(--m-display);
+  font-size: 1.375rem;
+  color: var(--m-text);
+}
+
+.personNote {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.fig {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.figLabel {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.figValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.buyerRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: var(--m-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The sizing box: a lesson tool, dashed copper like the other controls. */
+.sizing {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 0 2rem;
+  padding: 1.125rem 1.25rem;
+  border: 1.5px dashed var(--m-copper);
+  border-radius: var(--m-r-xl);
+  min-width: 0;
+}
+
+.sizing .slider {
+  margin: 0;
+  max-width: none;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--m-copper-line);
+}
+
+.sizingCompact {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sizingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.cashBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.cashField {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.875rem;
+  height: 3rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-lg);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cashInput {
+  width: 8.5rem;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--m-text);
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cashInput:focus {
+  outline: none;
+}
+
+.cashField:focus-within {
+  border-color: var(--m-copper);
+}
+
+.cashUnit {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--m-line);
+  border-radius: 999px;
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.chip b {
+  color: var(--m-text);
+}
+
+.chipWas {
+  color: var(--m-muted);
+}
+
+.sizingFormula {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.sizingFormula:empty {
+  display: none;
+}
+
+.floorLine {
+  margin-top: -0.5rem;
+  font-size: var(--m-t-sm);
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.results span {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.results em {
+  font-style: normal;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.results b {
+  font-size: 1.375rem;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The Repay tab's Flash Repay box, under the main box (lesson 6). The app's
+   colors, since it sits inside the practice vault. */
+.flashBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  border: 1px solid oklch(1 0 0 / 15%);
+  border-radius: 0.625rem;
+}
+
+.flashTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* Claim beside what it pays per alUSD (lesson 6, bad debt). */
+.claimWrap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem 0.875rem;
+}
+
+.claimNote {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The cash field keeps its own width when it stands alone (lesson 7, Ana and
+   Ben), and a loss slider in a card keeps the lesson controls' dashes. */
+.cashBox {
+  align-self: flex-start;
+}
+
+.sizingCompact .slider {
+  border-style: dashed;
+  border-color: var(--m-copper);
+}
+
+/* On a phone the cap table steps its type down and lets "60% with Aggressive"
+   wrap, so all four columns fit the card. */
+@media (max-width: 640px) {
+  .capTable {
+    font-size: 0.8125rem;
+  }
+
+  .capTable th,
+  .capTable td {
+    padding-right: 0.5rem;
+    vertical-align: top;
+  }
+
+  .capTable th:last-child,
+  .capTable td:last-child {
+    padding-right: 0;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+}

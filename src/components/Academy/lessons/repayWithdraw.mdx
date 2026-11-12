@@ -1,0 +1,57 @@
+import { Await, Do, PageBreak, Stat } from "../ArticleLesson";
+import { AvailableFigure, RepayPartMoment, RepayRestThenWithdrawMoment, VaultRowFigure } from "../ArticleLesson/moments-3-8";
+import { Term } from "../kit";
+
+Say you have had your loan for a month and want to pay part of it back yourself. This lesson starts from that point: 10,000 USDC deposited, 5,000 alUSD owed with 208 of it earmarked for the next redemption, and USDC in your practice wallet to repay with.
+
+<Term id="redemption">Redemptions</Term> pay the loan down over time, but you can also repay it yourself at any time, in part or in full. Repaying lowers what you owe and frees more of your deposit to withdraw. In the app, you do both from the vault page, which you reach from the Dashboard by pressing <Stat name="manage">Manage</Stat> on your position under Open Vault Positions. Repay and Withdraw are tabs on that page.
+
+<VaultRowFigure lit={["vault", "action"]} />
+
+While you owe anything, you can withdraw only part of your deposit. Withdrawing shrinks your deposit while your debt stays the same, which raises your <Term id="ltv">LTV</Term>, and the vault does not let a withdrawal take your LTV past 90%. So it keeps back enough deposit that your 5,000 of debt is 90% of it: 5,000 divided by 0.9, about 5,555.56. The rest, 4,444.44, is what you can withdraw, shown as the <Stat name="available">available</Stat> amount under the field on the Withdraw tab.
+
+The Withdraw field below is a what-if: type an amount and the stats preview how far it would raise your LTV, and MAX fills the full 4,444.44, which takes it to 90%. Nothing is withdrawn here.
+
+<AvailableFigure />
+
+<PageBreak title="Repay part of it" />
+
+The Repay tab accepts alUSD, USDC or MYT, and which one you can use depends on whether the debt is <Term id="earmarked">earmarked</Term>. Earmarked debt can be repaid only in MYT, which goes to the Transmuter to pay Fixed Yield depositors. You can pay it with MYT, or with USDC, which the app deposits into MYT for you as you repay. A USDC or MYT repayment clears earmarked debt first. The 0.25% redemption fee applies to that part, taken from your deposit as it would be in a redemption.
+
+alUSD repays only debt that is not earmarked, at face value, one alUSD for each USDC of debt, with no fee. Since alUSD typically trades a little under a dollar, repaying that part with alUSD can cost less than repaying in USDC.
+
+<Do moment="repay-part">
+
+Your practice wallet holds USDC for this, so repay with USDC: with USDC in the token picker, type 1,000 in the field and press Repay.
+
+</Do>
+
+<RepayPartMoment />
+
+<Stat name="debt">Debt</Stat> reads 4,000. A USDC repayment settles earmarked debt first, so the first 208 of your 1,000 cleared the earmarked part and <Stat name="earmarked">Earmarked</Stat> reads 0. The other 792 came off the rest of the loan. <Stat name="deposit">Deposit</Stat> fell by 0.52, the 0.25% redemption fee on the 208 of earmarked debt you repaid.
+
+With 1,000 less owed against almost the same deposit, <Stat name="ltv">LTV</Stat> fell to 40%, and <Stat name="borrowable">Borrowable</Stat> rose by about 1,000, since your loan now uses 1,000 less of the 90% limit. What you can withdraw rose by more than that, from 4,444.44 to 5,555.04. The vault keeps back 1.11 of deposit, 1 divided by 0.9, for each dollar you owe, so each dollar you repay frees 1.11 of deposit.
+
+<PageBreak title="Repay the rest and withdraw" />
+
+To withdraw your whole deposit, your Debt has to be 0.
+
+<Do moment="repay-rest">
+
+Repay the remaining 4,000: on the Repay tab, press MAX, which fills either what you owe or what your wallet holds, whichever is less, then press Repay.
+
+</Do>
+
+<RepayRestThenWithdrawMoment />
+
+<Stat name="debt">Debt</Stat> reads 0. With nothing owed, the vault no longer keeps any deposit back, so the available amount on the Withdraw tab is your whole deposit, 9,999.48 after the 0.52 fee.
+
+<Do moment="withdraw-all">
+
+Press MAX, then Withdraw.
+
+</Do>
+
+<Await moment="withdraw-all" hint="Press MAX, then Withdraw" />
+
+The vault sent your whole deposit, 9,999.48 USDC, to your practice wallet, which closes the position.

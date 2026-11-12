@@ -1,0 +1,1114 @@
+/* The track map, in the members area's framed grid: every section is a
+   full-width rule with the 76rem column standing on it between two side
+   hairlines, and a node where the rule meets each hairline. Colors, type and
+   the frame come from the shell's members tokens. */
+
+/* ── Frame ───────────────────────────────────────────────── */
+.intro,
+.trackSection,
+.progressNote {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--m-line);
+}
+
+.intro {
+  border-top: 0;
+}
+
+.inner,
+.introInner,
+.progressNoteInner {
+  position: relative;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: clamp(1.75rem, 4vw, 2.75rem) var(--m-gutter) clamp(2rem, 4.5vw, 3rem);
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+  min-width: 0;
+}
+
+.frameNode {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--m-node);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.nodeTL {
+  left: -4.5px;
+  top: -4.5px;
+}
+
+.nodeTR {
+  right: -4.5px;
+  top: -4.5px;
+}
+
+@media (max-width: 1023px) {
+  .frameNode {
+    display: none;
+  }
+}
+
+/* ── Statement ───────────────────────────────────────────── */
+
+/* Two columns: the pitch on the left, the course picture on the right, the
+ * way the members home sets its headline beside its orbit. The pitch is
+ * centred against the picture.
+ *
+ * Since 2026-10-30 the pitch is a headline, one sentence and the button. The
+ * rewards panel that shared the right column, and the second paragraph, made
+ * the hero about 840px tall at 1440, and
+ * the one line on rewards that replaced them went on 2026-11-09. */
+.introInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+  grid-template-areas: "text art";
+  align-items: center;
+  gap: 2rem clamp(2rem, 6vw, 6rem);
+  padding-top: clamp(2.5rem, 5vw, 3.75rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+.introText {
+  grid-area: text;
+  min-width: 0;
+}
+
+.heroArt {
+  grid-area: art;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* The members headline: Beaufort light. */
+.headline {
+  margin: 0 0 1.25rem;
+  font-family: var(--m-display);
+  font-size: var(--m-t-display);
+  line-height: 1.05;
+  font-weight: 300;
+  letter-spacing: var(--m-track-display);
+  color: var(--m-text);
+  text-wrap: balance;
+}
+
+.sub + .sub {
+  margin-top: 1rem;
+}
+
+/* The members lead. */
+.sub {
+  margin: 0;
+  font-size: var(--m-t-lead);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: var(--m-track-body);
+  color: var(--m-ink);
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+/* The button and, beside it, the lesson it opens. One height whatever it
+   holds: the label is one line, shorter than the button, so the row is the
+   button's height and nothing below it moves when the learner's progress is
+   read. Under 640px the label goes under the button, where a long title may
+   take two lines, and the row reserves both. */
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  min-height: 2.75rem;
+  margin-top: 2rem;
+  transition: opacity 0.2s ease;
+}
+
+/* Before progress is read the row holds a new learner's lesson, so it waits,
+   unseen, rather than showing a lesson that is about to change. */
+.heroActions.heroActionsWaiting {
+  opacity: 0;
+}
+
+.cta.heroCta {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* The lesson the button opens: the picture's "next" ring, the lesson's
+   place, its title, on one line. A long title takes a second line, whole,
+   and the row is still the button's height (two 22px lines). */
+.heroNext {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* 14px, centered on the first 22px line. */
+.heroNextMark {
+  flex: none;
+  margin-top: 0.25rem;
+  stroke: var(--m-copper);
+  stroke-width: 1.75;
+}
+
+.heroNextPlace {
+  flex: none;
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1.375rem;
+  color: var(--m-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.heroNextTitle {
+  min-width: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.375rem;
+  color: var(--m-text);
+  text-wrap: balance;
+}
+
+.heroDone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-green);
+}
+
+@media (max-width: 639px) {
+  .heroActions {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: calc(44px + 0.75rem + 2.75rem);
+  }
+
+  .heroNext {
+    flex: none;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0 0.5rem;
+  }
+
+  /* On a phone the title takes its own line when it has to. */
+  .heroNextTitle {
+    text-wrap: wrap;
+  }
+}
+
+/* ── Section label: "01 Beginner track" ──────────────────── */
+/* The landing's small light number before a Beaufort title. The number hangs
+   in the frame's gutter, so the title starts on the same edge as the sentence
+   under it and the lessons' rail. Where the gutter is too narrow to hold it
+   (under 1200px) the number is left out. */
+.label {
+  display: flex;
+  align-items: baseline;
+  margin: 0;
+  font-family: var(--m-display);
+  font-size: var(--m-t-h2);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+.labelNum {
+  display: none;
+  flex: none;
+  width: 1.25rem;
+  margin-left: -2rem;
+  margin-right: 0.75rem;
+  text-align: right;
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+@media (min-width: 1200px) {
+  .label .labelNum {
+    display: block;
+  }
+}
+
+/* ── One track ───────────────────────────────────────────── */
+/* A track is a section that opens and closes (2026-11-09). Its head is the
+   button and is always on the page: the name and the track's one sentence on
+   the left, a segment per lesson on the right, then the chevron. Until then
+   every track was open, its one line and progress in a sticky left column
+   beside the lessons. */
+.trackHeading {
+  margin: 0;
+}
+
+.trackToggle {
+  appearance: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.trackToggle:focus-visible {
+  outline: none;
+}
+
+.trackTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.trackToggle:hover .label,
+.trackToggle:focus-visible .label {
+  color: var(--m-copper-hi);
+}
+
+.trackIntro {
+  margin: 0;
+  font-family: var(--m-body);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0;
+  color: var(--m-ink);
+  max-width: 46rem;
+  text-wrap: pretty;
+}
+
+.trackMeta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* One segment per lesson, so a longer track is a longer row: grey ahead,
+   green once passed, copper for the lesson the hero's button opens. The
+   members area's 6px pill, cut into lessons. The check after the last
+   segment keeps its room when hidden, so finishing a track moves nothing. */
+.segments {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.segment {
+  display: block;
+  width: 1.125rem;
+  height: 0.375rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line-strong);
+  transition: background 0.3s ease;
+}
+
+/* Both classes, so each wins on specificity rather than on order: see
+   .resetLink.testLink. */
+.segment.segmentDone {
+  background: var(--m-green);
+}
+
+/* The next lesson is outlined, never filled: a filled segment read as a
+   lesson already passed. */
+.segment.segmentNext {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--m-copper);
+}
+
+.segmentsCheck {
+  display: inline-flex;
+  margin-left: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.segmentsCheck.segmentsCheckOn {
+  opacity: 1;
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: 50%;
+  color: var(--m-ink);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.chevron svg {
+  transition: transform 0.3s ease;
+}
+
+.trackToggle:hover .chevron,
+.trackToggle:focus-visible .chevron {
+  border-color: var(--m-copper);
+  color: var(--m-copper);
+}
+
+.trackToggle:focus-visible .chevron {
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+.trackSection.trackOpen .chevron svg {
+  transform: rotate(180deg);
+}
+
+/* A track that is not open yet (OPEN_TRACKS in lib/track.js). The same head,
+   in grey, not a button: no chevron, no hover, and "Coming soon" where an
+   open track draws its segments. Each rule carries both classes so it beats
+   the open track's own on specificity, not on order. */
+.trackToggle.trackStatic {
+  grid-template-columns: minmax(0, 1fr) auto;
+  cursor: default;
+}
+
+.trackSection.trackClosed .label,
+.trackSection.trackClosed .trackToggle:hover .label {
+  color: var(--m-muted);
+}
+
+.trackSection.trackClosed .trackIntro {
+  color: var(--m-muted);
+  opacity: 0.75;
+}
+
+/* "Coming soon": a quiet pill, here and on the finish pages' cards. */
+.soon {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-full);
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1rem;
+  letter-spacing: 0;
+  color: var(--m-muted);
+  white-space: nowrap;
+}
+
+/* The lessons. They stay in the page when the track is closed, collapsed to
+   no height: a grid row that goes from 0fr to 1fr slides without a measured
+   height. `trackSettled` arrives one frame after the page has read the
+   learner's progress, so the track that opens on load does not animate. */
+.trackBody {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+}
+
+.trackSection.trackOpen .trackBody {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.trackSection.trackSettled .trackBody {
+  transition: grid-template-rows 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.trackSection.trackSettled.trackOpen .trackBody {
+  transition: grid-template-rows 0.35s ease, visibility 0s linear 0s;
+}
+
+.trackBodyInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.trackContent {
+  padding-top: 2rem;
+}
+
+/* The way to a finished track's finish page, in its Track complete panel. */
+.finishLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-green);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.finishLink:hover,
+.finishLink:focus-visible {
+  color: var(--m-text);
+  text-decoration: none;
+}
+
+.finishLink svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ── Track complete ──────────────────────────────────────── */
+/* The members "ok" notice, at card scale. */
+.graduate {
+  position: relative;
+  margin: 1.5rem 0 0;
+  border: 1px solid rgba(91, 168, 138, 0.5);
+  border-radius: var(--m-r-xl);
+  background: rgba(91, 168, 138, 0.08);
+  padding: 1.25rem 1.375rem;
+}
+
+.graduateTitle {
+  font-family: var(--m-display);
+  font-size: var(--m-t-h3);
+  font-weight: 400;
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-text);
+  margin: 0.375rem 0 0.5rem;
+}
+
+.graduateMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.graduateRole {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-green);
+}
+
+.graduateBody {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+  margin: 0;
+}
+
+.graduateBody a {
+  color: var(--m-green);
+}
+
+.graduateBody.statusOk { color: var(--m-green); }
+.graduateBody.statusWarn { color: var(--a-amber); }
+.graduateBody.statusErr { color: var(--a-red); }
+
+.missingList {
+  margin: 0.75rem 0 0;
+  padding-left: 1.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--m-text);
+}
+
+.missingList li {
+  margin-bottom: 0.25rem;
+}
+
+.graduateActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.875rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+/* On the map the panel is a band above its track's lessons: the words on the
+   left, the ways on to the right. The finish pages use the panel as a card
+   and do not take this class. */
+.graduate.graduateBand {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem 2.5rem;
+  margin: 0 0 2rem;
+}
+
+.graduateBand .graduateText {
+  min-width: 0;
+}
+
+.graduateBand .graduateActions {
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 0;
+}
+
+/* ── The rail ────────────────────────────────────────────── */
+/* Each lesson's circle stands on the content's left edge, under the track's
+   name, and is centered on the lesson's title. `--rail-lead` is the distance
+   from the top of the row down to the circle: the row's small label and its
+   margin, then half of what is left of the title's line. The live card's
+   title sits lower (the card's border and padding, a larger title), so its
+   row sets its own. */
+.track {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  --rail-node: 1.75rem;
+  --rail-lead: calc(1rem + 0.4375rem + (var(--m-t-h3) * 1.3 - var(--rail-node)) / 2);
+  --card-pad: 1.5rem;
+  --card-title: var(--m-t-h2);
+}
+
+/* The live card's title in whole pixels. Its size is fluid between 24px and
+   30px, and at a size like 26.6px the browser sets the text most of a pixel
+   off the line the rail's circle and the card's button center on. */
+@supports (width: round(1.5px, 1px)) {
+  .trackContent .track {
+    --card-title: round(var(--m-t-h2), 1px);
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--rail-node) minmax(0, 1fr);
+}
+
+.row.rowCurrent {
+  --rail-lead: calc(1px + var(--card-pad) + 1rem + 0.5625rem + (var(--card-title) + 0.375rem - var(--rail-node)) / 2);
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The line from the lesson before, down to this lesson's circle. */
+.lead {
+  flex: none;
+  width: 1px;
+  height: var(--rail-lead);
+}
+
+.node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--rail-node);
+  height: var(--rail-node);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.node svg {
+  display: block;
+}
+
+.node_done {
+  background: rgba(91, 168, 138, 0.14);
+  border: 1px solid var(--m-green);
+}
+
+.node_current {
+  background: var(--m-copper-fill);
+  border: 1px solid var(--m-copper);
+}
+
+.node_ahead {
+  background: var(--m-panel);
+  border: 1px solid var(--m-line-strong);
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--m-copper);
+}
+
+.line {
+  flex-grow: 1;
+  width: 1px;
+  min-height: 1.5rem;
+}
+
+.line_done { background: var(--m-green); }
+.line_current { background: var(--m-line-strong); }
+.line_ahead { background: var(--m-line); }
+
+.body {
+  padding: 0 0 1.75rem 1.25rem;
+  min-width: 0;
+}
+
+.body.bodyLast {
+  padding-bottom: 0;
+}
+
+/* A lesson's row as a link: what it is on the left, how long it takes and the
+   way in on the right. Under 700px the two stack. */
+.rowLink {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 2rem;
+}
+
+.rowText {
+  display: block;
+  min-width: 0;
+}
+
+.rowText > span {
+  display: block;
+}
+
+/* On the title's line, like the rail's circle on the other side of it. */
+.rowMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  height: 1.25rem;
+  margin-top: calc(1rem + 0.4375rem + (var(--m-t-h3) * 1.3 - 1.25rem) / 2);
+  white-space: nowrap;
+}
+
+/* A lesson further down the track. Readable, so it is a link, but it stays
+   dimmer than the live card and its affordance says "read", not "start": what
+   opens is a preview with every control switched off. */
+.aheadLink {
+  color: inherit;
+  text-decoration: none;
+  /* 0.85 since 2026-10-15. At 0.55 the "Read ahead" link measured about 1.9:1
+     against the page, too faint to read beside the current lesson. */
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.aheadLink:hover,
+.aheadLink:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  opacity: 1;
+}
+
+/* One width for both, ending on the right edge, so the minutes beside them
+   end on one line down the whole track whichever a row carries. */
+.peek,
+.revisit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 6.75rem;
+  gap: 0.3125rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--m-muted);
+  transition: color 0.15s ease;
+}
+
+.peek svg,
+.revisit svg {
+  width: 13px;
+  height: 13px;
+}
+
+.aheadLink:hover .peek,
+.aheadLink:focus-visible .peek {
+  color: var(--m-copper);
+}
+
+/* A finished row is a quiet link back into its lesson. It must never compete
+   with the one live card, so the affordance is a small revisit line that
+   brightens on hover. */
+.doneLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.doneLink:hover,
+.doneLink:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.doneLink .rowTitle {
+  transition: color 0.15s ease;
+}
+
+.doneLink:hover .rowTitle {
+  color: var(--m-copper);
+}
+
+.doneLink:hover .revisit,
+.doneLink:focus-visible .revisit {
+  color: var(--m-green);
+}
+
+/* ── Shared labels ───────────────────────────────────────── */
+/* The members caption: sentence case, never small capitals. */
+.microLabel {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1rem;
+  color: var(--m-muted);
+  margin-bottom: 0.4375rem;
+}
+
+.microLabel.doneLabel {
+  color: var(--m-green);
+}
+
+/* The app screen a lesson is about, set apart from the lesson number and
+   the state either side of it. */
+.surface {
+  color: var(--m-blue);
+}
+
+.microLabel.currentLabel {
+  color: var(--m-copper);
+  margin-bottom: 0.5625rem;
+}
+
+.rowTitle {
+  font-family: var(--m-display);
+  font-size: var(--m-t-h3);
+  font-weight: 400;
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-text);
+  margin-bottom: 0.3125rem;
+}
+
+.rowBlurb {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+  max-width: 40rem;
+}
+
+/* ── The one live card ───────────────────────────────────── */
+/* A members card, with the copper line that marks the lesson to start. */
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1.25rem 2.5rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  padding: var(--card-pad) 1.625rem;
+}
+
+.cardText {
+  min-width: 0;
+}
+
+.cardTitle {
+  font-family: var(--m-display);
+  font-size: var(--card-title);
+  font-weight: 400;
+  letter-spacing: var(--m-track-head);
+  /* The type size plus 6px: 36px at the largest size (1.2, as before) and a
+     whole 30px at the smallest, where 1.2 gave 28.8px and the browser set the
+     title almost a pixel off the line the rail's circle centers on. */
+  line-height: calc(1em + 0.375rem);
+  color: var(--m-text);
+  margin-bottom: 0.625rem;
+}
+
+.cardBlurb {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+  max-width: 40rem;
+  margin: 0;
+}
+
+/* The button is centered on the card's title, like the rail's circle on the
+   other side of it. */
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.625rem;
+  margin-top: calc(1rem + 0.5625rem + (var(--card-title) + 0.375rem - 44px) / 2);
+}
+
+/* The members primary button, at the 44px touch height. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--m-copper);
+  border-radius: var(--m-r-md);
+  background: var(--m-copper);
+  color: var(--m-on-copper) !important;
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.cta:hover {
+  background: var(--m-copper-hi);
+  border-color: var(--m-copper-hi);
+}
+
+.cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+/* The claim button shares the CTA face and adds the button resets. */
+.cta.claim {
+  appearance: none;
+  cursor: pointer;
+}
+
+.cta.claim:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.minutes {
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+/* ── Where progress lives ──────────────────────────────────
+   The foot of the map, after both tracks. Deliberately quiet: it is
+   housekeeping, and the one destructive control in the academy sits inside it
+   behind a confirm. Its note stays at body-text brightness. */
+.progressNoteInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+.progressNoteText {
+  flex: 1 1 22rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--m-ink);
+  margin: 0;
+}
+
+.resetLink {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--m-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.resetLink:hover {
+  color: var(--m-text);
+}
+
+/* The development-only control that marks every lesson complete. Amber, so
+   nobody mistakes it for part of the course. Both classes, not just the
+   modifier: the CSS minifier groups rules that share a declaration and can
+   hoist that group above the rule it overrides, so a modifier has to win on
+   specificity rather than on order. */
+.resetLink.testLink {
+  color: var(--a-amber);
+}
+
+.resetLink.testLink:hover {
+  color: var(--m-copper);
+}
+
+.resetAsk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  flex: 1 1 20rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(212, 100, 90, 0.5);
+  border-radius: var(--m-r-lg);
+  background: rgba(212, 100, 90, 0.08);
+}
+
+.resetWarn {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--a-red);
+}
+
+.resetButtons {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.resetGo,
+.resetKeep {
+  appearance: none;
+  font-family: inherit;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--m-r-md);
+  cursor: pointer;
+  /* A touch target on a phone. */
+  min-height: 36px;
+}
+
+.resetGo {
+  border: 1px solid rgba(212, 100, 90, 0.5);
+  background: rgba(212, 100, 90, 0.14);
+  color: var(--a-red);
+}
+
+.resetGo:hover {
+  background: rgba(212, 100, 90, 0.22);
+}
+
+.resetKeep {
+  border: 1px solid var(--m-outline);
+  background: transparent;
+  color: var(--m-text);
+}
+
+.resetKeep:hover {
+  background: var(--m-hover);
+}
+
+/* A tablet and a phone: the pitch alone. The picture goes, so the button and
+   the first track sit higher, and the track list below names every lesson
+   the picture would have shown. */
+@media (max-width: 900px) {
+  .introInner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "text";
+  }
+
+  .heroArt {
+    display: none;
+  }
+}
+
+/* A track's head stacks: the name and its sentence, then its segments, with
+   the chevron kept at the top right. A row's length and
+   way in go under its words, and so does the live card's button. */
+@media (max-width: 760px) {
+  .trackToggle {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .trackTitle {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .chevron {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .trackMeta {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+  }
+
+  .rowLink {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rowLink .rowMeta {
+    margin-top: 0.5625rem;
+  }
+
+  .rowMeta .peek,
+  .rowMeta .revisit {
+    min-width: 0;
+  }
+
+  .card,
+  .graduate.graduateBand {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card .cardActions {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin-top: 0;
+  }
+
+  .graduateBand .graduateActions {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Phones. The live card and panels lose some padding, and nothing keeps a fixed
+   width wider than the viewport. */
+@media (max-width: 480px) {
+  .track {
+    --card-pad: 1.25rem;
+  }
+
+  .card,
+  .graduate {
+    padding: 1.25rem 1.125rem;
+  }
+
+  .body {
+    padding-left: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trackSection.trackSettled .trackBody,
+  .trackSection.trackSettled.trackOpen .trackBody,
+  .chevron svg,
+  .heroActions,
+  .segment,
+  .segmentsCheck {
+    transition: none;
+  }
+}

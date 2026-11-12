@@ -1,0 +1,129 @@
+import { Await, Do, Intro, PageBreak, Stat, StripAt, Sub } from "../../ArticleLesson";
+import { VestingFigure, EarmarkFigure, CoverFigure, ClaimFigure, EarmarkingTabShot } from "../../ArticleLesson/moments-i4";
+import { Term } from "../../kit";
+
+<Intro>
+
+In this track you learn how Alchemix v3 pays Fixed Yield depositors out of borrowers' deposits and repayments, and what that means for your own loan. A Fixed Yield depositor is someone who deposited alUSD on the Fixed Yield page to receive one USDC for each alUSD when the term ends, and every redemption that pays a loan down pays one of them. Once you can follow that payment from the depositor's claim to your Deposit and Debt, a vault's figures tell you how fast your loan will be paid down and what a Fixed Yield deposit will earn.
+
+This track builds on the intermediate track, so the Alchemist, the Transmuter, MYT's price and Loan Cost are used here without being introduced again. Each lesson sets the practice wallet at the top of the page to its own starting position.
+
+</Intro>
+
+Say you borrowed 5,000 alUSD against 10,000 USDC in the Risk-adjusted Mix USDC vault on Ethereum today. The same day, someone deposits 20,000 alUSD on the vault's Fixed Yield page with a 4-month term.
+
+Paying that depositor is what will pay part of your loan down. Their 20,000 alUSD can be claimed for 20,000 USDC when the term ends. The Transmuter pays that claim in MYT, and the app turns it into USDC by default. Unless other borrowers have already sent the Transmuter MYT by repaying, that MYT comes out of borrowers' deposits through a redemption. A redemption moves MYT out of each borrower's deposit and cancels the same amount of that borrower's debt, so part of the MYT comes out of your deposit and the same amount comes off your loan.
+
+<Sub>From deposit to claim</Sub>
+
+The deposit sits in the <Term id="transmuter">Transmuter</Term>, the contract that holds Fixed Yield deposits and pays depositors when they claim. Over the term it vests, which means that each block a little more of the deposit becomes claimable. As it vests, the Alchemist, the contract that holds your position, earmarks borrowers' debt, reserving the amount a redemption will later cancel. Once the term ends, the depositor can claim, and the claim is what triggers the redemption.
+
+In your position, vesting shows up as a rising Earmarked stat, and the claim shows up as a fall in your Deposit and your Debt. A repayment by another borrower during the term can lower both how much of your debt is earmarked and how much the claim takes, because it sends the Transmuter MYT that pays the depositor in place of borrowers' deposits.
+
+<Sub>The vesting schedule</Sub>
+
+A Fixed Yield deposit vests in a straight line, the same amount every block, from the day it is made until its maturity date, the day its term ends. So 20,000 over 4 months vests 5,000 a month. The Transmuter adds every deposit to one schedule of how much vests at each block, and the Alchemist reads that schedule to earmark debt.
+
+<Do moment="vest">
+
+Drag through the term to follow the deposit as it vests.
+
+</Do>
+
+<VestingFigure />
+
+By the maturity date, all 20,000 has vested. That is how much borrowers' debt will be earmarked to pay this one depositor, less any part the Transmuter can pay from MYT it already holds, which you will learn about later in this lesson.
+
+<PageBreak title="How your debt is earmarked" />
+
+As each block's alUSD vests, the Alchemist <Term id="earmarking">earmarks</Term> the same amount of borrowers' debt, reserving it for the depositor's claim. <Term id="earmarked">Earmarked</Term> debt is still your debt, and the MYT behind it stays in your deposit, earning, until the depositor claims. You can repay earmarked debt only with USDC or MYT, because it is reserved to pay the depositor in MYT and the app deposits USDC into MYT as you repay. An alUSD repayment would send the Transmuter none.
+
+The Alchemist earmarks the same share of every borrower's debt that is not yet earmarked, so each borrower carries part of the redemption in proportion to what they owe. A borrower with twice your unearmarked debt has twice as much earmarked. Debt that is already earmarked is left out, since it is reserved for alUSD that vested earlier. Your <Stat name="earmarked">Earmarked</Stat> stat shows what has been earmarked up to the current block.
+
+In the practice vault, borrowers owe 120,000 in all. You owe 5,000, one other borrower, B, owes 24,000, and everyone else together owes 91,000.
+
+<Do moment="month-1">
+
+Drag through the first month.
+
+</Do>
+
+<EarmarkFigure />
+
+5,000 vested, which is 4.17% of the 120,000 borrowers owe, so the Alchemist earmarked 4.17% of each borrower's debt. That is about 208 of your 5,000, 1,000 of B's 24,000 and about 3,792 of the other borrowers' 91,000.
+
+Your <Stat name="deposit">Deposit</Stat> and <Stat name="debt">Debt</Stat> are unchanged, because earmarking only marks debt to be settled later and moves no MYT.
+
+<Sub>The rest of the term</Sub>
+
+Each month after this, another 5,000 vests and is earmarked the same way. Your part stays about 208 a month, because your unearmarked debt stays the same share of all the unearmarked debt in the vault, 1 in 24.
+
+In the beginner track, each month's earmark was a little smaller than the last. That practice vault ran one redemption a month at a rate that held all year, so each month's earmark was the same share of a debt the last redemption had made smaller. Here nothing is redeemed until the depositor claims, so your debt stays at 5,000 through the term while the one deposit vests the same 5,000 every month. Which pattern a real vault follows depends on whether new Fixed Yield deposits arrive and whether other borrowers borrow again, which you will learn about later in this track.
+
+<PageBreak title="How cover pauses earmarking" />
+
+When a borrower repays with USDC or MYT, the repayment reaches the Transmuter as MYT, and so does deposit taken in a liquidation. The part that repays debt not yet earmarked becomes <Term id="cover">cover</Term>. When alUSD vests, the Alchemist settles as much of it as it can from cover first, since that MYT is already in the Transmuter to pay depositors. It earmarks borrowers' debt only for the rest.
+
+A repayment of earmarked debt also sends MYT to the Transmuter, but that MYT pays for alUSD that has already vested, the alUSD the debt was earmarked for, so it adds no cover. An alUSD repayment adds none either, since the vault burns the alUSD and sends the Transmuter no MYT.
+
+<Do moment="b-repays">
+
+Say that a month in, Borrower B repays 6,000 of their debt with USDC. 1,000 of B's debt is earmarked. Press B repays 6,000.
+
+</Do>
+
+<CoverFigure />
+
+B's 6,000 USDC was deposited into MYT and sent to the Transmuter as 4,800 MYT, at an example MYT price of 1.25 USDC. A USDC repayment clears earmarked debt first, so 800 MYT, worth 1,000, settled B's earmarked debt, with the 0.25% redemption fee of 2.50 taken from B's deposit. The other 4,000 MYT, worth 5,000, repaid debt that was not earmarked and became 5,000 of cover.
+
+<Do moment="month-2">
+
+Now drag through the second month.
+
+</Do>
+
+<Await moment="month-2" hint="Drag through the second month" />
+
+The second month's 5,000 vested, and the Alchemist settled all of it from the 5,000 of cover, so it earmarked nothing. Your <Stat name="earmarked">Earmarked</Stat> still reads about 208, where it would have reached about 417 without B's repayment.
+
+For you, cover means part of what Fixed Yield depositors are owed is paid with other borrowers' repayments, so less of your own debt is earmarked and redeemed.
+
+<PageBreak title="What the claim takes from your deposit" />
+
+<StripAt id="maturity" set={{ deposit: 10000, debt: 5000, earmarked: 833.33 }} />
+
+Now say no borrower repaid during the term. Each month another 5,000 vested and about 208 more of your debt was earmarked, so on the maturity date your Earmarked reads 833.33 and the vault's Earmarked total reads 20,000. The practice wallet at the top of the page now shows your position on that date.
+
+On the maturity date, the depositor can claim. The Transmuter pays them first with any MYT it already holds, and asks the Alchemist to redeem the rest.
+
+A redemption cancels the same share of every borrower's earmarked debt and moves the same value of MYT out of their deposits to the Transmuter. It also takes the redemption fee from their deposits for the protocol, 0.25% on Ethereum.
+
+<Do moment="claim">
+
+Say the depositor claims on the maturity date, and the Transmuter holds no MYT. Press Claim on their Fixed Yield position.
+
+</Do>
+
+<ClaimFigure />
+
+The claim needed 20,000, and borrowers' earmarked debt came to exactly 20,000, so the redemption canceled every borrower's earmarked debt in full. For you, the redemption canceled your 833.33 of earmarked debt, leaving your <Stat name="debt">Debt</Stat> at 4,166.67. To pay for it, the redemption moved MYT worth the same 833.33 out of your <Stat name="deposit">Deposit</Stat>, since each dollar of debt a redemption cancels is paid with a dollar of deposit. Your Deposit also paid the 0.25% redemption fee on that 833.33, about 2.08, and fell to 9,164.58.
+
+<Sub>Across the vault</Sub>
+
+Across every borrower, the redemption moved 16,000 MYT, worth 20,000 at the example price, and it reached the depositor as 20,000 USDC. The Transmuter burned the depositor's 20,000 alUSD, matching the 20,000 of debt the redemption canceled, and burned the Fixed Yield NFT that recorded their deposit.
+
+Had B repaid 6,000 during the term, as in the cover example, the Transmuter would have paid the depositor first with that 4,800 MYT, worth 6,000, and redeemed 6,000 less from borrowers.
+
+Your 833.33 was earmarked a little at a time over four months, but the MYT behind it left your deposit only at the claim. A depositor can also claim long after the maturity date, and that MYT keeps earning in your deposit until they do.
+
+<PageBreak title="Where the app shows it" />
+
+The Earmarking tab on a vault's page charts the last 30 days of earmarking in that vault. Each day's bar is the Fixed Yield alUSD that vested that day, which the tab labels Matured. The bar is split into the part cover absorbed and the part earmarked from borrowers' debt.
+
+The solid line is the Earmarking rate, the yearly pace at which borrowers' debt was earmarked. The dashed line, Gross (before cover), is the pace before cover is taken off.
+
+<EarmarkingTabShot>The Earmarking tab, with one day's Matured split into Absorbed by cover and Earmarked.</EarmarkingTabShot>
+
+On the day in the capture, Matured reads 13.90K alUSD and cover absorbed all of it. No debt was earmarked that day, so the Earmarking rate reads 0.00%. The gross rate of 108.20% is the pace borrowers' debt would have been earmarked at that day had there been no cover.
+
+The 20,000 deposit, the 120,000 owed across the vault and the MYT price of 1.25 are examples. The figures leave out your deposit's yield over the term, so the changes to your Deposit and Debt come from the redemption alone.

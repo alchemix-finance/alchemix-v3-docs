@@ -1,0 +1,59 @@
+import { Await, Do, PageBreak, Shot, Stat } from "../ArticleLesson";
+import { LiquidationSequence, WhatIfMoment } from "../ArticleLesson/moments-3-8";
+import { Term } from "../kit";
+
+This lesson starts from an open loan: 10,000 USDC deposited and 5,000 alUSD borrowed, an LTV of 50%.
+
+Besides redemptions, one other thing can settle part of your loan without you: a <Term id="liquidation">liquidation</Term>. A liquidation can happen once your <Term id="ltv">LTV</Term> reaches 95%, the LIQ LTV marker on the health bar. From that point anyone can repay part of your loan out of your deposit and collect a fee for doing it, and whoever does is called the liquidator. Liquidations keep every loan in the vault backed by a deposit worth more than the debt.
+
+A liquidation is partial. It takes only enough deposit to bring your LTV back to 90%, plus the liquidator's fee, and the rest of your position stays open and keeps earning.
+
+Between 90% and 95%, nothing is liquidated. The vault stops new borrowing and withdrawals, and the loan stays open.
+
+<Shot name="healthBar">The health bar, with MAX LTV at 90% and LIQ LTV at 95%.</Shot>
+
+<PageBreak title="What moves your LTV" />
+
+On most lending platforms, a falling price is what gets loans liquidated. You borrow one asset against a different one, so when the collateral's price falls, its value drops while the debt stays the same, and the LTV rises. In Alchemix, your deposit and your debt are counted in the same asset: a USDC deposit backs a debt counted in USDC, one USDC for each alUSD you owe.
+
+The price drop, the loss and the liquidation on these pages change only the practice vault below. Your practice position at the top stays as it is.
+
+<Do moment="drop">
+
+USDC rarely moves far from a dollar, but say it dropped to 0.90. Press Drop the price.
+
+</Do>
+
+<WhatIfMoment />
+
+<Stat name="ltv">LTV</Stat> held at 50%. The vault counts both your deposit and your debt in USDC, so a change in what USDC is worth in dollars leaves the ratio between them where it was. Priced in dollars at 0.90, as the stats now show them, your 10,000 deposit is worth 9,000 and your 5,000 of debt 4,500, both down by the same 10%, still 50%. A price drop on its own cannot liquidate you. An ETH vault works the same way, with alETH borrowed against ETH.
+
+<Do moment="loss">
+
+Besides borrowing more or withdrawing, what can raise your LTV is a loss inside the vault. Say the price of USDC is back at 1.00, and a <Term id="strategy">strategy</Term> the vault deposits into experiences a loss of funds worth 10% of the vault. Press Apply a 10% loss.
+
+</Do>
+
+<Await moment="loss" hint="Press Apply a 10% loss" />
+
+Unlike a price drop, a loss inside the vault lowers your deposit alone. The strategy's loss lowers what each MYT is worth, so every deposit in the vault falls in value while every debt stays the same. Your <Stat name="deposit">Deposit</Stat> fell 10%, to 9,000, while your <Stat name="debt">Debt</Stat> stayed at 5,000, so <Stat name="ltv">LTV</Stat> rose to 56%.
+
+Your LTV is your Debt divided by your Deposit, so with Debt fixed at 5,000, LTV reaches 95% when your Deposit falls to 5,000 divided by 0.95, about 5,263. From a 10,000 deposit, the vault would have to lose more than 47% of its value before you could be liquidated. The intermediate track covers how to weigh that risk when you choose an LTV.
+
+<PageBreak title="What a liquidation takes" />
+
+After that 10% loss your own loan, at 56% LTV, is far below 95%. Now say another borrower deposited the same 10,000 USDC and borrowed 8,600 alUSD, an LTV of 86%, and step through what the same loss does to their position.
+
+<LiquidationSequence>
+
+1. The 10% loss leaves Deposit at 9,000 against a Debt of 8,600, so LTV reads 96%, past LIQ LTV at 95%.
+2. Anyone can now liquidate the position, and 5,060 of their deposit is taken. A liquidation takes only from the deposit, so the 8,600 alUSD they borrowed, or whatever they bought with it, stays theirs. 5,054 of the 5,060 cancels 5,054 of their debt and goes to the Transmuter to pay Fixed Yield depositors. The other 6 is the liquidator's fee: 1.5% of the 400 by which their deposit exceeded their debt.
+3. Deposit reads 3,940 and Debt reads 3,546, so LTV is back at 90%. The rest of the position is still theirs, open and earning.
+
+</LiquidationSequence>
+
+5,060 of deposit sounds like a lot, but 5,054 of it paid off the same amount of their debt, so they now owe 5,054 less and keep what they borrowed. Their Deposit minus their Debt was 400 before the liquidation and is 394 after it, so the liquidation itself cost them only the 6 fee. The rest of what they lost was the 10% the vault lost.
+
+When a position has earmarked debt, a liquidation settles that first, out of the deposit, and stops there if that brings the LTV under 95%. A position is liquidated in full only in extreme cases, such as a debt that has reached the value of the whole deposit, which the intermediate track covers.
+
+The lower the LTV you borrow at, the larger the loss the vault would have to suffer before your position reached 95%. If a loss ever pushes your LTV toward 95%, repaying part of your loan with USDC on the Repay tab brings it back down, since each dollar you repay lowers your Debt. Above 90%, an alUSD repayment that would leave your LTV above 90% fails, so it has to bring you back to 90% in one go. A USDC repayment of any size goes through.

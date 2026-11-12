@@ -1,0 +1,335 @@
+/* The course picture in the track map's hero. Colors come from the shell's
+   tokens: green for a finished lesson (the Academy's colour in members, and
+   the colour of every finished lesson on the map), copper for the next one. */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.picture {
+  position: relative;
+  width: 100%;
+  max-width: 21rem;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* The dashes travel round the ring. Animated by offset, not by rotating the
+   circle, so its box never grows past the picture. */
+.drift {
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 1;
+  stroke-dasharray: 2 7;
+  animation: drift 90s linear infinite;
+}
+
+/* One track's ring and points. Pointing at another track's row in the key
+   dims it. */
+.track {
+  transition: opacity 0.2s ease;
+}
+
+.track.trackDim {
+  opacity: 0.3;
+}
+
+/* A track that is not open yet: its ring and points stay in the picture,
+   faint, and take no pointer. */
+.track.trackClosed {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.dotClosed {
+  fill: var(--a-ground);
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 1.25;
+}
+
+.ring {
+  stroke: var(--m-line-strong);
+  stroke-width: 1;
+  transition: stroke 0.2s ease;
+}
+
+.ring.ringHot {
+  stroke: rgba(255, 255, 255, 0.4);
+}
+
+.arcDone {
+  stroke: var(--m-green);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.point {
+  cursor: pointer;
+  outline: none;
+}
+
+/* A larger, invisible target than the dot itself, so a point is easy to hit. */
+.hit {
+  fill: transparent;
+}
+
+.dot {
+  stroke-width: 1.25;
+  transition: transform 0.15s ease, fill 0.15s ease, stroke 0.15s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.point.point_done .dot {
+  fill: var(--m-green);
+  stroke: var(--m-green);
+}
+
+/* The next lesson: a copper outline, not a fill. A filled point reads as a
+   lesson already passed, so fill is kept for
+   passed lessons alone, here and in each track's segments. */
+.point.point_next .dot {
+  fill: var(--a-ground);
+  stroke: var(--m-copper);
+  stroke-width: 2;
+}
+
+.point.point_ahead .dot {
+  fill: var(--a-ground);
+  stroke: rgba(255, 255, 255, 0.4);
+}
+
+.point:hover .dot,
+.point:focus-visible .dot {
+  transform: scale(1.2);
+}
+
+.point.point_ahead:hover .dot,
+.point.point_ahead:focus-visible .dot {
+  stroke: var(--m-copper);
+}
+
+.point:focus-visible .hit {
+  stroke: var(--m-copper);
+  stroke-width: 1.5;
+}
+
+/* The ring round the next lesson's point. The point itself is the size of
+   every other one. */
+.halo {
+  stroke: var(--m-copper);
+  stroke-width: 1.25;
+  opacity: 0.55;
+  animation: pulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── The pointed lesson's name ───────────────────────────── */
+/* Beside its point, on the side toward the picture's middle, so a point at
+   the picture's edge never pushes its name off the hero. */
+.tip {
+  position: absolute;
+  z-index: 3;
+  width: max-content;
+  max-width: 19rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-md);
+  background: var(--m-popover);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.tip.tipRight {
+  transform: translate(1rem, -50%);
+}
+
+.tip.tipLeft {
+  transform: translate(calc(-100% - 1rem), -50%);
+}
+
+/* ── A lesson named by its place ─────────────────────────── */
+/* The track and the lesson's number on one small line, parted by a hairline,
+   and the title under it. Used in the label above and beside the hero's
+   button. */
+.tag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.tagPlace {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.5rem;
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1.125rem;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tagRule {
+  flex: none;
+  width: 1px;
+  height: 0.6875rem;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.tagDone {
+  color: var(--m-green);
+}
+
+/* At most two lines, so a long title never grows the label or the hero. */
+.tagTitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.375rem;
+  color: var(--m-text);
+  overflow-wrap: anywhere;
+}
+
+/* The Alchemix mark at the picture's middle, in the brand's copper like the
+   lockup in the header (it was the page's light
+   grey before). The stroke is set in CSS, which beats the mark's own
+   attribute, at a weight that stays sharp at this size on a 1x screen. */
+.mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22%;
+  height: auto;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  color: var(--m-copper);
+  pointer-events: none;
+}
+
+.mark g {
+  stroke-width: 1.7px;
+}
+
+/* ── The key ─────────────────────────────────────────────── */
+/* One line under the picture, as wide as the picture: each track's name
+   beside the ring it is drawn on. A name is a link to that track in the list
+   below. The list is wider than the picture by a link's side padding, so the
+   first glyph and the last name end on the picture's own edges. */
+.key {
+  --key-pad: 0.4375rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.125rem;
+  box-sizing: border-box;
+  width: calc(100% + 2 * var(--key-pad));
+  max-width: calc(21rem + 2 * var(--key-pad));
+  margin: 0 calc(-1 * var(--key-pad));
+  padding: 0;
+  list-style: none;
+}
+
+.key li {
+  margin: 0;
+}
+
+.keyRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.375rem var(--key-pad);
+  border-radius: var(--m-r-md);
+  color: var(--m-ink);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.keyRow:hover,
+.keyRow:focus-visible {
+  background: var(--m-panel-strong);
+  color: var(--m-text);
+  text-decoration: none;
+  outline: none;
+}
+
+.keyRow:focus-visible {
+  box-shadow: 0 0 0 2px rgba(245, 192, 154, 0.3);
+}
+
+/* A closed track's name in the key: grey, and not a link. */
+.keyRow.keyClosed,
+.keyRow.keyClosed:hover {
+  background: transparent;
+  color: var(--m-muted);
+  opacity: 0.6;
+  cursor: default;
+}
+
+.glyph {
+  display: block;
+  flex: none;
+}
+
+.glyphOff {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+}
+
+.glyphOn {
+  stroke: rgba(255, 255, 255, 0.78);
+  stroke-width: 1.5;
+}
+
+.glyphOn.glyphDone {
+  stroke: var(--m-green);
+}
+
+.keyName {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+/* A whole number of 9-unit dash periods, so the loop has no visible jump. */
+@keyframes drift {
+  to {
+    stroke-dashoffset: -900;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift,
+  .halo {
+    animation: none;
+  }
+
+  .track,
+  .ring,
+  .dot {
+    transition: none;
+  }
+}

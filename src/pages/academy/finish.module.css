@@ -1,0 +1,69 @@
+/* The beginner track's finish page (2026-11-06). The blocks rise in one after
+   another on arrival, the lessons passed are listed with a green check, and
+   the Members card uses the map's "track complete" panel styles. */
+
+.in {
+  animation: rise 0.55s ease-out both;
+}
+
+.in:nth-child(2) { animation-delay: 0.08s; }
+.in:nth-child(3) { animation-delay: 0.16s; }
+.in:nth-child(4) { animation-delay: 0.24s; }
+.in:nth-child(5) { animation-delay: 0.32s; }
+.in:nth-child(6) { animation-delay: 0.4s; }
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .in {
+    animation: none;
+  }
+}
+
+/* The eight lessons, two or three to a row at full width, one on a phone. */
+.lessons {
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0.5rem 1.5rem;
+}
+
+.lesson {
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--m-text);
+}
+
+.lesson a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lesson a:hover,
+.lesson a:focus-visible {
+  text-decoration: underline;
+}
+
+.check {
+  color: var(--m-green);
+  font-weight: 600;
+}
+
+/* The Members card sits in the column at the prose width, with room above. */
+.members {
+  margin: 0 0 1.75rem;
+}

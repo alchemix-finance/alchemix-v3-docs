@@ -1,0 +1,71 @@
+import { Await, Do, PageBreak, Stat, Sub } from "../../ArticleLesson";
+import { LoopLossFigure, LoopPanel, LoopingTabFigure } from "../../ArticleLesson/moments-i9";
+import { Term } from "../../kit";
+
+Say you hold 10,000 USDC and have no need for cash. You want the 10,000 to earn more than the vault's APR alone would pay. This lesson uses the Risk-adjusted Mix USDC vault on Ethereum as its example.
+
+<Term id="yieldLooping">Yield Looping</Term> is a way to do that with a loan. Instead of spending what you borrow, you put it back into the vault, so you earn on a deposit larger than your own money. You could do it by hand, borrowing alUSD, selling it for USDC and depositing that, again and again. From the Yield Looping tab on a vault's page, you can do the whole loop in one transaction by pressing Boost Yield.
+
+The larger deposit earns more yield. In exchange, you pay the discount, the gap between a dollar and alUSD's market price, on all the alUSD the loop sells. A loss inside the vault also falls on the whole larger deposit, while your debt stays the same.
+
+<Sub>The Yield Looping tab</Sub>
+
+On the tab, Deposit Amount is the USDC you add from your wallet, and Target LTV is the highest LTV the loop borrows up to. Loop Multiplier sets how far toward that target you go, measured as your deposit after the loop divided by the deposit you put in. Slippage, the most the swap's price may move against you before the transaction fails, is set at 1%.
+
+At a 50% target, half the final deposit is borrowed, so the deposit could double if alUSD sold at a dollar. Each alUSD sells for less than a dollar, and the quote also allows for 1% slippage, so the largest multiplier is about 1.94×. <Term id="boostedApr">Boosted APR</Term> shows the vault's APR times the multiplier: the yield on your own money once the borrowed deposit earns too.
+
+<Do moment="loop-set">
+
+Type 10,000 in Deposit Amount, set Target LTV to 50%, then move Loop Multiplier to its maximum.
+
+</Do>
+
+<LoopPanel />
+
+The loop needs the extra USDC before it has borrowed anything, so when you press Boost Yield, the transaction starts with a <Term id="flashLoan">flash loan</Term> of USDC from Morpho, a loan that must be paid back inside the same transaction. It deposits that USDC into MYT together with your own, puts the MYT into your position, borrows alUSD against the larger deposit, and swaps the alUSD for USDC. That USDC pays back the flash loan, so the loop ends with a bigger deposit and a debt in alUSD. Any USDC left over is returned to your wallet.
+
+<Do moment="loop-go">
+
+Press View Transaction Details to read the steps, then press Boost Yield.
+
+</Do>
+
+<Await moment="loop-go" hint="Press View Transaction Details, then Boost Yield" />
+
+The loop deposited your 10,000 together with a 9,416.54 flash loan, so <Stat name="deposit">Deposit</Stat> reads 19,416.54. It borrowed 9,705.77 alUSD against that deposit, just under half of it, for the 50% you targeted, and that alUSD is your <Stat name="debt">Debt</Stat>. The loop sold it at 0.98 for 9,511.65 USDC, which paid back the flash loan with 95.12 to spare. The spare was returned to your practice wallet. The spare exists because the flash loan was sized as if the swap would use its whole 1% slippage allowance, and this swap used none of it.
+
+Since you had no position, the loop opened one and sent you its <Term id="positionNft">position NFT</Term>, the token that makes the position yours. With a position already open, the loop adds to it instead. The first time you do that, the app asks for a one-time approval, Approve Mint Allowance, which lets the contract running the loop borrow against your position for you.
+
+Each vault has a deposit cap, the most it accepts in deposits in total. When the vault is full, the Boost Yield button reads Deposit Cap Reached.
+
+<PageBreak title="What the loop costs and earns" />
+
+The loop has a cost up front: the discount on everything it borrowed. It sold 9,705.77 alUSD at 0.98, which brought 194.12 less than the debt it created. That is the loop's <Term id="loanCost">Loan Cost</Term>. The tab's Boosted APR leaves it out, since Boosted APR is only the vault's APR times the multiplier. Unlike Borrow & Swap, the loop's swap carries no 0.05% swap fee, so the discount is all the loop pays up front. The Visualizer beside the controls shows <Stat name="loopLoanCost">Loan Cost</Stat> in its row of figures.
+
+<LoopingTabFigure>A practice copy of the Yield Looping tab, with Boosted APR on the left and the Visualizer's row of figures beside it. Its inputs are this lesson's examples; the app fills them with the vault's live figures.</LoopingTabFigure>
+
+In return, you earn on nearly twice the deposit. Boosted APR reads 9.70%, since 19,416.54 earning the example 5% comes to about 971 a year, about 9.7% of your 10,000.
+
+The boost fades over the year, because redemptions pay the loop's debt down out of its deposit, as they would for any loan. Each month less of the deposit is borrowed money, so the yield on your own 10,000 moves back toward the vault's 5%.
+
+The Visualizer's <Stat name="loopProfit">Projected Profit</Stat> is what you gain over a year with the loop, counting the fading boost and taking off the Loan Cost and redemption fees. It reads 654.38 here, with the example 5% APR and a 50% Redemption Rate, the yearly pace at which redemptions pay loans down. The same 10,000 deposited with no loan would gain 500 at the same 5% a year. So in this example the loop comes out about 154 ahead over the year. The gap between 9.70% and 5% would suggest about 470, and the 194.12 Loan Cost and the fading boost account for the difference.
+
+<PageBreak title="What a loss takes from a loop" />
+
+A loop opens your position at about the LTV you target, 49.98% here, so the loss it can take before liquidation is the same as any 50% loan's, about 47%. What changes is how much of your own money a loss takes.
+
+With a loan you spend, the cash you borrowed is outside the vault, and a loss in the vault does not touch it. In a loop, the borrowed USDC went back into the deposit, so a loss falls on the whole deposit, borrowed part included, while your debt stays the same. All of that loss comes out of the part of the deposit that is yours.
+
+<Do moment="loop-loss">
+
+Press Apply a 10% loss.
+
+</Do>
+
+<LoopLossFigure />
+
+<Await moment="loop-loss" hint="Press Apply a 10% loss" />
+
+The same 10% loss took 1,941.65 from the looped deposit, about twice the 1,000 it took from 10,000 deposited alone. Your debt did not move, so what you own, your Deposit minus your Debt, fell by that whole 1,941.65, from about 9,711 to about 7,769, a fall of 20%. At this setting a loop nearly doubles what a loss takes from your own money, while over the example year it earned about 154 more than the same deposit alone.
+
+0.98, the 5% APR, the 50% Redemption Rate and the 10% loss are examples. The Yield Looping tab and the Visualizer use your vault's live figures.

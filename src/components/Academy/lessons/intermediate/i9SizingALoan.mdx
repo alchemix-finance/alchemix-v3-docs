@@ -1,0 +1,56 @@
+import { Await, Do, PageBreak, Sub } from "../../ArticleLesson";
+import { LtvPlanner } from "../../ArticleLesson/moments-i8";
+import { SizingPlanner } from "../../ArticleLesson/moments-i9";
+import { Term } from "../../kit";
+
+Say you hold 10,000 USDC and need about 4,900 in cash. You would rather keep your 10,000 deposited and earning than spend part of it, so you plan to borrow the cash against a deposit in the Risk-adjusted Mix USDC vault on Ethereum. Before you borrow, you need to decide what LTV to borrow at, and then how large a deposit that LTV needs for the cash you want.
+
+The LTV comes first, because it sets how large a loss inside the vault your loan can take before it can be liquidated. A loss, which happens when one of the vault's strategies loses funds, lowers your Deposit while your Debt stays the same, so your LTV after a loss is your starting LTV divided by the share of the deposit that is left. A loan at 50% that takes a 20% loss ends at 50% divided by 0.8, which is 62.5%.
+
+<Sub>From loss to LTV</Sub>
+
+To choose an LTV, start from the largest loss you want your loan to survive, and work back to the LTV that would end at 90% after it. Since a loss divides your LTV by the share of the deposit left, that starting LTV is 90% times the same share. Planning for a 40% loss, it is 90% times 0.6, or 54%. Ending at 90% leaves room below the 95% liquidation line: the deposit that is left could lose about another 5% before your loan could be liquidated.
+
+<Sub>Picking the loss</Sub>
+
+One way to pick the loss to plan for is the share of the vault held by its riskier strategies, the ones classed Moderate and Aggressive. If every one of them lost all its funds at once, the vault would lose their combined share. On Ethereum that share was 59.08% at the time of writing, and the risk caps, the most of the vault the DAO may place in riskier strategies, allow up to 70%. Withdrawals that shrink the vault can leave the share above the caps until the DAO rebalances, and a Conservative strategy can still lose funds, so neither figure is an upper limit on a loss.
+
+<Do moment="plan">
+
+Press each planned loss and read the LTV it allows.
+
+</Do>
+
+<LtvPlanner />
+
+<Await moment="plan" hint="Press all four" />
+
+The bigger the loss you plan for, the smaller the share of the deposit left after it, and so the lower the LTV that still ends at 90%. Planning for a 20% loss allows 72%, and planning for a 40% loss allows 54%. Planning to lose the whole riskier share in use today, 59.08%, allows about 36.8%, and planning for the most the caps allow in riskier strategies, 70%, allows 27%.
+
+A loan opened at 50% would end at 62.5% after a 20% loss and at about 83.3% after a 40% loss, both under the 90% limit. A loss of the whole 59.08% riskier share would take it to about 122%, where the debt is larger than the deposit. For that to happen, every Moderate and Aggressive strategy in the vault would have to lose all its funds at once.
+
+Which loss to plan for is your own judgment. A lower LTV leaves more room for a loss, and it takes a larger deposit for the same loan.
+
+<PageBreak title="Sizing the loan" />
+
+Sizing a loan means working back from the cash you need, first to the debt that brings that cash, and then to the deposit that debt needs at the LTV you chose.
+
+You borrow alUSD and sell it for USDC, so the debt is the cash you need divided by the rate you sell at. With Borrow & Swap, which borrows and sells in one step on the Borrow tab, that is its quoted rate: about 0.9795 when alUSD trades at 0.98, since the rate already takes out the 0.05% swap fee. At that rate, 5,000 alUSD of debt brings 4,897.55 USDC, about the 4,900 you need, so this example uses a loan of 5,000.
+
+Your LTV is your debt divided by your deposit, so the deposit is your debt divided by the LTV you chose. Alchemix lends up to 90% LTV, so the deposit can never be smaller than your debt divided by 0.9, about 5,556 for this loan.
+
+<Do moment="size">
+
+Under LTV you chose, pick the LTV you would borrow at. You can also change the amount in Cash you need.
+
+</Do>
+
+<SizingPlanner />
+
+<Await moment="size" hint="Pick an LTV" />
+
+The lower the LTV you choose, the larger the deposit the same loan takes, because the deposit is the debt divided by the LTV. For 5,000 of debt, that is 10,000 at 50%, about 13,587 at 36.8% and about 18,519 at 27%. Your 10,000 is enough at any LTV of 50% or higher.
+
+If you hold less than the deposit your LTV needs, the same rule works the other way: the most you can borrow is your deposit times the LTV you chose. At 36.8%, your 10,000 supports 3,680 of debt, which brings about 3,605 in cash. To get all the cash you need, you would have to find more USDC to deposit, or borrow at a higher LTV and accept less room for a loss. Otherwise you borrow less cash than you planned.
+
+0.98 and the 5,000 loan are examples. The risk caps and the share in riskier strategies were read from the Ethereum contracts on November 7, 2026, and change as the DAO allocates.

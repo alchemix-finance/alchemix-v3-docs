@@ -214,6 +214,77 @@ div[class*="announcementBar"] button[class*="closeButton"]:hover {
   opacity: 0.85;
 }
 
+/* ─── The way into the Academy ────────────────────────── */
+/* The Academy is a course with its own shell (src/components/Academy/Shell),
+   not a fifth documentation section, so its entry does not sit in the row of
+   section links. On the desktop bar it is a button on the right carrying the
+   Alchemix mark; in the phone drawer it is one more row with the same mark.
+   In both places it reads as the way somewhere else. The markup is the `html`
+   of the navbar item in docusaurus.config.js. */
+.navbar__items .academy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 0.375rem;
+  padding: 0.4375rem 0.9375rem 0.4375rem 0.6875rem;
+  border: 1px solid rgba(245, 192, 154, 0.42);
+  border-radius: 999px;
+  color: #f5c09a;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.navbar__items .academy-link:hover {
+  background-color: rgba(245, 192, 154, 0.1);
+  border-color: rgba(245, 192, 154, 0.85);
+  color: #f5c09a;
+}
+
+.academy-link__mark {
+  display: block;
+  flex-shrink: 0;
+}
+
+.menu__link.academy-link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: #f5c09a;
+}
+
+/* Between the phone breakpoint and about 1180px the bar is full: the logo,
+   four section links, the button, GitHub and the search box together run
+   within a few pixels of the width. The button is wider than the text link it
+   replaced, so the links give up a quarter rem of padding each side here and
+   the button its trailing margin, which is enough for the row to keep its
+   gaps rather than run the logo into the first link. */
+@media (min-width: 997px) and (max-width: 1180px) {
+  .navbar {
+    --ifm-navbar-item-padding-horizontal: 0.5rem;
+  }
+
+  .navbar__items .academy-link {
+    margin-right: 0;
+    padding-left: 0.5625rem;
+    padding-right: 0.8125rem;
+  }
+}
+
+/* The phone bar holds the menu button, the logo and search. Infima hides every
+   navbar item there and the drawer lists them instead; the rule above outranks
+   that for this one item, so it is hidden again here and the drawer's row is
+   the phone's way in. */
+@media (max-width: 996px) {
+  .navbar__items .academy-link {
+    display: none;
+  }
+}
+
 /* ─── Sidebar ─────────────────────────────────────────── */
 .theme-doc-sidebar-container {
   border-right: 1px solid rgba(245, 192, 154, 0.08) !important;

@@ -1,0 +1,115 @@
+import { Await, Do, PageBreak, StripAt, Sub } from "../../ArticleLesson";
+import { CapRoom, CapTooltipShot, ClaimMoment, FixedYieldPriceCard, PegCycle } from "../../ArticleLesson/moments-i7";
+import { Term } from "../../kit";
+
+Say you hold 5,000 alUSD, bought at 0.98 for 4,900 USDC, and are weighing a deposit on the Fixed Yield page on Ethereum. An alUSD deposit there vests over a set term, and once the term ends you can claim one USDC for each alUSD. What you earn depends on what alUSD costs, so the first question is why alUSD trades under a dollar at all, and what brings its price back toward a dollar.
+
+alUSD's <Term id="peg">peg</Term> is one USDC, the price it is designed to trade at. Inside Alchemix, alUSD always counts as exactly that: one alUSD cancels one USDC of debt, and a Fixed Yield claim pays one USDC for each alUSD. On exchanges, alUSD trades at whatever buyers pay, so its market price can drift from the peg.
+
+<Sub>What moves the price</Sub>
+
+Borrowing pushes the price down. The Alchemist mints new alUSD for each loan, and most borrowers sell theirs for USDC to spend. More alUSD is then for sale than buyers want at a dollar, so the price slips under the peg. The gap between a dollar and alUSD's market price is the discount, which a borrower who swaps pays as the first cost of the loan.
+
+Buying alUSD under a dollar pulls the price back up. A Fixed Yield depositor buys alUSD under a dollar to claim a full USDC for each at the end of the term. A borrower buys it under a dollar to repay debt at a full dollar, which is called <Term id="repaymentArbitrage">repayment arbitrage</Term>. Both take alUSD off the market, and with less for sale, the price moves back toward the peg.
+
+<Do moment="cycle">
+
+Press Next step to go through what moves alUSD's price away from the peg and back, one step at a time.
+
+</Do>
+
+<PegCycle />
+
+<Await moment="cycle" hint="Step through all four" />
+
+No contract fixes alUSD's market price at a dollar, which is why its peg is called a soft peg. Buyers bring the price back because inside Alchemix alUSD always counts as a full dollar, so the further its price falls under a dollar, the more each buyer gains.
+
+<PageBreak title="What sets a Fixed Yield return" />
+
+A Fixed Yield return comes from two numbers on the card, the alUSD price and the term. You pay the price for each alUSD and receive one USDC for it at the end of the term. So your return over the term is what each alUSD gains divided by what it cost. At 0.98, each alUSD gains 0.02 on 0.98 paid, about 2.04%, which the card shows as Percentage Return.
+
+The card's Projected Fixed APR scales that return to a year, so you can compare it with other yields. It multiplies the return by 365 and divides by the days left until the maturity date. Ethereum's term is about 121 days, so 2.04% becomes 2.04% times 365 divided by 121, which the card shows as 6.15%.
+
+<Do moment="price">
+
+Drag the ETH alUSD Price slider on the practice card, which sets alUSD's price on Ethereum, anywhere between 0.96 and 1.00.
+
+</Do>
+
+<FixedYieldPriceCard />
+
+<Await moment="price" hint="Move the alUSD price" />
+
+The deeper the discount, the higher your return, because each alUSD costs less and still pays one USDC at the end. With the price at 0.96, the card reads a Percentage Return of 4.16% and a Projected Fixed APR of 12.56%: each alUSD gains 0.04 on 0.96 paid, so 5,000 alUSD would cost 4,800 and pay 5,000. At 1.00, alUSD is at the peg and each alUSD costs exactly the one USDC it pays back, so the Percentage Return reads 0.00%.
+
+The length of the term changes the APR as well. The same 2.04% earned over a 28-day term, the term on Base, would be about 26.6% a year, since 28 days fits into a year about 13 times. The DAO sets the term for each asset on each chain, so two cards with the same Percentage Return can pay different amounts per year. Compare cards by their Projected Fixed APR.
+
+<Do moment="deposit">
+
+Set the price back to 0.98 and press Deposit.
+
+</Do>
+
+<Await moment="deposit" hint="Set 0.98 and press Deposit" />
+
+Your 5,000 alUSD is now deposited and vests gradually over the term, which ends on the Maturity Date, Mar 08, 2027. From that date you can claim 5,000 USDC, 100 more than the 4,900 it cost you.
+
+If you pick USDC instead of alUSD in the card's token picker, the button reads Swap & Deposit, and the app buys the alUSD at its market price and deposits it in one transaction. That swap charges a 0.05% fee, which lowers the return a little.
+
+<PageBreak title="How much alUSD a card accepts" />
+
+Each card accepts alUSD only up to its <Term id="fixedYieldCap">Deposit Cap</Term>, which is the smaller of two limits: the cap the DAO sets for that chain's Transmuter, and the alUSD that chain's Alchemist has issued. The second limit exists because each alUSD deposited needs a dollar of borrowers' debt to earmark as it vests and to redeem when it is claimed.
+
+The Deposit Cap row shows how much of that limit is in use, and the (i) tooltip beside it shows Available space, how much more alUSD the card can take. A deposit larger than Available space fails, so check it before you buy alUSD for a card.
+
+Space under the cap frees up as deposits finish vesting. Once a deposit has fully vested, anyone can call the <Term id="transmuter">Transmuter</Term>, the contract that holds Fixed Yield deposits while they vest and pays each claim, to mark it matured. From then on it no longer counts toward the cap, even before its owner claims it.
+
+<Do moment="cap">
+
+The practice card is full: its Deposit Cap row reads 2.4M of 2.4M. Open the Available space tooltip on the card, then press Mark matured deposits, which stands in for the contract call anyone can make.
+
+</Do>
+
+<CapRoom />
+
+<Await moment="cap" hint="Open Available space, then press Mark matured deposits" />
+
+Marking the vested deposits matured freed 100,000 alUSD of Available space while the cap stayed at 2.4 million, because those 100,000 alUSD had finished vesting and stopped counting toward it. Their owners can still claim whenever they like. At the time of writing, the alUSD card on Ethereum holds about 2.37 million of its 2.40 million cap, with about 27,700 alUSD of Available space.
+
+<CapTooltipShot>The Deposit Cap row on the live Ethereum alUSD card in the app, with Available space open. Its APR is the live rate on the day of the capture, so it differs from the practice card's.</CapTooltipShot>
+
+On Base, the Fixed Yield card accepts <Term id="alUSDb">alUSDb</Term>, the version of alUSD that Base's own Alchemist mints, so alUSD bridged to Base from another chain cannot be deposited there.
+
+<PageBreak title="What a claim pays" />
+
+<StripAt id="matured" set={{ walletAl: 0, fixedYield: 5000 }} />
+
+Say it is Mar 08, 2027, and your 5,000 alUSD has fully vested, as your practice wallet now shows.
+
+When you claim, the Transmuter burns your alUSD and pays you one USDC's worth of MYT for each one. MYT, the Mix-Yield Token, is a share of the vault's yield strategies, and its price rises as they earn. The Transmuter pays first from <Term id="cover">cover</Term>, the MYT it already holds from borrowers' repayments and from liquidations. It takes only the rest from borrowers through a redemption, which removes MYT from their deposits and cancels the same amount of their earmarked debt.
+
+<Sub>The Receive USDC switch</Sub>
+
+Pressing Claim opens the Claim Transmuted Assets dialog, where the Receive USDC upon claim switch is on by default. With it on, the app also withdraws the MYT from the MYT vault as USDC in the same transaction, so the vault's strategies have to pay that USDC out at once. A strategy can take time to withdraw from, or a lending market can be fully lent out. If either keeps the USDC from being paid out, the whole claim fails and your Fixed Yield position stays as it was.
+
+You can try again later, or turn the switch off and claim the MYT itself, which needs nothing from the strategies. MYT keeps earning in your wallet, and you can withdraw it as USDC later.
+
+<Do moment="claim">
+
+Press Claim on your Fixed Yield position, then press Claim in the dialog, with Receive USDC upon claim on or off.
+
+</Do>
+
+<ClaimMoment />
+
+<Await moment="claim" hint="Press Claim" />
+
+Your claim paid one USDC's worth for each of your 5,000 alUSD, so the alUSD you bought for 4,900 returned 5,000, a gain of 100. If you left the switch on, the payout arrived as 5,000 USDC. If you turned it off, it arrived as 4,000 MYT, because at an example MYT price of 1.25 USDC, 4,000 MYT is worth 5,000 USDC. In that case your Fixed Yield position shows the payout as +4,000.00 MYT, and your practice wallet lists the same 4,000 under the name the app gives this vault's MYT, mixUSDC.
+
+<Sub>When a claim pays less</Sub>
+
+Rarely, a claim pays less than one USDC for each alUSD. If cover and the vault's earmarked debt together fall short of a claim, the Transmuter pays what there is and returns the rest to you as alUSD, which still repays a dollar of debt inside Alchemix. The Receive Transmuted figure in the claim dialog shows that smaller amount before you press Claim.
+
+A claim also pays less while a vault is in <Term id="badDebt">bad debt</Term>, meaning the alUSD it has issued is worth more than the collateral backing its loans plus the MYT its Transmuter holds. While that lasts, every claim pays the same reduced share.
+
+The 0.98 price and the cap figures on the practice card are examples. In the app, each Fixed Yield card shows the live alUSD price, term and Available space for its asset and chain.

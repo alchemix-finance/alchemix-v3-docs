@@ -1,0 +1,550 @@
+/* Intermediate lesson 5 (script I5): the rate's what-if controls, the
+   two-case chart, the Redemption Rate with its tooltip, and the practice
+   Visualizer. Colors come from AppMock's `.frame` variables where the figure
+   sits inside one. */
+
+/* ── Page 1: three controls and the rate ── */
+
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.5fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.controlHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.controlHead span {
+  opacity: 0.6;
+}
+
+.controlHead b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.segs {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.seg {
+  flex: 1 1 0;
+  appearance: none;
+  min-height: 2rem;
+  padding: 0.25rem 0.25rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.seg:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.segOn {
+  border-color: var(--app-alchemix);
+  color: var(--app-fg);
+  background: rgba(245, 192, 154, 0.1);
+}
+
+/* The chip the text asks for, before it is picked. */
+.segTarget {
+  border-style: dashed;
+  border-color: var(--app-alchemix);
+  color: var(--app-fg);
+}
+
+.seg:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+.rateBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--app-alchemix);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.rateLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  opacity: 0.75;
+}
+
+.rateValue {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.calc {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.calc span {
+  border-radius: 0.25rem;
+  padding: 0 0.125rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.calc .part {
+  color: var(--app-fg);
+}
+
+/* One term of the sum with its sign ("÷ 240,000"): the line breaks between
+   terms, never inside one. */
+.calc .term {
+  padding: 0;
+  white-space: nowrap;
+}
+
+.calc .partLit {
+  background: rgba(245, 192, 154, 0.22);
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+@media (max-width: 1000px) {
+  .inputs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .rateBox {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .inputs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Charts (pages 2, 5, 6) ── */
+
+.chart {
+  position: relative;
+  outline: none;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.chart:focus-visible {
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 2px var(--app-alchemix);
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.axis {
+  fill: var(--app-muted);
+  font-size: 11px;
+  font-family: inherit;
+}
+
+.grid {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+}
+
+.endLabel {
+  fill: var(--app-fg);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  /* A halo in the chart's ground, so a label stays legible over a line. */
+  paint-order: stroke;
+  stroke: oklch(0.21 0.008 240);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.shadeLabel {
+  fill: var(--app-muted);
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.guide {
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 1;
+}
+
+.tip {
+  position: absolute;
+  z-index: 2;
+  min-width: 11rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: oklch(0.22 0.015 236);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.tipHead {
+  margin-bottom: 0.125rem;
+  font-weight: 600;
+}
+
+.tip > div:not(.tipHead) {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.tip i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.tip b {
+  margin-left: auto;
+  padding-left: 1rem;
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chipLabel {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.key i {
+  display: inline-block;
+  width: 1.25rem;
+  height: 0;
+  border-top: 2.5px solid currentColor;
+}
+
+.key i.dashed {
+  border-top-style: dashed;
+}
+
+.readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.readout b {
+  font-weight: 600;
+}
+
+.readoutOn {
+  border-color: var(--app-alchemix);
+}
+
+/* ── Page 3: the rate under cover ── */
+
+.coverGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 0.75rem;
+  align-items: start;
+}
+
+/* The gap to the tooltip is the tooltip's own top margin, so a closed
+   tooltip adds nothing under the tile. */
+.rateTile {
+  display: flex;
+  flex-direction: column;
+}
+
+.rateRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.future {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.info {
+  appearance: none;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: help;
+}
+
+.info:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* The (i) tooltip, drawn open in the flow under the stat. Its row has no
+   height until it opens and eases to the tooltip's own height when it does,
+   so the figure never grows in one frame. A fixed room for it was too small
+   on a phone, where the text runs to more lines. The ease is long and even
+   enough that no frame moves the parts under it far. */
+.tipRoom {
+  display: grid;
+  grid-template-rows: 0fr;
+}
+
+.tipRoomOpen {
+  grid-template-rows: 1fr;
+}
+
+.tipEase {
+  transition: grid-template-rows 0.6s ease-in-out;
+}
+
+.tipClip {
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.tipEase .tipClip {
+  transition: visibility 0s linear 0.6s;
+}
+
+.tipRoomOpen .tipClip {
+  visibility: visible;
+  transition: none;
+}
+
+.tooltip {
+  margin-top: 0.375rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: oklch(0.22 0.015 236);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+/* Named from the tile's column, so these outrank the lesson's body
+   paragraph (`.prose p`), which would set the text at reading size. */
+.rateTile .tooltip p {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: inherit;
+}
+
+.rateTile .tooltip p:last-child {
+  margin: 0;
+}
+
+.tooltipOpen {
+  border-color: var(--app-alchemix);
+  animation: tipIn 0.4s ease-out both;
+}
+
+@keyframes tipIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .coverGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Page 5: the Visualizer ── */
+
+.vizInputs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.vizField {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.375rem;
+}
+
+.vizLabel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+  white-space: nowrap;
+}
+
+.vizInput {
+  width: 100%;
+  box-sizing: border-box;
+  height: 3rem;
+  padding: 0 1rem;
+  border: 1px solid var(--app-input);
+  border-radius: 0.75rem;
+  background: var(--app-field);
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 1rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.vizInput:read-only {
+  color: var(--app-muted);
+  cursor: default;
+}
+
+.vizInput:focus {
+  outline: none;
+  border-color: var(--app-alchemix);
+}
+
+.vizInputLit {
+  border-color: var(--app-alchemix);
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+.vizChart {
+  padding: 0.75rem 0.75rem 0.5rem;
+  border-radius: 0.75rem;
+  background: oklch(0.21 0.008 240);
+}
+
+.pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+}
+
+.pill i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+@media (max-width: 760px) {
+  .vizInputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* The Visualizer's head row: the info tabs and the Practice tag, laid out as
+   the app frame's own head row is. */
+.vizTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* On a phone the six tabs and the Practice tag do not fit one line, and the
+   tabs wrapped around the tag. The tag takes a line of its own above them,
+   at the right as on every other figure, and the tabs wrap under it in two
+   rows, as the vault's action tabs do. */
+@media (max-width: 640px) {
+  .vizTop {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .vizTop > span {
+    align-self: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tipEase,
+  .tipEase .tipClip {
+    transition: none;
+  }
+}

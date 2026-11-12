@@ -1,0 +1,123 @@
+import { Await, Do, PageBreak, Stat, Sub } from "../../ArticleLesson";
+import { RateInputsFigure, RateCurveFigure, RateCoverFigure, VisualizerFigure, RedemptionsTabShot } from "../../ArticleLesson/moments-i5";
+import { Term } from "../../kit";
+
+Say you have 5,000 alUSD borrowed against 10,000 USDC in the Risk-adjusted Mix USDC vault on Ethereum, and want to know how fast <Term id="redemption">redemptions</Term> will pay it down. A redemption removes MYT from your deposit and cancels the same amount of your debt. The <Term id="redemptionRate">Redemption Rate</Term> stat on the vault's page projects that pace for the whole vault, as a yearly rate. The higher it reads, the faster your Debt and your Deposit fall together.
+
+<Sub>Working out the rate</Sub>
+
+The app works the rate out from the Transmuter's schedule of Fixed Yield deposits, because for each alUSD that vests, the Alchemist earmarks a dollar of borrowers' debt for redemption. It takes the alUSD set to vest over the next 7 days, multiplies it by 52 to make a year, and divides that by <Term id="totalDebt">Total Debt</Term>, everything the vault's borrowers owe together.
+
+In the practice vault, Fixed Yield deposits have been arriving at about 5,000 alUSD a month, each on a 4-month term, and depositors claim when their deposits mature. So the Transmuter holds four months of deposits, 20,000 alUSD. Borrowers in the vault owe 120,000. Each of the four open deposits vests 1,250 a month, so together about 5,000 vests a month, about 1,154 a week. 52 weeks of that is 60,000, and 60,000 is 50% of 120,000, so the practice vault's Redemption Rate reads 50%.
+
+<Sub>What moves the rate</Sub>
+
+The rate moves whenever one of its parts moves. The <Term id="queue">queue</Term>, the alUSD in open Fixed Yield deposits, sets how much is waiting to vest. The term those deposits vest over sets how fast it vests. Total Debt is what a year of that vesting is divided by, so the more borrowers owe in all, the smaller the share of each loan a week's vesting earmarks.
+
+<Do moment="queue">
+
+The controls below set the practice vault's queue, term and Total Debt, and its Redemption Rate updates as you move them. Move Queue to 40,000.
+
+</Do>
+
+<RateInputsFigure />
+
+Twice the alUSD vesting over the same term means twice as much vests each week, so the rate doubled to 100%. If the same amount kept vesting each week for a year, it would add up to as much as borrowers owe today.
+
+<Do moment="term">
+
+Now pick a 2-month term.
+
+</Do>
+
+<Await moment="term" hint="Pick a 2-month term" />
+
+The same 40,000 now vests in half the time, so each week's vesting doubled again, to about 4,615, and the rate read 200%. At that weekly amount, six months of vesting would add up to everything borrowers owe today.
+
+<Do moment="debt">
+
+Now move Total Debt to 240,000.
+
+</Do>
+
+<Await moment="debt" hint="Move Total Debt to 240,000" />
+
+The same redemptions are now spread over twice the debt, so the rate halved to 100%.
+
+Each Fixed Yield deposit keeps the term it was made with. If the DAO shortens the term for new deposits, the rate rises only as those new deposits replace older ones.
+
+<PageBreak title="When a rate holds" />
+
+The Redemption Rate is worked out from this week's vesting and today's Total Debt, so it describes today's pace. How much of your loan redemptions pay off over the coming year depends on whether new Fixed Yield deposits arrive and whether other borrowers borrow again.
+
+- **New deposits keep the queue the same size, and other borrowers borrow again as redemptions shrink their loans.** The week's vesting and Total Debt both stay where they are, so the rate holds. The share of every borrower's debt that is earmarked each week stays the same too, and it is taken from a debt of yours that keeps getting smaller. So each redemption is smaller than the last, and a 50% rate leaves about 3,031 of your 5,000 after a year. That is slightly more than the 3,000 left in the beginner track, where each monthly redemption took its share of the debt as it stood at the start of the month. Here your debt comes down a little at a time, so each small piece is a share of a debt already reduced by the pieces before it.
+- **New deposits keep the queue the same size, but no one borrows again.** The same amount vests each week while Total Debt shrinks. Every borrower's debt falls in proportion, so your share of the vault's debt stays the same, and about the same amount of your debt is redeemed each day. A rate that reads 50% today then pays off half your 5,000 in a year, while the rate itself climbs as Total Debt falls.
+- **No new deposits arrive.** The open deposits finish vesting within one term, so earmarking stops, and redemptions stop once those deposits are claimed.
+
+<Do moment="rate-100">
+
+The chart draws the first two cases for your 5,000 at 50%. Pick 100%.
+
+</Do>
+
+<RateCurveFigure />
+
+At 100%, 1,836 is left after a year if the rate holds, since each redemption takes its share of a smaller debt. If the same amount is redeemed each day, the whole 5,000 is paid off by the end of the year.
+
+So the stat tells you today's pace. While new deposits keep the queue the same size and Total Debt does not grow, your loan's payoff over a year falls between those two lines. It is slower if Total Debt grows, and it slows or stops if deposits stop.
+
+<PageBreak title="When the rate reads 0%" />
+
+Say another borrower repays 6,000 of debt that was not earmarked, with USDC. That adds 6,000 of <Term id="cover">cover</Term>, the MYT the Transmuter holds from such repayments and from liquidations, and lowers Total Debt to 114,000. While cover lasts, newly vested alUSD is settled from it and no debt is earmarked.
+
+<Do moment="cover">
+
+Press A borrower repays 6,000.
+
+</Do>
+
+<RateCoverFigure />
+
+The stat reads 0.00% because the 6,000 of cover will settle the next 6,000 that vests before any debt is earmarked. At about 1,154 a week, that takes about 36 days, which the (i) tooltip beside the stat shows. For those days no new debt of yours is earmarked.
+
+The future rate, the tooltip's "future RR", is the one that applies once the cover runs out, and it reads 52.63%. That is a little above the 50% before, because the repayment also lowered Total Debt to 114,000, and 60,000 divided by 114,000 is 52.63%.
+
+<PageBreak title="The Redemptions tab" />
+
+The Redemptions tab on a vault's page shows the alUSD in Fixed Yield deposits due to mature on each day over the next three months, so you can see redemptions coming before they reach your debt. Each bar is one day's Maturing amount, and the line is Cumulative, the total maturing up to that day.
+
+<RedemptionsTabShot>The Redemptions tab's Schedule, with one day's Maturing, Cumulative and Share of debt.</RedemptionsTabShot>
+
+Share of debt compares that total with everything the vault's borrowers owe. Every borrower's debt is earmarked by the same share, so the 32.6% in the capture means about 32.6% of your own debt will have been earmarked by that day, less whatever cover pays.
+
+<PageBreak title="Project your loan in the Visualizer" />
+
+The Visualizer tab on a vault's page projects your own Deposit and Debt over the months ahead. It works in two stretches, and the chart shades each one.
+
+The first stretch runs as far as the vault's schedule of Fixed Yield deposits reaches, and the chart shades it "on chain data". For each deposit in the schedule, the Visualizer counts the whole deposit as redeemed on its maturity date, pays what it can from cover, and takes your share of the rest off both your Deposit and your Debt.
+
+The second stretch runs past the last maturity date, and the chart shades it "simulated data". With no schedule left to read, the Visualizer uses the rate in its Redemption (%) field, which starts at the vault's future rate and takes any number you type. Its Debt line there is the middle of the two cases from earlier in this lesson: the rate holding, and the same amount redeemed each day.
+
+<Sub>The other fields</Sub>
+
+The other fields set the rest of the projection. Yield APY (%) is the vault's APR, which grows your Deposit. alUSD:USDC is the price the Visualizer uses for your Loan Cost. External APY (%) is for modeling what your borrowed money earns outside Alchemix, which the app's chart adds to its Net Value line.
+
+<VisualizerFigure />
+
+In the practice vault, one 5,000 deposit matures in each of the next four months. The Visualizer works out your share of each as your Debt divided by your Debt plus Total Debt, as if your loan were being added to the vault. That is 5,000 out of 125,000, so each deposit takes 200 off your Debt, a little under the 208 the Alchemist would earmark for a loan already counted in Total Debt. The on-chain stretch ends with your Debt at about 4,200.
+
+<Do moment="rate-typed">
+
+With 50% in the Redemption (%) field, eight more months from 4,200 would leave about 3,010 if the rate held, and about 2,800 if the same amount were redeemed each day. Debt at 12 months reads 2,906.02, midway between them.
+
+Type 100 in the Redemption (%) field.
+
+</Do>
+
+<Await moment="rate-typed" hint="Type 100 in Redemption (%)" />
+
+At 100%, Debt at 12 months reads 1,780.09, midway between the two cases: about 2,160 if the rate held, and about 1,400 if the same amount were redeemed each day. At 50% it read 2,906.02, midway between about 3,010 and about 2,800.
+
+In the app you see only that middle line, so a high rate in the field shows a faster payoff than the same rate would give if it held.
+
+The deposit pattern, the 120,000 owed and the rates here are examples. Each vault's page shows its own Redemption Rate, which moves as deposits arrive on the Fixed Yield page and loans change.

@@ -1,0 +1,43 @@
+import { Await, Do, PageBreak, Stat, Sub } from "../ArticleLesson";
+import { BorrowMoment, StatsFigure, VaultRowFigure } from "../ArticleLesson/moments-3-8";
+import { Term } from "../kit";
+
+Say you want 5,000 dollars to spend without withdrawing your deposit. Alchemix lets you borrow up to 90% of what your deposit is worth, so when you borrow, your deposit is worth more than the loan. Over time, Alchemix v3's redemption system pays the loan down out of your deposit.
+
+You borrow in <Term id="alusd">alUSD</Term>, the synthetic debt token Alchemix mints when you borrow against USDC. Inside Alchemix each alUSD counts as exactly one USDC of what you owe. In your wallet it is a token like any other, which you can hold, swap or use wherever it is accepted.
+
+How much you can borrow is set by your loan to value, <Term id="ltv">LTV</Term>: your Debt divided by your Deposit. Alchemix lends up to 90% LTV, so against a 10,000 deposit you can borrow up to 9,000.
+
+<Sub>The position stats</Sub>
+
+The position stats across the top of the vault page show the current numbers of your loan. <Stat name="debt">Debt</Stat> is the alUSD you owe. <Stat name="ltv">LTV</Stat> is your Debt divided by your Deposit at this moment. <Term id="borrowable">Borrowable</Term> is how much more alUSD you can borrow before your LTV reaches 90%, the MAX LTV marker on the health bar under the stats. <Stat name="health">Health Factor</Stat> is 90% divided by your LTV, so it rises as your LTV falls, and with nothing borrowed it has no limit. A Health Factor of 1.00 means your LTV is at the 90% limit, and liquidation can start once it falls to about 0.95, which is 90% divided by 95%. The Earmarked and Redemption Rate stats come later in this track.
+
+<StatsFigure />
+
+<PageBreak title="Borrow 5,000" />
+
+<Do moment="max-borrow">
+
+On the Borrow tab, press MAX, which fills the field with the most this deposit can borrow.
+
+</Do>
+
+<BorrowMoment />
+
+<Do moment="borrow">
+
+The alUSD field filled with 9,000, the most you can borrow against a 10,000 deposit, and the stats preview what that loan would do: LTV 90% and Borrowable 0. Borrowing 5,000 instead leaves your LTV well below that limit. Clear the field, type 5,000 and press Borrow.
+
+</Do>
+
+<Await moment="borrow" hint="Type 5,000 and press Borrow" />
+
+The vault minted 5,000 alUSD, created new for your loan, and sent it to your practice wallet. Your 10,000 stays in the vault and keeps earning, because borrowing adds debt against your deposit without moving it.
+
+<Stat name="debt">Debt</Stat> reads 5,000, one USDC of debt for each alUSD you received. <Stat name="ltv">LTV</Stat> reads 50%, since you owe 5,000 against a deposit worth 10,000. <Stat name="borrowable">Borrowable</Stat> reads 4,000: the 90% limit on a 10,000 deposit is 9,000, and your loan uses 5,000 of it. <Stat name="health">Health Factor</Stat> reads 1.80, which is 90% divided by your 50% LTV.
+
+At 90% LTV the vault stops lending and stops withdrawals. That limit sits below LIQ LTV at 95%, the LTV at which part of a loan can be liquidated. A 50% LTV leaves plenty of room below both.
+
+The Dashboard lists your deposit and loan together as one position under Open Vault Positions, and the position's card shows Deposit and Debt in tokens, the same 10,000 USDC and 5,000 alUSD as the vault page. The bar above the card gives totals in dollars and prices alUSD at its market price, 0.97 USDC in this course, so Total Debt reads $4.85K for your 5,000 alUSD and Available to Borrow reads $3.88K for your 4,000 Borrowable. Net Value, your Total Deposit minus your Total Debt, reads $5.15K. Inside Alchemix your debt is still 5,000, and the next lesson covers why alUSD trades below a dollar.
+
+<VaultRowFigure />

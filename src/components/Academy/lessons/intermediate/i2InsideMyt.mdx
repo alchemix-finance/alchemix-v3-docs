@@ -1,0 +1,140 @@
+import { Await, Do, PageBreak, Stat } from "../../ArticleLesson";
+import { CapsFigure, FeeToggleFigure, LossShareFigure, PriceSourceFigure, RiskInfoShot, RiskLevelFigure, VaultHoldingsFigure } from "../../ArticleLesson/moments-i2";
+import { Term } from "../../kit";
+
+Say you have 10,000 USDC deposited in the Risk-adjusted Mix USDC vault on Ethereum, with 5,000 alUSD borrowed against it.
+
+The Alchemist holds your deposit as <Term id="myt">MYT</Term>, the Mix-Yield Token, a share of the MYT vault. The MYT vault spreads its USDC across several <Term id="strategy">strategies</Term>, each a position the vault holds in another protocol, such as a lending market or another yield vault. MYT's price is the value of everything the strategies hold divided by the MYT in existence, so everything your deposit earns or loses comes from them.
+
+The Alchemix DAO decides which strategies your deposit is in and how much each holds. On a vault's page, the Info tab lists the strategies the vault deposits into, each with its APR and its Allocation, the share of the vault's deposits it holds. The vault's APR is the average of those APRs weighted by Allocation, so on the practice Info tab, 40% at 4.50%, 40% at 5.50% and 20% at 5.00% average to 5.00%.
+
+<VaultHoldingsFigure />
+
+<PageBreak title="The performance fee" />
+
+The APR the app shows, for the vault and for each strategy on the Info tab, is what the strategies earn after the vault's <Term id="performanceFee">performance fee</Term>. That fee is the share of the strategies' yield the protocol takes before the rest raises the MYT price. It is taken from yield only, never from your deposit, so a vault that earns nothing pays nothing. The DAO sets it for each vault, at 15% on this one, and the app does not show it as a separate figure.
+
+Each practice figure in this lesson is a what-if on the vault, so the controls you press in them leave your practice position at the top of the page unchanged.
+
+<Do moment="before-fee">
+
+Press Before fee.
+
+</Do>
+
+<FeeToggleFigure />
+
+Before the fee, the strategies earn 5.88% across the vault. The protocol takes 15% of that, about 0.88 points, and the other 5.00% raises the MYT price, which is the APR the app shows.
+
+<PageBreak title="How a strategy gets its Risk Level" />
+
+Before a strategy joins a vault, the DAO gives it a <Term id="riskLevel">Risk Level</Term>: Conservative, Moderate or Aggressive. The DAO can move only a capped share of the vault into Moderate and Aggressive strategies, so the level limits how much of your deposit the DAO can place in a riskier strategy. The DAO bases the level on four inputs.
+
+- **Entry and exit.** Moving funds through the strategy's own contract is the safest. A swap on a DEX is riskier, since a large trade can move the price against the vault.
+- **Pricing.** A price from the strategy's own accounting is the safest. A market price feed is riskier, since the market price can fall while the strategy's backing is intact.
+- **Withdrawal delay.** A strategy the vault can withdraw from at any time is the safest. One where a withdrawal can take weeks is riskier.
+- **Other factors.** The DAO also weighs the strategy's age, the team behind it and any unusual mechanism.
+
+A strategy is Conservative only if the first three inputs are at their safest and no other factor applies. Any one riskier input makes it Moderate, and an added factor, such as being new, can raise a Moderate strategy to Aggressive.
+
+<Do moment="delay">
+
+The practice strategy starts with every input at its safest. Set Withdrawal delay to Can take weeks.
+
+</Do>
+
+<RiskLevelFigure />
+
+A long withdrawal delay made the strategy Moderate on its own. A riskier setting on either of the first two inputs does the same.
+
+<Do moment="new">
+
+Now set Other factors to New strategy.
+
+</Do>
+
+<Await moment="new" hint="Set Other factors to New strategy" />
+
+Being new as well lets the DAO raise the strategy to Aggressive. The raise is a decision the DAO makes, so the strategy stays Moderate until the DAO makes it.
+
+The withdrawal delay matters to you directly. A USDC withdrawal makes the MYT vault pull USDC out of its strategies, so if a strategy has a withdrawal delay or a lending market is fully lent out, a large USDC withdrawal can fail. Withdrawing as mixUSDC avoids that, since the MYT comes straight out of the Alchemist.
+
+At the time of writing, the Risk-adjusted Mix USDC vault on Ethereum holds about 41% in one Conservative strategy and about 59% across two Moderate ones.
+
+<RiskInfoShot>The Info tab for Risk-adjusted Mix USDC on Ethereum, with each strategy's Risk Level, APR and Allocation.</RiskInfoShot>
+
+<PageBreak title="How a strategy is priced" />
+
+MYT's price is built from what each strategy reports it holds. Each strategy holds a token from the protocol it deposits into, such as a share of another vault or a staked-ETH token, and that token can also trade on exchanges.
+
+A strategy priced from its own accounting is valued by the assets backing its token, so if the token trades lower on an exchange while the backing is intact, MYT holds its price. A strategy priced at market uses an outside price feed instead, so a fall in its token's market price lowers MYT and raises the LTV of every position in the vault, even with no funds lost.
+
+<Do moment="price-drop">
+
+Below, Strategy B is priced from its own accounting on the left and at market on the right. Press Drop B's market price 20%.
+
+</Do>
+
+<PriceSourceFigure />
+
+On the left, where B is priced from its own accounting, nothing moved. B's backing is the same, so MYT, your <Stat name="deposit" scope="accounting">Deposit</Stat> of 10,000 and your <Stat name="ltv" scope="accounting">LTV</Stat> of 50% held.
+
+On the right, B holds 40% of the vault and its price fell 20%, so MYT fell 8%, which is 40% of 20%. <Stat name="deposit" scope="market">Deposit</Stat> reads 9,200, and <Stat name="ltv" scope="market">LTV</Stat> reads 54.34%: your 5,000 of debt divided by 9,200, cut to two decimals as the app prints it.
+
+Today every strategy in the USDC vaults is priced from its own accounting, so on a USDC vault a loss of funds in a strategy is the only thing that can raise your LTV while you take no action. The market-priced strategies today are staked-ETH strategies in the ETH vaults, so on an ETH vault a dip in a staked-ETH token's market price can raise your LTV as well.
+
+<PageBreak title="What a loss takes from you" />
+
+A loss is a different event from a price dip. In a loss, the strategy itself loses funds, which can happen when a protocol it deposits into is compromised or takes losses of its own. The strategy then reports less backing, however it is priced. MYT's price falls by the strategy's share of the vault times the share of its funds it lost, so every MYT holder loses the same share.
+
+<Do moment="loss-half">
+
+Strategy C holds 20% of the practice vault. Press C loses half its funds.
+
+</Do>
+
+<LossShareFigure />
+
+C held 20% of the vault and lost half its funds, so MYT fell 10%, which is 20% times 50%. Your <Stat name="deposit" figure>Deposit</Stat> fell 10% to 9,000 while your <Stat name="debt" figure>Debt</Stat> stayed at 5,000, so <Stat name="ltv" figure>LTV</Stat> rose to 55.55%, which is 5,000 divided by 9,000.
+
+The Allocation column moved as well. With half of C gone, the vault is 90% of its old size, so A and B, which kept their funds, each hold 40 of that 90, or 44.4%, and C holds 10 of 90, or 11.1%.
+
+<Do moment="loss-all">
+
+Drag C's loss to 100%.
+
+</Do>
+
+<Await moment="loss-all" hint="Drag C's loss to 100%" />
+
+Losing all of C, a fifth of the vault, takes your Deposit to 8,000 and your LTV to 62.50%, still well under the 90% limit. The more of the vault a strategy holds, the more its loss takes from you, and that share is what the risk caps limit.
+
+<PageBreak title="What the risk caps limit" />
+
+Moderate and Aggressive strategies each have a <Term id="cap">risk cap</Term>, the largest share of the vault the DAO can move into strategies of that level. On Ethereum, Moderate strategies can hold up to 60% of the vault and Aggressive ones up to 10%.
+
+<Do moment="allocate">
+
+The practice vault holds 60% in its Moderate strategies, B and C, which is the Ethereum cap. Press Move 5% into C.
+
+</Do>
+
+<CapsFigure />
+
+The allocation failed, because moving 5% into C would have put 65% of the vault in Moderate strategies, over the 60% cap.
+
+<Do moment="withdraw">
+
+Now say depositors withdraw a fifth of the vault, all paid out of Strategy A. Press Depositors withdraw 20% of the vault.
+
+</Do>
+
+<Await moment="withdraw" hint="Press Depositors withdraw 20% of the vault" />
+
+The vault shrank to 80% of its old size while B and C kept their 60, so they now hold 60 of 80, or 75%, above the 60% cap. The cap did not block this, because the vault checks a cap only when the DAO allocates funds to a strategy. B and C keep that 75% until the DAO rebalances by moving funds out of them.
+
+This has happened on a live vault: as funds left Arbitrum's USDC vault, its Moderate strategies came to hold about 87% of it, against a Moderate cap there of 40%.
+
+So a cap is the most the DAO can place in riskier strategies when it allocates, and the Info tab's Allocation column shows what each strategy holds today. Conservative strategies can lose funds too, and no cap limits their share. Later in this track, you will use the share held by riskier strategies to choose an LTV.
+
+Strategies A, B and C, their APRs and the 20% price dip are examples.

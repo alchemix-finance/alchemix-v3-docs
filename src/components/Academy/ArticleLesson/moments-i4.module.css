@@ -1,0 +1,523 @@
+/* Intermediate lessons 4 to 6 (scripts I4, I5, I6): the parts their practice
+   figures share, drawn inside the app's own frame (AppMock's `.frame`, whose
+   color variables these rules read). moments-i5 and moments-i6 import this
+   file too. */
+
+/* A figure that carries a chip flying from one part to another. */
+.board {
+  position: relative;
+}
+
+/* A board stacks three or four panels, so it runs tighter than a single
+   vault: at full size it fits the room between the pinned header and footer
+   of a 1440 x 900 window. Each rule names the board
+   first, so it outranks the base class it trims. */
+.board > section {
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.board .panel {
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+}
+
+.board [data-tile] {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.board .table th,
+.board .table td {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+/* The frame's head: a name, an optional line under it, the date and the tag. */
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.headText {
+  min-width: 0;
+}
+
+.headName {
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.headSub {
+  margin-top: 0.125rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--app-muted);
+}
+
+.headRight {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* One part of a figure: the Transmuter, the vault, your position. */
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+}
+
+.panelHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.panelName {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.panelNote {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+/* Label-over-value figures in a row (vested this month, MYT held, Cover). */
+.figs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.fig {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 9.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.figLabel {
+  font-size: 0.8125rem;
+  opacity: 0.6;
+}
+
+.figValue {
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.figNote {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 1.125rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+/* Lit: the copper outline a lit tile has. */
+.on {
+  border-color: var(--app-alchemix);
+}
+
+/* Pointed at from the text, or held lit for a moment after a change. */
+.pointed {
+  border-color: var(--app-alchemix);
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 16px rgba(245, 192, 154, 0.4);
+}
+
+/* The vault's borrowers. */
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The docs theme stripes and borders every table; this one is the app's. */
+.table tr,
+.table thead,
+.table tr:nth-child(2n) {
+  background: transparent;
+  border: 0;
+}
+
+.table th,
+.table td {
+  padding: 0.4rem 0.625rem;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+}
+
+.table th {
+  font-weight: 500;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.table .colOn {
+  background: rgba(245, 192, 154, 0.07);
+  color: var(--app-fg);
+}
+
+.table th.colOn {
+  color: var(--app-alchemix);
+}
+
+.rowYou td {
+  font-weight: 600;
+}
+
+.cellChips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* The chips a change leaves under a row of tiles, with their room kept. */
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 1.375rem;
+}
+
+/* A part held in place before it shows, so nothing moves when it does. */
+.held {
+  visibility: hidden;
+}
+
+.appear {
+  animation: appear 0.6s ease-out both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeOut {
+  transition: opacity 0.8s ease;
+  opacity: 0.25;
+}
+
+/* A figure's value as it would have been: faint, beside the real one. */
+.ghost {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--app-muted);
+  opacity: 0.75;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 0 0.375rem;
+}
+
+/* The chip that travels between two parts of a figure. */
+.flyer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: oklch(0.36 0.04 60);
+  border: 1px solid var(--app-alchemix);
+  color: var(--app-fg);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform 1s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+/* A time slider under a figure, in the app's colors. */
+.sliderRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.sliderHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.sliderHead b {
+  font-weight: 600;
+  color: var(--app-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.slider {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--app-alchemix);
+  cursor: pointer;
+}
+
+.slider:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.sliderLit {
+  outline: 1px solid var(--app-alchemix);
+  outline-offset: 6px;
+  border-radius: 999px;
+}
+
+.ticks {
+  position: relative;
+  height: 1.125rem;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.ticks span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.ticks span:first-child {
+  transform: none;
+}
+
+.ticks span:last-child {
+  transform: translateX(-100%);
+}
+
+/* The vested bar: thin slices, a block's worth each. */
+.vestTrack {
+  position: relative;
+  height: 1.75rem;
+  border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.vestFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: repeating-linear-gradient(90deg, var(--app-earmark) 0 3px, transparent 3px 4px);
+}
+
+.vestMarks span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.readout b {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.readout.on,
+.boxOn {
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+.readout.on {
+  padding: 0.25rem 0.5rem;
+  margin: -0.25rem -0.5rem;
+}
+
+/* The depositor's Fixed Yield position on the Transmuter panel. */
+.position {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--app-outline);
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.nft i {
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(135deg, var(--app-alchemix), var(--app-deposit));
+}
+
+.positionAction {
+  margin-left: auto;
+  min-width: 9rem;
+}
+
+.burned {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: oklch(0.704 0.191 22.216);
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--app-alchemix);
+}
+
+/* Room for the control that starts a sequence and the slider that follows it,
+   so swapping one for the other moves nothing. */
+.slot {
+  min-height: 4.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slot > div {
+  margin: 0;
+}
+
+/* A heading for a what-if figure, where the vault's name sits on the app's. */
+.whatIf {
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 640px) {
+  .fig {
+    min-width: 0;
+    flex: 1 1 8rem;
+  }
+  .figValue {
+    white-space: normal;
+  }
+  .table {
+    table-layout: fixed;
+    font-size: 0.8125rem;
+  }
+  .table th:first-child {
+    width: 42%;
+  }
+  .table td:not(:first-child) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .cellChips > * {
+    white-space: normal;
+  }
+  .table th,
+  .table td {
+    padding: 0.375rem 0.25rem;
+  }
+  /* The borrower's name wraps and its chip takes the line under it, so the
+     three columns fit a phone without scrolling sideways. */
+  .table td:first-child {
+    white-space: normal;
+  }
+  .cellChips {
+    display: flex;
+    margin: 0.25rem 0 0;
+  }
+  .table .ghost {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 0.25rem auto !important;
+    white-space: normal;
+    text-align: right;
+    border-radius: 0.5rem;
+  }
+  .positionAction {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appear {
+    animation: none;
+  }
+  .flyer {
+    transition: none;
+  }
+  .fadeOut {
+    transition: none;
+  }
+}

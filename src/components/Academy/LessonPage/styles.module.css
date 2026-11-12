@@ -1,0 +1,513 @@
+/* ── Header left: back out of the lesson ─────────────────── */
+/* The breadcrumb in the members header's voice: 14px, sentence case, the
+   track and number muted and the title in full white. */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--m-muted);
+  text-decoration: none;
+  min-width: 0;
+  min-height: 44px;
+}
+
+.back:hover {
+  color: var(--m-copper);
+  text-decoration: none;
+}
+
+.backLesson {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 1.25rem;
+  background: var(--m-line-strong);
+  flex-shrink: 0;
+}
+
+.backTitle {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--m-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Header right: the stage stepper, as the members nav ─────
+   Each stage is a nav link: white type, the current one in the dapp's blue
+   pill. Every stage of a lesson the learner has reached can be clicked, and
+   it has to look it: the old stepper read as a progress label, with no
+   sign that the stages were reachable. So each stage has a
+   hover surface, the stages ahead are full white (brighter than a switched-off
+   stage in a preview), and the button's title says where it goes. */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  padding: 0.375rem 0.625rem 0.375rem 0.375rem;
+  cursor: pointer;
+  border-radius: var(--m-r-xl);
+  min-height: 2.5rem;
+  box-sizing: border-box;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* A stage is a touch control on a phone, so it carries the 44px target. */
+@media (pointer: coarse), (max-width: 480px) {
+  .step {
+    min-height: 44px;
+  }
+}
+
+.step:disabled {
+  cursor: default;
+}
+
+.stepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  border: 1px solid var(--m-line-strong);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--m-dim);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.stepLabel {
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1.25rem;
+  color: var(--m-dim);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+/* The stage on screen: the members nav's active pill, in the Academy's green. */
+.step.step_on {
+  background: var(--a-active);
+}
+
+.step_on .stepNum {
+  border-color: var(--m-copper);
+  color: var(--m-copper);
+}
+
+.step_on .stepLabel {
+  color: var(--m-text);
+}
+
+/* Not reached yet, and still a click away: full white, like any nav link. */
+.step_ahead .stepNum {
+  border-color: var(--m-outline);
+  color: var(--m-text);
+}
+
+.step_ahead .stepLabel {
+  color: var(--m-text);
+}
+
+.step_seen .stepNum {
+  border-color: rgba(91, 168, 138, 0.6);
+  color: var(--m-green);
+}
+
+.step_seen .stepLabel {
+  color: var(--m-ink);
+}
+
+/* A preview shows the stages but none is reachable. */
+.step_off {
+  opacity: 0.6;
+}
+
+.step:not(:disabled):not(.step_on):hover {
+  background: var(--m-panel-strong);
+  border-color: var(--m-line);
+}
+
+.step:not(:disabled):not(.step_on):hover .stepLabel {
+  color: var(--m-copper);
+}
+
+.step:not(:disabled):not(.step_on):hover .stepNum {
+  border-color: var(--m-copper);
+}
+
+.step:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+/* The members nav has no connectors between its links, and at the frame's
+   76rem the header has no room for them beside an intermediate title. */
+.rule {
+  display: none;
+}
+
+/* ── Lesson body: one framed column, no sidebar ──────────── */
+.body {
+  position: relative;
+  z-index: 1;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: clamp(2.25rem, 5vw, 3.625rem) var(--m-gutter) 5rem;
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* ── Preview ─────────────────────────────────────────────── */
+
+/* Shown when a learner opens a lesson ahead of the one they are on. Browsing is
+   allowed on purpose, so this has to say clearly that the page is inert and
+   where to go instead, rather than reading as a failure. Drawn as the members
+   area's blue notice. */
+.preview {
+  position: relative;
+  display: flex;
+  border: 1px solid rgba(143, 178, 222, 0.5);
+  border-radius: var(--m-r-xl);
+  background: rgba(143, 178, 222, 0.08);
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+.previewBar {
+  display: none;
+}
+
+.previewBody {
+  padding: 1.375rem 1.5rem 1.5rem;
+  min-width: 0;
+}
+
+.previewLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1.25rem;
+  color: var(--m-blue);
+  margin-bottom: 0.5rem;
+}
+
+.previewTitle {
+  margin: 0 0 0.625rem;
+  font-family: var(--m-display);
+  font-size: var(--m-t-h3);
+  font-weight: 400;
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-text);
+}
+
+.previewText {
+  margin: 0;
+  max-width: 44rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--m-ink);
+}
+
+.previewActions,
+.previewFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.25rem;
+}
+
+/* The members primary button. */
+.previewCta,
+.wrapNext {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--m-copper);
+  border-radius: var(--m-r-md);
+  background: var(--m-copper);
+  color: var(--m-on-copper) !important;
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.previewCta:hover,
+.wrapNext:hover {
+  background: var(--m-copper-hi);
+  border-color: var(--m-copper-hi);
+}
+
+.previewCta:focus-visible,
+.wrapNext:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+/* The members quiet button. */
+.previewBack,
+.wrapBack {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--m-r-md);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--m-ink) !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.previewBack:hover,
+.wrapBack:hover {
+  background: var(--m-panel-strong);
+  color: var(--m-text) !important;
+}
+
+/* The outer wrapper still takes pointer events, so it is the one that can show
+   a cursor. Hovering anywhere over a previewed lab says the same thing the
+   banner does. */
+.previewLabWrap {
+  cursor: not-allowed;
+}
+
+/* The lab itself while previewing. `inert` in the markup takes it out of the
+   tab order and away from assistive tech; pointer-events is the belt to that
+   braces. The dimming is the part the learner can see. */
+.previewLab {
+  opacity: 0.45;
+  filter: saturate(0.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* A preview is a full lesson long, so the pointer is repeated at the bottom
+   rather than left behind at the top. */
+.previewFoot {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--m-line);
+  padding-top: 2rem;
+}
+
+.previewFootText {
+  font-size: 0.9375rem;
+  color: var(--m-ink);
+}
+
+/* ── Wrap-up ─────────────────────────────────────────────── */
+/* Its rule runs the full width of the frame, meeting the side hairlines the
+   way the members sections' rules do. */
+.wrap {
+  margin: 3.5rem calc(-1 * var(--m-gutter)) 0;
+  border-top: 1px solid var(--m-line);
+  padding: 2.5rem var(--m-gutter) 0;
+}
+
+/* The members section label: Beaufort at the h2 size, sentence case. */
+.wrapHead {
+  margin: 0 0 1.5rem;
+  font-family: var(--m-display);
+  font-size: var(--m-t-h2);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+/* The write-up beside its reading list. */
+.wrapBody {
+  display: grid;
+  grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+  align-items: start;
+  gap: 2.5rem 3.5rem;
+}
+
+.prose {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--m-ink);
+}
+
+.prose h3 {
+  font-family: var(--m-display);
+  font-size: var(--m-t-h3);
+  font-weight: 400;
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-copper);
+  margin: 2rem 0 0.75rem;
+}
+
+.prose p {
+  margin: 0 0 1.125rem;
+}
+
+.prose strong {
+  color: var(--m-text);
+  font-weight: 600;
+}
+
+.prose ul {
+  padding-left: 1.25rem;
+  margin: 0 0 1.125rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+/* ── Go deeper ───────────────────────────────────────────── */
+.deeper {
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  padding: 1.25rem 1.5rem 1.375rem;
+}
+
+/* The members caption. */
+.deeperLabel {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1rem;
+  color: var(--m-muted);
+  margin-bottom: 0.75rem;
+}
+
+.deeperList {
+  margin: 0;
+  padding-left: 1.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.deeperList li {
+  margin-bottom: 0.5rem;
+}
+
+/* ── Wrap-up actions ─────────────────────────────────────── */
+
+.wrapActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 2.5rem;
+}
+
+/* What the header gives up, and in what order, as the row narrows.
+
+   The row holds the lockup (the mark below 1440px, see the shell's styles),
+   the back link with the track and lesson number, the title, the three stage
+   buttons and the Members and Docs links. The title is the one thing in it
+   that can shrink, so it is the first thing to go wrong. Below 1280px the
+   stage labels go first, because every stage names itself again in its own
+   eyebrow, and the title goes at 1000px, where even the compact stepper
+   leaves it no room. The track and the lesson number stay to the end.
+   Measured on every lesson.
+
+   The header used to carry the lesson's app screen as a chip after the title.
+   Once the lockup was there it never fit beside the longest titles at any
+   width, and the map's row and the lesson's own figure both name the screen,
+   so it is gone from here. */
+@media (max-width: 1279px) {
+  .stepLabel {
+    display: none;
+  }
+
+  .step {
+    padding: 0.375rem 0.5rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .backTitle {
+    display: none;
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+/* Both two-column blocks in the wrap-up give up their second column together,
+   so the foot of a lesson is one column or two and never one and a half. */
+@media (max-width: 1000px) {
+  .wrapBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .prose {
+    max-width: 46rem;
+  }
+}
+
+/* The shell's header wraps to two rows at this width, so the back link has the
+   full row. "Intermediate track · Lesson 1" may break after the track label
+   at 320px. */
+@media (max-width: 480px) {
+  .back {
+    gap: 0.625rem;
+  }
+
+  .backLesson {
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  /* Number only: a 44px target, as wide as it is tall. */
+  .step {
+    justify-content: center;
+    min-width: 44px;
+    padding: 0.375rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .step {
+    min-width: 40px;
+  }
+
+  .backTrack {
+    display: block;
+  }
+
+  .backSep {
+    display: none;
+  }
+}

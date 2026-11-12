@@ -1,0 +1,138 @@
+import { Await, Do, PageBreak, Sub } from "../../ArticleLesson";
+import { FullLiquidationCases, LiquidationSteps, LossSlider, SelfLiquidateMoment } from "../../ArticleLesson/moments-i8";
+import { ShortClaimFigure } from "../../ArticleLesson/moments-i7";
+import { Term } from "../../kit";
+
+Say you borrowed 5,000 alUSD against 10,000 USDC in the Risk-adjusted Mix USDC vault on Ethereum a month ago, sold the alUSD and spent the cash. Your LTV is 50%. Over that month, Alchemix's redemption system has earmarked 208 of your debt, reserving it to be paid off out of your deposit by the next redemptions.
+
+With the cash spent, you have nothing in your wallet to repay with if the vault takes a loss. So what matters is how large a loss inside the vault your loan can take before your LTV reaches 95%, the line where a liquidation can start.
+
+A move in the price of USDC cannot move your LTV, because the vault counts your alUSD debt in USDC too, one USDC for each alUSD you owe, so a price move changes both sides by the same share. On this USDC vault, each strategy is valued from the assets it reports holding, so the value of MYT falls only when a strategy loses funds. That loss lowers what each MYT is worth, and with it every deposit in the vault, while every debt stays the same. A loss inside the vault is the one thing that can raise your LTV without any action from you.
+
+<Sub>LTV after a loss</Sub>
+
+Your LTV is your Debt divided by your Deposit. After a loss your Debt is unchanged and your Deposit is smaller, so your new LTV is your old LTV divided by the share of the deposit that is left. From 50%, a 20% loss leaves 80% of the deposit, 8,000 against the same 5,000 of debt, and 50% divided by 0.8 is 62.5%.
+
+The same rule, turned around, gives the loss it takes to reach 95%, the LIQ LTV marker on the health bar. Your LTV reaches 95% once the share of the deposit that is left falls to your starting LTV divided by 95%, and the loss it takes is the rest of the deposit.
+
+<Do moment="loss">
+
+Drag the Loss slider until LTV reaches the LIQ LTV marker at 95%. Then pick another starting LTV and do it again.
+
+</Do>
+
+<LossSlider />
+
+<Await moment="loss" hint="Reach 95% from a second starting LTV" />
+
+From 50%, your LTV reached 95% at a loss of about 47.4%. With your Debt fixed at 5,000, LTV reaches 95% when your Deposit falls to 5,000 divided by 0.95, about 5,263, which is 52.6% of the 10,000 you started with. From 70% it takes only about 26%, and from 30% about 68%.
+
+The lower the LTV you borrow at, the larger the loss your loan can take before a liquidation. Later in this track, you will use this rule to choose an LTV.
+
+<PageBreak title="What a liquidation takes" />
+
+Now say the practice vault lost 48%, enough to take your position past 95%. Your Deposit would fall to 5,200, the 52% left of 10,000, against the same Debt of 5,000, an LTV of about 96.2%. From that point anyone can liquidate the position. A liquidator repays part of your loan out of your deposit, at most as much as it takes to bring your LTV back to 90%, and collects a small fee for doing it.
+
+A liquidation first settles your earmarked debt out of your deposit. Only if your LTV is still 95% or over after that does it seize more of your deposit to pay down the rest of the loan.
+
+<Do moment="liq">
+
+Press Next step to go through the liquidation one step at a time.
+
+</Do>
+
+<LiquidationSteps />
+
+<Await moment="liq" hint="Step through to the end" />
+
+The first step settled your 208 of earmarked debt out of your deposit, as a redemption would. It charged the 0.52 redemption fee, 0.25% of the 208, and paid the liquidator nothing. With your deposit and your debt already close in size, taking the same 208 off both barely moved your LTV, from about 96.2% to 96.0%. That is still over 95%, so the second step ran.
+
+The second step seized 3,026.60 of your deposit. 3,023.61 of it went to the Transmuter, the contract that pays Fixed Yield depositors, and canceled the same amount of your debt. The other 2.99 went to the liquidator as their fee: 1.5% of the 199.48 by which your deposit exceeded your debt. The liquidation sizes the seizure, fee included, so that your position ends at exactly 90%.
+
+<Sub>What it cost you</Sub>
+
+3,026.60 sounds like a lot, but 3,023.61 of it paid off the same amount of your debt. The cash you borrowed, or what you bought with it, is still yours. Your Deposit minus your Debt, the part of the position that is yours, was 200 before the liquidation and is 196.49 after it, so the liquidation itself cost you 3.51: the 0.52 redemption fee and the 2.99 liquidator fee. Your real loss was the vault's 48% loss, which took 4,800 of your deposit before any liquidation started.
+
+<PageBreak title="When a liquidation takes the whole loan" />
+
+The liquidation you just followed was partial: it took only what it needed to bring your LTV back to 90%, and the rest of the position stayed open. A liquidation clears the whole loan instead when a position's debt has reached the value of its deposit, or when the vault as a whole is short of collateral.
+
+A position's debt can reach the value of its deposit when a loss is too large or too fast for any liquidation to catch the position between 95% and 100%. Its liquidation takes all of the deposit and clears all of the debt, even though the deposit no longer covers it.
+
+A vault is short of collateral as a whole when the total debt of its borrowers reaches 95% of the value of all the MYT deposited in it. The vault is then below its <Term id="globalMinimum">global minimum</Term>, and any position at 95% LTV or over is liquidated in full.
+
+In both cases the liquidator's fee, 1.5% of the debt, is paid from the <Term id="feeVault">fee vault</Term>, a fund Alchemix holds to pay liquidators when a position's own deposit cannot, so it does not come out of your deposit.
+
+<Do moment="full">
+
+Press Debt reaches the deposit, then Vault below its minimum, to play each case on the same position.
+
+</Do>
+
+<FullLiquidationCases />
+
+<Await moment="full" hint="Press both cases" />
+
+When the debt reached the deposit, your deposit of 4,900 was worth 100 less than your 5,000 of debt. The liquidation settled your 208 of earmarked debt, then took the rest of the deposit and cleared the rest of the debt anyway. That left 100.52 alUSD, the 100 shortfall plus the 0.52 redemption fee, in circulation with nothing backing it. Your deposit is gone and you owe nothing, so your Deposit minus your Debt went from -100 to 0, and the cash you borrowed is still yours.
+
+When the vault was below its global minimum, your position was at 96.2%, as in the partial liquidation. The whole 5,000 of debt was cleared with the same amount of deposit, plus the 0.52 redemption fee. The liquidator's fee came from the fee vault, so the 199.48 left over stayed yours, a little more than the 196.49 the partial liquidation left you.
+
+<Sub>On Ethereum today</Sub>
+
+On the Ethereum USDC vault at the time of writing, borrowers' total debt is about 60% of the value of its MYT. 60% divided by 95% is about 63%, so once the vault's MYT lost about 37% of its value, leaving 63%, the vault would be below its global minimum. A 50% loan needs a loss of about 47% to reach 95%, so on this vault today the global minimum would be crossed first, and a 50% loan that reached 95% would be liquidated in full. As the Vault below its minimum case showed, that leaves you with about what a partial liquidation would.
+
+<PageBreak title="Closing the loan yourself" />
+
+The losses so far were what-ifs, so your practice position is still 10,000 deposited against 5,000 owed, with 208 of the debt earmarked.
+
+While your LTV is under 95%, you can close the loan from your own deposit on the Liquidate tab, without needing any alUSD or USDC in your wallet. This is a <Term id="selfLiquidation">self-liquidation</Term>, and only the owner of the position can do it. It is the way out of a loan when you have spent the cash you borrowed, as you have here. If you do hold USDC, repaying part of the loan with it lowers your LTV at any time, even between 90% and 95%.
+
+A self-liquidation settles your earmarked debt first, with the 0.25% redemption fee. It then clears the rest of your debt with the same amount of your deposit and returns what is left to your wallet, with no liquidator fee. At 95% or over, the transaction fails. The tab's warning that it will "burn your collateral" means only that part of your deposit is used to pay your debt.
+
+<Do moment="self-open">
+
+On the Liquidate tab, press Self Liquidate.
+
+</Do>
+
+<SelfLiquidateMoment />
+
+<Do moment="self-confirm">
+
+Press Confirm Self Liquidate.
+
+</Do>
+
+<Await moment="self-confirm" hint="Press Confirm Self Liquidate" />
+
+The self-liquidation closed your position. 5,000 of your 10,000 deposit paid your debt, 0.52 paid the redemption fee on the 208 that was earmarked, and the other 4,999.48 came back to your wallet. With the Receive USDC on liquidation switch on, as it is by default, it came as 4,999.48 USDC. With the switch off, it would have come as 3,999.58 MYT, worth the same at this lesson's example price of 1.25 USDC per MYT, and your practice wallet lists it as mixUSDC.
+
+Flash Repay, on the Repay tab, also clears debt out of your deposit. It uses part of your deposit to buy alUSD on the market and repays with it, so while alUSD trades under a dollar, each dollar of debt costs you less than a dollar of deposit, and that recovers your <Term id="loanCost">Loan Cost</Term>. It can clear only debt that is not earmarked. A self-liquidation settles each dollar of debt with a dollar of your deposit, so it recovers none of your Loan Cost, and it clears earmarked debt as well.
+
+<PageBreak title="When a vault falls into bad debt" />
+
+Liquidations keep each loan backed while losses come gradually. If a loss is too large or too fast for them, positions end up owing more than their whole deposit, and each of their liquidations leaves alUSD in circulation with nothing backing it, as the liquidation did when the debt reached the deposit.
+
+When enough unbacked alUSD builds up, the vault is in <Term id="badDebt">bad debt</Term>. That means the alUSD it has issued is worth more than the collateral backing its loans plus the MYT its Transmuter holds from repayments and liquidations to pay Fixed Yield depositors. On the Ethereum USDC vault at the time of writing, its MYT would have to fall about 40% to reach it.
+
+<Sub>During bad debt</Sub>
+
+While a vault is in bad debt, it rejects new deposits and new loans. Withdrawals, repayments and liquidations keep working, so borrowers can still lower their debt and close loans.
+
+Fixed Yield claims pay a reduced share: if the backing covers 90% of the alUSD issued, each alUSD claims 0.90 USDC. The share rises as the backing gains value, for example as yield raises what each MYT is worth, and claims pay a full USDC again once the backing covers all the alUSD issued.
+
+Say you had bought 5,000 alUSD for 4,900 USDC and deposited it on Fixed Yield, and it matured while this vault was in bad debt, with backing at 90%.
+
+<Do moment="bad-debt">
+
+Press Claim, then choose Claim now or Wait.
+
+</Do>
+
+<ShortClaimFigure />
+
+<Await moment="bad-debt" hint="Press Claim, then choose" />
+
+Claiming now pays 4,500, 0.90 USDC for each of your 5,000 alUSD, and burns all 5,000. The 500 cut off does not come back later, so you end 400 under the 4,900 you paid. Waiting keeps your full claim for when the backing is restored, at the risk that losses grow in the meantime.
+
+The Risk-adjusted Mix USDC vault on Ethereum, the losses in this lesson and the 90% backing are examples. The 37% and 40% figures were read from the Ethereum contracts on November 7, 2026, and change as borrowers borrow and repay.

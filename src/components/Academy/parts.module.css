@@ -1,0 +1,918 @@
+/* Shared lesson parts.
+ *
+ * A left-to-right flow of steps, an LTV meter with a cap marker, a row of stat
+ * tiles, and the position card. The beginner labs each use at least one of
+ * these, so they live here rather than being copied into each lab with small
+ * drifts between them. Colors come from the shell's members tokens. */
+
+/* ── Flow of steps ───────────────────────────────────────── */
+
+.flow,
+.flow4,
+.flow5 {
+  display: grid;
+  /* stretch, not center: the cards share a row, and a longer note on one of
+     them used to make that card taller than its neighbours. Stretching gives
+     every card the height of the tallest, so the row reads as one object. The
+     arrows opt out below. */
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Three stops. */
+.flow {
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+}
+
+/* Four stops, for the Transmuter timeline. */
+.flow4 {
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  margin-top: 1.5rem;
+}
+
+/* Five stops. */
+.flow5 {
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+  margin-top: 1.5rem;
+}
+
+.step {
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  padding: 1.125rem 1.25rem;
+  min-width: 0;
+  transition: opacity 0.25s ease, border-color 0.25s ease;
+}
+
+/* A walk through the cards: the step the learner is on, and the rest. */
+.stepOn {
+  border-color: var(--m-copper-line);
+}
+
+.stepOff {
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    transition: none;
+  }
+}
+
+/* Four and five stops share a row, so each card gets less room. */
+.flow4 .step,
+.flow5 .step {
+  padding: 1rem 1.0625rem;
+}
+
+.stepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  border: 1px solid var(--m-copper-line);
+  color: var(--m-copper);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+/* The members caption. */
+.stepLabel {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1rem;
+  color: var(--m-muted);
+  margin-bottom: 0.375rem;
+}
+
+.stepValue {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.375rem;
+  line-height: 1.3;
+}
+
+.flow5 .stepValue {
+  font-size: 1rem;
+}
+
+.stepNote {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.arrow {
+  justify-self: center;
+  /* The grid stretches its items so the step cards match heights. An arrow
+     has no height to fill, so it centres itself against the row instead. */
+  align-self: center;
+}
+
+/* ── LTV meter ───────────────────────────────────────────── */
+.meterWrap {
+  margin-bottom: 2rem;
+}
+
+.meterHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.meterValue {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.meter {
+  position: relative;
+  height: 26px;
+  border-radius: var(--m-r-md);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--m-green), var(--m-copper));
+  transition: width 0.15s ease;
+}
+
+.meterCap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--a-amber);
+}
+
+/* A second marker on the same bar, for the liquidation threshold. Red, because
+   crossing it is the only line that costs you anything. */
+.meterLiq {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--a-red);
+}
+
+.meterKey {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.4375rem;
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+.capMark {
+  color: var(--a-amber);
+}
+
+/* ── Stat row ────────────────────────────────────────────── */
+.statRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--m-line);
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.stat {
+  background: var(--m-card);
+  padding: 1rem 1.125rem;
+}
+
+/* Three figures instead of four. Both classes, so it beats the base rule and
+   the base rule's tablet override. */
+.statRow.statRow3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .statRow.statRow3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ── Position card ───────────────────────────────────────────
+   The card the app shows for an open position: three figures, a health bar
+   with the cap and the liquidation threshold marked on it, and whether the
+   deposit is still earning. Rendered by PositionCard in the kit. */
+
+.card {
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  padding: 1.25rem 1.375rem 1.375rem;
+  margin-bottom: 2rem;
+}
+
+.card.cardCompact {
+  padding: 1rem 1.125rem 1.125rem;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.125rem;
+}
+
+.cardHeadLeft {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.cardLabel {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--m-ink);
+}
+
+/* Shown only while a loss of backing is applied. */
+.cardLoss {
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1rem;
+  color: var(--a-red);
+  border: 1px solid rgba(212, 100, 90, 0.5);
+  border-radius: var(--m-r-full);
+  padding: 0.125rem 0.625rem;
+  white-space: nowrap;
+}
+
+.cardEarning {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-green);
+  white-space: nowrap;
+}
+
+.cardEarningDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--m-green);
+  animation: cardPulse 2.4s ease-out infinite;
+}
+
+@keyframes cardPulse {
+  0% { box-shadow: 0 0 0 0 rgba(91, 168, 138, 0.45); }
+  70% { box-shadow: 0 0 0 6px rgba(91, 168, 138, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(91, 168, 138, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardEarningDot {
+    animation: none;
+  }
+}
+
+/* Three stats most of the time, four or five once Earmarked and the health
+   factor are switched on. Auto-fit rather than a fixed count so the extra
+   stats wrap to a second row on narrow screens instead of crushing the
+   figures, which are tabular and cannot shrink. */
+.cardStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.75rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cardStat {
+  min-width: 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--m-line);
+}
+
+.cardStat.cardStatOn {
+  border-left-color: var(--m-copper);
+}
+
+.cardStatOn .cardStatLabel {
+  color: var(--m-copper);
+}
+
+.cardStatLabel {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1rem;
+  color: var(--m-muted);
+  margin-bottom: 0.3125rem;
+}
+
+.cardStatValue {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardCompact .cardStatValue {
+  font-size: 1rem;
+}
+
+.cardUnit {
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-muted);
+  margin-left: 0.3125rem;
+}
+
+/* A second line under a figure. The LTV stat uses it for the effective LTV
+   while a loss of backing is applied. */
+.cardStatSub {
+  margin-top: 0.1875rem;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Vertical room for the tags that sit above and below the bar. */
+.cardBar {
+  padding: 1.5rem 0 1.625rem;
+}
+
+.cardTrack {
+  position: relative;
+  height: 22px;
+  border-radius: var(--m-r-md);
+  background: var(--m-line);
+}
+
+.cardFill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--m-r-md) 0 0 var(--m-r-md);
+  background: linear-gradient(90deg, #4c9578, var(--m-green));
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* The earmarked band sits over the fill at its leading edge. Its own color
+   rather than a lightened fill, so it stays legible when the fill turns amber
+   at the cap or red past liquidation. */
+.cardEarmark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    var(--m-blue),
+    var(--m-blue) 5px,
+    #7e99c8 5px,
+    #7e99c8 10px
+  );
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+.cardFill.cardFillCap {
+  background: linear-gradient(90deg, #b8801f, var(--a-amber));
+}
+
+.cardFill.cardFillLiq {
+  background: linear-gradient(90deg, #b8504a, var(--a-red));
+}
+
+/* Markers overhang the track a little, the way the app's do, and slide when
+   their position changes so a moving threshold is seen to move. */
+.cardMark {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 2px;
+  margin-left: -1px;
+  transition: left 0.3s ease;
+}
+
+.cardMarkCap {
+  background: var(--a-amber);
+}
+
+.cardMarkLiq {
+  background: var(--a-red);
+}
+
+/* The cap tag sits above the bar and the liquidation tag below it, so the two
+   never collide however close the markers stand. Each hangs to the left of its
+   line. */
+.cardTag {
+  position: absolute;
+  right: 0;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.cardMarkCap .cardTag {
+  bottom: calc(100% + 4px);
+  color: var(--a-amber);
+}
+
+.cardMarkLiq .cardTag {
+  top: calc(100% + 4px);
+  color: var(--a-red);
+}
+
+.cardTagFlip .cardTag {
+  right: auto;
+  left: 0;
+}
+
+/* Shown only when the bar carries an earmarked band, which is the one time
+   two fill colors need naming. */
+.cardKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.125rem;
+  margin: -0.5rem 0 0.75rem;
+}
+
+.cardKeyItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.cardKeyDotDebt,
+.cardKeyDotMark {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.cardKeyDotDebt {
+  background: var(--m-green);
+}
+
+.cardKeyDotMark {
+  background: var(--m-blue);
+}
+
+.cardNote {
+  margin-top: 0.125rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .flow5 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow5 .arrow {
+    transform: rotate(90deg);
+  }
+
+  .flow5 .step {
+    padding: 1.125rem 1.25rem;
+  }
+
+  .flow5 .stepValue {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .flow,
+  .flow4,
+  .flow5 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+  }
+
+  .flow4 .step {
+    padding: 1.125rem 1.25rem;
+  }
+
+  .statRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .statValue {
+    font-size: 1.0625rem;
+  }
+
+  /* Three figures across a phone leaves about 85px each. Stack them as rows
+     instead, label left and figure right, which is how the app lays a card
+     out on a phone. */
+  .cardStats {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .cardStat {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.125rem 0 0.125rem 0.75rem;
+  }
+
+  .cardStatLabel {
+    margin-bottom: 0;
+  }
+
+  /* The second line takes its own row, under the figure it belongs to. */
+  .cardStatSub {
+    flex-basis: 100%;
+    margin-top: -0.375rem;
+    text-align: right;
+  }
+
+  .cardStatValue {
+    font-size: 1.0625rem;
+  }
+}
+
+/* ── The app, inline ─────────────────────────────────────────
+   A complete element of a real screen, shown under the model of it once the
+   learner has pushed on that model. The window is the crop; the image inside
+   is oversized and offset by the inline styles <AppShot> computes, so the
+   capture itself is never re-cut.
+
+   The card runs the width of the lesson column, on the same edges as the
+   card above it. The crop inside it shows at the size the app draws it
+   (<AppShot> writes that width inline), centered, and shrinks to the column
+   on a phone. Stretched to the column, its type came out larger than the
+   lesson's headline. */
+
+.fig {
+  /* Above whatever ends the stage before it, the button row or the reveal that
+     replaces it, so the figure sits at one distance in both states. The margin
+     collapses with theirs. */
+  margin: 2.5rem 0 0;
+}
+
+/* A figure with no phone crop that reads at phone width. */
+@media (max-width: 640px) {
+  .figHideNarrow {
+    display: none;
+  }
+}
+
+/* ── The card every app image sits in ──────────────────────
+   The same card as the rest of the lesson: one rounded border, the picture
+   filling it edge to edge, and the caption as its foot. The figures used to
+   borrow the docs' frame (hairlines overhanging each corner, a dot where they
+   cross; see `src/components/FramedImage`). That was the one element on the
+   page not drawn as a card, and its rules stuck out past the column edge
+   everything else sits on. */
+.figCard {
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  overflow: hidden;
+}
+
+/* The band the crop sits centered in, as wide as the card. The margin around
+   the crop is the same at every size, so a crop narrower than the column and
+   one that fills it read as the same kind of picture. */
+.figStage {
+  padding: 1rem;
+  background: var(--m-ground);
+}
+
+/* Everything inside is clipped to this, so a crop cannot spill past the window.
+   Its width is the crop's own, written inline; never wider than the band. No
+   outline: most crops carry the app's own page around the element, and a rule
+   round that drew a second frame. */
+.figWindow {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--m-r-lg);
+  background: var(--m-ground);
+}
+
+@media (max-width: 640px) {
+  .figStage {
+    padding: 0.625rem;
+  }
+}
+
+/* A crop: blown up to 1/w of the window and shifted into place. */
+.figCrop {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+.figCap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.9375rem 1.375rem 1.0625rem;
+  border-top: 1px solid var(--m-line);
+  min-width: 0;
+}
+
+/* "In the app": the members caption, in the blue the app's own screens use. */
+.figLabel {
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1rem;
+  color: var(--m-blue);
+}
+
+.figText {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+  text-wrap: pretty;
+  /* Held to a readable measure even under a figure that runs the whole column. */
+  max-width: 46rem;
+}
+
+/* ── In the app, as a line ─────────────────────────────────
+   Where a lesson's step happens in the app: the caption's blue label and its
+   text, on one line where it fits. <InApp> in the kit. */
+.inApp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.125rem 0.625rem;
+  margin: 1rem 0 0;
+}
+
+.inApp .figLabel {
+  flex-shrink: 0;
+}
+
+.inAppText {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+  text-wrap: pretty;
+}
+
+/* ── Beginner track parts ────────────────────────────────── */
+
+/* A lesson control: time passing, a price moving. Dashed copper, so it never
+   reads as one of the app's outlined buttons or as the lesson's Next. */
+.controlRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: -1rem 0 2rem;
+}
+
+.lessonControl {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.125rem;
+  border: 1.5px dashed var(--m-copper);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--m-copper);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lessonControl:hover:not(:disabled) {
+  background: var(--m-copper-fill);
+}
+
+.lessonControl:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Under a switched-off lesson control: why. The row's full width, muted. */
+.controlHint {
+  flex-basis: 100%;
+  margin: -0.25rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.lessonControl:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+/* The caveat under the "In the app" line: the same small type. */
+.caveat {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--m-muted);
+  text-wrap: pretty;
+}
+
+/* A numbered list of steps, each with its figures. */
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.stepItem {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.stepItemNum {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: 999px;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-copper);
+}
+
+.stepItemBody {
+  min-width: 0;
+}
+
+.stepItemText {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+}
+
+.stepFigs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.stepFig {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--m-r-md);
+  background: rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+}
+
+.stepFigLabel {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.stepFigValue {
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepFigBad {
+  color: oklch(0.704 0.191 22.216);
+}
+
+/* A defined word: a quiet dotted underline, no color change. */
+.termWrap {
+  position: relative;
+}
+
+.term {
+  appearance: none;
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, currentColor 55%, transparent);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1.5px;
+  cursor: help;
+}
+
+.term:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.termPop {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  left: 0;
+  z-index: 20;
+  display: block;
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 2rem));
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-lg);
+  background: #182229;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: var(--m-text);
+  text-align: left;
+  white-space: normal;
+}
+
+/* One paragraph of a popover's text, a small gap between them. */
+/* Opened above the word, where the room below runs under a pinned footer. */
+.termPopAbove {
+  top: auto;
+  bottom: calc(100% + 0.375rem);
+}
+
+.termPara {
+  display: block;
+}
+
+.termPara + .termPara {
+  margin-top: 0.5rem;
+}
+
+/* "Read more in the docs" at the foot of a popover. */
+.termPop .termMore {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--m-copper);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.termPop .termMore:hover {
+  color: var(--m-copper-hi);
+}

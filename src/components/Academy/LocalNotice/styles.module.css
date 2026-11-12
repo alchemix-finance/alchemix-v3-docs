@@ -1,0 +1,20 @@
+/* The members area's bordered notice, in amber: a development-only state. */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid rgba(212, 149, 42, 0.5);
+  border-radius: var(--m-r-lg);
+  background: rgba(212, 149, 42, 0.08);
+  color: var(--m-ink);
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
+  margin: -1rem 0 1.75rem;
+}
+
+.notice svg {
+  flex-shrink: 0;
+  margin-top: 0.1875rem;
+  color: var(--a-amber);
+}

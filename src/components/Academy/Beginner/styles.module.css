@@ -1,0 +1,64 @@
+/* Figures drawn in the lesson's own style: the charts of the article
+   lessons and the pair the intermediate labs use. The coin and the
+   two-cost cards went with the earlier lessons 1 and 4. */
+
+/* A chart in a card, with its key under it. */
+.chartCard {
+  margin: 0 0 2rem;
+  padding: 1rem 1.125rem 0.75rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.chartHead {
+  margin-bottom: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-ink);
+}
+
+.key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.key i {
+  display: inline-block;
+  width: 1.25rem;
+  height: 0;
+  border-top: 2.5px solid currentColor;
+}
+
+.key i.dashed {
+  border-top-style: dashed;
+}
+
+/* Two figures side by side, one height, so their edges align (lesson 4). */
+.pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 0 1.25rem;
+  align-items: stretch;
+}
+
+.pair > * {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 760px) {
+  .pair {
+    align-items: start;
+  }
+}

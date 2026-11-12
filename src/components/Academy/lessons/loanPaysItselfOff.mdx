@@ -1,0 +1,69 @@
+import { Do, PageBreak, Stat, StripAt, Sub } from "../ArticleLesson";
+import { RateFigure, RedeemMoment, YearOfRedemptions } from "../ArticleLesson/moments-3-8";
+import { Term } from "../kit";
+
+This lesson starts from the loan you just took: 10,000 USDC deposited, 5,000 alUSD borrowed, and the alUSD swapped for USDC to spend. You aren't required to take any further action on your position. From here the loan gets paid off automatically through Alchemix v3's redemption system.
+
+<Sub>Redemptions</Sub>
+
+A <Term id="redemption">redemption</Term> removes MYT from your deposit and cancels the same amount of your debt, effectively deleveraging your position. The MYT pays a Fixed Yield depositor when they claim, which you will see from the depositor's side later in this track. When MYT that borrowers have already repaid is waiting to pay depositors, it is used first, and redemptions pay only the rest. Your deposit and your debt fall by the same amount, so your Deposit minus your Debt stays the same apart from the redemption fee.
+
+This is how an Alchemix loan pays itself off. You already received the loan's value as the 5,000 alUSD you borrowed and swapped. Redemptions settle it from your deposit over time, so you never have to bring new money to pay it back. The deposit that is left keeps earning.
+
+<Sub>The Redemption Rate</Sub>
+
+How fast redemptions pay your loan down is shown by the <Term id="redemptionRate">Redemption Rate</Term>, one of the position stats. It is a projection worked out from the Fixed Yield page: the alUSD set to become claimable there over the next week, scaled up to a year, divided by everything borrowers in the vault owe. The rate rises and falls with how much alUSD is waiting on the Fixed Yield page. Each vault has its own borrowers and its own Fixed Yield deposits, so the rate differs from vault to vault and chain to chain.
+
+In the app, a redemption happens whenever a Fixed Yield depositor claims, so a loan is paid down in many small steps through the year. To keep the figures easy to follow, the practice vault runs one redemption a month. For the sake of example, the Redemption Rate here is 50%: at that pace, half of your debt would be paid in a year if the debt stayed the same size. Half of 5,000 spread over a year is about 208 a month, so the first month's redemption is 208. Each month after works the same way on whatever debt is left, so each redemption is a little smaller than the last.
+
+<RateFigure />
+
+<PageBreak title="Run one redemption" />
+
+<StripAt id="earmark" set={{ earmarked: 208 }} />
+
+Before a redemption happens, the vault reserves the part of your debt it will cancel, which the <Stat name="earmarked">Earmarked</Stat> position stat shows. Each alUSD deposit on the Fixed Yield page vests a little at a time over its term, until the maturity date, the day the term ends. As it vests, the vault earmarks the same amount of borrowers' debt to pay it, spread across borrowers in proportion to the debt each has not yet had earmarked.
+
+Earmarked debt is still your debt. The part of your deposit set aside to pay it keeps earning yield until the Fixed Yield depositor claims, which is when the redemption happens. This month's share of your 5,000 is 208, half of it spread over a year, so Earmarked shows 208 before the redemption. Earmarked debt can be repaid only in MYT, which goes straight to paying Fixed Yield depositors. You can still repay it with USDC, because the app deposits your USDC into MYT for you as part of the repayment.
+
+<Do moment="redeem">
+
+Press Run redemption.
+
+</Do>
+
+<RedeemMoment />
+
+The redemption removed 208 USDC worth of MYT from your deposit and canceled 208 of your debt, so <Stat name="debt">Debt</Stat> now reads 4,792. That MYT went to the <Term id="transmuter">Transmuter</Term>, the Alchemix contract that holds Fixed Yield deposits while they vest and pays depositors when they claim.
+
+<Stat name="deposit">Deposit</Stat> fell by 208.52, to 9,791.48: the 208 of MYT that paid the depositor, and a 0.52 <Term id="redemptionFee">redemption fee</Term>, 0.25% of the 208, which goes to the protocol. The fee is the second cost of your loan, after the discount.
+
+<Stat name="earmarked">Earmarked</Stat> now reads 200. Next month's share is worked out the same way, half of the debt spread over a year, but on the smaller 4,792 that is left. Both sides fell by 208, and 208 is a larger share of your 5,000 debt than of your 10,000 deposit, so your <Stat name="ltv">LTV</Stat> fell from 50% to 48.9%. <Stat name="borrowable">Borrowable</Stat> rose by 20.33 for the same reason: the 90% limit fell by 187.67 with your deposit, while your debt fell by the full 208.
+
+<PageBreak title="A year of redemptions" />
+
+Over a year, redemptions keep paying the loan down while your deposit keeps earning. The chart starts again from the day you borrowed, at 10,000 USDC deposited and 5,000 alUSD owed, and steps through twelve months. Each month your Deposit grows with the vault's 5% yield, then a redemption takes the same amount off your Deposit and your Debt. The dashed line is a 5,000 USDC loan from a lender charging 7% interest, for comparison.
+
+<Do moment="year">
+
+Press Skip ahead a year.
+
+</Do>
+
+<YearOfRedemptions />
+
+Move along the chart to read any month's Deposit, Debt and lender loan.
+
+<Sub>After a year</Sub>
+
+Redemptions took about 2,000 off your Deposit and canceled the same 2,000 of debt, so <Stat name="debt">Debt</Stat> reads 3,000. A rate that stays at 50% all year does not clear half the loan, because each month's redemption is a share of a smaller debt than the month before: 208 in the first month, about 130 in the last.
+
+Yield added about 461 over the year and redemption fees took about 5, so <Stat name="deposit">Deposit</Stat> reads 8,456. The yield is a little under 500, a year at 5% on 10,000, because redemptions shrank the deposit it was earned on.
+
+<Sub>A fair comparison</Sub>
+
+The lender's loan has grown to 5,350 while your Alchemix debt fell to 3,000. In both cases you still hold the 5,000 you borrowed. With the lender, your whole 10,000 deposit stays in place, and earning the same 5%, compounding each month as here, it grows to about 10,512. Here, 2,000 of your deposit has already paid 2,000 of the loan, so you hold 8,456 against 3,000 owed.
+
+To compare them fairly, subtract what you owe from what you hold. With the lender that leaves about 5,162. Here it leaves 5,456, or 5,306 once you count the 150 discount you paid on the swap, about 144 more. The lender's interest added 350 to what you owe. Here the loan cost the 150 discount and 5 in fees, and your deposit earned about 51 less yield because redemptions made it smaller. Your LTV also fell over the year, to about 35%, while the lender loan's rose to about 51%.
+
+50% and 5% are examples. Your vault's page shows the real Redemption Rate and APR, which both change over time.

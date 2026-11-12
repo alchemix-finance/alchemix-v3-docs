@@ -1,0 +1,126 @@
+import { Await, Do, PageBreak, Stat, StripAt, Sub } from "../../ArticleLesson";
+import { BorrowSwapMoment, FeeWaysFigure, BuybackFigure, FlashRepayMoment } from "../../ArticleLesson/moments-i6";
+import { Term } from "../../kit";
+
+Say you have 10,000 USDC deposited in the Risk-adjusted Mix USDC vault on Ethereum, and owe nothing against it. You need about 4,900 USDC to spend.
+
+On most lending platforms, a loan's cost is its interest, a rate charged on everything you owe for as long as you owe it. In Alchemix, your Debt stays at the amount you borrowed until a redemption, a repayment or a liquidation lowers it, so the time you hold the loan adds nothing to what you owe.
+
+An Alchemix loan has two costs instead. The first is the discount, the gap between a dollar and the price alUSD sells for, which you pay once if you sell your borrowed alUSD for USDC. The discount exists because borrowers often sell the alUSD they borrow, and that selling pushes alUSD's market price under a dollar. You will learn what pulls the price back toward a dollar later in this track. The second cost is the redemption fee, 0.25% of each part of your debt that is settled while it is earmarked.
+
+<Sub>Borrow & Swap</Sub>
+
+On the Borrow tab you can borrow and sell in one step. With USDC picked in its token picker, the button reads <Term id="borrowAndSwap">Borrow & Swap</Term>, and one transaction mints the alUSD against your deposit and swaps it for USDC through Enso, a service that routes the swap across exchanges.
+
+<Do moment="pick-usdc">
+
+Pick USDC in the token picker on the Borrow tab.
+
+</Do>
+
+<BorrowSwapMoment />
+
+With USDC picked, the field takes the USDC you want to receive. The Rate row reads 1 alUSD ≈ 0.9795 USDC: alUSD's market price of 0.98, less Enso's 0.05% swap fee, which comes to 0.97951 before rounding. Available under the field is now counted in USDC too, the most USDC the swap would pay for all the alUSD you can still borrow.
+
+Since the field takes the USDC you receive, the amount you type sets your debt through the rate. At 0.97951, 5,000 alUSD swaps for 4,897.55 USDC, so typing 4,897.55 makes your Debt exactly 5,000.
+
+<Do moment="borrow-swap">
+
+Type 4,897.55 and press Borrow & Swap.
+
+</Do>
+
+<Await moment="borrow-swap" hint="Type 4,897.55 and press Borrow & Swap" />
+
+The vault minted 5,000 alUSD against your deposit, and the app swapped it for 4,897.55 USDC, which is now in your practice wallet. <Stat name="debt">Debt</Stat> reads 5,000 because your debt is the 5,000 alUSD the vault minted, one dollar of debt for each alUSD, whatever the swap paid for it.
+
+You owe 5,000 and received 4,897.55. Of the 102.45 gap, 100 is the discount, the 0.02 under a dollar on each of the 5,000 alUSD you sold at 0.98. The app records that 100 as your <Term id="loanCost">Loan Cost</Term>. The other 2.45 is the swap fee, 0.05% of the 4,900 the alUSD was worth at market.
+
+If alUSD's price moves before the transaction runs, you receive less USDC while your Debt stays 5,000, and the slippage setting, 1% by default, limits how much less. If the price moves further than that, the whole transaction fails and nothing is borrowed.
+
+<PageBreak title="What the redemption fee is charged on" />
+
+The redemption fee comes out of your deposit and goes to the protocol. It is charged on <Term id="earmarked">earmarked</Term> debt, the part of your debt reserved for the next redemptions. The fee applies whenever that debt is settled, whether by a redemption, by your own repayment with USDC or MYT, or by a liquidation.
+
+Say a month from now 208 of your 5,000 is earmarked, about one month's share at a 50% Redemption Rate (5,000 times 50%, divided by 12).
+
+<Do moment="fee-ways">
+
+Press each way of settling debt.
+
+</Do>
+
+<FeeWaysFigure />
+
+<Await moment="fee-ways" hint="Press each way of settling debt" />
+
+In all three, the fee was charged only on earmarked debt. The redemption settled the 208 of earmarked debt and cost 0.52, which is 0.25% of 208. The 1,000 USDC repayment cost the same 0.52, because a USDC repayment clears earmarked debt first. It settled the 208, and the other 792 it cleared was not earmarked, so that part carried no fee. The 1,000 alUSD repayment cost nothing, because alUSD clears only debt that is not earmarked, so all 1,000 came off the other 4,792.
+
+Each dollar of debt is settled only once, so however long the loan runs, its redemption fees cannot total more than 0.25% of what you borrowed, 12.50 on 5,000. Any part you repay before it is earmarked never pays the fee at all.
+
+<PageBreak title="Recovering the discount" />
+
+The discount stays a cost because redemptions settle debt at 1:1. Each redemption cancels a dollar of your debt with a dollar of your deposit, so by the time redemptions have settled this loan, 5,000 of deposit will have paid for alUSD that was worth 4,900 at market.
+
+You can recover the discount by repaying with alUSD bought on the Trade page. Inside the vault, one alUSD always cancels one dollar of debt, whatever it costs on the market. So while alUSD trades under a dollar, each alUSD you buy and repay with clears a dollar of debt for less than a dollar.
+
+<Do moment="buyback">
+
+Drag the alUSD price down to 0.96, then up to 1.00.
+
+</Do>
+
+<BuybackFigure />
+
+<Await moment="buyback" hint="Drag the alUSD price to 0.96" />
+
+What you recover depends on the price you buy alUSD back at, compared with the 0.98 you sold it for. At 0.98, 4,900 USDC buys 5,000 alUSD, which clears all 5,000 of debt, so you recover the whole 100 discount. At 0.96 the same 5,000 alUSD costs 4,800, so you recover 200, which is 100 more than the discount you paid. At 1.00, alUSD costs as much as the debt it clears, so there is nothing to recover. These figures are before swap fees, which take about 0.05% of each swap.
+
+Repaying with alUSD is limited in two ways, and both come from the debt that has to stay in place to pay Fixed Yield depositors.
+
+- **An alUSD repayment clears only debt that is not earmarked.** Earmarked debt is reserved to pay a Fixed Yield depositor in MYT, so it can be repaid only with MYT, or with USDC that the app deposits into MYT.
+- **The whole vault can repay only a set amount of debt with alUSD.** That amount is called <Term id="globalBurnable">Global Burnable</Term>.
+
+Every alUSD deposited on the Fixed Yield page will be paid out by redeeming a dollar of borrowers' debt, so that much debt has to stay in place for redemptions to settle. Global Burnable is therefore the alUSD the vault has issued minus the alUSD waiting on the Fixed Yield page. On Optimism, Arbitrum and Base, the Repay tab shows Global Burnable above the field when it is lower than your debt that is not earmarked.
+
+<PageBreak title="Recovering the discount with Flash Repay" />
+
+<StripAt id="flash" set={{ wallet: 0, earmarked: 208 }} />
+
+Buying alUSD on the Trade page takes USDC in your wallet, so you cannot recover the discount that way once you have spent what you borrowed. Say a month has passed, you have spent the 4,897.55 USDC, and alUSD still trades at 0.98. By now 208 of your 5,000 is earmarked.
+
+<Sub>How Flash Repay works</Sub>
+
+A <Term id="flashLoan">flash loan</Term> is borrowed and paid back inside a single transaction. If it is not paid back by the end, the whole transaction fails, so the lender needs no collateral. <Term id="flashRepay">Flash Repay</Term> takes a flash loan of USDC from Morpho, a lending protocol, at no fee, so you can repay with alUSD without holding any USDC.
+
+Flash Repay buys alUSD with the borrowed USDC and repays your debt with it. It then withdraws as much of your deposit as the debt it cleared and uses that to pay back the flash loan. Each alUSD clears a full dollar of debt and costs less than a dollar, so the deposit withdrawn is worth more than the flash loan, and the difference comes to your wallet.
+
+Because Flash Repay repays with alUSD, it works only on the part of your debt that is not earmarked, up to Global Burnable. <Stat name="available">Available</Stat> under the Flash Repay field reads 4,792 before the repayment, your 5,000 of debt minus the 208 that is earmarked.
+
+<Do moment="flash-open">
+
+On the Repay tab, press MAX in the Flash Repay field, then press Flash Repay.
+
+</Do>
+
+<FlashRepayMoment />
+
+Before you confirm, Flash Repay lists what the repayment would recover. <Stat name="flashCurrent">Current Loan Cost</Stat> reads 100, the discount you paid when you sold 5,000 alUSD at 0.98. <Stat name="flashRecovered">Recovered Loan Cost</Stat> reads 93.49, because each of the 4,792 alUSD clears a dollar of debt and costs about 0.9805 with the swap fee, so about 0.0195 on each comes back to you.
+
+<Do moment="flash-confirm">
+
+Press View transaction details to read the seven steps, then press Confirm Flash Repay.
+
+</Do>
+
+<Await moment="flash-confirm" hint="Press View transaction details, then Confirm Flash Repay" />
+
+<Stat name="debt">Debt</Stat> and <Stat name="earmarked">Earmarked</Stat> both read 208, since Flash Repay cleared the 4,792 that was not earmarked. <Stat name="deposit">Deposit</Stat> reads 5,208 because the transaction withdrew 4,792 of it, as much as the debt it cleared. That 4,792 paid back the 4,698.50 USDC flash loan, and the 93.49 left over came to your practice wallet.
+
+Your Deposit fell by the same 4,792 as your Debt, so your Deposit minus your Debt is still 5,000, and the 93.49 in your wallet is on top of it. It came to your wallet with the Keep savings in position as collateral switch off.
+
+The other 6.51 of the 100 is about 4.16 of discount on the 208 that is still earmarked and about 2.35 of swap fee. Earmarked debt cannot be repaid with alUSD, and a redemption will settle it at a full dollar, so its discount can no longer be recovered. The earlier you repay with alUSD bought under a dollar, the less of your debt has been earmarked and the more of the discount you can recover.
+
+{/* Capture slot, for when a wallet with a position can take it: <Shot name="flashRepaySteps" column>The Flash Repay dialog in the app, with View transaction details open.</Shot> */}
+
+The alUSD price of 0.98 and the 208 earmarked are examples. The Borrow and Repay tabs quote real prices before you confirm.

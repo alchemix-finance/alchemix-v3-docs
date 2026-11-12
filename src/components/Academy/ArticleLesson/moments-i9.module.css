@@ -1,0 +1,539 @@
+/* Lesson I9's figures, inside the app's frame (its colors come from there). */
+
+/* ── Page 1: the sizing planner ── */
+
+.planTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1rem;
+}
+
+.cashBox,
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.cashBox {
+  flex: 1 1 18rem;
+  max-width: 28rem;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.rateChip {
+  margin-bottom: 1.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ltvChips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chipsLabel {
+  margin-right: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.chip {
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.chip:hover:not(:disabled) {
+  border-color: var(--app-outline);
+}
+
+.chip:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.chipOn {
+  border-color: var(--app-alchemix);
+  background: rgba(245, 192, 154, 0.12);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+.readouts {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.9fr) minmax(0, 1.3fr);
+  gap: 0.75rem;
+}
+
+.readout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.formula {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.worked {
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.worked b {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.textWarn {
+  color: #e0a54a;
+}
+
+.blank {
+  color: var(--app-muted);
+}
+
+.scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding-top: 1.5rem;
+}
+
+.scaleTrack {
+  position: relative;
+  height: 0.875rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.scaleFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--app-deposit);
+}
+
+.scaleOver {
+  background: #d4952a;
+}
+
+.walletMark {
+  position: absolute;
+  top: -0.375rem;
+  bottom: -0.375rem;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--app-fg);
+  transition: background 0.3s ease;
+}
+
+.walletMark b {
+  position: absolute;
+  bottom: calc(100% + 0.25rem);
+  left: 0;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.walletOver {
+  background: #e0a54a;
+}
+
+.walletOver b {
+  color: #e0a54a;
+}
+
+.scaleLegend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Page 2: the Yield Looping tab ── */
+
+.walletLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.walletLabel {
+  color: var(--app-muted);
+}
+
+.walletItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.slot {
+  display: inline-grid;
+}
+
+.slot > * {
+  grid-area: 1 / 1;
+  justify-self: start;
+}
+
+.loopChip,
+.nft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.nft {
+  color: var(--app-fg);
+}
+
+.detailsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.detailsLink {
+  padding: 0.125rem 0.25rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 0.75rem;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.detailsLink:hover {
+  color: var(--app-fg);
+  text-decoration: underline;
+}
+
+.detailsLit {
+  color: var(--app-alchemix);
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+.slippage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.slippage b {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.375rem;
+  color: var(--app-fg);
+  font-weight: 500;
+}
+
+/* The box is tall enough for all eight steps, one line each, so the learner
+   reads them without scrolling inside the figure, and it holds that height
+   for Boosted APR too, so switching between them moves nothing. Where a
+   narrow column wraps a step onto a second line (a phone), the box grows to
+   fit the list, and the tab's `Grow` eases it. */
+.box {
+  display: flex;
+  flex-direction: column;
+  min-height: 12.25rem;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: var(--app-ground);
+}
+
+.stepList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+/* Named from the box down, so these outrank the lesson's `.prose li`, which
+   set each step in the body's large type with a gap under it (three steps
+   filled the box). */
+.box .stepList li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--app-fg);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.box .stepList li > span:first-child {
+  flex-shrink: 0;
+  color: var(--app-muted);
+}
+
+.box .stepList li.stepOn {
+  background: rgba(245, 192, 154, 0.14);
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+.box .stepList li.stepPast {
+  color: var(--app-muted);
+}
+
+.aprBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 100%;
+}
+
+/* In the box, Boosted APR fills whatever height the box has. */
+.box > .aprBox {
+  flex: 1 1 auto;
+  height: auto;
+}
+
+.aprSmall {
+  height: auto;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+}
+
+.aprLabel {
+  font-size: 0.875rem;
+  color: var(--app-muted);
+}
+
+.aprValue {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #22c55e;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Page 3: the tab with the Visualizer's figures ── */
+
+.tabFigure {
+  margin: 1.75rem 0 2rem;
+}
+
+.tabFigure > section {
+  margin-bottom: 0.75rem;
+}
+
+.tabGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 1rem 1.5rem;
+}
+
+.tabLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tabRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.tabRows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tabRows dt {
+  color: var(--app-muted);
+}
+
+.tabRows dd {
+  margin: 0;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabRight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vizLabel {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.tabCaption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--m-muted, #888);
+}
+
+/* ── Page 4: the loss, two ways ── */
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.875rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.625rem;
+}
+
+.columnHead {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* Debt that stays: outlined dashed while the loss lands. */
+.heldOn {
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  outline: 1px dashed var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .readouts,
+  .columns,
+  .tabGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rateChip {
+    margin-bottom: 0;
+  }
+}
+
+/* ── The loop's tab fits 1440x900 at full size ── */
+
+/* Deposit and Debt from the shared tiles, and this lesson's truncating LTV
+   tile beside them, in one row: the shared row is laid out as if the three
+   were its own. */
+.loopStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.loopStats > div:first-child {
+  display: contents;
+  --app-tiles: 3 !important;
+}
+
+.loopStats > :last-child {
+  flex: 1 1 calc(100% / 3 - 0.75rem);
+}
+
+/* The tab's controls in two columns on a wide screen: the three inputs on
+   the left, the details, the box and Boost Yield on the right. The app
+   stacks them; side by side the practice copy fits a 900px window without
+   shrinking. */
+.loopGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem 1.5rem;
+  align-items: start;
+}
+
+.loopCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .loopGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .loopStats {
+    gap: 0.5rem;
+  }
+
+  .loopStats > :last-child {
+    flex-basis: calc(50% - 0.25rem);
+  }
+}
+
+/* The Visualizer's inputs, as this lesson's example sets them. */
+.vizInputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1rem;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.vizInputs b {
+  margin-left: 0.25rem;
+  color: var(--app-fg);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}

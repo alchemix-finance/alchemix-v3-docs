@@ -1,0 +1,30 @@
+import { Intro, PageBreak, Shot, StripAppears } from "../ArticleLesson";
+import { Term } from "../kit";
+
+<Intro>
+
+In this track you learn Alchemix by using it, in the order you would in the app, from your first deposit to repaying the loan. Every step uses the practice wallet at the top of the page. It starts with 10,000 USDC, and each action you take changes it the way your real wallet and position would change in the app.
+
+No real wallet is connected here, so nothing you do in this track costs gas or real money. In the real app, each action is a transaction that your own wallet approves and pays gas for, in ETH on the vault's chain. Each lesson ends with a short check on what it taught.
+
+</Intro>
+
+<StripAppears />
+
+There are usually two ways to get cash from an asset you hold. You can sell it, and give up whatever it would have earned. Or you can borrow against it, and pay interest on the loan until you pay it back. Alchemix is built around a third way.
+
+You deposit USDC or ETH into a vault, where it earns yield. You can then borrow against it, up to 90% of its value, without paying interest on the loan. Repaying the loan yourself is optional, and you can do it at any time. Left alone, the loan is paid down for you out of your deposit, a little at a time, by Alchemix v3's redemption system, which you will learn about later in this track. The yield and the repayment are separate: yield raises what your deposit is worth, and redemptions pay the loan down out of the deposit itself.
+
+<PageBreak title="The three pages" />
+
+Three things make that work, and each has its own page in the app.
+
+- **Borrow** is the page where you borrow against a vault deposit. A vault is one pool of USDC or ETH that Alchemix spreads across yield strategies on other protocols, chosen and weighted by the Alchemix DAO. Alchemix mints <Term id="alusd">alUSD</Term>, its synthetic debt token, against a USDC deposit (alETH against ETH), up to 90% of its value, and charges no interest beyond the redemption fee, which you will learn about later in this course. Each alUSD is one USDC of debt inside Alchemix. Typically, you swap the alUSD for USDC to spend, which the app can also do for you as you borrow.
+- **Fixed Yield**, listed in the menu under Earn as Fixed Rate, is the page where you deposit alUSD for a set term and receive one USDC for each alUSD at the end. alUSD typically costs a little under a dollar, so you know your return on the day you deposit. Redemptions pay that USDC out of borrowers' deposits and cancel the same amount of their debt, which pays their loans down.
+- **Mixed Yield**, listed under Earn as Variable Rate, is the page where you deposit into vaults to earn a variable yield. A deposit there gives you <Term id="myt">MYT</Term>, the Mix-Yield Token, an ERC-20 token representing your share of the vault's strategies. Its value rises as they earn yield and falls if one of them records a loss. MYT is also the collateral Alchemix lends against.
+
+The Dashboard lists everything you hold across the three.
+
+<Shot name="menu">The app's top menu with Earn open. Fixed Rate leads to the Fixed Yield page and Variable Rate to the <Term id="mixedYield">Mixed Yield</Term> page.</Shot>
+
+In the next lesson, you deposit the practice wallet's 10,000 USDC into a vault.

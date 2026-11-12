@@ -1,0 +1,930 @@
+/* Intermediate lessons 1 to 3 (moments-i1.jsx, shared by moments-i2.jsx and
+   moments-i3.jsx). Every figure sits inside the practice vault's frame
+   (AppMock's `.frame`), so the app's colors (--app-*) are set here. */
+
+.frame {
+  position: relative;
+}
+
+.heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-alchemix);
+}
+
+.topRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* ── Flow figures ── */
+
+.flow {
+  position: relative;
+}
+
+/* Room under the boxes for a token that goes round the middle one. */
+.withLane {
+  padding-bottom: 2.25rem;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.75rem 0.875rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  border-radius: 0.625rem;
+  transition: border-color 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lit {
+  border-color: var(--app-alchemix);
+  box-shadow: 0 0 14px rgba(245, 192, 154, 0.22);
+}
+
+.dim {
+  opacity: 0.35;
+}
+
+.boxTitle {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.boxBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.empty {
+  font-size: 0.875rem;
+  color: var(--app-muted);
+}
+
+/* `Turns`: parts that replace each other in a box share one cell, which is
+   as large as the largest of them, so a swap changes no height. */
+.turns {
+  display: grid;
+  justify-items: start;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.turns > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  color: var(--app-muted);
+  opacity: 0.45;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.connectorLit {
+  color: var(--app-alchemix);
+  opacity: 1;
+}
+
+.arrowBack {
+  transform: rotate(180deg);
+}
+
+/* A token held in a box. */
+.holding {
+  max-width: 100%;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.coin {
+  background: color-mix(in oklch, var(--app-debt, oklch(0.78 0.15 228)) 22%, transparent);
+}
+
+.myt {
+  background: color-mix(in oklch, var(--app-deposit, oklch(0.65 0.1925 283.02)) 30%, transparent);
+}
+
+.al {
+  background: color-mix(in oklch, var(--app-earmark, oklch(0.85 0.0792 57.05)) 22%, transparent);
+}
+
+.nft {
+  border-radius: 0.375rem;
+  border: 1px solid var(--app-alchemix, #f5c09a);
+  background: rgba(245, 192, 154, 0.1);
+  color: var(--app-alchemix, #f5c09a);
+}
+
+.chip {
+  font-weight: 500;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.row {
+  border-radius: 0.375rem;
+  font-weight: 500;
+  white-space: normal;
+}
+
+.fresh {
+  animation: fresh 0.6s ease-out both;
+}
+
+.gone {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+@keyframes fresh {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A token in flight, over everything in the figure. */
+.token {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--app-card);
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 6px 18px rgba(0, 0, 0, 0.45);
+  color: var(--app-fg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.token.nft {
+  border-radius: 0.375rem;
+  color: var(--app-alchemix);
+}
+
+.token.slide {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  width: 15rem;
+}
+
+.router {
+  padding: 0.25rem 0.75rem;
+  border: 1px dashed var(--app-outline);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.routerLit {
+  border-color: var(--app-alchemix);
+  color: var(--app-alchemix);
+}
+
+.routerLane {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.withRouter {
+  padding-bottom: 0;
+}
+
+/* ── The vault page's own parts ── */
+
+.appCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.screen .appCard {
+  box-sizing: border-box;
+  padding: 1rem;
+  background: var(--app-card);
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+}
+
+.screen .appCardOn {
+  border-color: var(--app-alchemix);
+}
+
+/* The vault's six tabs on one line in the half-width card beside the
+   Dashboard (page 2, after Manage). At the app's own size and spacing
+   "Yield Looping" went to a second line on its own at 1440. The row is
+   AppMock's, so it is reached by its role, and only the six-tab row is
+   touched: the Mixed Yield card's two tabs keep the app's size. Where the
+   card is too narrow for even this, the row wraps as before. */
+.screen .appCard [role="tablist"]:has(> :nth-child(6)) {
+  gap: 0.25rem 1rem;
+}
+
+.screen .appCard [role="tablist"]:has(> :nth-child(6)) [role="tab"] {
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.screenLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-muted);
+}
+
+/* Room for two rows of holdings in a box, so the figure keeps its height as tokens come
+   and go. The holdings sit side by side and wrap, which keeps page 2's figure short
+   enough to show whole at 1440x900. */
+.columnsTall .box {
+  min-height: 7.25rem;
+}
+
+.columnsTall .boxBody {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.vaultHead {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.vaultHead img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.vaultHeadName {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.vaultHeadSub {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+.posId {
+  padding: 0 0.375rem;
+  border-radius: 0.25rem;
+  color: var(--app-fg);
+  font-variant-numeric: tabular-nums;
+  transition: box-shadow 0.4s ease;
+}
+
+.posIdLit {
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 12px rgba(245, 192, 154, 0.4);
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.screen {
+  min-width: 0;
+}
+
+/* ── The Dashboard ── */
+
+.dash {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+}
+
+.dashIn {
+  animation: fresh 0.8s ease-out both;
+}
+
+.dashOut {
+  visibility: hidden;
+}
+
+.dashTitle {
+  font-size: 1rem;
+}
+
+/* The two Dashboard sections side by side where there is room, stacked where there is not. */
+.dashCols {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem 1rem;
+}
+
+.dashCol {
+  display: flex;
+  flex: 1 1 13rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.dashHeading {
+  width: fit-content;
+  padding: 0 0.25rem;
+  margin-left: -0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--app-fg);
+  transition: box-shadow 0.3s ease;
+}
+
+.dashHeadingLit {
+  box-shadow: 0 0 0 1px var(--app-alchemix);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 17rem;
+  padding: 0.75rem 0.875rem 0.875rem;
+  background: var(--app-card);
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  color: var(--app-fg);
+  font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+.cardOn {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.cardDim {
+  opacity: 0.35;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 1.75rem;
+}
+
+.chain {
+  padding: 0.0625rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.6875rem;
+  color: var(--app-muted);
+}
+
+.cardToken {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.cardRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.8125rem;
+}
+
+.cardRows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0.25rem;
+  margin: 0 -0.25rem;
+  border-radius: 0.25rem;
+}
+
+.cardRows dt {
+  font-weight: 400;
+}
+
+.cardRows dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cardLit {
+  box-shadow: inset 0 0 0 1px var(--app-alchemix);
+}
+
+.cardBar {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--app-deposit) 62%, transparent);
+  overflow: hidden;
+}
+
+.cardBar i {
+  display: block;
+  height: 100%;
+  background: var(--app-debt);
+}
+
+.cardManage {
+  display: flex;
+  flex-direction: column;
+}
+
+.mytTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--app-card);
+  font-size: 0.8125rem;
+}
+
+.mytHead,
+.mytRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+}
+
+.mytHead {
+  color: var(--app-muted);
+}
+
+.mytRow {
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--app-border);
+  transition: opacity 0.6s ease;
+}
+
+.mytRowGone {
+  opacity: 0;
+}
+
+.mytName,
+.mytDeposit {
+  display: flex;
+  flex-direction: column;
+}
+
+.mytDeposit {
+  text-align: right;
+}
+
+.mytName small,
+.mytDeposit small {
+  color: var(--app-muted);
+  font-size: 0.75rem;
+}
+
+.mytName b,
+.mytDeposit b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Send ── */
+
+.sendPair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.sendSide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+}
+
+.cardSlot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 18.5rem;
+}
+
+.noPositions {
+  width: 100%;
+  font-size: 0.875rem;
+  color: var(--app-muted);
+  text-align: center;
+}
+
+.menuWrap {
+  position: relative;
+}
+
+.dots {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: none;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dots:disabled {
+  cursor: default;
+}
+
+.dotsLit {
+  border-color: var(--app-alchemix);
+  color: var(--app-fg);
+  box-shadow: 0 0 12px rgba(245, 192, 154, 0.35);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 3;
+  padding: 0.25rem;
+  background: var(--app-card);
+  border: 1px solid var(--app-input);
+  border-radius: 0.5rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.menu button {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--app-alchemix);
+  border-radius: 0.375rem;
+  background: none;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.dialogBack {
+  position: absolute;
+  inset: -0.25rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  background: rgba(10, 16, 22, 0.7);
+  animation: fresh 0.25s ease-out both;
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 27rem;
+  padding: 1.25rem;
+  background: var(--app-card);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.dialogTitle {
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.dialogText {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-muted);
+}
+
+.dialogLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+}
+
+.dialogField {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  background: var(--app-field);
+  border: 1px solid var(--app-input);
+  border-radius: 0.375rem;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.check input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0.125rem 0 0;
+  accent-color: #f5c09a;
+  flex-shrink: 0;
+}
+
+/* ── The loop on page 4 ── */
+
+.loop {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.35fr) minmax(0, 1.15fr) minmax(0, 0.85fr) minmax(0, 0.75fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.person {
+  background: transparent;
+  border: 1px dashed var(--app-border);
+}
+
+.loopRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.loopRow b {
+  font-weight: 600;
+}
+
+.loopLegend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+}
+
+.loopLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.loopLegend i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+}
+
+/* The deposit's full length, faint, so the track's shortening at the claim shows. */
+.loopBar {
+  width: 100%;
+  height: 0.875rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+/* Two classes, so it beats the app bar's own height whatever order the sheets load in. */
+.loopBar .loopTrack {
+  height: 100%;
+}
+
+.vest {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.vestTrack {
+  flex: 1;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.vestTrack i {
+  display: block;
+  height: 100%;
+  background: var(--app-earmark);
+  transition: width 1.6s ease-in-out;
+}
+
+/* Step cards are sentences, so they keep the text width, not the stage's. */
+.steps {
+  max-width: var(--article-text);
+  margin: 0 0 2rem;
+}
+
+.backStep {
+  border-style: solid;
+  border-color: var(--m-line-strong, rgba(255, 255, 255, 0.2));
+  color: var(--m-muted);
+}
+
+/* ── The Contracts tab ── */
+
+.contracts {
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.contractRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+  padding: 0.125rem 0.375rem;
+  margin: 0 -0.375rem;
+  border-radius: 0.375rem;
+}
+
+.contractName {
+  flex-shrink: 0;
+  color: var(--app-muted);
+  white-space: nowrap;
+}
+
+/* An address is there to be checked character by character, so it is never
+   cut short: where the row is too narrow it wraps (it was clipped with an
+   ellipsis at 390, about 192px of 300px showing). */
+.contractAddress {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.contractRow code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--app-fg);
+  font-size: 0.8125rem;
+}
+
+.contractLit {
+  box-shadow: inset 0 0 0 1px var(--app-alchemix);
+}
+
+.caption {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--app-muted);
+}
+
+.barRed {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 95%;
+  right: 0;
+  background: oklch(0.704 0.191 22.216 / 85%);
+}
+
+@media (max-width: 640px) {
+  .columns,
+  .loop,
+  .pair,
+  .sendPair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .connector {
+    width: auto;
+    height: 1.5rem;
+    transform: rotate(90deg);
+  }
+
+  .dashOut {
+    display: none;
+  }
+
+  .withLane {
+    padding-bottom: 0;
+  }
+
+  .cardSlot {
+    min-height: 0;
+    justify-content: center;
+  }
+
+  .card {
+    max-width: none;
+  }
+
+  .token.slide {
+    width: 14rem;
+  }
+
+  /* On a phone each contract's name sits over its address, and the address
+     is a size down, so all 42 characters fit on one line at 390. */
+  .contractRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .contractRow code {
+    font-size: 0.6875rem;
+  }
+
+  .contractAddress {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fresh,
+  .dashIn,
+  .dialogBack {
+    animation: none;
+  }
+
+  .vestTrack i {
+    transition: none;
+  }
+}
+
+/* The Dashboard's position card (AppMock's) at the width this figure gives it. */
+.cardFit {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 17rem;
+}

@@ -1,0 +1,567 @@
+/* Intermediate lesson 2's figures (moments-i2.jsx). Inside the practice
+   frame, so the app's colors (--app-*) apply. */
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.infoBody {
+  align-items: flex-start;
+}
+
+.slice,
+.sliceFade {
+  transition: opacity 0.25s ease;
+}
+
+.sliceFade {
+  opacity: 0.3;
+}
+
+.row td {
+  transition: background 0.2s ease;
+}
+
+.rowOn td {
+  background: rgba(245, 192, 154, 0.08) !important;
+}
+
+.rowOn td:first-child {
+  box-shadow: inset 2px 0 0 var(--app-alchemix);
+}
+
+.rowChip {
+  margin-left: 0.5rem;
+}
+
+.afterRow td {
+  padding-top: 0.25rem !important;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chip b {
+  font-weight: 600;
+}
+
+.chipLabel {
+  color: var(--app-muted);
+}
+
+.chipLit {
+  border-color: var(--app-alchemix);
+  box-shadow: 0 0 12px rgba(245, 192, 154, 0.25);
+}
+
+.feeChip {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(245, 192, 154, 0.1);
+  border: 1px solid transparent;
+  color: var(--app-alchemix);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.feeChipLit {
+  border-color: var(--app-alchemix);
+  box-shadow: 0 0 14px rgba(245, 192, 154, 0.35);
+}
+
+.yearLine {
+  margin: 0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--app-fg);
+}
+
+/* The two-way switch over the table: After fee | Before fee. */
+.segment {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  width: 17rem;
+  box-sizing: border-box;
+  padding: 0.1875rem;
+  border: 1px solid var(--app-input);
+  border-radius: 0.5rem;
+  background: var(--app-field);
+}
+
+.toggle {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.1875rem;
+  border: 1px solid var(--app-input);
+  border-radius: 0.5rem;
+  background: var(--app-field);
+}
+
+.toggleOption,
+.segmentOption {
+  appearance: none;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: none;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.toggleOption:disabled,
+.segmentOption:disabled {
+  cursor: default;
+}
+
+.segmentOption:disabled:not(.segmentOn) {
+  opacity: 0.45;
+}
+
+.toggleOn,
+.segmentOn {
+  background: var(--app-card);
+  color: var(--app-fg);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* The option the text asks for, outlined until it is pressed. */
+.toggleCall,
+.segmentCall {
+  border-color: var(--app-alchemix);
+  color: var(--app-fg);
+  box-shadow: 0 0 12px rgba(245, 192, 154, 0.3);
+}
+
+.toggleOption:focus-visible,
+.segmentOption:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+/* ── Risk Level ── */
+
+.riskCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--app-card);
+  border-radius: 0.75rem;
+}
+
+.riskTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  min-height: 2.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.riskName {
+  font-size: 1.0625rem;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.875rem;
+  font-weight: 600;
+  animation: badgeIn 0.6s ease-out both;
+}
+
+.badgeConservative {
+  color: oklch(0.78 0.15 228);
+}
+
+.badgeModerate,
+.badgesplit {
+  color: var(--app-earmark);
+}
+
+.badgeAggressive {
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: oklch(0.704 0.191 22.216 / 22%);
+  color: oklch(0.8 0.15 22);
+  font-weight: 700;
+}
+
+@keyframes badgeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The options sit directly after the label, which keeps one width so the
+   four switches line up. Pushed to the row's two ends they were about 700px
+   apart at 1440. */
+.input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 1rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition: border-color 0.4s ease, background 0.4s ease;
+}
+
+.inputLit {
+  border-color: var(--app-alchemix);
+  background: rgba(245, 192, 154, 0.06);
+}
+
+.inputLabel {
+  flex: 0 0 9.5rem;
+  font-size: 0.9375rem;
+}
+
+/* ── Priced two ways ── */
+
+.sides {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+}
+
+.sideLabel {
+  font-size: 0.9375rem;
+}
+
+.strats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.75rem;
+  background: var(--app-card);
+  border-radius: 0.5rem;
+}
+
+.strat {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) 2.5rem;
+  align-items: center;
+  gap: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+}
+
+.stratName {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+
+.stratName i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+}
+
+.stratBar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.stratBar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.stratShare {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stratNotes {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  min-height: 1.125rem;
+}
+
+.backing {
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* ── A loss ── */
+
+.lossPair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.lossStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.slider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.slider input {
+  flex: 1;
+  min-width: 6rem;
+  accent-color: #f5c09a;
+}
+
+.slider b {
+  min-width: 2.75rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The caps ── */
+
+.caps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--app-card);
+  border-radius: 0.75rem;
+}
+
+.vaultBar {
+  position: relative;
+  height: 2.25rem;
+}
+
+.vaultGhost {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 0.5rem;
+}
+
+.vaultFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  transition: width 1s ease-in-out;
+}
+
+.seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+  color: oklch(0.2 0.02 240);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: flex-grow 1s ease-in-out;
+}
+
+.capsLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.capsLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.capsLegend i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+}
+
+.meter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.meterHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.meterHead b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.meterTrack {
+  position: relative;
+  height: 0.875rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.meterTrack > i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: oklch(0.65 0.1925 283.02);
+  transition: width 0.6s ease-in-out, background 0.3s ease;
+}
+
+.meterTrack > i.meterBad {
+  background: oklch(0.704 0.191 22.216);
+}
+
+.meterTrack > i.meterOver {
+  background: oklch(0.8 0.14 75);
+}
+
+.capLine {
+  position: absolute;
+  top: -0.25rem;
+  bottom: -0.25rem;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--app-fg);
+}
+
+.meterNote {
+  min-height: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+}
+
+/* `ControlStage`: its own formatting context, so the frame's and the control
+   row's margins are inside its height. */
+.withControl {
+  display: flow-root;
+}
+
+/* The caps figure's two lesson controls in one place: the grid's one cell is
+   as large as the larger of them, and the row's margins (parts.module.css
+   `.controlRow`) move to the grid so the cell has no margin inside it. */
+.controlSwap {
+  display: grid;
+  margin: -1rem 0 2rem;
+}
+
+.swapItem {
+  grid-area: 1 / 1;
+  min-width: 0;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.swapItem > div {
+  margin: 0;
+}
+
+.swapOff {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.noteBad,
+.meterNote:not(.noteOver):not(:empty) {
+  color: var(--app-muted);
+}
+
+.noteOver {
+  color: oklch(0.8 0.14 75);
+}
+
+@media (max-width: 640px) {
+  .sides,
+  .lossPair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .strat {
+    grid-template-columns: 5.75rem minmax(0, 1fr) 2.25rem;
+  }
+
+  .segmentOption,
+  .toggleOption {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  /* "Blocked: ..." takes two lines on a phone; its room is there from the start. */
+  .meterNoteHold {
+    min-height: 2lh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    animation: none;
+  }
+
+  .vaultFill,
+  .seg,
+  .meterTrack > i,
+  .swapItem {
+    transition: none;
+  }
+}

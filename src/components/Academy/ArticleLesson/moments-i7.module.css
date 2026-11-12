@@ -1,0 +1,787 @@
+/* Lessons I7 to I9's practice parts, beside the app's own (AppMock). The
+   app's colors live on its frame; a part drawn outside a frame (a window
+   under a Dashboard row) carries them itself. */
+
+.appVars,
+.window {
+  --app-card: oklch(0.2964 0.0247 236.77);
+  --app-ground: oklch(0.255 0.016 236);
+  --app-border: oklch(1 0 0 / 10%);
+  --app-muted: oklch(0.708 0 0);
+  --app-fg: oklch(0.985 0 0);
+  --app-outline: oklch(0.6 0.05 240);
+  --app-deposit: oklch(0.65 0.1925 283.02);
+  --app-debt: oklch(0.78 0.15 228);
+  --app-earmark: oklch(0.85 0.0792 57.05);
+  --app-alchemix: oklch(0.8461 0.0792 57.05);
+}
+
+/* A part the text names: the copper outline a lit tile has. */
+.rowLit {
+  border-radius: 0.375rem;
+  box-shadow: 0 0 0 1px var(--app-alchemix, #f5c09a);
+}
+
+/* A figure that does not change, said so: a dashed outline. */
+.rowHeld {
+  border-radius: 0.375rem;
+  outline: 1px dashed var(--app-alchemix, #f5c09a);
+  outline-offset: 0;
+}
+
+.partLit {
+  box-shadow: 0 0 0 1px var(--app-alchemix, #f5c09a);
+}
+
+/* ── Slider ── */
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  margin: 0 -0.625rem;
+  border-radius: 0.5rem;
+}
+
+.sliderOff {
+  opacity: 0.55;
+}
+
+.sliderHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.75rem;
+}
+
+.sliderLabel {
+  color: var(--app-muted);
+}
+
+.sliderValue {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.25rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.range:disabled {
+  cursor: not-allowed;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--app-alchemix, #f5c09a) var(--fill, 0%), rgba(255, 255, 255, 0.14) var(--fill, 0%));
+}
+
+.range::-moz-range-track {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--app-alchemix, #f5c09a) var(--fill, 0%), rgba(255, 255, 255, 0.14) var(--fill, 0%));
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: -0.375rem;
+  border: 2px solid var(--app-alchemix, #f5c09a);
+  border-radius: 50%;
+  background: var(--app-fg, #fff);
+}
+
+.range::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--app-alchemix, #f5c09a);
+  border-radius: 50%;
+  background: var(--app-fg, #fff);
+}
+
+.range:focus-visible {
+  outline: 2px solid var(--app-alchemix, #f5c09a);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+.ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: var(--app-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Switch ── */
+
+.switchRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--app-muted);
+}
+
+.switchOff {
+  opacity: 0.6;
+}
+
+.switch {
+  position: relative;
+  width: 2.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.switch i {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+
+.switchOn {
+  background: var(--app-fg, #fafafa);
+}
+
+.switchOn i {
+  transform: translateX(1rem);
+  background: var(--app-ground, #1e2730);
+}
+
+.switch:focus-visible {
+  outline: 2px solid var(--app-alchemix, #f5c09a);
+  outline-offset: 2px;
+}
+
+/* ── A window the app opens, drawn in place ── */
+
+.growIn {
+  min-width: 0;
+}
+
+.window {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: -1rem 0 2rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--app-ground);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  color: var(--app-fg);
+  font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* The window in place of a vault tab's panel (the Liquidate tab's confirmation). */
+.windowInPanel {
+  margin: 0;
+  box-shadow: none;
+  background: var(--app-card);
+}
+
+.windowTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.windowText {
+  margin: -0.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--app-muted);
+}
+
+.windowRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.windowNote {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.windowActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.windowActions > button {
+  min-width: 10rem;
+}
+
+.dotted {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.dotted i {
+  flex: 1 1 auto;
+  min-width: 1rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.45);
+}
+
+.dotted b {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(234, 179, 8, 0.5);
+  border-radius: 0.5rem;
+  background: rgba(234, 179, 8, 0.1);
+  font-size: 0.875rem;
+  transition: box-shadow 0.4s ease;
+}
+
+.noticeLit {
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 14px rgba(245, 192, 154, 0.3);
+}
+
+.notice p,
+.notice ul {
+  margin: 0;
+}
+
+.notice ul {
+  padding-left: 1.25rem;
+}
+
+/* The app's own list, at the notice's size, not the lesson text's. */
+.notice ul li {
+  margin: 0.125rem 0;
+  font-size: inherit;
+  line-height: 1.5;
+}
+
+.noticeTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.noticeTitle svg {
+  color: rgb(234, 179, 8);
+}
+
+.choiceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* The two choices sit under the window, inside its overlay, which spaces
+   them: a lesson control's own row margins are for a row under a figure. */
+.choiceRow > div {
+  margin: 0;
+}
+
+/* ── The claim window, over its Dashboard row ── */
+
+/* The row, the scrim and the window in one grid cell: the figure is as tall
+   as the taller of the row and the open window. */
+.over {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.over > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.over > section {
+  align-self: start;
+}
+
+/* The dimming the app's dialog puts over the page, here over the figure. It
+   ends where the row's card does (the card's 2rem of room under it is not
+   dimmed) and fades with the window. */
+.scrim {
+  z-index: 3;
+  margin-bottom: 2rem;
+  border-radius: 0.75rem;
+  background: rgba(8, 12, 16, 0.62);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.scrimOn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Shut, this has no height and lets a press through to the row's button. */
+.overWindow {
+  z-index: 4;
+  align-self: start;
+  pointer-events: none;
+}
+
+/* A rem of the scrim around the window, as the Self Liquidate window has;
+   the bottom adds the 2rem the scrim leaves undimmed. */
+.overPad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1rem 3rem;
+  pointer-events: auto;
+}
+
+.overPad > * {
+  box-sizing: border-box;
+  width: min(32rem, 100%);
+}
+
+.overPad > [role="dialog"] {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim {
+    transition: none;
+  }
+}
+
+/* ── I7 page 1: the price line ── */
+
+.cycleCaption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  min-height: 3rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.cycleNum {
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--app-alchemix);
+  color: var(--app-alchemix);
+  /* 11px, not 12: a 12px digit is 9px tall, which cannot sit centered in a
+     24px circle and rendered half a pixel high at every screen scaling. */
+  font-size: 0.6875rem;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.priceLine {
+  position: relative;
+  height: 4.5rem;
+  margin: 0 1.25rem;
+}
+
+.priceTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2.75rem;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.peg {
+  position: absolute;
+  top: 1.25rem;
+  bottom: 0;
+  border-left: 2px dashed var(--app-muted);
+}
+
+.peg span {
+  position: absolute;
+  top: -1.25rem;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--app-muted);
+  white-space: nowrap;
+}
+
+.marker {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  transform: translateX(-50%);
+  transition: left 0.6s ease;
+}
+
+.marker span {
+  margin-top: 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.marker i {
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.25rem;
+  border-radius: 50%;
+  background: var(--app-debt);
+  box-shadow: 0 0 0 3px var(--app-ground);
+}
+
+.markerLit i {
+  box-shadow: 0 0 0 3px var(--app-ground), 0 0 0 5px var(--app-alchemix);
+}
+
+.cycleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.sale {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1 1 18rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.saleLabel {
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+  white-space: nowrap;
+}
+
+.saleBar {
+  position: relative;
+  flex: 1 1 auto;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.saleBar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--app-debt);
+  transition: width 0.6s ease;
+}
+
+.burn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  /* alUSD taken off the market pulls the price up: the app's green. */
+  color: #22c55e;
+  white-space: nowrap;
+}
+
+.cycleChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fyChip,
+.buyer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  transition: box-shadow 0.3s ease;
+}
+
+.fyChip b {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+  color: #22c55e;
+}
+
+/* ── I7 page 2: the card's price row ── */
+
+.aprBlock {
+  margin: 0 -0.5rem;
+  padding: 0.25rem 0.5rem 0;
+}
+
+.priceRow {
+  flex-direction: column;
+  gap: 0.25rem !important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.priceRowHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.outputValue {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.rowChip {
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--app-muted);
+  white-space: nowrap;
+}
+
+/* Every row of the card's right column sits a little inside the outline it
+   takes when lit, lit or not, so lighting a row never moves its words. */
+.cardRow {
+  margin: 0 -0.375rem;
+  padding: 0 0.375rem;
+}
+
+/* ── I7 page 3: the Deposit Cap row ── */
+
+.capCard {
+  max-width: 34rem;
+  background: var(--app-card);
+}
+
+.capChipRow {
+  display: flex;
+  justify-content: flex-start;
+  height: 1.5rem;
+  margin: -0.5rem 0 -0.75rem;
+}
+
+.freedChip {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: rgba(245, 192, 154, 0.14);
+  color: var(--app-alchemix);
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  transition: opacity 0.35s ease, transform 0.8s ease;
+}
+
+.freedIn {
+  opacity: 1;
+  transform: translateY(0);
+  animation: freedSettle 2s ease forwards;
+}
+
+@keyframes freedSettle {
+  0%,
+  45% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0.875rem);
+  }
+}
+
+.capBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin: 0 -0.5rem;
+  border-radius: 0.5rem;
+}
+
+.capRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.capLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.capFigure {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tipWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.info {
+  display: inline-grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  padding: 0;
+  border: 1px solid var(--app-muted);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--app-muted);
+  font-size: 0.6875rem;
+  font-style: italic;
+  font-weight: 700;
+  font-family: Georgia, serif;
+  cursor: pointer;
+}
+
+.infoLit {
+  border-color: var(--app-alchemix);
+  color: var(--app-alchemix);
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.2);
+}
+
+.info:focus-visible {
+  outline: 2px solid var(--app-alchemix);
+  outline-offset: 2px;
+}
+
+.tip {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(100% + 0.5rem);
+  transform: translateX(-30%);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.375rem;
+  background: oklch(0.2 0.012 236);
+  box-shadow: 0 0 0 1px var(--app-alchemix), 0 8px 20px rgba(0, 0, 0, 0.35);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.capAction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lessonCaption {
+  font-size: 0.8125rem;
+  color: var(--app-alchemix);
+}
+
+/* ── I7 pages 4 and 5: the Dashboard row ── */
+
+.tCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tIcons {
+  display: inline-flex;
+}
+
+.tIcons img {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.tIcons img + img {
+  margin-left: -0.5rem;
+}
+
+.tChain {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.paidLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--app-muted);
+}
+
+@media (max-width: 640px) {
+  .window {
+    padding: 1rem;
+  }
+
+  .dotted {
+    font-size: 0.8125rem;
+  }
+
+  .priceLine {
+    margin: 0 0.75rem;
+  }
+
+  /* The longest step caption runs to three lines here; every step keeps that room. */
+  .cycleCaption {
+    min-height: 4.25rem;
+  }
+
+  .tip {
+    transform: translateX(-50%);
+    white-space: normal;
+    width: 12rem;
+  }
+}

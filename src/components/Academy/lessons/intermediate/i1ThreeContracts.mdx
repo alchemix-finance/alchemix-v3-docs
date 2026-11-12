@@ -1,0 +1,118 @@
+import { Await, Do, Intro, PageBreak, Stat } from "../../ArticleLesson";
+import { ContractLoopSequence, ContractsTabFigure, DashboardBothShot, DepositPathFigure, MixedYieldPathFigure, SendPositionFigure } from "../../ArticleLesson/moments-i1";
+import { Term } from "../../kit";
+
+<Intro>
+
+In this track you learn what Alchemix does with your deposit and your loan after you press Deposit or Borrow in the app, from the contracts that hold your deposit to the losses inside a vault that can raise your LTV. Once you know this, you can judge the risk of a vault and decide how much to borrow against it before you open a position of your own.
+
+Every lesson uses the practice wallet at the top of the page, set to that lesson's own starting position, so the numbers in the text match the ones on screen. The examples use the Risk-adjusted Mix USDC vault on Ethereum. No real wallet is connected here.
+
+</Intro>
+
+Say you have 20,000 USDC. You plan to borrow against 10,000 of it, and to keep the other 10,000 earning without taking a loan. The two deposits take different paths. The one you borrow against ends up in the Alchemist, the contract that records your position, and the one you keep without a loan ends up in your own wallet as MYT.
+
+In the app, you deposit into a vault, such as Risk-adjusted Mix USDC. What the app calls a vault is two contracts working together, the MYT vault and the Alchemist. A deposit on the Fixed Yield page goes to a third contract, the Transmuter.
+
+- **The <Term id="mytVault">MYT vault</Term>** receives your USDC and mints <Term id="myt">MYT</Term>, the Mix-Yield Token, for it at MYT's current price. It spreads the USDC across the vault's strategies, the lending markets and other yield vaults the Alchemix DAO chooses to deposit into, and MYT's price rises as they earn.
+- **The <Term id="alchemist">Alchemist</Term>** holds MYT as collateral, mints alUSD against it when you borrow, and records each position's Deposit and Debt.
+- **The <Term id="transmuter">Transmuter</Term>** holds the alUSD that people deposit on the Fixed Yield page while it vests, meaning it becomes claimable a little at a time over the deposit's term, and pays each depositor in MYT when they claim.
+
+In the app, the Risk-adjusted Mix USDC vault's MYT is named mixUSDC. In this example 1 mixUSDC is worth 1.25 USDC, since MYT's price has risen with the vault's yield.
+
+A USDC deposit on the Borrow page passes through the MYT vault and then the Alchemist in a single transaction. Your wallet sends the USDC to the Alchemist Router, a helper contract that deposits it into the MYT vault and then deposits the MYT it gets back into the Alchemist for you.
+
+<Do moment="deposit">
+
+Type 10,000 in the USDC field on the Deposit/Borrow tab and press Deposit.
+
+</Do>
+
+<DepositPathFigure />
+
+Your 10,000 USDC is now 8,000 MYT, held by the Alchemist as the collateral of a new position. The MYT vault minted 8,000 because each MYT is worth 1.25 USDC, and 10,000 divided by 1.25 is 8,000. The <Stat name="deposit">Deposit</Stat> stat shows what that MYT is worth in USDC, so it reads 10,000, and it rises as the MYT price rises with yield.
+
+The Alchemist minted a <Term id="positionNft">position NFT</Term> for the new position, #1234 in this example, and the router passed it to your wallet. Only the wallet holding it can withdraw from the position, and only that wallet, or a contract it has approved, can borrow against it.
+
+A withdrawal follows the same path in reverse: the Alchemist releases your MYT, and the MYT vault turns it back into USDC for your wallet.
+
+<PageBreak title="Earn without a loan" />
+
+The other 10,000 is the part you want earning with no loan against it. A deposit from the <Term id="mixedYield">Mixed Yield</Term> page (Earn, then Variable Rate) goes into the same MYT vault and does not go on to the Alchemist.
+
+<Do moment="mixed-deposit">
+
+Type 10,000 in the USDC field on the practice Mixed Yield card and press Deposit.
+
+</Do>
+
+<MixedYieldPathFigure />
+
+This time the 8,000 MYT came to your wallet, and the Alchemist created no position and no NFT, because the deposit never reached it. It is the same token at the same price as the MYT in your position, so it earns exactly the same yield. In your wallet, mixUSDC is an ERC-20 token you can hold or send like any other.
+
+<DashboardBothShot>The Dashboard with a vault position under Open Vault Positions and an MYT deposit under Mixed Yield Token Holdings.</DashboardBothShot>
+
+Say you later want a larger borrowing limit, so you add this mixUSDC to your position. A mixUSDC deposit goes straight to the Alchemist, since it is already MYT.
+
+Which position a deposit joins depends on how you open the vault's page. If you open it from the Borrow page, no position is selected, so a deposit there opens a second position with its own NFT. If you press Manage on your position's card on the Dashboard, the vault's page opens with #1234 selected, and a deposit adds to that position.
+
+<Do moment="add-myt">
+
+On the Dashboard, press Manage on your USDC position. Pick mixUSDC in the token picker on the Deposit/Borrow tab, type 8,000 and press Deposit.
+
+</Do>
+
+<Await moment="add-myt" hint="Press Manage, pick mixUSDC, type 8,000 and press Deposit" />
+
+Position #1234 now holds 16,000 MYT, the 8,000 from your Borrow page deposit plus the 8,000 you just added, worth 20,000 USDC at 1.25 each. Your wallet still holds the same single NFT, since the deposit went into the position you had selected.
+
+<PageBreak title="Your position is an NFT" />
+
+The Alchemist records each position under its NFT's number and checks who holds that NFT before any withdrawal or borrow. So whoever holds the NFT controls the deposit and the debt recorded under it, and sending the NFT is how you would move a position to a new wallet of your own.
+
+<Do moment="send">
+
+Say you are moving to a new wallet that you also control, shown as Wallet 2. Press ⋮ on your USDC position, choose Send, tick the confirmation checkbox and press Send position.
+
+</Do>
+
+<SendPositionFigure />
+
+<Do moment="send-back">
+
+Wallet 2's Dashboard now lists position #1234 with its 20,000 deposit, and your practice wallet's <Stat name="deposit">Deposit</Stat> reads 0.
+
+Now send it back: press ⋮ on the position card in Wallet 2, choose Send, tick the confirmation checkbox and press Send position.
+
+</Do>
+
+<Await moment="send-back" hint="Send the position back to your wallet" />
+
+The position is back on your Dashboard, and <Stat name="deposit">Deposit</Stat> reads 20,000 again. Each time you sent the NFT, control of the whole 20,000 deposit went with it. The Alchemist held the same 16,000 MYT under #1234 throughout, and the only thing that changed was which wallet controls it.
+
+Had the position carried debt, the debt would have moved with it, while any alUSD you had borrowed would stay in the wallet that received it. Anyone who ends up holding your NFT, through a mistaken transfer or a wallet you no longer control, controls the position, and the app warns that a transfer cannot be reversed.
+
+<PageBreak title="How the three work together" />
+
+A loan and a Fixed Yield deposit together use all three contracts. The alUSD the Alchemist mints for borrowers is what Fixed Yield depositors put into the Transmuter, and the depositors are paid out of borrowers' deposits. The steps below are a what-if, so they leave your practice position as it is.
+
+<Do moment="loop">
+
+Press Next step to follow a loan and a Fixed Yield deposit through the three contracts, one step at a time.
+
+</Do>
+
+<ContractLoopSequence>
+
+1. Say you borrow 5,000 alUSD against your position. The Alchemist checks that your LTV stays at or under 90%, adds 5,000 to your Debt and mints 5,000 alUSD to your wallet. Your LTV would be 25%, since you would owe 5,000 against 20,000.
+2. Someone deposits 5,000 alUSD on the Fixed Yield page. The Transmuter holds their alUSD and mints them a Fixed Yield position NFT.
+3. As their deposit vests, the Alchemist earmarks the same amount of borrowers' debt, reserving it for the redemption that will pay the depositor. Each borrower's share is in proportion to their debt, so your position carries a small part of it.
+4. The depositor claims. The Alchemist moves MYT from borrowers' deposits to the Transmuter and cancels the same amount of their debt, which is the redemption that pays down your loan. The Transmuter pays the depositor in MYT, which the MYT vault turns into USDC by default, and burns the 5,000 alUSD and their NFT.
+
+</ContractLoopSequence>
+
+The Contracts tab on a vault's page lists the address of every contract behind it, so you can check each one on a block explorer before you deposit. Its last row shows your position's NFT number.
+
+<ContractsTabFigure>The Contracts tab on Risk-adjusted Mix USDC, opened from Manage.</ContractsTabFigure>
+
+The price of 1.25 USDC per MYT and the position number #1234 are examples.

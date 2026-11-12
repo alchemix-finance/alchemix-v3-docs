@@ -8,6 +8,18 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+// The navbar's Academy entry: the Alchemix mark and the word. It is the `html`
+// of a navbar link item rather than its `label`, so the mark travels with the
+// word into both the desktop bar and the phone drawer; the item is still an
+// internal link with client-side routing. Styled by `.academy-link` in
+// src/css/custom.css. The mark is the one on the Academy lockup
+// (src/components/Academy/Logo), drawn with a heavier stroke for 20px.
+const ACADEMY_LINK_HTML =
+  '<svg class="academy-link__mark" width="20" height="20" viewBox="-1.5 -1.5 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<circle cx="22.5" cy="22.5" r="22"/>' +
+  '<path d="M22.5 28.8V44.4M22.5 .5V5.1M22.5 28.8 7.5 17 22.5 5.1 37.4 17 30.7 22.3M35.1 29.9 37.4 28V17M7.5 17V28L22.5 39.9 29.2 34.5M10.1 30.1 7.6 34.5H15.7M22.5 34.5H37.4L22.5 8.7 14.7 22.2"/>' +
+  "</svg><span>Academy</span>";
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Alchemix Docs",
@@ -26,6 +38,26 @@ const config = {
   projectName: "alchemix-v3-docs", // Usually your repo name.
 
   onBrokenLinks: "throw",
+
+  customFields: {
+    // Where the Academy sends challenge and grading requests. Empty means
+    // same-origin, which is what production uses: /api/academy/* is proxied to
+    // the season engine by the rewrite in vercel.json, so the browser never
+    // leaves docs.alchemix.fi. Set an absolute origin only for local dev, when
+    // the docs and the engine run on different ports.
+    academyApiBase: process.env.ACADEMY_API_BASE ?? "",
+    // Shows "Test mode: finish every lesson" on the map in a production build.
+    // Only the share-link deploy sets it, for testing:
+    //   vercel --prod --build-env ACADEMY_TEST_MODE=1
+    // Any deploy without the flag, docs.alchemix.fi included, leaves it off.
+    academyTestMode: process.env.ACADEMY_TEST_MODE === "1",
+    // Grades every Check in the browser and never calls the season engine. For
+    // a share link built ahead of an engine deploy, so its Checks match its
+    // lessons:
+    //   vercel --prod --build-env ACADEMY_TEST_MODE=1 --build-env ACADEMY_LOCAL_GRADER=1
+    // Completions graded this way are unsigned and earn nothing.
+    academyLocalGrader: process.env.ACADEMY_LOCAL_GRADER === "1",
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -48,6 +80,8 @@ const config = {
       {
         hashed: true,
         docsRouteBasePath: ["user", "dev", "governance", "projects"],
+        // The Academy is custom pages, not a docs instance, so it is indexed here.
+        indexPages: true,
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
       },
@@ -92,6 +126,10 @@ const config = {
     // swizzle (git checkout 296d5ff -- src/theme/LastUpdated/index.js), and
     // uncomment the registration line below.
     // require.resolve("./plugins/last-update-authors"),
+
+    // Dev server only: stops Chrome's harmless "ResizeObserver loop" message
+    // from opening the full-screen error overlay over Academy lessons.
+    require.resolve("./plugins/quiet-resize-observer"),
 
     // — DEV docs @ /dev
     [
@@ -153,6 +191,13 @@ const config = {
           {
           from: '/resources/audits-and-reports/financial-reports',
           to: '/user/financial-reports',
+          },
+          // The Academy's last intermediate lesson lived at /academy/capstone
+          // until it was named for what it teaches. The lesson keeps its id;
+          // the URL follows the title.
+          {
+            from: "/academy/capstone",
+            to: "/academy/sizing-a-position",
           },
           // Pages removed in the 2026-06 docs pass → redirect old URLs so external/indexed links don't 404
           {
@@ -233,6 +278,15 @@ const config = {
             docsPluginId: "projects",
             position: "left",
             label: "Integrations",
+          },
+          // The Academy is a course with its own shell, not a fifth
+          // documentation section, so its entry sits apart from the section
+          // links: on the right, as a button carrying the mark.
+          {
+            to: "/academy",
+            position: "right",
+            className: "academy-link",
+            html: ACADEMY_LINK_HTML,
           },
           {
             href: "https://github.com/alchemix-finance/alchemix-v3-docs",

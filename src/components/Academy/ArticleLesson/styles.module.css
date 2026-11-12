@@ -1,0 +1,720 @@
+/* The article lessons: a short run of pages of prose with the
+   figures and practice moments in it, between the Shell's pinned header (the
+   nav, then the position strip) and its pinned footer (Back, the page's
+   place, the one action). The breadcrumb and the preview banner are
+   LessonPage's. */
+
+/* The column: 60rem (960px, `--lesson-col` on the Shell's pinned page),
+   centered in the window, with a 1rem gutter either side. The text is
+   left-aligned in it (a narrower centered text column
+   above wider app elements read as awkward) and fills most of it; app-sized
+   things (figures, practice vaults) span it edge to edge, and the strip's
+   fields and the footer's row are laid out in the same column, so
+   everything on the page shares one left edge and the app elements, the
+   strip and the footer one right edge. It was 75rem until 2026-11-10: see
+   `--lesson-col`. The site frame's hairlines are dropped on these pages
+   (see the Shell's pinned header), so nothing is drawn at the frame's
+   width. */
+.body {
+  --article-col: var(--lesson-col, 60rem);
+  /* The text's own width inside the column (at the
+     full 75rem a line ran about 150 characters, too long to read). Text
+     blocks keep the column's left edge and stop here, about 90 characters to
+     a line at most, five sixths of the column, so the space to their right
+     reads as a paragraph's margin. At 42.5rem and 47.5rem in a 75rem column
+     it read as a gap. One number, so it is easy to tune. */
+  --article-text: 50rem;
+  /* The lesson text's own type, set for reading a page of it. It carried the
+     members area's 0.04em tracking, which is made for a headline's one-line
+     lead: over paragraphs it spread every word, and with 1.7 leading the
+     lines read as separate rows (2026-11-10). */
+  --article-size: 1.0625rem;
+  --article-leading: 1.6;
+  --article-track: 0.01em;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--article-col) + 2rem);
+  margin-inline: auto;
+  padding: clamp(2.25rem, 5vw, 3.625rem) 1rem 3rem;
+  /* Lesson 1's strip comes in above a reader who has scrolled past it, and
+     the page makes up the height itself (see PositionStrip). The browser's
+     own scroll anchoring would make it up a second time. */
+  overflow-anchor: none;
+}
+
+/* The page's title: the lesson's on page 1, the page's own after that. The
+   Check page opens on the Check's own heading. */
+.title {
+  margin: 0 0 1.5rem;
+  font-family: var(--m-display);
+  font-size: clamp(1.875rem, 3.8vw, 2.75rem);
+  line-height: 1.1;
+  font-weight: 300;
+  letter-spacing: var(--m-track-display);
+  color: var(--m-text);
+  text-wrap: balance;
+}
+
+/* The header names the lesson on every page, at every width: the big title
+   is on page 1 only. LessonPage's back link drops the title below 1000px
+   and keeps the track label; here the title stays and the track label goes
+   instead, since the map already names the track. Each class doubled, so
+   the rule beats LessonPage's on specificity rather than on order. */
+@media (max-width: 1000px) {
+  .headTitle.headTitle {
+    display: block;
+    min-width: 0;
+  }
+
+  .headDivider.headDivider {
+    display: block;
+  }
+
+  .headTrack.headTrack {
+    display: none;
+  }
+}
+
+/* ── The position strip ── */
+
+/* The pinned header's second row. The Shell draws the band the width of the
+   window; the row inside sits in the reading column. */
+/* One slim row, the stage's width: "Practice wallet" on the left (the
+   course's demo wallet, and it says so), then each field as its label and
+   value on one line, spread across the row. Five fit at 1440 (Earmarked
+   joins in lesson 5, a Fixed Yield slot in lesson 8); on a phone the label
+   takes its own line and the fields wrap under it. */
+.strip {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  max-width: calc(var(--lesson-col, 60rem) + 2rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+  min-width: 0;
+}
+
+.stripLabel {
+  flex-shrink: 0;
+  padding-right: 1.5rem;
+  border-right: 1px solid var(--m-line);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--m-copper);
+  white-space: nowrap;
+}
+
+/* Lesson 1: the strip arriving. Fades in place. */
+.stripIn {
+  animation: stripIn 0.45s ease-out both;
+}
+
+@keyframes stripIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stripIn {
+    animation: none;
+  }
+}
+
+.stripRow {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.125rem 1.25rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  margin-inline: -0.5rem;
+  border-radius: var(--m-r-md);
+  white-space: nowrap;
+}
+
+.fieldLabel {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+.fieldValue {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.fieldUnit {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+/* The field a moment just changed: the practice vault's copper wash, held
+   while the number tweens and then faded, 3 seconds in all.
+   Nothing under reduced motion. */
+.fieldWash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(245, 192, 154, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(245, 192, 154, 0.55);
+  pointer-events: none;
+  animation: fieldWash 3s ease-in-out forwards;
+}
+
+@keyframes fieldWash {
+  0%,
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A field the reader is pointing at in the text (`Stat`). */
+.field {
+  transition: box-shadow 0.2s ease;
+}
+
+.fieldPointed {
+  box-shadow: inset 0 0 0 1px var(--m-copper), 0 0 12px rgba(245, 192, 154, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fieldWash {
+    display: none;
+  }
+}
+
+/* A phone: the label on its own line, the fields wrapping under it. */
+@media (max-width: 600px) {
+  .strip {
+    flex-wrap: wrap;
+  }
+
+  .stripLabel {
+    flex-basis: 100%;
+    padding-right: 0;
+    border-right: 0;
+    line-height: 1rem;
+  }
+
+  .stripRow {
+    gap: 0 0.5rem;
+  }
+
+  /* A step smaller on a phone, so three fields keep one line even while a
+     tween runs both Wallet and Deposit through four digits at once. */
+  .fieldValue {
+    font-size: 0.8125rem;
+  }
+
+  .fieldLabel,
+  .fieldUnit {
+    font-size: 0.6875rem;
+  }
+}
+
+/* Where lesson 1's strip comes in. */
+.marker {
+  height: 1px;
+}
+
+/* The blocks after a moment, arriving once the reader has acted: a short
+   fade in place. Nothing under reduced motion. */
+.reveal {
+  animation: reveal 0.35s ease-out both;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+}
+
+/* ── The prose ── */
+
+.prose {
+  letter-spacing: var(--article-track);
+}
+
+/* A page's text blocks, at the text width. Only the page's own blocks (and
+   the ones a moment reveals), so a paragraph inside a practice element or a
+   figure's caption keeps that element's width. */
+.prose > div > :is(p, ul, ol, .sub, .intro, .do),
+.prose > div > .reveal > :is(p, ul, ol, .sub, .intro, .do) {
+  max-width: var(--article-text);
+}
+
+.prose p {
+  margin: 0 0 1.25rem;
+  font-size: var(--article-size);
+  font-weight: 400;
+  line-height: var(--article-leading);
+  color: var(--m-ink);
+  text-wrap: pretty;
+}
+
+.prose ul {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.prose li {
+  margin: 0 0 0.625rem;
+  font-size: var(--article-size);
+  line-height: var(--article-leading);
+  color: var(--m-ink);
+}
+
+.prose li::marker {
+  color: var(--m-muted);
+}
+
+.prose strong {
+  color: var(--m-text);
+  font-weight: 600;
+}
+
+/* `Sub`: a short heading over a few paragraphs. The body face at a weight
+   above the text, so it reads as a label for the run under it and the page
+   keeps one display heading (its title). */
+.prose .sub {
+  margin: 2rem 0 0.625rem;
+  font-family: inherit;
+  font-size: var(--m-t-lead);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: var(--article-track);
+  color: var(--m-text);
+}
+
+.prose .sub:first-child {
+  margin-top: 0;
+}
+
+/* `Do`: instructions that fold away once done. A block formatting context,
+   so its paragraphs' margins are inside the height that folds. */
+.do {
+  display: flow-root;
+}
+
+/* `Stat`: a stat's name that lights its tile. A dotted underline in copper,
+   apart from a Term's grey one, and a faint copper wash while pointed at. */
+.stat {
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, var(--m-copper) 70%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+  border-radius: 2px;
+  cursor: default;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.stat:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+.statOn {
+  background: var(--m-copper-fill);
+  color: var(--m-text);
+}
+
+/* `Intro`: text about the course, in a quiet panel at the column's width. */
+.intro {
+  box-sizing: border-box;
+  margin: 0.25rem 0 1.75rem;
+  padding: 1.125rem 1.25rem 0.125rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg, 10px);
+  background: var(--m-panel-strong);
+}
+
+.introLabel {
+  margin-bottom: 0.5rem;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1rem;
+  color: var(--m-copper);
+}
+
+.prose .intro p {
+  margin-bottom: 1rem;
+}
+
+/* The stage: an app-sized thing (a practice vault, a capture) spans the
+   column, which is the app's own width, so it shares the text's edges.
+   Measured against the page (the Shell makes it the container on these
+   pages); a browser without container units keeps the column's width. A
+   stage zoomed to fit the room (useFitRoom, never under 90%) is drawn at
+   its width times the zoom, so it is laid out wider by the same factor
+   (`--fit`, the zoom) and still ends on the column's right edge (without
+   it, zoomed stages sat left with an empty strip on the right). */
+.stage {
+  --stage: min(var(--lesson-col, 60rem), calc(100cqw - 2rem));
+  width: calc(var(--stage) / var(--fit, 1));
+  margin: 1.75rem 0 0;
+}
+
+/* A narrow capture (the Swap card) at a reading width on the column's left
+   edge. */
+.column {
+  max-width: 46rem;
+  margin-top: 1.75rem;
+}
+
+/* A screenshot has its own room under it; a practice vault's frame and a
+   lesson control's row already end on 2rem. */
+.shot {
+  margin-bottom: 2rem;
+}
+
+/* Both classes, so the room under a screenshot beats the stage's own margin
+   on specificity. On order alone it held in development and lost in the
+   built site, where the two rules are emitted the other way round: the live
+   pages had no space under a figure. */
+.stage.shot,
+.column.shot {
+  margin-bottom: 2rem;
+}
+
+.shot > figure {
+  margin: 0;
+}
+
+/* The kit's figure card clips to its rounded corners, which also clipped a
+   word's popover opened from the caption (lesson 1's Mixed Yield). Here the
+   card lets it out, and the picture's band rounds its own top corners
+   instead. */
+.shot > figure > div {
+  overflow: visible;
+}
+
+.shot > figure > div > div:first-child {
+  border-radius: calc(var(--m-r-xl) - 1px) calc(var(--m-r-xl) - 1px) 0 0;
+  overflow: hidden;
+}
+
+/* ── The Check, the reading list, Start over ── */
+
+/* The Check's own page. */
+.check {
+  width: 100%;
+  max-width: var(--article-text);
+}
+
+
+.check h2 {
+  font-size: var(--m-t-h2);
+  line-height: 1.2;
+}
+
+.deeper {
+  margin-top: 2.5rem;
+  box-sizing: border-box;
+}
+
+.foot {
+  margin-top: 2.5rem;
+}
+
+.reset {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--m-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.reset:hover {
+  color: var(--m-text);
+}
+
+/* Only for a screen reader: pages after the first keep the lesson's h1, and
+   the pinned header shows its title. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── The footer's one row ── */
+
+/* Back on the column's left edge, the page's place centered, the action on
+   the column's right edge, so the button ends where the text and the stage
+   do. */
+.bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  box-sizing: border-box;
+  max-width: calc(var(--lesson-col, 60rem) + 2rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.barLeft {
+  justify-self: start;
+  min-width: 0;
+}
+
+.barPlace {
+  font-size: var(--m-t-sm);
+  line-height: 1.25rem;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.barRight {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+/* Beside a switched-off Next: the one thing that still has to happen on
+   the page ("Press Repay to continue"). Muted, no icon. */
+.barReason {
+  font-size: var(--m-t-sm);
+  line-height: 1.25rem;
+  color: var(--m-muted);
+  text-align: right;
+}
+
+/* The kit's Back pulls itself toward a button on its left; here it starts
+   the row, so its padding sits outside the column's edge instead. Both
+   classes, so it beats the kit's rule on specificity. */
+.barLeft .barBack {
+  margin-left: -0.75rem;
+}
+
+/* The pass state's link in the button's face: Infima colours every link on
+   hover, so the face's own colours are held here. */
+.barRight .barLink,
+.barRight .barLink:hover {
+  color: var(--m-on-copper);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.barRight button {
+  white-space: nowrap;
+}
+
+/* A phone: the button takes the room it needs and the place sits centered in
+   what is left, so "Next: Check" never runs over "3 of 4". */
+@media (max-width: 480px) {
+  .bar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.75rem;
+  }
+
+  .barPlace {
+    text-align: center;
+  }
+
+  /* The reason stacks over the button, so the row keeps one line of place. */
+  .barRight {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+
+  .barReason {
+    font-size: var(--m-t-xs);
+    line-height: 1rem;
+  }
+}
+
+/* The Swap card (lesson 4) sits in the text column at its own width, and a
+   step list (lessons 7 and 8) in the column with the room a figure has. */
+.swapPlace,
+/* Step cards are sentences, so they keep the text width, not the stage's. */
+.steps {
+  max-width: var(--article-text);
+  margin: 1.75rem 0 2rem;
+}
+
+/* The card is narrower than the column (the app draws it at 544px). It sits
+   on the column's left edge, where the text starts. */
+.swapPlace > section {
+  margin: 0;
+}
+
+/* Lesson 7's what-if: the price of USDC, one line under the vault's name
+   where the wallet line sits on other pages. */
+.priceNote {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.25rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* The price before the what-if: the chip's place, as plain figures. */
+.priceValue {
+  padding: 0 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--app-muted, var(--m-muted));
+}
+
+/* A neutral note beside the paid-out chips (lesson 8's early exit fee). */
+.paidNote {
+  font-size: 0.8125rem;
+  color: var(--app-muted, var(--m-muted));
+}
+
+/* ── Lesson 5's year chart ── */
+
+.yearChart {
+  position: relative;
+  outline: none;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.yearChart:focus-visible {
+  border-radius: var(--m-r-md);
+  box-shadow: 0 0 0 2px var(--m-copper);
+}
+
+/* A faint line at each month, where each redemption lands. */
+.yearMonth {
+  stroke: var(--m-line);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.yearGuide {
+  stroke: var(--m-muted);
+  stroke-width: 1;
+}
+
+.yearPlaceholder {
+  width: 100%;
+}
+
+.yearTip {
+  position: absolute;
+  z-index: 2;
+  min-width: 11rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-md);
+  background: var(--m-popover);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--m-ink);
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.yearTipHead {
+  margin-bottom: 0.125rem;
+  font-weight: 600;
+  color: var(--m-text);
+}
+
+.yearTip > div:not(.yearTipHead) {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.yearTip i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.yearTip b {
+  margin-left: auto;
+  padding-left: 1rem;
+  font-weight: 600;
+  color: var(--m-text);
+}
+
+/* The year in sums, under the chart's key once the year has run. */
+.yearSums {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.yearSum {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--m-ink);
+}
+
+.yearSumLabel {
+  min-width: 4rem;
+  color: var(--m-muted);
+}
+
+.yearSumTo {
+  font-weight: 600;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}

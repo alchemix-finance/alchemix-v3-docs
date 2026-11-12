@@ -1,0 +1,14 @@
+/* The page a closed track's addresses show: see index.jsx. It uses the
+   lesson page's column and title, so it starts on the same edges. */
+.closed {
+  min-height: 50vh;
+}
+
+.closed .line {
+  margin: 0 0 2rem;
+  font-size: var(--m-t-lead);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: var(--m-track-body);
+  color: var(--m-ink);
+}

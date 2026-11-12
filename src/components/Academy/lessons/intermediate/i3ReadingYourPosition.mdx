@@ -1,0 +1,116 @@
+import { Await, Do, PageBreak, Stat, StripAt, Sub } from "../../ArticleLesson";
+import { BandFigure, CurrencySwitchFigure, HealthFactorFigure, PreviewFigure } from "../../ArticleLesson/moments-i3";
+import { Term } from "../../kit";
+
+Say you borrowed 5,000 alUSD against a 10,000 USDC deposit in the Risk-adjusted Mix USDC vault on Ethereum, and have 2,000 USDC in your wallet. <Term id="healthFactor">Health Factor</Term>, one of the position stats across the top of the vault's page, sums up in one number how close your LTV is to the 90% borrowing limit.
+
+Health Factor is 90% divided by your <Term id="ltv">LTV</Term>, and your LTV is your Debt divided by your Deposit. Owing 5,000 against a 10,000 deposit puts your LTV at 50%, so your Health Factor reads 1.8, which is 90% divided by 50%.
+
+On many lending platforms, a Health Factor of 1 is the line where liquidation starts. Alchemix measures Health Factor against its 90% borrowing limit instead, so 1.00 means your LTV is exactly 90%, the <Stat name="maxltv" figure>MAX LTV</Stat> line on the health bar, where the vault stops new borrowing and withdrawals. A reading under 1.00 means your LTV is above 90%. At about 0.95, which is 90% divided by 95%, your LTV reaches 95%, the <Stat name="liqltv" figure>LIQ LTV</Stat> line, where a liquidation can start.
+
+<Sub>Room for a loss</Sub>
+
+Health Factor also tells you how large a loss inside the vault, such as a strategy losing funds, your position can take before your LTV reaches 90%. A loss lowers your Deposit while your Debt stays the same, so your LTV reaches 90% when your Deposit falls to your Debt divided by 0.9. With 5,000 owed that is about 5,556, or 56% of your 10,000.
+
+That 56% is your LTV divided by 90%, which is the same as 1 divided by your Health Factor, here 1 divided by 1.8. The other 44% of your deposit is the loss your position can take before your LTV reaches 90%.
+
+<Do moment="hf-slider">
+
+The slider below sets other LTVs on a copy of your position, so your practice wallet at the top stays as it is. Drag it until Health Factor reads 1.00.
+
+</Do>
+
+<HealthFactorFigure />
+
+At 90% <Stat name="ltv" figure>LTV</Stat>, <Stat name="health" figure>Health Factor</Stat> reads 1.00, and the loss your deposit could take before the limit reads 0%, because your Debt is already 90% of your Deposit and any loss would push your LTV above 90%.
+
+So a Health Factor of 2 means your deposit could lose half its value before your LTV reached 90%, and a Health Factor close to 1 means a small loss would take your LTV past 90%.
+
+<PageBreak title="Preview an action before you send it" />
+
+In the app, typing an amount on the Borrow, Withdraw or Repay tab shows the new value beside each stat it would change, before you press anything, so you can see your new LTV and Health Factor before you sign the transaction.
+
+<Do moment="preview">
+
+Say you want 2,000 more alUSD. Type 2,000 in the alUSD field on the Borrow tab.
+
+</Do>
+
+<PreviewFigure />
+
+The preview shows the position you would have after borrowing 2,000 more. <Stat name="debt" figure>Debt</Stat> would read 7,000, LTV 70% since 7,000 is 70% of 10,000, and Health Factor 1.28, which is 90% divided by 70%, cut to two decimals as the app does. <Stat name="borrowable" figure>Borrowable</Stat>, shown as <Stat name="available" figure>Available</Stat> under the field, would fall to 2,000, because the 90% limit on 10,000 is 9,000 and you would owe 7,000.
+
+The extra 2,000 would also halve the loss your deposit could take before your LTV reached 90%, from about 44% at a Health Factor of 1.8 to about 22% at 1.28.
+
+<Do moment="borrow">
+
+Press Borrow.
+
+</Do>
+
+<Await moment="borrow" hint="Press Borrow" />
+
+The Alchemist minted 2,000 alUSD to your wallet, and each stat moved to the value its preview showed.
+
+<PageBreak title="Your position in dollars" />
+
+The position stats count tokens, with Deposit in USDC and Debt and Borrowable in alUSD. That is also how the vault measures your LTV, one alUSD of debt against one USDC of deposit. The USD switch under the stats shows them in dollars instead, pricing your Deposit at USDC's market price and your Debt and Borrowable at alUSD's market price.
+
+<Do moment="currency">
+
+In this example, alUSD trades at 0.98 on the market. Turn on the USD switch.
+
+</Do>
+
+<CurrencySwitchFigure />
+
+<Stat name="debt" figure>Debt</Stat> reads $6,860, which is 7,000 alUSD at 0.98, and <Stat name="borrowable" figure>Borrowable</Stat> reads $1,960, which is 2,000 alUSD at 0.98. LTV stays at 70%, since it is still measured in tokens.
+
+The Dashboard's summary bar always shows dollars this way. Its <Term id="netValue">Net Value</Term> is Total Deposit minus Total Debt, so in this example it reads $3,140, which is $10,000 minus $6,860. That is 140 more than your Deposit minus your Debt counted in tokens, which is 3,000. The difference comes from the debt: the summary bar prices your 7,000 alUSD of debt at 0.98, 2% under a dollar, while inside the vault each alUSD of debt counts as a full dollar.
+
+<PageBreak title="What still works between 90% and 95%" />
+
+The vault stops your own borrowing and withdrawing at 90%, so your LTV goes above 90% only when your Deposit falls. That happens through a loss inside the vault or, on the ETH vaults, through a fall in the market price of a strategy priced at market. Between 90% and 95%, your position stays open and keeps earning, and a liquidation cannot start until your LTV reaches 95%.
+
+In that band, the Alchemist blocks the actions that would raise your LTV and lets through repayments that lower it, with one condition on repayments in alUSD.
+
+- **Borrowing stops.** Borrowable reads 0, since you already owe more than 90% of your deposit.
+- **Withdrawing stops.** Available on the Withdraw tab reads 0, since the <Term id="alchemist">Alchemist</Term> keeps back 1.11 of deposit for each dollar you owe, which is 1 divided by 90%, and you hold less than that.
+- **A USDC or MYT repayment of any size goes through.** The Alchemist runs no LTV check after a USDC or MYT repayment, so one that lowers your LTV but leaves it above 90% still goes through.
+- **An alUSD repayment has to bring your LTV to 90% or under in a single repayment.** You might expect any repayment to go through, since it lowers your LTV. The Alchemist ends an alUSD repayment with the same LTV check it runs after a borrow, so one that would leave your LTV above 90% fails.
+
+<StripAt id="band" set={{ deposit: 7600, debt: 7000, wallet: 2000, walletAl: 2000 }} />
+
+Say a strategy loss inside the vault has lowered your Deposit from 10,000 to 7,600, while your Debt stays at 7,000. The practice position at the top is set to that state, with <Stat name="ltv">LTV</Stat> at 92.10%, which is 7,000 divided by 7,600, and <Stat name="health">Health Factor</Stat> at 0.97, so your position is inside the band between 90% and 95%.
+
+<Do moment="repay-alusd">
+
+On the Repay tab, pick alUSD in the token picker, type 100 and press Repay.
+
+</Do>
+
+<BandFigure />
+
+<Await moment="repay-alusd" hint="Pick alUSD, type 100 and press Repay" />
+
+The alUSD repayment failed the Alchemist's LTV check. Repaying 100 alUSD would have left you owing 6,900 against 7,600, an LTV of 90.78%, still above 90%. With 7,000 owed, an alUSD repayment has to bring your Debt down to 6,840, which is 90% of 7,600, so it has to be at least 160.
+
+In the app, the transaction fails its check before your wallet asks you to sign it. The message says the action would leave your position undercollateralized, which means its LTV would still be above 90%.
+
+<Do moment="repay-usdc">
+
+Switch the token picker to USDC, type 100 and press Repay.
+
+</Do>
+
+<Await moment="repay-usdc" hint="Pick USDC, type 100 and press Repay" />
+
+Repaying the same 100 in USDC went through. The app deposited the USDC into MYT and repaid with that MYT, and the Alchemist runs no LTV check after an MYT repayment, so <Stat name="debt">Debt</Stat> reads 6,900 even though your LTV is still above 90%.
+
+LTV now reads 90.78%, which is 6,900 divided by 7,600. Repaying 60 more, in either token, brings your Debt to 6,840 and your LTV back to 90%, and any repayment beyond that frees room to borrow and withdraw again.
+
+<Term id="redemption">Redemptions</Term> also keep running in the band, and each one lowers your LTV. A redemption cancels part of your Debt with the same amount of your Deposit, and since your Debt is the smaller of the two, that amount is a larger share of your Debt than of your Deposit.
+
+While your LTV is under 95%, you can also close the whole loan from your own deposit on the Liquidate tab, which you will learn about later in this track.
+
+The 7,600 deposit and alUSD at 0.98 are examples.
