@@ -12,7 +12,7 @@ export default function Lesson() {
   return (
     <ArticleLesson
       lessonId="self-repaying"
-      description="From here the loan gets paid off automatically through Alchemix v3's redemption system."
+      description="After you borrow, the loan gets paid off automatically through Alchemix v3's redemption system."
       Content={Content}
       start={START}
       moments={MOMENTS}

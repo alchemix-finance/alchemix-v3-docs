@@ -54,6 +54,6 @@ After that 10% loss your own loan, at 56% LTV, is far below 95%. Now say another
 
 5,060 of deposit sounds like a lot, but 5,054 of it paid off the same amount of their debt, so they now owe 5,054 less and keep what they borrowed. Their Deposit minus their Debt was 400 before the liquidation and is 394 after it, so the liquidation itself cost them only the 6 fee. The rest of what they lost was the 10% the vault lost.
 
-When a position has earmarked debt, a liquidation settles that first, out of the deposit, and stops there if that brings the LTV under 95%. A position is liquidated in full only in extreme cases, such as a debt that has reached the value of the whole deposit, which the intermediate track covers.
+When a position has earmarked debt, a liquidation settles the earmarked debt first, out of the deposit, and if the LTV is then under 95%, the liquidation ends with nothing more taken. A position is liquidated in full only in extreme cases, such as a debt that has reached the value of the whole deposit, which the intermediate track covers.
 
 The lower the LTV you borrow at, the larger the loss the vault would have to suffer before your position reached 95%. If a loss ever pushes your LTV toward 95%, repaying part of your loan with USDC on the Repay tab brings it back down, since each dollar you repay lowers your Debt. Above 90%, an alUSD repayment that would leave your LTV above 90% fails, so it has to bring you back to 90% in one go. A USDC repayment of any size goes through.

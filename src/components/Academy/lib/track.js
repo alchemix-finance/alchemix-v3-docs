@@ -109,7 +109,7 @@ export const BEGINNER = lessonsOf("beginner", [
     slug: "/academy/self-repaying",
     app: "Borrow",
     title: "The loan pays itself off",
-    blurb: "From here the loan gets paid off automatically through Alchemix v3's redemption system.",
+    blurb: "After you borrow, the loan gets paid off automatically through Alchemix v3's redemption system.",
     minutes: 7,
   },
   {
@@ -125,7 +125,7 @@ export const BEGINNER = lessonsOf("beginner", [
     slug: "/academy/what-can-go-wrong",
     app: "Borrow",
     title: "What can liquidate you",
-    blurb: "A liquidation can settle part of your loan once your LTV reaches 95%, and only a loss inside the vault can push it there.",
+    blurb: "A liquidation can settle part of your loan once your LTV reaches 95%, and a loss of funds in one of the vault's strategies can raise your LTV to 95%.",
     minutes: 5,
   },
   {

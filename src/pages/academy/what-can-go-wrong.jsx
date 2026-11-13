@@ -12,7 +12,7 @@ export default function Lesson() {
   return (
     <ArticleLesson
       lessonId="what-can-go-wrong"
-      description="A liquidation can settle part of your loan once your LTV reaches 95%, and only a loss inside the vault can push it there."
+      description="A liquidation can settle part of your loan once your LTV reaches 95%, and a loss of funds in one of the vault's strategies can raise your LTV to 95%."
       Content={Content}
       start={START}
       moments={MOMENTS}

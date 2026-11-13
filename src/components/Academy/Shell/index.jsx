@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./styles.module.css";
 import { AlchemixLockup, AlchemixMark } from "../Logo";
 import { readCompletions } from "../lib/api";
@@ -55,6 +56,10 @@ export default function AcademyShell({ title, description, children, left, right
     setCompleted((prev) => (prev === n ? prev : n));
   });
 
+  // The preview picture has to be a full address: the apps that draw link
+  // previews fetch it from outside the page.
+  const card = useBaseUrl("/img/academy-social-card.png", { absolute: true });
+
   return (
     <>
       <Head>
@@ -64,6 +69,12 @@ export default function AcademyShell({ title, description, children, left, right
         <meta property="og:title" content={title} />
         {description ? <meta name="description" content={description} /> : null}
         {description ? <meta property="og:description" content={description} /> : null}
+        {/* The Academy's own preview card and name. Without these a pasted
+            Academy link shows the docs card, "Alchemix v3 Documentation". */}
+        <meta property="og:site_name" content="Alchemix Academy" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={card} />
+        <meta name="twitter:image" content={card} />
       </Head>
 
       <div className={`${styles.page} ${pinned ? styles.pageWide : ""}`}>

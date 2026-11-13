@@ -270,9 +270,9 @@ export const QUESTIONS = {
       options: ["Enough to bring you back to 90%, plus a fee", "Your whole deposit", "Exactly your debt"],
       correct: 0,
       explain: [
-        "Right. A liquidation first settles any earmarked debt and stops there if that brings your LTV under 95%. Otherwise it takes enough deposit to bring your LTV back to 90%, and that deposit goes to the Transmuter. The liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
-        "A liquidation first settles any earmarked debt and stops there if that brings your LTV under 95%. Otherwise it takes enough deposit to bring your LTV back to 90%, and that deposit goes to the Transmuter. The liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
-        "A liquidation first settles any earmarked debt and stops there if that brings your LTV under 95%. Otherwise it takes enough deposit to bring your LTV back to 90%, and that deposit goes to the Transmuter. The liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
+        "Right. A liquidation first settles any earmarked debt out of your deposit, and if your LTV is then under 95%, the liquidation ends with nothing more taken. Otherwise the liquidation takes enough deposit to bring your LTV back to 90%, and the deposit taken goes to the Transmuter. The liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
+        "A liquidation first settles any earmarked debt out of your deposit, and if your LTV is then under 95%, the liquidation ends with nothing more taken. Otherwise the liquidation takes enough deposit to bring your LTV back to 90%, and the deposit taken goes to the Transmuter. The liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
+        "A liquidation first settles any earmarked debt out of your deposit, and if your LTV is then under 95%, the liquidation ends with nothing more taken. Otherwise the liquidation takes enough deposit to bring your LTV back to 90%, and the deposit taken goes to the Transmuter. The liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
       ],
     },
     {

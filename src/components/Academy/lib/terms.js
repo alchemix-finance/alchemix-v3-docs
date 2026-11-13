@@ -109,7 +109,7 @@ export const TERMS = {
   liquidation: {
     term: "liquidation",
     lesson: "what-can-go-wrong",
-    text: "A liquidation is anyone settling part of your loan out of your deposit once your LTV reaches 95%. Only a loss inside the vault can push a position there, since the vault counts your deposit and your debt in the same asset.\n\nIt settles any earmarked debt first and stops there if that brings you under 95%. Otherwise it takes enough deposit to bring you back to 90%, and that deposit goes to the Transmuter.\n\nThe liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
+    text: "A liquidation is anyone settling part of your loan out of your deposit once your LTV reaches 95%. A loss of funds in one of the vault's strategies can push your LTV to 95%. A price drop cannot, since the vault counts your deposit and your debt in the same asset.\n\nA liquidation first settles any earmarked debt out of your deposit, and if your LTV is then under 95%, the liquidation ends with nothing more taken. Otherwise the liquidation takes enough deposit to bring your LTV back to 90%, and the deposit taken goes to the Transmuter.\n\nThe liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
     docs: "/user/concepts/liquidations",
   },
   strategy: {

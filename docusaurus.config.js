@@ -26,8 +26,10 @@ const config = {
   tagline: "Alchemix V3 Documentation",
   favicon: "img/favicon.png",
 
-  // Set the production url of your site here
-  url: "https://docs.alchemix.fi",
+  // Set the production url of your site here. A deploy on another host (a
+  // share link) sets SITE_URL to its own address, so the canonical link and
+  // the link-preview picture point at that host and not at the docs.
+  url: process.env.SITE_URL || "https://docs.alchemix.fi",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
