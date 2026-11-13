@@ -4,6 +4,60 @@
     {
       "source": "/api/academy/:path*",
       "destination": "https://alchemix-seasons.vercel.app/api/academy/:path*"
+    },
+    {
+      "source": "/api/wallets/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/wallets/:path*"
+    },
+    {
+      "source": "/api/eligibility/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/eligibility/:path*"
+    },
+    {
+      "source": "/api/claims/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/claims/:path*"
+    },
+    {
+      "source": "/api/feedback",
+      "destination": "https://alchemix-seasons.vercel.app/api/feedback"
+    },
+    {
+      "source": "/api/feedback/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/feedback/:path*"
+    },
+    {
+      "source": "/api/exit-reasons",
+      "destination": "https://alchemix-seasons.vercel.app/api/exit-reasons"
+    },
+    {
+      "source": "/api/seasons",
+      "destination": "https://alchemix-seasons.vercel.app/api/seasons"
+    },
+    {
+      "source": "/api/seasons/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/seasons/:path*"
+    },
+    {
+      "source": "/api/leaderboard",
+      "destination": "https://alchemix-seasons.vercel.app/api/leaderboard"
+    },
+    {
+      "source": "/api/members/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/members/:path*"
+    },
+    {
+      "source": "/api/auth/discord/:path*",
+      "destination": "https://alchemix-seasons.vercel.app/api/auth/discord/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/members/(manifest\\.json|safe-app-icon\\.svg)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, content-type, Authorization" }
+      ]
     }
   ]
 }

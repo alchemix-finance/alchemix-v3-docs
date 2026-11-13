@@ -51,6 +51,23 @@ const config = {
     //   vercel --prod --build-env ACADEMY_TEST_MODE=1
     // Any deploy without the flag, docs.alchemix.fi included, leaves it off.
     academyTestMode: process.env.ACADEMY_TEST_MODE === "1",
+    // Where the members area (src/pages/members) sends its lookups, claims and
+    // feedback. Same rule as academyApiBase: empty means same-origin, which is
+    // what production uses, because the members API paths are proxied to the
+    // season engine by the rewrites in vercel.json. Set an absolute origin only
+    // for local dev, e.g. MEMBERS_API_BASE=http://localhost:3000, and list the
+    // docs origin in the engine's MEMBERS_ALLOWED_ORIGINS.
+    membersApiBase: process.env.MEMBERS_API_BASE ?? "",
+    // Shows proposals that are not live yet (the return bonus card) on
+    // /members, and only while the engine reports them as proposed or live.
+    // For the team's demo builds only: MEMBERS_SHOW_PROPOSALS=1. Any deploy
+    // without the flag, docs.alchemix.fi included, leaves it off.
+    membersShowProposals: process.env.MEMBERS_SHOW_PROPOSALS === "1",
+    // V3 backlog ticket 07: the WalletConnect project id (from
+    // cloud.reown.com) for the members area's connect modal. Empty, the
+    // default, leaves WalletConnect out entirely. Set
+    // MEMBERS_WALLETCONNECT_PROJECT_ID in the Vercel project to switch it on.
+    membersWalletConnectProjectId: process.env.MEMBERS_WALLETCONNECT_PROJECT_ID ?? "",
   },
 
   // Even if you don't use internationalization, you can use this field to set

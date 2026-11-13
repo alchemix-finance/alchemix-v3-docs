@@ -1,0 +1,1267 @@
+/*
+ * Badge cards (2026-11-04, Keenan: badges become tarot-style cards in the live
+ * flow). The grid on the Badges page (Home/Achievements.jsx), the large card
+ * in the badge panel, and the thumbnail on the hover card (Home/BadgePop.jsx).
+ * The frame and plate are drawn by BadgeCard.jsx.
+ */
+
+/* ── Grid ──────────────────────────────────────────────────── */
+
+/* Six to a row at 1440 (about 6rem a card), three on a phone. */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 1rem 0.625rem;
+}
+
+.grid li {
+  min-width: 0;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-family: var(--m-body);
+  color: var(--m-text);
+  cursor: pointer;
+}
+
+.tile:focus-visible {
+  outline: none;
+}
+
+.tile:focus-visible .card {
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.35);
+}
+
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 7.5rem;
+  aspect-ratio: 200 / 350;
+  border-radius: 6px;
+  box-shadow: 0 14px 26px -18px rgba(0, 0, 0, 0.95);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tile:hover .card {
+  transform: translateY(-3px);
+  box-shadow:
+    0 18px 30px -18px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(245, 192, 154, 0.28);
+}
+
+.tileOn .card,
+.tileOn:hover .card {
+  box-shadow:
+    0 18px 30px -18px rgba(0, 0, 0, 0.95),
+    0 0 0 2px rgba(245, 192, 154, 0.75);
+}
+
+/* A face-up card not earned yet (the Access row, a claim that is ready). */
+.muted svg {
+  filter: saturate(0.2) brightness(0.62);
+}
+
+.tile:hover .muted svg {
+  filter: saturate(0.35) brightness(0.75);
+}
+
+/* Transmuted claims, over the card's lower corner. */
+.count {
+  position: absolute;
+  right: -0.375rem;
+  bottom: 0.5rem;
+}
+
+/* ── The badge panel ───────────────────────────────────────── */
+
+/* The card large on the left, the facts on the right. */
+.panel {
+  display: grid;
+  grid-template-columns: 10.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding: 1.25rem;
+  text-align: left;
+}
+
+.panelCard {
+  width: 100%;
+  aspect-ratio: 200 / 350;
+  border-radius: 9px;
+  box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.95);
+}
+
+.panelCard svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.panelFacts {
+  min-width: 0;
+  padding-top: 0.25rem;
+}
+
+.panelFacts > :first-child {
+  margin-top: 0;
+}
+
+.panelFacts p {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.panelFacts [class*="actionRow"] {
+  justify-content: flex-start;
+}
+
+/* ── Hover card ────────────────────────────────────────────── */
+
+.popThumb {
+  display: block;
+  width: 4.5rem;
+  aspect-ratio: 200 / 350;
+  align-self: start;
+  border-radius: 5px;
+  box-shadow: 0 10px 20px -12px rgba(0, 0, 0, 0.9);
+}
+
+.popThumb svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 960px) {
+  .panel {
+    grid-template-columns: 11rem minmax(0, 1fr);
+  }
+}
+
+/* On a phone the card sits above the facts, centered. */
+@media (max-width: 600px) {
+  .grid {
+    gap: 1rem 0.75rem;
+  }
+
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .panelCard {
+    width: 11rem;
+  }
+
+  .panelFacts {
+    width: 100%;
+  }
+
+  .panelFacts p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .panelFacts [class*="actionRow"] {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .tile:hover .card {
+    transform: none;
+  }
+}
+
+/* ── The cabinet (2026-11-05) ───────────────────────────────── */
+/* Every group as a deck in one bounded box (Badges/Cabinet.jsx, Badges/Deck.jsx).
+   The components set --i, --shift, --after, --d and --b per slot and the counts
+   (--n, --n1 = n - 1, --n2 = n - 2); the rules below turn those into transforms
+   with the same math as Badges/drawer.js.
+
+   Round two (2026-11-05): the cabinet takes the page's full width, a drawn
+   card opens in a reading spot inside its deck, and every state change is a
+   transform or an opacity on one easing family (--settle; --spring, which
+   overshoots a little, for lifts). Nothing animates a layout property, except
+   the 2px bar under a lifted label (see .tabBar).
+
+   House look (2026-11-05, Keenan: "generic styling and padding seem quite
+   poor"): the box is a panel like .detail in Home/home.module.css, the
+   drawers are flat with hairlines between them, insets are 1.5rem, labels
+   use the landing's small-caps markers, and only cards cast shadows. */
+.cabinet {
+  position: relative;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  /* clip, not hidden: a hidden box is still a scroll container, and scrolling the
+     reading spot into view would scroll the cabinet's insides instead of the page. */
+  overflow: clip;
+}
+
+.drawers {
+  /* About 40rem on a laptop, less on a short screen. */
+  /* Up to 42.5rem (round six, 2026-11-05): the open deck needs room for the fan's air and its caption. */
+  --cab-h: clamp(26rem, calc(100vh - 8rem), 42.5rem);
+  --tab-h: 3rem;
+  /* The box's side inset, as the page's panels have (1rem on a phone). */
+  --inset: 1.5rem;
+  /* The fan card fills the open deck's height, up to 12rem wide. Here --n is the
+     number of decks: the open deck gets the box less one tab per other deck, and
+     9.5rem of that goes to its own tab, the air over the lifted card, and the
+     caption with its space above and below (round six). */
+  --fan-w: min(12rem, calc((var(--cab-h) - (var(--n) - 1) * var(--tab-h) - 9.5rem) / 1.75));
+  /* A lifted card rises 0.75rem, so this keeps 1rem clear under the tab row. */
+  --fan-top: calc(var(--tab-h) + 1.75rem);
+  /* The open fan's side inset: 2.5rem from the box's edge to the furthest corner
+     of a tilted end card, which leans about 1.5rem past its slot (round six).
+     --fan-pad is how much further in that sits than the label inset; the closed
+     stack subtracts it, so it stays where it was. */
+  --fan-inset: 4rem;
+  --fan-pad: calc(var(--fan-inset) - var(--inset));
+  /* A closed stack is the fan's cards at 0.75, so about 9rem wide on a laptop. */
+  --stack-scale: 0.75;
+  --stack-top: 1rem;
+  --stack-h: calc(var(--fan-w) * var(--stack-scale) * 1.75);
+  --deck-h: calc(var(--stack-top) + var(--stack-h) + 0.75rem);
+  /* Where a closed deck's label starts: the inset, the stack and its edges, and about 1.85rem of air. */
+  --side-x: calc(var(--inset) + var(--fan-w) * var(--stack-scale) + 2.75rem);
+  /* A lifted stack loosens: each card behind the top one peeks out this far (round three, 2026-11-05). */
+  --spread: 2rem;
+  /* The fan's start and card scale: the whole width at full size, or beside a drawn card (.drawing). */
+  --fan-x0: 0px;
+  --fan-scale: 1;
+  /* Beside the fan on a wide screen: the drawn card (13rem at full size), a hairline, and its facts (21rem). */
+  --read-card: calc(var(--fan-w) * 1.08);
+  --read-w: calc(var(--read-card) + 25rem);
+  /* Closed: decks sit --cab-step apart and the box clips the last one. */
+  --cab-step: calc((var(--cab-h) - var(--deck-h)) / var(--n1));
+  --cab-open: calc(var(--deck-h) - var(--cab-step));
+  --settle: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --spring: cubic-bezier(0.3, 1.3, 0.5, 1);
+  position: relative;
+  height: calc(var(--cab-h) + var(--box-read, 0px));
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sizeCab,
+.sizeDeck {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sizeCab {
+  height: var(--cab-h);
+}
+
+.sizeDeck {
+  height: var(--deck-h);
+}
+
+/* A deck: as tall as the box, so a later deck covers the rest of it. Closed,
+   each shows one step; the lifted deck shows whole and the decks below move on. */
+.drawer {
+  --y: calc(var(--i) * var(--cab-step) + var(--shift) * var(--cab-open));
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--cab-h) + var(--box-read, 0px));
+  z-index: var(--i);
+  overflow: clip;
+  /* Flat, with a hairline between decks; a solid fill, since a later deck covers an earlier one. */
+  background: var(--m-card);
+  border-top: 1px solid var(--m-line);
+  cursor: pointer;
+  transform: translateY(var(--y));
+  transition: transform 300ms var(--settle);
+  /* A link arrival scrolls the open deck's tab to the top of the window, with a little air. */
+  scroll-margin-top: 1rem;
+}
+
+.drawer:first-of-type {
+  border-top-color: transparent;
+}
+
+/* The lifted or open deck's lighter face and copper edge, faded in. The face is
+   --m-panel-strong over the deck's own fill, and the copper line lies over the
+   deck's hairline. The first deck's top edge is the box's own border. */
+.drawer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid var(--m-copper-line);
+  background: var(--m-panel-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms var(--settle);
+}
+
+.drawerLifted::before,
+.drawerOpen::before {
+  opacity: 1;
+}
+
+.drawer:first-of-type::before {
+  border-top-color: transparent;
+}
+
+/* Fanned: the decks above the open one keep their tabs at the top of the box,
+   the decks below it keep theirs at the bottom, past the reading spot. */
+.fanned .drawer {
+  --y: calc((1 - var(--after)) * var(--i) * var(--tab-h) + var(--after) * (var(--cab-h) - (var(--n) - var(--i)) * var(--tab-h) + var(--read, 0px)));
+}
+
+.drawerOpen {
+  cursor: default;
+}
+
+/* Closing: the cards go back to their stack first, then the decks close up. */
+.shutting .drawer {
+  transition-delay: 180ms;
+}
+
+.busy .drawer,
+.busy .fan li {
+  will-change: transform;
+}
+
+/* The lifted stack's deeper shadow, faded in under it. */
+.liftShadow {
+  position: absolute;
+  top: var(--stack-top);
+  left: var(--inset);
+  width: calc(var(--fan-w) * var(--stack-scale));
+  height: calc(var(--fan-w) * var(--stack-scale) * 1.75);
+  border-radius: 8px;
+  box-shadow: 0 34px 46px -20px rgba(0, 0, 0, 1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms var(--settle);
+}
+
+.drawerLifted .liftShadow {
+  opacity: 1;
+}
+
+/* ── The label ── */
+/* One button per deck along its top. Closed, its label sits beside the stack
+   (.tabSide); collapsed or open, along the tab (.tabRow). The two cross-fade. */
+.tab {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: var(--tab-h);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--m-ink);
+  font-family: var(--m-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.tab:focus-visible {
+  outline: none;
+}
+
+.tab:focus-visible .tabRow,
+.tab:focus-visible .tabSide::after {
+  border-radius: var(--m-r-sm);
+  box-shadow: 0 0 0 2px rgba(245, 192, 154, 0.45);
+}
+
+/* Collapsed or open: one line, 3rem tall. Marker and name at the left (the
+   season's line after them, cut short if it runs long), the count at the right. */
+.tabRow {
+  position: absolute;
+  inset: 0 var(--inset);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  opacity: 0;
+  transition: opacity 200ms var(--settle);
+}
+
+.drawerOpen .tabRow,
+.drawerShut .tabRow {
+  opacity: 1;
+}
+
+.rowText {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.rowText .tabSeason {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.rowText .tabIntro {
+  flex: 0 100 auto;
+  min-width: 0;
+}
+
+/* Closed: the label beside the stack, top-aligned with the stack's top card,
+   running to the right inset. A lifted deck's stack loosens to the right by
+   --lift-x (--cards is the deck's card count), so the label slides that far;
+   its count and the right end of its bar stay at the inset. */
+.drawer {
+  --lift-x: calc(min(var(--cards) - 1, 6) * var(--spread));
+}
+
+.tabSide {
+  position: absolute;
+  top: var(--stack-top);
+  left: var(--side-x);
+  right: var(--inset);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  transition:
+    opacity 200ms var(--settle),
+    transform 220ms var(--settle);
+}
+
+/* The focus ring, drawn on a layer that ends at the inset however far the label has slid. */
+.tabSide::after {
+  content: "";
+  position: absolute;
+  top: -0.375rem;
+  bottom: -0.375rem;
+  left: -0.5rem;
+  right: calc(var(--lift-x) * var(--up, 0) - 0.5rem);
+  pointer-events: none;
+}
+
+.drawerLifted .tabSide {
+  --up: 1;
+  transform: translateX(var(--lift-x));
+}
+
+.drawerOpen .tabSide,
+.drawerShut .tabSide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The open deck's tab sits over its fan's list, which starts at the deck's top,
+   so a click on the tab reaches it (round six, 2026-11-05: before this only the
+   keyboard could close a deck from its tab). */
+.drawerOpen .tab {
+  z-index: 3;
+}
+
+/* The marker line: the small-caps marker at the left, the count on its baseline at the right. */
+.tabHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tabHead .tabCount {
+  transition: transform 220ms var(--settle);
+}
+
+.drawerLifted .tabHead .tabCount {
+  transform: translateX(calc(-1 * var(--lift-x)));
+}
+
+.drawerLifted .tabLine {
+  max-width: calc(100% - var(--lift-x));
+}
+
+/* "01  SEASON": the deck's place and its group, as the landing marks its sections. */
+.tabMarker {
+  display: inline-flex;
+  flex: none;
+  gap: 0.75em;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: var(--m-track-head);
+  text-transform: uppercase;
+  color: var(--m-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The season's name, the one name line in the cabinet (round five, 2026-11-05). */
+.tabSeason {
+  overflow: hidden;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: var(--m-track-body);
+  color: var(--m-copper);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tabIntro {
+  overflow: hidden;
+  font-size: var(--m-t-xs);
+  line-height: 1.35;
+  color: var(--m-dim);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tabCount {
+  flex: none;
+  font-size: var(--m-t-xs);
+  line-height: 1.35;
+  color: var(--m-dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A plain deck's marker is its whole label (round five, 2026-11-05), so its group
+   word takes the name's colors on the tab: ink at rest, full text when lifted, open
+   or hovered. The numeral stays dim, and so does the marker over the reading spot. */
+.tab .tabGroupName {
+  color: var(--m-ink);
+}
+
+.drawerLifted .tab .tabGroupName,
+.drawerOpen .tab .tabGroupName,
+.tab:hover .tabGroupName {
+  color: var(--m-text);
+}
+
+/* Earned over total: .seasonBar in Home/home.module.css at 2px, from the
+   label's left edge to the right inset, 0.75rem under the label block (the
+   column's 0.375rem gap plus its own). When the label slides right for a
+   lifted deck, the bar narrows by the same distance on the same curve, so its
+   right end holds still. That width is the one layout property that animates
+   in the cabinet; it is a 2px line. */
+.tabBar {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  margin-top: 0.375rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+  transition: width 220ms var(--settle);
+}
+
+.drawerLifted .tabBar {
+  width: calc(100% - var(--lift-x));
+}
+
+.tabBar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, rgba(245, 192, 154, 0.6), var(--m-copper));
+}
+
+/* ── The text buttons (round six, 2026-11-05) ── */
+/* The members link style (.link in Home/season.module.css): copper, 500, a
+   copper hairline under the words that deepens on hover. */
+.textButton {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--m-copper-line);
+  border-radius: 0;
+  background: none;
+  color: var(--m-copper);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.textButton:hover {
+  border-bottom-color: var(--m-copper);
+}
+
+.textButton:focus-visible {
+  outline: none;
+  border-radius: var(--m-r-sm);
+  box-shadow: 0 0 0 2px rgba(245, 192, 154, 0.45);
+}
+
+/* "Close deck": at the right inset of the open deck's tab row. The count makes
+   room by sliding left (--close-w is the button and its gap), and the button
+   fades in and out with the open state. */
+.drawers {
+  --close-w: 6.25rem;
+}
+
+.deckClose {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--tab-h) / 2);
+  right: var(--inset);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity 200ms var(--settle);
+}
+
+.drawerOpen .deckClose {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tabRow .tabCount {
+  transition: transform 220ms var(--settle);
+}
+
+.drawerOpen .tabRow .tabCount {
+  transform: translateX(calc(-1 * var(--close-w)));
+}
+
+.drawerOpen .rowText {
+  margin-right: var(--close-w);
+}
+
+/* ── The cards ── */
+/* Each card's slot is fan-sized and placed by transform alone: closed, at its
+   depth in the stack and scaled down; open, at its fan slot. --d is a card's
+   depth (0 is the top card); up to three cards behind it show their edges.
+   The fan's 100cqw is its own width (the list is a size container). */
+.fan {
+  /* The run the fan spreads over and its card's width, which shrink beside a drawn card. */
+  --fan-len: calc(100cqw - var(--fan-x0));
+  --fan-item: calc(var(--fan-w) * var(--fan-scale));
+  --fan-step: min((var(--fan-len) - var(--fan-item)) / var(--n1), (var(--fan-len) - 2 * var(--fan-item)) / var(--n2));
+  --fan-open: max(0px, var(--fan-item) - var(--fan-step));
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: var(--fan-inset);
+  right: var(--fan-inset);
+  height: calc(var(--fan-top) + var(--fan-w) * 1.75 + 0.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  container-type: inline-size;
+  transform-origin: calc(-1 * var(--fan-pad)) var(--stack-top);
+  transition:
+    transform 220ms var(--spring),
+    opacity 200ms var(--settle);
+}
+
+/* A lifted deck comes forward: the stack grows a little and loosens. */
+.drawerLifted .fan {
+  transform: scale(1.04);
+}
+
+.drawerShut .fan {
+  opacity: 0;
+}
+
+.drawerOpen .fan {
+  /* A sideways drag sifts the fan; a vertical one scrolls the page. */
+  touch-action: pan-y;
+}
+
+.fan li {
+  --tx: calc(min(var(--d), 3) * 0.3rem - var(--fan-pad));
+  --ty: calc(var(--stack-top) - min(var(--d), 3) * 0.25rem);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--fan-w);
+  z-index: calc(20 - var(--d));
+  transform-origin: 0 0;
+  transform: translate(var(--tx), var(--ty)) scale(var(--stack-scale));
+  transition: transform 320ms var(--settle);
+}
+
+.drawerLifted .fan li {
+  --tx: calc(min(var(--d), 6) * var(--spread) - var(--fan-pad));
+  --ty: calc(var(--stack-top) - min(var(--d), 6) * 0.06rem);
+}
+
+.drawerOpen .fan li {
+  --tx: calc(var(--fan-x0) + var(--i) * var(--fan-step) + var(--shift) * var(--fan-open));
+  --ty: var(--fan-top);
+  z-index: var(--i);
+  transform: translate(var(--tx), var(--ty)) scale(var(--fan-scale));
+}
+
+.drawerOpen .fan li.lifted {
+  z-index: 100;
+}
+
+/* Opening: the cards leave the stack one after another (about 25ms apart). */
+.opening .fan li {
+  transition-duration: 420ms;
+  transition-delay: calc(var(--i) * 25ms);
+}
+
+/* Closing: they go home last card first. */
+.closing .fan li {
+  transition-duration: 340ms;
+  transition-delay: calc((var(--n) - 1 - var(--i)) * 20ms);
+}
+
+/* The drawn card's slot: a hairline card shape where it was, set like a card at
+   rest in the fan (same tilt and size, never lifted), on the deck's own face.
+   No fill (round five, 2026-11-05): where the fan overlaps, the card under it
+   shows through and the slot reads as a gap in the row. */
+.fan li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--m-line-strong);
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 50% 115%;
+  transition: opacity 200ms var(--settle);
+}
+
+.drawerOpen .fan li::before {
+  transform: rotate(var(--r)) scale(0.94);
+}
+
+.fan li.empty::before {
+  opacity: 1;
+}
+
+/* The empty slot keeps its place in the row's order: the card after it covers it. */
+.drawerOpen .fan li.lifted.empty {
+  z-index: var(--i);
+}
+
+.deckCard {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform-origin: 50% 115%;
+  transition:
+    transform 200ms var(--spring),
+    opacity 150ms var(--settle);
+}
+
+.deckCard:focus-visible {
+  outline: none;
+}
+
+.drawerOpen .deckCard {
+  transform: rotate(var(--r)) scale(0.94);
+}
+
+.drawerOpen .lifted .deckCard {
+  transform: translateY(-0.75rem) rotate(0deg) scale(1);
+}
+
+/* Opening: the tilt settles once each card has nearly reached its slot. */
+.opening .deckCard {
+  transition:
+    transform 260ms var(--settle) calc(var(--i) * 25ms + 300ms),
+    opacity 150ms var(--settle);
+}
+
+.empty .deckCard {
+  opacity: 0;
+}
+
+.deckCard .card {
+  max-width: none;
+  transition: none;
+  /* A shadow off the left edge, so each card reads as lying on the one before. */
+  box-shadow:
+    -8px 0 16px -10px rgba(0, 0, 0, 0.95),
+    0 14px 26px -18px rgba(0, 0, 0, 0.95);
+}
+
+/* Two faded layers over a card: the stack's copper edge on the cards behind
+   the top one (--b), and the lifted card's ring. */
+.deckCard .card::before,
+.deckCard .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 6px;
+  pointer-events: none;
+  transition: opacity 200ms var(--settle);
+}
+
+.deckCard .card::before {
+  box-shadow: inset 0 0 0 1px rgba(245, 192, 154, 0.42);
+  opacity: var(--b);
+}
+
+.drawerOpen .deckCard .card::before {
+  opacity: 0;
+}
+
+.deckCard .card::after {
+  box-shadow:
+    0 22px 36px -18px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(245, 192, 154, 0.4);
+  opacity: 0;
+}
+
+.drawerOpen .lifted .deckCard .card::after {
+  opacity: 1;
+}
+
+.deckCard:focus-visible .card::after {
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.45);
+  opacity: 1;
+}
+
+.deckCount {
+  position: absolute;
+  z-index: 2;
+  right: -0.375rem;
+  bottom: 0.5rem;
+  min-width: 1.375rem;
+  padding: 0 0.375rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  background: var(--m-ground);
+  color: var(--m-copper);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* One caption under the fan: the lifted card's name, then its month, progress or hint. */
+/* Round six (2026-11-05): centered on the fan's run (the box's middle, moved
+   half of --fan-x0 when the fan sits beside a drawn card), 1rem clear of the
+   lowest card corner. */
+.deckCaption {
+  position: absolute;
+  top: calc(var(--fan-top) + var(--fan-w) * 1.75 + 1.75rem);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.125rem 0.625rem;
+  padding: 0 var(--fan-inset);
+  min-height: 1.5rem;
+  margin: 0;
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  line-height: 1.5rem;
+  /* Follows the fan when it moves aside for a drawn card. */
+  transform: translate(calc(var(--fan-x0) / 2), calc((var(--fan-scale) - 1) * var(--fan-w) * 1.75));
+  transition: transform 320ms var(--settle);
+  animation: fadeIn 200ms var(--settle) 260ms both;
+}
+
+.deckName {
+  font-weight: 500;
+  color: var(--m-ink);
+}
+
+.name_locked,
+.name_hidden {
+  color: var(--m-muted);
+}
+
+.deckSub {
+  color: var(--m-dim);
+  font-size: var(--m-t-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The reading spot ── */
+/* Under the fan: the drawn card large, its facts beside it (Detail in
+   Home/Achievements.jsx, without the panel's own frame). The card flies in
+   from its slot (Deck.jsx); the facts fade and rise in just after.
+
+   House look (2026-11-05): a hairline between the card and the facts (the
+   stat strip's divider on /members), the facts left-aligned in a column under
+   the deck's marker, and the card's title in Montserrat 500 at 1.5rem. These
+   rules only align and size; Detail and its classes in home.module.css stay as they are.
+   --spot-card, --spot-gap and --spot-pad place the marker (.spotMark) over
+   the facts column at each width. */
+.spot {
+  --spot-card: 14rem;
+  --spot-gap: 2rem;
+  --spot-pad: 2rem;
+  --spot-top: 1.25rem;
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--fan-top) + var(--fan-w) * 1.75 + 4rem);
+  left: var(--inset);
+  right: var(--inset);
+  cursor: default;
+  user-select: text;
+  -webkit-user-select: text;
+  scroll-margin: 1rem;
+}
+
+.spot > div {
+  align-items: stretch;
+  padding: var(--spot-top) 0 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-align: left;
+}
+
+.spot .panelCard {
+  align-self: start;
+}
+
+/* The facts: under the marker, left-aligned, a hairline down their left side. */
+.spot .panelFacts {
+  padding: calc(var(--m-t-xs) * 1.35 + 0.75rem) 0 0 var(--spot-pad);
+  border-left: 1px solid var(--m-line);
+}
+
+.spot .panelFacts p {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.spot .panelFacts [class*="actionRow"] {
+  justify-content: flex-start;
+}
+
+/* The card's title keeps the members-wide Montserrat override (metalface, 2026-11-03:
+   Beaufort only on h1 and section titles), sized for the reading spot (round five). */
+.spot [class*="detailTitle"] {
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: var(--m-track-body);
+}
+
+/* "Put the card back": at the foot of the facts column, which stretches to the
+   card's height, so it lines up with the card's bottom edge (or sits under the
+   facts when they run longer). The facts keep room for it. */
+.spot .panelFacts {
+  padding-bottom: 2.5rem;
+}
+
+.putBack {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: calc(var(--spot-card) + var(--spot-gap) + 1px + var(--spot-pad));
+  animation: factsIn 240ms var(--settle) 120ms both;
+}
+
+.spotBack .putBack,
+.spotFade .putBack {
+  animation: factsOut 200ms var(--settle) both;
+}
+
+.spotMark {
+  position: absolute;
+  z-index: 1;
+  top: var(--spot-top);
+  left: calc(var(--spot-card) + var(--spot-gap) + 1px + var(--spot-pad));
+  display: flex;
+  animation: factsIn 240ms var(--settle) 120ms both;
+}
+
+.spotBack .spotMark,
+.spotFade .spotMark {
+  animation: factsOut 200ms var(--settle) both;
+}
+
+.spot .panelCard {
+  position: relative;
+  z-index: 1;
+}
+
+.spot .panelFacts {
+  animation: factsIn 240ms var(--settle) 120ms both;
+}
+
+.spotBack .panelFacts,
+.spotFade .panelFacts {
+  animation: factsOut 200ms var(--settle) both;
+}
+
+.spotFade .panelCard {
+  animation: fadeOut 200ms var(--settle) both;
+}
+
+@keyframes factsIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes factsOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Wider than a phone: the card about 14rem wide, the facts beside it. */
+@media (min-width: 601px) {
+  .spot > div {
+    grid-template-columns: var(--spot-card) minmax(0, 34rem);
+    gap: var(--spot-gap);
+  }
+}
+
+/* A wide screen (round three, 2026-11-05): the box keeps its height. The drawn
+   card and its facts take the left of the open deck, and the fan moves into the
+   rest, its cards at 0.75 and overlapping more, so the draw reads as pulling a
+   card out of the row. Everything moves by transform.
+   From 1200px (round six; it was 1024px): narrower, the rest of the deck is
+   less than two small cards wide, and a seven-card fan ran into the box's edge.
+   Between 601px and 1199px the drawn card sits under the fan instead. */
+@media (min-width: 1200px) {
+  .drawing {
+    --fan-x0: calc(var(--read-w) + 2.5rem - var(--fan-pad));
+    --fan-scale: 0.75;
+  }
+
+  .spot {
+    --spot-card: var(--read-card);
+    --spot-top: 0px;
+    top: var(--fan-top);
+    right: auto;
+    width: var(--read-w);
+  }
+
+  .spot > div {
+    grid-template-columns: var(--spot-card) minmax(0, 23rem);
+  }
+}
+
+/* A phone: the cabinet takes the column, the decks still stack, smaller cards,
+   and the reading spot puts the card above its facts (the panel's phone layout). */
+@media (max-width: 600px) {
+  .drawers {
+    --cab-h: clamp(26rem, calc(100vh - 12rem), 31.5rem);
+    --inset: 1rem;
+    /* 1.25rem from the box's edge to a tilted end card's corner (round six). */
+    --fan-inset: 2rem;
+    --fan-w: 5.75rem;
+    --stack-scale: 0.87;
+    --side-x: calc(var(--inset) + var(--fan-w) * var(--stack-scale) + 1.75rem);
+    --spread: 0.55rem;
+    /* A closed deck shows about 4.4rem here: a little less air over the stack keeps its bar in view. */
+    --stack-top: 0.75rem;
+  }
+
+  .tabSide .tabSeason {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+  }
+
+  .tabSide .tabIntro {
+    display: none;
+  }
+
+  /* The marker keeps its group's name (the plain decks have no other), so the
+     count leaves its line, where it would run into the marker once a deck
+     loosens, and drops under the label instead: marker, the season's name,
+     count, bar. It moves with the label (round five, 2026-11-05). */
+  .tabHead {
+    display: contents;
+  }
+
+  .tabSide .tabSeason {
+    order: 1;
+  }
+
+  .tabSide .tabCount {
+    order: 2;
+  }
+
+  .tabSide .tabBar {
+    order: 3;
+  }
+
+  .drawerLifted .tabHead .tabCount {
+    transform: none;
+  }
+
+  /* Along a season's tab: marker and count on the first line, the season's long name under them. */
+  .tabTwo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-content: center;
+    gap: 0.375rem 1rem;
+  }
+
+  .tabTwo .rowText {
+    display: contents;
+  }
+
+  .tabTwo .tabMarker {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .tabTwo .tabSeason {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  /* Too narrow for the season's line beside the count: the line drops here (round three). */
+  .tabTwo .tabIntro {
+    display: none;
+  }
+
+  .tabTwo .tabCount {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: baseline;
+  }
+
+  /* The season's two-line tab: "Close deck" sits on the first line, with the
+     marker and the count, clear of the season's name under them (round six). */
+  .deckCloseTwo {
+    top: calc((var(--tab-h) - 2.57rem) / 2 + 0.5rem);
+  }
+
+  /* The reading spot: the card above its facts, everything on the left inset. */
+  .spot > div {
+    justify-items: start;
+  }
+
+  .spot .panelCard {
+    width: 11rem;
+  }
+
+  .spot .panelFacts {
+    width: 100%;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .spotMark {
+    top: calc(var(--spot-top) + 11rem * 1.75 + 1.25rem);
+    left: 0;
+  }
+
+  .putBack {
+    left: 0;
+  }
+}
+
+/* Reduced motion: plain offsets, no tilt, lift or flight, nothing animates. */
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawer::before,
+  .liftShadow,
+  .tabRow,
+  .tabSide,
+  .tabHead .tabCount,
+  .tabRow .tabCount,
+  .deckClose,
+  .tabBar,
+  .fan,
+  .fan li,
+  .fan li::before,
+  .deckCard,
+  .deckCard .card::before,
+  .deckCard .card::after {
+    transition: none;
+  }
+
+  .deckCaption,
+  .spotMark,
+  .putBack,
+  .spotBack .putBack,
+  .spotFade .putBack,
+  .spotBack .spotMark,
+  .spotFade .spotMark,
+  .spot .panelFacts,
+  .spotBack .panelFacts,
+  .spotFade .panelFacts,
+  .spotFade .panelCard {
+    animation: none;
+  }
+
+  .drawerLifted .fan {
+    transform: none;
+  }
+
+  .deckCaption {
+    transition: none;
+  }
+
+  .drawerOpen .deckCard,
+  .drawerOpen .lifted .deckCard {
+    transform: none;
+  }
+}

@@ -260,7 +260,7 @@ function PreviewBanner({ lesson, current }) {
           Lesson {lesson.n} is yours to read: the write-up, the app screen and the reading
           list are all below. The controls stay switched off until you get here, because
           each lesson sets up the one after it and the checkpoint grades against that
-          setup. Working them in order is what banks the points.
+          setup. Working them in order is what banks the essence.
         </p>
         <div className={styles.previewActions}>
           <Link to={current.slug} className={styles.previewCta}>

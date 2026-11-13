@@ -212,8 +212,9 @@ export const TOTAL_POINTS = BEGINNER_TOTAL_POINTS + INTERMEDIATE_TOTAL_POINTS;
  * The tracks in the order the map shows them.
  *
  * `key` is what the claim endpoint expects in its `track` field. `roleLine`
- * names the Discord role a finished track earns, worded for the graduation
- * panel and the rewards card.
+ * says what a finished track's essence reaches on the members area's ladder
+ * (demo walkthrough 2026-10-27: one Discord role at 500, not a role per
+ * track), worded for the graduation panel and the rewards card.
  */
 export const TRACKS = [
   {
@@ -221,14 +222,14 @@ export const TRACKS = [
     label: "Beginner track",
     lessons: BEGINNER,
     bonus: BEGINNER_BONUS,
-    roleLine: "Graduate role on Discord",
+    roleLine: "Reaches the Discord role",
   },
   {
     key: "intermediate",
     label: "Intermediate track",
     lessons: INTERMEDIATE,
     bonus: INTERMEDIATE_BONUS,
-    roleLine: "Intermediate role on Discord",
+    roleLine: "Toward the Inner Circle",
   },
 ];
 

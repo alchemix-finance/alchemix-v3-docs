@@ -1,0 +1,5197 @@
+/* The members home, v2. Tokens come from the shell's .page.
+   Sentence case throughout; filled shapes for the background geometry. */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bodySmall {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.textLink {
+  color: var(--m-copper) !important;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--m-copper-line);
+}
+
+.textLink:hover {
+  text-decoration: none;
+  border-bottom-color: var(--m-copper);
+}
+
+.inlineButton {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--m-copper-line);
+  color: var(--m-copper);
+  font-family: var(--m-body);
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.inlineButton:hover:not(:disabled) {
+  border-bottom-color: var(--m-copper);
+}
+
+.inlineButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.sectionNote {
+  margin-top: 1rem;
+}
+
+.howNote {
+  margin: 1.5rem 0 0;
+  max-width: 46rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.6;
+  color: var(--m-dim);
+}
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+}
+
+/* Page review 2026-10-24: two columns, the text spanning both rows on the
+   left; on the right the card or orbit, then the onboarding aside. */
+.heroInner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "text art"
+    "text side";
+  gap: 1.5rem 2.5rem;
+  align-items: center;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: clamp(1.75rem, 4.5vw, 3rem) var(--m-gutter) clamp(1.75rem, 4vw, 2.75rem);
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+}
+
+.heroText {
+  grid-area: text;
+  min-width: 0;
+}
+
+.heroSide {
+  grid-area: side;
+  align-self: start;
+  min-width: 0;
+}
+
+.heroSide .unlocks {
+  margin-top: 0;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.heroSide .onboardMore {
+  margin: 0.75rem 0 0;
+}
+
+.eyebrow {
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1.25rem;
+  color: var(--m-copper);
+  margin-bottom: 0.75rem;
+}
+
+.headline {
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 300;
+  font-size: var(--m-t-display);
+  line-height: 1.05;
+  letter-spacing: var(--m-track-display);
+  color: var(--m-text);
+}
+
+.lead {
+  margin: 0.875rem 0 0;
+  max-width: 42rem;
+  font-size: var(--m-t-lead);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: var(--m-track-body);
+  color: var(--m-ink);
+}
+
+.heroConnect {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.heroArt {
+  grid-area: art;
+  display: flex;
+  justify-content: center;
+  align-self: start;
+}
+
+/* Onboarding a past user: the history card takes the art column, a little wider. */
+.heroInnerCard {
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem);
+  align-items: start;
+}
+
+.heroInnerCard .heroArt {
+  padding-top: 2rem;
+}
+
+.orbit {
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+}
+
+/* The season banner */
+.seasonBanner {
+  margin-top: 1.75rem;
+  padding: 1.125rem 1.25rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.seasonLoading {
+  opacity: 0.6;
+}
+
+.seasonNone {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.seasonTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.seasonText {
+  min-width: 0;
+}
+
+.seasonName {
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: var(--m-t-h3);
+  letter-spacing: 0;
+  line-height: 1.3;
+  color: var(--m-text);
+}
+
+.seasonDates {
+  margin-top: 0.25rem;
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.seasonBar {
+  position: relative;
+  height: 0.5rem;
+  margin-top: 1rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.seasonBar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, rgba(245, 192, 154, 0.6), var(--m-copper));
+}
+
+/* The status strip */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
+  margin-top: 0.75rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  overflow: hidden;
+}
+
+.stripError {
+  margin-top: 0.75rem;
+}
+
+.stripLoading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  min-height: 6.25rem;
+}
+
+.loadingOrbit {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--m-line-strong);
+  border-top-color: var(--m-copper);
+  animation: spin 1.1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cell {
+  min-width: 0;
+  padding: 1rem 1.25rem 1.125rem;
+  border-left: 1px solid var(--m-line);
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.cell:first-child {
+  border-left: 0;
+}
+
+.cellLink:hover {
+  background: var(--m-panel-strong);
+}
+
+.cellLabel {
+  font-size: var(--m-t-xs);
+  line-height: 1rem;
+  color: var(--m-muted);
+  margin-bottom: 0.5rem;
+}
+
+.cellValue {
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-text);
+  overflow-wrap: anywhere;
+}
+
+.cellSub {
+  margin-top: 0.375rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.cellAction {
+  background: rgba(245, 192, 154, 0.06);
+}
+
+/* Not joined yet: the first cell reads as waiting, not empty. */
+.cellWaiting .cellValue {
+  color: var(--m-ink);
+}
+
+.cellWaiting .cellLabel::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  vertical-align: 1px;
+  box-shadow: inset 0 0 0 1px var(--m-grey);
+}
+
+.cellAction .cellLabel {
+  color: var(--m-copper);
+}
+
+.cellButton {
+  margin-top: 0.125rem;
+}
+
+.cellButton > * {
+  margin: 0;
+}
+
+/* The action cell is the narrowest place a step's button lands: let a long
+   label ("Open the Academy") wrap inside it rather than run past the edge. */
+.cellButton a,
+.cellButton button {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  white-space: normal;
+  text-align: center;
+}
+
+.cellButton .signHint {
+  display: none;
+}
+
+.miniBar {
+  position: relative;
+  height: 0.375rem;
+  margin-top: 0.5rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.miniBar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+}
+
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 0.5rem;
+  max-width: 10rem;
+}
+
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dotOn {
+  background: var(--m-copper);
+}
+
+.dotOff {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dotHidden {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.stripNote {
+  margin: 0.75rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+/* Which address is on screen */
+
+/* Demo sign-in: marks the address the page acts as */
+
+/* ── Season progress ───────────────────────────────────────── */
+.progressGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.progressStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.bigStat {
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--m-line);
+}
+
+.bigNumber {
+  font-family: var(--m-body);
+  font-weight: 300;
+  font-size: var(--m-t-number);
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.bigLabel {
+  margin-top: 0.5rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+/* One grid for every rung, so the bars line up: name, bar, count, and the
+   "You" tag in a column of its own (empty in the other rows). Each rung
+   takes the columns through subgrid, so a long count or the tag widens its
+   column for every row instead of running into the bar. */
+.rungBars {
+  display: grid;
+  grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr) auto auto;
+  column-gap: 1rem;
+  row-gap: 0.875rem;
+}
+
+.rungBarsLabel {
+  grid-column: 1 / -1;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.rungBar {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+.rungBarName {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: var(--m-t-sm);
+  color: var(--m-text);
+}
+
+.rungBarThreshold {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.rungBarTrack {
+  position: relative;
+  height: 0.5rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.rungBarTrack span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+  opacity: 0.75;
+}
+
+.rungBarMine .rungBarTrack span {
+  background: var(--m-copper);
+  opacity: 1;
+}
+
+.rungBarCount {
+  min-width: 3rem;
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h4);
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.rungBarYou {
+  display: flex;
+  align-items: center;
+}
+
+.youTag {
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1rem;
+  color: var(--m-copper);
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  padding: 0 0.5rem;
+}
+
+/* ── How seasons chain, and what carries over ──────────────── */
+.chain {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.chainLabel {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  margin-bottom: 0.875rem;
+}
+
+.chainBars {
+  position: relative;
+  display: grid;
+  gap: 0.375rem;
+  padding: 0.25rem 0;
+}
+
+.chainRow {
+  display: flex;
+  height: 0.5rem;
+}
+
+.chainSeason {
+  position: relative;
+  height: 100%;
+  border-radius: var(--m-r-full) 0 0 var(--m-r-full);
+  background: rgba(245, 192, 154, 0.18);
+  overflow: hidden;
+}
+
+.chainElapsed {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, rgba(245, 192, 154, 0.6), var(--m-copper));
+}
+
+.chainAccess {
+  height: 100%;
+  margin-left: 2px;
+  border-radius: 0 var(--m-r-full) var(--m-r-full) 0;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(245, 192, 154, 0.3) 0 4px,
+    rgba(245, 192, 154, 0.08) 4px 8px
+  );
+}
+
+.chainNext {
+  height: 100%;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, rgba(143, 178, 222, 0), var(--m-progress-from) 70%, var(--m-progress-to));
+}
+
+.chainToday {
+  position: absolute;
+  top: -0.125rem;
+  bottom: -0.125rem;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--m-text);
+}
+
+.chainKey {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+}
+
+.chainKey li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.keyDot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translateY(-1px);
+}
+
+.keySeason {
+  background: var(--m-copper);
+}
+
+.keyAccess {
+  background: repeating-linear-gradient(135deg, rgba(245, 192, 154, 0.75) 0 2px, rgba(245, 192, 154, 0.2) 2px 4px);
+}
+
+.keyNext {
+  background: var(--m-progress-to);
+}
+
+.keyName {
+  color: var(--m-text);
+}
+
+.chainNote {
+  margin: 0.875rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.carryList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.carryItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.3125rem 0.75rem 0.3125rem 0.3125rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-text);
+}
+
+.carryGlyph {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+}
+
+/* ── The proposed return bonus (behind the proposals flag) ─── */
+.bonus {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem 1.25rem;
+  align-items: start;
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px dashed rgba(143, 178, 222, 0.45);
+  border-radius: var(--m-r-xl);
+  background: rgba(143, 178, 222, 0.05);
+}
+
+.bonusLive {
+  border-style: solid;
+  border-color: var(--m-copper-line);
+  background: var(--m-copper-fill);
+}
+
+.bonusTag,
+.bonusTagLive {
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1.25rem;
+  padding: 0 0.625rem;
+  border-radius: var(--m-r-full);
+  white-space: nowrap;
+  margin-top: 0.125rem;
+}
+
+.bonusTag {
+  color: var(--m-blue);
+  border: 1px solid rgba(143, 178, 222, 0.55);
+}
+
+.bonusTagLive {
+  color: var(--m-copper);
+  border: 1px solid var(--m-copper-line);
+}
+
+.bonusTitle {
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-text);
+}
+
+.bonusBody {
+  margin: 0.375rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.bonusWho {
+  margin: 0.375rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+/* V3 backlog ticket 09: one wallet's own numbers, and its monthly steps once settled. */
+.bonusMine {
+  margin: 0.5rem 0 0;
+  font-size: var(--m-t-body);
+  line-height: 1.45;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.bonusIf {
+  color: var(--m-blue);
+}
+
+.bonusSteps {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.bonusStep {
+  display: grid;
+  gap: 0.125rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid rgba(143, 178, 222, 0.3);
+  border-radius: var(--m-r-md);
+  font-size: var(--m-t-xs);
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+
+.bonusStepDate,
+.bonusStepState {
+  color: var(--m-muted);
+}
+
+.bonusStepAmount {
+  color: var(--m-text);
+}
+
+.bonusStep_vested .bonusStepState {
+  color: var(--m-copper);
+}
+
+.bonusStep_forfeited {
+  border-style: dashed;
+}
+
+.bonusStep_forfeited .bonusStepAmount {
+  color: var(--m-muted);
+  text-decoration: line-through;
+}
+
+/* ── Achievements ──────────────────────────────────────────── */
+/* Cards, 2026-11-04: the side column is wide enough for the panel's card beside its facts. */
+.badgeLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 29rem;
+  grid-template-areas:
+    "main side"
+    "event side";
+  gap: 1.75rem 2.25rem;
+  align-items: start;
+}
+
+.badgeMain {
+  grid-area: main;
+  min-width: 0;
+}
+
+/* Round two, 2026-11-05 (Keenan: lose the right section): a card's facts open
+   inside its deck, so the cabinet takes the whole width with the event card under it. */
+.badgeLayoutOne {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "main"
+    "event";
+  gap: 1.75rem;
+}
+
+/* The panel stays in view beside the grid on a wide screen (static under 900px,
+   see below). Nothing fixed sits above it, so the offset is only breathing room. */
+.badgeSide {
+  grid-area: side;
+  position: sticky;
+  top: 1.5rem;
+  align-self: start;
+  scroll-margin-top: 1rem;
+}
+
+.badgeEvent {
+  grid-area: event;
+  min-width: 0;
+}
+
+.badgeGroups {
+  display: grid;
+  gap: 1.125rem;
+}
+
+/* Cards, 2026-11-04: the group's name sits above its cards, so six fit to a row. */
+.badgeGroup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.badgeGroup:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.badgeGroupLabel {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-ink);
+}
+
+/* Round two, 2026-11-04: a season's set, labelled with the season's name and its one line. */
+.badgeSeasonName {
+  display: block;
+  line-height: 1.35;
+  color: var(--m-copper);
+}
+
+.badgeSeasonIntro {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--m-dim);
+}
+
+.badgeGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.375rem;
+}
+
+.badgeGrid li {
+  min-width: 0;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem 0.25rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--m-r-lg);
+  font-family: var(--m-body);
+  color: var(--m-text);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tile:hover {
+  background: var(--m-panel-strong);
+}
+
+.tile:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+.tileOn {
+  background: var(--m-panel-strong);
+  border-color: var(--m-copper-line);
+}
+
+.tileMedal {
+  position: relative;
+  display: block;
+  width: 4rem;
+  height: 4rem;
+}
+
+.tileMedal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tileCount {
+  position: absolute;
+  right: -0.25rem;
+  bottom: 0;
+  min-width: 1.375rem;
+  padding: 0 0.375rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-ground);
+  border: 1px solid var(--m-copper-line);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+}
+
+.tileTitle {
+  margin-top: 0.5rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.3;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tileSub {
+  margin-top: 0.1875rem;
+  font-size: 0.6875rem;
+  color: var(--m-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.tile_locked .tileTitle {
+  color: var(--m-muted);
+}
+
+.tile_hidden .tileTitle {
+  color: var(--m-dim);
+}
+
+.tile_earned .tileSub {
+  color: rgba(245, 192, 154, 0.75);
+}
+
+/* The selected badge's panel */
+.detail {
+  position: relative;
+  padding: 1.75rem 1.5rem 1.5rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background:
+    radial-gradient(ellipse 80% 45% at 50% 0%, rgba(245, 192, 154, 0.08), transparent 70%),
+    var(--m-card);
+  text-align: center;
+}
+
+.detail_locked,
+.detail_hidden {
+  background:
+    radial-gradient(ellipse 80% 45% at 50% 0%, rgba(143, 178, 222, 0.06), transparent 70%),
+    var(--m-card);
+}
+
+.detailTitle {
+  margin: 0.375rem 0 0;
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: 1.625rem;
+  line-height: 1.2;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+.detailBody {
+  margin: 0.5rem auto 0;
+  max-width: 17rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.detailHint {
+  margin: 0.5rem 0 0;
+  font-size: var(--m-t-sm);
+  color: var(--m-grey);
+}
+
+.detailStatus {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 1.125rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.statusEarned {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-copper);
+}
+
+.statusLocked {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-muted);
+}
+
+.detailFact {
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+/* Round two, 2026-11-04: "Tier 2 of 3" under an earned badge with tiers. */
+.detailTier {
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--m-muted);
+}
+
+.detailProgress {
+  margin-top: 0.875rem;
+}
+
+.bar {
+  position: relative;
+  height: 0.375rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+}
+
+.detailProgressText {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.detailActions {
+  margin-top: 1.125rem;
+}
+
+.detailActions:empty {
+  display: none;
+}
+
+.detailActions .actionRow {
+  justify-content: center;
+}
+
+/* ── Claim actions ─────────────────────────────────────────── */
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.875rem;
+}
+
+.actionRow + .actionRow {
+  margin-top: 0.625rem;
+}
+
+.actionNote {
+  margin-top: 0.625rem;
+  text-align: left;
+}
+
+.actionText,
+.actionOk,
+.actionFine {
+  margin: 0.5rem 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.actionOk {
+  color: var(--m-green);
+}
+
+.actionFine {
+  font-size: var(--m-t-xs);
+  color: var(--m-dim);
+}
+
+.signHint {
+  font-size: var(--m-t-xs);
+  color: var(--m-dim);
+}
+
+/* The season shirt on the VIP and merch badge (v3 backlog ticket 04) */
+.merch {
+  margin-top: 1.125rem;
+  padding-top: 1.125rem;
+  border-top: 1px solid var(--m-line);
+  text-align: left;
+}
+
+.detailActions .merch .actionRow {
+  justify-content: flex-start;
+}
+
+.merchTitle {
+  margin: 0 0 0.25rem;
+  font-family: var(--m-display);
+  font-size: var(--m-t-h4);
+  font-weight: 500;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+.merchNotice {
+  padding: 1rem 1.125rem 1.125rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-copper-fill);
+}
+
+.merchStrong {
+  margin: 0.5rem 0 0.75rem;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--m-copper-hi);
+}
+
+.merchList {
+  margin: 0 0 0.75rem;
+  padding-left: 1.125rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.merchList li + li {
+  margin-top: 0.3rem;
+}
+
+.merchSafe {
+  margin: 0 0 0.75rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-text);
+}
+
+.merchTick {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0.875rem;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-text);
+  cursor: pointer;
+}
+
+.merchTick input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--m-copper);
+  cursor: pointer;
+}
+
+.merchCodeLabel {
+  font-size: var(--m-t-xs);
+  letter-spacing: var(--m-track-head);
+  text-transform: uppercase;
+  color: var(--m-muted);
+}
+
+.merchCode {
+  margin: 0.25rem 0 0;
+  padding: 0.625rem 0.875rem;
+  border: 1px dashed var(--m-copper-line);
+  border-radius: var(--m-r-md);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 1.125rem;
+  letter-spacing: 0.08em;
+  color: var(--m-copper);
+  overflow-wrap: anywhere;
+}
+
+/* The event code card */
+.eventCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  scroll-margin-top: 1rem;
+}
+
+.eventTitle {
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  line-height: 1.3;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+.eventBody {
+  margin: 0.25rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.codeForm {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.codeInput {
+  width: 9.5rem;
+  min-width: 0;
+  height: 2.5rem;
+  padding: 0 0.875rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-md);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  letter-spacing: 0.12em;
+}
+
+.codeInput::placeholder {
+  letter-spacing: 0;
+  color: var(--m-muted);
+}
+
+.codeInput:focus {
+  outline: none;
+  border-color: var(--m-copper-line);
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.12);
+}
+
+.eventNote {
+  grid-column: 1 / -1;
+}
+
+/* ── Next steps ────────────────────────────────────────────── */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--m-line);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem 0.25rem;
+  border-left: 1px solid var(--m-line);
+}
+
+.step:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.stepNum {
+  font-size: var(--m-t-xs);
+  font-weight: 300;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+  margin: 0.5rem 0 0;
+  font-family: var(--m-display);
+  font-weight: 500;
+  font-size: var(--m-t-h3);
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-copper);
+}
+
+.stepBody {
+  margin: 0.5rem 0 1.25rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+  flex: 1 0 auto;
+}
+
+.stepAction .actionRow {
+  gap: 0.5rem 0.75rem;
+}
+
+/* Buttons on one line across the cards, even when one card has the gas line
+   under its button: each card shares the list's four rows (number, title,
+   body, action), so every action row starts at the same height and a hint
+   only adds height below its own button. Browsers without subgrid keep the
+   column layout above. */
+@supports (grid-template-rows: subgrid) {
+  .step {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    align-items: start;
+  }
+}
+
+/* ── History ───────────────────────────────────────────────── */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+}
+
+.fact {
+  min-width: 0;
+  padding: 0 1rem;
+  border-left: 1px solid var(--m-line);
+}
+
+.fact:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.fact dt {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  margin-bottom: 0.375rem;
+}
+
+.fact dd {
+  margin: 0;
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h4);
+  line-height: 1.3;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-text);
+  overflow-wrap: anywhere;
+}
+
+/* ── Positions ─────────────────────────────────────────────── */
+/*
+ * Fifth round (Keenan, 2026-10-28): the head and each row had their own grid,
+ * so the empty last head cell and the rows' Manage and Details buttons sized
+ * the columns differently and the headings sat off their values. The table
+ * owns the columns now and every row shares them (subgrid).
+ */
+.posTable {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1.3fr) repeat(4, minmax(0, 1fr)) auto;
+  column-gap: 1rem;
+  border-bottom: 1px solid var(--m-line);
+}
+
+.posRow,
+.posGroup {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+.posRow {
+  align-items: center;
+  padding: 0.875rem 0;
+}
+
+.posDetail {
+  grid-column: 1 / -1;
+}
+
+.posHead {
+  padding: 0 0 0.5rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.posGroup {
+  border-top: 1px solid var(--m-line);
+}
+
+.posOpen {
+  background: linear-gradient(180deg, var(--m-panel-strong), transparent);
+}
+
+.posMarket {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.marketDot {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, var(--m-copper) 0 3px, transparent 3.5px),
+    radial-gradient(circle at 50% 50%, rgba(245, 192, 154, 0.16) 0 100%);
+}
+
+.posAsset {
+  display: block;
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: var(--m-t-h4);
+  letter-spacing: 0;
+  color: var(--m-text);
+}
+
+.posMeta {
+  display: block;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.posCell {
+  min-width: 0;
+  font-size: var(--m-t-sm);
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.posNote {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  color: var(--m-dim);
+}
+
+.posToggleCell {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+.posToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  background: transparent;
+  border: 1px solid var(--m-outline);
+  border-radius: var(--m-r-md);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.posToggle:hover {
+  background: var(--m-hover);
+}
+
+.posDetail {
+  padding: 0.25rem 0 1.125rem 2.25rem;
+}
+
+.detailCells {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 12rem));
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.detailValue {
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h4);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-text);
+}
+
+.valueUp {
+  color: var(--m-green);
+}
+
+.posFine {
+  margin: 0;
+  max-width: 44rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.6;
+  color: var(--m-dim);
+}
+
+.ltv {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  min-width: 4rem;
+}
+
+.ltvValue {
+  font-size: var(--m-t-sm);
+}
+
+.ltvTrack {
+  position: relative;
+  width: 4.5rem;
+  height: 0.375rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.ltvTrack span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+}
+
+/* ── Share cards ───────────────────────────────────────────── */
+.shareGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+}
+
+.shareOne {
+  grid-template-columns: minmax(0, 34rem);
+}
+
+.shareCard {
+  align-self: start;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.shareCard .shareFrame {
+  border-radius: var(--m-r-lg);
+}
+
+/* Feedback 2026-10-28: the title and the buttons on one line under the image. */
+.shareFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-top: 0.875rem;
+}
+
+.shareFoot .shareTitle {
+  margin: 0;
+}
+
+.shareFrame {
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  overflow: hidden;
+  background: var(--m-card);
+  aspect-ratio: 1200 / 630;
+}
+
+.shareImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shareTitle {
+  margin: 1rem 0 0;
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+/* The referral link beside the share cards (v3 backlog ticket 08). */
+.referralCard {
+  align-self: start;
+  min-width: 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.referralTitle {
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  line-height: 1.3;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+.referralBody {
+  margin: 0.375rem 0 1rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.referralLinkRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.referralLink {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 2.5rem;
+  padding: 0 0.875rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-md);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  text-overflow: ellipsis;
+}
+
+.referralLink:focus {
+  outline: none;
+  border-color: var(--m-copper-line);
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.12);
+}
+
+.referralStatus {
+  margin: 0.875rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.referralFine {
+  margin: 0.25rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-dim);
+}
+
+.referralInvitee {
+  margin: 1rem 0 0;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--m-line);
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-copper);
+}
+
+/* ── Narrower screens ──────────────────────────────────────── */
+@media (max-width: 960px) {
+  /* One column: the card above the text, the aside below it, the orbit gone. */
+  .heroInner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "art"
+      "text"
+      "side";
+    row-gap: 1.25rem;
+  }
+
+  .heroArt {
+    display: none;
+  }
+
+  .heroInnerCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* On a narrow screen the card stays, above the text. */
+  .heroInnerCard .heroArt {
+    display: block;
+    max-width: 30rem;
+    padding-top: 0;
+  }
+
+  .badgeLayout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "main"
+      "side"
+      "event";
+  }
+
+  .badgeSide {
+    position: static;
+  }
+
+  .progressGrid,
+  .chain {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .posTable {
+    grid-template-columns: minmax(9rem, 1.3fr) repeat(4, minmax(0, 1fr)) auto;
+    column-gap: 0.75rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cell:nth-child(3) {
+    border-left: 0;
+  }
+
+  .cell:nth-child(n + 3) {
+    border-top: 1px solid var(--m-line);
+  }
+
+  .cellAction,
+  .cellLink {
+    grid-column: 1 / -1;
+    border-left: 0;
+  }
+
+  .cellLink .dots {
+    max-width: none;
+  }
+
+  .seasonName {
+    font-size: 1.125rem;
+  }
+
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .step,
+  .step:first-child {
+    padding: 1rem 0 1.125rem;
+    border-left: 0;
+    border-top: 1px solid var(--m-line);
+  }
+
+  .step:first-child {
+    border-top: 0;
+  }
+
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 0;
+  }
+
+  .fact,
+  .fact:first-child {
+    padding: 0 0.75rem 0 0;
+    border-left: 0;
+  }
+
+  .rungBars {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: 0.75rem;
+  }
+
+  .rungBar {
+    row-gap: 0.375rem;
+  }
+
+  .rungBarTrack {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .chainKey {
+    flex-direction: column;
+  }
+
+  .bonus {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1rem 1.125rem;
+  }
+
+  .bonusTag,
+  .bonusTagLive {
+    justify-self: start;
+  }
+
+  .badgeGrid {
+    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  }
+
+  .eventCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .codeInput {
+    flex: 1 1 auto;
+    width: auto;
+  }
+
+  .posHead {
+    display: none;
+  }
+
+  .posTable,
+  .posGroup {
+    display: block;
+  }
+
+  .posRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    align-items: start;
+  }
+
+  .posMarket {
+    grid-column: 1;
+  }
+
+  .posToggleCell {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .posHideSm {
+    display: none;
+  }
+
+  .posOpen .posHideSm {
+    display: block;
+  }
+
+  .posCell::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.1875rem;
+    font-size: 0.6875rem;
+    color: var(--m-dim);
+  }
+
+  .posDetail {
+    padding-left: 0;
+  }
+
+  .detailCells {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shareGrid,
+  .shareOne {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Onboarding (walkthrough 2026-10-23) ────────────────────── */
+/* The getting-started checklist: one row per step, the next one lit. */
+.checklist {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  overflow: hidden;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: 0.25rem 1rem;
+  align-items: start;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.check:first-child {
+  border-top: 0;
+}
+
+.checkNow {
+  background: rgba(245, 192, 154, 0.06);
+}
+
+.checkMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--m-line-strong);
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.checkNow .checkMark {
+  border-color: var(--m-copper);
+  color: var(--m-copper);
+}
+
+.checkDone .checkMark {
+  border-color: var(--m-green);
+  background: rgba(91, 168, 138, 0.15);
+  color: var(--m-green);
+}
+
+.checkText {
+  min-width: 0;
+  padding-top: 0.125rem;
+}
+
+.checkTitle {
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-text);
+}
+
+.checkNow .checkTitle {
+  color: var(--m-copper);
+}
+
+.checkDone .checkTitle {
+  color: var(--m-ink);
+}
+
+.checkBody {
+  margin: 0.25rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.checkFine {
+  margin: 0.375rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-dim);
+}
+
+/* Social proof under the deposit step (page review 2026-10-24). */
+.checkSocial {
+  margin: 0.375rem 0 0;
+  max-width: none;
+}
+
+.checkBonus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.5rem;
+  margin: 0.5rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.checkBonus .bonusTag,
+.checkBonus .bonusTagLive {
+  margin-top: 0;
+}
+
+.checkAction {
+  align-self: center;
+}
+
+.checkAction .actionRow {
+  margin: 0;
+  justify-content: flex-end;
+}
+
+.checkAction .actionNote {
+  max-width: 18rem;
+}
+
+/* What joining and holding unlock, under the checklist. */
+.unlocks {
+  margin-top: 1.25rem;
+}
+
+.unlocksLabel {
+  font-size: var(--m-t-xs);
+  line-height: 1rem;
+  color: var(--m-copper);
+  margin-bottom: 0.375rem;
+}
+
+.unlocksLine {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.55;
+  color: var(--m-ink);
+}
+
+.unlocksDefine {
+  margin: 0.375rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.55;
+  color: var(--m-dim);
+}
+
+.onboardMore {
+  margin: 0.875rem 0 0;
+  font-size: var(--m-t-sm);
+}
+
+/* A past user's history card, in the hero's art column. */
+.heroCard {
+  width: 100%;
+}
+
+/* A card while the engine draws it. */
+.shareFrame {
+  position: relative;
+}
+
+.shareLoading {
+  background: linear-gradient(100deg, var(--m-card) 30%, var(--m-hover) 50%, var(--m-card) 70%);
+  background-size: 220% 100%;
+  animation: cardShimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes cardShimmer {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shareLoading {
+    animation: none;
+  }
+}
+
+.shareLoadingText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.shareLoading .shareImage {
+  opacity: 0;
+}
+
+.shareImageIn {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Badges collapsed to the earned ones (onboarding). */
+.badgeSummary {
+  margin: 0 0 1rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.badgeRow {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 760px) {
+  .check {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+
+  .checkAction {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .checkAction .actionRow {
+    justify-content: flex-start;
+  }
+}
+
+/* ── Funnel review 2026-10-23: the money fact and Transmuter stakes ── */
+
+.earnLine {
+  margin: 0.875rem 0 0;
+  max-width: 36rem;
+}
+
+.earnFact {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.55;
+  color: var(--m-ink);
+}
+
+.earnFact strong {
+  font-weight: 500;
+  color: var(--m-green);
+}
+
+.earnNote {
+  margin: 0.25rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-dim);
+}
+
+.stripEarn {
+  margin-top: 0.75rem;
+}
+
+.posClosed {
+  margin-top: 0.875rem;
+}
+
+.stakes {
+  margin-top: 1.25rem;
+}
+
+.stakeList {
+  list-style: none;
+  margin: 0.5rem 0 0.625rem;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stakeList li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--m-line);
+  font-size: var(--m-t-sm);
+}
+
+.stakeAmount {
+  margin-left: auto;
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h4);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-text);
+}
+
+.communityLine {
+  margin: 0.75rem 0 0;
+  max-width: 36rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.55;
+  color: var(--m-dim);
+}
+
+/* ── Member journey 2026-10-28: essence cell, Earn more, What you get, Recent ── */
+
+.earnLands {
+  margin: 0 0 1rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.earnTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 500;
+  font-size: var(--m-t-h4);
+  letter-spacing: var(--m-track-head);
+  line-height: 1.3;
+  color: var(--m-text);
+}
+
+.earnOn {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-copper);
+  flex: none;
+}
+
+.earnSub {
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.eventBare {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: end;
+  scroll-margin-top: 1rem;
+}
+
+.chores {
+  margin-top: 1.25rem;
+}
+
+.choresLabel {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  margin-bottom: 0.5rem;
+}
+
+.choreList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chore {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-card);
+}
+
+.chore .actionRow {
+  flex-wrap: nowrap;
+}
+
+.choreTitle {
+  font-size: var(--m-t-sm);
+  color: var(--m-text);
+}
+
+.chores + aside {
+  margin-top: 1.5rem;
+}
+
+.unlockGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.unlockCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.25rem 1.25rem 1.125rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  min-width: 0;
+}
+
+.unlockHeld {
+  border-color: var(--m-copper-line);
+}
+
+.unlockTop {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.unlockMedal {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: none;
+}
+
+.unlockTitle {
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 500;
+  font-size: var(--m-t-h3);
+  letter-spacing: var(--m-track-head);
+  line-height: 1.25;
+  color: var(--m-text);
+}
+
+.unlockNeeds {
+  margin-top: 0.125rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.unlockState {
+  font-size: var(--m-t-sm);
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.unlockOn {
+  color: var(--m-copper);
+}
+
+.unlockWhat {
+  margin: 0;
+  padding: 0 0 0 1rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+  flex: 1 0 auto;
+}
+
+.unlockWhat li + li {
+  margin-top: 0.25rem;
+}
+
+.unlockPlaceholder {
+  color: var(--m-dim);
+}
+
+.unlockTag {
+  margin-left: 0.5rem;
+  padding: 0 0.4rem;
+  border: 1px dashed var(--m-line-strong);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  white-space: nowrap;
+  color: var(--m-muted);
+}
+
+.unlockFoot {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.unlockAccess {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.unlockAction {
+  margin-top: 0.5rem;
+}
+
+.recentList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--m-line);
+}
+
+.recentRow {
+  display: grid;
+  grid-template-columns: 7.5rem 4.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--m-line);
+  font-size: var(--m-t-sm);
+}
+
+.recentDay {
+  color: var(--m-muted);
+}
+
+.recentTotal {
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.recentParts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  color: var(--m-muted);
+  min-width: 0;
+}
+
+.recentUnlock {
+  display: inline-block;
+  padding: 0 0.5rem;
+  white-space: nowrap;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  color: var(--m-copper);
+}
+
+@media (max-width: 960px) {
+  .unlockGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .eventBare {
+    justify-items: start;
+  }
+}
+
+@media (max-width: 760px) {
+  .recentRow {
+    grid-template-columns: 6.5rem 3.75rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .chore {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ── Feedback 2026-10-28: the hero's essence card, tiers, Your season, Your record ── */
+
+.earnProposal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.625rem;
+  margin-top: 0.625rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.earnProposal .bonusTag,
+.earnProposal .bonusTagLive {
+  margin-top: 0;
+}
+
+.referralBare {
+  display: grid;
+  gap: 0.375rem;
+  justify-items: end;
+  width: 100%;
+  min-width: 0;
+}
+
+.referralBare .referralStatus,
+.referralBare .referralFine {
+  margin: 0;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  text-align: right;
+}
+
+.referralBare .referralInvitee {
+  margin: 0.25rem 0 0;
+  padding-top: 0.5rem;
+  text-align: right;
+}
+
+.posManage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-md);
+  color: var(--m-copper) !important;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  text-decoration: none !important;
+}
+
+.posManage:hover {
+  background: var(--m-copper-fill);
+}
+
+/* Beside Manage, Details is the quiet one. */
+.posToggleCell .posToggle {
+  padding: 0 0.5rem;
+  border-color: transparent;
+  color: var(--m-muted);
+}
+
+.posToggleCell .posToggle:hover {
+  color: var(--m-text);
+}
+
+.referralBare .referralLinkRow {
+  width: min(22rem, 100%);
+}
+
+.recordFacts {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--m-line);
+}
+
+@media (max-width: 960px) {
+  .referralBare {
+    justify-items: start;
+  }
+
+  .referralBare .referralStatus,
+  .referralBare .referralFine,
+  .referralBare .referralInvitee {
+    text-align: left;
+  }
+}
+
+/* ── Feedback 2026-10-28, second round: the one-panel hero, and Essence with two tabs ── */
+
+.heroInnerMember {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas: "text";
+}
+
+.memberTitle {
+  margin: 0;
+  font-family: var(--m-display);
+  font-weight: 300;
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: var(--m-track-display);
+  color: var(--m-text);
+}
+
+.essenceNumber {
+  margin-top: 0.25rem;
+  font-family: var(--m-display);
+  font-weight: 400;
+  font-size: 3.25rem;
+  line-height: 1;
+  letter-spacing: var(--m-track-display);
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+}
+
+.essenceRate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.625rem;
+}
+
+.essenceRateValue {
+  font-size: var(--m-t-sm);
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.essenceRate .cellSub {
+  margin: 0;
+}
+
+.essenceNext {
+  margin: 0.875rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.essenceNextLink {
+  font-weight: 500;
+  color: var(--m-text) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--m-copper-line);
+}
+
+.essenceNextLink:hover {
+  border-bottom-color: var(--m-copper);
+}
+
+.bonusLine {
+  display: flex;
+  flex: 1 1 20rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.625rem;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.bonusLine .bonusTag,
+.bonusLine .bonusTagLive {
+  margin-top: 0;
+}
+
+/* The Essence section's tabs, in the section head. */
+.essenceSection {
+  scroll-margin-top: 5rem;
+}
+
+.essenceSection [role="tabpanel"][hidden] {
+  display: none;
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-full);
+  background: var(--m-card);
+}
+
+.tab {
+  appearance: none;
+  padding: 0.375rem 1rem;
+  border: 0;
+  border-radius: var(--m-r-full);
+  background: transparent;
+  font: inherit;
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--m-text);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+.tabOn,
+.tabOn:hover {
+  background: var(--m-copper-fill);
+  box-shadow: inset 0 0 0 1px var(--m-copper-line);
+  color: var(--m-copper);
+}
+
+.earnGroup {
+  margin: 1.75rem 0 0.75rem;
+  font-family: inherit;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--m-muted);
+}
+
+.earnLands + .earnGroup {
+  margin-top: 1.25rem;
+}
+
+.dailyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.earnCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1.25rem 1.375rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.earnCardOn {
+  border-color: var(--m-copper-line);
+}
+
+.earnCardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.earnCardValue {
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  letter-spacing: 0;
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.earnCard .earnSub {
+  margin-top: -0.25rem;
+}
+
+.earnCardPicture {
+  margin: 0.75rem 0 0.25rem;
+}
+
+.earnCardNote {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.earnCardAction {
+  display: flex;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* Safe loan: no loan to the 90% limit, the band shaded, a mark per loan. */
+.gauge {
+  padding-top: 0.25rem;
+}
+
+.gaugeTrack {
+  position: relative;
+  height: 0.5rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+}
+
+.gaugeBand {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--m-r-full);
+  background: var(--m-copper-fill);
+  box-shadow: inset 0 0 0 1px var(--m-copper-line);
+}
+
+.gaugeMark {
+  position: absolute;
+  top: 50%;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-left: -0.4375rem;
+  border: 2px solid var(--m-card);
+  border-radius: var(--m-r-full);
+  background: var(--m-copper);
+  transform: translateY(-50%);
+}
+
+.gaugeScale {
+  position: relative;
+  height: 1.125rem;
+  margin-top: 0.375rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.gaugeScale span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.gaugeScale .gaugeEnd {
+  right: 0;
+  transform: none;
+}
+
+.gaugeLegend {
+  margin: 0.375rem 0 0;
+  font-size: var(--m-t-xs);
+  color: var(--m-ink);
+}
+
+/* The capped sources, as tiles. The invite tile is twice as wide. */
+.capGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.capTile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1.125rem 1.25rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+.capTileWide {
+  grid-column: span 2;
+}
+
+.capTileOn {
+  border-color: var(--m-copper-line);
+}
+
+.capHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.capValue {
+  font-size: var(--m-t-sm);
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.capMeter {
+  position: relative;
+  height: 0.25rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.capMeter span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--m-r-full);
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+}
+
+.capBody {
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.capAction {
+  display: flex;
+  min-width: 0;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.capAction .actionRow {
+  justify-content: flex-start;
+}
+
+.capAction .eventBare,
+.capAction .referralBare {
+  justify-items: start;
+  width: 100%;
+}
+
+.capAction .eventBare {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.capAction .codeForm {
+  width: 100%;
+}
+
+.capAction .codeInput {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+.capAction .codeForm button {
+  flex: none;
+}
+
+.capAction .referralBare .referralStatus,
+.capAction .referralBare .referralFine,
+.capAction .referralBare .referralInvitee {
+  text-align: left;
+}
+
+@media (max-width: 960px) {
+  .capGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .essenceNumber {
+    font-size: 2.5rem;
+  }
+
+  .dailyGrid,
+  .capGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .capTileWide {
+    grid-column: auto;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1;
+  }
+}
+
+/* ── Feedback 2026-10-28, third round: the two-half hero panel, tabs in Your season, the badge strip, the badges page, motion ── */
+
+.heroTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.heroTop .eyebrow {
+  margin-bottom: 0;
+}
+
+.heroTop + .memberTitle {
+  margin-top: 0.75rem;
+}
+
+.essencePanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 0;
+  margin-top: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-xl);
+  background: linear-gradient(180deg, rgba(245, 192, 154, 0.06), var(--m-card) 60%);
+  animation: mRise 0.5s ease-out both;
+}
+
+.essenceMain {
+  min-width: 0;
+  padding: 1.5rem 1.75rem 1.625rem;
+}
+
+.essenceHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.essenceHead .cellLabel {
+  margin-bottom: 0;
+}
+
+.essenceRank {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.essenceRankLink {
+  color: var(--m-copper) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--m-copper-line);
+}
+
+.essenceRankLink:hover {
+  border-bottom-color: var(--m-copper);
+}
+
+.essenceFigure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem 1.25rem;
+  margin: 0.5rem 0 1.375rem;
+}
+
+.essenceFigure .essenceNumber {
+  margin-top: 0;
+}
+
+.essenceFigure .essenceRate {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0 0 0.375rem;
+}
+
+.essenceMain .essenceNext {
+  margin-top: 0.75rem;
+}
+
+.moneyGrowth {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-top: 0.25rem;
+}
+
+.moneyAmount {
+  font-family: var(--m-body);
+  font-weight: 300;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.moneyUp {
+  color: var(--m-green, #7fd1a8);
+}
+
+.moneySub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.625rem;
+  margin: 0.375rem 0 0;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.moneyNote {
+  margin: 0.875rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--m-line);
+  width: 100%;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--m-dim);
+}
+
+/* The track fills in on arrival. */
+
+/* A tab's content eases in. */
+.tabPanel:not([hidden]) {
+  animation: mRise 0.28s ease-out both;
+}
+
+/* Holding: the curve. */
+.curve {
+  margin: 0;
+}
+
+.curvePlot {
+  position: relative;
+  height: 6.5rem;
+  margin-top: 1.25rem;
+}
+
+.curvePlot svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.curveLine {
+  stroke: var(--m-copper);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.curveGrid {
+  stroke: var(--m-line);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.curveYou {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.curveDot {
+  position: absolute;
+  left: -0.4375rem;
+  top: -0.4375rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid var(--m-card);
+  border-radius: var(--m-r-full);
+  background: var(--m-copper);
+  box-shadow: 0 0 0 0 rgba(245, 192, 154, 0.5);
+  animation: mPulse 2.4s ease-out 1s infinite;
+}
+
+.curveYouLabel {
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-copper);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.curveAxis {
+  position: relative;
+  height: 1rem;
+  margin-top: 0.375rem;
+  border-top: 1px solid var(--m-line);
+  font-size: 0.6875rem;
+  color: var(--m-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.curveAxis span {
+  position: absolute;
+  top: 0.25rem;
+  transform: translateX(-50%);
+}
+
+/* Cards and tiles: one family. */
+.earnCard,
+.capTile,
+.unlockGrid > li,
+.claimCard {
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earnCard:hover,
+.capTile:hover,
+.claimCard:hover {
+  border-color: var(--m-copper-line);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.8);
+}
+
+.earnCard .earnSub,
+.capBody,
+.earnProposal {
+  font-size: var(--m-t-sm);
+}
+
+.earnProposal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.5rem;
+  margin-top: 0.625rem;
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.earnGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.earnGroup::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--m-line);
+}
+
+.chores {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+  padding: 0.875rem 1.125rem;
+  border: 1px dashed var(--m-line);
+  border-radius: var(--m-r-xl);
+}
+
+.chores .choresLabel {
+  margin: 0;
+}
+
+.chores .chore {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+/* Your season: the activity panel's two columns line up at the top. */
+
+.carryList {
+  gap: 0.375rem;
+}
+
+.carryItem {
+  white-space: nowrap;
+}
+
+/* The badge strip under Your season's tabs. */
+
+.readyPill {
+  padding: 0.125rem 0.625rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  background: var(--m-copper-fill);
+  font-size: var(--m-t-xs);
+  color: var(--m-copper);
+}
+
+/* /members/badges: ready to claim. */
+.claimGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+
+.claimCard {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-xl);
+  background: linear-gradient(180deg, rgba(245, 192, 154, 0.06), var(--m-card) 70%);
+  text-decoration: none !important;
+  color: var(--m-text) !important;
+}
+
+.claimCard svg {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.claimText {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.claimTitle {
+  font-family: var(--m-display);
+  font-size: var(--m-t-h4);
+  letter-spacing: var(--m-track-head);
+}
+
+.claimBody {
+  font-size: var(--m-t-xs);
+  line-height: 1.45;
+  color: var(--m-muted);
+}
+
+.claimGo {
+  color: var(--m-copper);
+  font-size: 1.125rem;
+  transition: transform 0.2s ease;
+}
+
+.claimCard:hover .claimGo {
+  transform: translateX(3px);
+}
+
+@keyframes mRise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes mPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 192, 154, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 0.625rem rgba(245, 192, 154, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 192, 154, 0);
+  }
+}
+
+@keyframes mGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 192, 154, 0);
+  }
+  50% {
+    box-shadow: 0 0 1.25rem 0 rgba(245, 192, 154, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .essencePanel,
+.tabPanel:not([hidden]),
+.curveDot {
+    animation: none;
+  }
+
+  .earnCard:hover,
+.capTile:hover,
+.claimCard:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .essencePanel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .essenceMain {
+    padding: 1.25rem;
+  }
+
+  .claimCard {
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+  }
+}
+
+/* Third round, after a look on the demo. The hero's left half: number at the top, the track along the bottom. */
+.essenceMain {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The "You" mark's label sits below and to the right of the dot, clear of the line. */
+.curveYouLabel {
+  top: 0.5rem;
+  left: 0.625rem;
+  transform: none;
+}
+
+/* Activity: the season-end card runs full width under the credits, in two columns. */
+
+/* The hero's last 14 days. */
+
+@keyframes mGrow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.capBody .earnProposal,
+.capBody .earnProposal span {
+  font-size: var(--m-t-sm);
+}
+
+/* Each tier's label stays inside its third of the curve, wrapping on a narrow card. */
+
+@media (max-width: 760px) {
+  .moneySub {
+    display: grid;
+    gap: 0.125rem;
+  }
+}
+
+/* ── Feedback 2026-10-28, fourth round: the hero with the chart and the record, per-day credits, the season summary, the money facts, the store ── */
+
+.essencePanel {
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 19rem);
+}
+
+.essenceMain {
+  display: flex;
+  flex-direction: column;
+}
+
+.essenceFigure {
+  margin-bottom: 0.75rem;
+}
+
+.essenceRateValue {
+  font-size: var(--m-t-lead);
+}
+
+/* Under the essence bar: the next unlock and the one action. */
+.essenceFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: auto;
+  padding-top: 1.125rem;
+}
+
+.essenceFoot .essenceNext {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+.essenceAct {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex: 0 1 auto;
+}
+
+.essenceEffect {
+  max-width: 14rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.45;
+  color: var(--m-muted);
+}
+
+/* The record half. */
+.record {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: 0;
+  padding: 1.5rem 1.5rem 1.375rem;
+  border-left: 1px solid var(--m-line);
+  background: rgba(10, 14, 20, 0.22);
+  border-radius: 0 var(--m-r-xl) var(--m-r-xl) 0;
+}
+
+.record .cellLabel {
+  margin-bottom: 0;
+}
+
+.recordTenure {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-lg);
+  background: linear-gradient(135deg, rgba(245, 192, 154, 0.09), rgba(245, 192, 154, 0.01));
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.recordTenure:hover {
+  border-color: var(--m-copper);
+  transform: translateY(-1px);
+}
+
+.recordTenureMedal {
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.recordTenureText {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.recordSince {
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  color: var(--m-text);
+}
+
+.recordSub {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.recordClaim {
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-copper);
+}
+
+.recordRareLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--m-dim);
+}
+
+.recordRare {
+  list-style: none;
+  margin: -0.375rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.recordRare li {
+  animation: mRise 0.45s ease-out both;
+  animation-delay: calc(var(--i) * 90ms + 0.35s);
+}
+
+.recordBadge {
+  display: grid;
+  justify-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0;
+  color: inherit !important;
+  text-decoration: none !important;
+  text-align: center;
+}
+
+.recordBadge > svg,
+.recordBadge > span:first-child {
+  width: 3.75rem;
+  height: 3.75rem;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.recordBadge:hover > svg,
+.recordBadge:hover > span:first-child {
+  transform: translateY(-2px) scale(1.05);
+  filter: drop-shadow(0 0.375rem 0.75rem rgba(245, 192, 154, 0.25));
+}
+
+.recordBadgeName {
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--m-muted);
+}
+
+.recordNone {
+  margin: 0;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.recordFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.recordAll {
+  font-size: var(--m-t-xs);
+  color: var(--m-ink) !important;
+  text-decoration: none !important;
+}
+
+.recordAll:hover {
+  color: var(--m-copper) !important;
+}
+
+a.readyPill {
+  text-decoration: none !important;
+  color: var(--m-copper) !important;
+  animation: mGlow 2.8s ease-in-out infinite;
+}
+
+/* Your season: the summary. */
+.seasonSummary {
+  margin-bottom: 1.5rem;
+}
+
+.seasonStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-card);
+}
+
+.seasonStat {
+  padding: 0.875rem 1.125rem;
+  min-width: 0;
+}
+
+.seasonStat + .seasonStat {
+  border-left: 1px solid var(--m-line);
+}
+
+.seasonStat dt {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--m-dim);
+}
+
+.seasonStat dd {
+  display: grid;
+  margin: 0.25rem 0 0;
+  font-family: var(--m-body);
+  font-weight: 300;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.seasonStatSub {
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.seasonEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin: 0.75rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.seasonCarry {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.75rem;
+}
+
+.seasonCarryLabel {
+  color: var(--m-dim);
+}
+
+.seasonCarryItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--m-ink);
+}
+
+.seasonCarryItem svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* Your season: one row a day. */
+.recentRow {
+  grid-template-columns: 5.5rem 4.5rem minmax(0, 1fr);
+  animation: mRise 0.35s ease-out both;
+  animation-delay: calc(var(--i) * 30ms);
+}
+
+.recentCredit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  color: var(--m-ink);
+  white-space: nowrap;
+}
+
+.recentAmount {
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+}
+
+.recentMore {
+  margin-top: 0.75rem;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-full);
+  background: transparent;
+  font: inherit;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  cursor: pointer;
+}
+
+.recentMore:hover {
+  border-color: var(--m-copper-line);
+  color: var(--m-copper);
+}
+
+/* Positions: the money facts over the table. */
+.moneyFacts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem 2rem;
+  align-items: end;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-card);
+}
+
+.moneyFactsMain .moneyGrowth {
+  margin-top: 0.25rem;
+}
+
+.moneySince {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.moneyFactsRate {
+  text-align: right;
+}
+
+.moneyRateValue {
+  margin-top: 0.25rem;
+  font-family: var(--m-body);
+  font-weight: 300;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  color: var(--m-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.moneyFactsRate .moneySub {
+  justify-content: flex-end;
+  margin-top: 0.125rem;
+}
+
+.moneyFacts .moneyNote {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+/* Holding: the amount at each tier line, and the rule in words. */
+.curveKnot {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.curveKnot::before {
+  content: "";
+  position: absolute;
+  left: -0.1875rem;
+  top: -0.1875rem;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-copper);
+  opacity: 0.7;
+}
+
+.curveKnotLabel {
+  position: absolute;
+  bottom: 0.4375rem;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.curveKnotStart .curveKnotLabel {
+  transform: none;
+}
+
+.curveRule {
+  margin: 0.625rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.45;
+  color: var(--m-muted);
+}
+
+/* The essence store. */
+.storePreview {
+  padding: 0.125rem 0.625rem;
+  border: 1px dashed var(--m-line-strong);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.storeShelf {
+  padding: 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  animation: mRise 0.45s ease-out both;
+  animation-delay: calc(var(--i) * 80ms);
+}
+
+.storeShelf + .storeShelf {
+  margin-top: 1rem;
+}
+
+.storeShelfOpen {
+  border-color: var(--m-copper-line);
+  background: linear-gradient(180deg, rgba(245, 192, 154, 0.05), var(--m-card) 70%);
+}
+
+.storeShelfHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.storeShelfMedal {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+}
+
+.storeShelfText {
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
+.storeShelfTitle {
+  margin: 0;
+  font-family: var(--m-display);
+  font-size: var(--m-t-h4);
+  font-weight: 400;
+  color: var(--m-text);
+}
+
+.storeShelfPrice {
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.storeShelfState {
+  display: grid;
+  justify-items: end;
+  gap: 0.375rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.storeBar {
+  display: block;
+  width: 9rem;
+  height: 0.25rem;
+  border-radius: var(--m-r-full);
+  background: var(--m-line);
+  overflow: hidden;
+}
+
+.storeBar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--m-progress-from, var(--m-copper)), var(--m-progress-to, var(--m-copper)));
+  transform-origin: left center;
+  animation: mFill 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+}
+
+.storeGrid {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.storeItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "art body"
+    "art foot";
+  gap: 0.375rem 1rem;
+  padding: 1rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: rgba(10, 14, 20, 0.22);
+  opacity: 0.72;
+  transition: border-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.storeItemOpen {
+  opacity: 1;
+}
+
+.storeItem:hover {
+  border-color: var(--m-copper-line);
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.storeArt {
+  grid-area: art;
+}
+
+.storeGlyph {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.storeItem:not(.storeItemOpen) .storeGlyph {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+
+.storeBody {
+  grid-area: body;
+  min-width: 0;
+}
+
+.storeTitle {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-text);
+}
+
+.storeText {
+  margin: 0.125rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.45;
+  color: var(--m-muted);
+}
+
+.storeFoot {
+  grid-area: foot;
+  align-self: end;
+  font-size: var(--m-t-xs);
+}
+
+.storeLocked {
+  color: var(--m-dim);
+}
+
+.storeDone {
+  color: var(--m-copper);
+}
+
+.storeNote {
+  margin: 1rem 0 0;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+@keyframes mReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The return bonus inside the Holding card: one line under the note. */
+.earnCard .bonusLine {
+  flex: none;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+/* The referral card in Your record. */
+.referralSteps {
+  margin: 0.5rem 0 1rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.referralSteps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.625rem;
+  align-items: baseline;
+  font-size: var(--m-t-sm);
+  line-height: 1.45;
+  color: var(--m-ink);
+}
+
+.referralSteps li::before {
+  content: counter(step);
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  color: var(--m-copper);
+}
+
+@keyframes mFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recordRare li,
+  a.readyPill,
+  .recentRow,
+  .storeShelf,
+  .storeBar span {
+    animation: none;
+  }
+
+  .recordTenure,
+  .storeItem,
+  .recordBadge > svg,
+  .recordBadge > span:first-child {
+    transition: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .essencePanel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .record {
+    border-left: 0;
+    border-top: 1px solid var(--m-line);
+    border-radius: 0 0 var(--m-r-xl) var(--m-r-xl);
+  }
+
+  .seasonStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .seasonStat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .seasonStat:nth-child(n + 3) {
+    border-top: 1px solid var(--m-line);
+  }
+}
+
+@media (max-width: 760px) {
+  .essenceAct {
+    flex-wrap: wrap;
+  }
+
+  .essenceEffect {
+    max-width: none;
+  }
+
+  .record {
+    padding: 1.25rem;
+  }
+
+  .recentRow {
+    grid-template-columns: 4rem 3.75rem minmax(0, 1fr);
+    gap: 0.625rem;
+  }
+
+  .moneyFacts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .moneyFactsRate {
+    text-align: left;
+  }
+
+  .moneyFactsRate .moneySub {
+    justify-content: flex-start;
+  }
+
+  .storeGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .storeShelfState {
+    justify-items: start;
+    width: 100%;
+  }
+}
+
+/* ── Fifth round (Keenan, 2026-10-28) ─────────────────────────── */
+
+/* The badge card that pops on hover (./BadgePop.jsx). Fixed, in a portal in the shell. */
+.popAnchor {
+  display: block;
+  height: 100%;
+}
+
+.recordTenureMedal.popAnchor {
+  height: 3.5rem;
+}
+
+.recordTenureMedal > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.popCard {
+  position: fixed;
+  z-index: 400;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.875rem;
+  align-items: center;
+  width: min(20rem, calc(100vw - 24px));
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-xl);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(245, 192, 154, 0.14), transparent 55%),
+    var(--m-popover);
+  box-shadow:
+    0 1.25rem 2.5rem -0.75rem rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(0, 0, 0, 0.25);
+  font-family: var(--m-body);
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  transform-origin: var(--arrow, 50%) 100%;
+  transition:
+    opacity 0.18s ease,
+    transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.popCardBelow {
+  transform: translateY(-6px) scale(0.96);
+  transform-origin: var(--arrow, 50%) 0;
+}
+
+.popCardIn {
+  opacity: 1;
+  transform: none;
+}
+
+.popCard::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--arrow, 50%) - 6px);
+  bottom: -7px;
+  width: 12px;
+  height: 12px;
+  background: var(--m-popover);
+  border-right: 1px solid var(--m-copper-line);
+  border-bottom: 1px solid var(--m-copper-line);
+  transform: rotate(45deg);
+}
+
+.popCardBelow::after {
+  bottom: auto;
+  top: -7px;
+  transform: rotate(225deg);
+}
+
+.popText {
+  display: grid;
+  gap: 0.1875rem;
+  min-width: 0;
+}
+
+.popKicker {
+  font-size: 0.6875rem;
+  letter-spacing: var(--m-track-head);
+  text-transform: uppercase;
+  color: var(--m-dim);
+}
+
+.popTitle {
+  font-family: var(--m-display);
+  font-size: 1.125rem;
+  line-height: 1.2;
+  letter-spacing: var(--m-track-display);
+  color: var(--m-text);
+}
+
+.popHow {
+  font-size: var(--m-t-sm);
+  line-height: 1.4;
+  color: var(--m-ink);
+}
+
+.popFact {
+  font-size: var(--m-t-xs);
+  line-height: 1.4;
+  color: var(--m-muted);
+}
+
+.popWhen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.5rem;
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-copper);
+}
+
+.popAgo {
+  font-weight: 400;
+  color: var(--m-dim);
+}
+
+.popReady {
+  justify-self: start;
+  margin-top: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  font-size: var(--m-t-xs);
+  color: var(--m-copper);
+}
+
+.popProgress {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.popBar {
+  display: block;
+  height: 4px;
+  border-radius: var(--m-r-full);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.popBar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+  transform-origin: left;
+  animation: mFill 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+}
+
+.popLocked {
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-dim);
+}
+
+/* Round two, 2026-11-04: "Tier 2 of 3" on the hover card, then the way to the next tier. */
+.popTier {
+  margin-top: 0.375rem;
+  padding-top: 0.375rem;
+  border-top: 1px solid var(--m-line);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-ink);
+}
+
+/* Badges lift and their ring turns under the pointer (hero record, badges page). */
+.recordBadge:hover > svg {
+  transform: translateY(-3px) scale(1.07) rotate(-4deg);
+}
+
+.recordBadge > svg > g:first-of-type,
+.recordTenure svg > g:first-of-type,
+.tileMedal svg > g:first-of-type {
+  transform-box: view-box;
+  transform-origin: 60px 60px;
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.recordBadge:hover > svg > g:first-of-type,
+.recordTenure:hover svg > g:first-of-type,
+.tile:hover .tileMedal svg > g:first-of-type {
+  transform: rotate(48deg);
+}
+
+.tileMedal {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.tile:hover .tileMedal {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.tile_earned:hover .tileMedal {
+  filter: drop-shadow(0 0.375rem 0.75rem rgba(245, 192, 154, 0.25));
+}
+
+/* Holding: pointing at the curve. */
+.curvePlot {
+  cursor: crosshair;
+  touch-action: pan-y;
+  outline: none;
+  border-radius: var(--m-r-md);
+}
+
+.curvePlot:focus-visible {
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+.curveYouLabel {
+  transition: opacity 0.15s ease;
+}
+
+.curveProbing .curveYouLabel {
+  opacity: 0.2;
+}
+
+.curveProbeLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dashed rgba(245, 192, 154, 0.5);
+  pointer-events: none;
+}
+
+.curveProbe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.curveProbe::before {
+  content: "";
+  position: absolute;
+  left: -0.3125rem;
+  top: -0.3125rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 2px solid var(--m-copper);
+  border-radius: var(--m-r-full);
+  background: var(--m-card);
+}
+
+.curveProbeTip {
+  position: absolute;
+  z-index: 2;
+  bottom: 0.75rem;
+  left: 0;
+  display: grid;
+  gap: 0.0625rem;
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-popover);
+  box-shadow: 0 0.75rem 1.5rem -0.5rem rgba(0, 0, 0, 0.6);
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+}
+
+.curveProbeTipBelow {
+  bottom: auto;
+  top: 0.75rem;
+}
+
+.curveProbeTipLeft {
+  transform: translateX(calc(-100% + 1rem));
+}
+
+.curveProbeTipRight {
+  transform: translateX(-1rem);
+}
+
+.curveProbeTip strong {
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-text);
+}
+
+.curveProbeUp {
+  color: var(--m-green);
+}
+
+.curveProbeDown {
+  color: var(--m-dim);
+}
+
+/* The hero's gain since the last visit. */
+.gainChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  padding: 0.1875rem 0.625rem 0.1875rem 0.5rem;
+  border: 1px solid rgba(91, 168, 138, 0.35);
+  border-radius: var(--m-r-full);
+  background: rgba(91, 168, 138, 0.1);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  color: var(--m-green);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  animation: mRise 0.45s ease-out 0.9s both;
+}
+
+.gainChip svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* A fresh unlock, over the hero panel. */
+.unlock {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 0.875rem 1rem 0.875rem 1.125rem;
+  border: 1px solid var(--m-copper);
+  border-radius: var(--m-r-xl);
+  background:
+    linear-gradient(90deg, rgba(245, 192, 154, 0.16), rgba(245, 192, 154, 0.03) 60%),
+    var(--m-card);
+  overflow: hidden;
+  animation: mRise 0.5s ease-out both;
+}
+
+.unlock + .essencePanel {
+  margin-top: 1rem;
+}
+
+.unlock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 236, 220, 0.12) 50%, transparent 60%) no-repeat;
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  animation: mSheen 1.6s ease-out 0.5s both;
+  pointer-events: none;
+}
+
+.unlockMedal {
+  position: relative;
+  display: block;
+  width: 3.25rem;
+  height: 3.25rem;
+  animation: mMint 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.3) 0.2s both;
+}
+
+.unlockMedal svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 0.75rem rgba(245, 192, 154, 0.35));
+}
+
+.unlockBurst {
+  position: absolute;
+  inset: 10%;
+  border-radius: var(--m-r-full);
+  animation: mBurst 1.4s ease-out 0.6s 2 both;
+}
+
+.unlockText {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.unlockKicker {
+  font-size: 0.6875rem;
+  letter-spacing: var(--m-track-head);
+  text-transform: uppercase;
+  color: var(--m-copper);
+}
+
+.unlockTitle {
+  font-family: var(--m-display);
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--m-text);
+}
+
+.unlockBody {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+.unlockActs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.unlockLink {
+  display: inline-flex;
+  align-items: center;
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: var(--m-r-md);
+  background: var(--m-copper);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-on-copper) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: filter 0.15s ease;
+}
+
+.unlockLink:hover {
+  filter: brightness(1.08);
+}
+
+.unlockClose {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-full);
+  background: transparent;
+  color: var(--m-muted);
+  cursor: pointer;
+}
+
+.unlockClose:hover {
+  color: var(--m-text);
+  border-color: var(--m-line-strong);
+}
+
+.unlockClose svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+@keyframes mMint {
+  from {
+    opacity: 0;
+    transform: perspective(320px) rotateY(-90deg) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mSheen {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes mBurst {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 192, 154, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 1.5rem rgba(245, 192, 154, 0);
+  }
+}
+
+@keyframes mPop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popCard,
+  .popCard.popCardIn {
+    transition: opacity 0.12s ease;
+    transform: none;
+  }
+
+  .popBar > span,
+  .gainChip,
+  .unlock,
+  .unlock::before,
+  .unlockMedal,
+  .unlockBurst {
+    animation: none;
+  }
+
+  .recordBadge:hover > svg,
+  .tile:hover .tileMedal,
+  .recordBadge:hover > svg > g:first-of-type,
+  .recordTenure:hover svg > g:first-of-type,
+  .tile:hover .tileMedal svg > g:first-of-type {
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .unlock {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .unlockActs {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+  }
+}
+
+/* Fifth round (persona walk): the hero with nothing to chart yet. */
+.chartEmpty {
+  display: grid;
+  place-items: center;
+  flex: 1 1 auto;
+  min-height: 7rem;
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--m-line-strong);
+  border-radius: var(--m-r-lg);
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ── Visual pass 2026-10-28: the visitor page in the member page's style ── */
+
+/* How it works: three cards. */
+.howGrid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.howCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0 1.375rem 1.375rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: linear-gradient(180deg, rgba(245, 192, 154, 0.05), var(--m-card) 55%);
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  animation: mRise 0.5s ease-out both;
+  animation-delay: calc(var(--i) * 90ms);
+}
+
+.howCard:hover {
+  border-color: var(--m-copper-line);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.8);
+}
+
+.howPicture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8.5rem;
+  margin: 0 -1.375rem 1.125rem;
+  padding: 0 1.375rem;
+  border-bottom: 1px solid var(--m-line);
+  background: radial-gradient(ellipse at 50% 55%, rgba(245, 192, 154, 0.09), transparent 70%);
+}
+
+.howBody {
+  margin: 0.5rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.55;
+  color: var(--m-ink);
+}
+
+/* 01: three medals, fanned. */
+.howMedals {
+  display: flex;
+  align-items: center;
+}
+
+.howMedal {
+  width: 4.25rem;
+  height: 4.25rem;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+}
+
+.howMedal:nth-child(2) {
+  width: 5.25rem;
+  height: 5.25rem;
+  margin: 0 -0.625rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* 02: the message the join signs. */
+.howSign {
+  width: 100%;
+  max-width: 17rem;
+  margin: 0;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.howSignLabel {
+  font-size: var(--m-t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--m-dim);
+}
+
+.howSignText {
+  margin: 0.375rem 0 0;
+  padding: 0 0 0 0.625rem;
+  border-left: 2px solid var(--m-copper);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--m-text);
+}
+
+/* 03: the unlocks on one track. */
+.howRungs {
+  list-style: none;
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.howRungs::before {
+  content: "";
+  position: absolute;
+  top: 1.75rem;
+  left: 16%;
+  right: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--m-progress-from), var(--m-progress-to));
+  opacity: 0.6;
+}
+
+.howRung {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+}
+
+.howRungMedal {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--m-card);
+}
+
+.howRungAt {
+  margin-top: 0.375rem;
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: var(--m-t-sm);
+  color: var(--m-copper);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The open season, with the members' season bar. */
+
+@media (max-width: 960px) {
+  .howGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .howPicture {
+    height: 7.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .howCard {
+    animation: none;
+    transition: none;
+  }
+
+  .howCard:hover {
+    transform: none;
+  }
+}
+
+/* ── Design notes 2026-11-03 (metalface) ── */
+
+/* Montserrat for card-level titles (notes 15, 22, 24, 31): the heading inside
+   a card, tile or panel. Beaufort stays for page and section titles. Same
+   size as before; the display tracking goes, since Montserrat sets wider. */
+.earnTitle,
+.unlockTitle,
+.stepTitle,
+.shareTitle,
+.referralTitle,
+.eventTitle,
+.detailTitle,
+.popTitle,
+.bonusTitle,
+.merchTitle,
+.checkTitle,
+.claimTitle,
+.storeShelfTitle {
+  font-family: var(--m-body);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* The hero essence number in Montserrat (note 23): light, tabular figures. */
+.essenceNumber,
+.essenceFigure .essenceNumber {
+  font-family: var(--m-body);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The season module in the hero (notes 2 and 4). */
+.heroSeason {
+  margin-top: 1.75rem;
+}
+
+.essenceTrack {
+  margin: 0.25rem 0 0.25rem;
+}
+
+/* ── Design notes 2026-11-03, member home (notes 3, 5, 7, 8, 9, 21) ── */
+
+/* Note 3: the daily rate, the days earning and the week's gain on one line beside the number. */
+.essenceFigure .essenceRate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.125rem 0.3em;
+  margin: 0 0 0.5rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+}
+
+.essenceFigure .essenceRate > *:not(:last-child)::after {
+  content: ",";
+  font-weight: 400;
+}
+
+.essenceFigure .essenceRateValue {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-text);
+}
+
+.essenceFigure .essenceRate .cellSub {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.essenceFigure .essenceRate .gainChip {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--m-t-sm);
+}
+
+.essenceFigure .essenceRate .gainChip svg {
+  display: none;
+}
+
+/* Note 5: the essence panel and the record, two cards side by side. */
+.heroPanels {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+  align-items: stretch;
+}
+
+.unlock + .heroPanels {
+  margin-top: 1rem;
+}
+
+.heroPanels .essencePanel {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 0;
+}
+
+/* The record card sets the row's height; the bar sits in the middle of the spare room, so no hole opens under it. */
+.heroPanels .essenceTrack {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 1rem 0;
+}
+
+.heroPanels .essenceFoot {
+  margin-top: 0;
+}
+
+.heroPanels .recordRare {
+  margin-top: -0.5rem;
+}
+
+.heroPanels .recordBadge > svg,
+.heroPanels .recordBadge > span:first-child {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.heroPanels .record {
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+  animation: mRise 0.5s ease-out 0.08s both;
+}
+
+.recordHeading {
+  margin: 0;
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0;
+  color: var(--m-muted);
+}
+
+/* Note 7: the credits' open and close controls. */
+.recentControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.recentControls .recentMore {
+  margin-top: 0;
+}
+
+/* Note 8: one boxed strip for Your season and Your record, as many columns as figures. */
+.seasonStats {
+  grid-template-columns: repeat(var(--stat-count, 4), minmax(0, 1fr));
+}
+
+.seasonStat dd {
+  overflow-wrap: anywhere;
+}
+
+.recordFacts {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+/* Note 9: the referral link inside the Referrals card, left aligned like the other actions. */
+.capAction .referralBare {
+  justify-items: start;
+}
+
+.capAction .referralBare .referralStatus,
+.capAction .referralBare .referralFine,
+.capAction .referralBare .referralInvitee {
+  text-align: left;
+}
+
+/* Note 21: "Every day" and "Every season" as labels. Review 2026-11-13 (metalface: the copper pill
+   looked like a button): plain text, no outline, with the rule running on from it. */
+.earnGroupLabel {
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  color: var(--m-ink);
+  white-space: nowrap;
+}
+
+/* Review 2026-11-13: where a tile has no button, a greyed tag says how its essence arrives. */
+.capTag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-md);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-dim);
+  cursor: default;
+  user-select: none;
+}
+
+@media (max-width: 960px) {
+  .heroPanels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .seasonStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .seasonStat:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .seasonStat:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .heroPanels .record {
+    padding: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroPanels .record {
+    animation: none;
+  }
+}
+
+/* Verification 2026-11-04: one share card fills the row, the picture left and its title and buttons beside it.
+   Review 2026-11-13 (metalface): the picture takes all the width the buttons do not need, and the two buttons
+   stack in a narrow column at the right, the same width as each other. */
+.shareGrid.shareOne {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.shareOne .shareCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.875rem 2rem;
+  align-items: center;
+}
+
+.shareOne .shareFoot {
+  flex-direction: column;
+  align-items: stretch;
+  width: 11rem;
+  margin-top: 0;
+  margin-right: 1rem;
+}
+
+.shareOne .shareFoot .actionRow {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.625rem;
+}
+
+.shareOne .actionNote {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 760px) {
+  .shareOne .shareCard {
+    display: block;
+  }
+
+  .shareOne .shareFoot {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    margin-top: 0.875rem;
+    margin-right: 0;
+  }
+
+  .shareOne .shareFoot .actionRow {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Design notes 2026-11-04: Montserrat sets wider than Beaufort, so the two
+   column stat strip steps its figures down on a phone to keep "0.4829 ETH" on one line. */
+@media (max-width: 600px) {
+  .seasonStat dd {
+    font-size: 1.25rem;
+  }
+}
+
+/* Round two, 2026-11-04 (badge multipliers): "+10% essence while held" on the
+   hover card and in the badge panel, under the how-to line. */
+.popMultiplier {
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--m-copper);
+}
+
+.detailMultiplier {
+  margin: 0.5rem 0 0;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-copper);
+}
+
+/* Review 2026-11-13 (metalface): Your record names its chains with the app's chain icons. */
+.chainIcons {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.725rem;
+}
+
+.chainIcon {
+  display: block;
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 50%;
+}
+
+.chainText {
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  color: var(--m-ink);
+}

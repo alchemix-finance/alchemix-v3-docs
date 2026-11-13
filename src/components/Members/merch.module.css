@@ -1,0 +1,154 @@
+/* /members/merch, the proof-of-concept store page. Tokens come from the shell's .page. */
+
+.poc {
+  margin-top: 1.5rem;
+  max-width: 40rem;
+}
+
+.codeCard {
+  max-width: 28rem;
+  padding: 1.25rem;
+  border: 1px dashed var(--m-copper-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-copper-fill);
+}
+
+.codeLabel {
+  font-size: var(--m-t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--m-muted);
+}
+
+.code {
+  margin-top: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.125rem;
+  letter-spacing: 0.08em;
+  color: var(--m-copper);
+  overflow-wrap: anywhere;
+}
+
+.fine {
+  margin: 0.625rem 0 0;
+  font-size: var(--m-t-sm);
+  color: var(--m-ink);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+  max-width: 52rem;
+}
+
+@media (max-width: 720px) {
+  .item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.art {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-lg);
+  background: radial-gradient(circle at 50% 42%, var(--m-copper-fill) 0 38%, transparent 62%), var(--m-card);
+  max-width: 15rem;
+  width: 100%;
+}
+
+.mark {
+  width: 42%;
+  height: auto;
+  color: var(--m-copper);
+}
+
+.artSeason {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: var(--m-t-sm);
+  letter-spacing: 0;
+  color: var(--m-ink);
+}
+
+.itemBody {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.itemName {
+  margin: 0;
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: var(--m-t-h3);
+  color: var(--m-text);
+}
+
+.lines {
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+  max-width: 24rem;
+  font-size: var(--m-t-sm);
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--m-ink);
+}
+
+.line dt,
+.line dd {
+  margin: 0;
+}
+
+.total {
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--m-line);
+  font-weight: 500;
+  color: var(--m-text);
+}
+
+.mailbox {
+  margin: 0;
+  max-width: 40rem;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--m-copper);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 520px) {
+  .fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Design notes 2026-11-03 (the Montserrat rule): the item card's title is card-level. */
+.itemName {
+  font-family: var(--m-body);
+  font-weight: 500;
+}

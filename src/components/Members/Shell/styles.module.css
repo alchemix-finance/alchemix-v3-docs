@@ -1,0 +1,758 @@
+/* The members area shell.
+   Every members module reads its colors, type and radii from the tokens on
+   .page, defined once here. Values come from the live Alchemix site
+   (alchemix.fi, the dapp's own stylesheet) unless noted; the full spec with
+   sources is .scratch/members-area-v2/brand-spec.md in the engine repo. */
+.page {
+  /* Ground: the landing page's diagonal, coal to blue-black. */
+  --m-ground-from: #1d1d1b;
+  --m-ground-to: #122029;
+  --m-ground: #171e22; /* a solid between the two, for fills that sit on the ground */
+  --m-card: #212f38; /* dapp --card (dark) */
+  --m-popover: #242f38; /* dapp --popover (dark) */
+  --m-panel: rgba(255, 255, 255, 0.03);
+  --m-panel-strong: rgba(255, 255, 255, 0.05); /* dapp secondary button fill */
+  --m-active: #10364e; /* dapp --secondary (dark): the active nav pill */
+  --m-hover: #243e4c; /* dapp outline button hover */
+  --m-line: rgba(255, 255, 255, 0.1); /* dapp --border (dark) */
+  --m-line-strong: rgba(255, 255, 255, 0.15); /* dapp --input (dark) */
+  --m-outline: #65859b; /* dapp --outline (dark): neutral button border */
+  --m-node: #2f3539; /* landing grid nodes, filled */
+
+  /* Brand colors */
+  --m-copper: #f5c09a; /* dapp --alchemix */
+  --m-copper-hi: #fee3cf; /* primary hover, display gradient top */
+  --m-copper-2: #edc29f; /* the logo files in static/img/BrandAssets */
+  --m-copper-line: rgba(245, 192, 154, 0.35);
+  --m-copper-fill: rgba(245, 192, 154, 0.1);
+  --m-blue: #8fb2de; /* landing illustration strokes */
+  --m-grey: #9ca3af; /* landing illustration strokes */
+  --m-progress-from: #6abde6; /* dapp --progress-fg-to */
+  --m-progress-to: #8fb2de;
+
+  /* Ink */
+  --m-text: #fafafa; /* dapp --foreground (dark) */
+  --m-ink: #dbdbdb; /* landing paragraph color */
+  --m-muted: #a1a1a1; /* dapp --muted-foreground (dark) */
+  --m-dim: #8b8f92; /* foreground at 50%, the dapp's footer fine print */
+  --m-on-copper: #171717; /* dapp --primary-foreground (dark) */
+  --m-green: #5ba88a; /* Academy */
+  --m-red: #ff5e4c; /* dapp --destructive (dark) */
+
+  /* Type. Beaufort Pro and Montserrat are loaded by src/css/custom.css from
+     the same font files alchemix.fi serves. */
+  --m-display: "Beaufort Pro", "Beaufort", Georgia, serif;
+  --m-body: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --m-t-display: clamp(2.25rem, 4.6vw, 3rem); /* landing h1: Beaufort 300, 48px */
+  --m-t-h2: clamp(1.5rem, 2.6vw, 1.875rem); /* landing section h3 at its 30px phone size */
+  --m-t-h3: 1.25rem; /* landing h4 phone size, Beaufort 500 */
+  --m-t-h4: 1.125rem;
+  --m-t-number: clamp(1.875rem, 3vw, 2.5rem); /* landing stats: Beaufort 400, 30px */
+  --m-t-lead: 1.0625rem;
+  --m-t-body: 1rem;
+  --m-t-sm: 0.875rem; /* dapp text-sm: nav, buttons, descriptions */
+  --m-t-xs: 0.75rem; /* dapp text-xs: labels, captions */
+
+  --m-track-display: 0.02em; /* landing hero */
+  --m-track-head: 0.06em; /* landing section heads */
+  --m-track-body: 0.04em; /* landing paragraphs */
+
+  /* Radii (dapp --radius 0.5rem and its steps) */
+  --m-r-sm: 4px;
+  --m-r-md: 6px; /* buttons, inputs */
+  --m-r-lg: 8px;
+  --m-r-xl: 12px; /* cards */
+  --m-r-full: 999px;
+
+  --m-width: 76rem;
+  --m-gutter: clamp(1rem, 4vw, 3rem);
+  --m-edge: clamp(0rem, 2.4vw, 2rem);
+
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, var(--m-ground-from), var(--m-ground-to));
+  background-color: var(--m-ground);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-weight: 400;
+  /* clip, not hidden: hidden makes this wrapper a scroll container, and the sticky
+     badge panel (Home/home.module.css .badgeSide) then follows a box that never
+     scrolls. clip still cuts the ::before glow at the edges (2026-11-05). */
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A faint copper and blue glow at the top, as the landing hero has. Kept
+   inside the content column (Keenan, 2026-11-05: at 6% over the dark ground
+   the browser dithers it, and in the gutters that read as a grain that
+   stopped partway down the page). Each ellipse fades out before the column's
+   edge, so the gutters stay flat. */
+.page::before {
+  content: "";
+  position: absolute;
+  top: -320px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--m-width), 100vw);
+  height: 760px;
+  background:
+    radial-gradient(ellipse 30% 44% at 34% 50%, rgba(143, 178, 222, 0.06), transparent),
+    radial-gradient(ellipse 34% 48% at 64% 46%, rgba(245, 192, 154, 0.06), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page a {
+  color: inherit;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── The node: a filled dot where hairlines cross (landing grid) ── */
+.node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--m-node);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.nodeBL {
+  left: -4.5px;
+  bottom: -4.5px;
+}
+.nodeBR {
+  right: -4.5px;
+  bottom: -4.5px;
+}
+.nodeTL {
+  left: -4.5px;
+  top: -4.5px;
+}
+.nodeTR {
+  right: -4.5px;
+  top: -4.5px;
+}
+
+/* The landing shows its nodes from 1024px up; phones get the lines only. */
+@media (max-width: 1023px) {
+  .node {
+    display: none;
+  }
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.header {
+  position: relative;
+  z-index: 5;
+  border-bottom: 1px solid var(--m-line);
+}
+
+.headerInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 5rem;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: 0.75rem var(--m-gutter);
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  color: var(--m-copper) !important;
+}
+
+.brand:hover {
+  text-decoration: none;
+  opacity: 0.88;
+}
+
+/* The header logo slot (brand.jsx). The lockup is the one alchemix.fi uses,
+   drawn in currentColor, 40px tall there; a final file drops in at the same
+   height. "Members" sits beside it after a hairline. */
+.logoSlot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.875rem;
+  height: 2rem;
+}
+
+.logoImage,
+.lockup {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.lockup,
+.logoMark {
+  color: var(--m-copper);
+}
+
+.logoMark {
+  display: none;
+  height: 100%;
+  width: auto;
+}
+
+.brandRule {
+  width: 1px;
+  height: 1.25rem;
+  background: var(--m-line-strong);
+}
+
+.brandWord {
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--m-muted);
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Nav: Montserrat 400 at 14px, sentence case, white; the current page sits
+   in the dapp's blue pill. */
+.navLink,
+.navOut {
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1.25rem;
+  color: var(--m-text) !important;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--m-r-xl);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navLink:hover,
+.navOut:hover {
+  color: var(--m-copper) !important;
+  text-decoration: none;
+}
+
+.navActive,
+.navActive:hover {
+  background: var(--m-active);
+  color: var(--m-text) !important;
+}
+
+.navOut {
+  color: var(--m-muted) !important;
+}
+
+.navRule {
+  width: 1px;
+  height: 1rem;
+  margin: 0 0.25rem;
+  background: var(--m-line-strong);
+}
+
+/* ── Connect button and the account chip (the dapp's outline button) ── */
+.connect,
+.accountChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: var(--m-r-md);
+  background: transparent;
+  border: 1px solid var(--m-outline);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.connect:hover,
+.accountChip:hover {
+  background: var(--m-hover);
+}
+
+.accountChip {
+  font-variant-numeric: tabular-nums;
+}
+
+.accountDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--m-green);
+}
+
+/* Demo sign-in: the chip says the page acts as this address */
+.demoTag {
+  padding: 0 0.375rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-full);
+  color: var(--m-copper-hi);
+  font-size: var(--m-t-xs);
+  line-height: 1.125rem;
+}
+
+.account {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  min-width: 12rem;
+  padding: 0.25rem;
+  background: var(--m-popover);
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-md);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  z-index: 20;
+}
+
+.menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 0;
+  border-radius: var(--m-r-sm);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  cursor: pointer;
+}
+
+.menu button:hover {
+  background: var(--m-panel-strong);
+}
+
+/* ── The connect modal (the dapp's dialog) ─────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(1rem, 10vh, 6rem) 1rem 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  overflow-y: auto;
+}
+
+.modal {
+  position: relative;
+  width: min(28rem, 100%);
+  padding: 1.5rem;
+  background: var(--m-popover);
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  font-family: var(--m-body);
+  color: var(--m-text);
+}
+
+.modalHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modalTitle {
+  margin: 0;
+  font-family: var(--m-body);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--m-text);
+}
+
+.modalClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--m-r-md);
+  color: var(--m-muted);
+  cursor: pointer;
+}
+
+.modalClose:hover {
+  color: var(--m-text);
+  background: var(--m-panel-strong);
+}
+
+.modalBody {
+  margin: 0.5rem 0 1.25rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.modalCaption {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  color: var(--m-muted);
+  margin-bottom: 0.5rem;
+}
+
+.wallets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.wallet {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--m-panel);
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.wallet:hover:not(:disabled) {
+  border-color: var(--m-copper-line);
+  background: var(--m-panel-strong);
+}
+
+.wallet:disabled {
+  cursor: default;
+}
+
+.walletIcon,
+.walletGlyph {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--m-r-md);
+  flex: 0 0 auto;
+}
+
+.walletGlyph {
+  background: radial-gradient(circle at 50% 50%, var(--m-copper-fill) 0 45%, transparent 46%), var(--m-panel-strong);
+  border-radius: 50%;
+}
+
+.walletName {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.walletState {
+  font-size: var(--m-t-xs);
+  color: var(--m-copper);
+}
+
+.modalNone,
+.modalHint {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-muted);
+}
+
+.modalError {
+  margin: 0.75rem 0 0;
+  font-size: var(--m-t-sm);
+  color: var(--m-red);
+}
+
+.modalView {
+  margin-top: 1.375rem;
+  padding-top: 1.125rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.modalView .modalHint {
+  margin-bottom: 0.625rem;
+}
+
+/* ── View any address (modal and footer): the dapp's input ──── */
+.viewForm {
+  width: 100%;
+}
+
+.viewRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.viewInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-md);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+}
+
+.viewInput::placeholder {
+  color: var(--m-muted);
+}
+
+.viewInput:focus {
+  outline: none;
+  border-color: var(--m-copper-line);
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.12);
+}
+
+.viewSubmit {
+  flex: 0 0 auto;
+  height: 2.25rem;
+  padding: 0 1rem;
+  background: transparent;
+  border: 1px solid var(--m-outline);
+  border-radius: var(--m-r-md);
+  color: var(--m-text);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.viewSubmit:hover {
+  background: var(--m-hover);
+}
+
+.viewError {
+  margin: 0.5rem 0 0;
+  font-size: var(--m-t-xs);
+  line-height: 1.5;
+  color: var(--m-red);
+}
+
+/* Phones: brand and connect on one row, the links on the next. */
+@media (max-width: 860px) {
+  .headerInner {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    min-height: 0;
+  }
+
+  .nav {
+    display: contents;
+  }
+
+  .navLinks {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.25rem;
+    margin-left: -0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* The dapp drops its wordmark on small screens too; the mark stays. */
+  .logoSlot {
+    height: 1.75rem;
+    gap: 0.625rem;
+  }
+
+  .lockup {
+    display: none;
+  }
+
+  .logoMark {
+    display: block;
+  }
+
+  .brandRule {
+    height: 1rem;
+  }
+
+
+  .navLink,
+  .navOut {
+    padding: 0.5rem 0.625rem;
+  }
+
+  .navLinks {
+    margin-left: -0.625rem;
+  }
+
+  .navRule {
+    display: none;
+  }
+
+  .connect,
+  .accountChip {
+    height: 2rem;
+    padding: 0 0.75rem;
+    font-size: var(--m-t-xs);
+  }
+}
+
+/* ── Main and footer ───────────────────────────────────────── */
+/* The viewing banner (design notes 2026-11-03, notes 1 and 11): one quiet,
+   centred line under the header while the page reads someone else's address. */
+.viewing {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--m-line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.viewingInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem 1rem;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: 0.5rem var(--m-gutter);
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+  font-size: var(--m-t-xs);
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.viewingText {
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.viewingButton {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--m-copper-line);
+  background: none;
+  color: var(--m-copper);
+  font-family: var(--m-body);
+  font-size: inherit;
+  font-weight: 500;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.viewingButton:hover {
+  border-bottom-color: var(--m-copper);
+}
+
+.viewingButton:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+}
+
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--m-line);
+}
+
+.footerInner {
+  position: relative;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: 1.75rem var(--m-gutter) 2.5rem;
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* The dapp footer's links: 14px, muted, white on hover. */
+.footerLinks a,
+.footerButton {
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  color: var(--m-muted) !important;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--m-body);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.footerLinks a:hover,
+.footerButton:hover {
+  color: var(--m-text) !important;
+  text-decoration: none;
+}
+
+.footerView {
+  max-width: 30rem;
+  margin: 0.25rem 0 1.125rem;
+}
+
+.footerInner p {
+  margin: 0;
+  max-width: 44rem;
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-dim);
+}

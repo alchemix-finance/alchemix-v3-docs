@@ -1,0 +1,325 @@
+/* Shared members area parts. Tokens come from the shell's .page.
+   v2: sentence case throughout (plan item 11), no all caps labels. */
+
+/* ── Section frame ─────────────────────────────────────────── */
+.section {
+  position: relative;
+  border-top: 1px solid var(--m-line);
+}
+
+.section:first-child {
+  border-top: none;
+}
+
+.inner {
+  position: relative;
+  margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
+  padding: clamp(1.75rem, 4vw, 2.75rem) var(--m-gutter) clamp(2rem, 4.5vw, 3rem);
+  border-left: 1px solid var(--m-line);
+  border-right: 1px solid var(--m-line);
+  min-width: 0;
+}
+
+.section:first-child .nodeTL,
+.section:first-child .nodeTR {
+  display: none;
+}
+
+.nodeTL {
+  left: -4.5px;
+  top: -4.5px;
+}
+.nodeTR {
+  right: -4.5px;
+  top: -4.5px;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.headAside {
+  font-size: var(--m-t-sm);
+  color: var(--m-muted);
+}
+
+/* Section heading: a Beaufort title with its 0.06em tracking. Sentence case,
+   never caps. Design notes 2026-11-03 (metalface, notes 6, 14, 27, 32): no
+   section number before it. */
+.label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  margin: 0;
+  font-family: var(--m-display);
+  font-size: var(--m-t-h2);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: var(--m-track-head);
+  color: var(--m-text);
+}
+
+/* Review 2026-11-13: the title with a small "?" beside it that links to the explainer. */
+.headStart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.headHelp {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: 50%;
+  font-family: var(--m-body);
+  font-size: var(--m-t-xs);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--m-muted) !important;
+  text-decoration: none !important;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.headHelp:hover,
+.headHelp:focus-visible {
+  border-color: var(--m-copper);
+  color: var(--m-copper) !important;
+  outline: none;
+}
+
+/* The right of a section head: the aside and the docs link, side by side. */
+.headEnd {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+}
+
+/* The optional docs link at the top right of a section (note 18). */
+.headLink {
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-copper) !important;
+  text-decoration: none;
+  border-bottom: 1px solid var(--m-copper-line);
+}
+
+.headLink:hover {
+  text-decoration: none;
+  border-bottom-color: var(--m-copper);
+}
+
+.caption {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  line-height: 1rem;
+  color: var(--m-muted);
+  margin-bottom: 0.375rem;
+}
+
+/* ── Stats ─────────────────────────────────────────────────── */
+.stat {
+  min-width: 0;
+}
+
+.statValue {
+  font-family: var(--m-body);
+  font-weight: 400;
+  font-size: var(--m-t-h3);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  color: var(--m-text);
+  overflow-wrap: anywhere;
+}
+
+.statBig {
+  font-family: var(--m-body);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--m-t-number);
+  letter-spacing: 0;
+  line-height: 1.05;
+  color: var(--m-text);
+  overflow-wrap: anywhere;
+}
+
+.statNote {
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+  line-height: 1.5;
+}
+
+/* ── Buttons: the dapp's button, Montserrat 500 at 14px, 6px radius ── */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--m-r-md);
+  font-family: var(--m-body);
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 192, 154, 0.3);
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Primary: the landing's "Get a loan", copper fill. */
+.primary {
+  background: var(--m-copper);
+  border: 1px solid var(--m-copper);
+  color: var(--m-on-copper) !important;
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--m-copper-hi);
+  border-color: var(--m-copper-hi);
+}
+
+/* Secondary: the landing's section buttons, copper outline. */
+.secondary {
+  background: transparent;
+  border: 1px solid var(--m-copper);
+  color: var(--m-copper) !important;
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--m-hover);
+}
+
+/* Quiet: the dapp's ghost button. */
+.quiet {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--m-muted) !important;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.quiet:hover:not(:disabled) {
+  background: var(--m-panel-strong);
+  color: var(--m-text) !important;
+}
+
+/* ── Notices: the dapp's bordered callouts ─────────────────── */
+.notice {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-panel);
+  font-size: var(--m-t-sm);
+  line-height: 1.5;
+  color: var(--m-ink);
+}
+
+.noticeDot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.4375rem;
+  border-radius: 50%;
+  background: var(--m-grey);
+}
+
+.noticeBody {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.noticeAction {
+  margin-top: 0.625rem;
+}
+
+.notice_ok {
+  border-color: rgba(91, 168, 138, 0.5);
+  background: rgba(91, 168, 138, 0.08);
+}
+.notice_ok .noticeDot {
+  background: var(--m-green);
+}
+
+.notice_error {
+  border-color: rgba(255, 94, 76, 0.5);
+  background: rgba(255, 94, 76, 0.08);
+}
+.notice_error .noticeDot {
+  background: var(--m-red);
+}
+
+.notice_soon {
+  border-color: rgba(143, 178, 222, 0.5);
+  background: rgba(143, 178, 222, 0.08);
+}
+.notice_soon .noticeDot {
+  background: var(--m-blue);
+}
+
+.noticeTitle {
+  color: var(--m-text);
+  font-weight: 600;
+}
+
+/* "Using a Safe?" under Connect and in the connect modal (v3 backlog ticket 07) */
+.safeHint {
+  max-width: 34rem;
+  margin: 0.875rem 0 0;
+  font-size: var(--m-t-sm);
+  line-height: 1.55;
+  color: var(--m-muted);
+}
+
+.safeHint strong {
+  color: var(--m-text);
+  font-weight: 600;
+}
+
+.safeHint code {
+  padding: 0.0625rem 0.3125rem;
+  border: 1px solid var(--m-line);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--m-text);
+  font-size: 0.95em;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.safeHint span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--m-t-xs);
+  color: var(--m-dim);
+}

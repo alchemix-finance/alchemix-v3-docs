@@ -7,14 +7,16 @@ import ReadingProgress from "@site/src/components/ReadingProgress";
 //
 // The Academy is excluded. It is a course rather than a document, it renders its
 // own shell and its own progress, and a second scroll bar pinned above that reads
-// as leftover documentation chrome.
+// as leftover documentation chrome. The members area is excluded for the same
+// reason: it has its own shell, and the bar crossed its season progress bar.
 export default function Root({ children }) {
   const { pathname } = useLocation();
-  const isAcademy = pathname === "/academy" || pathname.startsWith("/academy/");
+  const own = (base) => pathname === base || pathname.startsWith(`${base}/`);
+  const hasOwnShell = own("/academy") || own("/members");
 
   return (
     <>
-      {isAcademy ? null : <ReadingProgress />}
+      {hasOwnShell ? null : <ReadingProgress />}
       {children}
     </>
   );

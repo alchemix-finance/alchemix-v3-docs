@@ -1,0 +1,6 @@
+{
+  "name": "Alchemix members area",
+  "description": "Any wallet's Alchemix history, season standing and badges.",
+  "iconPath": "safe-app-icon.svg",
+  "safe_apps_permissions": []
+}

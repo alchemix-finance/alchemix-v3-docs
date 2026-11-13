@@ -11,6 +11,7 @@ import {
   ALL_LESSONS, BEGINNER_BONUS, INTERMEDIATE_BONUS, LESSON_POINTS, TOTAL_POINTS, TRACKS,
   lessonById, trackBankedPoints, trackState, trackTotalPoints,
 } from "@site/src/components/Academy/lib/track";
+import { ACADEMY_LINKS } from "@site/src/components/Members/copy";
 import styles from "./track.module.css";
 
 /**
@@ -165,12 +166,14 @@ function RewardCard({ completedIds, banked }) {
     <aside className={styles.rewardCard} aria-labelledby="rewards-title">
       <div className={styles.microLabel}>Rewards</div>
       <h2 className={styles.rewardTitle} id="rewards-title">
-        Each track earns a Discord role
+        Every lesson counts toward your season
       </h2>
+      {/* Demo walkthrough 2026-10-27: the members area's essence and rungs, in place of "points" and a role per track. NEW, not through the TOV pass. */}
       <p className={styles.rewardBody}>
-        Every lesson banks {LESSON_POINTS} points. Finishing the beginner track adds{" "}
-        {BEGINNER_BONUS} more and the intermediate track {INTERMEDIATE_BONUS}, along with the
-        role each one carries. It all converts to season points when season one opens.
+        Every lesson earns {LESSON_POINTS} essence. Finishing the beginner track adds{" "}
+        {BEGINNER_BONUS} more and the intermediate track {INTERMEDIATE_BONUS}. The beginner
+        track alone reaches the Discord role, and Academy essence carries into every season
+        you join.
       </p>
       <p className={styles.rewardNote}>
         Completions are kept in this browser until you claim them, so finish a track where
@@ -199,7 +202,7 @@ function RewardCard({ completedIds, banked }) {
                 value={points}
                 total={total}
                 complete={complete}
-                label={`${track.label} points banked`}
+                label={`${track.label} essence banked`}
               />
               <div className={styles.rewardMeta}>
                 <span>{finished} of {track.lessons.length} lessons</span>
@@ -214,9 +217,9 @@ function RewardCard({ completedIds, banked }) {
 
       <div className={styles.pointsRow}>
         <span className={`${styles.points} ${full ? styles.pointsDone : ""}`}>{fmt(banked)}</span>
-        <span className={styles.pointsOf}>of {fmt(TOTAL_POINTS)} points banked</span>
+        <span className={styles.pointsOf}>of {fmt(TOTAL_POINTS)} essence banked</span>
       </div>
-      <Meter value={banked} total={TOTAL_POINTS} complete={full} label="Points banked" />
+      <Meter value={banked} total={TOTAL_POINTS} complete={full} label="Essence banked" />
     </aside>
   );
 }
@@ -323,7 +326,7 @@ function TrackSection({ track, completions, loaded, base }) {
             label={`${track.label} lessons complete`}
           />
           <span className={styles.progressPoints}>
-            {fmt(banked)} of {fmt(trackTotalPoints(track))} points
+            {fmt(banked)} of {fmt(trackTotalPoints(track))} essence
           </span>
           {complete ? <DonePill /> : null}
         </div>
@@ -392,11 +395,11 @@ function GraduationPanel({ track, completions, base, banked }) {
     body = "The season engine is checking your completions.";
   } else if (status === "notOpen") {
     body =
-      "The claim opens with the Discord link. Your completions are stored in this browser and will be ready when it does.";
+      "The claim is not open yet. Your completions are stored in this browser and will be ready when it is.";
     tone = styles.statusWarn;
   } else if (status === "eligible") {
     body =
-      "The season engine verified every completion on this track. Linking Discord is the next step.";
+      "The season engine verified every completion on this track. Claim its essence in the members area, in this browser.";
     tone = styles.statusOk;
   } else if (status === "ineligible") {
     body = "The season engine could not verify every completion. Redo the lessons below, then check again.";
@@ -408,7 +411,7 @@ function GraduationPanel({ track, completions, base, banked }) {
     body = "Claiming sends the completions stored in this browser to the season engine for verification.";
   }
 
-  let buttonLabel = "Claim your role";
+  let buttonLabel = "Check my completions";
   if (busy) buttonLabel = "Checking";
   else if (status === "error") buttonLabel = "Try again";
   else if (status === "ineligible") buttonLabel = "Check again";
@@ -419,7 +422,7 @@ function GraduationPanel({ track, completions, base, banked }) {
       <div className={styles.graduateTitle}>You passed every lesson.</div>
       <div className={styles.graduateMeta}>
         <span className={styles.graduateRole}>{track.roleLine}</span>
-        <span className={styles.graduatePoints}>{fmt(banked)} points banked</span>
+        <span className={styles.graduatePoints}>{fmt(banked)} essence banked</span>
       </div>
 
       <p className={`${styles.graduateBody} ${tone}`} aria-live="polite">{body}</p>
@@ -448,6 +451,13 @@ function GraduationPanel({ track, completions, base, banked }) {
             app.
           </span>
         ) : null}
+      </div>
+
+      {/* Links into the members area (members gap audit item 2). */}
+      <div className={styles.graduateLinks}>
+        <span>{ACADEMY_LINKS.lead}</span>
+        <Link to="/members/badges">{ACADEMY_LINKS.standing}</Link>
+        <Link to="/members/feedback">{ACADEMY_LINKS.feedback}</Link>
       </div>
     </section>
   );
