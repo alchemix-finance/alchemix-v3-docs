@@ -237,6 +237,45 @@ export function submitAnswer(base, { challenge, params, answer, attempt }) {
   );
 }
 
+/** What this browser has already counted: "lesson_opened:<lesson>" and "step_done:<lesson>:<step>". */
+const REPORTED_KEY = "alchemix-academy-reported-v1";
+
+/**
+ * Count a lesson opened or a practice step done, once per browser.
+ *
+ * The engine keeps anonymous counts of these, so the Academy can see where
+ * learners stop (`POST /api/academy/events`). The body is the kind, the
+ * lesson id and the step id, and nothing else: no id for the learner or the
+ * browser is made, stored or sent. This browser remembers what it has already
+ * counted, so a reload or a step run again is not counted twice, and that
+ * list never leaves the browser. Storage that cannot be read or written means
+ * nothing is sent, since the count could not be kept to one.
+ *
+ * Fire and forget: no retry, and a failure is never shown. Nothing is sent
+ * from a build that grades in the browser (a share build has no engine behind
+ * it), or in development unless an engine base is set.
+ */
+export function reportEvent(base, kind, lessonId, step = null) {
+  if (browserGradingOnly()) return;
+  if (process.env.NODE_ENV !== "production" && !base) return;
+  if (kind !== "lesson_opened" && kind !== "step_done") return;
+  try {
+    const key = step ? `${kind}:${lessonId}:${step}` : `${kind}:${lessonId}`;
+    const raw = JSON.parse(window.localStorage.getItem(REPORTED_KEY) || "[]");
+    const sent = Array.isArray(raw) ? raw : [];
+    if (sent.includes(key)) return;
+    window.localStorage.setItem(REPORTED_KEY, JSON.stringify([...sent, key]));
+    fetch(`${base}/api/academy/events`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(step ? { kind, lessonId, step } : { kind, lessonId }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    // Private browsing or a full quota: not counted.
+  }
+}
+
 /**
  * Ask the engine to verify a finished track.
  *

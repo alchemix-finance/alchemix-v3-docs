@@ -10,7 +10,7 @@ import ls from "../lesson.module.css";
 import { AppShot, Arrow, ChoiceCheckpoint, LessonProvider, SHOTS } from "../kit";
 import { useReducedMotion, useTween } from "../AppMock/motion";
 import { AppContextProvider, SLOW_TWEEN, isWhole, useAppContext, useWash } from "../AppMock";
-import { apiBase, hasCompletion, readCompletions } from "../lib/api";
+import { apiBase, hasCompletion, readCompletions, reportEvent } from "../lib/api";
 import { currentLesson, lessonById, nextLesson, trackByKey } from "../lib/track";
 import { PageContext, PositionProvider, usePosition } from "./position";
 import styles from "./styles.module.css";
@@ -77,7 +77,7 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
   const isBrowser = useIsBrowser();
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
-  const { shown, done: moments, notes, setPage: positionPage } = usePosition();
+  const { shown, done: moments, play, notes, setPage: positionPage } = usePosition();
   const [done, setDone] = useState(false);
   // The stat the reader is pointing at in the text (`Stat`), for every
   // practice element and the strip to light: `{ name, scope }`, where scope
@@ -97,8 +97,21 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
     const finished = hasCompletion(lessonId);
     if (finished) setDone(true);
     const current = finished ? null : currentLesson(Object.keys(readCompletions()), lessonId);
-    setAhead(current && current.id !== lessonId ? current : null);
+    const reading = Boolean(current && current.id !== lessonId);
+    setAhead(reading ? current : null);
+    // Counted once per browser, and not for a lesson read ahead as a preview.
+    if (!reading) reportEvent(base, "lesson_opened", lessonId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBrowser, lessonId]);
+
+  // Each practice step the reader does is counted once per browser. `play`
+  // counts actions in this visit, so a step restored on load is not sent
+  // again, and one run again is already on the browser's list.
+  useEffect(() => {
+    if (!play) return;
+    for (const id of Object.keys(moments)) reportEvent(base, "step_done", lessonId, id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [play]);
 
   const preview = Boolean(ahead);
 
@@ -489,7 +502,7 @@ function Gated({ blocks, done, play }) {
       step = { id: ms[0].id, ids: ms.map((m) => m.id) };
       runs[runs.length - 1].blocks.push(
         <React.Fragment key={`step:${step.id}`}>
-          <div hidden data-step={step.id} />
+          <StepMark id={step.id} ids={step.ids} />
           {b}
           <RunAgain id={step.id} ids={step.ids} />
         </React.Fragment>,
@@ -508,6 +521,99 @@ function Gated({ blocks, done, play }) {
       </Reveal>
     );
   });
+}
+
+/**
+ * The mark in front of a practice element (`data-step`, which "Run again"
+ * finds the element by), and what keeps the element in view when the reader
+ * does one of its steps.
+ *
+ * A step changes what is above the element: its instruction folds away, and
+ * everything under the instruction rides up with it, about 100px. A reader
+ * who had scrolled down to reach the button (any window too short to show
+ * the whole element under the text) watched the element slide under the
+ * pinned header, and the stat that had just changed went with it. So for the
+ * half second after a step the window is scrolled, frame by frame, to hold
+ * the element where it was, and if the stats that changed are cut off by the
+ * header or the footer it is eased just far enough to show them. A reader who
+ * scrolls in that half second takes over.
+ */
+function StepMark({ id, ids }) {
+  const { done, play } = usePosition();
+  const reduced = useReducedMotion();
+  const ref = useRef(null);
+  const count = ids.filter((m) => done[m]).length;
+  const was = useRef({ count, play });
+  useIsoLayoutEffect(() => {
+    const before = was.current;
+    was.current = { count, play };
+    // Only a step the reader just did: a load restores what was done without
+    // an action (`play` stays), and "Run again" lowers the count.
+    if (count <= before.count || play === before.play) return undefined;
+    const el = ref.current ? ref.current.nextElementSibling : null;
+    return el ? holdInView(el, reduced) : undefined;
+    // `ids` is rebuilt on every render; the count is what changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count, play]);
+  return <div ref={ref} hidden data-step={id} />;
+}
+
+/** How long the element is held after a step: a little longer than the instruction takes to fold (0.4s). */
+const HOLD_MS = 520;
+/** The room kept between a changed stat and the header or the footer. */
+const HOLD_GAP = 12;
+
+/**
+ * Hold `el` where it is in the window while the page around it settles, and
+ * ease it to where its changed stats (the tiles carrying a change chip) are
+ * between the header and the footer. Returns the way to stop.
+ */
+function holdInView(el, reduced) {
+  const from = el.getBoundingClientRect().top;
+  const header = document.querySelector("header");
+  const footer = document.querySelector("footer");
+  const roomTop = (header ? header.getBoundingClientRect().bottom : 0) + HOLD_GAP;
+  const roomBottom = (footer ? footer.getBoundingClientRect().top : window.innerHeight) - HOLD_GAP;
+  // The stats that changed, as a span measured from the element's top. A
+  // chip outside a tile (the wallet balance under a field) does not count:
+  // it sits by the button the reader just pressed.
+  const tiles = [...el.querySelectorAll('[class*="delta_"]')].map((chip) => chip.closest('[class*="tile_"]')).filter(Boolean);
+  let to = from;
+  if (tiles.length) {
+    const rects = tiles.map((t) => t.getBoundingClientRect());
+    const top = Math.min(...rects.map((r) => r.top));
+    const bottom = Math.max(...rects.map((r) => r.bottom));
+    if (top < roomTop) to = from + (roomTop - top);
+    else if (bottom > roomBottom) to = from - Math.min(bottom - roomBottom, top - roomTop);
+  }
+  let raf = 0;
+  let stopped = false;
+  const stop = () => {
+    stopped = true;
+    window.cancelAnimationFrame(raf);
+    window.removeEventListener("wheel", stop);
+    window.removeEventListener("touchmove", stop);
+    window.removeEventListener("keydown", onKey);
+  };
+  const onKey = (e) => {
+    if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) stop();
+  };
+  window.addEventListener("wheel", stop, { passive: true });
+  window.addEventListener("touchmove", stop, { passive: true });
+  window.addEventListener("keydown", onKey);
+  const start = performance.now();
+  const tick = (now) => {
+    if (stopped) return;
+    const t = Math.min((now - start) / HOLD_MS, 1);
+    const eased = reduced ? 1 : 1 - Math.pow(1 - t, 3);
+    const want = from + (to - from) * eased;
+    const off = el.getBoundingClientRect().top - want;
+    if (Math.abs(off) >= 0.5) window.scrollBy({ top: off, behavior: "instant" });
+    if (t < 1) raf = window.requestAnimationFrame(tick);
+    else stop();
+  };
+  raf = window.requestAnimationFrame(tick);
+  return stop;
 }
 
 /** A block that is a practice element with moments of its own, not a marker (`Await`) or a `Do`. */
