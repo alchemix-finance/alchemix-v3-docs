@@ -10,7 +10,7 @@ import { TAUGHT } from "../Beginner";
 import { PROTOCOL_FEE, simpleCurve } from "../lib/model";
 import useElementWidth from "../lib/useElementWidth";
 import { useMoment, useMomentNote, usePosition } from "./position";
-import { Stage } from "./index";
+import { FoldAway, Stage } from "./index";
 import { NOT_READY, OVER_WALLET } from "./moments";
 
 /**
@@ -180,9 +180,12 @@ export function RedeemMoment() {
         ltvDigits={1}
         wash
       />
-      <LessonControl disabled={!m.ready} hint={m.done ? null : NOT_READY} onClick={run}>
-        Run redemption
-      </LessonControl>
+      {/* Gone once pressed: "Run again" under the element is the way back. */}
+      <FoldAway show={!m.done}>
+        <LessonControl disabled={!m.ready} hint={NOT_READY} onClick={run}>
+          Run redemption
+        </LessonControl>
+      </FoldAway>
     </Stage>
   );
 }
@@ -251,9 +254,11 @@ export function YearOfRedemptions() {
   return (
     <>
       <YearChart run={drawing || m.done} onDone={finish} sums={m.done} />
-      <LessonControl disabled={!m.ready || drawing} hint={m.done || drawing ? null : NOT_READY} onClick={() => setDrawing(true)}>
-        Skip ahead a year
-      </LessonControl>
+      <FoldAway show={!m.done}>
+        <LessonControl disabled={!m.ready || drawing} hint={drawing ? null : NOT_READY} onClick={() => setDrawing(true)}>
+          Skip ahead a year
+        </LessonControl>
+      </FoldAway>
     </>
   );
 }

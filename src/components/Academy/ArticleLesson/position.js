@@ -26,7 +26,11 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
  * key is ignored (an old saved earmark once showed 9,999.27 where the lesson
  * says 9,999.48). It is read after mount, never during render: these pages
  * are prerendered, and the first frame is the lesson's starting position.
- * `reset` puts the lesson back to that start ("Start over").
+ * `reset` puts the lesson back to that start ("Start over"). `undo(id)` puts
+ * it back to just before one moment ("Run again" under a finished practice
+ * element): that moment and every later one in the lesson are no longer done,
+ * since their numbers follow from it, and the moments remount as on a reload
+ * at that point.
  *
  *   position  { wallet, walletAl, walletMyt, deposit, debt, earmarked,
  *             fixedYield } as of the page on screen. `walletAl` is the alUSD
@@ -43,7 +47,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
  *   play      bumps on every action, never on a load
  *   moved     bumps on every action and every page the reader turns, for the
  *             strip, whose numbers also change when a page sets them
- *   version   bumps on reset, so the moments remount with their boxes empty
+ *   version   bumps on reset and on undo, so the moments remount with their boxes empty
  *   notes     { [momentId]: text }, what a moment says is wrong right now
  *             ("Pick USDC first"), shown in the footer in place of its hint
  */
@@ -75,6 +79,14 @@ function reducer(state, action) {
       return { ...state, moved: state.moved + 1 };
     case "reveal":
       return state.shown ? state : { ...state, shown: true, entered: true };
+    case "undo": {
+      const from = action.moments.indexOf(action.id);
+      if (from < 0) return state;
+      const drop = new Set(action.moments.slice(from));
+      if (!Object.keys(state.done).some((m) => drop.has(m))) return state;
+      const done = Object.fromEntries(Object.entries(state.done).filter(([m]) => !drop.has(m)));
+      return { ...state, done, moved: state.moved + 1, version: state.version + 1 };
+    }
     case "reset":
       return { ...initial(action), play: state.play + 1, moved: state.moved + 1, version: state.version + 1 };
     default:
@@ -190,6 +202,7 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
 
   const apply = useCallback((id, after, before) => dispatch({ type: "apply", id, after, before: before ?? positionBefore(id) }), [positionBefore]);
   const reveal = useCallback(() => dispatch({ type: "reveal" }), []);
+  const undo = useCallback((id) => dispatch({ type: "undo", id, moments }), [moments]);
   const reset = useCallback(() => {
     forget(lessonId);
     setNotes({});
@@ -208,12 +221,13 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
       note,
       apply,
       reveal,
+      undo,
       reset,
       setLayout,
       setPage,
       started: Object.keys(state.done).length > 0,
     }),
-    [state, position, positionAt, positionBefore, page, moments, notes, note, apply, reveal, reset, setLayout, setPage],
+    [state, position, positionAt, positionBefore, page, moments, notes, note, apply, reveal, undo, reset, setLayout, setPage],
   );
   return <PositionContext.Provider value={value}>{children}</PositionContext.Provider>;
 }

@@ -10,7 +10,7 @@ export default function Lesson() {
   return (
     <ArticleLesson
       lessonId="what-you-can-do-here"
-      description="Alchemix lets you borrow against a deposit that keeps earning, and the loan pays itself off over time."
+      description="Alchemix lets you borrow against a deposit that keeps earning, and the loan is paid down for you out of your deposit over time."
       Content={Content}
       start={START}
       hidden

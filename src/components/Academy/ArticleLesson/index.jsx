@@ -475,21 +475,81 @@ function eventsOf(block) {
  * no `moment` static, so nothing waits on it.
  */
 function Gated({ blocks, done, play }) {
+  // What was done when the page's blocks mounted. A run behind one of those
+  // moments is simply there: "Run again" remounts the blocks in the middle of
+  // a visit, and the runs the reader had already read would fade in again.
+  const [atMount] = useState(done);
   const runs = [{ gate: null, blocks: [] }];
+  // The practice element the markers after it belong to: its own moments and
+  // each `Await` up to the next element.
+  let step = null;
   blocks.forEach((b) => {
-    runs[runs.length - 1].blocks.push(b);
     const ms = momentsOf(b);
+    if (isPractice(b) && ms.length) {
+      step = { id: ms[0].id, ids: ms.map((m) => m.id) };
+      runs[runs.length - 1].blocks.push(
+        <React.Fragment key={`step:${step.id}`}>
+          <div hidden data-step={step.id} />
+          {b}
+          <RunAgain id={step.id} ids={step.ids} />
+        </React.Fragment>,
+      );
+    } else {
+      if (step) step.ids.push(...ms.map((m) => m.id));
+      runs[runs.length - 1].blocks.push(b);
+    }
     if (ms.length) runs.push({ gate: ms[ms.length - 1].id, blocks: [] });
   });
   return runs.map((r, i) => {
     if (!r.blocks.length || (r.gate && !done[r.gate])) return null;
     return (
-      <Reveal key={i} fade={Boolean(r.gate)} play={play}>
+      <Reveal key={i} fade={Boolean(r.gate) && !atMount[r.gate]} play={play}>
         {r.blocks}
       </Reveal>
     );
   });
 }
+
+/** A block that is a practice element with moments of its own, not a marker (`Await`) or a `Do`. */
+function isPractice(block) {
+  return React.isValidElement(block) && typeof block.type === "function" && block.type !== Do && block.type !== Await;
+}
+
+/**
+ * "Run again", under a practice element once every step on it is done. A
+ * finished step could not be seen a second time: its control was switched
+ * off for good, and a reload kept it done. Pressing it puts the lesson back
+ * to just before the element's first step (the store's `undo`), so the
+ * reader does the step again and watches the change again.
+ *
+ * Until then its row has no height. Once it is there the row sits in part of
+ * the 2rem every practice element leaves under itself and adds 25px, and when
+ * it arrives because the reader just acted the row opens over 0.3s, so the
+ * text under the element slides instead of snapping. `id` is the element's
+ * first moment and `ids` every moment acted on the element.
+ */
+function RunAgain({ id, ids }) {
+  const { done, play } = usePosition();
+  const again = useContext(AgainContext);
+  const finished = ids.every((m) => done[m]) && Boolean(again);
+  // Opens only when the step is finished in front of the reader; on a page
+  // loaded with the step done it is simply there (the store restores what was
+  // done just after mount, at `play` 0).
+  const [arrives] = useState(!finished);
+  if (!finished) return <div className={styles.again} />;
+  return (
+    <div className={`${styles.again} ${styles.againOn} ${arrives && play > 0 ? styles.againIn : ""}`}>
+      <button type="button" className={styles.againButton} onClick={() => again(id)}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 3-6.7" />
+          <path d="M3 4v5h5" />
+        </svg>
+        Run again
+      </button>
+    </div>
+  );
+}
+
 
 function Reveal({ fade, play, children }) {
   // Decided once, when the run mounts: a run that was done on an earlier
@@ -512,13 +572,59 @@ function RevealStrip() {
   return null;
 }
 
-/** The prose column. The moments remount on Start over, so their boxes empty. */
+/** What "Run again" calls with its element's first moment (see `Article`). */
+const AgainContext = createContext(null);
+
+/**
+ * The prose column. The moments remount on Start over and on "Run again", so
+ * their boxes empty.
+ *
+ * "Run again" keeps its practice element where it is in the window. Putting a
+ * step back changes what is above the element (its instruction returns) and
+ * takes away the text under it, and the whole column remounts. So the
+ * element's top is read before the change and the window is scrolled by the
+ * difference before the browser paints, and the column keeps the height it
+ * had, or a page that got shorter would pull the element down the window by
+ * what it lost. The height is let go when the reader turns the page.
+ */
 function Article({ children }) {
-  const { version } = usePosition();
+  const { version, undo, page } = usePosition();
+  const box = useRef(null);
+  const held = useRef(null);
+  const top = (id) => {
+    const mark = document.querySelector(`[data-step="${CSS.escape(id)}"]`);
+    const el = mark ? mark.nextElementSibling : null;
+    return el ? el.getBoundingClientRect().top : null;
+  };
+  const again = useCallback(
+    (id) => {
+      held.current = { id, top: top(id), height: box.current ? box.current.offsetHeight : 0 };
+      undo(id);
+    },
+    [undo],
+  );
+  useIsoLayoutEffect(() => {
+    const was = held.current;
+    held.current = null;
+    if (!was) return;
+    if (box.current && was.height) box.current.style.minHeight = `${was.height}px`;
+    const now = top(was.id);
+    if (was.top == null || now == null || Math.abs(now - was.top) <= 0.5) return;
+    // The instruction that came back pushed the element down. The window has
+    // to scroll that much further than the page was long, so the column grows
+    // by it too.
+    if (box.current && was.height && now > was.top) box.current.style.minHeight = `${was.height + (now - was.top)}px`;
+    window.scrollBy(0, now - was.top);
+  }, [version]);
+  useEffect(() => {
+    if (box.current) box.current.style.minHeight = "";
+  }, [page]);
   return (
-    <div className={styles.prose} key={version}>
-      {children}
-    </div>
+    <AgainContext.Provider value={again}>
+      <div ref={box} className={styles.prose} key={version}>
+        {children}
+      </div>
+    </AgainContext.Provider>
   );
 }
 

@@ -77,7 +77,7 @@ export const BEGINNER = lessonsOf("beginner", [
     slug: "/academy/what-you-can-do-here",
     app: "Dashboard",
     title: "What you can do here",
-    blurb: "Alchemix lets you borrow against a deposit that keeps earning, and the loan pays itself off over time.",
+    blurb: "Alchemix lets you borrow against a deposit that keeps earning, and the loan is paid down for you out of your deposit over time.",
     minutes: 4,
   },
   {

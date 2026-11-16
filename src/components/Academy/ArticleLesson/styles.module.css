@@ -265,6 +265,76 @@
   }
 }
 
+/* "Run again" under a finished practice element. Until every step on the
+   element is done the row has no height. Then it takes a row of its own,
+   pulled up into the 2rem the element leaves under itself: 0.75rem under the
+   element, 1.5rem over the text that follows. When it arrives because the
+   reader just acted, the row opens over 0.3s, so the text under it slides
+   the 25px instead of snapping. */
+.again {
+  height: 0;
+}
+
+.againOn {
+  display: flex;
+  height: 1.3125rem;
+  margin: -1.25rem 0 1.5rem;
+}
+
+.againIn {
+  overflow: hidden;
+  animation: againIn 0.3s ease both;
+}
+
+@keyframes againIn {
+  from {
+    height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+  }
+  to {
+    height: 1.3125rem;
+    margin-top: -1.25rem;
+    margin-bottom: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .againIn {
+    animation: none;
+  }
+}
+
+.againButton {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 1.3125rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--m-muted);
+  cursor: pointer;
+}
+
+.againButton:hover {
+  color: var(--m-text);
+}
+
+.againButton:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* ── The prose ── */
 
 .prose {
