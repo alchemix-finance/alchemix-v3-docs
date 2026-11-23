@@ -10,7 +10,9 @@
   font-size: var(--m-t-sm);
   line-height: 1.5;
   padding: 0.75rem 1rem;
-  margin: -1rem 0 1.75rem;
+  /* Under a heading: a little into the heading's own margin, so the two read
+     as one block and the notice does not touch the heading's last line. */
+  margin: -0.125rem 0 1.75rem;
 }
 
 .notice svg {

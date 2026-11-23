@@ -1,33 +1,71 @@
-import { Do, PageBreak, Shot, Stat } from "../ArticleLesson";
-import { SwapMoment } from "../ArticleLesson/moments-3-8";
+import { Beside, Do, PageBreak, ReadOn, Stat, There } from "../ArticleLesson";
+import { SwapExampleFigure, SwapMoment } from "../ArticleLesson/moments-3-8";
 import { Term } from "../kit";
 
-The alUSD you borrowed is yours to hold or to swap for any other token. Far more places take USDC, so most borrowers choose to swap their alUSD for USDC. You can do this on any DEX that has alUSD liquidity, or trade directly from within Alchemix through the Trade page to find the best rates on your chain.
+<Beside />
 
-<Shot name="swapCard" column>Swapping alUSD for USDC on the Trade page.</Shot>
+The <Term id="alusd">alUSD</Term> you borrowed is yours to hold or to swap for any other token.
 
-alUSD typically trades for slightly less than a dollar, since borrowers mint it and sell it for USDC to spend. Buyers take the other side, buying alUSD below a dollar to deposit on the Fixed Yield page, where each alUSD pays one USDC at the end of a set term. Their buying pulls the price back toward a dollar.
+Far more places take USDC, so most borrowers choose to swap their alUSD for USDC.
 
-That gap between a dollar and the price alUSD sells for is called <Term id="discount">the discount</Term>. When you swap alUSD for USDC, you receive a little less USDC than the alUSD you give up, while inside Alchemix your debt still counts every alUSD you borrowed at a full dollar. The difference is a cost of your loan.
+You can do this on any DEX that has alUSD liquidity, or trade directly from within Alchemix through the Trade page to find the best rates on your chain.
 
-You can also receive USDC straight from your loan. On the vault's Borrow tab you choose which token to receive. Choose USDC, and the app borrows alUSD and swaps it for USDC in the same transaction, at the market rate, so the discount applies the same way. Here you make the swap as a separate step, which shows where the discount comes from.
+<ReadOn moment="read-swap" title="Why borrowers swap" />
+
+<SwapExampleFigure />
+
+<There /> is the Swap card from the app's Trade page, filled in with an example swap. You give 1,000 in the <Stat name="pay">alUSD</Stat> field and receive 970 in the <Stat name="receive">USDC</Stat> field.
+
+The rate line reads <Stat name="price">1 alUSD = 0.97 USDC</Stat>, an example price 0.03 under a dollar. The gap between a dollar and the price alUSD sells for is called <Term id="discount">the discount</Term>.
+
+Inside Alchemix, your debt still counts every alUSD you borrowed at a full dollar. So after this swap you owe 1,000 for 970 USDC in hand, and the gap of 30 is a cost of your loan.
+
+<ReadOn moment="read-discount" title="The discount" />
+
+alUSD typically trades for slightly less than a dollar, since borrowers mint it and sell it for USDC to spend.
+
+Buyers take the other side. They deposit the alUSD they buy on the Fixed Yield page, to receive one USDC for each alUSD at the end of a set term.
+
+Their buying pulls the price back toward a dollar.
+
+<ReadOn moment="read-price" title="Why alUSD sells under a dollar" />
+
+You can also receive USDC directly within the Alchemix app when you borrow. On the vault's Borrow tab, you choose which token to receive.
+
+Choose USDC, and the app borrows alUSD and swaps it for USDC in the same transaction. The swap is routed through the DEXs on the vault's chain to find the best rate.
+
+Your alUSD is still sold at its market price, so you pay the same discount as on a swap you make yourself.
+
+In this lesson you make the swap yourself, so the discount shows as its own figure: the gap between the alUSD you give and the USDC you receive.
 
 <PageBreak title="Make the swap" />
 
-For this swap, alUSD sells for 0.97 USDC, a discount of 0.03 on each alUSD. The rate the Trade page quotes already includes its 0.05% swap fee, so 0.97 is what you receive for each alUSD.
+<Beside />
 
-<Do moment="swap">
+<There /> is a practice copy of the Trade page's Swap card, for swapping the 5,000 <Term id="alusd">alUSD</Term> in your <Stat name="wallet">practice wallet</Stat> for USDC.
 
-Type 5,000 in the alUSD field and press Swap.
+Its rate, <Stat name="price">1 alUSD = 0.97 USDC</Stat>, is set at an example price of 0.97, a <Term id="discount">discount</Term> of 0.03 on each alUSD. The rate already includes the Trade page's 0.05% swap fee, so 0.97 is what you receive for each alUSD.
+
+<Do moment="swap" title="Swap 5,000 alUSD">
+
+Type 5,000 in the <Stat name="pay">alUSD field</Stat> and press <Stat name="action">Swap</Stat>.
 
 </Do>
 
 <SwapMoment />
 
-You received 4,850 USDC for your 5,000 alUSD, so the discount on this swap cost you 150.
+You received 4,850 USDC in your <Stat name="wallet">practice wallet</Stat> for your 5,000 alUSD. The discount cost you 150.
 
-Your <Stat name="debt">Debt</Stat> still reads 5,000. The debt is recorded on your position in the vault, and the swap happened outside the vault: it traded the alUSD in your wallet for USDC without touching what you owe. You still owe 5,000, and your wallet's USDC rose by 4,850 while its alUSD went to 0.
+Your <Stat name="debt">Debt</Stat> still reads 5,000. The debt is recorded on your position in the vault, and the swap traded only the alUSD in your wallet.
 
-Most lenders charge interest for every month you owe. Alchemix charges no interest beyond the redemption fee, so an Alchemix loan has two costs. The first is the discount, paid once if you choose to swap your alUSD for USDC to spend, which is the market difference between alUSD and USDC. The second is the redemption fee, 0.25% of each amount a redemption pays off on Ethereum, which you will learn about in the next lesson.
+<ReadOn moment="read-swapped" title="What the swap changed" />
 
-0.97 is an example. The Trade page shows the real price, which changes every day.
+Most lenders charge interest for every month you owe. Alchemix charges none.
+
+An Alchemix loan does have two costs, though. The first is the discount, 150 here, paid once if you swap your alUSD for USDC.
+
+The second is the redemption fee. Each time a redemption pays off part of your loan out of your deposit, the protocol takes a fee on that amount.
+
+The redemption fee is 0.25% on Ethereum, where your practice vault is. Each chain sets its own, and the [Fees page](/user/concepts/fees) in the Alchemix docs lists the redemption fee on every chain.
+
+The practice card's rate, <Stat name="price">1 alUSD = 0.97 USDC</Stat>, is an example. The Trade page shows the real price, which changes every day.

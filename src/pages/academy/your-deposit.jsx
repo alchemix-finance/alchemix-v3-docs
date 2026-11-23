@@ -4,7 +4,7 @@ import Content from "@site/src/components/Academy/lessons/depositAndEarn.mdx";
 
 /* Lesson 2 starts with the 10,000 USDC lesson 1 handed the reader. */
 const START = { wallet: 10_000, deposit: 0, debt: 0 };
-const MOMENTS = ["deposit", "year", "withdraw"];
+const MOMENTS = ["read-vault", "read-strategies", "read-risk", "deposit", "year", "withdraw"];
 
 export default function Lesson() {
   return (

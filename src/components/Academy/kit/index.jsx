@@ -4,6 +4,7 @@ import styles from "../lesson.module.css";
 import parts from "../parts.module.css";
 import { fetchChallenge, saveCompletion, submitAnswer } from "../lib/api";
 import useElementWidth from "../lib/useElementWidth";
+import APP_LISTS from "../lib/app-lists.json";
 import { TERMS } from "../lib/terms";
 import { ALL_LESSONS } from "../lib/track";
 import LocalNotice from "../LocalNotice";
@@ -684,12 +685,21 @@ const NARROW_PX = 640;
  * size prop.
  */
 export function AppShot({ shot, narrow, label = "In the app", children }) {
-  const [ref, width] = useElementWidth();
+  const [ref, , width] = useElementWidth();
   const variant = narrow ?? shot.narrow;
   const shown = variant && width > 0 && width < NARROW_PX
     ? { src: shot.src, size: shot.size, alt: shot.alt, dpr: shot.dpr, ...variant }
     : shot;
   const { frame, img } = cropStyle(shown);
+  // The parts of the picture a lesson's text can point at (`spots`, in the
+  // same shares of the capture as the crop): a clear box over each, carrying
+  // its name as `data-point`, which the lesson lights while the text points
+  // at it. A variant has its own spots, and a spot the crop leaves out is
+  // not drawn.
+  const c = shown.crop ?? { x: 0, y: 0, w: 1, h: 1 };
+  const spots = Object.entries(shown.spots ?? {}).filter(
+    ([, s]) => s && s.x >= c.x - 0.002 && s.y >= c.y - 0.002 && s.x + s.w <= c.x + c.w + 0.002 && s.y + s.h <= c.y + c.h + 0.002,
+  );
 
   return (
     <figure className={`${parts.fig} ${shot.hideNarrow ? parts.figHideNarrow : ""}`} ref={ref}>
@@ -697,6 +707,21 @@ export function AppShot({ shot, narrow, label = "In the app", children }) {
         <div className={parts.figStage}>
           <div className={parts.figWindow} style={frame}>
             <img className={parts.figCrop} style={img} src={shown.src} alt={shown.alt} loading="eager" />
+            {spots.map(([name, s]) => (
+              <span
+                key={name}
+                className={parts.figSpot}
+                data-point={name}
+                data-spot=""
+                aria-hidden="true"
+                style={{
+                  left: `${((s.x - c.x) / c.w) * 100}%`,
+                  top: `${((s.y - c.y) / c.h) * 100}%`,
+                  width: `${(s.w / c.w) * 100}%`,
+                  height: `${(s.h / c.h) * 100}%`,
+                }}
+              />
+            ))}
           </div>
         </div>
         <Caption label={label}>{children}</Caption>
@@ -764,6 +789,55 @@ const phoneRow = (top, bottom, alt) => ({
 /** The app's header with Earn open, at 1600 CSS px (`pnpm capture:app static/img menu`). */
 const MENU = [3200, 344];
 
+/**
+ * A figure of the cards on one of the app's list pages, from the captures
+ * taken at the app's own layout for a window about as wide as the figure
+ * (`scripts/capture-app-lists.mjs`, which also writes where each card and
+ * each part a lesson names sits: `lib/app-lists.json`). `key` is the page
+ * and the layout ("borrow-mid", "fixed-yield-phone"). `only` keeps the
+ * first cards of the file, with the page's margin under the last. The spots
+ * are those of the first card.
+ */
+function listShot(key, only = null) {
+  const file = APP_LISTS[key].cards;
+  const kept = only ? file.items.slice(0, only) : file.items;
+  const last = kept[kept.length - 1].rect;
+  const under = (file.pad * 2) / file.size[1];
+  return {
+    src: file.src,
+    size: file.size,
+    ...(kept.length < file.items.length ? { crop: { x: 0, y: 0, w: 1, h: Math.min(1, last.y + last.h + under) } } : {}),
+    spots: kept[0].spots,
+  };
+}
+
+/** A rectangle measured on a capture in its own pixels, as the shares a crop or a spot is written in. */
+const px = ([W, H], x0, y0, x1, y1) => ({ x: x0 / W, y: y0 / H, w: (x1 - x0) / W, h: (y1 - y0) / H });
+
+/** The vault page capture, and the parts of its Info tab lesson 2 names. */
+const VAULT_PAGE = [2608, 2140];
+const INFO_SPOTS = {
+  "info-tab": px(VAULT_PAGE, 1348, 1128, 1408, 1176),
+  "info-donut": px(VAULT_PAGE, 1420, 1268, 1651, 1499),
+  // The table's column headings. The app sets its columns a few pixels
+  // apart, so a ring round a whole column ran against the next column's
+  // words; the heading alone has room round it.
+  "info-strategy": px(VAULT_PAGE, 1724, 1297, 1973, 1350),
+  "info-risk": px(VAULT_PAGE, 1983, 1297, 2161, 1350),
+  "info-apr": px(VAULT_PAGE, 2214, 1297, 2296, 1350),
+  "info-alloc": px(VAULT_PAGE, 2305, 1297, 2467, 1350),
+  "info-chart": px(VAULT_PAGE, 1388, 1650, 2498, 2040),
+};
+
+/** The Swap card capture, and its two boxes, the slippage line and the button. */
+const SWAP = [1472, 912];
+const SWAP_SPOTS = {
+  "swap-pay": px(SWAP, 264, 88, 1208, 308),
+  "swap-receive": px(SWAP, 264, 444, 1208, 640),
+  "swap-slippage": px(SWAP, 950, 646, 1176, 678),
+  "swap-button": px(SWAP, 298, 710, 1174, 790),
+};
+
 export const SHOTS = {
   /**
    * The app's top menu with Earn open, on the Mixed Yield page: Dashboard to
@@ -786,22 +860,19 @@ export const SHOTS = {
   },
   /**
    * The Borrow page's two Ethereum vault cards, Risk-adjusted Mix USDC on
-   * top, with the same 30 capture px around them as `vaultCard`.
+   * top, as the app draws them in a window 820px wide, with the page's own
+   * 12px around them. On a phone, the USDC card as the app draws it at 390px.
    *
-   * Recaptured 2026-11-12 (`pnpm capture:app static/img borrow fixed-yield`).
-   * The page now lists Base first, so the Ethereum cards are the second and
-   * third: every crop on this file and on the Fixed Yield one starts one card
-   * lower than it did (472 px here, 536 px there). If the app's order moves
-   * again, find the Ethereum cards before trusting these rectangles.
+   * The card as a 1600px window shows it is 1288px wide, and beside a
+   * lesson's text it came out at half size, its labels a few pixels tall.
+   * The lesson's text points at the top card's parts (`spots`).
    */
   borrowCards: {
-    src: "/img/academy-borrow.png",
-    size: [3200, 2500],
-    crop: { x: 312 / 3200, y: 1436 / 2500, w: 2576 / 3200, h: 1024 / 2500 },
-    alt: "Vault cards on the Borrow page: Risk-adjusted Mix USDC at 5.92% APR, then Risk-adjusted Mix ETH, each with its deposit cap, totals and strategies",
+    ...listShot("borrow-mid"),
+    alt: "Two vault cards on the Borrow page, Risk-adjusted Mix USDC and Risk-adjusted Mix ETH, both on Ethereum. Each shows the tokens it takes, its APR, a bar for the room left under its deposit cap, and its total deposits, total debt, earmarked debt and LTV",
     narrow: {
-      crop: { x: 580 / 3200, y: 1532 / 2500, w: 790 / 3200, h: 310 / 2500 },
-      alt: "The top left of the Risk-adjusted Mix USDC card on the Borrow page: its name, its APR and a bar showing how full its deposit cap is",
+      ...listShot("borrow-phone", 1),
+      alt: "The Risk-adjusted Mix USDC card on the Borrow page, on Ethereum: its APR, a bar for the room left under its deposit cap, and its total deposits, total debt, earmarked debt and LTV",
     },
   },
   /**
@@ -821,34 +892,42 @@ export const SHOTS = {
     },
   },
   /**
-   * The same capture cropped to the Info tab (2026-11-06): the tab row, the
-   * strategy table with Risk Level, APR and Allocation, and the vault's 30-day
-   * APR chart. Lesson 2 shows only what it teaches; the stats above it are
-   * taught from lesson 3 on. On a phone, the strategy table alone.
+   * The same capture cropped to the Info tab: the tab row, the panel with the
+   * strategy table (Risk Level, APR, Allocation) and the vault's 30-day APR
+   * chart, with 20 CSS px of the page on every side of the panel and over the
+   * tab row. Lesson 2 shows only what it teaches; the stats above it are
+   * taught from lesson 3 on. On a phone, the strategy table alone, with 15
+   * CSS px of the panel around it. The lesson's text points at the tab, the
+   * table's columns and the chart (`spots`).
    */
   vaultInfo: {
     src: "/img/academy-vault-page.png",
-    size: [2608, 2140],
-    crop: { x: 1330 / 2608, y: 1100 / 2140, w: 1240 / 2608, h: 1000 / 2140 },
+    size: VAULT_PAGE,
+    crop: px(VAULT_PAGE, 1296, 1094, 2600, 2132),
     alt: "The vault's Info tab: three strategies with their risk level, APR and allocation, and a chart of the vault's APR over 30 days",
+    spots: INFO_SPOTS,
     narrow: {
-      crop: { x: 1690 / 2608, y: 1255 / 2140, w: 800 / 2608, h: 250 / 2140 },
+      crop: px(VAULT_PAGE, 1694, 1267, 2497, 1505),
       alt: "The strategy list on the vault's Info tab: each strategy with its risk level, APR and allocation",
+      spots: INFO_SPOTS,
     },
   },
   /**
    * The Trade page's Swap card with alUSD in and USDC out (`pnpm capture:app
-   * static/img swap`, 2026-11-05): the card with 24px of the page above and
-   * below and 112px either side, 736 CSS px, the width of a lesson's text
-   * column. On a phone, the card alone.
+   * static/img swap`, 2026-11-05): the card with 24 CSS px of the page on
+   * every side of it. On a phone, the two boxes with 10 CSS px of the card
+   * around them. No amount is typed, so the card quotes no rate.
    */
   swapCard: {
     src: "/img/academy-swap.png",
-    size: [1472, 912],
+    size: SWAP,
+    crop: px(SWAP, 176, 0, 1296, 912),
     alt: "The Swap card on the app's Trade page: alUSD in the top box, USDC in the bottom one, with the slippage under them and the button that sends it",
+    spots: SWAP_SPOTS,
     narrow: {
-      crop: { x: 250 / 1472, y: 70 / 912, w: 972 / 1472, h: 780 / 912 },
+      crop: px(SWAP, 244, 68, 1228, 844),
       alt: "The Swap card on the app's Trade page, alUSD in and USDC out",
+      spots: SWAP_SPOTS,
     },
   },
   /**
@@ -937,17 +1016,17 @@ export const SHOTS = {
     hideNarrow: true,
     dpr: 1,
   },
+  /**
+   * The Ethereum alUSD card on the Fixed Yield page, as the app draws it in a
+   * window 820px wide (see `borrowCards`); on a phone, as it draws it at
+   * 390px. The lesson's text points at its parts (`spots`).
+   */
   fixedYieldCard: {
-    src: "/img/academy-fixed-yield.png",
-    size: [3200, 2500],
-    // The same 30 px around the card as the vault card above. The Ethereum
-    // alUSD card, the second on the page since 2026-11-12 (see `borrowCards`):
-    // 4 Months, Mar 13, 2027, 9.10%, which lesson 8's caption quotes.
-    crop: { x: 312 / 3200, y: 1472 / 2500, w: 2576 / 3200, h: 552 / 2500 },
-    alt: "A card on the Fixed Yield page: projected fixed APR, deposit cap, term, early exit fee, maturity date and the alUSD price it quotes against",
+    ...listShot("fixed-yield-mid"),
+    alt: "A card on the Fixed Yield page, for alUSD on Ethereum: its projected fixed APR, a bar for the room left under its deposit cap, its term and early exit fee, then its maturity date, the alUSD price it quotes, and the form that swaps and deposits",
     narrow: {
-      crop: { x: 580 / 3200, y: 1566 / 2500, w: 600 / 3200, h: 390 / 2500 },
-      alt: "The left of a Fixed Yield card: its projected fixed APR, deposit cap, term and early exit fee",
+      ...listShot("fixed-yield-phone"),
+      alt: "A card on the Fixed Yield page, for alUSD on Ethereum: its projected fixed APR, term and early exit fee, its maturity date and alUSD price, and the form that swaps and deposits",
     },
   },
   fixedPositions: {
@@ -1250,19 +1329,28 @@ const KEYS = ["A", "B", "C", "D", "E"];
  * The engine decides what kind of question a lesson asks. Its `controls` carry
  * either a slider (`{ slider: { min, max, step } }`) or a set of questions
  * (`{ questions: [{ variant, prompt, choices }] }`), and this renders whichever
- * arrives. A choice checkpoint asks two questions and passes only when both are
- * right. A slider
- * lesson supplies how the value is read (`computeOf`) and what it is measured
- * against (`targetOf`). A choice lesson supplies neither.
+ * arrives. A slider lesson supplies how the value is read (`computeOf`) and
+ * what it is measured against (`targetOf`). A choice lesson supplies neither.
+ *
+ * A choice checkpoint asks two questions, one at a time, and passes only when
+ * both are right. Each answer is graded as soon as it is sent, and the
+ * explanation for the option picked shows under the question before the next
+ * one is asked. Both questions on one page with one submit put each
+ * explanation a screen away from its question, after both had been answered.
  *
  * Choice options arrive in this learner's order and the answer goes back as the
  * index picked. Which option is right is never known here, so grading stays on
- * the server.
+ * the server. One answer is sent per submission, in its own slot, with -1 in
+ * the slots not answered. A question answered right earns a credit, and the
+ * next question comes from a challenge that keeps it as passed, so the
+ * submission that answers the last question is the one that passes.
  *
- * A miss ends the attempt. The learner reads why each option they picked is
- * right or wrong, and the next attempt asks other questions from the bank
- * first. Leaving the same options on screen made the checkpoint answerable by
- * elimination. The numeric checkpoints already worked this way.
+ * A missed question is replaced at once: under its explanation the one way
+ * on is "Try another question", which asks a different question in its place
+ * and keeps a question already answered right. There is no end-of-try
+ * screen between a miss and the next question. Leaving the same options on
+ * screen made the checkpoint answerable by elimination, so a missed
+ * question's right option is never marked.
  */
 export function Checkpoint({
   base,
@@ -1290,10 +1378,11 @@ export function Checkpoint({
   /* Set on an article lesson: no "Stage 3 · Check" eyebrow, and the
      headline is an h2 under the page's own title. */
   inline = false,
-  /* A frame that carries the submit button itself (the article
-     lessons' footer). `liftSubmit` hides the body's button; `onSubmitState`
-     hears whether an answer can be sent and gets the same submit the body's
-     button would call. The retry stays in the body. */
+  /* A frame that carries the Check's button itself (the article lessons'
+     footer). `liftSubmit` hides the body's button; `onSubmitState` hears
+     `{ action, passed }`, where `action` is the one press the Check is
+     waiting for (`{ kind: "check" | "next" | "retry", label, disabled,
+     press }`) or null when it has none to offer. */
   liftSubmit = false,
   onSubmitState,
   children,
@@ -1302,33 +1391,38 @@ export function Checkpoint({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(0);
-  const [picked, setPicked] = useState([]);
   const [result, setResult] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  // One try at a choice checkpoint: the question on screen and what has been
+  // answered so far (see `freshTry`).
+  const [run, setRun] = useState(() => freshTry(null));
   // Which try this is, sent with each submission for the engine's answer log.
   const attempt = useRef(0);
+  // The variants this try was asked to avoid, for the challenge that follows
+  // a right answer.
+  const avoiding = useRef([]);
+  // Whether the reader has moved on from a question in this visit, so the
+  // next one is brought to where they are looking (see `ChoiceStep`).
+  const moved = useRef(false);
 
   /**
    * Ask for questions, optionally excluding the variants just missed.
    *
    * A choice checkpoint passes the variants it missed, so a miss costs the
    * learner those questions rather than one of four options. `keep` is the
-   * credit the miss returned for a question answered right: the engine serves
+   * credit a miss returned for a question answered right: the engine serves
    * that question again as passed, and only the missed one is new.
-   * A kept question arrives with its right option, which is
-   * picked for the learner so the form is complete once they answer the rest.
    */
   const load = useCallback(
     (avoid, keep = null) => {
       setLoading(true);
       setError(null);
       setResult(null);
-      setPicked([]);
+      avoiding.current = (Array.isArray(avoid) ? avoid : [avoid]).filter((v) => Number.isInteger(v));
       fetchChallenge(base, lessonId, avoid, keep)
         .then((c) => {
           setChallenge(c);
-          const qs = c.controls?.questions;
-          if (Array.isArray(qs)) setPicked(qs.map((q) => (q.kept ? q.correctIndex : undefined)));
+          setRun(freshTry(c.controls?.questions, Boolean(keep)));
           const s = c.controls?.slider;
           setValue(s ? s.min + (s.max - s.min) / 2 : 0);
         })
@@ -1351,18 +1445,9 @@ export function Checkpoint({
 
   const questions = challenge?.controls?.questions;
   const isChoice = Array.isArray(questions);
-  const allPicked = isChoice && questions.every((_, i) => Number.isInteger(picked[i]));
-  const settledNow = Boolean(result);
-  const submitRef = useRef(null);
-  submitRef.current = () => onSubmit();
-  const canSend = Boolean(challenge) && isChoice && allPicked && !settledNow && !submitting;
-  const passedNow = Boolean(result?.passed);
-  useEffect(() => {
-    if (onSubmitState) onSubmitState({ canSend, submitting, passed: passedNow, submit: () => submitRef.current() });
-  }, [onSubmitState, canSend, submitting, passedNow]);
 
+  /** A numeric checkpoint: one answer, one grade. */
   async function onSubmit() {
-    if (isChoice && !allPicked) return;
     setSubmitting(true);
     setError(null);
     attempt.current += 1;
@@ -1370,7 +1455,7 @@ export function Checkpoint({
       const res = await submitAnswer(base, {
         challenge: challenge.challenge,
         params: challenge.params,
-        answer: isChoice ? questions.map((_, i) => picked[i]) : value,
+        answer: value,
         attempt: attempt.current,
       });
       setResult(res);
@@ -1386,6 +1471,123 @@ export function Checkpoint({
       setSubmitting(false);
     }
   }
+
+  /** Grade the question on screen. */
+  async function checkAnswer() {
+    const slot = run.at;
+    if (!isChoice || !Number.isInteger(run.pick) || run.graded || submitting) return;
+    setSubmitting(true);
+    setError(null);
+    if (!run.started) attempt.current += 1;
+    try {
+      // This answer in its own slot. A slot answered right earlier on the same
+      // challenge is sent again, so the last answer can pass; every other slot
+      // carries no answer.
+      const answer = questions.map((_, i) => (i === slot ? run.pick : Number.isInteger(run.picks[i]) ? run.picks[i] : -1));
+      const res = await submitAnswer(base, {
+        challenge: challenge.challenge,
+        params: challenge.params,
+        answer,
+        attempt: attempt.current,
+      });
+      const mine = res.results?.[slot] ?? { passed: false, feedback: res.feedback };
+      const right = Boolean(mine.passed);
+      const marks = run.marks.map((m, i) => (i === slot ? (right ? "right" : "missed") : m));
+      const last = !marks.includes(null);
+      const passed = Boolean(res.passed && res.completion);
+      const credit = res.credits?.[0] ?? null;
+      // The next question comes with this one kept as passed. Asked for now,
+      // so it is there by the time the explanation has been read.
+      let ahead = null;
+      if (!passed && right && !last && credit) {
+        ahead = "loading";
+        const settle = (next) => setRun((r) => (r.ahead === "loading" ? { ...r, ahead: next } : r));
+        fetchChallenge(base, lessonId, avoiding.current, credit).then(
+          (c) => settle(Array.isArray(c.controls?.questions) && c.controls.questions.some((q) => q.kept) ? c : "none"),
+          () => settle("none"),
+        );
+      }
+      setRun((r) => ({
+        ...r,
+        started: true,
+        graded: { passed: right, feedback: mine.feedback, shot: mine.shot ?? null },
+        marks,
+        missed: right ? r.missed : [...r.missed, questions[slot].variant],
+        credit: credit ?? r.credit,
+        picks: right ? { ...r.picks, [slot]: r.pick } : r.picks,
+        ahead,
+        over: !right && !passed,
+        passed,
+      }));
+      if (passed) {
+        saveCompletion(lessonId, res.completion);
+        onPass();
+      }
+    } catch (e) {
+      setError(e.message);
+      if (e.code === "bad_challenge") load();
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  /** On to the question not yet asked. */
+  function nextQuestion() {
+    if (run.ahead === "loading") return;
+    const next = run.ahead && run.ahead !== "none" ? run.ahead : null;
+    if (next) {
+      const at = next.controls.questions.findIndex((q) => !q.kept);
+      setChallenge(next);
+      setRun((r) => ({ ...r, at: at < 0 ? 0 : at, pick: null, graded: null, picks: {}, ahead: null }));
+    } else {
+      setRun((r) => ({ ...r, at: Math.max(0, r.marks.indexOf(null)), pick: null, graded: null, ahead: null }));
+    }
+    moved.current = true;
+  }
+
+  function retry() {
+    moved.current = true;
+    load(run.missed, run.credit);
+  }
+
+  // Passed in this visit. A learner who finished the lesson earlier and comes
+  // back gets a fresh draw they can answer. Answering again changes nothing
+  // about their progress.
+  const passed = isChoice ? run.passed : Boolean(result?.passed);
+  const again = done && !passed;
+
+  // The one press a choice checkpoint is waiting for.
+  let step = null;
+  if (isChoice && !loading && !passed) {
+    if (run.over) step = { kind: "retry", label: "Try another question", disabled: false, press: retry };
+    else if (run.graded) step = { kind: "next", label: "Next question", disabled: run.ahead === "loading", press: nextQuestion };
+    else step = { kind: "check", label: submitting ? "Checking..." : "Check my answer", disabled: !Number.isInteger(run.pick) || submitting, press: checkAnswer };
+  }
+  // A frame that carries the button leaves its own way on in place for a
+  // learner who has already passed, until they start answering again, and
+  // after a miss, which costs them nothing.
+  const idle = again && (run.over || (!run.started && !Number.isInteger(run.pick)));
+  const lifted = liftSubmit && step && !idle ? step : null;
+  const pressRef = useRef(null);
+  pressRef.current = lifted ? lifted.press : null;
+  const liftedKind = lifted ? lifted.kind : null;
+  const liftedLabel = lifted ? lifted.label : null;
+  const liftedOff = lifted ? lifted.disabled : false;
+  useEffect(() => {
+    if (!onSubmitState) return;
+    onSubmitState({
+      action: liftedKind ? { kind: liftedKind, label: liftedLabel, disabled: liftedOff, press: () => pressRef.current && pressRef.current() } : null,
+      passed,
+    });
+  }, [onSubmitState, liftedKind, liftedLabel, liftedOff, passed]);
+
+  // How the try ended (the line after a miss, the pass panel) comes in under
+  // the last explanation, which can be past the foot of the window.
+  const end = useRef(null);
+  const ended = isChoice && (run.over || passed);
+  useEffect(() => {
+    if (ended && end.current) end.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [ended]);
 
   const eyebrow = inline ? null : `Stage ${stageNumber} · ${stageLabel}`;
   const level = inline ? 2 : 1;
@@ -1413,48 +1615,46 @@ export function Checkpoint({
     );
   }
 
-  // Passed in this visit. A learner who finished the lesson earlier and comes
-  // back gets a fresh draw they can answer: it used to arrive already settled,
-  // options switched off and no answer marked, which read as broken.
-  // Answering again changes nothing about their progress.
-  const passed = Boolean(result?.passed);
-  const again = done && !passed;
   const n = isChoice ? questions.length : 0;
-  // "more", not "new": a lesson's bank holds three questions and a Check draws
-  // two, so one of them has been asked before (2026-11-12).
   const title = isChoice
     ? again
-      ? `You passed. Try ${n === 2 ? "two" : n} more questions.`
+      ? "You passed this lesson. Answer again for practice."
       : `Answer ${n === 2 ? "both questions" : `all ${n} questions`} to finish the lesson.`
     : headline;
+  // The body's own button, where no frame carries it. A learner answering
+  // again after a miss has the frame's way on, so their "Try again" is a
+  // quiet button inside the line that says how the try went.
+  const own = step && !liftSubmit ? step : null;
+  const quiet = step && liftSubmit && again && run.over ? step : null;
 
   return (
     <Stage eyebrow={eyebrow} level={level} headline={title}>
       {/* A numeric checkpoint keeps a headline and a prompt: the headline names
           the task, the prompt carries this learner's figures. A choice
-          checkpoint's prompts sit above each question's options instead. */}
+          checkpoint's prompt sits above its options instead. */}
       {isChoice ? null : <Sub>{challenge.prompt}</Sub>}
       <LocalNotice show={challenge.local} />
       {children}
 
       {isChoice ? (
-        <ChoiceAnswer
-          liftSubmit={liftSubmit}
-          questions={questions}
-          picked={picked}
-          onPick={(slot, i) => setPicked((p) => { const next = [...p]; next[slot] = i; return next; })}
-          allPicked={allPicked}
-          result={result}
-          passed={passed}
-          submitting={submitting}
-          onSubmit={onSubmit}
-          onRetry={() =>
-            load(
-              (result?.results ?? []).filter((r) => !r.passed).map((r) => r.variant),
-              result?.credits?.[0] ?? null,
-            )
-          }
-        />
+        <>
+          <ChoiceStep
+            key={`${questions[run.at].variant}-${run.at}`}
+            questions={questions}
+            run={run}
+            submitting={submitting}
+            arrive={inline && moved.current}
+            onPick={(i) => setRun((r) => (r.graded ? r : { ...r, pick: i }))}
+          />
+          {quiet ? <TryResult boxRef={end} action={quiet} /> : null}
+          {own ? (
+            <Actions>
+              <button type="button" className={styles.primary} onClick={own.press} disabled={own.disabled}>
+                {own.label}
+              </button>
+            </Actions>
+          ) : null}
+        </>
       ) : (
         <SliderAnswer
           slider={challenge.controls?.slider ?? { min: 0, max: 100, step: 1 }}
@@ -1484,7 +1684,7 @@ export function Checkpoint({
           The write-up below carries the next lesson and the way back to the
           map, so the reading order is verdict, screen, summary, onward. */}
       {passed ? (
-        <div className={`${styles.passBox} ${passBody ? "" : styles.passBare}`}>
+        <div ref={end} className={`${styles.passBox} ${styles.checkEnd} ${passBody ? "" : styles.passBare}`}>
           <div className={`${styles.resultHead} ${styles.passHead}`}>{passTitle}</div>
           {passBody ? (
             <div className={styles.resultText}>
@@ -1495,6 +1695,44 @@ export function Checkpoint({
       ) : null}
     </Stage>
   );
+}
+
+/**
+ * A try at a choice checkpoint as it opens on a challenge's questions.
+ *
+ *   at        the slot of the question on screen
+ *   pick      the option picked for it, before it is graded
+ *   graded    `{ passed, feedback, shot }` once it is
+ *   marks     per slot: "right", "missed", or null while not yet asked. A
+ *             question kept from the try before starts "right".
+ *   missed    the variants missed on this try, for the next one to avoid
+ *   credit    the credit for a question answered right, for the next try to keep
+ *   picks     per slot, an option graded right on the challenge on screen
+ *   ahead     the challenge the next question comes from once this one was
+ *             answered right: "loading", the challenge, or "none" (stay on
+ *             this challenge)
+ *   started   whether an answer has been sent on this try
+ *   over      whether the question on screen was missed (the next press asks another)
+ *   passed    whether it ended with every question right
+ *   keptNote  whether the try opened with a question kept from the one before
+ */
+function freshTry(questions, retried = false) {
+  const qs = Array.isArray(questions) ? questions : [];
+  const marks = qs.map((q) => (q.kept ? "right" : null));
+  return {
+    at: Math.max(0, marks.indexOf(null)),
+    pick: null,
+    graded: null,
+    marks,
+    missed: [],
+    credit: null,
+    picks: {},
+    ahead: null,
+    started: false,
+    over: false,
+    passed: false,
+    keptNote: retried && qs.some((q) => q.kept),
+  };
 }
 
 /**
@@ -1576,15 +1814,6 @@ function SliderAnswer({
 }
 
 /**
- * The choice body of a checkpoint: each question with its options, then one
- * submit for all of them.
- *
- * Once graded, every question shows the explanation for the option picked.
- * A question answered right marks that option green; one answered wrong marks
- * it amber, and which option was right stays hidden, because the next attempt
- * may ask it again.
- */
-/**
  * The explanation under a graded question, marked right or wrong by a sign and
  * a word as well as by its color. A missed answer's card was only a different
  * tint with nothing saying it was wrong. The signs are the Academy's own
@@ -1611,87 +1840,107 @@ function GradedNote({ right, text }) {
   );
 }
 
-function ChoiceAnswer({ questions, picked, onPick, allPicked, result, passed, submitting, onSubmit, onRetry, liftSubmit = false }) {
-  const missed = Boolean(result && !result.passed);
-  // A settled attempt, either way. The options stop taking clicks, because the
-  // way on from a miss is new questions rather than a second guess at these.
-  const settled = passed || missed;
-  const wrong = (result?.results ?? []).filter((r) => !r.passed).length;
-  // A miss that credits a question answered right: the retry keeps it.
-  const kept = missed && (result?.credits?.length ?? 0) > 0;
+/**
+ * The question on screen at a choice checkpoint: where it stands in the
+ * try, its prompt and options, and once graded the explanation for the
+ * option picked.
+ *
+ * A question answered right marks that option green; one answered wrong marks
+ * it amber, and which option was right stays hidden, because a later try may
+ * ask it again. The explanation says what is true either way. `graded.shot`
+ * names a figure (a key of `SHOTS`) to show over the explanation, for a
+ * question whose answer is easier to see than to read.
+ */
+function ChoiceStep({ questions, run, submitting, onPick, arrive = false }) {
+  const q = questions[run.at];
+  const graded = run.graded;
+  const box = useRef(null);
+  const review = useRef(null);
+  // A question the reader moved on to (from the one before, or from a try
+  // that missed) is shown from the top of the page where the whole of it
+  // fits there, and otherwise from under the pinned header. The reader was
+  // at the foot of the last explanation, a screen further down on a phone.
+  useEffect(() => {
+    const el = box.current;
+    if (!arrive || !el || typeof window === "undefined") return;
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
+    const roof = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+    const floor = footer ? Math.min(window.innerHeight, footer.getBoundingClientRect().top) : window.innerHeight;
+    const r = el.getBoundingClientRect();
+    const fits = r.bottom + window.scrollY <= floor - 16;
+    const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: fits ? 0 : Math.max(0, r.top + window.scrollY - roof - 20), behavior: still ? "instant" : "smooth" });
+    // On arrival only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // The explanation comes in under the options. Where the window is too
+  // short to show it there, the page follows it.
+  useEffect(() => {
+    if (graded && review.current) review.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [graded]);
+  const pip = (m, i) => (i === run.at && !graded ? styles.pipNow : m === "right" ? styles.pipRight : m === "missed" ? styles.pipMissed : "");
+  const shot = graded?.shot ? SHOTS[graded.shot] : null;
 
   return (
-    <>
-      {questions.map((q, slot) => {
-        const graded = result?.results?.[slot];
-        return (
-          <div key={`${q.variant}-${slot}`} className={styles.checkQuestion}>
-            <div className={styles.checkQuestionHead}>
-              <span className={styles.microLabel}>
-                Question {slot + 1} of {questions.length}{q.kept ? " · Right last time" : ""}
-              </span>
-            </div>
-            <div className={styles.question}>{withLive(q.prompt)}</div>
-            <div className={styles.choices} role="radiogroup" aria-label={`Question ${slot + 1} options`}>
-              {q.choices.map((text, i) => {
-                const mine = picked[slot] === i;
-                const state =
-                  graded && mine ? (graded.passed ? styles.choiceRight : styles.choiceWrong)
-                  : passed && graded?.correctIndex === i ? styles.choiceRight
-                  : q.kept && mine ? styles.choiceRight
-                  : mine ? styles.choiceOn
-                  : "";
-                return (
-                  <button
-                    key={text}
-                    type="button"
-                    role="radio"
-                    aria-checked={mine}
-                    className={`${styles.choice} ${state}`}
-                    disabled={settled || Boolean(q.kept)}
-                    onClick={() => onPick(slot, i)}
-                  >
-                    <span className={styles.choiceKey}>{KEYS[i] ?? i + 1}</span>
-                    <span>{text}</span>
-                  </button>
-                );
-              })}
-            </div>
-            {graded?.feedback ? <GradedNote right={graded.passed} text={graded.feedback} /> : null}
-          </div>
-        );
-      })}
-
-      {!settled && !liftSubmit ? (
-        <Actions aside={allPicked ? null : "Choose an option for each question."}>
-          <button
-            type="button"
-            className={styles.primary}
-            onClick={onSubmit}
-            disabled={submitting || !allPicked}
-          >
-            {submitting ? "Checking..." : "Submit answers"}
-          </button>
-        </Actions>
+    <div ref={box} className={`${styles.checkQuestion} ${styles.checkStep}`}>
+      <div className={styles.checkQuestionHead}>
+        <span className={styles.microLabel}>
+          Question {run.at + 1} of {questions.length}
+        </span>
+        <span className={styles.checkPips} aria-hidden="true">
+          {run.marks.map((m, i) => (
+            <i key={i} className={pip(m, i)} />
+          ))}
+        </span>
+      </div>
+      <div className={styles.question}>{withLive(q.prompt)}</div>
+      <div className={styles.choices} role="radiogroup" aria-label={`Question ${run.at + 1} options`}>
+        {q.choices.map((text, i) => {
+          const mine = run.pick === i;
+          const state = mine ? (graded ? (graded.passed ? styles.choiceRight : styles.choiceWrong) : styles.choiceOn) : "";
+          return (
+            <button
+              key={text}
+              type="button"
+              role="radio"
+              aria-checked={mine}
+              className={`${styles.choice} ${state}`}
+              disabled={Boolean(graded) || submitting}
+              onClick={() => onPick(i)}
+            >
+              <span className={styles.choiceKey}>{KEYS[i] ?? i + 1}</span>
+              <span>{text}</span>
+            </button>
+          );
+        })}
+      </div>
+      {graded ? (
+        <div ref={review} className={styles.checkReview} role="status">
+          {shot ? <AppShot shot={shot} /> : null}
+          {graded.feedback ? <GradedNote right={graded.passed} text={graded.feedback} /> : null}
+        </div>
       ) : null}
+    </div>
+  );
+}
 
-      {missed ? (
-        <Actions
-          aside={
-            // The kept line and its button say what is saved and what comes
-            // next: the old ones read "The one you got
-            // right stays; ..." under a button saying "Try the other again".
-            kept
-              ? "Your correct answer is saved. The next attempt asks a new question in place of the one you missed."
-              : `${wrong === 1 ? "One answer was" : "Both answers were"} wrong. The next attempt asks new questions on the same ground.`
-          }
-        >
-          <button type="button" className={styles.primary} onClick={onRetry}>
-            {kept ? "Try another question" : "Try new questions"}
-          </button>
-        </Actions>
+/**
+ * The way to another question after a miss, for a learner who has already
+ * passed the lesson and is answering again for practice: the frame keeps its
+ * own way on for them (a miss costs them nothing), so theirs is a quiet
+ * button under the explanation.
+ */
+function TryResult({ boxRef = null, action = null }) {
+  return (
+    <div ref={boxRef} className={`${styles.checkResult} ${styles.checkEnd}`} role="status">
+      <div>You have already passed this lesson, so a miss changes nothing.</div>
+      {action ? (
+        <button type="button" className={styles.checkResultAction} onClick={action.press} disabled={action.disabled}>
+          {action.label}
+        </button>
       ) : null}
-    </>
+    </div>
   );
 }
 
@@ -1747,7 +1996,7 @@ export function LineChart({
   // A series with `ghost` is drawn faint, for where a line stood before the
   // learner moved a control. `markers` are labeled points: { x, y, label, color },
   // with `below: true` to set the label under the point.
-  const [ref, width] = useElementWidth();
+  const [ref, , width] = useElementWidth();
 
   const narrow = width < 480;
   const w = Math.max(width, 260);

@@ -19,6 +19,8 @@ export { useBefore, useReducedMotion, useTween } from "./motion";
  *            and none when they are, whatever `digits` a screen passes.
  *   slow     the tween and the wash run long enough to watch (1.6 s, 3 s),
  *            and a part that appears grows into place (`Grow`).
+ *   Fold     a component the practice vault wraps its tabs and panel in, so
+ *            the page can fold them away once they have been used.
  */
 const AppContext = React.createContext({ stat: null, statIn: null, hints: true, auto: false, slow: false });
 export const AppContextProvider = AppContext.Provider;
@@ -302,7 +304,11 @@ export function AppStats({
   const now = figures(base);
   const ahead = preview ? figures({ ...base, ...preview }) : null;
   const before = prev ? figures({ ...base, ...prev }) : null;
-  const reserve = preview !== undefined || prev !== undefined;
+  // A lesson's frame keeps the line under every figure (`reserve` in the app
+  // context), so a tile is the same size on a page that shows changes and on
+  // one that does not: turning the page made the tiles grow.
+  const { reserve: always = false } = useAppContext();
+  const reserve = always || preview !== undefined || prev !== undefined;
   const unit = { asset, al };
   const lit = Array.isArray(highlight) ? highlight : highlight ? [highlight] : [];
   const places = { digits, ratioDigits, ltvDigits, chipDigits };
@@ -346,11 +352,16 @@ export function AppStats({
  */
 export function useWash(on, play, changed) {
   const [key, setKey] = React.useState(0);
-  const last = React.useRef(play);
+  // `play` is compared by what it holds. A lab that builds the state before
+  // its last action on each render hands a new object every time, and by
+  // identity the wash ran again whenever anything on the page re-rendered:
+  // pointing at a label lit every tile the last action had changed.
+  const mark = play !== null && typeof play === "object" ? JSON.stringify(play) : play;
+  const last = React.useRef(mark);
   React.useEffect(() => {
-    if (on && play !== last.current && changed) setKey((k) => k + 1);
-    last.current = play;
-  }, [on, play, changed]);
+    if (on && mark !== last.current && changed) setKey((k) => k + 1);
+    last.current = mark;
+  }, [on, mark, changed]);
   return key;
 }
 
@@ -480,7 +491,7 @@ function AppTile({ kind, value, ahead, before, play, unit, price, prevPrice = nu
   }
 
   return (
-    <div className={`${styles.tile} ${on || pointed ? styles.tileOn : ""} ${pointed ? styles.pointed : ""}`}>
+    <div className={`${styles.tile} ${on || pointed ? styles.tileOn : ""} ${pointed ? styles.pointed : ""}`} data-tile={kind}>
       {washKey ? <span key={washKey} className={styles.wash} aria-hidden="true" /> : null}
       {spec.icon ? <img src={src} alt="" className={styles.tileIcon} width="40" height="40" /> : null}
       <div className={styles.tileText}>
@@ -510,7 +521,7 @@ function AppTile({ kind, value, ahead, before, play, unit, price, prevPrice = nu
  * a screen is about ("deposit", "debt", "earmarked", "max", "liq"); the rest
  * fade while it is set. Callers that pass neither get the bar as before.
  */
-export function AppBar({ deposit = 0, debt = 0, earmarked = 0, capLtv = 0.9, liqLtv = 0.95, marks = true, legend = true, prev, taught, lit }) {
+export function AppBar({ deposit = 0, debt = 0, earmarked = 0, capLtv = 0.9, liqLtv = 0.95, marks = true, legend = true, prev, preview = null, taught, lit }) {
   const pct = (x) => `${Math.min(Math.max(x, 0), 1) * 100}%`;
   const ratio = (dep, d) => (dep > 0 ? d / dep : 0);
   const target = ratio(deposit, debt);
@@ -520,11 +531,16 @@ export function AppBar({ deposit = 0, debt = 0, earmarked = 0, capLtv = 0.9, liq
   const was = prev ? ratio(prev.deposit ?? deposit, prev.debt ?? debt) : null;
   // No outline for an empty bar: from nothing, the fill itself is the change.
   const moved = was != null && was > 0.0005 && Math.abs(was - target) > 0.0005;
+  // Where the fill would stand with the typed amount applied (`preview`, the
+  // state the stats preview): the bar draws the stretch between the fill and
+  // that point, so an amount is seen against the two markers before it is
+  // applied. Null when nothing is typed.
+  const ahead = preview ? Math.min(ratio(preview.deposit ?? deposit, preview.debt ?? debt), 1) : null;
   if (taught) {
     return (
       <TaughtBar
         fill={fill} mark={mark} was={was} moved={moved} target={target} deposit={deposit} earmarked={earmarked}
-        capLtv={capLtv} liqLtv={liqLtv} taught={taught} lit={lit} pct={pct}
+        capLtv={capLtv} liqLtv={liqLtv} taught={taught} lit={lit} pct={pct} ahead={ahead}
       />
     );
   }
@@ -562,36 +578,51 @@ export function AppBar({ deposit = 0, debt = 0, earmarked = 0, capLtv = 0.9, liq
   );
 }
 
-function TaughtBar({ fill, mark, was, moved, target, deposit, earmarked, capLtv, liqLtv, taught, lit, pct }) {
+function TaughtBar({ fill, mark, was, moved, target, deposit, earmarked, capLtv, liqLtv, taught, lit, pct, ahead = null }) {
   const has = (k) => taught.includes(k);
   const isPointed = usePointed();
-  // `<Stat name="maxltv">` in the text lights the MAX LTV marker and its tag.
-  const pointed = (k) => has(k) && isPointed(`${k}ltv`);
+  // `<Stat name="max">` or `<Stat name="liq">` in the text lights the marker
+  // and its tag. The markers answered only to "maxltv" and "liqltv", names
+  // no lesson's text used, so pointing at either label lit nothing.
+  const pointed = (k) => has(k) && (isPointed(k) || isPointed(`${k}ltv`));
   const fading = Boolean(lit && lit.length);
   const fade = (k) => (pointed(k) ? "" : fading && !lit.includes(k) ? styles.barFade : "");
   const markCls = (k) => `${has(k) ? fade(k) : styles.barMarkDim} ${pointed(k) ? styles.markPointed : ""}`;
+  // A marker is a target only once the course has taught it.
+  const point = (k) => (has(k) ? k : undefined);
+  const previewing = ahead != null && Math.abs(ahead - target) > 0.0005;
+  const from = previewing ? Math.min(target, ahead) : target;
+  const to = previewing ? Math.max(target, ahead) : target;
   return (
     <div className={styles.barWrap}>
       <div
         className={`${styles.bar} ${deposit > 0 ? "" : styles.barEmpty} ${fading && !lit.includes("deposit") ? styles.barTrackFade : ""}`}
         role="img"
-        aria-label={`Debt is ${(target * 100).toFixed(1)}% of the deposit${moved ? `, from ${(was * 100).toFixed(1)}%` : ""}.`}
+        aria-label={`Debt is ${(target * 100).toFixed(1)}% of the deposit${moved ? `, from ${(was * 100).toFixed(1)}%` : ""}${previewing ? `. The amount typed would make it ${(ahead * 100).toFixed(1)}%` : ""}.`}
+        data-point="bar"
       >
         <span className={`${styles.barDebt} ${fade("debt")}`} style={{ width: pct(fill) }} />
         {mark > 0.0005 ? (
           <span className={`${styles.barEarmark} ${fade("earmarked")}`} style={{ left: pct(fill - mark), width: pct(mark) }} />
         ) : null}
         {moved ? <span className={styles.barGhost} style={{ width: pct(was) }} /> : null}
-        <span className={`${styles.barMax} ${markCls("max")}`} style={{ left: pct(capLtv) }} />
-        <span className={`${styles.barLiq} ${markCls("liq")}`} style={{ left: pct(liqLtv) }} />
+        {/* Always in the bar, at no width until an amount is typed, so it
+            runs out from the fill instead of appearing at its full length. */}
+        <span
+          className={`${styles.barAhead} ${previewing ? styles.barAheadOn : ""} ${previewing && ahead < target ? styles.barAheadBack : ""}`}
+          style={{ left: pct(from), width: pct(to - from) }}
+          data-bar-preview={previewing ? "" : undefined}
+        />
+        <span className={`${styles.barMax} ${markCls("max")}`} style={{ left: pct(capLtv) }} data-point={point("max")} />
+        <span className={`${styles.barLiq} ${markCls("liq")}`} style={{ left: pct(liqLtv) }} data-point={point("liq")} />
       </div>
       {has("max") || has("liq") ? (
         <div className={`${styles.barTags} ${has("max") && has("liq") ? styles.barTagsBoth : ""}`}>
           {has("max") ? (
-            <span className={`${styles.tagMax} ${fade("max")} ${pointed("max") ? styles.tagPointed : ""}`} style={{ right: `calc(${(1 - capLtv) * 100}% + 0.5rem)` }}>MAX LTV</span>
+            <span className={`${styles.tagMax} ${fade("max")} ${pointed("max") ? styles.tagPointed : ""}`} style={{ right: `calc(${(1 - capLtv) * 100}% + 0.5rem)` }} data-point="max">MAX LTV</span>
           ) : null}
           {has("liq") ? (
-            <span className={`${styles.tagLiq} ${fade("liq")} ${pointed("liq") ? styles.tagPointed : ""}`} style={liqLtv > 0.9 ? { right: 0 } : { left: pct(liqLtv) }}>LIQ LTV</span>
+            <span className={`${styles.tagLiq} ${fade("liq")} ${pointed("liq") ? styles.tagPointed : ""}`} style={liqLtv > 0.9 ? { right: 0 } : { left: pct(liqLtv) }} data-point="liq">LIQ LTV</span>
           ) : null}
         </div>
       ) : null}
@@ -610,6 +641,9 @@ function TaughtBar({ fill, mark, was, moved, target, deposit, earmarked, capLtv,
  * as the app shows them, quiet and switched off. `lit` outlines the live tab
  * in copper, as a lit tile is, so a reader sees which tab they are on.
  */
+/** The name each action tab answers to when the text points at it. */
+const TAB_POINTS = { "Deposit/Borrow": "tab-deposit", Borrow: "tab-borrow", Withdraw: "tab-withdraw", Repay: "tab-repay" };
+
 export function AppTabs({ tabs, active, onChange, live, lit = false }) {
   const on = live ?? active;
   return (
@@ -624,6 +658,7 @@ export function AppTabs({ tabs, active, onChange, live, lit = false }) {
             aria-selected={t === on}
             disabled={quiet}
             className={`${styles.tab} ${t === on ? styles.tabOn : ""} ${quiet ? styles.tabQuiet : ""} ${lit && t === on ? styles.tabLit : ""}`}
+            data-point={TAB_POINTS[t]}
             onClick={() => onChange && onChange(t)}
           >
             {t}
@@ -690,8 +725,14 @@ function grouped(amount) {
  * panel's button belongs in there (checked against the live vault page,
  * 2026-11-10). `bare` drops the box's border and padding, for a card that
  * frames the input itself (the Fixed Yield card).
+ *
+ * The box's parts carry the names the text points at them by (`data-point`):
+ * the amount is `point` ("field" unless a card names its own), the token
+ * picker "token", the Balance or Available line `limitPoint` ("available")
+ * and MAX "max-button". `point={null}` leaves them all off, for a card that
+ * makes the whole box one target.
  */
-export function AppInput({ token = "USDC", amount = "", onChange, balance, max = null, type = "Balance", usd = null, label, prevBalance = null, chipTone = "neutral", digits: asked = 2, dim = false, tag = null, onMax, tokens = null, onToken, bare = false, children = null }) {
+export function AppInput({ token = "USDC", amount = "", onChange, balance, max = null, type = "Balance", usd = null, label, prevBalance = null, chipTone = "neutral", digits: asked = 2, dim = false, tag = null, onMax, tokens = null, onToken, bare = false, point = "field", limitPoint = "available", children = null }) {
   const icon = useBaseUrl(iconPath(token));
   const { auto } = useAppContext();
   const pointed = usePointed();
@@ -754,7 +795,7 @@ export function AppInput({ token = "USDC", amount = "", onChange, balance, max =
     <div className={`${styles.input} ${bare ? styles.inputBare : ""}`}>
       <div className={styles.inputRow}>
         {tokens && onToken ? (
-          <div className={styles.tokenWrap} ref={picker}>
+          <div className={styles.tokenWrap} ref={picker} data-point={point ? "token" : undefined}>
             <button type="button" className={`${styles.token} ${styles.tokenButton}`} aria-haspopup="listbox" aria-expanded={open} aria-label={`Token: ${token}`} onClick={() => setOpen((o) => !o)}>
               <img src={icon} alt="" className={styles.tokenIcon} width="36" height="36" />
               <span>{token}</span>
@@ -773,7 +814,7 @@ export function AppInput({ token = "USDC", amount = "", onChange, balance, max =
             ) : null}
           </div>
         ) : (
-          <div className={styles.token}>
+          <div className={styles.token} data-point={point ? "token" : undefined}>
             <img src={icon} alt="" className={styles.tokenIcon} width="36" height="36" />
             <span>{token}</span>
             <svg className={styles.chev} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -789,6 +830,7 @@ export function AppInput({ token = "USDC", amount = "", onChange, balance, max =
           aria-label={label ?? `${token} amount`}
           value={grouped(amount)}
           readOnly={!onChange}
+          data-point={point || undefined}
           onChange={(e) => {
             const v = e.target.value.replace(/,/g, "");
             if (onChange && /^\d*\.?\d*$/.test(v)) onChange(v);
@@ -799,7 +841,7 @@ export function AppInput({ token = "USDC", amount = "", onChange, balance, max =
         <span>${number(dollars, digits)}</span>
         <span className={styles.inputLimit}>
           {balance != null ? (
-            <span className={pointed("available") && type === "Available" ? styles.limitPointed : undefined}>
+            <span className={pointed("available") ? styles.limitPointed : undefined} data-point={point ? limitPoint : undefined}>
               {type}: {number(balance, balanceDigits)}
             </span>
           ) : null}
@@ -812,6 +854,7 @@ export function AppInput({ token = "USDC", amount = "", onChange, balance, max =
             <button
               type="button"
               className={styles.max}
+              data-point={point ? "max-button" : undefined}
               onClick={() => {
                 onChange(fill(max ?? balance));
                 if (onMax) onMax();
@@ -836,7 +879,7 @@ export function AppInput({ token = "USDC", amount = "", onChange, balance, max =
  * the hint is the button's title and accessible description instead. `lit`
  * outlines the button in copper, as a lit tile is.
  */
-export function AppButton({ onClick, disabled, hint = null, lit = false, children }) {
+export function AppButton({ onClick, disabled, hint = null, lit = false, point = "action", children }) {
   const { hints } = useAppContext();
   const why = useControlReason(disabled, hint);
   return (
@@ -846,6 +889,7 @@ export function AppButton({ onClick, disabled, hint = null, lit = false, childre
         className={`${styles.cta} ${lit ? styles.ctaLit : ""}`}
         onClick={onClick}
         disabled={disabled}
+        data-point={point || undefined}
         title={why}
         aria-description={why}
       >
@@ -947,6 +991,13 @@ export const VAULT_NAME = "Risk-adjusted Mix USDC";
 const fadeIf = (lit, key) => (lit && lit.length && !lit.includes(key) ? styles.fade : "");
 
 /**
+ * The same for the Fixed Yield card and the Fixed Yield positions, where a
+ * part the screen is not about only steps back a little. Faded as far as
+ * `fadeIf` takes it, half a card read as switched off.
+ */
+const recedeIf = (lit, key) => (lit && lit.length && !lit.includes(key) ? styles.recede : "");
+
+/**
  * The practice vault as the beginner track draws it: the real vault page,
  * top to bottom. All eight tiles in the app's order, with the ones the course
  * has not taught dimmed and unlabeled (Health Factor on every screen), the
@@ -965,14 +1016,20 @@ const fadeIf = (lit, key) => (lit && lit.length && !lit.includes(key) ? styles.f
 export function PracticeVault({
   deposit = 0, debt = 0, earmarked = 0, apr = null, redemptionRate = null,
   taught = [], lit = [], barLit, prev, preview, chipTone = "neutral", chipDigits = null,
-  tab = null, wallet = null, bar = true, health = false, ltvDigits = 2, wash = false, price = null, prevPrice = null, children,
+  tab = null, wallet = null, bar = true, health = false, ltvDigits = 2, wash = false, price = null, prevPrice = null,
+  /** The word in the corner: "What if" on a vault that is not the reader's own position. */
+  tag = "Practice", children,
 }) {
   const tiles = health || taught.includes("health") ? [...taught.filter((k) => k !== "health"), "health"] : taught.filter((k) => k !== "health");
   // A vault that shows changes keeps the line under its values from the
   // start, so the first chip does not push the frame taller (2026-11-07).
   const keep = wash && prev === undefined ? null : prev;
+  // The page may fold the tabs and the panel away once they have been used
+  // (the article lessons do, in a window too short for the vault and the
+  // text under it). Anywhere else there is no `Fold` and they stay.
+  const Fold = useAppContext().Fold ?? React.Fragment;
   return (
-    <AppFrame title={VAULT_NAME} tag="Practice" strong head={wallet == null ? null : <Grow>{wallet}</Grow>}>
+    <AppFrame title={VAULT_NAME} tag={tag} strong head={wallet == null ? null : <Grow>{wallet}</Grow>}>
       <AppStats
         tiles={VAULT_TILES} taught={tiles} highlight={lit}
         apr={apr} deposit={deposit} debt={debt} earmarked={earmarked} redemptionRate={redemptionRate}
@@ -981,12 +1038,14 @@ export function PracticeVault({
         wash={wash}
       />
       {bar ? (
-        <AppBar deposit={deposit} debt={debt} earmarked={earmarked} prev={prev} taught={taught} lit={barLit} />
+        <AppBar deposit={deposit} debt={debt} earmarked={earmarked} prev={prev} preview={preview ?? null} taught={taught} lit={barLit} />
       ) : null}
-      <Grow>
-        {tab ? <AppTabs tabs={VAULT_TABS} live={tab} lit /> : null}
-        {children ? <AppPanel>{children}</AppPanel> : null}
-      </Grow>
+      <Fold>
+        <Grow>
+          {tab ? <AppTabs tabs={VAULT_TABS} live={tab} lit /> : null}
+          {children ? <AppPanel>{children}</AppPanel> : null}
+        </Grow>
+      </Fold>
     </AppFrame>
   );
 }
@@ -1240,7 +1299,7 @@ export function AppInfoTable({ lit = ["strategy", "allocation"], strategies = ST
 export function AppSwapCard({
   amount = "", onChange, price, payToken = "alUSD", getToken = "USDC",
   payBalance = null, getBalance = null, prevPay = null, prevGet = null,
-  onSwap, canSwap = false, hint = null, lit = [], priceLine = null,
+  onSwap, canSwap = false, hint = null, lit = [], priceLine = null, tag = "Practice",
 }) {
   const n = Number(amount) || 0;
   const out = n * price;
@@ -1255,27 +1314,30 @@ export function AppSwapCard({
             <span key={t} className={`${styles.tab} ${t === "Swap" ? styles.tabOn : styles.tabQuiet}`}>{t}</span>
           ))}
         </div>
-        <span className={`${styles.practice} ${styles.practiceStrong}`}>Practice</span>
+        <span className={`${styles.practice} ${styles.practiceStrong}`}>{tag}</span>
       </div>
-      <div className={f("pay")}>
+      <div className={f("pay")} data-point="pay">
         <AppInput
           token={payToken} amount={amount} onChange={onChange} balance={payBalance} prevBalance={prevPay}
-          digits={0} label={`${payToken} to swap`}
+          digits={0} label={`${payToken} to swap`} point={null}
         />
       </div>
       <div className={styles.swapArrow} aria-hidden="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m8 7 4-4 4 4M12 3v18M8 17l4 4 4-4" /></svg>
       </div>
+      {/* The box you receive in holds the rate line and the button, which
+          are targets of their own, so the target here is the box's amount
+          and its balance line. */}
       <div className={f("receive")}>
         <AppInput
           token={getToken} amount={n > 0 ? String(Math.round(out)) : ""} balance={getBalance} prevBalance={prevGet}
-          digits={0} label={`${getToken} received`}
+          digits={0} label={`${getToken} received`} point="receive" limitPoint="receive"
         >
           <AppSlippage value="0.5%" />
           {/* Not on the app's card, which shows the rate only through the two
               amounts. The lesson's text reads the rate, so the practice card
               states it, set apart as a note. */}
-          <div className={`${styles.swapPrice} ${f("price")}`}>{priceLine ?? `1 ${payToken} = ${price.toFixed(2)} ${getToken}`}</div>
+          <div className={`${styles.swapPrice} ${f("price")}`} data-point="price">{priceLine ?? `1 ${payToken} = ${price.toFixed(2)} ${getToken}`}</div>
           <div className={f("button")}>
             <AppButton onClick={onSwap} disabled={!canSwap} hint={hint}>Swap</AppButton>
           </div>
@@ -1305,9 +1367,13 @@ export function AppSwapCard({
  * dimmed. An empty `lit` dims nothing. Output, return and gain read "--"
  * until an amount is typed, as the app's do. `chain` is the chain's short
  * name in the price's label ("ETH alUSD Price").
+ *
+ * Each figure also lights when the text points at it (a `Stat` or a row with
+ * the same key), and carries its key as `data-point`, so pointing at the
+ * figure lights its sentence where the two are side by side.
  */
 export function AppFixedCard({
-  apr, price, term, maturity, cap = "2.3M/2.4M alUSD", capFill = 0.92, early = "1.00%",
+  apr, price, term, maturity, cap = "2.3M/2.4M alUSD", capLabel = "Deposit Cap", capFill = 0.92, early = "1.00%",
   amount = "", onChange, balance = null, prevBalance = null, buys = null,
   output = null, percent = null, gain = null,
   asset = "USDC", al = "alUSD", lit = [], action = null, chain = "ETH", slippage = "0.1%",
@@ -1316,9 +1382,12 @@ export function AppFixedCard({
 }) {
   const assetIcon = useBaseUrl(iconPath(asset));
   const alIcon = useBaseUrl(iconPath(al));
-  const f = (k) => fadeIf(lit, k);
+  const pointed = usePointed();
+  // The Early Exit Fee is "early" in `lit` and "fee" where the text points at it.
+  const NAMES = { early: "fee" };
+  const f = (k) => (pointed(NAMES[k] ?? k) || pointed(k) ? styles.figPointed : recedeIf(lit, k));
   const row = (key, name, value, info = false) => (
-    <div className={f(key)}>
+    <div className={f(key)} data-point={NAMES[key] ?? key}>
       <dt>{name}{info ? <AppInfo /> : null}</dt>
       <dd>{value}</dd>
     </div>
@@ -1336,13 +1405,13 @@ export function AppFixedCard({
             <img src={alIcon} alt="" width="32" height="32" />
             <img src={assetIcon} alt="" width="32" height="32" />
           </span>
-          <div className={f("apr")}>
+          <div className={f("apr")} data-point="apr">
             <div className={styles.fxApr}>{asset} {number(apr * 100)}%</div>
             <div className={styles.fxAprLabel}>Projected Fixed APR<AppInfo /></div>
           </div>
           <span className={`${styles.capBar} ${styles.fxCapBar} ${f("cap")}`}><i style={{ width: `${Math.round(capFill * 100)}%` }} /></span>
           <dl className={styles.fxRows}>
-            {row("cap", "Deposit Cap", cap, true)}
+            {row("cap", capLabel, cap, true)}
             {row("term", "Term", term)}
             {row("early", "Early Exit Fee", early, true)}
           </dl>
@@ -1358,7 +1427,7 @@ export function AppFixedCard({
           <div className={`${styles.fxAmount} ${f("amount")}`}>
             <AppInput
               token={asset} amount={amount} onChange={onChange} balance={balance} prevBalance={prevBalance}
-              digits={0} label={`${asset} to spend`} bare
+              digits={0} label={`${asset} to spend`} bare point="amount"
             >
               <AppSlippage value={slippage} />
               {buys != null ? (
@@ -1394,8 +1463,21 @@ export function AppFixedCard({
  * learner has to press off the screen. There each value sits under its own
  * column name instead, and the button takes the last line.
  */
+/** The sort arrows after each column's name in the app's tables. Drawn only: the practice table has one row. */
+function SortMark() {
+  return (
+    <svg className={styles.fySort} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M8 5v14M4 15l4 4 4-4M16 19V5M12 9l4-4 4 4" />
+    </svg>
+  );
+}
+
 export function AppFixedRow({ transmuter, apr, end, deposit, profit, date = null, lit = [], action = null, wallet = null, asset = "USDC", al = "alUSD", chain = "ETH", tag = "Practice", label = "Practice copy of the Dashboard's Open Fixed Yield Positions" }) {
-  const f = (k) => fadeIf(lit, k);
+  const pointed = usePointed();
+  // The Deposit column is "fy-deposit" where the text points at it, so the
+  // name does not also light the practice wallet's own Deposit.
+  const NAMES = { deposit: "fy-deposit" };
+  const f = (k) => (pointed(NAMES[k] ?? k) ? styles.figPointed : recedeIf(lit, k));
   const assetIcon = useBaseUrl(iconPath(asset));
   const alIcon = useBaseUrl(iconPath(al));
   const COLS = [
@@ -1423,10 +1505,10 @@ export function AppFixedRow({ transmuter, apr, end, deposit, profit, date = null
   return (
     <section className={`${styles.frame} ${styles.fyFrame}`} aria-label={label}>
       <div className={styles.top}>
-        <div className={`${styles.vaultName} ${styles.dashTitle}`}>Open Fixed Yield Positions</div>
+        <div className={`${styles.vaultName} ${styles.dashTitle}`} data-point="fy-heading">Open Fixed Yield Positions</div>
         <span className={styles.topRight}>
           {date ? (
-            <span className={styles.dateChip}>
+            <span className={styles.dateChip} data-point="date">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></svg>
               {date}
             </span>
@@ -1434,17 +1516,19 @@ export function AppFixedRow({ transmuter, apr, end, deposit, profit, date = null
           <span className={`${styles.practice} ${styles.practiceStrong}`}>{tag}</span>
         </span>
       </div>
-      {wallet}
       <div className={styles.fyTable} role="table" aria-label="Open Fixed Yield Positions">
         <div className={styles.fyHead} role="row">
           {COLS.map(([key, name]) => (
-            <span key={key} role="columnheader" className={f(key)}>{name}</span>
+            <span key={key} role="columnheader" className={f(key)}>
+              {name}
+              <SortMark />
+            </span>
           ))}
           <span role="columnheader" aria-hidden="true" />
         </div>
         <div className={styles.fyRow} role="row">
           {COLS.map(([key, name]) => (
-            <div key={key} role="cell" className={`${styles.fyCell} ${f(key)}`}>
+            <div key={key} role="cell" className={`${styles.fyCell} ${f(key)}`} data-point={NAMES[key] ?? key}>
               <span className={styles.fyLabel} aria-hidden="true">{name}</span>
               <span className={styles.fyValue}>{values[key]}</span>
             </div>
@@ -1452,6 +1536,11 @@ export function AppFixedRow({ transmuter, apr, end, deposit, profit, date = null
           <div role="cell" className={`${styles.rowAction} ${f("action")}`}>{action}</div>
         </div>
       </div>
+      {/* What a press on the row's button paid out (the lesson's note, not
+          the app's) goes under the table and grows in. Over the table, with
+          its room held before the press, it left an empty band between the
+          section's heading and the first position. */}
+      {wallet == null ? null : <Grow>{wallet}</Grow>}
     </section>
   );
 }
@@ -1475,17 +1564,22 @@ export function AppFixedRow({ transmuter, apr, end, deposit, profit, date = null
 export function AppPositionCard({
   asset = "USDC", deposit, debt, apr, ltv, earmarked, fill = 0, mark = 0,
   lit = [], dimRows = [], on = false, dim = false, menu, manage = null, className = "", compact = false,
+  /** The name the card answers to when the text points at it; its Deposit and Debt rows are then "card-deposit" and "card-debt". */
+  point = null,
 }) {
   const icon = useBaseUrl(iconPath(asset));
   const pct = (x) => `${Math.min(Math.max(x, 0), 1) * 100}%`;
   const row = (key, name, value) => (
-    <div className={`${lit.includes(key) ? styles.posRowLit : ""} ${dimRows.includes(key) ? styles.posRowDim : ""}`}>
+    <div
+      className={`${lit.includes(key) ? styles.posRowLit : ""} ${dimRows.includes(key) ? styles.posRowDim : ""}`}
+      data-point={point && (key === "deposit" || key === "debt") ? `card-${key}` : undefined}
+    >
       <dt>{name}</dt>
       <dd>{dimRows.includes(key) ? "\u2013" : value}</dd>
     </div>
   );
   return (
-    <div className={`${styles.posCard} ${compact ? styles.posCardCompact : ""} ${on ? styles.posCardOn : ""} ${dim ? styles.fade : ""} ${className}`}>
+    <div className={`${styles.posCard} ${compact ? styles.posCardCompact : ""} ${on ? styles.posCardOn : ""} ${dim ? styles.fade : ""} ${className}`} data-point={point || undefined}>
       <ChainFlag />
       {menu === undefined ? (
         <span className={styles.posMenu} aria-hidden="true">
@@ -1543,9 +1637,12 @@ export function AppPositionCard({
  *
  * `lit` names the parts to keep bright: "deposit", "debt", "available" and
  * "net" in the summary bar, "vault" for the card, "action" for Manage. The
- * section's filters (asset, chain) are not drawn.
+ * section's filters (asset, chain) are not drawn. `tag` is the word in the
+ * corner: "Practice" where the position is the reader's own practice one,
+ * "Example" where it is a picture of the page (lesson 1's tour, before the
+ * reader has deposited anything).
  */
-export function AppVaultRow({ deposit, debt, earmarked = null, apr = 0.05, alPrice = 0.98, lit = [] }) {
+export function AppVaultRow({ deposit, debt, earmarked = null, apr = 0.05, alPrice = 0.98, lit = [], tag = "Practice" }) {
   const f = (k) => fadeIf(lit, k);
   const { auto } = useAppContext();
   const pointed = usePointed();
@@ -1553,27 +1650,28 @@ export function AppVaultRow({ deposit, debt, earmarked = null, apr = 0.05, alPri
   const room = Math.max(deposit * 0.9 - debt, 0);
   const ltv = deposit > 0 ? debt / deposit : 0;
   const marked = Math.min(earmarked ?? 0, debt);
-  const cell = (key, name, value) => (
-    <div className={f(key)}>
+  const cell = (key, name, value, point) => (
+    <div className={f(key)} data-point={point}>
       <dt>{name}</dt>
       <dd>{value}</dd>
     </div>
   );
   return (
-    <section className={`${styles.frame} ${styles.dashFrame}`} aria-label="Practice copy of the Dashboard's Open Vault Positions">
+    <section className={`${styles.frame} ${styles.dashFrame}`} aria-label={`${tag} copy of the Dashboard's Open Vault Positions`}>
       <div className={styles.top}>
-        <div className={`${styles.vaultName} ${styles.dashTitle}`}>Open Vault Positions</div>
-        <span className={`${styles.practice} ${styles.practiceStrong}`}>Practice</span>
+        <div className={`${styles.vaultName} ${styles.dashTitle}`} data-point="dash-heading">Open Vault Positions</div>
+        <span className={`${styles.practice} ${styles.practiceStrong}`}>{tag}</span>
       </div>
-      <dl className={styles.summary}>
-        {cell("deposit", "Total Deposit", compactUsd(deposit))}
-        {cell("debt", "Total Debt", compactUsd(debt * alPrice))}
-        {cell("available", "Available to Borrow", compactUsd(room * alPrice))}
-        {cell("net", "Net Value", compactUsd(deposit - debt * alPrice))}
+      <dl className={styles.summary} data-point="dash-summary">
+        {cell("deposit", "Total Deposit", compactUsd(deposit), "total-deposit")}
+        {cell("debt", "Total Debt", compactUsd(debt * alPrice), "total-debt")}
+        {cell("available", "Available to Borrow", compactUsd(room * alPrice), "available-to-borrow")}
+        {cell("net", "Net Value", compactUsd(deposit - debt * alPrice), "net-value")}
       </dl>
       <div className={styles.posCards}>
         <AppPositionCard
           className={f("vault")}
+          point="dash-card"
           deposit={`${amt(deposit)} USDC`}
           debt={`${amt(debt)} alUSD`}
           apr={`${number(apr * 100, 0)}%`}
@@ -1585,7 +1683,7 @@ export function AppVaultRow({ deposit, debt, earmarked = null, apr = 0.05, alPri
           manage={
             // Lit, the button the sentence names is outlined in copper.
             <span className={pointed("manage") ? "" : f("action")}>
-              <AppButton disabled lit={lit.includes("action") || pointed("manage")}>
+              <AppButton disabled lit={lit.includes("action") || pointed("manage")} point="manage">
                 Manage
               </AppButton>
             </span>

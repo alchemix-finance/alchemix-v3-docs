@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
@@ -33,9 +33,9 @@ import { LESSON_COUNT, OPEN_LESSONS } from "../lib/track";
 export const MEMBERS_LIVE = false;
 
 /**
- * Opt-in, for the article lessons (and nothing else, so the map and
- * the LessonPage lessons render as before): `pinned` keeps the header at the
- * top of the window, `below` is a second row inside it (the position strip),
+ * The header stays at the top of the window on every page. Opt-in, for the
+ * article lessons: `pinned` draws the page to the window and lays it out in
+ * the lessons' column, `below` is a second row inside the header (the position strip),
  * and `footer` is a bar kept at the foot of the window. The footer is the
  * page column's last child and sticks to the bottom, so it takes its own
  * room in the flow and nothing in the body ever sits behind it.
@@ -56,6 +56,20 @@ export default function AcademyShell({ title, description, children, left, right
     setCompleted((prev) => (prev === n ? prev : n));
   });
 
+  // The height of the header's first row, for the stylesheet: in a short
+  // window the header lets that row scroll away and keeps only its second
+  // row (the lessons' strip) at the top.
+  const row = useRef(null);
+  useEffect(() => {
+    const el = row.current;
+    if (!el || typeof ResizeObserver === "undefined") return undefined;
+    const set = () => el.parentElement.style.setProperty("--nav-row", `${el.offsetHeight}px`);
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    set();
+    return () => ro.disconnect();
+  }, []);
+
   // The preview picture has to be a full address: the apps that draw link
   // previews fetch it from outside the page.
   const card = useBaseUrl("/img/academy-social-card.png", { absolute: true });
@@ -63,6 +77,8 @@ export default function AcademyShell({ title, description, children, left, right
   return (
     <>
       <Head>
+        {/* A lesson's page is sized to the window (see the style sheet). */}
+        {pinned ? <html data-academy-fit="" /> : null}
         <title>{title}</title>
         {/* The link preview's title: without this a pasted Academy link
             unfurls under the site's default, "Alchemix Docs". */}
@@ -79,7 +95,7 @@ export default function AcademyShell({ title, description, children, left, right
 
       <div className={`${styles.page} ${pinned ? styles.pageWide : ""}`}>
         <header className={`${styles.header} ${pinned ? styles.headerPinned : ""}`}>
-          <div className={`${styles.headerInner} ${left ? styles.withCrumb : ""}`}>
+          <div ref={row} className={`${styles.headerInner} ${left ? styles.withCrumb : ""}`}>
             <span className={`${styles.node} ${styles.nodeBL}`} aria-hidden="true" />
             <span className={`${styles.node} ${styles.nodeBR}`} aria-hidden="true" />
             <div className={styles.headerLeft}>

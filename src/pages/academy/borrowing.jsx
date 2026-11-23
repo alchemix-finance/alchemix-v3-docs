@@ -5,7 +5,7 @@ import Content from "@site/src/components/Academy/lessons/borrowAgainstIt.mdx";
 /* Lesson 3 opens where lesson 2 ended: 10,000 in the vault and 500 in the
    wallet, nothing owed. */
 const START = { wallet: 500, walletAl: 0, deposit: 10_000, debt: 0, earmarked: null, fixedYield: null };
-const MOMENTS = ["max-borrow", "borrow"];
+const MOMENTS = ["read-alusd", "read-stats", "max-borrow", "borrow", "read-loan", "read-dashboard"];
 
 export default function Lesson() {
   return (

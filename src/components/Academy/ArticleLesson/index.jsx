@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "@docusaurus/Link";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -8,14 +8,17 @@ import { PreviewBanner, PreviewFooter } from "../LessonPage";
 import lp from "../LessonPage/styles.module.css";
 import ls from "../lesson.module.css";
 import { AppShot, Arrow, ChoiceCheckpoint, LessonProvider, SHOTS } from "../kit";
-import { useReducedMotion, useTween } from "../AppMock/motion";
-import { AppContextProvider, SLOW_TWEEN, isWhole, useAppContext, useWash } from "../AppMock";
+import { useReducedMotion } from "../AppMock/motion";
+import { AppContextProvider, isWhole, useAppContext, useWash } from "../AppMock";
 import { apiBase, hasCompletion, readCompletions, reportEvent } from "../lib/api";
 import { currentLesson, lessonById, nextLesson, trackByKey } from "../lib/track";
-import { PageContext, PositionProvider, usePosition } from "./position";
+import { PageContext, PositionProvider, useFooterAction, useMoment, usePosition } from "./position";
+import { cueOf, labelFor, useCues } from "./cue";
+import NumberFlow from "@number-flow/react";
+import { AnimatePresence, motion } from "motion/react";
 import styles from "./styles.module.css";
 
-export { usePosition, useMoment, useMomentNote } from "./position";
+export { usePosition, useMoment, useMomentNote, useFooterAction } from "./position";
 
 // A layout effect where there is a layout, so the strip changes with the page
 // in the same frame; the server takes the plain effect.
@@ -77,7 +80,7 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
   const isBrowser = useIsBrowser();
   const { siteConfig } = useDocusaurusContext();
   const base = apiBase(siteConfig);
-  const { shown, done: moments, play, notes, setPage: positionPage } = usePosition();
+  const { shown, done: moments, play, notes, loaded, setPage: positionPage, redo, actions, press } = usePosition();
   const [done, setDone] = useState(false);
   // The stat the reader is pointing at in the text (`Stat`), for every
   // practice element and the strip to light: `{ name, scope }`, where scope
@@ -85,9 +88,36 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
   // of a `StatScope` (see AppMock's usePointed).
   const [pointer, setPointer] = useState(null);
   const app = useMemo(
-    () => ({ stat: pointer ? pointer.name : null, statIn: pointer ? pointer.scope : null, pointer, setPointer, hints: false, auto: true, slow: true }),
+    () => ({ stat: pointer ? pointer.name : null, statIn: pointer ? pointer.scope : null, pointer, setPointer, hints: false, auto: true, slow: true, reserve: true, Fold: StageFold }),
     [pointer],
   );
+  // Pointing at a label, or at the thing it names, lights both in full: the
+  // label through its own state (`Stat`), the thing through `data-pointed`
+  // on everything the label's key was marked on (cue.js). Only a thing that
+  // a label on screen names is marked, so nothing else on the page answers
+  // to the pointer.
+  useEffect(() => {
+    if (!pointer || typeof document === "undefined") return undefined;
+    const key = `${pointer.name}|${pointer.scope ?? ""}`;
+    const lit = [];
+    for (const el of document.querySelectorAll("[data-cue-key]")) {
+      if (el.hasAttribute("data-stat") || el.getAttribute("data-cue-key") !== key) continue;
+      el.setAttribute("data-pointed", "");
+      lit.push(el);
+    }
+    // While one thing is pointed at, every other marked thing and label drops
+    // its rim and its light (`data-cue-quiet`): the one highlight on screen
+    // is the one the reader asked for.
+    const root = document.documentElement;
+    root.setAttribute("data-cue-quiet", "");
+    return () => {
+      lit.forEach((el) => el.removeAttribute("data-pointed"));
+      root.removeAttribute("data-cue-quiet");
+    };
+  }, [pointer]);
+  // While a label is on screen, a band of light keeps crossing it and the
+  // thing it names (see cue.js).
+  useCues();
   const [ahead, setAhead] = useState(null);
 
   // Read after mount: the page is prerendered, and the first frame is the
@@ -122,8 +152,8 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
   // The Check mounts the first time it is reached and stays, so going Back
   // to read a page does not cost the reader their questions.
   const [checkSeen, setCheckSeen] = useState(false);
-  // What the Check reports for the footer's button: whether an answer can be
-  // sent, and the submit the Check's own button would have called.
+  // What the Check reports for the footer's button: the press it is waiting
+  // for (check this answer, the next question, try again), or none.
   const [check, setCheck] = useState(null);
   const onCheckState = useCallback((s) => setCheck(s), []);
   const place = page === CHECK ? (total ?? 0) + 1 : Number(page);
@@ -135,7 +165,10 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
   // The pending moment's next action: an `Await`'s hint from the MDX, or the
   // moment's own, unless the moment says what the reader did is wrong
   // ("Pick USDC first"), which the practice element no longer prints.
-  const reason = pending ? notes[pending.id] ?? pending.hint ?? "Finish the step above to continue" : null;
+  // A step that is pressed in the footer (Continue, a lesson control, a
+  // sequence's next step) puts its own label on the footer's button.
+  const offered = pending ? actions[pending.id] ?? null : null;
+  const reason = !pending || (offered && !offered.disabled) ? null : notes[pending.id] ?? (offered ? null : pending.hint ?? "Finish the step above to continue");
 
   // The store shows the position as of the page on screen. A page the reader
   // turned to tweens the strip to its numbers; a reload's restore does not.
@@ -157,9 +190,51 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
     if (total && page !== CHECK && Number(page) > total) setPage(String(total));
   }, [total, page]);
 
+  // An address that names a page past a step the reader has not done (a link
+  // to #3 opened in a browser that has not done page 2's steps) opens the
+  // page with that step. Every control on a later page waits for it, so the
+  // page named would open with nothing on it that can be pressed. Next only
+  // opens once a page's steps are done, so a reader turning pages is never
+  // past that page; this waits for the saved steps and the pages to be known.
+  useEffect(() => {
+    if (!loaded || !total || pages.length < total || preview) return;
+    const open = pages.findIndex((ms) => ms.some((m) => !moments[m.id]));
+    if (open < 0) return;
+    const at = page === CHECK ? total + 1 : Number(page);
+    if (at > open + 1) {
+      setPage(String(open + 1));
+      const { pathname, search } = window.location;
+      window.history.replaceState(window.history.state, "", `${pathname}${search}${open === 0 ? "" : `#${open + 1}`}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaded, total, pages, preview, page, moments]);
+
   useEffect(() => {
     if (page === CHECK) setCheckSeen(true);
   }, [page]);
+
+  // The Check follows each review and the result into the window, which can
+  // stop with the breadcrumb cut through by the header. Once that scroll has
+  // run, the page moves the little further that takes the line out whole, or
+  // back to where it shows whole.
+  const checkStep = check?.action?.kind ?? null;
+  useEffect(() => {
+    if (page !== CHECK) return undefined;
+    const t = window.setTimeout(() => {
+      const crumbLine = [...document.querySelectorAll(`main .${styles.crumb}`)].find((el) => el.getClientRects().length > 0);
+      if (!crumbLine) return;
+      const edge = roomNow().top;
+      const r = crumbLine.getBoundingClientRect();
+      // Whole and clear of the header, or out of the window: nothing to do.
+      if (r.bottom <= edge || r.top >= edge + 8) return;
+      const left = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      const down = r.bottom - edge + LINE_OUT;
+      const move = down <= left ? down : r.top - edge - BENCH_GAP;
+      const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollBy({ top: move, behavior: still ? "instant" : "smooth" });
+    }, 750);
+    return () => window.clearTimeout(t);
+  }, [page, checkStep, done]);
 
   // replaceState rather than the router, which would treat the hash as an
   // anchor to scroll to. Page 1 keeps the plain address.
@@ -171,18 +246,37 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
     window.scrollTo(0, 0);
   };
 
+  // The steps on the page on screen, for "Redo this page": there once one of
+  // them is done.
+  const here = page === CHECK ? [] : (pages[Number(page) - 1] ?? []).map((m) => m.id);
+  const redoPage = here.some((id) => moments[id])
+    ? () => {
+        redo(here);
+        window.scrollTo(0, 0);
+      }
+    : null;
+
+  const crumb = { track: track ? track.label : "Academy", place: `Lesson ${lesson.n}` };
+
   const footer = preview || !total ? null : (
     <FooterBar
       onBack={page === "1" ? null : () => go(page === CHECK ? String(total) : String(Number(page) - 1))}
+      aside={redoPage ? <RedoPage onRedo={redoPage} /> : null}
       place={`${place} of ${total + 1}`}
       reason={reason}
       action={
         page === CHECK ? (
           <CheckAction check={check} done={done} next={next && next.track === lesson.track ? next : null} finish={track?.finish ?? null} />
+        ) : offered ? (
+          <button type="button" className={ls.primary} disabled={offered.disabled} data-footer-action={pending.id} onClick={() => press(pending.id)}>
+            {offered.label}
+            <ActionIcon kind={offered.kind} />
+          </button>
         ) : (
           <button
             type="button"
             className={ls.primary}
+            data-footer-next=""
             disabled={Boolean(pending)}
             onClick={() => go(Number(page) === total ? CHECK : String(Number(page) + 1))}
           >
@@ -202,31 +296,23 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
       pinned
       below={shown ? <PositionStrip /> : null}
       footer={footer}
-      left={
-        <Link to="/academy" className={lp.back}>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M19 12H6M11 18l-6-6 6-6" />
-          </svg>
-          <span className={lp.backLesson}>
-            <span className={`${lp.backTrack} ${styles.headTrack}`}>{track ? track.label : "Academy"}</span>
-            <span className={`${lp.backSep} ${styles.headTrack}`}> · </span>
-            Lesson {lesson.n}
-          </span>
-          <span className={`${lp.divider} ${styles.headDivider}`} />
-          <span className={`${lp.backTitle} ${styles.headTitle}`}>{lesson.title}</span>
-        </Link>
-      }
     >
-      <main className={styles.body}>
+      <main className={styles.body} data-lesson="">
         {preview ? <PreviewBanner lesson={lesson} current={ahead} /> : null}
 
-        {/* The title on page 1. After it the header names the lesson, and the
-            heading stays for a screen reader only. */}
-        <h1 className={preview || page === "1" ? styles.title : styles.srOnly}>{lesson.title}</h1>
+        {/* Where the reader is and the page's title head each page (the
+            Pager draws them, so a page laid out in two columns can put them
+            at the top of its text). The frame draws them for the Check,
+            over the Check's column, and for a preview. Past page 1 the
+            lesson's heading stays for a screen reader only. */}
+        {preview || page === CHECK ? (
+          <Crumb track={crumb.track} place={crumb.place} title={preview ? null : lesson.title} center={page === CHECK} />
+        ) : null}
+        {preview ? <h1 className={styles.title}>{lesson.title}</h1> : page === "1" ? null : <h1 className={styles.srOnly}>{lesson.title}</h1>}
 
         {page === CHECK ? <RevealStrip /> : null}
 
-        <PagerContext.Provider value={{ page, setTotal, setPages: onPages, preview, frame: `${Boolean(footer)}|${shown}` }}>
+        <PagerContext.Provider value={{ page, setTotal, setPages: onPages, preview, frame: `${Boolean(footer)}|${shown}`, lessonTitle: lesson.title, crumb }}>
           <div className={preview ? lp.previewLabWrap : undefined}>
             <div className={preview ? lp.previewLab : undefined} inert={preview ? true : undefined}>
               <LessonProvider value={lessonId}>
@@ -279,10 +365,39 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
           </div>
         ) : null}
 
-        {preview ? <PreviewFooter current={ahead} /> : <StartOver onReset={() => go("1")} />}
+        {preview ? <PreviewFooter current={ahead} /> : null}
       </main>
     </AcademyShell>
     </AppContextProvider>
+  );
+}
+
+/**
+ * Where the reader is: the way back to the map (the track, and the lesson's
+ * number or the page's own word), then the lesson's name. It stands in the
+ * page over the title, on the column's left edge. In the nav row it shared a
+ * line with the track's progress, the site's links and the logo, and read as
+ * part of the site's menu.
+ */
+export function Crumb({ track, place = null, title = null, center = false }) {
+  return (
+    <nav className={`${styles.crumb} ${center ? styles.crumbCenter : ""}`} aria-label="Where you are">
+      <Link to="/academy" className={styles.crumbBack}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M19 12H6M11 18l-6-6 6-6" />
+        </svg>
+        <span>
+          {track}
+          {place ? ` · ${place}` : ""}
+        </span>
+      </Link>
+      {title ? (
+        <>
+          <span className={styles.crumbRule} aria-hidden="true" />
+          <span className={styles.crumbTitle}>{title}</span>
+        </>
+      ) : null}
+    </nav>
   );
 }
 
@@ -291,9 +406,10 @@ function LessonFrame({ lessonId, description, Content, deeper = [], passTitle })
 /**
  * One row: the quiet Back, the page's place, the page's one action. `reason`
  * is the one line beside a switched-off Next that says what still has to
- * happen ("Press Repay to continue").
+ * happen ("Press Repay to continue"). `aside` follows Back on the left (the
+ * lessons' "Redo this page").
  */
-export function FooterBar({ onBack, place, action, reason = null }) {
+export function FooterBar({ onBack, place, action, reason = null, aside = null }) {
   return (
     <div className={styles.bar}>
       <span className={styles.barLeft}>
@@ -302,6 +418,7 @@ export function FooterBar({ onBack, place, action, reason = null }) {
             Back
           </button>
         ) : null}
+        {aside}
       </span>
       <span className={styles.barPlace}>{place}</span>
       <span className={styles.barRight}>
@@ -312,20 +429,32 @@ export function FooterBar({ onBack, place, action, reason = null }) {
   );
 }
 
+/** The icon after a step's label on the footer's button: down for Continue, the lesson's skip mark for a lesson control, an arrow for the next part. */
+function ActionIcon({ kind }) {
+  if (kind === "next") return <Arrow />;
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {kind === "read" ? <path d="M12 5v13M6 13l6 6 6-6" /> : <path d="m5 6 6 6-6 6M13 6l6 6-6 6" />}
+    </svg>
+  );
+}
+
 /**
- * The Check page's action. "Check my answer" sends the answers the reader
- * picked, through the Check's own submit. Once the lesson is passed it is
- * the way on: the next lesson, or after a track's last lesson the track's
- * finish page (`finish`, from track.js), or the map for a track without one
- * (the beginner track's lesson 8 does not run on into the intermediate
- * track). A reader back on a lesson they passed earlier, who picks a new
- * answer for every question, gets "Check my answer" again.
+ * The Check page's action. While the Check is waiting for a press it is
+ * that press (`check.action`): "Check my answer" for the question on screen,
+ * "Next question" once its explanation shows, "Try again" after a try that
+ * missed. Once the lesson is passed it is the way on: the next lesson, or
+ * after a track's last lesson the track's finish page (`finish`, from
+ * track.js), or the map for a track without one (the beginner track's lesson
+ * 8 does not run on into the intermediate track). A reader back on a lesson
+ * they passed earlier keeps the way on until they pick an answer.
  */
 function CheckAction({ check, done, next, finish = null }) {
-  if (check?.canSend) {
+  const action = check?.action ?? null;
+  if (action) {
     return (
-      <button type="button" className={ls.primary} onClick={() => check.submit()}>
-        Check my answer
+      <button type="button" className={ls.primary} disabled={action.disabled} data-check-action={action.kind} onClick={() => action.press()}>
+        {action.label}
         <Arrow />
       </button>
     );
@@ -418,6 +547,7 @@ function momentsOf(block) {
   // still counts, as if it stood just after it.
   if (t === Do) return React.Children.toArray(block.props.children).flatMap((c) => momentsOf(c));
   if (t === Await) return typeof block.props.moment === "string" ? [{ id: block.props.moment, hint: block.props.hint ?? null }] : [];
+  if (t === ReadOn) return typeof block.props.moment === "string" ? [{ id: block.props.moment, hint: "Press Continue to read on" }] : [];
   if (typeof t !== "function") return [];
   if (Array.isArray(t.moments)) return t.moments.map((m) => ({ id: m.id, hint: m.hint ?? null }));
   return typeof t.moment === "string" ? [{ id: t.moment, hint: typeof t.hint === "string" ? t.hint : null }] : [];
@@ -447,7 +577,7 @@ export function Await({ moment, hint }) {
  * on a live page the blocks after a moment wait for it (`Gated`).
  */
 function Pager({ children }) {
-  const { page, setTotal, setPages, preview } = useContext(PagerContext);
+  const { page, setTotal, setPages, preview, lessonTitle, crumb } = useContext(PagerContext);
   const { done, play, setLayout } = usePosition();
   const pages = split(children);
   const total = pages.length;
@@ -462,14 +592,77 @@ function Pager({ children }) {
   useEffect(() => {
     setLayout(JSON.parse(events));
   }, [events, setLayout]);
+  // What heads a page: where the reader is, then the page's title. Page 1's
+  // title is the lesson's own, so its breadcrumb stops at the lesson's
+  // number. A preview has the frame's breadcrumb and title over all of it.
+  const head = (p, i) =>
+    preview ? (
+      i > 0 && p.title ? <h2 className={styles.title}>{p.title}</h2> : null
+    ) : (
+      <React.Fragment key="head">
+        <Crumb track={crumb.track} place={crumb.place} title={i === 0 ? null : lessonTitle} />
+        {i === 0 ? <h1 className={styles.title}>{lessonTitle}</h1> : p.title ? <h2 className={styles.title}>{p.title}</h2> : null}
+      </React.Fragment>
+    );
   return pages.map((p, i) => (
     <PageContext.Provider key={i} value={i + 1}>
       <div className={styles.page} hidden={preview ? undefined : page !== String(i + 1)}>
-        {i > 0 && p.title ? <h2 className={styles.title}>{p.title}</h2> : null}
-        {preview ? p.blocks : <Gated blocks={p.blocks} done={done} play={play} />}
+        {preview ? (
+          <>
+            {head(p, i)}
+            {p.blocks}
+          </>
+        ) : (
+          <Gated head={head(p, i)} blocks={p.blocks} done={done} play={play} />
+        )}
       </div>
     </PageContext.Provider>
   ));
+}
+
+/**
+ * A marker in a page: the blocks after it are laid out beside the first
+ * practice element or figure that follows, where the window is wide enough
+ * for both (see `Bench`). The row ends at a `Below`, at the next `Beside`, at
+ * a second element, or with the page. Renders nothing.
+ *
+ *   <Beside />
+ *
+ *   Type 10,000 in the USDC field and press Deposit.
+ *
+ *   <DepositMoment />
+ *
+ *   The vault deposited your 10,000 USDC into MYT...
+ *
+ * A row sizes itself to an element narrower than its column (the Swap card,
+ * a capture at a reading width). `full` keeps the row at the full width with
+ * the element filling its column, for a page with two rows whose edges should
+ * line up.
+ */
+// eslint-disable-next-line no-unused-vars
+export function Beside({ full = false }) {
+  return null;
+}
+
+/**
+ * A marker that ends a `Beside` row: the blocks after it are under the
+ * element and its text, at the page's full width (a figure of another
+ * screen, and the text about that figure). Renders nothing.
+ */
+export function Below() {
+  return null;
+}
+
+const isMarker = (block, type) => React.isValidElement(block) && block.type === type;
+
+/** A figure with nothing to press that a `Beside` row can stand its text beside (it sets a static `figure`). */
+const isFigure = (block) => React.isValidElement(block) && typeof block.type === "function" && block.type.figure === true;
+
+/** How wide a row's element is when it is narrower than its column (the Swap card, a capture at a reading width). */
+function benchWidth(block) {
+  if (!React.isValidElement(block) || typeof block.type !== "function") return null;
+  if (block.type === Shot) return block.props.column ? "46rem" : null;
+  return typeof block.type.benchWidth === "string" ? block.type.benchWidth : null;
 }
 
 /** A block's position events: `{ moment }` for each moment, `{ strip, set }` for a StripAt. */
@@ -479,54 +672,515 @@ function eventsOf(block) {
 }
 
 /**
- * A page's blocks, cut after each moment. The run up to and including the
- * first moment is always on the page; every run after a moment is off the
+ * A page's blocks, cut after each moment. The blocks up to and including the
+ * first moment are always on the page; every block after a moment is off the
  * page until that moment is done (an element with two moments gates on its
- * last). A run that arrives because the reader
- * just acted fades in (`play` counts actions in this visit, never a load,
+ * last). Blocks that arrive because the reader
+ * just acted fade in (`play` counts actions in this visit, never a load,
  * so a reload shows what was done with no fade). A marker like StripAt has
  * no `moment` static, so nothing waits on it.
+ *
+ * The page is a column of parts in the order written: its own blocks at the
+ * page's width, and each `Beside` row (the row's element, the text before
+ * it and the text after it).
  */
-function Gated({ blocks, done, play }) {
-  // What was done when the page's blocks mounted. A run behind one of those
-  // moments is simply there: "Run again" remounts the blocks in the middle of
-  // a visit, and the runs the reader had already read would fade in again.
-  const [atMount] = useState(done);
-  const runs = [{ gate: null, blocks: [] }];
-  // The practice element the markers after it belong to: its own moments and
-  // each `Await` up to the next element.
-  let step = null;
+function Gated({ head = null, blocks, done, play }) {
+  // The steps the page asks for, in order (each `Do`), for a step's label.
+  const steps = [];
   blocks.forEach((b) => {
+    if (isMarker(b, Do)) steps.push({ id: b.props.moment, title: b.props.title ?? null });
+  });
+  // What was done when the page's blocks mounted. A block behind one of those
+  // moments is simply there: "Redo this page" remounts the blocks in the
+  // middle of a visit, and blocks the reader had already read would fade in
+  // again.
+  const [atMount] = useState(done);
+  const parts = [];
+  // The row being filled, if the last marker was a `Beside`.
+  let bench = null;
+  // The moment the blocks from here on wait for.
+  let gate = null;
+  // The practice element the markers after it belong to: its own moments and
+  // each `Await` up to the next element. A `ReadOn` after it is not one of
+  // its steps (the element is finished before the reader reads on).
+  let step = null;
+  const plain = () => {
+    const last = parts[parts.length - 1];
+    if (last && last.kind === "plain") return last.items;
+    const part = { kind: "plain", items: [] };
+    parts.push(part);
+    return part.items;
+  };
+  blocks.forEach((b) => {
+    // The line break the MDX leaves between two blocks.
+    if (typeof b === "string" && !b.trim()) return;
+    if (isMarker(b, Beside)) {
+      bench = { kind: "bench", before: [], card: null, width: null, full: Boolean(b.props.full), after: [] };
+      parts.push(bench);
+      return;
+    }
+    if (isMarker(b, Below)) {
+      bench = null;
+      return;
+    }
     const ms = momentsOf(b);
-    if (isPractice(b) && ms.length) {
+    const element = isPractice(b) && ms.length > 0;
+    let node = b;
+    if (element) {
       step = { id: ms[0].id, ids: ms.map((m) => m.id) };
-      runs[runs.length - 1].blocks.push(
+      node = (
         <React.Fragment key={`step:${step.id}`}>
           <StepMark id={step.id} ids={step.ids} />
-          {b}
-          <RunAgain id={step.id} ids={step.ids} />
-        </React.Fragment>,
+          <StepState ids={step.ids}>{b}</StepState>
+        </React.Fragment>
       );
+    } else if (step && !isMarker(b, ReadOn)) step.ids.push(...ms.map((m) => m.id));
+    // A row has one element. A second one ends the row and takes the page's width.
+    if (bench && bench.card && (element || isFigure(b))) bench = null;
+    if (bench && !bench.card && (element || isFigure(b))) {
+      bench.card = node;
+      bench.width = bench.full ? null : benchWidth(b);
+      // An element stepped through with its steps written in the text's
+      // column (lesson 7's liquidation). The text before it and its steps
+      // fold together, to a line with the element's `stepsTitle`, when the
+      // reader presses the Continue that follows it (`fold`, set below).
+      // Folding as the last step was done hid that step before it was read.
+      bench.seq = element && typeof b.type.stepsTitle === "string" ? { last: ms[ms.length - 1].id, title: b.type.stepsTitle, fold: null } : null;
     } else {
-      if (step) step.ids.push(...ms.map((m) => m.id));
-      runs[runs.length - 1].blocks.push(b);
+      if (bench && bench.card && bench.seq && !bench.seq.fold && gate === bench.seq.last && (isMarker(b, ReadOn) || isMarker(b, Do))) bench.seq.fold = b.props.moment;
+      (bench ? (bench.card ? bench.after : bench.before) : plain()).push({ gate, node });
     }
-    if (ms.length) runs.push({ gate: ms[ms.length - 1].id, blocks: [] });
+    if (ms.length) gate = ms[ms.length - 1].id;
   });
-  return runs.map((r, i) => {
-    if (!r.blocks.length || (r.gate && !done[r.gate])) return null;
+  // Blocks in order, each run of blocks behind the same moment in one `Reveal`.
+  // `tail` is a row's place for its element's steps (see `Bench`), which goes
+  // at the end of the text before the element. `seq` names the element when
+  // that text and those steps fold once it is done.
+  const show = (items, name, tail = null, seq = null) => {
+    const out = [];
+    items.forEach((it) => {
+      if (it.gate && !done[it.gate]) return;
+      const last = out[out.length - 1];
+      if (last && last.gate === it.gate) last.nodes.push(it.node);
+      else out.push({ gate: it.gate, nodes: [it.node] });
+    });
+    return out.map((g, i) => {
+      const key = `${name}:${g.gate ?? ""}:${i}`;
+      const fade = Boolean(g.gate) && !atMount[g.gate];
+      // The step this run of text asks for (its `Do`). Once that step is
+      // done the run has been used: it folds to one line naming the step,
+      // and the text the step revealed is what the reader sees.
+      const mark = g.nodes.filter((n) => isMarker(n, Do) || isMarker(n, ReadOn)).pop() ?? null;
+      const end = i === out.length - 1;
+      // A step with no title folds to "Step done"; a Continue with none folds without a line.
+      const asked = mark ? { moment: mark.props.moment, title: mark.props.title ?? (isMarker(mark, Do) ? "Step done" : null) } : end ? seq : null;
+      const nodes = end && tail ? [...g.nodes, tail] : g.nodes;
+      // Text that asks for nothing and waits for nothing (a page that is
+      // only read) is the page's own blocks.
+      if (!asked && !g.gate) {
+        return (
+          <Reveal key={key} fade={fade} play={play}>
+            {nodes}
+          </Reveal>
+        );
+      }
+      return (
+        <StepGroup key={key} past={Boolean(asked && done[asked.moment])} title={asked ? asked.title : null} fade={fade} play={play}>
+          {nodes}
+        </StepGroup>
+      );
+    }).concat(tail && !out.length ? [tail] : []);
+  };
+  // The page's breadcrumb and title go to its row, which puts them at the
+  // top of the text's column. A page with no row has them over its text.
+  const row = parts.findIndex((part) => part.kind === "bench" && part.card);
+  const page = parts.map((part, i) => {
+    if (part.kind === "plain") return <React.Fragment key={i}>{show(part.items, `p${i}`)}</React.Fragment>;
+    // A row whose element never came (a `Beside` with no element after it) is its text.
+    if (!part.card) return <React.Fragment key={i}>{show(part.before, `p${i}`)}</React.Fragment>;
     return (
-      <Reveal key={i} fade={Boolean(r.gate) && !atMount[r.gate]} play={play}>
-        {r.blocks}
-      </Reveal>
+      <Bench
+        key={i}
+        width={part.width}
+        head={i === row ? head : null}
+        before={(slot) => show(part.before, "before", slot, part.seq && part.seq.fold ? { moment: part.seq.fold, title: part.seq.title } : null)}
+        after={show(part.after, "after")}
+        card={part.card}
+      />
     );
   });
+  return (
+    <StepsContext.Provider value={steps}>
+      {row < 0 ? head : null}
+      {page}
+    </StepsContext.Provider>
+  );
+}
+
+/** The steps the page around a `Do` asks for, in order: `{ id, title }`. */
+const StepsContext = createContext([]);
+
+/**
+ * A run of a page's text that ends in a step (`Do`): what the reader needs
+ * to read before acting, and the instruction. The text a page's last step
+ * reveals is a run too, one that asks for nothing and so never folds.
+ *
+ * Until the step is done it is on the page as written. Once it is done the
+ * run folds to one line, a tick and the step's `title`, and the text the
+ * step revealed stands under it. Left on the page, each step's text stacked
+ * under the last: after two steps the column held four runs of text and the
+ * reader had to find the one that was new. The line opens the run again for
+ * a reader who wants to reread it.
+ */
+function StepGroup({ past, title, fade, play, children }) {
+  const [open, setOpen] = useState(false);
+  const reduced = useReducedMotion();
+  const body = useRef(null);
+  const line = useRef(null);
+  // Whether the run has finished folding behind its line.
+  const [gone, setGone] = useState(past);
+  const [fresh, setFresh] = useState(false);
+  const was = useRef(past);
+  const born = useRef(0);
+  useEffect(() => {
+    born.current = Date.now();
+  }, []);
+  // The run folds into its line in one motion: the line opens from nothing
+  // as the run closes, over the same time and on the same curve, so what is
+  // under them rides up once. The line used to arrive at once and the run
+  // fade before it folded, three movements where the reader did one thing.
+  useIsoLayoutEffect(() => {
+    if (past === was.current) return undefined;
+    was.current = past;
+    if (!past) {
+      setGone(false);
+      return undefined;
+    }
+    const el = body.current;
+    const ln = line.current;
+    // Done within a moment of the page loading: restored from an earlier visit.
+    if (reduced || !el || justBorn(born)) {
+      setGone(true);
+      return undefined;
+    }
+    if (ln) {
+      const full = ln.offsetHeight;
+      ln.style.height = "0px";
+      ln.style.opacity = "0";
+      void ln.offsetHeight;
+      ln.style.transition = `height ${FOLD_S}s ${FOLD_EASE}, opacity ${FOLD_S}s ease`;
+      ln.style.height = `${full}px`;
+      ln.style.opacity = "1";
+    }
+    // The run keeps the room it had over it while it folds: its own line,
+    // now in front of it, would otherwise give it the room a run has after
+    // the lines of earlier steps, 20px in one frame.
+    const after = [...el.parentElement.children].some((c) => c !== ln && c.classList.contains(styles.pastWrap) && c.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING);
+    el.style.paddingTop = after ? "1.25rem" : "0px";
+    foldOut(el, FOLD_S, FOLD_EASE);
+    el.style.opacity = "0";
+    el.style.pointerEvents = "none";
+    setFresh(true);
+    const t = window.setTimeout(() => {
+      if (ln) {
+        ln.style.transition = "";
+        ln.style.height = "";
+        ln.style.opacity = "";
+      }
+      setGone(true);
+    }, FOLD_S * 1000 + 20);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [past]);
+  const folded = past && gone;
+  return (
+    <>
+      {past && title ? (
+        <div ref={line} className={styles.pastWrap}>
+          <button type="button" className={`${styles.pastLine} ${fresh ? styles.pastFresh : ""}`} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+            <svg className={styles.pastTick} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m5 12.5 4.5 4.5L19 7.5" pathLength="1" />
+            </svg>
+            <span className={styles.pastTitle}>{title}</span>
+            <svg className={styles.pastChevron} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+      ) : null}
+      {folded ? (
+        <FoldAway show={open} className={`${styles.group} ${styles.groupPast}`}>
+          {children}
+        </FoldAway>
+      ) : (
+        <div ref={body} className={styles.group} data-current="" aria-hidden={past ? true : undefined}>
+          <Reveal fade={fade} play={play}>
+            {children}
+          </Reveal>
+        </div>
+      )}
+    </>
+  );
+}
+
+/** How long a finished run takes to fold into its line, and the curve it folds on. */
+const FOLD_S = 0.36;
+const FOLD_EASE = "cubic-bezier(0.3, 0.7, 0.2, 1)";
+
+/** Whether the practice element around this sits beside its text (`Bench`), for the stage to size itself by. */
+const BenchContext = createContext(false);
+
+/**
+ * A page's practice element with the page's text beside it.
+ *
+ * Under the element, the text that explains a step was a form's height from
+ * the stats it names, and no window showed both. Where the window is wide
+ * enough (the style sheet decides, and `side` reads its answer), the page's
+ * text takes the left of a wider row, under the page's breadcrumb and title
+ * (`head`), and the element the right, from the top of the page. With the
+ * title over the whole row the element started 160px lower, and in a laptop's
+ * window its button was under the footer when the page opened. Each
+ * column stays in the window while the longer one scrolls, so the stats and
+ * the sentence about them are on screen together. Pointing at a stat on the
+ * element lights its row in the text, as pointing at the row lights the stat.
+ *
+ * In a narrower window the same blocks are in the page's one column, in the
+ * order they are written: the text before the element, the element, the text
+ * after it. The element keeps its place in the tree either way, so what the
+ * reader typed stays through a resize.
+ */
+function Bench({ width = null, head = null, before, after, card }) {
+  const ref = useRef(null);
+  const cardRef = useRef(null);
+  // Where an element puts the part of itself that is text (a sequence's
+  // steps), in the text's column between what is written before the element
+  // and after it.
+  const [slot, setSlot] = useState(null);
+  // "Redo this page" remounts the page's blocks, this with them. It
+  // starts from the last answer read (`besideSeen`), so the page is drawn in
+  // the same layout it had and the element can be held where it was. The
+  // first draw of a visit is the one-column order, as the server drew it.
+  const [side, setSide] = useState(besideSeen);
+  const { setPointer } = useAppContext();
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === "undefined") return undefined;
+    const read = () => {
+      // A page that is not the one shown is not laid out, and its row would
+      // answer for the one-column order whatever the window's width. It keeps
+      // the answer it had until its page is turned to.
+      if (el.getClientRects().length === 0) return;
+      besideSeen = window.getComputedStyle(el).getPropertyValue("--side").trim() === "1";
+      setSide(besideSeen);
+      // Where the columns stop under the pinned header (in a short window
+      // only its strip stays pinned, see `useFitRoom`).
+      const header = document.querySelector("header");
+      const pinned = header ? Math.max(0, header.getBoundingClientRect().height + Math.min(0, parseFloat(window.getComputedStyle(header).top) || 0)) : 0;
+      el.style.setProperty("--bench-top", `${Math.round(pinned) + BENCH_GAP}px`);
+      // The room an element leaves under itself (a figure's 2rem, a vault
+      // frame's) is taken off the column's height. The column stops moving
+      // when its foot meets the foot of the row, and with that room counted
+      // the figure stopped 32px short of the foot of the text beside it.
+      const box = cardRef.current;
+      if (box) {
+        let trail = 0;
+        if (besideSeen) {
+          const foot = box.getBoundingClientRect().bottom;
+          let lowest = -Infinity;
+          for (const n of box.querySelectorAll("*")) {
+            if (n.offsetHeight === 0) continue;
+            lowest = Math.max(lowest, n.getBoundingClientRect().bottom);
+          }
+          if (Number.isFinite(lowest)) trail = Math.max(0, Math.round(foot - lowest));
+        }
+        box.style.setProperty("--trail", `${trail}px`);
+        // An element taller than the window's room (a laptop's short window,
+        // where the vault cannot shrink any further) stops with its foot
+        // above the footer instead of its head under the header. Held by its
+        // head, its form's button stayed under the footer for as long as the
+        // text beside it was scrolling, and no scrolling brought it up.
+        const footer = document.querySelector("footer");
+        const floor = (footer ? footer.getBoundingClientRect().top : window.innerHeight) - HOLD_GAP;
+        const tall = box.offsetHeight - trail;
+        const head = Math.round(pinned) + BENCH_GAP;
+        el.style.setProperty("--card-top", `${Math.min(head, Math.round(floor - tall))}px`);
+        // A row whose element or text ends under the footer as the page
+        // opens (both start under the page's title) is shown whole only
+        // where its columns stop under the header, with the title out of
+        // the window. The row is given the height that lets the page scroll
+        // that far; short of it, the page ended with the title cut through.
+        const over = el.querySelector(`:scope > .${styles.benchHead}`);
+        const lead = over ? over.offsetHeight : 0;
+        const text = el.querySelector(`:scope > .${styles.rail}`);
+        const most = Math.max(tall, text ? text.offsetHeight : 0);
+        let least = 0;
+        // Where the row starts as the page opens: under the room the page
+        // keeps over its breadcrumb, which is more than the columns keep
+        // under the header once they stop there.
+        const body = el.closest(`.${styles.body}`);
+        const start = Math.round(pinned) + Math.max(BENCH_GAP, body ? parseFloat(window.getComputedStyle(body).paddingTop) || 0 : 0);
+        if (besideSeen && lead && lead + most > floor - start) {
+          const under = body ? parseFloat(window.getComputedStyle(body).paddingBottom) || 0 : 0;
+          const bar = footer ? footer.getBoundingClientRect().height : 0;
+          least = Math.max(0, Math.ceil(lead + window.innerHeight - head - bar - under));
+        }
+        el.style.setProperty("--row-least", `${least}px`);
+      }
+    };
+    const ro = new ResizeObserver(read);
+    ro.observe(el);
+    if (cardRef.current) ro.observe(cardRef.current);
+    const header = document.querySelector("header");
+    if (header) ro.observe(header);
+    window.addEventListener("resize", read);
+    read();
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", read);
+    };
+  }, []);
+  const set = setPointer ?? (() => {});
+  const fromTile = (p) => Boolean(p) && p.from === "tile";
+  // An element that fits the window's room starts under the page's title, so
+  // in a window just tall enough for it the foot of its form opens under the
+  // footer. When the reader starts using the element (a click in it), the
+  // page moves up to where the element stops under the header, which shows
+  // it whole. An element taller than the room is left to the reader: no
+  // place shows it whole.
+  const bringWhole = () => {
+    const box = cardRef.current;
+    if (!side || !box) return;
+    const room = roomNow();
+    const trail = parseFloat(box.style.getPropertyValue("--trail")) || 0;
+    const r = box.getBoundingClientRect();
+    const tall = r.height - trail;
+    const line = room.top + BENCH_GAP;
+    const floor = room.bottom - HOLD_GAP;
+    // Nothing to do for an element whose foot is over the footer, or under
+    // it by less than the room kept between the two.
+    if (tall > floor - line || r.top + tall - floor <= 8 || r.top <= line) return;
+    // To where the columns stop under the header: the one place the page
+    // rests with the title out of the window whole and the element whole.
+    const move = r.top - line;
+    const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollBy({ top: move, behavior: still ? "instant" : "smooth" });
+  };
+  return (
+    <BenchContext.Provider value={side}>
+      <RailSlotContext.Provider value={side ? slot : null}>
+      <div
+        ref={ref}
+        className={`${styles.bench} ${width ? styles.benchFit : ""}`}
+        style={width ? { "--card": width } : undefined}
+        data-bench=""
+        data-side={side ? "" : undefined}
+      >
+        {/* The breadcrumb and the title head the row, over both columns, so
+            the text and the element start on one line under them. */}
+        {side && head ? (
+          <div key="head" className={styles.benchHead}>
+            {head}
+          </div>
+        ) : null}
+        {side ? (
+          <div key="rail" className={styles.rail}>
+            {/* The place for the element's steps ends the text before the
+                element, so the two fold together. */}
+            <React.Fragment key="before">{before(<div key="slot" ref={setSlot} className={styles.railSlot} />)}</React.Fragment>
+            <React.Fragment key="after">{after}</React.Fragment>
+          </div>
+        ) : null}
+        {side ? null : head}
+        {side ? null : <React.Fragment key="before">{before(null)}</React.Fragment>}
+        <div
+          key="card"
+          ref={cardRef}
+          className={styles.benchCard}
+          data-bench-card=""
+          onClick={bringWhole}
+          onPointerOver={(e) => {
+            if (e.pointerType !== "mouse") return;
+            const named = cueOf(e.target);
+            if (named) set((p) => (fromTile(p) && p.name === named.name && p.scope === named.scope ? p : { ...named, from: "tile", id: labelFor(named) }));
+            else set((p) => (fromTile(p) ? null : p));
+          }}
+          onPointerLeave={() => set((p) => (fromTile(p) ? null : p))}
+        >
+          {card}
+        </div>
+        {side ? null : <React.Fragment key="after">{after}</React.Fragment>}
+      </div>
+      </RailSlotContext.Provider>
+    </BenchContext.Provider>
+  );
 }
 
 /**
- * The mark in front of a practice element (`data-step`, which "Run again"
- * finds the element by), and what keeps the element in view when the reader
- * does one of its steps.
+ * The place in a `Bench`'s text column for the part of an element that is
+ * text, or null where the element and its text are in one column. A sequence
+ * draws its steps there (`useRailSlot`, with a portal), so each step is read
+ * beside the vault it describes.
+ */
+const RailSlotContext = createContext(null);
+export function useRailSlot() {
+  return useContext(RailSlotContext);
+}
+
+/** Whether the element around this sits beside its text. Its steps' place is null there while the text before it is folded. */
+export function useBeside() {
+  return useContext(BenchContext);
+}
+
+/**
+ * Where the page's element is from the text that introduces it: "On the
+ * right" where the two are side by side; where the page is one column (a
+ * phone, a narrow window), "Below" for text written before the element and
+ * "Above" for text that comes after it. `low` gives it in lower case for the
+ * middle of a sentence.
+ *
+ *   <There /> is a practice copy of the app's Dashboard.
+ *   The practice vault <There low /> holds your deposit.
+ */
+export function There({ low = false }) {
+  const side = useContext(BenchContext);
+  const ref = useRef(null);
+  const [above, setAbove] = useState(false);
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    const bench = el ? el.closest("[data-bench]") : null;
+    const card = bench ? bench.querySelector(":scope > [data-bench-card]") : null;
+    setAbove(Boolean(card) && Boolean(card.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING));
+  }, [side]);
+  const words = side ? "On the right" : above ? "Above" : "Below";
+  return <span ref={ref}>{low ? words.toLowerCase() : words}</span>;
+}
+
+/** Whether the last `Bench` measured had its element beside its text. */
+let besideSeen = false;
+
+/**
+ * The room between the pinned header and the top of a `Bench`'s columns once
+ * the page's title has scrolled away. Less than the room over the page's
+ * breadcrumb as the page opens (the body's padding in the style sheet) and
+ * than the room under the title, so the title is out of the window whole by
+ * the time the columns stop.
+ */
+const BENCH_GAP = 24;
+/** The share of the window's room a step's revealed text is given beside its element. */
+const BESIDE_LEAD = 0.6;
+
+/** Whether every step on the practice element around this is done. */
+const StepContext = createContext(false);
+
+/** Tells a practice element when its last step is done (`ids`: every moment acted on it). */
+function StepState({ ids, children }) {
+  const { done } = usePosition();
+  return <StepContext.Provider value={ids.every((m) => done[m])}>{children}</StepContext.Provider>;
+}
+
+/**
+ * The mark in front of a practice element (`data-step`), and what keeps the
+ * element in view when the reader does one of its steps.
  *
  * A step changes what is above the element: its instruction folds away, and
  * everything under the instruction rides up with it, about 100px. A reader
@@ -548,44 +1202,146 @@ function StepMark({ id, ids }) {
     const before = was.current;
     was.current = { count, play };
     // Only a step the reader just did: a load restores what was done without
-    // an action (`play` stays), and "Run again" lowers the count.
+    // an action (`play` stays), and "Redo this page" lowers the count.
     if (count <= before.count || play === before.play) return undefined;
     const el = ref.current ? ref.current.nextElementSibling : null;
-    return el ? holdInView(el, reduced) : undefined;
+    if (!el) return undefined;
+    // Beside its text the element stays in the window by itself; the window
+    // only has to show the text the step revealed.
+    const bench = el.closest("[data-side]");
+    return bench ? settleBeside(bench, reduced) : holdInView(el, reduced);
     // `ids` is rebuilt on every render; the count is what changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, play]);
   return <div ref={ref} hidden data-step={id} />;
 }
 
-/** How long the element is held after a step: a little longer than the instruction takes to fold (0.4s). */
-const HOLD_MS = 520;
+/** How long the element is held after a step: a little longer than the instruction (0.4s) and a used panel (0.66s) take to fold. */
+const HOLD_MS = 740;
 /** The room kept between a changed stat and the header or the footer. */
 const HOLD_GAP = 12;
+/** How much of the text a step reveals is brought above the footer: about three lines. */
+const HOLD_TEXT = 96;
+
+/**
+ * The window's room for the page: from the foot of the pinned header to the
+ * top of the pinned footer. In a short window only the header's strip stays
+ * pinned (the Shell lets the row above it scroll away), so the header's foot
+ * is read where it is now.
+ */
+function roomNow() {
+  const header = document.querySelector("header");
+  const footer = document.querySelector("footer");
+  return {
+    top: Math.max(0, header ? header.getBoundingClientRect().bottom : 0),
+    bottom: footer ? Math.min(window.innerHeight, footer.getBoundingClientRect().top) : window.innerHeight,
+  };
+}
+
+/**
+ * Where a move the page makes by itself should stop, so that no line that
+ * heads the page is left cut through by the pinned header: the breadcrumb,
+ * the page's title, the line a finished step folds to. A move down goes on
+ * until the line it would cut is out of the window whole, and no further
+ * than `most` (past that the text being brought into view starts to leave).
+ * A move up goes on until the line shows whole.
+ */
+export function wholeLines(move, most = Infinity) {
+  const main = typeof document === "undefined" ? null : document.querySelector("main");
+  if (!main || !move) return move;
+  const edge = roomNow().top;
+  const lines = [...main.querySelectorAll(`.${styles.crumb}, .${styles.title}, .${styles.pastLine}`)].filter((el) => el.getClientRects().length > 0);
+  let d = move;
+  if (d > 0) {
+    for (const el of lines) {
+      const t = el.getBoundingClientRect();
+      if (t.top - d < edge - LINE_OUT - 1 && t.bottom - d > edge - LINE_OUT + 1 && t.bottom - edge + LINE_OUT <= most) d = t.bottom - edge + LINE_OUT;
+    }
+  } else {
+    for (const el of lines.reverse()) {
+      const t = el.getBoundingClientRect();
+      // The breadcrumb comes back with the room it has over it at the top of the page.
+      if (t.top - d < edge - LINE_OUT - 1 && t.bottom - d > edge + 1) d = t.top - edge - (el.matches(`.${styles.crumb}`) ? BENCH_GAP : 0);
+    }
+  }
+  return d;
+}
+
+/** How far past the header's edge a line is taken (a title's descenders hang under its box). */
+const LINE_OUT = 6;
+
+/** The first block with a box after a practice element: the text its step reveals. */
+function blockAfter(el) {
+  let n = el;
+  while (n) {
+    let next = n.nextElementSibling;
+    // The end of a run that faded in, or of the box a `Bench` keeps its
+    // element in: on to what follows it.
+    while (!next && n.parentElement && n.parentElement.matches(`.${styles.reveal}, [data-bench-card]`)) {
+      n = n.parentElement;
+      next = n.nextElementSibling;
+    }
+    if (!next) return null;
+    if (next.matches(`.${styles.reveal}`) && next.firstElementChild) next = next.firstElementChild;
+    if (!next.hidden && next.offsetHeight > 0) return next;
+    n = next;
+  }
+  return null;
+}
 
 /**
  * Hold `el` where it is in the window while the page around it settles, and
  * ease it to where its changed stats (the tiles carrying a change chip) are
- * between the header and the footer. Returns the way to stop.
+ * between the header and the footer, and the start of the text the step
+ * revealed is above the footer when that takes no changed stat out of view.
+ * Returns the way to stop.
+ *
+ * Where the element should end is worked out again on every frame, from
+ * where its parts are then: a used panel folding away inside the element
+ * brings the text up by itself, and the window follows only as far as is
+ * still needed.
  */
 function holdInView(el, reduced) {
   const from = el.getBoundingClientRect().top;
-  const header = document.querySelector("header");
-  const footer = document.querySelector("footer");
-  const roomTop = (header ? header.getBoundingClientRect().bottom : 0) + HOLD_GAP;
-  const roomBottom = (footer ? footer.getBoundingClientRect().top : window.innerHeight) - HOLD_GAP;
-  // The stats that changed, as a span measured from the element's top. A
-  // chip outside a tile (the wallet balance under a field) does not count:
-  // it sits by the button the reader just pressed.
+  // The stats that changed. A chip outside a tile (the wallet balance under
+  // a field) does not count: it sits by the button the reader just pressed.
   const tiles = [...el.querySelectorAll('[class*="delta_"]')].map((chip) => chip.closest('[class*="tile_"]')).filter(Boolean);
-  let to = from;
-  if (tiles.length) {
-    const rects = tiles.map((t) => t.getBoundingClientRect());
-    const top = Math.min(...rects.map((r) => r.top));
-    const bottom = Math.max(...rects.map((r) => r.bottom));
-    if (top < roomTop) to = from + (roomTop - top);
-    else if (bottom > roomBottom) to = from - Math.min(bottom - roomBottom, top - roomTop);
-  }
+  const text = blockAfter(el);
+  // Parts of the element that are folding away (`FoldAway`). The text under
+  // the element ends up higher by what is left of them, so it is placed
+  // where it will be, and the element does not rise to meet text that is
+  // about to come up by itself.
+  const folding = [...el.querySelectorAll("[data-folding]")];
+  const goal = () => {
+    // The room is read on every frame too: on a phone the strip can take a
+    // second line while its numbers run, and the header grows with it.
+    const room = roomNow();
+    const roomTop = room.top + HOLD_GAP;
+    const roomBottom = room.bottom - HOLD_GAP;
+    const at = el.getBoundingClientRect().top;
+    let to = from;
+    // The highest the element may sit before a changed stat goes under the header.
+    let least = -Infinity;
+    if (tiles.length) {
+      const rects = tiles.map((t) => t.getBoundingClientRect());
+      const top = Math.min(...rects.map((r) => r.top)) - at;
+      const bottom = Math.max(...rects.map((r) => r.bottom)) - at;
+      least = roomTop - top;
+      if (from < least) to = least;
+      else if (from + bottom > roomBottom) to = Math.max(least, roomBottom - bottom);
+    }
+    if (text && text.isConnected) {
+      // A list of changes (`Changes`) carries each stat beside its sentence,
+      // so its start is shown even where the vault's own stats cannot all
+      // stay in the window with it (a phone, where they fill it).
+      if (text.matches("[data-changes]")) least = -Infinity;
+      const r = text.getBoundingClientRect();
+      const toFold = folding.reduce((sum, f) => sum + (f.isConnected ? f.getBoundingClientRect().height : 0), 0);
+      const most = roomBottom - Math.min(HOLD_TEXT, r.height) - (r.top - at - toFold);
+      if (to > most) to = Math.max(least, most);
+    }
+    return to;
+  };
   let raf = 0;
   let stopped = false;
   const stop = () => {
@@ -606,7 +1362,7 @@ function holdInView(el, reduced) {
     if (stopped) return;
     const t = Math.min((now - start) / HOLD_MS, 1);
     const eased = reduced ? 1 : 1 - Math.pow(1 - t, 3);
-    const want = from + (to - from) * eased;
+    const want = from + (goal() - from) * eased;
     const off = el.getBoundingClientRect().top - want;
     if (Math.abs(off) >= 0.5) window.scrollBy({ top: off, behavior: "instant" });
     if (t < 1) raf = window.requestAnimationFrame(tick);
@@ -616,44 +1372,113 @@ function holdInView(el, reduced) {
   return stop;
 }
 
-/** A block that is a practice element with moments of its own, not a marker (`Await`) or a `Do`. */
-function isPractice(block) {
-  return React.isValidElement(block) && typeof block.type === "function" && block.type !== Do && block.type !== Await;
+/**
+ * After a step on an element that sits beside its text (`Bench`): bring the
+ * start of the text the step revealed into the window, and no further. The
+ * element needs no holding there, since its column stays in the window by
+ * itself.
+ *
+ * A reader in a short window has scrolled down the element to reach its
+ * button, so the text's column has gone up with the page. The window is
+ * eased back to where the revealed text starts under the header (and to the
+ * top of the row when the text still shows from there). A reader whose
+ * window already shows the text is not moved. Where things are is read on
+ * every frame, because an instruction folding away above the text brings it
+ * up by itself. Returns the way to stop.
+ */
+function settleBeside(bench, reduced) {
+  const rail = bench.querySelector(`.${styles.rail}`);
+  const runs = rail ? rail.querySelectorAll(`.${styles.reveal}`) : [];
+  const run = runs.length ? runs[runs.length - 1] : null;
+  let text = run ? run.firstElementChild : null;
+  while (text && text.offsetHeight === 0) text = text.nextElementSibling;
+  if (!text) return undefined;
+  // Where the move would leave the page's title cut through by the header,
+  // it goes on until the title is out of the window whole, as long as the
+  // revealed text's start stays under the header (`wholeLines`).
+  const whole = (d, room, most) => (d > 0 ? Math.max(d, wholeLines(d, most)) : d);
+  const delta = () => {
+    const room = roomNow();
+    const line = room.top + BENCH_GAP;
+    const foot = room.bottom - HOLD_GAP;
+    const r = text.getBoundingClientRect();
+    let rising = 0;
+    for (const d of rail.querySelectorAll(`[data-folding], .${styles.do}[aria-hidden="true"]`)) {
+      // A step's instruction inside a run that is folding is counted with the run.
+      if (!d.matches("[data-folding]") && d.closest("[data-folding]")) continue;
+      if (d.compareDocumentPosition(text) & Node.DOCUMENT_POSITION_FOLLOWING) rising += d.getBoundingClientRect().height;
+    }
+    const top = r.top - rising;
+    // Scrolling down by more than `most` puts the text's start under the
+    // header; by less than `least` leaves it under the footer.
+    const most = top - line;
+    // How much of the revealed text is brought above the footer: all of a
+    // short run, and of a long one enough to fill most of the room (the
+    // element stays where it is, so nothing is lost by moving the text up).
+    const lead = Math.max(Math.min(HOLD_TEXT, r.height), Math.min(run.getBoundingClientRect().bottom - r.top, (foot - line) * BESIDE_LEAD));
+    const least = top + lead - foot;
+    // Back to where the row's columns stop under the header when the text
+    // shows from there: under the breadcrumb and the title, which have
+    // scrolled away by then. Going back to the top of the page instead put
+    // the foot of the element under the footer again after every step.
+    const over = bench.querySelector(`:scope > .${styles.benchHead}`);
+    const up = (over ? over.getBoundingClientRect().bottom : bench.getBoundingClientRect().top) - line;
+    if (up < 0 && up >= least) return up;
+    if (most < 0) return whole(Math.max(least, Math.min(most, up)), room, most);
+    if (least > 0) return whole(Math.min(least, most), room, most);
+    // The text shows where the page is: all that is left is a line that
+    // heads the page and is cut through by the header.
+    const tidy = wholeLines(0.01, most);
+    return tidy > 1 ? tidy : 0;
+  };
+  let raf = 0;
+  let stopped = false;
+  const stop = () => {
+    stopped = true;
+    window.cancelAnimationFrame(raf);
+    window.removeEventListener("wheel", stop);
+    window.removeEventListener("touchmove", stop);
+    window.removeEventListener("keydown", onKey);
+  };
+  const onKey = (e) => {
+    if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) stop();
+  };
+  window.addEventListener("wheel", stop, { passive: true });
+  window.addEventListener("touchmove", stop, { passive: true });
+  window.addEventListener("keydown", onKey);
+  const start = performance.now();
+  let last = start;
+  // The part of a pixel not yet moved. A screen that draws 120 frames a
+  // second asks for a smaller share on each one, and a move of under half a
+  // pixel was dropped, which left the page some pixels short of where it
+  // was going.
+  let carry = 0;
+  const tick = (now) => {
+    if (stopped) return;
+    const d = delta();
+    // A share of what is left on each frame, so the move slows as it lands.
+    const share = reduced ? 1 : 1 - Math.exp(-(now - last) / 110);
+    last = now;
+    if (Math.abs(d) >= 0.5) {
+      const want = d * share + carry;
+      const step = Math.abs(d) < 1.5 ? Math.round(d) : Math.trunc(want);
+      carry = step === Math.round(d) && Math.abs(d) < 1.5 ? 0 : want - step;
+      if (step) window.scrollBy({ top: step, behavior: "instant" });
+    } else carry = 0;
+    // A step that is still opening when the hold ends (a sequence's last
+    // step) goes on pushing the text down, so the window follows for as long
+    // as there is something left to make up, and for twice the hold at most.
+    const spent = now - start;
+    if (spent < HOLD_MS || (Math.abs(d) >= 0.5 && spent < 2 * HOLD_MS)) raf = window.requestAnimationFrame(tick);
+    else stop();
+  };
+  raf = window.requestAnimationFrame(tick);
+  return stop;
 }
 
-/**
- * "Run again", under a practice element once every step on it is done. A
- * finished step could not be seen a second time: its control was switched
- * off for good, and a reload kept it done. Pressing it puts the lesson back
- * to just before the element's first step (the store's `undo`), so the
- * reader does the step again and watches the change again.
- *
- * Until then its row has no height. Once it is there the row sits in part of
- * the 2rem every practice element leaves under itself and adds 25px, and when
- * it arrives because the reader just acted the row opens over 0.3s, so the
- * text under the element slides instead of snapping. `id` is the element's
- * first moment and `ids` every moment acted on the element.
- */
-function RunAgain({ id, ids }) {
-  const { done, play } = usePosition();
-  const again = useContext(AgainContext);
-  const finished = ids.every((m) => done[m]) && Boolean(again);
-  // Opens only when the step is finished in front of the reader; on a page
-  // loaded with the step done it is simply there (the store restores what was
-  // done just after mount, at `play` 0).
-  const [arrives] = useState(!finished);
-  if (!finished) return <div className={styles.again} />;
-  return (
-    <div className={`${styles.again} ${styles.againOn} ${arrives && play > 0 ? styles.againIn : ""}`}>
-      <button type="button" className={styles.againButton} onClick={() => again(id)}>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M3 12a9 9 0 1 0 3-6.7" />
-          <path d="M3 4v5h5" />
-        </svg>
-        Run again
-      </button>
-    </div>
-  );
+/** A block that is a practice element with moments of its own, not a marker (`Await`) or a `Do`. */
+function isPractice(block) {
+  return React.isValidElement(block) && typeof block.type === "function" && block.type !== Do && block.type !== Await && block.type !== ReadOn;
 }
 
 
@@ -678,82 +1503,39 @@ function RevealStrip() {
   return null;
 }
 
-/** What "Run again" calls with its element's first moment (see `Article`). */
-const AgainContext = createContext(null);
-
 /**
- * The prose column. The moments remount on Start over and on "Run again", so
- * their boxes empty.
- *
- * "Run again" keeps its practice element where it is in the window. Putting a
- * step back changes what is above the element (its instruction returns) and
- * takes away the text under it, and the whole column remounts. So the
- * element's top is read before the change and the window is scrolled by the
- * difference before the browser paints, and the column keeps the height it
- * had, or a page that got shorter would pull the element down the window by
- * what it lost. The height is let go when the reader turns the page.
+ * The prose column. The moments remount when a page is put back ("Redo this
+ * page"), so their boxes empty.
  */
 function Article({ children }) {
-  const { version, undo, page } = usePosition();
-  const box = useRef(null);
-  const held = useRef(null);
-  const top = (id) => {
-    const mark = document.querySelector(`[data-step="${CSS.escape(id)}"]`);
-    const el = mark ? mark.nextElementSibling : null;
-    return el ? el.getBoundingClientRect().top : null;
-  };
-  const again = useCallback(
-    (id) => {
-      held.current = { id, top: top(id), height: box.current ? box.current.offsetHeight : 0 };
-      undo(id);
-    },
-    [undo],
-  );
-  useIsoLayoutEffect(() => {
-    const was = held.current;
-    held.current = null;
-    if (!was) return;
-    if (box.current && was.height) box.current.style.minHeight = `${was.height}px`;
-    const now = top(was.id);
-    if (was.top == null || now == null || Math.abs(now - was.top) <= 0.5) return;
-    // The instruction that came back pushed the element down. The window has
-    // to scroll that much further than the page was long, so the column grows
-    // by it too.
-    if (box.current && was.height && now > was.top) box.current.style.minHeight = `${was.height + (now - was.top)}px`;
-    window.scrollBy(0, now - was.top);
-  }, [version]);
-  useEffect(() => {
-    if (box.current) box.current.style.minHeight = "";
-  }, [page]);
+  const { version } = usePosition();
   return (
-    <AgainContext.Provider value={again}>
-      <div ref={box} className={styles.prose} key={version}>
-        {children}
-      </div>
-    </AgainContext.Provider>
+    <div className={styles.prose} key={version}>
+      {children}
+    </div>
   );
 }
 
 /**
- * Puts the lesson's position back to its start, in the map's quiet restart
- * style, and the reader back on page 1.
+ * The lesson's one way to do something again: it puts the steps on the page
+ * on screen back to how the page opened, so the reader can do them and watch
+ * the change a second time. It stands in the footer after Back once a step
+ * on the page is done. The pages after it keep what was done on them, so
+ * nothing is lost and it does not ask first.
+ *
+ * It replaces two controls that did nearly the same thing in two places: a
+ * "Run again" under the practice element, and a Start over that cleared the
+ * whole lesson and sent the reader back to page 1.
  */
-function StartOver({ onReset }) {
-  const { started, reset } = usePosition();
-  if (!started) return null;
+function RedoPage({ onRedo }) {
   return (
-    <div className={styles.foot}>
-      <button
-        type="button"
-        className={styles.reset}
-        onClick={() => {
-          reset();
-          onReset();
-        }}
-      >
-        Start over
-      </button>
-    </div>
+    <button type="button" className={`${ls.back} ${styles.barReset}`} aria-label="Redo this page" onClick={onRedo}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M3 12a9 9 0 1 0 3-6.7" />
+        <path d="M3 4v5h5" />
+      </svg>
+      <span className={styles.barResetLabel}>Redo this page</span>
+    </button>
   );
 }
 
@@ -775,11 +1557,11 @@ const amount = (n, places) => Number(n).toLocaleString("en-US", { minimumFractio
  * moment the lesson sets a number for it (null until then).
  */
 const FIELDS = [
-  { key: "wallet", label: "Wallet", unit: "USDC" },
-  { key: "deposit", label: "Deposit", unit: "USDC", optional: true },
-  { key: "debt", label: "Debt", unit: "alUSD", optional: true },
-  { key: "earmarked", label: "Earmarked", unit: "alUSD", optional: true },
-  { key: "fixedYield", label: "Fixed Yield", unit: "alUSD", optional: true },
+  { key: "wallet", label: "Wallet", unit: "USDC", wide: "10,000.00" },
+  { key: "deposit", label: "Deposit", unit: "USDC", optional: true, wide: "10,000.00" },
+  { key: "debt", label: "Debt", unit: "alUSD", optional: true, wide: "5,000.00" },
+  { key: "earmarked", label: "Earmarked", unit: "alUSD", optional: true, wide: "1,000.00" },
+  { key: "fixedYield", label: "Fixed Yield", unit: "alUSD", optional: true, wide: "5,000.00" },
 ];
 
 /**
@@ -792,9 +1574,7 @@ const FIELDS = [
  * height in the same frame, so the text under their eyes stays where it was.
  */
 function PositionStrip() {
-  const { position, moved: play, entered } = usePosition();
-  // A Stat aimed at a figure (`figure`, `scope`) leaves the strip alone.
-  const { stat, statIn } = useAppContext();
+  const { position, moved: play, play: acts, entered } = usePosition();
   const row = useRef(null);
 
   useLayoutEffect(() => {
@@ -805,13 +1585,16 @@ function PositionStrip() {
 
   return (
     <div ref={row} className={`${styles.strip} ${entered ? styles.stripIn : ""}`}>
-      <span className={styles.stripLabel}>Practice wallet</span>
-      <dl className={styles.stripRow}>
+      <motion.span layout="position" transition={STRIP_GLIDE} className={styles.stripLabel}>
+        Practice wallet
+      </motion.span>
+      <dl className={styles.stripRow} data-fields={FIELDS.filter((f) => !f.optional || position[f.key] != null).length}>
         {FIELDS.filter((f) => !f.optional || position[f.key] != null).map((f) => (
           <StripField
             key={f.key}
             label={f.label}
             unit={f.unit}
+            wide={f.wide}
             value={position[f.key] ?? 0}
             // The wallet's alUSD, when it holds any, follows its USDC: "500 USDC and 5,000 alUSD".
             also={f.key === "wallet" ? position.walletAl ?? 0 : null}
@@ -819,7 +1602,8 @@ function PositionStrip() {
             // strip that key and the wallet holds some: "0 USDC and 8,000 mixUSDC".
             alsoMyt={f.key === "wallet" ? position.walletMyt ?? null : null}
             play={play}
-            pointed={statIn == null && stat === f.key}
+            name={f.key}
+            acts={acts}
           />
         ))}
       </dl>
@@ -827,20 +1611,36 @@ function PositionStrip() {
   );
 }
 
+/* How a field moves to its new place on the rare step that changes what a
+   field holds (the wallet's alUSD joining its USDC), and how long a change
+   tag stays. */
+const STRIP_GLIDE = { type: "spring", duration: 0.6, bounce: 0 };
+const DELTA_MS = 4600;
+const FLOW = {
+  0: { minimumFractionDigits: 0, maximumFractionDigits: 0 },
+  2: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+};
+
 /**
- * One field, label and value on one line ("Wallet 10,000 USDC"). The value
- * tweens over 1.6 seconds when a moment or a turned page changes it, and the
- * field takes the same copper wash as a practice vault tile, held and then
- * faded over 3 seconds (a shorter wash was too fast to register). `pointed`
- * lights it while the reader points at its name in the text (`Stat`).
+ * One field, label and value on one line ("Wallet 10,000 USDC"). When a
+ * moment or a turned page changes the value its digits roll to the new one
+ * (NumberFlow) and the number is copper for a moment.
+ *
+ * Every field keeps its place whatever its number is: the value's box is as
+ * wide as the widest number the field holds on this track (`wide`, never
+ * drawn), so a number gaining or losing digits moves nothing. After a step
+ * the reader took, what the step did to the field ("+4,850") is shown on a
+ * small tag right under the number, lying across the header's lower edge. It
+ * takes none of the row's room, so it moves nothing either, and however long
+ * it is it never meets the next field (beside the number, a tag with two
+ * amounts ran into the next label).
  */
-function StripField({ label, unit, value, also = null, alsoMyt = null, play, pointed = false }) {
-  const shown = useTween(value, play, SLOW_TWEEN);
-  const shownAl = useTween(also ?? 0, play, SLOW_TWEEN);
-  const shownMyt = useTween(alsoMyt ?? 0, play, SLOW_TWEEN);
+function StripField({ name, label, unit, wide = "10,000.00", value, also = null, alsoMyt = null, play, acts = 0 }) {
+  // Pointing at a field does something only when a label on screen names it.
+  const { setPointer } = useAppContext();
+  const aim = setPointer ?? (() => {});
+  const fromStrip = (p) => Boolean(p) && p.from === "strip" && p.name === name;
   const places = isWhole(value) ? 0 : 2;
-  const placesAl = isWhole(also ?? 0) ? 0 : 2;
-  const placesMyt = isWhole(alsoMyt ?? 0) ? 0 : 2;
   const was = useRef({ value, also, alsoMyt });
   const changed = was.current.value !== value || was.current.also !== also || was.current.alsoMyt !== alsoMyt;
   useEffect(() => {
@@ -848,31 +1648,96 @@ function StripField({ label, unit, value, also = null, alsoMyt = null, play, poi
   }, [value, also, alsoMyt]);
   // What follows the USDC, in order: "10,000 USDC and 8,000 mixUSDC", or with
   // both, "500 USDC, 5,000 alUSD and 8,000 mixUSDC". Each shows while the
-  // wallet holds some, or while its number is still tweening down to 0.
+  // wallet holds some.
   const extras = [];
-  if (also > 0 || (also != null && Math.round(shownAl) > 0)) extras.push({ unit: "alUSD", shown: shownAl, places: placesAl });
-  if (alsoMyt > 0 || (alsoMyt != null && Math.round(shownMyt) > 0)) extras.push({ unit: "mixUSDC", shown: shownMyt, places: placesMyt });
+  if (also > 0) extras.push({ unit: "alUSD", value: also });
+  if (alsoMyt > 0) extras.push({ unit: "mixUSDC", value: alsoMyt });
   const washKey = useWash(true, play, changed);
+  // What the reader's last step did to this field, for a few seconds. The
+  // strip is at the top of the window and the step is taken lower down, so a
+  // number changing there was missed. A turned page changes the numbers too,
+  // with no tag: nothing was done.
+  const seen = useRef({ acts, value, also: also ?? 0 });
+  const [delta, setDelta] = useState(null);
+  useEffect(() => {
+    const before = seen.current;
+    seen.current = { acts, value, also: also ?? 0 };
+    if (acts === before.acts) {
+      if (value !== before.value || (also ?? 0) !== before.also) setDelta(null);
+      return;
+    }
+    const parts = [];
+    if (Math.abs(value - before.value) >= 0.005) parts.push({ n: value - before.value, unit });
+    if (Math.abs((also ?? 0) - before.also) >= 0.005) parts.push({ n: (also ?? 0) - before.also, unit: "alUSD" });
+    setDelta(parts.length ? { key: acts, parts } : null);
+  }, [acts, value, also, unit]);
+  useEffect(() => {
+    if (!delta) return undefined;
+    const t = window.setTimeout(() => setDelta(null), DELTA_MS);
+    return () => window.clearTimeout(t);
+  }, [delta]);
+  // The numbers a returning reader's saved place puts in the strip are set,
+  // not rolled to: nothing happened.
+  const [live, setLive] = useState(false);
+  useEffect(() => {
+    const t = window.setTimeout(() => setLive(true), 900);
+    return () => window.clearTimeout(t);
+  }, []);
+  // The unit is named on the tag only where the field shows two amounts.
+  const named = extras.length > 0 || (delta ? delta.parts.length > 1 : false);
+  const signed = (d) => `${d.n > 0 ? "+" : "\u2212"}${amount(Math.abs(d.n), isWhole(d.n) ? 0 : 2)}${named ? ` ${d.unit}` : ""}`;
   return (
-    <div className={`${styles.field} ${pointed ? styles.fieldPointed : ""}`}>
-      {washKey ? <span key={washKey} className={styles.fieldWash} aria-hidden="true" /> : null}
+    <motion.div
+      layout="position"
+      transition={STRIP_GLIDE}
+      className={styles.field}
+      data-point={name}
+      onPointerEnter={(e) => {
+        const named = e.pointerType === "mouse" ? cueOf(e.currentTarget) : null;
+        if (named) aim({ ...named, from: "strip", id: labelFor(named) });
+      }}
+      onPointerLeave={() => aim((p) => (fromStrip(p) ? null : p))}
+    >
       <dt className={styles.fieldLabel}>{label}</dt>
-      <dd className={styles.fieldValue}>
-        {amount(shown, places)} <span className={styles.fieldUnit}>{unit}</span>
-        {extras.map((x, i) => (
-          <React.Fragment key={x.unit}>
-            {i < extras.length - 1 ? (
-              <span className={styles.fieldUnit}>,</span>
-            ) : (
-              <>
-                {" "}<span className={styles.fieldUnit}>and</span>
-              </>
-            )}{" "}
-            {amount(x.shown, x.places)} <span className={styles.fieldUnit}>{x.unit}</span>
-          </React.Fragment>
-        ))}
+      <dd className={styles.fieldValue} data-tint={washKey ? (washKey % 2 ? "a" : "b") : undefined}>
+        <span className={styles.fieldWide} aria-hidden="true">
+          {wide} <span className={styles.fieldUnit}>{unit}</span>
+        </span>
+        <span className={styles.fieldNow}>
+          <NumberFlow className={styles.fieldFlow} value={value} format={FLOW[places]} suffix={`\u00a0${unit}`} animated={live} />
+          {extras.map((x, i) => (
+            <React.Fragment key={x.unit}>
+              {i < extras.length - 1 ? (
+                <span className={styles.fieldUnit}>,</span>
+              ) : (
+                <>
+                  {" "}<span className={styles.fieldUnit}>and</span>
+                </>
+              )}{" "}
+              <NumberFlow className={styles.fieldFlow} value={x.value} format={FLOW[isWhole(x.value) ? 0 : 2]} suffix={`\u00a0${x.unit}`} animated={live} />
+            </React.Fragment>
+          ))}
+          <AnimatePresence initial={false}>
+            {delta ? (
+              <motion.span
+                key={`delta-${delta.key}`}
+                className={styles.fieldDelta}
+                role="status"
+                data-cue-ignore=""
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4, transition: { duration: 0.25, delay: 0 } }}
+                transition={{ type: "spring", duration: 0.5, bounce: 0.2, delay: 0.2 }}
+              >
+                {delta.parts.map((d) => (
+                  <span key={d.unit}>{signed(d)}</span>
+                ))}
+              </motion.span>
+            ) : null}
+          </AnimatePresence>
+        </span>
       </dd>
-    </div>
+    </motion.div>
   );
 }
 
@@ -899,50 +1764,119 @@ export function StripAt({ id, set }) {
  * Pager treats it as one block, and a marker written inside it counts as if
  * it stood after it.
  *
- *   <Do moment="max-borrow">
+ *   <Do moment="max-borrow" title="Check the most you can borrow">
  *
  *   On the Borrow tab, press MAX.
  *
  *   </Do>
+ *
+ * `title` names the step in a few words. It is the line the step's text
+ * folds to once the step is done (see `StepGroup`).
  */
-export function Do({ moment, children }) {
+export function Do({ moment, title = null, children }) {
   const { done } = usePosition();
-  const reduced = useReducedMotion();
+  // "Step 1 of 2" on a page with more than one step, "Try it" on a page with one.
+  const steps = useContext(StepsContext);
+  const at = steps.findIndex((s) => s.id === moment);
+  const label = steps.length > 1 && at >= 0 ? `Step ${at + 1} of ${steps.length}` : "Try it";
   const isDone = Boolean(done[moment]);
-  // "shown", "going" (folding away) or "gone". Decided at mount from the
-  // store, so a reload with the moment done draws nothing.
-  const [phase, setPhase] = useState(isDone ? "gone" : "shown");
-  const box = useRef(null);
-  const born = useRef(0);
-  useEffect(() => {
-    born.current = Date.now();
-  }, []);
-  useIsoLayoutEffect(() => {
-    if (!isDone) {
-      if (phase !== "shown") setPhase("shown");
-      return undefined;
-    }
-    if (phase !== "shown") return undefined;
-    const el = box.current;
-    // A moment that is done within a moment of the page loading was done on
-    // an earlier visit (the store restores just after mount): no fold then.
-    if (reduced || !el || justBorn(born)) {
-      setPhase("gone");
-      return undefined;
-    }
-    foldOut(el, 0.4);
-    el.style.opacity = "0";
-    setPhase("going");
-    const t = window.setTimeout(() => setPhase("gone"), 420);
-    return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDone]);
-  if (phase === "gone") return null;
+  // The instruction stays in its run. The run folds to a line once the step
+  // is done (`StepGroup`), and a reader who opens the line again finds the
+  // instruction where it was, marked done.
   return (
-    <div ref={box} className={styles.do} aria-hidden={phase === "going" ? true : undefined}>
-      {children}
+    <div className={`${styles.do} ${isDone ? styles.doDone : ""}`}>
+      <div className={styles.doBody} data-step-title={title ?? undefined}>
+        <div className={styles.doLabel}>
+          {label}
+          {isDone ? " · done" : ""}
+        </div>
+        {children}
+      </div>
     </div>
   );
+}
+
+/**
+ * The end of one part of a page that is read, not acted on: a Continue
+ * button, and the blocks after it wait for the press.
+ *
+ * A page that explains (what a redemption is, then what sets its rate) was
+ * one long column of text beside its figure. Cut into parts, the reader has
+ * one part in front of them at a time. Pressing Continue folds the part
+ * just read to a line with a tick and its `title`, as a finished step's
+ * text folds (`StepGroup`), and brings in the next. `moment` is the part's
+ * id in the store, listed with the lesson's moments in its page file.
+ *
+ *   A redemption removes MYT from your deposit ...
+ *
+ *   <ReadOn moment="read-redemptions" title="What a redemption does" />
+ *
+ *   How fast redemptions pay your loan down ...
+ *
+ * With no `title` and nothing before it, it is the Continue after an element
+ * that is stepped through (lesson 7's liquidation): the press folds the
+ * element's steps, and the line they fold to is the element's own.
+ */
+export function ReadOn({ moment }) {
+  const m = useMoment(moment);
+  useFooterAction(
+    moment,
+    m.done
+      ? null
+      : {
+          label: "Continue",
+          kind: "read",
+          onPress: () => {
+            m.apply({ ...m.position });
+            // Once the part just read has folded, see the next one into the window.
+            window.setTimeout(settleRead, FOLD_S * 1000 + 80);
+          },
+        },
+  );
+  return null;
+}
+
+/**
+ * After a Continue: bring the part it revealed into the window.
+ *
+ * The part just read folds to a line, so the next part starts higher than
+ * the button that was pressed. A reader who had scrolled down to that button
+ * would be left looking at the foot of the new part, or past it. And a part
+ * a little taller than what is left of the window had its own Continue cut
+ * through by the footer. So the window is moved up until the part's first
+ * line is under the header (with room for the line of the part before it),
+ * or down until its last line is over the footer, and never so far down that
+ * its first line leaves.
+ */
+function settleRead() {
+  const main = document.querySelector("main");
+  if (!main) return;
+  const parts = [...main.querySelectorAll(`.${styles.group}:not(.${styles.groupPast})`)].filter((g) => g.getClientRects().length > 0 && g.offsetHeight > 0);
+  const part = parts[parts.length - 1];
+  if (!part) return;
+  const room = roomNow();
+  const top = room.top + 12;
+  const foot = room.bottom - 16;
+  const r = part.getBoundingClientRect();
+  // Up when the part's first line is under the header (to where the line of
+  // the part before it shows too); otherwise down by what is under the footer.
+  let move = 0;
+  if (r.top < top) move = r.top - (top + 44);
+  else if (r.bottom > foot) move = Math.min(r.bottom - foot, r.top - top);
+  move = wholeLines(move, r.top - top);
+  if (Math.abs(move) < 1) {
+    // The part shows where the page is. The fold made the page shorter,
+    // though, and a page that was scrolled further than it now goes is left
+    // where it ends, which can be with the breadcrumb or the title cut
+    // through by the header. On down until the line is out, if the page goes
+    // that far; otherwise back up until it shows whole.
+    const left = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+    const down = wholeLines(0.01, r.top - top);
+    move = down > 1 && down <= left ? down : wholeLines(-0.01);
+    if (Math.abs(move) < 1) return;
+  }
+  const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollBy({ top: move, behavior: still ? "instant" : "smooth" });
 }
 
 /** Whether a part mounted less than half a second ago: nobody has acted on the page yet. */
@@ -961,7 +1895,7 @@ const justBorn = (born) => born.current === 0 || Date.now() - born.current < 500
  * bottom margin while it runs. The measuring happens before the browser
  * paints, so none of it shows.
  */
-function foldOut(el, seconds) {
+function foldOut(el, seconds, ease = "ease") {
   // What sits under the block: the next thing in the page that has a box.
   // A block that is the last child of its parent (a lesson control at the
   // foot of a stage) looks past the parent, because the margins under it
@@ -991,7 +1925,7 @@ function foldOut(el, seconds) {
   el.style.display = "";
   el.style.height = `${full}px`;
   void el.offsetHeight;
-  el.style.transition = `height ${seconds}s ease, margin ${seconds}s ease, opacity ${Math.max(seconds - 0.1, 0.1)}s ease`;
+  el.style.transition = `height ${seconds}s ${ease}, margin ${seconds}s ${ease}, opacity ${Math.max(seconds - 0.1, 0.1)}s ease`;
   el.style.height = "0px";
   el.style.marginTop = "0px";
   // `folded` was measured with the top margin above still on; it eases to
@@ -1011,7 +1945,7 @@ function foldOut(el, seconds) {
  *     <LessonControl onClick={run}>Apply a 10% loss</LessonControl>
  *   </FoldAway>
  */
-export function FoldAway({ show, children }) {
+export function FoldAway({ show, instant = false, seconds = 0.3, className = undefined, children }) {
   const reduced = useReducedMotion();
   const box = useRef(null);
   const [mounted, setMounted] = useState(show);
@@ -1027,16 +1961,17 @@ export function FoldAway({ show, children }) {
     if (!mounted) return undefined;
     const el = box.current;
     // Gone within a moment of the page loading: it was used on an earlier
-    // visit, so it simply is not there.
-    if (reduced || !el || justBorn(born)) {
+    // visit, so it simply is not there. `instant` says the same of a part
+    // that goes for another reason than the reader's last action.
+    if (reduced || !el || instant || justBorn(born)) {
       setMounted(false);
       return undefined;
     }
     el.style.transition = "opacity 0.18s ease";
     el.style.opacity = "0";
     el.style.pointerEvents = "none";
-    const fold = window.setTimeout(() => foldOut(el, 0.3), 190);
-    const gone = window.setTimeout(() => setMounted(false), 510);
+    const fold = window.setTimeout(() => foldOut(el, seconds), 190);
+    const gone = window.setTimeout(() => setMounted(false), 210 + seconds * 1000);
     return () => {
       window.clearTimeout(fold);
       window.clearTimeout(gone);
@@ -1045,7 +1980,7 @@ export function FoldAway({ show, children }) {
   }, [show]);
   if (!mounted) return null;
   return (
-    <div ref={box} aria-hidden={show ? undefined : true}>
+    <div ref={box} className={className} aria-hidden={show ? undefined : true} data-folding={show ? undefined : ""}>
       {children}
     </div>
   );
@@ -1055,12 +1990,13 @@ export function FoldAway({ show, children }) {
  * A stat's name in the text that lights the same stat on the practice
  * element. A dotted underline in copper, apart from
  * a `Term`'s grey one. Pointing at it (hover, keyboard focus, or a tap on a
- * touch screen) outlines the matching tile on every practice vault on the
- * page and the matching field in the strip. `name` is a tile ("apr",
- * "deposit", "debt", "health", "earmarked", "redemption", "borrowable",
- * "ltv"), "wallet", "available" (the Withdraw tab's Available line),
- * "manage" (the Dashboard row's button), "maxltv" or "liqltv" (the health
- * bar's markers).
+ * touch screen) lights whatever carries that name on the page on screen
+ * (`data-tile` or `data-point`) and the matching field in the strip, and
+ * pointing at the thing lights this. `name` is a tile ("apr", "deposit",
+ * "debt", "health", "earmarked", "redemption", "borrowable", "ltv"),
+ * "wallet", a part of the practice element ("field", "max-button",
+ * "available", "action", "bar", "max", "liq", "tab-borrow"), or a part of a
+ * figure or a capture (its `spots`).
  *
  *   Deposit fell by 208 plus 0.52, so <Stat name="deposit">Deposit</Stat> reads 9,791.48.
  *
@@ -1077,15 +2013,39 @@ export function FoldAway({ show, children }) {
  * (`pointed("ltv")`), which follows the aim; one that still compares
  * `stat === "ltv"` lights for `figure` but ignores `scope`.
  */
+/** Bring the thing a label names into the window, when none of it is between the header and the footer. */
+function showThing(key) {
+  const things = [...document.querySelectorAll("[data-cue-key]")].filter((el) => !el.hasAttribute("data-stat") && el.getAttribute("data-cue-key") === key);
+  if (!things.length || things.some((el) => el.closest("header"))) return;
+  const header = document.querySelector("header");
+  const footer = document.querySelector("footer");
+  const top = header ? header.getBoundingClientRect().bottom : 0;
+  const bottom = footer ? footer.getBoundingClientRect().top : window.innerHeight;
+  const seen = things.some((el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom > top + 8 && r.top < bottom - 8;
+  });
+  if (seen) return;
+  const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  things[0].scrollIntoView({ block: "center", behavior: still ? "instant" : "smooth" });
+}
+
 export function Stat({ name, figure = false, scope = null, children }) {
   const { pointer, setPointer } = useAppContext();
+  const id = useId();
   const aim = scope ?? (figure ? "figure" : null);
-  const mine = (p) => Boolean(p) && p.name === name && p.scope === aim;
+  // Lit while it is pointed at, and while the thing it names is pointed at
+  // on the element or the strip. A name written more than once on a page
+  // lights only the label under the pointer (or, from the thing, the one
+  // label the frame picks, `labelFor`): the others would pull the eye to
+  // themselves for nothing.
+  const mine = (p) => Boolean(p) && p.name === name && p.scope === aim && (p.id == null || p.id === id);
   const on = mine(pointer);
   const touch = useRef(false);
+  const lit = useRef(false);
   const ref = useRef(null);
   const set = setPointer ?? (() => {});
-  const point = () => set({ name, scope: aim });
+  const point = () => set({ name, scope: aim, id });
   const unpoint = () => set((p) => (mine(p) ? null : p));
   // A tap lights it until the next tap anywhere else.
   useEffect(() => {
@@ -1108,8 +2068,12 @@ export function Stat({ name, figure = false, scope = null, children }) {
       tabIndex={0}
       data-stat={name}
       data-stat-scope={aim ?? undefined}
+      data-stat-id={id}
       onPointerDown={(e) => {
         touch.current = e.pointerType !== "mouse";
+        // Whether it was lit before this tap: the tap's own focus lights it
+        // before the click arrives, so the click cannot ask.
+        lit.current = on;
       }}
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse") point();
@@ -1122,10 +2086,20 @@ export function Stat({ name, figure = false, scope = null, children }) {
         if (!touch.current) unpoint();
       }}
       onClick={() => {
-        if (touch.current) set((p) => (mine(p) ? null : { name, scope: aim }));
+        if (!touch.current) return;
+        // A tap lights it, and a tap on one already lit puts it out. On a
+        // touch screen the element is under or over the text, often out of
+        // the window: the tap that lights a label brings the thing it names
+        // into view.
+        if (lit.current) {
+          unpoint();
+          return;
+        }
+        point();
+        window.requestAnimationFrame(() => showThing(`${name}|${aim ?? ""}`));
       }}
     >
-      {children}
+      <span className={styles.statText}>{children}</span>
     </span>
   );
 }
@@ -1207,8 +2181,49 @@ export function StripAppears() {
  */
 const FIT_FLOOR = 0.9;
 
-function useFitRoom() {
+/**
+ * What a practice element needs under itself for its text to start in the
+ * window: the space under it and about three lines.
+ */
+const UNDER = 170;
+
+/** What an element beside its text keeps under itself: a little air over the footer. */
+const UNDER_BESIDE = 16;
+
+/**
+ * Whether the stage's practice vault has folded its used tabs and panel
+ * away, and whether that happened in front of the reader (`live`) or was
+ * simply so when the page was drawn. Outside a stage nothing folds.
+ */
+const FoldedContext = createContext({ folded: false, live: false });
+
+/** How long a used panel takes to fold: it is over 300px tall, and at a lesson control's 0.3s it snapped shut. */
+const FOLD_PANEL = 0.45;
+
+/** What the practice vault wraps its tabs and panel in (the app context's `Fold`). */
+function StageFold({ children }) {
+  const { folded, live } = useContext(FoldedContext);
+  return (
+    <FoldAway show={!folded} instant={!live} seconds={FOLD_PANEL}>
+      {children}
+    </FoldAway>
+  );
+}
+
+/**
+ * `folded` (a ref) says the stage has folded part of itself away; its full
+ * height is then the last one measured before the fold, so the zoom and the
+ * answer do not change because of the fold itself. `onShort` is told whether
+ * the stage at full height, with the start of the text under it, is more
+ * than the room.
+ */
+function useFitRoom(folded = null, onShort = null, side = false) {
   const ref = useRef(null);
+  const full = useRef(0);
+  // Beside its text an element needs no room under itself for the text, only
+  // to fit between the header and the footer.
+  const under = side ? 0 : UNDER;
+  const spare = side ? 0 : 24;
   // The footer arrives once the pager has counted the pages, and the strip
   // joins the header part way through lesson 1. Neither changes the stage's
   // own size, so the frame says when they come and go and the room is
@@ -1227,26 +2242,48 @@ function useFitRoom() {
       raf = 0;
       const header = document.querySelector("header");
       const footer = document.querySelector("footer");
-      const room =
-        window.innerHeight -
-        (header ? header.getBoundingClientRect().height : 0) -
-        (footer ? footer.getBoundingClientRect().height : 0) -
-        24;
+      // The part of the header that stays pinned: all of it, or in a short
+      // window its strip alone (the Shell pins it at a negative `top`).
+      const pinned = header ? Math.max(0, header.getBoundingClientRect().height + Math.min(0, parseFloat(getComputedStyle(header).top) || 0)) : 0;
+      // Beside its text the element starts under the room the page keeps
+      // over its breadcrumb (the body's padding), then the row's breadcrumb
+      // and title, so its size is worked out for the room under them: an
+      // element that can fit there is whole when the page opens, without a
+      // scroll.
+      const page = side ? el.closest(`.${styles.body}`) : null;
+      const over = Math.max(BENCH_GAP, page ? parseFloat(getComputedStyle(page).paddingTop) || 0 : 0);
+      const room = window.innerHeight - pinned - (footer ? footer.getBoundingClientRect().height : 0) - (side ? over + UNDER_BESIDE : 24);
+      const bench = side ? el.closest("[data-bench]") : null;
+      const headBox = bench ? bench.querySelector(`:scope > .${styles.benchHead}`) : null;
+      const head = headBox ? headBox.getBoundingClientRect().height : 0;
       const current = Number(el.style.zoom) || 1;
+      const isFolded = Boolean(folded && folded.current);
       // A phone keeps the app's own tall layout and scrolls it, as the app
       // does (the kit switches to its narrow figures under 640px).
       if (room <= 0 || window.innerWidth < 640) {
         if (current !== 1) set(1);
+        const tall = el.getBoundingClientRect().height;
+        if (tall && !isFolded) full.current = tall;
+        if (onShort && room > 0 && full.current) onShort(full.current + under > room + spare);
         return;
       }
       // The height at full size and the column's width, so the answer does
       // not depend on the zoom it had (a widened stage is a little shorter,
       // and measuring that would let the zoom drift back and forth).
-      if (current !== 1) set(1);
-      const natural = el.getBoundingClientRect().height;
-      if (!natural) return;
-      const next = Math.max(FIT_FLOOR, Math.min(1, Math.floor((room / natural) * 1000) / 1000));
-      set(Math.abs(next - current) < 0.003 ? current : next);
+      let natural = full.current;
+      if (!isFolded || !natural) {
+        if (current !== 1) set(1);
+        natural = el.getBoundingClientRect().height;
+        if (!natural) {
+          if (current !== 1) set(current);
+          return;
+        }
+        if (!isFolded) full.current = natural;
+      }
+      const next = Math.max(FIT_FLOOR, Math.min(1, Math.floor(((room - head) / natural) * 1000) / 1000));
+      const zoom = Math.abs(next - current) < 0.003 ? current : next;
+      set(zoom);
+      if (onShort) onShort(natural * zoom + under > room + spare);
     };
     const schedule = () => {
       if (!raf) raf = window.requestAnimationFrame(fit);
@@ -1261,7 +2298,7 @@ function useFitRoom() {
       window.removeEventListener("resize", schedule);
       if (raf) window.cancelAnimationFrame(raf);
     };
-  }, [frame]);
+  }, [frame, side]);
   return ref;
 }
 
@@ -1271,11 +2308,32 @@ function useFitRoom() {
  * and never taller than the window's room (`useFitRoom`).
  */
 export function Stage({ children }) {
-  const ref = useFitRoom();
+  const finished = useContext(StepContext);
+  const { play } = usePosition();
+  const [short, setShort] = useState(false);
+  const folded = finished && short;
+  const foldedRef = useRef(folded);
+  foldedRef.current = folded;
+  // The fold is shown as it happens only when the reader's own action
+  // finished the element. One that is finished when the page is drawn, or
+  // when its page is turned to, is simply folded.
+  const was = useRef({ finished, play });
+  const live = useRef(false);
+  if (was.current.finished !== finished) {
+    live.current = finished && play !== was.current.play;
+    was.current = { finished, play };
+  } else if (!finished) {
+    was.current.play = play;
+  }
+  const side = useContext(BenchContext);
+  const ref = useFitRoom(foldedRef, setShort, side);
+  const fold = useMemo(() => ({ folded, live: live.current }), [folded]);
   return (
-    <div ref={ref} className={styles.stage}>
-      {children}
-    </div>
+    <FoldedContext.Provider value={fold}>
+      <div ref={ref} className={styles.stage}>
+        {children}
+      </div>
+    </FoldedContext.Provider>
   );
 }
 
@@ -1287,7 +2345,8 @@ export function Shot({ name, column = false, children }) {
   // `column` keeps a narrow capture (the Swap card) at a reading width on
   // the column's left edge, where it sits at its own size instead of
   // floating small in the middle of the stage.
-  const ref = useFitRoom();
+  const side = useContext(BenchContext);
+  const ref = useFitRoom(null, null, side);
   return (
     <div ref={ref} className={`${column ? styles.column : styles.stage} ${styles.shot}`}>
       <AppShot shot={SHOTS[name]} label={null}>
@@ -1296,3 +2355,4 @@ export function Shot({ name, column = false, children }) {
     </div>
   );
 }
+Shot.figure = true;

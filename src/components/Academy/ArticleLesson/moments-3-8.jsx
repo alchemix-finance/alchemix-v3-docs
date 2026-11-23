@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import own from "../Beginner/styles.module.css";
 import ls from "../lesson.module.css";
 import styles from "./styles.module.css";
 import {
-  AppButton, AppDelta, AppFixedCard, AppFixedRow, AppInput, AppSwapCard, AppVaultRow, PracticeVault, useReducedMotion,
+  AppButton, AppDelta, AppFixedCard, AppFixedRow, AppInput, AppSwapCard, AppVaultRow, PracticeVault, usePointed, useReducedMotion,
 } from "../AppMock";
-import { LessonControl, StepList, money } from "../kit";
+import { StepList, money } from "../kit";
 import { TAUGHT } from "../Beginner";
 import { PROTOCOL_FEE, simpleCurve } from "../lib/model";
 import useElementWidth from "../lib/useElementWidth";
-import { useMoment, useMomentNote, usePosition } from "./position";
-import { FoldAway, Stage } from "./index";
+import { useFooterAction, useMoment, useMomentNote, usePosition } from "./position";
+import { Stage, useBeside, useRailSlot, wholeLines } from "./index";
 import { NOT_READY, OVER_WALLET } from "./moments";
 
 /**
@@ -27,8 +28,9 @@ import { NOT_READY, OVER_WALLET } from "./moments";
  * one block); lesson 6's last page repays and then withdraws on one vault;
  * lesson 7's two what-ifs act on one vault without touching the practice
  * wallet, and its liquidation and lesson 8's loop are step sequences on a
- * Next step control. The figures that were drawn mocks (the LTV stats, the
- * Redemption Rate, the health bar) are real captures now, in the MDX.
+ * Next step control. The figures with nothing to press (the position stats,
+ * the Redemption Rate, the bar's two limits, the Dashboard's position) are
+ * at the foot of this file.
  */
 
 const APR = 0.05;
@@ -78,7 +80,7 @@ export function BorrowMoment() {
         deposit={shown.deposit}
         debt={shown.debt}
         taught={TAUGHT.max}
-        lit={live && n > 0 ? ["debt", "ltv", "borrowable"] : ["debt"]}
+        lit={live && n > 0 ? ["debt", "ltv", "borrowable"] : []}
         prev={m.before}
         preview={live && n > 0 ? { debt: shown.debt + n } : null}
         tab="Borrow"
@@ -142,6 +144,24 @@ export function SwapMoment() {
   );
 }
 SwapMoment.moment = "swap";
+
+/**
+ * The Swap card with an example filled in, for the page that explains the
+ * discount: 1,000 alUSD in, 970 USDC out, and the rate between them. The
+ * app's own card with nothing typed shows 0.00 in both boxes, so a capture
+ * of it showed no discount. Nothing on it can be pressed.
+ */
+export function SwapExampleFigure() {
+  return (
+    <div className={styles.swapPlace}>
+      <AppSwapCard price={PRICE} amount="1000" tag="Example" />
+    </div>
+  );
+}
+SwapExampleFigure.figure = true;
+SwapExampleFigure.benchWidth = "34rem";
+// The card is 34rem wide: a `Beside` row sizes itself to it.
+SwapMoment.benchWidth = "34rem";
 SwapMoment.hint = "Type 5,000 and press Swap";
 
 /* ── Lesson 5: The loan pays itself off ──────────────────── */
@@ -164,6 +184,7 @@ export function RedeemMoment() {
     const debt = p.debt - piece;
     m.apply({ ...p, deposit: p.deposit - piece - piece * PROTOCOL_FEE, debt, earmarked: slice(debt) });
   };
+  useFooterAction("redeem", m.done ? null : { label: "Run redemption", disabled: !m.ready, onPress: run });
   return (
     <Stage>
       <PracticeVault
@@ -180,12 +201,6 @@ export function RedeemMoment() {
         ltvDigits={1}
         wash
       />
-      {/* Gone once pressed: "Run again" under the element is the way back. */}
-      <FoldAway show={!m.done}>
-        <LessonControl disabled={!m.ready} hint={NOT_READY} onClick={run}>
-          Run redemption
-        </LessonControl>
-      </FoldAway>
     </Stage>
   );
 }
@@ -221,13 +236,6 @@ const MONTH_STEPS = CURVE.slice(1).map((p, i) => {
   return { month: p.month, from: a, top, redeemed, fee: redeemed * PROTOCOL_FEE, earned: top - a.collateral, to: p };
 });
 
-/** The year in sums, rounded: what yield added and what redemptions and fees took. */
-const YEAR_SUMS = {
-  earned: Math.round(MONTH_STEPS.reduce((s, x) => s + x.earned, 0)),
-  redeemed: Math.round(MONTH_STEPS.reduce((s, x) => s + x.redeemed, 0)),
-  fees: Math.round(MONTH_STEPS.reduce((s, x) => s + x.fee, 0)),
-};
-
 /**
  * The year's end in whole numbers, as the lesson reads it (Deposit 8,456,
  * Debt 3,000): the model's 8,456.06 and 3,000.33 would otherwise show their
@@ -239,7 +247,7 @@ const YEAR_DEBT = Math.round(YEAR_END.debt);
 /**
  * "Press Skip ahead a year." The chart draws the twelve months in, a step a
  * month; the strip moves to the year's end (8,456 and 3,000, with the next
- * share earmarked), and the year's sums appear under the chart.
+ * share earmarked). The year's sums are in the page's text.
  */
 export function YearOfRedemptions() {
   const m = useMoment("year");
@@ -251,16 +259,8 @@ export function YearOfRedemptions() {
     setDrawing(false);
     if (!m.done) m.apply({ ...m.position, deposit: YEAR_DEPOSIT, debt: YEAR_DEBT, earmarked: slice(YEAR_DEBT) });
   };
-  return (
-    <>
-      <YearChart run={drawing || m.done} onDone={finish} sums={m.done} />
-      <FoldAway show={!m.done}>
-        <LessonControl disabled={!m.ready || drawing} hint={drawing ? null : NOT_READY} onClick={() => setDrawing(true)}>
-          Skip ahead a year
-        </LessonControl>
-      </FoldAway>
-    </>
-  );
+  useFooterAction("year", m.done ? null : { label: "Skip ahead a year", disabled: !m.ready || drawing, onPress: () => setDrawing(true) });
+  return <YearChart run={drawing || m.done} onDone={finish} />;
 }
 YearOfRedemptions.moment = "year";
 YearOfRedemptions.hint = "Press Skip ahead a year to continue";
@@ -280,7 +280,7 @@ const RISE = 0.75;
  * chart (mouse, a tap, or the arrow keys once it has focus) draws a guide
  * at the nearest month and a readout of that month's three figures.
  */
-function YearChart({ run, onDone, sums = false }) {
+function YearChart({ run, onDone }) {
   const reduced = useReducedMotion();
   // Mounted with the year already run (a reload): drawn in full, no replay.
   const [shown, setShown] = useState(run ? MONTHS : 0);
@@ -307,7 +307,7 @@ function YearChart({ run, onDone, sums = false }) {
     return () => window.cancelAnimationFrame(raf);
   }, [run, reduced]);
 
-  const [ref, width] = useElementWidth();
+  const [ref, , width] = useElementWidth();
   const [hover, setHover] = useState(null);
   const narrow = width < 480;
   const w = Math.max(width, 260);
@@ -365,6 +365,19 @@ function YearChart({ run, onDone, sums = false }) {
     </g>
   );
 
+  // A line the text points at (`<Stat name="line-debt">`) is drawn heavier
+  // and the other two step back. The lines take no pointer themselves, so a
+  // reader moving along the chart to read a month does not light and unlight
+  // them on the way; the key under the chart is where a line is pointed at.
+  const isPointed = usePointed();
+  const LINES = ["line-deposit", "line-debt", "line-lender"];
+  const litLine = LINES.find((k) => isPointed(k)) ?? null;
+  const lineProps = (k) => ({
+    "data-point": k,
+    style: { pointerEvents: "none", opacity: litLine && litLine !== k ? 0.35 : 1, transition: "opacity 0.2s ease" },
+  });
+  const heavy = (k, w) => (litLine === k ? w + 1.5 : w);
+
   return (
     <div className={own.chartCard}>
       <div
@@ -412,24 +425,26 @@ function YearChart({ run, onDone, sums = false }) {
 
             {at != null ? <line x1={x(at)} x2={x(at)} y1={mg.top} y2={mg.top + plotH} className={styles.yearGuide} /> : null}
 
-            <path
-              d={`M${x(0)},${y(START5.debt)} L${x(lenderEnd)},${y(compareAt(lenderEnd))}`}
-              fill="none" stroke={COLORS.compare} strokeWidth={2} strokeDasharray="7 6" strokeLinecap="round"
-            />
-            <path d={path(debtPts)} fill="none" stroke={COLORS.debt} strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
-            <path d={path(depositPts)} fill="none" stroke={COLORS.deposit} strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
-
-            <circle cx={x(0)} cy={y(START5.deposit)} r={4} fill={COLORS.deposit} />
-            <text x={x(0) + 8} y={y(START5.deposit) - 9} className={ls.markerText} textAnchor="start">{money(START5.deposit)}</text>
-            <circle cx={x(0)} cy={y(START5.debt)} r={4} fill={COLORS.debt} />
-            <text x={x(0) + 8} y={y(START5.debt) + 17} className={ls.markerText} textAnchor="start">{money(START5.debt)}</text>
-            {full ? (
-              <>
-                {endLabel(YEAR_END.collateral, COLORS.deposit)}
-                {endLabel(compareAt(MONTHS), COLORS.compare)}
-                {endLabel(YEAR_END.debt, COLORS.debt)}
-              </>
-            ) : null}
+            {/* Each line with its end dot and end figure, as one part. */}
+            <g {...lineProps("line-lender")}>
+              <path
+                d={`M${x(0)},${y(START5.debt)} L${x(lenderEnd)},${y(compareAt(lenderEnd))}`}
+                fill="none" stroke={COLORS.compare} strokeWidth={heavy("line-lender", 2)} strokeDasharray="7 6" strokeLinecap="round"
+              />
+              {full ? endLabel(compareAt(MONTHS), COLORS.compare) : null}
+            </g>
+            <g {...lineProps("line-debt")}>
+              <path d={path(debtPts)} fill="none" stroke={COLORS.debt} strokeWidth={heavy("line-debt", 2.5)} strokeLinejoin="round" strokeLinecap="round" />
+              <circle cx={x(0)} cy={y(START5.debt)} r={4} fill={COLORS.debt} />
+              <text x={x(0) + 8} y={y(START5.debt) + 17} className={ls.markerText} textAnchor="start">{money(START5.debt)}</text>
+              {full ? endLabel(YEAR_END.debt, COLORS.debt) : null}
+            </g>
+            <g {...lineProps("line-deposit")}>
+              <path d={path(depositPts)} fill="none" stroke={COLORS.deposit} strokeWidth={heavy("line-deposit", 2.5)} strokeLinejoin="round" strokeLinecap="round" />
+              <circle cx={x(0)} cy={y(START5.deposit)} r={4} fill={COLORS.deposit} />
+              <text x={x(0) + 8} y={y(START5.deposit) - 9} className={ls.markerText} textAnchor="start">{money(START5.deposit)}</text>
+              {full ? endLabel(YEAR_END.collateral, COLORS.deposit) : null}
+            </g>
 
             {point ? (
               <>
@@ -459,28 +474,10 @@ function YearChart({ run, onDone, sums = false }) {
         ) : null}
       </div>
       <div className={own.key}>
-        <span style={{ color: COLORS.deposit }}><i />Deposit</span>
-        <span style={{ color: COLORS.debt }}><i />Debt</span>
-        <span style={{ color: COLORS.compare }}><i className={own.dashed} />Lender loan, 5,000 USDC at 7%</span>
+        <span style={{ color: COLORS.deposit }} data-point="line-deposit"><i />Deposit</span>
+        <span style={{ color: COLORS.debt }} data-point="line-debt"><i />Debt</span>
+        <span style={{ color: COLORS.compare }} data-point="line-lender"><i className={own.dashed} />Lender loan, 5,000 USDC at 7%</span>
       </div>
-      {sums ? (
-        // The year in sums: the text gives the yield and the fees, so the
-        // figure shows them.
-        <div className={styles.yearSums}>
-          <span className={styles.yearSum}>
-            <span className={styles.yearSumLabel}>Deposit</span>
-            <AppDelta>yield +{money(YEAR_SUMS.earned)}</AppDelta>
-            <AppDelta>redemptions −{money(YEAR_SUMS.redeemed)}</AppDelta>
-            <AppDelta>fees −{money(YEAR_SUMS.fees)}</AppDelta>
-            <span className={styles.yearSumTo}>→ {money(YEAR_DEPOSIT)}</span>
-          </span>
-          <span className={styles.yearSum}>
-            <span className={styles.yearSumLabel}>Debt</span>
-            <AppDelta>redemptions −{money(YEAR_SUMS.redeemed)}</AppDelta>
-            <span className={styles.yearSumTo}>→ {money(YEAR_DEBT)}</span>
-          </span>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -533,6 +530,8 @@ export function AvailableFigure() {
     </Stage>
   );
 }
+
+AvailableFigure.figure = true;
 
 /**
  * "Pick USDC in the token picker, type 1,000 in the field and press Repay."
@@ -701,7 +700,14 @@ export function WhatIfMoment() {
   const drop = useMoment("drop");
   const loss = useMoment("loss");
   const { position } = drop;
-  const dropped = drop.done && !loss.done;
+  // The price is back at 1.00 once the reader has read why the LTV held
+  // (the page's Continue), which is where the text says so. Held until the
+  // loss was applied, the vault still showed 0.90 under a sentence that said
+  // the price was back.
+  const held = useMoment("read-ltv-held");
+  const dropped = drop.done && !held.done && !loss.done;
+  useFooterAction("drop", drop.done ? null : { label: "Drop the price", disabled: !drop.ready, onPress: () => drop.apply({ ...drop.position }) });
+  useFooterAction("loss", loss.done ? null : { label: "Apply a 10% loss", disabled: !loss.ready, onPress: () => loss.apply({ ...loss.position }) });
   const deposit = loss.done ? position.deposit * 0.9 : position.deposit;
   return (
     <Stage>
@@ -717,25 +723,17 @@ export function WhatIfMoment() {
         prev={loss.done ? { deposit: position.deposit } : dropped ? { deposit: position.deposit, debt: position.debt } : undefined}
         chipTone="app"
         wash
+        tag="What if"
         // The price row is there from the start, at 1.00, so the drop changes
         // a figure and nothing moves (a row added on the press changed the
         // element's size in one frame).
         wallet={
-          <div className={styles.priceNote}>
+          <div className={styles.priceNote} data-point="price">
             <span>USDC price</span>
             {dropped ? <AppDelta tone="bad">0.90, was 1.00</AppDelta> : <span className={styles.priceValue}>1.00</span>}
           </div>
         }
       />
-      {!drop.done ? (
-        <LessonControl disabled={!drop.ready} hint={NOT_READY} onClick={() => drop.apply({ ...drop.position })}>
-          Drop the price
-        </LessonControl>
-      ) : !loss.done ? (
-        <LessonControl disabled={!loss.ready} hint={NOT_READY} onClick={() => loss.apply({ ...loss.position })}>
-          Apply a 10% loss
-        </LessonControl>
-      ) : null}
     </Stage>
   );
 }
@@ -748,7 +746,14 @@ WhatIfMoment.hint = "Press Drop the price to continue";
  * step records the moment `id` with the position unchanged, so the footer's
  * Next opens with it. `states` gives a practice vault per step (lesson 7's
  * liquidation), each with the index of the state its chips are drawn from;
- * `figures` gives chips under each step instead (lesson 8's loop).
+ * `figures` gives chips under a step (what the borrower still holds, under
+ * the liquidation's second step).
+ *
+ * Where the page's text is beside the element (a `Beside` row), the steps
+ * are drawn in the text's column, so each step is read beside the vault it
+ * describes, and the control stays under the vault like every other lesson
+ * control: in the text's column it moved down a step's height at each press
+ * and left the window at the second.
  *
  *   <LiquidationSequence>
  *
@@ -768,6 +773,67 @@ function Sequence({ id, states = null, figures = [], children }) {
   const shown = Math.min(step, total);
   const state = states ? states[shown] : null;
   const from = state && state.prev != null ? states[state.prev] : null;
+  const slot = useRailSlot();
+  const beside = useBeside();
+  // A press adds a step, and where the control is under the steps it moves
+  // down by the step's height. The window follows, far enough to keep the
+  // new step and the control above the pinned footer and never so far that
+  // the new step's first line goes under the header. The last press is left
+  // to the page, which settles the window when a moment is done.
+  const stepsBox = useRef(null);
+  const pressed = useRef(false);
+  useEffect(() => {
+    if (!pressed.current) return;
+    pressed.current = false;
+    const box = stepsBox.current;
+    const last = box ? box.querySelector("ol > li:last-child") : null;
+    if (!last) return;
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
+    const top = (header ? Math.max(0, header.getBoundingClientRect().bottom) : 0) + 16;
+    const bottom = (footer ? Math.min(window.innerHeight, footer.getBoundingClientRect().top) : window.innerHeight) - 16;
+    const end = last;
+    const follow = () => {
+      const most = last.getBoundingClientRect().top - top;
+      const down = wholeLines(Math.min(end.getBoundingClientRect().bottom - bottom, most), most);
+      if (down > 0) {
+        const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollBy({ top: down, behavior: still ? "instant" : "smooth" });
+      }
+    };
+    // The last press also finishes the moment, and the page settles itself
+    // for most of a second after that; the step is followed once it has.
+    if (shown < total) {
+      follow();
+      return undefined;
+    }
+    const t = window.setTimeout(follow, 1600);
+    return () => window.clearTimeout(t);
+  }, [shown]);
+  const steps =
+    shown > 0 ? (
+      <div ref={stepsBox} className={styles.steps}>
+        <StepList steps={items.slice(0, shown).map((li, i) => ({ text: li.props.children, figures: figures[i] ?? [] }))} />
+      </div>
+    ) : null;
+  // The next step is the footer's button, like every press that belongs to
+  // the lesson (see `useFooterAction`).
+  useFooterAction(
+    id,
+    shown < total
+      ? {
+          label: "Next step",
+          kind: "next",
+          disabled: !m.ready,
+          onPress: () => {
+            const next = shown + 1;
+            setStep(next);
+            pressed.current = true;
+            if (next === total) m.apply({ ...m.position });
+          },
+        }
+      : null,
+  );
   return (
     <>
       {state ? (
@@ -781,27 +847,18 @@ function Sequence({ id, states = null, figures = [], children }) {
             prev={from ? { deposit: from.deposit, debt: from.debt } : undefined}
             chipTone="app"
             wash
+            tag="What if"
           />
         </Stage>
       ) : null}
-      {shown > 0 ? (
-        <div className={styles.steps}>
-          <StepList steps={items.slice(0, shown).map((li, i) => ({ text: li.props.children, figures: figures[i] ?? [] }))} />
-        </div>
-      ) : null}
-      {shown < total ? (
-        <LessonControl
-          disabled={!m.ready}
-          hint={m.ready ? null : NOT_READY}
-          onClick={() => {
-            const next = shown + 1;
-            setStep(next);
-            if (next === total) m.apply({ ...m.position });
-          }}
-        >
-          Next step
-        </LessonControl>
-      ) : null}
+      {state && beside ? (
+        // Beside the text, the steps are in the text's column. They fold
+        // away with the text before them once the sequence is done, and
+        // while they are folded there is no place to draw them.
+        slot ? createPortal(steps, slot) : null
+      ) : (
+        steps
+      )}
     </>
   );
 }
@@ -845,6 +902,7 @@ export function LiquidationSequence({ children }) {
 }
 LiquidationSequence.moment = "liquidation";
 LiquidationSequence.hint = "Step through the liquidation to continue";
+LiquidationSequence.stepsTitle = "Step through the liquidation";
 
 /* ── Lesson 8: The other side of your loan ───────────────── */
 
@@ -855,7 +913,7 @@ const ALUSD = Math.round(SPEND / PRICE);
 // Dashboard's Profit in dollars (checked against the live app, 2026-11-10).
 // The cap is the live Ethereum card's on 2026-11-12, the one in the capture
 // above the practice card; the advanced lessons keep the kit's 2.4M default.
-const CARD = { apr: Math.floor((((ALUSD - SPEND) / SPEND) * 365) / 120 * 10000) / 10000, price: "0.970 USDC", term: "4 Months", maturity: "Mar 04, 2027", early: "1.00%", cap: "2.4M/2.5M alUSD", capFill: 0.96 };
+const CARD = { apr: Math.floor((((ALUSD - SPEND) / SPEND) * 365) / 120 * 10000) / 10000, price: "0.970 USDC", term: "4 months", maturity: "Mar 04, 2027", early: "1.00%", cap: "100K/2.5M alUSD", capLabel: "Available Space", capFill: 0.96 };
 const ROW = { apr: "9.40%", end: "Mar 04, 2027", deposit: "5,000 alUSD", profit: "$150" };
 const EARLY_FEE = 0.01;
 
@@ -919,16 +977,19 @@ export function ClaimMoment() {
         deposit={m.done ? "0 alUSD" : ROW.deposit}
         date="Mar 04, 2027"
         lit={["apr", "end", "deposit", "profit", "action"]}
-        // Held in place (hidden) before the claim, so the row does not grow.
+        // Under the table once the claim is made (the frame grows to take it).
         wallet={
-          <div className={styles.priceNote} style={m.done ? undefined : { visibility: "hidden" }} aria-hidden={m.done ? undefined : true}>
-            <span>Paid out</span>
-            <AppDelta tone="good">+5,000 USDC</AppDelta>
-            <AppDelta tone="bad">5,000 alUSD burned</AppDelta>
-          </div>
+          m.done ? (
+            <div className={own.paid}>
+              <span>Paid out</span>
+              <AppDelta tone="good">+5,000 USDC</AppDelta>
+              <AppDelta>5,000 alUSD burned</AppDelta>
+            </div>
+          ) : null
         }
         action={
           <AppButton
+            point="claim"
             disabled={!m.ready || !((m.position.fixedYield ?? 0) > 0)}
             hint={m.done ? null : !m.ready ? NOT_READY : !((m.position.fixedYield ?? 0) > 0) ? "Nothing in Fixed Yield to claim" : null}
             onClick={() => m.apply({ ...m.position, wallet: m.position.wallet + m.position.fixedYield, fixedYield: 0 })}
@@ -943,33 +1004,219 @@ export function ClaimMoment() {
 ClaimMoment.moment = "claim";
 ClaimMoment.hint = "Press Claim to continue";
 
-/** The figures under each step of lesson 8's loop: the practice wallet's own numbers. */
-const LOOP_FIGURES = [
-  [
-    { label: "Borrowers' Debt", value: "5,000 alUSD" },
-    { label: "Borrowers' wallet", value: "+4,850 USDC" },
-    { label: "Discount", value: "150 USDC", tone: "bad" },
-  ],
-  [
-    { label: "Your wallet", value: "-4,850 USDC", tone: "bad" },
-    { label: "Fixed Yield", value: "5,000 alUSD" },
-  ],
-  [
-    { label: "Borrowers' Earmarked", value: "5,000 alUSD" },
-  ],
-  [
-    { label: "Borrowers' Deposit", value: "-5,012.50 USDC", tone: "bad" },
-    { label: "Borrowers' Debt", value: "-5,000 alUSD" },
-    { label: "Your wallet", value: "+5,000 USDC" },
-    { label: "Burned", value: "5,000 alUSD" },
-  ],
+/**
+ * Lesson 8's loop as one picture: the four parties at the corners of a
+ * square, and what moves between them along its sides.
+ *
+ * The parties are the same four in every step, each under one name. A side
+ * of the square is the two parties it joins: `top` the vault and the
+ * borrower, `right` the borrower and you, `bottom` you and the Transmuter,
+ * `left` the Transmuter and the vault. A step's `flows` say what moves along
+ * a side and to whom (`to`); `claim` marks one that is a claim on debt and
+ * moves no token (the earmark), drawn dashed. A step's `nodes` are the lines
+ * a party shows once the step has happened, each `[label, value, tone]`; a
+ * party keeps the lines of the last step that gave it any.
+ *
+ * One rule for color: a figure is neutral unless it is what a wallet gained
+ * ("good") or gave up ("bad").
+ */
+const PARTIES = {
+  vault: "The borrower's vault",
+  borrower: "The borrower",
+  you: "You",
+  transmuter: "The Transmuter",
+};
+const SIDES = { top: ["vault", "borrower"], right: ["borrower", "you"], bottom: ["transmuter", "you"], left: ["vault", "transmuter"] };
+const LOOP = [
+  {
+    flows: [
+      { side: "top", to: "borrower", value: "5,000 alUSD" },
+      { side: "right", to: "you", value: "5,000 alUSD" },
+      { side: "right", to: "borrower", value: "4,850 USDC" },
+    ],
+    nodes: {
+      vault: [["Debt", "5,000 alUSD"]],
+      borrower: [["Wallet", "+4,850 USDC", "good"], ["Discount paid", "150 USDC", "bad"]],
+    },
+  },
+  {
+    flows: [
+      { side: "right", to: "you", value: "5,000 alUSD" },
+      { side: "right", to: "borrower", value: "4,850 USDC" },
+      { side: "bottom", to: "transmuter", value: "5,000 alUSD" },
+    ],
+    nodes: {
+      you: [["Wallet", "-4,850 USDC", "bad"], ["Fixed Yield", "5,000 alUSD"]],
+      transmuter: [["Holds", "5,000 alUSD"]],
+    },
+  },
+  {
+    flows: [{ side: "left", to: "vault", value: "5,000 alUSD earmarked", claim: true }],
+    nodes: {
+      vault: [["Debt", "5,000 alUSD"], ["Earmarked", "5,000 alUSD"]],
+    },
+  },
+  {
+    flows: [
+      { side: "left", to: "transmuter", value: "5,000 USDC" },
+      { side: "bottom", to: "you", value: "5,000 USDC" },
+    ],
+    nodes: {
+      vault: [["Debt", "0 alUSD"], ["Deposit", "-5,012.50 USDC"]],
+      transmuter: [["Burned", "5,000 alUSD"]],
+      you: [["Wallet", "+5,000 USDC", "good"], ["Return", "150 USDC", "good"]],
+    },
+  },
 ];
 
-export function LoopSequence({ children }) {
+/** The arrow of a flow: across a side that lies flat, or along one that stands. */
+function FlowArrow({ dir }) {
+  const turn = { right: 0, down: 90, left: 180, up: 270 }[dir];
   return (
-    <Sequence id="loop" figures={LOOP_FIGURES}>
-      {children}
-    </Sequence>
+    <svg className={own.loopArrow} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ transform: `rotate(${turn}deg)` }}>
+      <path d="M4 12h15M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+/** A minus sign for a figure typed with a hyphen. */
+const signed = (v) => String(v).replace(/^-/, "−");
+
+/**
+ * Lesson 8, "Where your payout comes from": the loop from the borrower's loan
+ * to the reader's claim, one step to a press of the footer's button.
+ *
+ * It was a list of four cards, each with its own row of chips, which named
+ * the same things differently from card to card ("Borrowers' wallet", "Your
+ * wallet", "Fixed Yield", "Burned") and colored them by no rule a reader
+ * could find. Here every step is drawn on the same four parties, so a step
+ * is read as what moved from whom to whom, and the square closes when the
+ * claim pays out. The step's sentence, from the MDX's list, is under the
+ * picture; the numbers over it open any step already shown.
+ *
+ *   <LoopSequence>
+ *
+ *   1. A borrower borrows 5,000 alUSD ...
+ *   ...
+ *
+ *   </LoopSequence>
+ */
+export function LoopSequence({ children }) {
+  const m = useMoment("loop");
+  const list = React.Children.toArray(children).find((c) => React.isValidElement(c));
+  const items = list ? React.Children.toArray(list.props.children).filter((c) => React.isValidElement(c)) : [];
+  const total = Math.min(items.length, LOOP.length);
+  // The step reached (1 as the page opens) and the one on show.
+  const [reached, setReached] = useState(m.done ? total : 1);
+  const [view, setView] = useState(m.done ? total : 1);
+  const at = Math.min(view, total) - 1;
+  useFooterAction(
+    "loop",
+    reached < total
+      ? {
+          label: "Next step",
+          kind: "next",
+          disabled: !m.ready,
+          onPress: () => {
+            const next = reached + 1;
+            setReached(next);
+            setView(next);
+            if (next === total) m.apply({ ...m.position });
+          },
+        }
+      : null,
+  );
+  const step = LOOP[at];
+  // Each party's lines as of the step on show, and whether this step set them.
+  const lines = (party) => {
+    for (let i = at; i >= 0; i--) if (LOOP[i].nodes[party]) return { rows: LOOP[i].nodes[party], now: i === at };
+    return { rows: [], now: false };
+  };
+  // What a side shows: this step's flows, or the last ones that used it.
+  const along = (side) => {
+    for (let i = at; i >= 0; i--) {
+      const flows = LOOP[i].flows.filter((f) => f.side === side);
+      if (flows.length) return { flows, now: i === at };
+    }
+    return { flows: [], now: false };
+  };
+  const flat = (side) => side === "top" || side === "bottom";
+  const dir = (side, to) => (flat(side) ? (to === SIDES[side][1] ? "right" : "left") : to === SIDES[side][1] ? "down" : "up");
+  const node = (party) => {
+    const { rows, now } = lines(party);
+    return (
+      <div className={`${own.loopNode} ${own[`loop_${party}`]} ${now ? own.loopNodeNow : ""} ${rows.length ? "" : own.loopNodeIdle}`}>
+        <div className={own.loopName}>
+          {/* "The" is left off where the square is a phone's width. */}
+          {PARTIES[party].startsWith("The ") ? <span className={own.loopThe}>The </span> : null}
+          {PARTIES[party].replace(/^The /, "")}
+        </div>
+        <dl className={own.loopRows}>
+          {rows.map(([label, value, tone]) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd className={tone === "good" ? own.loopGood : tone === "bad" ? own.loopBad : undefined}>{signed(value)}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    );
+  };
+  const side = (name) => {
+    const { flows, now } = along(name);
+    return (
+      <div className={`${own.loopSide} ${own[`loop_${name}`]} ${flat(name) ? own.loopFlat : own.loopTall} ${flows.length ? (now ? own.loopSideNow : own.loopSidePast) : ""}`}>
+        {flows.map((f) => {
+          const d = dir(name, f.to);
+          return (
+            <span key={`${f.to}:${f.value}`} className={`${own.loopFlow} ${f.claim ? own.loopClaim : ""}`}>
+              {d === "left" || d === "up" || d === "down" ? <FlowArrow dir={d} /> : null}
+              {/* The amount and the token apart, so a narrow side can set one over the other. */}
+              <span>{f.value.split(" ")[0]}</span>
+              <span>{f.value.split(" ").slice(1).join(" ")}</span>
+              {d === "right" ? <FlowArrow dir={d} /> : null}
+              <span className={own.loopSr}>
+                {" "}from {PARTIES[SIDES[name].find((p) => p !== f.to)].toLowerCase()} to {PARTIES[f.to].toLowerCase()}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
+  return (
+    <section className={own.loop} aria-label="How the borrower's loan and your deposit connect">
+      <div className={own.loopSteps} role="tablist" aria-label="Steps">
+        {LOOP.slice(0, total).map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            role="tab"
+            aria-selected={i === at}
+            aria-label={`Step ${i + 1}`}
+            disabled={i + 1 > reached}
+            className={`${own.loopStep} ${i === at ? own.loopStepOn : ""} ${i + 1 <= reached && i !== at ? own.loopStepSeen : ""}`}
+            onClick={() => setView(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <span className={own.loopCount}>Step {at + 1} of {total}</span>
+      </div>
+      <div className={own.loopMap}>
+        {node("vault")}
+        {side("top")}
+        {node("borrower")}
+        {side("left")}
+        {side("right")}
+        {node("transmuter")}
+        {side("bottom")}
+        {node("you")}
+      </div>
+      <div className={own.loopText} role="tabpanel" aria-live="polite" key={at}>
+        {items[at] ? items[at].props.children : null}
+      </div>
+    </section>
   );
 }
 LoopSequence.moment = "loop";
@@ -995,20 +1242,23 @@ export function ClaimEarlyMoment() {
         date="Jan 03, 2027"
         lit={["apr", "end", "deposit", "profit", "action"]}
         // What was paid, and the fee as a note on the alUSD rather than a
-        // second red chip, which read as two charges. Held in place (hidden)
-        // before the claim.
+        // second red chip, which read as two charges. Under the table once
+        // the claim is made.
         wallet={
-          <div className={styles.priceNote} style={left ? undefined : { visibility: "hidden" }} aria-hidden={left ? undefined : true}>
-            <span>Paid out</span>
-            <AppDelta tone="good">+{money(half)} USDC</AppDelta>
-            <AppDelta tone="good">+{money(half * (1 - EARLY_FEE))} alUSD</AppDelta>
-            <span className={styles.paidNote}>
-              {money(half)} alUSD less the {money(half * EARLY_FEE)} alUSD early exit fee
-            </span>
-          </div>
+          left ? (
+            <div className={own.paid}>
+              <span>Paid out</span>
+              <AppDelta tone="good">+{money(half)} USDC</AppDelta>
+              <AppDelta tone="good">+{money(half * (1 - EARLY_FEE))} alUSD</AppDelta>
+              <span className={styles.paidNote}>
+                {money(half)} alUSD minus the {money(half * EARLY_FEE)} alUSD early exit fee
+              </span>
+            </div>
+          ) : null
         }
         action={
           <AppButton
+            point="claim"
             disabled={!m.ready}
             hint={m.done ? null : NOT_READY}
             onClick={() =>
@@ -1050,6 +1300,7 @@ export function VaultRowFigure({ lit = [] }) {
     </Stage>
   );
 }
+VaultRowFigure.figure = true;
 
 /**
  * Lesson 3, page 1: the position stats and the health bar on the practice
@@ -1070,11 +1321,12 @@ export function StatsFigure() {
         earmarked={position.earmarked ?? 0}
         taught={TAUGHT.max}
         lit={["debt", "ltv", "borrowable", "health"]}
-        barLit={["max", "debt"]}
+        barLit={["max", "liq", "debt"]}
       />
     </Stage>
   );
 }
+StatsFigure.figure = true;
 
 /**
  * Lesson 5, page 1: the practice vault with the Redemption Rate lit among
@@ -1097,3 +1349,31 @@ export function RateFigure() {
     </Stage>
   );
 }
+RateFigure.figure = true;
+
+/**
+ * Lesson 7, page 1: the practice vault with both markers named on its health
+ * bar, MAX LTV and LIQ LTV, on the lesson's own position (10,000 deposited,
+ * 5,000 owed). A capture of the app's bar alone stood here, a strip whose two
+ * marker labels were too small to read, with no loan drawn on it. On the
+ * vault the reader sees how far a 50% LTV is from each marker, and the text's
+ * `Stat` names light the markers.
+ */
+export function LimitsFigure() {
+  const { position } = usePosition();
+  return (
+    <Stage>
+      <PracticeVault
+        {...V7}
+        deposit={position.deposit}
+        debt={position.debt}
+        earmarked={position.earmarked ?? 0}
+        taught={TAUGHT.liq}
+        lit={["ltv"]}
+        barLit={["debt", "max", "liq"]}
+      />
+    </Stage>
+  );
+}
+LimitsFigure.figure = true;
+

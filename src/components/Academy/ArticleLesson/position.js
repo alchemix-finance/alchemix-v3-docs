@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { hasCompletion } from "../lib/api";
 
 /**
  * The course's one position, per lesson, in one place.
@@ -26,11 +27,12 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
  * key is ignored (an old saved earmark once showed 9,999.27 where the lesson
  * says 9,999.48). It is read after mount, never during render: these pages
  * are prerendered, and the first frame is the lesson's starting position.
- * `reset` puts the lesson back to that start ("Start over"). `undo(id)` puts
- * it back to just before one moment ("Run again" under a finished practice
- * element): that moment and every later one in the lesson are no longer done,
- * since their numbers follow from it, and the moments remount as on a reload
- * at that point.
+ * `reset` puts the lesson back to that start. `redo(ids)` puts one page's
+ * moments back ("Redo this page" in the footer): only those are no longer
+ * done, and the moments remount with their boxes empty. Every step records
+ * a fixed change, so the pages after it keep the numbers they had and the
+ * reader loses nothing by doing a page twice. `undo(id)` puts the lesson
+ * back to just before one moment, with every later one.
  *
  *   position  { wallet, walletAl, walletMyt, deposit, debt, earmarked,
  *             fixedYield } as of the page on screen. `walletAl` is the alUSD
@@ -50,6 +52,9 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
  *   version   bumps on reset and on undo, so the moments remount with their boxes empty
  *   notes     { [momentId]: text }, what a moment says is wrong right now
  *             ("Pick USDC first"), shown in the footer in place of its hint
+ *   actions   { [momentId]: { label, disabled, kind } }, the press a moment
+ *             offers for the footer's button while it is the page's next
+ *             step (`useFooterAction`); `press(id)` calls it
  */
 
 const KEY = (lessonId) => `alchemix-academy-position-v2:${lessonId}`;
@@ -87,6 +92,12 @@ function reducer(state, action) {
       const done = Object.fromEntries(Object.entries(state.done).filter(([m]) => !drop.has(m)));
       return { ...state, done, moved: state.moved + 1, version: state.version + 1 };
     }
+    case "redo": {
+      const drop = new Set(action.ids);
+      if (!Object.keys(state.done).some((m) => drop.has(m))) return state;
+      const done = Object.fromEntries(Object.entries(state.done).filter(([m]) => !drop.has(m)));
+      return { ...state, done, moved: state.moved + 1, version: state.version + 1 };
+    }
     case "reset":
       return { ...initial(action), play: state.play + 1, moved: state.moved + 1, version: state.version + 1 };
     default:
@@ -113,6 +124,23 @@ function write(lessonId, start, state) {
     window.localStorage.setItem(KEY(lessonId), JSON.stringify({ start: JSON.stringify(start), done, shown }));
   } catch {
     // Private browsing or a full quota: the lesson still works, it just will not survive a reload.
+  }
+}
+
+/* Whether the lesson on screen is the page the browser loaded by a reload or
+   by Back, the first time it is asked. Every lesson opened after that was
+   come to from another page of the site. */
+let firstLesson = true;
+
+function reloaded() {
+  const first = firstLesson;
+  firstLesson = false;
+  if (!first) return false;
+  try {
+    const nav = window.performance.getEntriesByType("navigation")[0];
+    return Boolean(nav) && (nav.type === "reload" || nav.type === "back_forward");
+  } catch {
+    return false;
   }
 }
 
@@ -162,7 +190,16 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
   // read would wipe what the reader saved, so the first write waits for it.
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const saved = read(lessonId, start);
+    // A lesson the reader has passed opens as it did the first time, with
+    // nothing done, whenever they come to it (from the map, from another
+    // lesson, from a link). Its completion is kept apart from this
+    // (lib/api), so nothing is lost. Restored, the lesson came back with
+    // every step done and every part folded, a page of ticked lines. An
+    // unfinished lesson is restored where the reader left it, and so is any
+    // lesson when the page is reloaded.
+    let saved = null;
+    if (hasCompletion(lessonId) && !reloaded()) forget(lessonId);
+    else saved = read(lessonId, start);
     if (saved) dispatch({ type: "load", saved });
     setLoaded(true);
     // `start` is a constant of the lesson's page.
@@ -187,6 +224,27 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
   const note = useCallback((id, text) => {
     setNotes((cur) => ((cur[id] ?? null) === (text ?? null) ? cur : { ...cur, [id]: text ?? null }));
   }, []);
+  // What each moment offers the footer's button. The handlers are kept out
+  // of state (they are new on every render of the moment that offers them).
+  const [actions, setActions] = useState({});
+  const handlers = useRef({});
+  const offer = useCallback((id, action) => {
+    if (action) handlers.current[id] = action.onPress;
+    else delete handlers.current[id];
+    const next = action ? { label: action.label, disabled: Boolean(action.disabled), kind: action.kind ?? "step" } : null;
+    setActions((cur) => {
+      const was = cur[id] ?? null;
+      if (JSON.stringify(was) === JSON.stringify(next)) return cur;
+      const out = { ...cur };
+      if (next) out[id] = next;
+      else delete out[id];
+      return out;
+    });
+  }, []);
+  const press = useCallback((id) => {
+    const run = handlers.current[id];
+    if (run) run();
+  }, []);
 
   const positionAt = useCallback(
     (n) => fold(start, layout, moments, state.done, n),
@@ -203,6 +261,7 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
   const apply = useCallback((id, after, before) => dispatch({ type: "apply", id, after, before: before ?? positionBefore(id) }), [positionBefore]);
   const reveal = useCallback(() => dispatch({ type: "reveal" }), []);
   const undo = useCallback((id) => dispatch({ type: "undo", id, moments }), [moments]);
+  const redo = useCallback((ids) => dispatch({ type: "redo", ids }), []);
   const reset = useCallback(() => {
     forget(lessonId);
     setNotes({});
@@ -212,6 +271,8 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
   const value = useMemo(
     () => ({
       ...state,
+      // Whether the saved steps have been read (after mount).
+      loaded,
       position,
       positionAt,
       positionBefore,
@@ -219,15 +280,19 @@ export function PositionProvider({ lessonId, start, hidden = false, moments = []
       moments,
       notes,
       note,
+      actions,
+      offer,
+      press,
       apply,
       reveal,
       undo,
+      redo,
       reset,
       setLayout,
       setPage,
       started: Object.keys(state.done).length > 0,
     }),
-    [state, position, positionAt, positionBefore, page, moments, notes, note, apply, reveal, undo, reset, setLayout, setPage],
+    [state, loaded, position, positionAt, positionBefore, page, moments, notes, note, actions, offer, press, apply, reveal, undo, redo, reset, setLayout, setPage],
   );
   return <PositionContext.Provider value={value}>{children}</PositionContext.Provider>;
 }
@@ -284,4 +349,35 @@ export function useMomentNote(id, text) {
     return undefined;
   }, [note, id, text]);
   useEffect(() => () => note && note(id, null), [note, id]);
+}
+
+/**
+ * A press that belongs to the lesson, not to the app: Continue at the end of
+ * a part that is read, a lesson control ("Skip ahead a year"), the next step
+ * of a sequence, the next page of lesson 1's tour. While `id` is the first
+ * step not done on the page on screen, the footer's one button carries
+ * `label` and calls `onPress`; once the page's steps are done the button is
+ * Next again. So everything that moves a lesson on is pressed in one place.
+ * Under the practice element or at the end of the text, the button sat
+ * somewhere else on every page.
+ *
+ *   useFooterAction("year", done ? null : { label: "Skip ahead a year", onPress: run, disabled: !ready });
+ *
+ * `kind` picks the button's icon: "read" (Continue), "step" (a lesson
+ * control, the default), "next" (on to another part of an element).
+ */
+export function useFooterAction(id, action) {
+  const ctx = useContext(PositionContext);
+  const offer = ctx?.offer;
+  const label = action ? action.label : null;
+  const disabled = action ? Boolean(action.disabled) : false;
+  const kind = action ? action.kind ?? "step" : null;
+  const latest = useRef(action);
+  latest.current = action;
+  useEffect(() => {
+    if (!offer) return undefined;
+    offer(id, label == null ? null : { label, disabled, kind, onPress: () => latest.current && latest.current.onPress && latest.current.onPress() });
+    return undefined;
+  }, [offer, id, label, disabled, kind]);
+  useEffect(() => () => offer && offer(id, null), [offer, id]);
 }

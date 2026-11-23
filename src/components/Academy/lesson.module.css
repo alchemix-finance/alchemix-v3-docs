@@ -763,6 +763,133 @@
   margin: 1.25rem 0 0;
 }
 
+/* One question on screen at a time. It comes in with a short rise, and so
+   does its explanation once the answer is graded. */
+.checkStep {
+  margin-bottom: 1.5rem;
+  animation: checkIn 0.32s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+
+.checkStep .checkQuestionHead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Where the question stands in the try: a short bar per question, copper for
+   the one on screen, green once right, amber once missed. */
+.checkPips {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.checkPips i {
+  width: 1.25rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--m-line-strong);
+}
+
+.checkPips i.pipNow {
+  background: var(--m-copper);
+}
+
+.checkPips i.pipRight {
+  background: var(--m-green);
+}
+
+.checkPips i.pipMissed {
+  background: var(--a-amber);
+}
+
+.checkKept {
+  margin: -0.125rem 0 0.875rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.125rem;
+  color: var(--m-ink);
+}
+
+/* The explanation. Brought into the window when it arrives, with room kept
+   for a footer pinned over the page's foot. */
+.checkReview {
+  scroll-margin-bottom: 6.5rem;
+  animation: checkIn 0.32s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+
+.checkReview > figure {
+  margin: 1.25rem 0 0;
+}
+
+/* What a try came to after a miss: a quieter panel than the explanation
+   over it, so the two do not read as one box. */
+.checkResult {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg);
+  background: var(--m-panel);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--m-ink);
+}
+
+.checkResult strong {
+  font-weight: 600;
+  color: var(--m-text);
+}
+
+/* "Try again" inside the line, for a learner whose frame already offers the
+   way on: the lesson's copper in outline. */
+.checkResultAction {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  height: 2.25rem;
+  margin-top: 0.875rem;
+  padding: 0 0.875rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-md);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  color: var(--m-copper);
+  cursor: pointer;
+}
+
+.checkResultAction:hover {
+  border-color: var(--m-copper);
+  background: var(--m-copper-fill);
+}
+
+.checkResultAction:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+/* How a try ended, brought into the window when it arrives. */
+.checkEnd {
+  scroll-margin-bottom: 6.5rem;
+}
+
+@keyframes checkIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkStep,
+  .checkReview {
+    animation: none;
+  }
+}
+
 /* The explanation under a question answered right: the same box as a miss,
    in the pass colour. */
 .rightNote {

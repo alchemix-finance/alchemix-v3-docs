@@ -1,57 +1,140 @@
-import { Await, Do, PageBreak, Stat } from "../ArticleLesson";
+import { Await, Beside, Do, PageBreak, ReadOn, Stat, There } from "../ArticleLesson";
 import { AvailableFigure, RepayPartMoment, RepayRestThenWithdrawMoment, VaultRowFigure } from "../ArticleLesson/moments-3-8";
+import { Change, Changes } from "../ArticleLesson/changes";
+import { Versus, Work } from "../ArticleLesson/figures";
 import { Term } from "../kit";
 
-Say you have had your loan for a month and want to pay part of it back yourself. This lesson starts from that point: 10,000 USDC deposited, 5,000 alUSD owed with 208 of it earmarked for the next redemption, and USDC in your practice wallet to repay with.
+<Beside />
 
-<Term id="redemption">Redemptions</Term> pay the loan down over time, but you can also repay it yourself at any time, in part or in full. Repaying lowers what you owe and frees more of your deposit to withdraw. In the app, you do both from the vault page, which you reach from the Dashboard by pressing <Stat name="manage">Manage</Stat> on your position under Open Vault Positions. Repay and Withdraw are tabs on that page.
+Say you have had your loan for a month and want to pay part of it back yourself.
 
-<VaultRowFigure lit={["vault", "action"]} />
+<Term id="redemption">Redemptions</Term> pay the loan down over time, and you can also repay it yourself at any time, in part or in full. Repaying lowers what you owe and frees more of your deposit to withdraw.
 
-While you owe anything, you can withdraw only part of your deposit. Withdrawing shrinks your deposit while your debt stays the same, which raises your <Term id="ltv">LTV</Term>, and the vault does not let a withdrawal take your LTV past 90%. So it keeps back enough deposit that your 5,000 of debt is 90% of it: 5,000 divided by 0.9, about 5,555.56. The rest, 4,444.44, is what you can withdraw, shown as the <Stat name="available">available</Stat> amount under the field on the Withdraw tab.
+<There /> is a practice copy of the app's Dashboard, the page that lists what you hold. Your deposit and your loan are one position, shown as a <Stat name="dash-card">card</Stat> under <Stat name="dash-heading">Open Vault Positions</Stat>.
 
-The Withdraw field below is a what-if: type an amount and the stats preview how far it would raise your LTV, and MAX fills the full 4,444.44, which takes it to 90%. Nothing is withdrawn here.
+To repay or withdraw, press <Stat name="manage">Manage</Stat> on the card. <Stat name="manage">Manage</Stat> opens the vault page, where Repay and Withdraw are tabs.
+
+<VaultRowFigure lit={["vault", "action", "deposit", "debt", "available", "net"]} />
+
+<PageBreak title="Withdrawing while you owe" />
+
+<Beside />
+
+While you owe anything, part of your deposit has to stay in the vault. Withdrawing shrinks your deposit while your debt stays the same, so your <Term id="ltv">LTV</Term> rises.
+
+A withdrawal can take your LTV up to 90% and no further. With 5,000 owed, about 5,555.56 of your 10,000 deposit has to stay, so you can withdraw 4,444.44.
+
+The <Stat name="tab-withdraw">Withdraw</Stat> tab shows that 4,444.44 as <Stat name="available">Available</Stat> under the field.
+
+<Work title="How the 4,444.44 is worked out">
+
+5,000 divided by 0.9 is 5,555.56, the smallest deposit that keeps your LTV at 90%. 10,000 minus 5,555.56 is 4,444.44.
+
+</Work>
+
+You can try the limit here before withdrawing anything. Type an amount in the <Stat name="field">field</Stat>, and the <Stat name="deposit">Deposit</Stat> and <Stat name="ltv">LTV</Stat> stats preview where that withdrawal would leave you.
+
+<Stat name="max-button">MAX</Stat> fills the whole 4,444.44, which takes LTV to exactly 90%.
+
+<Stat name="action">Withdraw</Stat> is switched off here. You withdraw your whole deposit once the loan is repaid.
 
 <AvailableFigure />
 
-<PageBreak title="Repay part of it" />
+<PageBreak title="Repay part of the loan" />
 
-The Repay tab accepts alUSD, USDC or MYT, and which one you can use depends on whether the debt is <Term id="earmarked">earmarked</Term>. Earmarked debt can be repaid only in MYT, which goes to the Transmuter to pay Fixed Yield depositors. You can pay it with MYT, or with USDC, which the app deposits into MYT for you as you repay. A USDC or MYT repayment clears earmarked debt first. The 0.25% redemption fee applies to that part, taken from your deposit as it would be in a redemption.
+<Beside />
 
-alUSD repays only debt that is not earmarked, at face value, one alUSD for each USDC of debt, with no fee. Since alUSD typically trades a little under a dollar, repaying that part with alUSD can cost less than repaying in USDC.
+Repaying part of the loan yourself lowers what you owe right away. The practice vault is open on its <Stat name="tab-repay">Repay</Stat> tab, with a <Stat name="debt">Debt</Stat> of 5,000, of which 208 is <Stat name="earmarked">Earmarked</Stat> for the next <Term id="redemption">redemption</Term>.
 
-<Do moment="repay-part">
+The <Stat name="tab-repay">Repay</Stat> tab takes <Term id="alusd">alUSD</Term>, USDC or <Term id="myt">MYT</Term>. You repay 1,000 of the loan from the USDC in your <Stat name="wallet">practice wallet</Stat>.
 
-Your practice wallet holds USDC for this, so repay with USDC: with USDC in the token picker, type 1,000 in the field and press Repay.
+<Do moment="repay-part" title="Repay 1,000 USDC">
+
+With USDC in the <Stat name="token">token picker</Stat>, type 1,000 in the <Stat name="field">field</Stat> and press <Stat name="action">Repay</Stat>.
 
 </Do>
 
 <RepayPartMoment />
 
-<Stat name="debt">Debt</Stat> reads 4,000. A USDC repayment settles earmarked debt first, so the first 208 of your 1,000 cleared the earmarked part and <Stat name="earmarked">Earmarked</Stat> reads 0. The other 792 came off the rest of the loan. <Stat name="deposit">Deposit</Stat> fell by 0.52, the 0.25% redemption fee on the 208 of earmarked debt you repaid.
+Your 1,000 USDC paid off 1,000 of your loan. The repayment cleared the 208 of earmarked debt first, which cost a small fee.
 
-With 1,000 less owed against almost the same deposit, <Stat name="ltv">LTV</Stat> fell to 40%, and <Stat name="borrowable">Borrowable</Stat> rose by about 1,000, since your loan now uses 1,000 less of the 90% limit. What you can withdraw rose by more than that, from 4,444.44 to 5,555.04. The vault keeps back 1.11 of deposit, 1 divided by 0.9, for each dollar you owe, so each dollar you repay frees 1.11 of deposit.
+<Changes>
+<Change stat="debt">
+
+<Stat name="debt">Debt</Stat> fell from 5,000 to 4,000.
+
+</Change>
+<Change stat="earmarked">
+
+<Stat name="earmarked">Earmarked</Stat> reads 0. The first 208 of your 1,000 cleared the earmarked debt, and the other 792 came off the rest.
+
+</Change>
+<Change stat="deposit">
+
+<Stat name="deposit">Deposit</Stat> fell by 0.52, to 9,999.48. The 0.52 is the 0.25% <Term id="redemptionFee">redemption fee</Term> on the 208 of earmarked debt, taken as in a redemption.
+
+</Change>
+</Changes>
+
+From here on, the stats are worked out from a deposit of 9,999.48, which is why they no longer come out round.
+
+<ReadOn moment="read-repaid" title="What the repayment changed" />
+
+Owing less gives your position more room. With 4,000 owed against almost the same deposit, <Stat name="ltv">LTV</Stat> fell to 40%, and <Stat name="borrowable">Borrowable</Stat> rose by about 1,000.
+
+Repaying also lets you withdraw more. For each dollar you owe, about 1.11 of your deposit has to stay in the vault, so each dollar you repay frees about 1.11.
+
+Your 1,000 repayment raised what you can withdraw by more than 1,000, from 4,444.44 to 5,555.04.
+
+<Work title="How the 5,555.04 is worked out">
+
+1 divided by 0.9 is about 1.11, the deposit that has to stay for each dollar you owe. With 4,000 owed, 4,444.44 of your 9,999.48 deposit has to stay, and 9,999.48 minus 4,444.44 is 5,555.04.
+
+</Work>
+
+<ReadOn moment="read-freed" title="Repaying frees deposit" />
+
+Which part of your debt a repayment clears depends on the token you repay with. USDC and MYT clear the earmarked part first and then the rest, while alUSD clears only debt that is not earmarked.
+
+<Versus
+  heads={["USDC or MYT", "alUSD"]}
+  rows={[["Clears earmarked debt", "Yes, first", "No"], ["Clears the rest of the debt", "Yes", "Yes"], ["Fee", "0.25% of the earmarked part", "None"]]}
+/>
+
+Your USDC cleared the earmarked 208 first, which is why your deposit paid the 0.52 fee.
+
+<ReadOn moment="read-tokens" title="Which token clears what" />
+
+Earmarked debt can be repaid only in MYT, because the MYT you repay with goes to the <Term id="transmuter">Transmuter</Term> to pay Fixed Yield depositors. When you repay with USDC, the app deposits it into MYT for you in the same transaction, so USDC clears earmarked debt too.
+
+alUSD repays at face value, one alUSD for each USDC of debt. Since alUSD typically trades a little under a dollar, repaying debt that is not earmarked with alUSD can cost less than with USDC.
 
 <PageBreak title="Repay the rest and withdraw" />
 
-To withdraw your whole deposit, your Debt has to be 0.
+<Beside />
 
-<Do moment="repay-rest">
+To withdraw your whole deposit, you first have to owe nothing. Your <Stat name="debt">Debt</Stat> is 4,000, and you pay it off from the USDC in your <Stat name="wallet">practice wallet</Stat>.
 
-Repay the remaining 4,000: on the Repay tab, press MAX, which fills either what you owe or what your wallet holds, whichever is less, then press Repay.
+On the <Stat name="tab-repay">Repay</Stat> tab, <Stat name="max-button">MAX</Stat> fills either what you owe or what your wallet holds, whichever is smaller.
+
+<Do moment="repay-rest" title="Repay the remaining 4,000">
+
+Press <Stat name="max-button">MAX</Stat>, then press <Stat name="action">Repay</Stat>.
 
 </Do>
 
 <RepayRestThenWithdrawMoment />
 
-<Stat name="debt">Debt</Stat> reads 0. With nothing owed, the vault no longer keeps any deposit back, so the available amount on the Withdraw tab is your whole deposit, 9,999.48 after the 0.52 fee.
+Your loan is paid off, and <Stat name="debt">Debt</Stat> reads 0. With nothing owed, none of your deposit has to stay in the vault, so you can withdraw all of it.
 
-<Do moment="withdraw-all">
+<Stat name="available">Available</Stat> on the <Stat name="tab-withdraw">Withdraw</Stat> tab shows your whole deposit, 9,999.48. The deposit is 0.52 under 10,000 because of the fee on the <Term id="earmarked">earmarked</Term> debt you repaid.
 
-Press MAX, then Withdraw.
+<Do moment="withdraw-all" title="Withdraw your whole deposit">
+
+Press <Stat name="max-button">MAX</Stat>, then <Stat name="action">Withdraw</Stat>.
 
 </Do>
 
 <Await moment="withdraw-all" hint="Press MAX, then Withdraw" />
 
-The vault sent your whole deposit, 9,999.48 USDC, to your practice wallet, which closes the position.
+The vault sent your whole deposit, 9,999.48 USDC, to your <Stat name="wallet">practice wallet</Stat>, which closes the position.

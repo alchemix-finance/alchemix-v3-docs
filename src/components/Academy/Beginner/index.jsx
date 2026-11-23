@@ -31,7 +31,8 @@ const T_DEPOSIT = ["deposit"];
 const T_APR = ["apr", "deposit"];
 const T_DEBT = [...T_APR, "debt"];
 const T_LTV = [...T_DEBT, "ltv"];
-const T_MAX = [...T_LTV, "borrowable", "max", "health"];
+// Lesson 3 names LIQ LTV at 95% beside MAX LTV, so the bar labels both markers from there on.
+const T_MAX = [...T_LTV, "borrowable", "max", "liq", "health"];
 const T_RATE = [...T_MAX, "redemption"];
 const T_EARMARK = [...T_RATE, "earmarked"];
 const T_LIQ = [...T_EARMARK, "liq"];
@@ -50,7 +51,7 @@ export const TAUGHT = {
   debt: T_DEBT,
   /** Lesson 3, screen 3: LTV. */
   ltv: T_LTV,
-  /** Lesson 3, screen 4 on: Borrowable and the MAX LTV marker. */
+  /** Lesson 3, screen 4 on: Borrowable and the bar's MAX LTV and LIQ LTV markers. */
   max: T_MAX,
   /** Lesson 5, screen 2: the Redemption Rate. */
   rate: T_RATE,

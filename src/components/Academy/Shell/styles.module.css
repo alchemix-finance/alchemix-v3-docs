@@ -89,6 +89,16 @@
   --m-gutter: clamp(1rem, 4vw, 3rem);
   --m-edge: clamp(0rem, 2.4vw, 2rem);
 
+  /* The header's own unit and column. A lesson's page is drawn to the window
+     (see "A lesson is drawn to the window" below), so its header's sizes
+     follow the window too. The header reads its sizes from `--u`, which is
+     that same length on every Academy page, and stands in `--nav-col`, the
+     lessons' wide column. The logo, the links and the row's height are then
+     the same on the track map, in a lesson and on a finish page, and the
+     header does not change as a reader moves between them. */
+  --u: 1rem;
+  --nav-col: 60rem;
+
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -104,6 +114,30 @@
   overflow-x: hidden;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
+}
+
+/* The window sizes at which a lesson is laid out in its wide column: the
+   header takes the lessons' scale and column on every page, and the framed
+   column of the pages that are not lessons (the track map) takes the same
+   two edges, so the page's content starts under the logo. The formula is the
+   lessons' root type size, kept in step with it by hand. */
+@media (min-width: 1014px) {
+  .page {
+    --u: clamp(12.5px, min(calc(100vw / 104.25), calc(100vh / 61.25)), 22px);
+    --nav-col: calc(84 * var(--u));
+    /* Where the nav row's column starts, from the window's edge: the room
+       beside the column, or the row's own padding in a window narrower than
+       the column. The framed column's content starts there too. In a window
+       with no room for the frame's full margin and gutter outside the
+       column, the margin gives way first (the gutter keeps 1.5rem while
+       there is room for it, so the text never stands against the side
+       hairline) and the content keeps the edge. The percentages are read
+       where the values are used, against the page's width. */
+    --nav-side: max(var(--u), calc((100% - var(--nav-col)) / 2));
+    --m-edge: min(clamp(0rem, 2.4vw, 2rem), max(0px, calc(var(--nav-side) - 1.5rem)));
+    --m-gutter: min(clamp(1rem, 4vw, 3rem), calc(var(--nav-side) - var(--m-edge)));
+    --m-width: calc(var(--nav-col) + 2 * var(--m-gutter));
+  }
 }
 
 /* A faint copper and teal glow at the top. Members uses copper and blue. It
@@ -135,8 +169,31 @@
      page of text that left the right 40% of the frame empty between the
      words and the footer's button. At 60rem the text fills most of the column and
      a practice vault is still drawn four tiles across. The nav row above
-     keeps the site's width, so the logo stands where it does on the map. */
+     is laid out in the same column (see the pinned header). */
   --lesson-col: 60rem;
+}
+
+/* A lesson of text and figures only, with no practice element (the track's
+   first): its column is the text's own width, a step wider than the text
+   elsewhere, so the nav row, the text, a figure and the footer's Next all
+   end on one right edge. In the 60rem column the text stopped 160px short of
+   the logo row's last link and of Next. */
+.page.pageWide:has([data-lesson]):not(:has([data-bench])) {
+  --lesson-col: 52rem;
+  --lesson-text: 52rem;
+}
+
+/* A lesson whose pages set the practice element beside its text (the article
+   lessons' rows, `data-bench`) is one wide column where the window has room
+   for the rows: the wallet strip, the rows and the footer's Back and Next
+   share its two edges, on every page of the lesson, its Check included. At
+   60rem the strip and the footer stood 192px inside a card that started at
+   the row's edge. This only names the width; the article lessons' style
+   sheet takes it up where the window is wide enough, so the page is drawn at
+   that width from the first paint. */
+.page.pageWide:has([data-bench]) {
+  --lesson-rows: 84rem;
+  --lesson-rows-center: auto;
 }
 
 
@@ -169,22 +226,30 @@
 
 /* ── Header ──────────────────────────────────────────────── */
 
-/* The rule spans the window; the frame on it is the content column below. */
+/* The rule spans the window. The header stays at the top of the window on
+   every Academy page, on a ground of its own so the body scrolls under it.
+   It was pinned on the lessons only, on a different ground from the track
+   map's, so the header changed when a lesson opened. */
 .header {
-  position: relative;
-  z-index: 5;
-  border-bottom: 1px solid var(--m-line);
-}
-
-/* Pinned (article lessons only): the header stays at the top of the window,
-   on a ground of its own so the body scrolls under it. Both classes, so it
-   wins on specificity rather than on order. */
-.header.headerPinned {
   position: sticky;
   top: 0;
+  z-index: 5;
+  border-bottom: 1px solid var(--m-line);
   background: rgba(23, 30, 34, 0.94);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+}
+
+/* A short window (a laptop's browser, a phone, a phone on its side): the
+   pinned header and footer left too little room for a practice element, 208px
+   of a 390px window at the worst. The first row scrolls away with the page
+   and the second row, the lessons' strip, stays at the top: the header
+   sticks one first row above the window (`--nav-row`, set by the Shell). On
+   a page with no second row the whole header scrolls away. */
+@media (max-height: 700px) {
+  .page .header {
+    top: calc(-1 * var(--nav-row, 0px));
+  }
 }
 
 /* The pinned header's second row: a band the width of the window, with a
@@ -197,14 +262,53 @@
 
 /* A pinned page reads in one centered column, so the frame's side hairlines
    and the dots where they meet the header rule would mark a second, wider
-   frame around it. They go on these pages; the nav row keeps its place. */
+   frame around it. They go on these pages, and the nav row is laid out in
+   the page's own column: the logo starts on the left edge the title, the
+   practice element and Back start on, and the last link ends where the text
+   and Next end. This rule lays the row out under 1014px, where a lesson is
+   one column; from there up every page's header is laid out by the media
+   rule below. */
 .header.headerPinned .headerInner {
-  border-left-color: transparent;
-  border-right-color: transparent;
+  max-width: calc(var(--lesson-col, 60rem) + 2rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+  border-left: 0;
+  border-right: 0;
+}
+
+/* The last link's own padding stands outside the column, so its word ends
+   on the column's edge. */
+.header.headerPinned .navLinks {
+  margin-right: -0.625rem;
 }
 
 .header.headerPinned .node {
   display: none;
+}
+
+/* From 1014px the nav row stands in the lessons' wide column on every page,
+   whatever the page under it is laid out in: a lesson's rows, the track
+   map's frame, one column of text (a lesson's Check, a lesson read ahead).
+   It was laid out in each page's own column, so at 1440px it was 837px wide
+   on a finish page and on a lesson read ahead, 1,169px in a lesson and
+   1,118px on the track map. The selectors carry the page's class as well, so
+   they win over the pinned rules above on specificity, not on order. */
+@media (min-width: 1014px) {
+  .page .header.header .headerInner {
+    max-width: calc(var(--nav-col) + 2 * var(--u));
+    margin-inline: auto;
+    padding-inline: var(--u);
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .page .header.header .navLinks {
+    margin-right: calc(-0.625 * var(--u));
+  }
+
+  .page .header.header .node {
+    display: none;
+  }
 }
 
 /* The bar at the foot of the window (article lessons only). The safe-area
@@ -230,10 +334,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.25rem;
-  min-height: 5rem;
+  gap: calc(1.25 * var(--u));
+  min-height: calc(5 * var(--u));
   margin-inline: max(var(--m-edge), calc((100% - var(--m-width)) / 2));
-  padding: 0.75rem var(--m-gutter);
+  padding: calc(0.75 * var(--u)) var(--m-gutter);
   border-left: 1px solid var(--m-line);
   border-right: 1px solid var(--m-line);
   box-sizing: border-box;
@@ -242,7 +346,7 @@
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--u);
   min-width: 0;
 }
 
@@ -279,8 +383,8 @@
 .logoSlot {
   display: inline-flex;
   align-items: center;
-  gap: 0.875rem;
-  height: 2rem;
+  gap: calc(0.875 * var(--u));
+  height: calc(2 * var(--u));
 }
 
 .lockup {
@@ -297,13 +401,13 @@
 
 .brandRule {
   width: 1px;
-  height: 1.25rem;
+  height: calc(1.25 * var(--u));
   background: var(--m-line-strong);
 }
 
 .brandWord {
   font-family: var(--m-body);
-  font-size: var(--m-t-sm);
+  font-size: calc(0.875 * var(--u));
   font-weight: 400;
   line-height: 1;
   color: var(--m-muted);
@@ -333,14 +437,14 @@
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--u);
 }
 
 /* Progress: the members caption beside its thin pill bar. */
 .progressLabel {
-  font-size: var(--m-t-sm);
+  font-size: calc(0.875 * var(--u));
   font-weight: 400;
-  line-height: 1.25rem;
+  line-height: calc(1.25 * var(--u));
   color: var(--m-ink);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -349,8 +453,8 @@
 .progressTrack {
   position: relative;
   display: block;
-  width: 8.25rem;
-  height: 0.375rem;
+  width: calc(8.25 * var(--u));
+  height: calc(0.375 * var(--u));
   background: var(--m-line);
   border-radius: var(--m-r-full);
   overflow: hidden;
@@ -371,24 +475,24 @@
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 0.125rem;
+  gap: calc(0.125 * var(--u));
 }
 
 .navRule {
   width: 1px;
-  height: 1rem;
+  height: var(--u);
   margin: 0;
   background: var(--m-line-strong);
 }
 
 .exit {
-  font-size: var(--m-t-sm);
+  font-size: calc(0.875 * var(--u));
   font-weight: 400;
-  line-height: 1.25rem;
+  line-height: calc(1.25 * var(--u));
   color: var(--m-muted) !important;
   text-decoration: none;
   white-space: nowrap;
-  padding: 0.5rem 0.625rem;
+  padding: calc(0.5 * var(--u)) calc(0.625 * var(--u));
   border-radius: var(--m-r-xl);
   transition: color 0.15s ease, background 0.15s ease;
 }
@@ -403,7 +507,7 @@
 .exit.exitOut {
   display: inline-flex;
   align-items: center;
-  gap: 0.3125rem;
+  gap: calc(0.3125 * var(--u));
 }
 
 .exitOut svg {
@@ -471,6 +575,10 @@
   .exit {
     padding: 0.5rem 0.5rem;
   }
+
+  .header.headerPinned .navLinks {
+    margin-right: -0.5rem;
+  }
 }
 
 /* As members: the wordmark goes on a phone and the mark stays. */
@@ -515,6 +623,10 @@
   .exit {
     padding: 0.5rem 0.375rem;
   }
+
+  .header.headerPinned .navLinks {
+    margin-right: -0.375rem;
+  }
 }
 
 /* The narrowest phones: the map's row cannot hold the count as well as the
@@ -522,5 +634,27 @@
 @media (max-width: 380px) {
   .headerInner:not(.withCrumb) .progressShort {
     display: none;
+  }
+}
+
+/* ── A lesson is drawn to the window ──
+   A lesson's page is laid out for one frame, text on the left and the
+   practice element on the right, between the pinned header and footer: 1668
+   by 980 at the browser's own type size. Every length on these pages is in
+   rem, so the page is fitted to any other window by setting the root type
+   size from the window: the same frame, larger on a large screen and smaller
+   on a small one, with the same things on screen. Left at 16px, a laptop's
+   window cut the practice element off under the footer and a large monitor
+   left the lesson in the top two thirds of the screen.
+
+   The size follows whichever of the window's width and height is the
+   tighter. It stops at 12.5px, under which the text is too small to read (a
+   shorter window scrolls), and at 22px. A window too narrow for the two
+   columns (a phone, a tablet upright) keeps the browser's size and the
+   one-column page. The browser's own zoom still enlarges the page once the
+   floor is reached. */
+@media (min-width: 1014px) {
+  :global(html[data-academy-fit]) {
+    font-size: clamp(12.5px, min(calc(100vw / 104.25), calc(100vh / 61.25)), 22px);
   }
 }

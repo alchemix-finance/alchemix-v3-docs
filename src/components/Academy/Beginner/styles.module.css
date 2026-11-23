@@ -62,3 +62,401 @@
     align-items: start;
   }
 }
+
+/* What a claim paid out, under the Fixed Yield positions table (lesson 8). */
+.paid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.5rem 0;
+  border-top: 1px solid var(--app-border, var(--m-line));
+  font-size: 0.875rem;
+  color: var(--app-muted, var(--m-muted));
+}
+
+/* ── Lesson 8's loop: four parties on a square, a step's flows on its sides ── */
+
+.loop {
+  container-type: inline-size;
+  box-sizing: border-box;
+  max-width: 47rem;
+  margin: 0 0 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: var(--m-card);
+}
+
+/* The steps: a number each, the one on show in copper. A step already shown
+   can be opened again; one not reached yet is faint. */
+.loopSteps {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.loopStep {
+  appearance: none;
+  box-sizing: border-box;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--m-line);
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--m-t-xs);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-muted);
+  opacity: 0.6;
+  cursor: default;
+}
+
+.loopStepSeen {
+  border-color: var(--m-line-strong);
+  color: var(--m-ink);
+  opacity: 1;
+  cursor: pointer;
+}
+
+.loopStepSeen:hover {
+  border-color: var(--m-copper-line);
+  color: var(--m-text);
+}
+
+.loopStepOn {
+  border-color: var(--m-copper);
+  background: var(--m-copper-fill);
+  color: var(--m-copper);
+  opacity: 1;
+}
+
+.loopStep:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+.loopCount {
+  margin-left: auto;
+  font-size: var(--m-t-xs);
+  color: var(--m-muted);
+}
+
+.loopMap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(8.5rem, auto) minmax(0, 1fr);
+  grid-template-areas:
+    "vault top borrower"
+    "left . right"
+    "transmuter bottom you";
+}
+
+.loop_vault {
+  grid-area: vault;
+}
+
+.loop_borrower {
+  grid-area: borrower;
+}
+
+.loop_transmuter {
+  grid-area: transmuter;
+}
+
+.loop_you {
+  grid-area: you;
+}
+
+.loop_top {
+  grid-area: top;
+}
+
+.loop_right {
+  grid-area: right;
+}
+
+.loop_bottom {
+  grid-area: bottom;
+}
+
+.loop_left {
+  grid-area: left;
+}
+
+/* A party: its name, and up to two lines of what it holds or owes. Every
+   party is two lines tall from the start, so the square keeps its shape as
+   the lines come in. */
+.loopNode {
+  box-sizing: border-box;
+  min-height: 5.875rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-md);
+  background: var(--m-panel);
+  transition: border-color 0.25s ease;
+}
+
+.loopNodeNow {
+  border-color: var(--m-copper-line);
+}
+
+.loopNodeIdle .loopName {
+  color: var(--m-ink);
+}
+
+.loopName {
+  margin-bottom: 0.375rem;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  line-height: 1.25rem;
+  color: var(--m-text);
+}
+
+.loopRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0;
+}
+
+.loopRows > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.25rem;
+  animation: loopIn 0.35s ease both;
+}
+
+.loopRows dt {
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+.loopRows dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--m-text);
+}
+
+.loopRows dd.loopGood {
+  color: var(--m-green);
+}
+
+.loopRows dd.loopBad {
+  color: var(--m-red);
+}
+
+/* A side of the square: a faint line between its two parties, and on it what
+   moves along it. The side a step uses is drawn solid in copper; one an
+   earlier step used keeps its figures, quieter. */
+.loopSide {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.loopFlat {
+  padding: 0 0.625rem;
+}
+
+.loopTall {
+  min-height: 5rem;
+  padding: 0.625rem 0;
+}
+
+.loopSide::before {
+  content: "";
+  position: absolute;
+}
+
+.loopFlat::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px dashed var(--m-line-strong);
+}
+
+.loopTall::before {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px dashed var(--m-line-strong);
+}
+
+.loopFlat.loopSideNow::before {
+  border-top: 1px solid var(--m-copper-line);
+}
+
+.loopTall.loopSideNow::before {
+  border-left: 1px solid var(--m-copper-line);
+}
+
+.loopFlow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: 999px;
+  background: var(--m-card);
+  font-size: var(--m-t-xs);
+  font-weight: 600;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--m-ink);
+  animation: loopIn 0.35s ease both;
+}
+
+.loopArrow {
+  flex: none;
+  color: var(--m-muted);
+}
+
+.loopSideNow .loopFlow {
+  border-color: var(--m-copper);
+  color: var(--m-text);
+}
+
+.loopSideNow .loopArrow {
+  color: var(--m-copper);
+}
+
+.loopSidePast .loopFlow {
+  opacity: 0.6;
+}
+
+/* A claim on debt, not a token that moves (the earmark). */
+.loopFlow.loopClaim {
+  border-style: dashed;
+}
+
+.loopSr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The step's sentence, four lines tall whatever its length, so the card
+   keeps its height from step to step. */
+.loopText {
+  min-height: 6.875rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--m-line);
+  font-size: var(--article-size, 1.0625rem);
+  line-height: var(--article-leading, 1.6);
+  color: var(--m-ink);
+  text-wrap: pretty;
+  animation: loopIn 0.35s ease both;
+}
+
+.loopText p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+@keyframes loopIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loopRows > div,
+  .loopFlow,
+  .loopText {
+    animation: none;
+  }
+}
+
+/* A phone's column: the parties' lines stack label over figure, and the
+   figures on the sides are a size down. */
+@container (max-width: 32rem) {
+  .loopMap {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .loopNode {
+    min-height: 7.5rem;
+    padding: 0.625rem;
+  }
+
+  .loopRows {
+    gap: 0.25rem;
+  }
+
+  .loopRows > div {
+    flex-direction: column;
+    gap: 0;
+    line-height: 1.125rem;
+  }
+
+  .loopRows dd {
+    white-space: normal;
+  }
+
+  .loopThe {
+    display: none;
+  }
+
+  .loopName {
+    font-size: 0.8125rem;
+    line-height: 1.125rem;
+  }
+
+  .loopName::first-letter {
+    text-transform: uppercase;
+  }
+
+  .loopFlat {
+    padding: 0 0.25rem;
+  }
+
+  .loopFlow {
+    padding: 0.0625rem 0.375rem;
+    font-size: 0.6875rem;
+    line-height: 1.125rem;
+  }
+
+  /* On a side that lies flat, the amount over the token, so the two parties
+     beside it keep the width their own lines need. */
+  .loopFlat .loopFlow {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 4.25rem;
+    padding: 0.1875rem 0.375rem;
+    border-radius: 0.625rem;
+    row-gap: 0;
+    white-space: normal;
+  }
+
+  .loopArrow {
+    width: 11px;
+    height: 11px;
+  }
+
+  .loopText {
+    min-height: 8.5rem;
+  }
+}

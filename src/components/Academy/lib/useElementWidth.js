@@ -11,10 +11,18 @@ import { useEffect, useRef, useState } from "react";
  *
  * Returns 0 until measured, which is also what server-side rendering sees, so
  * callers must handle a zero width rather than dividing by it.
+ *
+ * The third value is the width as it would be at the browser's own type size
+ * (16px). A lesson's page sets the root type size from the window (see the
+ * Shell), so the same column is fewer pixels wide in a small window while
+ * holding the same layout. A caller that picks a layout by width ("narrower
+ * than 640, show the phone crop") asks this one; a caller that draws in
+ * pixels asks the real width.
  */
 export default function useElementWidth() {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
+  const [design, setDesign] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
@@ -25,7 +33,12 @@ export default function useElementWidth() {
     // shrinks with it while the layout width stays. Measured by the rect, a
     // 1200px figure zoomed to half read as a phone column, swapped in its
     // phone crop, fitted again at full size, and so on forever.
-    const measure = () => setWidth(el.offsetWidth);
+    const measure = () => {
+      const w = el.offsetWidth;
+      const root = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
+      setWidth(w);
+      setDesign((w * 16) / root);
+    };
     measure();
 
     // ResizeObserver is in every browser this site targets, but a guard costs
@@ -40,5 +53,5 @@ export default function useElementWidth() {
     return () => ro.disconnect();
   }, []);
 
-  return [ref, width];
+  return [ref, width, design];
 }

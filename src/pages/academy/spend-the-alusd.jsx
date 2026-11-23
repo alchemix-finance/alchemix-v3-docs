@@ -5,7 +5,7 @@ import Content from "@site/src/components/Academy/lessons/spendAlusd.mdx";
 /* Lesson 4 opens with the loan from lesson 3: 500 USDC and 5,000 alUSD in
    the wallet, 10,000 deposited, 5,000 owed. */
 const START = { wallet: 500, walletAl: 5_000, deposit: 10_000, debt: 5_000, earmarked: null, fixedYield: null };
-const MOMENTS = ["swap"];
+const MOMENTS = ["read-swap", "read-discount", "read-price", "swap", "read-swapped"];
 
 export default function Lesson() {
   return (

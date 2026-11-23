@@ -3,11 +3,10 @@ import Link from "@docusaurus/Link";
 import { useHistory } from "@docusaurus/router";
 import AcademyShell, { MEMBERS_LIVE } from "@site/src/components/Academy/Shell";
 import { readCompletions } from "@site/src/components/Academy/lib/api";
-import { FooterBar } from "@site/src/components/Academy/ArticleLesson";
+import { Crumb, FooterBar } from "@site/src/components/Academy/ArticleLesson";
 import { Arrow } from "@site/src/components/Academy/kit";
 import TrackClosed from "@site/src/components/Academy/TrackClosed";
 import { trackByKey } from "@site/src/components/Academy/lib/track";
-import lp from "@site/src/components/Academy/LessonPage/styles.module.css";
 import ls from "@site/src/components/Academy/lesson.module.css";
 import tm from "@site/src/pages/academy/track.module.css";
 import styles from "@site/src/components/Academy/ArticleLesson/styles.module.css";
@@ -153,20 +152,9 @@ export default function TrackFinish({ trackKey, description, lead, recap, choice
           }
         />
       }
-      left={
-        <Link to="/academy" className={lp.back}>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M19 12H6M11 18l-6-6 6-6" />
-          </svg>
-          <span className={lp.backLesson}>
-            <span className={`${lp.backTrack} ${styles.headTrack}`}>{track.label}</span>
-            <span className={`${lp.backSep} ${styles.headTrack}`}> · </span>
-            Finished
-          </span>
-        </Link>
-      }
     >
-      <main className={styles.body}>
+      <main className={`${styles.body} ${own.wide}`}>
+        <Crumb track={track.label} place="Finished" />
         {done ? (
         <>
         <header className={own.hero}>

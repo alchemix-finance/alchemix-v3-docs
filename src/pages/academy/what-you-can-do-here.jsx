@@ -6,6 +6,10 @@ import Content from "@site/src/components/Academy/lessons/whatAlchemixDoes.mdx";
    paragraph that hands the reader 10,000 USDC. */
 const START = { wallet: 10_000, deposit: 0, debt: 0 };
 
+/* Page 1's two Continue presses (the parts of a reading page), then the
+   lesson's one step: opening each page in the tour of the app's pages. */
+const MOMENTS = ["read-wallet", "tour"];
+
 export default function Lesson() {
   return (
     <ArticleLesson
@@ -14,6 +18,7 @@ export default function Lesson() {
       Content={Content}
       start={START}
       hidden
+      moments={MOMENTS}
       passTitle="Lesson 1 complete."
       deeper={[
         { to: "/user", label: "Introduction" },

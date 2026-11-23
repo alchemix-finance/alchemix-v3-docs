@@ -80,7 +80,7 @@ export function useTween(value, play, ms = 700) {
 /**
  * The "before" a lab keeps for one action. Call `mark(state)` just before the
  * action changes the numbers; pass `before` as `prev` to AppStats and AppBar.
- * `clear()` removes the trace (a new amount typed, a tab changed, Start over).
+ * `clear()` removes the trace (a new amount typed, a tab changed, the page put back).
  *
  *   const [before, mark, clear] = useBefore();
  *   const borrow = () => { mark({ deposit, debt }); setDebt(debt + amount); };

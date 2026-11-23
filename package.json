@@ -25,7 +25,9 @@
     "@docusaurus/theme-mermaid": "^3.9.2",
     "@easyops-cn/docusaurus-search-local": "^0.52.2",
     "@mdx-js/react": "^3.0.0",
+    "@number-flow/react": "^0.6.2",
     "clsx": "^2.0.0",
+    "motion": "^14.14.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

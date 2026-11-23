@@ -41,7 +41,7 @@ export const TERMS = {
   apr: {
     term: "APR",
     lesson: "your-deposit",
-    text: "A vault's APR is the annualized rate its strategies are earning right now. It changes as the strategies' own rates change, so a year at today's APR is an estimate.",
+    text: "A vault's APR is the share a deposit would gain over a year at the rate its strategies are earning right now.\n\nThe APR moves every day, so a year at today's APR is an estimate.",
     docs: "/user/concepts/myt-and-yield",
   },
 
@@ -89,13 +89,13 @@ export const TERMS = {
   earmarked: {
     term: "Earmarked",
     lesson: "self-repaying",
-    text: "Earmarked is the part of your debt reserved for upcoming redemptions. It grows as alUSD deposits on the Fixed Yield page vest toward their maturity date, less any MYT already waiting to pay them.\n\nEarmarked debt is still your debt, and the part of your deposit set aside to pay it keeps earning until the Fixed Yield depositor claims. It can be repaid only with MYT, or with USDC the app deposits into MYT for you.",
+    text: "Earmarked is the part of your debt reserved for upcoming redemptions. It grows as alUSD deposits on the Fixed Yield page vest toward their maturity date, less any MYT the Transmuter already holds to pay them.\n\nEarmarked debt is still your debt, and the part of your deposit set aside to pay it keeps earning until the Fixed Yield depositor claims. It can be repaid only with MYT, or with USDC the app deposits into MYT for you.",
     docs: "/user/concepts/redemption-rate",
   },
   redemptionRate: {
     term: "Redemption Rate",
     lesson: "self-repaying",
-    text: "The Redemption Rate is a projection of how fast redemptions are paying down debt in the vault: the alUSD set to vest on the Fixed Yield page over the next week, scaled up to a year, divided by everything borrowers owe.\n\nIt rises and falls with how much alUSD is waiting there, so it differs from vault to vault and chain to chain.\n\nWhile MYT that borrowers already repaid is covering depositors' claims, the stat reads 0%, and the rate that will apply once it is used up is shown beside it as future.",
+    text: "The Redemption Rate is a projection of how fast redemptions are paying down debt in the vault: the alUSD set to vest on the Fixed Yield page over the next week, scaled up to a year, divided by everything borrowers owe.\n\nIt rises and falls with how much alUSD is deposited on the Fixed Yield page, so it differs from vault to vault and chain to chain.\n\nWhile MYT that borrowers already repaid is covering depositors' claims, the stat reads 0%, and the rate that will apply once that MYT is used up is shown beside it as future.",
     docs: "/user/concepts/redemption-rate",
   },
   redemptionFee: {
@@ -109,13 +109,13 @@ export const TERMS = {
   liquidation: {
     term: "liquidation",
     lesson: "what-can-go-wrong",
-    text: "A liquidation is anyone settling part of your loan out of your deposit once your LTV reaches 95%. A loss of funds in one of the vault's strategies can push your LTV to 95%. A price drop cannot, since the vault counts your deposit and your debt in the same asset.\n\nA liquidation first settles any earmarked debt out of your deposit, and if your LTV is then under 95%, the liquidation ends with nothing more taken. Otherwise the liquidation takes enough deposit to bring your LTV back to 90%, and the deposit taken goes to the Transmuter.\n\nThe liquidator receives a fee of 1.5% of what your deposit exceeded your debt by, and the rest of your position stays open and earning.",
+    text: "A liquidation is anyone settling part of your loan out of your deposit once your LTV reaches 95%. A loss of funds in one of the vault's strategies can push your LTV to 95%. A price drop cannot, since the vault counts your deposit and your debt in the same asset.\n\nA liquidation first settles any earmarked debt out of your deposit, and if your LTV is then under 95%, the liquidation ends with nothing more taken. Otherwise the liquidation takes enough deposit to bring your LTV back to 90%, plus the liquidator's fee. The deposit taken, apart from that fee, goes to the Transmuter.\n\nThe fee is 1.5% of the amount by which your deposit exceeded your debt, and the rest of your position stays open and earning.",
     docs: "/user/concepts/liquidations",
   },
   strategy: {
     term: "strategy",
     lesson: "your-deposit",
-    text: "A strategy is one of the yield sources on other protocols, such as lending markets, liquid staking or other vaults, that a vault spreads its deposits across, chosen and weighted by the Alchemix DAO. Your deposit earns what the strategies earn.\n\nIf one experiences a loss of funds, every deposit in the vault is worth less. Besides borrowing more or withdrawing, that is one thing that can raise your LTV.",
+    text: "A strategy is one of the yield sources on other protocols, such as lending markets, liquid staking or other vaults, that a vault spreads its deposits across. The Alchemix DAO chooses the strategies and sets each one's share. Your deposit earns what the strategies earn.\n\nIf a strategy loses funds, every deposit in the vault is worth less. Besides borrowing more or withdrawing, a strategy loss can raise your LTV.",
     docs: "/user/concepts/myt-and-yield",
   },
 
@@ -129,7 +129,7 @@ export const TERMS = {
   transmuter: {
     term: "Transmuter",
     lesson: "the-transmuter",
-    text: "The Transmuter is the Alchemix contract that holds Fixed Yield deposits while they vest and pays depositors when they claim. As deposits vest, the same amount of borrowers' debt is earmarked.\n\nWhen a depositor claims, it pays first from MYT it already holds from borrowers' repayments and from liquidations, and redeems the rest from borrowers' deposits. It pays the depositor in MYT, which the app unwraps to USDC, and the claimed alUSD is burned.",
+    text: "The Transmuter is the Alchemix contract that holds Fixed Yield deposits while they vest and pays depositors when they claim. As deposits vest, borrowers' debt is earmarked to pay them.\n\nWhen a depositor claims, it pays first from MYT it already holds from borrowers' repayments and from liquidations, and redeems the rest from borrowers' deposits. It pays the depositor in MYT, which the app unwraps to USDC, and the claimed alUSD is burned.",
     docs: "/user/concepts/transmuter",
   },
   earlyExitFee: {

@@ -7,6 +7,15 @@
    written with a parent or a doubled class, so they win on specificity rather
    than on order (see .meterFill.meterDone in track.module.css). */
 
+/* The page stands in the lessons' wide column, where the window has room
+   for it (the lessons' style sheet reads `--lesson-rows`), so the header, the
+   page and the footer's button keep the edges they have in a lesson. In the
+   60rem column the page was 332px narrower than the lesson before it and
+   its three cards stood 266px wide. */
+.wide {
+  --lesson-rows: 84rem;
+}
+
 /* ── Arrival ─────────────────────────────────────────────── */
 /* Each block rises in after the one above it; the delay is set per block
    with --d. The seal's arcs draw in one after another, then the check. */

@@ -6,7 +6,7 @@ import Content from "@site/src/components/Academy/lessons/repayWithdraw.mdx";
    10,000 deposited, 5,000 owed with 208 of it earmarked, and 5,350 USDC in
    the wallet (the 500 from lesson 2 and the 4,850 from the swap). */
 const START = { wallet: 5_350, walletAl: 0, deposit: 10_000, debt: 5_000, earmarked: 208, fixedYield: null };
-const MOMENTS = ["repay-part", "repay-rest", "withdraw-all"];
+const MOMENTS = ["repay-part", "read-repaid", "read-freed", "read-tokens", "repay-rest", "withdraw-all"];
 
 export default function Lesson() {
   return (

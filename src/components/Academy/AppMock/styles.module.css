@@ -91,13 +91,13 @@
   border-radius: 0.5rem;
 }
 
-.tileOn {
-  border-color: var(--app-alchemix);
-}
+/* The tile a step is about has nothing drawn on it at rest: the lesson's
+   passing light marks the tile the text names (ArticleLesson's `data-cue`),
+   and pointing at it lights it in full (`.pointed`). A standing outline on
+   two or three tiles drew the eye to the vault before it was read. */
 
 /* The wash over a tile the last action changed: a soft copper fill held while
-   the number tweens, then a gentle fade, 3 seconds in all (a shorter glow
-   was gone before the reader saw the change). The tile's container
+   the number tweens, then a gentle fade, about 2 seconds in all. The tile's container
    type already makes it the box this sits in. Nothing under reduced motion:
    the chip says what changed. */
 .tile {
@@ -109,10 +109,11 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: rgba(245, 192, 154, 0.2);
-  box-shadow: inset 0 0 0 1px rgba(245, 192, 154, 0.55);
+  /* No rim: a copper ring is what a label's highlight looks like, and six
+     changed tiles wearing one read as six things pointed at. */
+  background: rgba(245, 192, 154, 0.13);
   pointer-events: none;
-  animation: washFade 3s ease-in-out forwards;
+  animation: washFade 2.2s ease-in-out forwards;
 }
 
 @keyframes washFade {
@@ -128,37 +129,37 @@
 /* A tile the reader is pointing at in the text (`<Stat>`): the lit outline
    with a soft copper glow. */
 .pointed {
-  background: rgba(245, 192, 154, 0.08);
-  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 16px rgba(245, 192, 154, 0.4);
+  /* Drawn by the lesson's frame (`data-pointed` in the article lessons'
+     sheet), the same ring for every kind of thing. */
 }
 
 /* The bar's MAX LTV or LIQ LTV marker, pointed at from the text. */
 .markPointed {
-  box-shadow: 0 0 0 2px var(--app-alchemix), 0 0 12px rgba(245, 192, 154, 0.55);
+  /* See `.pointed`. */
 }
 
 .tagPointed {
-  color: var(--app-alchemix);
-  font-weight: 600;
+  /* See `.pointed`. */
+}
+
+/* A figure on the Fixed Yield card or the Dashboard's Fixed Yield row,
+   pointed at from the text. The ring is drawn outside the figure's own box,
+   so nothing moves. */
+.figPointed {
+  border-radius: 0.25rem;
 }
 
 /* The Withdraw tab's Available line, pointed at from the text. */
 .limitPointed {
-  padding: 0 0.375rem;
-  margin: 0 -0.375rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 12px rgba(245, 192, 154, 0.35);
   color: var(--app-fg);
 }
 
-/* A button the screen is about (the Dashboard row's Manage), outlined in
-   copper like a lit tile, at full strength even where it cannot be pressed.
+/* A button the screen is about (the Dashboard row's Manage): never dimmed,
+   even where it cannot be pressed. The lesson's passing light marks it.
    Doubled class, so it beats `.cta:disabled` on specificity. */
 .cta.ctaLit,
 .cta.ctaLit:disabled {
   opacity: 1;
-  border-color: var(--app-alchemix);
-  box-shadow: 0 0 0 1px var(--app-alchemix), 0 0 14px rgba(245, 192, 154, 0.3);
 }
 
 /* `Grow`: a part that appears after an action eases to its height. The
@@ -338,6 +339,41 @@
   border: 1.5px dashed rgba(255, 255, 255, 0.75);
   border-radius: 999px;
   pointer-events: none;
+}
+
+/* Where the fill would reach with the typed amount applied: the stretch
+   between the fill and that point, in the debt's color at part strength,
+   with a dashed line on the edge that leads. It eases as the amount changes,
+   so MAX runs it up to the MAX LTV marker. A repayment draws it back over
+   the fill that would go (`barAheadBack`): there the fill shows through
+   lighter, and the dashed edge is the one on the left. */
+.barAhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  background: color-mix(in oklch, var(--app-debt) 42%, transparent);
+  border-right: 2px dashed transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: left 0.6s cubic-bezier(0.3, 0.7, 0.2, 1), width 0.6s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s ease;
+}
+
+.barAheadOn {
+  border-right-color: rgba(255, 255, 255, 0.85);
+  opacity: 1;
+}
+
+.barAheadBack {
+  background: color-mix(in oklch, var(--app-deposit) 55%, transparent);
+  border-right: 0;
+  border-left: 2px dashed rgba(255, 255, 255, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barAhead {
+    transition: none;
+  }
 }
 
 .barMax,
@@ -545,7 +581,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.25rem 0.5rem;
+  /* Room between the balance and MAX for the ring either gets when the text points at it. */
+  gap: 0.25rem 0.875rem;
   padding-right: 0.5rem;
 }
 
@@ -818,6 +855,11 @@
 /* A part of a figure the screen is not about. */
 .fade {
   opacity: 0.3;
+}
+
+/* The same on the Fixed Yield card and positions, where it only steps back. */
+.recede {
+  opacity: 0.8;
 }
 
 .barFade {
@@ -1653,7 +1695,6 @@
   margin: 0 -0.25rem;
   padding: 0 0.25rem;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0 1px var(--app-alchemix);
 }
 
 .posRowDim {
@@ -1890,30 +1931,83 @@
   padding: 1rem;
 }
 
-/* The app's sm: the name and rate beside the panel. */
-@container (min-width: 36rem) {
+/* A card about 40rem to 56rem wide (beside a lesson's text): the name and
+   rate over the panel, in two columns, the icons and the rate on the left
+   and the cap, term and fee on the right; then the panel with its figures
+   beside its amount box, as at the app's lg. The app's own layout at this
+   width puts the name and rate beside a panel twice their height, which left
+   them in the middle of an empty column. */
+@container (min-width: 40rem) and (max-width: 55.99rem) {
+  .fxLeft {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+    grid-template-rows: auto auto;
+    column-gap: 2rem;
+    row-gap: 0.5rem;
+    align-items: start;
+  }
+
+  .fxLeft > .fxIcons {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .fxLeft > [data-point="apr"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .fxLeft > .fxCapBar {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .fxLeft > .fxRows {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .fxPanel {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .fxGrid {
+    flex: 0 0 auto;
+    padding: 1rem 0.75rem 1rem 1rem;
+  }
+
+  .fxGrid > div {
+    grid-template-columns: 9.5rem max-content;
+    gap: 0.75rem;
+  }
+
+  .fxAmount {
+    flex: 1 1 0;
+    padding: 0.75rem;
+  }
+}
+
+/* The app's lg: the name and rate beside the panel, and the panel's figures
+   beside its amount box. This is the
+   layout the card has in the lessons' 60rem column. The figures' column is
+   as wide as its longest label and value, with less padding than at xl: at
+   40% of the panel a value ran out of its cell and under the token picker
+   (2026-11-10; the same at any window about 1000px wide before that). */
+@container (min-width: 56rem) {
   .fxBody {
     flex-direction: row;
     align-items: center;
   }
 
   .fxLeft {
-    flex: 0 0 calc(50% - 0.5rem);
+    flex: 0 0 29%;
   }
 
   .fxPanel {
     flex: 1 1 0;
-  }
-}
-
-/* The app's lg: the panel's figures beside its amount box. This is the
-   layout the card has in the lessons' 60rem column. The figures' column is
-   as wide as its longest label and value, with less padding than at xl: at
-   40% of the panel a value ran out of its cell and under the token picker
-   (2026-11-10; the same at any window about 1000px wide before that). */
-@container (min-width: 56rem) {
-  .fxLeft {
-    flex-basis: 29%;
   }
 
   .fxPanel {
@@ -2063,6 +2157,39 @@
   align-items: center;
 }
 
+/* On a card narrower than the lessons' column (beside its text), the date
+   needs more of the row than the rate or the profit do: at equal shares
+   "Mar 04, 2027" ran 14px into the Deposit column. The button's column is
+   the width of its longest label ("Claim with Penalty"), the same in the
+   row of names and in the position's row so the two line up, and the text
+   is a size down, so the table keeps its six columns down to 40rem. */
+@container (min-width: 40rem) and (max-width: 56rem) {
+  .fyTable {
+    font-size: 0.9375rem;
+  }
+
+  .fyHead,
+  .fyRow {
+    grid-template-columns: minmax(7rem, 9rem) 0.75fr 1.3fr 1.15fr 0.7fr 10rem;
+  }
+
+  .fyHead > span,
+  .fyCell {
+    padding-inline: 0.375rem;
+  }
+
+  .fyRow .rowAction {
+    padding-inline: 0.375rem 0;
+  }
+}
+
+/* The app's sort arrows after a column's name. */
+.fySort {
+  margin-left: 0.25rem;
+  vertical-align: -1px;
+  opacity: 0.55;
+}
+
 .fyHead {
   min-height: 2.5rem;
   border-bottom: 1px solid oklch(0.35 0.04 231.64);
@@ -2146,9 +2273,9 @@
 }
 
 /* A narrow frame: each value under its own column name, the button on the
-   last line. The app's table scrolls sideways here instead. From 50rem down,
+   last line. The app's table scrolls sideways here instead. Under 40rem,
    which is where six columns stop holding a date on one line. */
-@container (max-width: 50rem) {
+@container (max-width: 39.99rem) {
   .fyHead {
     display: none;
   }

@@ -1,55 +1,113 @@
-import { Await, Do, PageBreak, Shot, Stat } from "../ArticleLesson";
+import { Await, Beside, Do, PageBreak, ReadOn, Shot, Stat, There } from "../ArticleLesson";
 import { DepositMoment, YearThenWithdrawMoment } from "../ArticleLesson/moments";
+import { Change, Changes } from "../ArticleLesson/changes";
 import { Term } from "../kit";
 
-The Borrow page lists the vaults you can deposit into and borrow against, one card per vault. Each card shows the vault's asset and its chain at the top left, and the vault's APR under its name. Opening a card takes you to that vault's page, where you can deposit and borrow in one flow.
+<Beside />
 
-The same vaults are also listed on the <Term id="mixedYield">Mixed Yield</Term> page, under Earn as Variable Rate, which is set up for depositing to earn without taking a loan. A deposit earns the same yield from either page.
+To earn yield on USDC and be able to borrow against it later, you deposit it into a vault. A vault is one pool of USDC or ETH that Alchemix spreads across yield <Term id="strategy">strategies</Term> on other protocols.
 
-In the app, you pick the vault for the asset you hold and the chain you want to use, a USDC vault for USDC or an ETH vault for ETH. This lesson uses the Risk-adjusted Mix USDC vault on Ethereum as its example, deposited from the Borrow page.
+<There /> are two vault cards from the app's Borrow page, which has one card for each vault. You pick a vault for the asset you hold and the chain you want.
 
-<Shot name="borrowCards">Two vault cards on the Borrow page, each with its asset and chain at the top left and its APR under its name.</Shot>
+<ReadOn moment="read-vault" title="What a vault is" />
 
-On a vault's page, the Info tab lists its diversified portfolio of <Term id="strategy">strategies</Term>, the lending markets, liquid staking and other vaults it deposits into, along with each one's Allocation, the share of the vault it holds. The mix differs from vault to vault and chain to chain. The Alchemix DAO chooses the strategies and sets each one's share, spreading deposits across several of them to reduce the vault's exposure to any single protocol. Each strategy carries a Risk Level, and riskier strategies are capped at a smaller share of the vault, which you will learn about in the intermediate track.
+<Shot name="borrowCards">Two vault cards on the Borrow page.</Shot>
 
-The vault's <Term id="apr">APR</Term>, shown at the top of its page and charted on the Info tab, is the annualized rate those strategies are earning right now, which changes as their own rates change.
+Each card on the Borrow page shows what you need to pick a vault.
 
-<Shot name="vaultInfo" column>The Info tab: each strategy with its Risk Level, APR and share of the vault, and the vault's APR over the last 30 days.</Shot>
+<Changes>
+<Change stat="card-asset">
+
+The <Stat name="card-asset">token icons</Stat> show the asset the vault takes: USDC on the top card, ETH on the one under it.
+
+</Change>
+<Change stat="card-chain">
+
+The <Stat name="card-chain">chain flag</Stat> shows the chain the vault is on. Both of these vaults are on Ethereum.
+
+</Change>
+</Changes>
+
+This lesson uses the <Stat name="card-name">Risk-adjusted Mix USDC</Stat> vault on Ethereum as its example.
+
+<PageBreak title="Where your USDC goes" />
+
+<Beside />
+
+<There /> is the <Stat name="info-tab">Info</Stat> tab from a vault's page in the app. The <Stat name="info-tab">Info</Stat> tab shows where the vault puts your USDC.
+
+Your USDC goes into several <Term id="strategy">strategies</Term>: lending markets, liquid staking and other vaults. Each one is listed under <Stat name="info-strategy">Strategy</Stat>, and its <Stat name="info-alloc">Allocation</Stat> is the share of the vault that strategy holds.
+
+The Alchemix DAO chooses the strategies and sets each one's share. Spreading deposits across several of them reduces the vault's exposure to any single protocol.
+
+The mix differs from vault to vault and chain to chain.
+
+<ReadOn moment="read-strategies" title="The vault's strategies" />
+
+<Shot name="vaultInfo" column>A vault's Info tab, with the vault's APR over the last 30 days.</Shot>
+
+Each strategy on the <Stat name="info-tab">Info</Stat> tab has a <Stat name="info-risk">Risk Level</Stat>: the Alchemix DAO's rating of how much could go wrong with the protocol behind the strategy. The app prints each rating in words, such as Conservative or Moderate.
+
+The riskier a Risk Level, the smaller the cap on how much of the vault's deposits its strategies can hold. Those caps keep more of your deposit in the strategies rated less risky.
+
+<ReadOn moment="read-risk" title="Risk Level" />
+
+A vault's <Term id="apr">APR</Term> is how much a deposit would grow in a year, as a percentage, if the vault's strategies kept earning at today's rates. Each strategy's own rate is listed under <Stat name="info-apr">APR</Stat> on the <Stat name="info-tab">Info</Stat> tab.
+
+The APR moves every day, as the <Stat name="info-chart">chart</Stat> of the last 30 days shows.
+
+The same vaults are on the <Term id="mixedYield">Mixed Yield</Term> page, for depositing without a loan. A deposit made there goes into the same strategies as one made from the Borrow page, so it earns the same yield.
 
 <PageBreak title="Make the deposit" />
 
-<Do moment="deposit">
+<Beside />
 
-Type 10,000 in the USDC field on the Deposit/Borrow tab below and press Deposit. The 10,000 is practice USDC, so no real money moves.
+<There /> is a practice copy of the Risk-adjusted Mix USDC vault's page, with nothing deposited yet. In the app, a vault's card on the Borrow page opens the vault's page, where you deposit and borrow in one flow.
+
+The vault's <Stat name="deposit">Deposit</Stat> stat reads 0 and shows your deposit once you make it.
+
+<Do moment="deposit" title="Deposit your 10,000 USDC">
+
+Deposit the 10,000 USDC in your <Stat name="wallet">practice wallet</Stat>: type 10,000 in the <Stat name="field">USDC field</Stat> and press <Stat name="action">Deposit</Stat>.
 
 </Do>
 
 <DepositMoment />
 
-The vault deposited your 10,000 USDC into <Term id="myt">MYT</Term>, the Mix-Yield Token, at MYT's current exchange rate, and holds the MYT as your position's collateral. As the strategies earn, the exchange rate rises and each MYT is worth more USDC, which is how your yield reaches you, with no new MYT added. If a strategy records a loss, each MYT is worth less. The <Stat name="deposit">Deposit</Stat> stat shows what your MYT is worth in USDC.
+The vault deposited your 10,000 USDC into <Term id="myt">MYT</Term>, the Mix-Yield Token, at MYT's current exchange rate. The vault holds your MYT as your position's collateral.
+
+The <Stat name="deposit">Deposit</Stat> stat shows what your MYT is worth in USDC.
+
+Your <Term id="myt">MYT</Term> is your share of the vault's <Term id="strategy">strategies</Term>. As the strategies earn, the exchange rate rises and each MYT is worth more USDC.
+
+No new MYT is added to your position. If a strategy records a loss, each MYT is worth less.
 
 <PageBreak title="A year of yield" />
 
-The <Stat name="apr">APR</Stat> stat on the practice vault reads 5%, an example rate. A real vault's APR moves every day.
+<Beside />
 
-<Do moment="year">
+The practice vault <There low /> holds your 10,000 USDC deposit. Its <Stat name="apr">APR</Stat> stat reads 5%. These lessons use 5% as an example rate, and a real vault's page shows its current APR.
 
-Press Skip ahead a year.
+Skipping ahead a year adds a year of yield at 5% to your <Stat name="deposit">Deposit</Stat>.
+
+<Do moment="year" title="Skip ahead one year">
+
+Press Skip ahead a year at the bottom of the page.
 
 </Do>
 
 <YearThenWithdrawMoment />
 
-<Stat name="deposit">Deposit</Stat> reads 10,500, a year of 5% on 10,000. Your position holds the same MYT as before, now worth 500 more.
+A year at 5% added 500 to your 10,000 deposit, so <Stat name="deposit">Deposit</Stat> reads 10,500. Your position holds the same <Term id="myt">MYT</Term> as before, now worth 500 more.
 
-While you owe nothing against it, you can withdraw any amount of your deposit at any time. Once you borrow, the vault keeps back enough of it to back the loan, which you will learn about later.
+While you owe nothing against your deposit, you can withdraw any amount of it at any time. Withdrawing 500 takes the year's yield out as USDC.
 
-<Do moment="withdraw">
+<Do moment="withdraw" title="Withdraw the year's yield">
 
-To withdraw the year's yield as USDC, type 500 in the USDC field on the Withdraw tab and press Withdraw.
+On the <Stat name="tab-withdraw">Withdraw</Stat> tab, type 500 in the <Stat name="field">USDC field</Stat>. Then press <Stat name="action">Withdraw</Stat>.
 
 </Do>
 
 <Await moment="withdraw" hint="Type 500 and press Withdraw" />
 
-The vault sent 500 USDC to your practice wallet, and Deposit reads 10,000 again.
+The vault sent the year's 500 of yield to your <Stat name="wallet">practice wallet</Stat> as USDC. <Stat name="deposit">Deposit</Stat> reads 10,000 again, the amount you started with.

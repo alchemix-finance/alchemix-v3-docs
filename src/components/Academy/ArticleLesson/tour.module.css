@@ -1,0 +1,435 @@
+/* Lesson 1's tour of the app's pages (`PageTour`): the pages as a list in
+   the text column, one open on what the page is for, and a picture of the
+   open page as the row's element. In one column the picture is inside the
+   open row, under its text. */
+
+/* ── The list ── */
+
+/* A hairline runs down the list's left side; the open row's part of it is
+   copper (`.rule`). */
+.list {
+  position: relative;
+  min-width: 0;
+  /* A reading measure where the list has the page's whole column. */
+  max-width: var(--article-text, 50rem);
+  margin: 0.75rem 0 1.5rem;
+  box-shadow: inset 1px 0 0 var(--m-line);
+}
+
+.row {
+  position: relative;
+  min-width: 0;
+  padding-left: 1.25rem;
+  /* Under the pinned header when the window is brought back to it. */
+  scroll-margin-top: 9.5rem;
+}
+
+.rule {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--m-copper);
+}
+
+/* A row's head: the page's name, the whole line a button. */
+.head {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 3.25rem;
+  margin: 0;
+  padding: 0.625rem 0.25rem 0.625rem 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  letter-spacing: 0;
+  text-align: left;
+  color: var(--m-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.head:hover {
+  color: var(--m-text);
+}
+
+.head:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+  border-radius: var(--m-r-sm);
+}
+
+.rowOn .head {
+  color: var(--m-text);
+  cursor: default;
+}
+
+.name {
+  font-family: var(--m-display);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: var(--m-track-display);
+}
+
+.mark {
+  display: inline-flex;
+  flex: none;
+  opacity: 0.7;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.head:hover .mark {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+.tick {
+  color: var(--m-copper);
+}
+
+/* The open row's text. The panel's height is animated, so what is inside
+   keeps its own box and is cut by the panel as it opens and closes. */
+.panel {
+  overflow: hidden;
+}
+
+.panelIn {
+  padding: 0 0 1.25rem;
+}
+
+.where {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.625rem;
+  margin: 0 0 0.875rem;
+  font-size: var(--m-t-xs);
+  line-height: 1.25rem;
+}
+
+.whereLabel {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--m-muted);
+}
+
+.wherePath {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: var(--m-r-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--m-text);
+}
+
+.text > p:last-child {
+  margin-bottom: 0;
+}
+
+/* One column: the picture inside the open row, under its text. */
+.inRow {
+  margin: 1.25rem 0 0;
+}
+
+/* ── The picture: the app's top bar with the page's item lit, over the page ── */
+
+.picture {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-xl);
+  background: #141d23;
+  /* The bar measures itself against the picture (the logo gives way to the
+     mark, then the right side goes, where the picture is narrow). */
+  container-type: inline-size;
+}
+
+/* The app's bar: the logo on the left, the menu in the middle, the theme
+   button and Connect Wallet on the right. Three columns, the outer two equal,
+   so the menu is centered in the bar as it is in the app. An open menu's
+   panel hangs under the bar, over the page. */
+.menu {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.875rem;
+  border-bottom: 1px solid var(--m-line);
+  font-size: 0.8125rem;
+  line-height: 1;
+  color: var(--m-ink);
+}
+
+.menuBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  color: var(--m-copper);
+}
+
+/* The lockup, or the mark where the picture is narrow. Each rule that hides
+   one of them carries the bar's class too, so it wins on specificity: the
+   build gathers `display: none` rules together and does not keep their
+   order. */
+.menuLockup,
+.menuMark {
+  flex: none;
+  display: block;
+  height: 1.125rem;
+  width: auto;
+}
+
+.menu .menuMark {
+  display: none;
+}
+
+.menuItems {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.menuItem {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.menuText {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.menuOn {
+  color: var(--m-text);
+}
+
+/* The open page's ground, the app's own (its active nav pill): one element,
+   moved from item to item. The faint copper rim is the Academy's: the mark
+   it puts on what the text beside the picture names. */
+.menuLit {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--m-active);
+  box-shadow: inset 0 0 0 1px var(--m-copper-line);
+}
+
+/* An open menu: the app's panel under its item, with the menu's entries. */
+.menuPanel {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  left: 0;
+  display: grid;
+  gap: 0.125rem;
+  min-width: 8.5rem;
+  padding: 0.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: 0.5rem;
+  background: #1b2730;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  color: var(--m-muted);
+}
+
+.menuEntry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: 0.375rem;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.menuEntryOn {
+  color: var(--m-text);
+}
+
+.menuEntryLit {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--m-active);
+  box-shadow: inset 0 0 0 1px var(--m-copper-line);
+}
+
+.menuRight {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--m-text);
+}
+
+.menuTheme {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  border: 1px solid var(--m-line-strong);
+  border-radius: 0.375rem;
+}
+
+.menuWallet {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 1.625rem;
+  padding: 0 0.625rem;
+  border: 1px solid var(--m-outline);
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* A picture too narrow for the whole bar with room between its three parts:
+   the theme button goes first, then the logo gives way to its mark. */
+@container (max-width: 50rem) {
+  .menu .menuTheme {
+    display: none;
+  }
+}
+
+@container (max-width: 42rem) {
+  .menu .menuBrand .menuLockup {
+    display: none;
+  }
+
+  .menu .menuBrand .menuMark {
+    display: block;
+  }
+}
+
+/* The page under the menu. The captures are at their own width at most, in
+   the middle of a picture wider than that. */
+.page {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 51.25rem;
+  margin: 0 auto;
+}
+
+/* One page's picture; the last one fades out under the next. */
+.pageIn {
+  width: 100%;
+}
+
+/* The heading, then the cards, with a hairline where the page's filters are
+   left out between them. */
+.capture {
+  display: grid;
+  gap: 1px;
+  background: var(--m-line);
+}
+
+.part {
+  position: relative;
+  overflow: hidden;
+  background: #141d23;
+}
+
+.part img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+/* The practice copy of the Dashboard, scaled to the picture's width (`Drawn`). */
+.drawn {
+  padding: 0.75rem;
+}
+
+.drawnBox {
+  overflow: hidden;
+}
+
+.drawnInner {
+  transform-origin: 0 0;
+}
+
+.drawnInner > section {
+  margin: 0;
+}
+
+/* A phone's column: each page at its own height. The bar keeps the mark and
+   the menu, which wraps to a second line where it has to; the right side
+   goes. */
+.picturePhone .menu {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.375rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.6875rem;
+}
+
+.picturePhone .menuItems {
+  flex-wrap: wrap;
+  gap: 0.25rem 0.125rem;
+}
+
+.picturePhone .menuItem {
+  height: 1.5rem;
+  padding: 0 0.375rem;
+}
+
+.picturePhone .menu .menuRight,
+.picturePhone .menu .menuBrand svg:last-child {
+  display: none;
+}
+
+.picturePhone .menu .menuBrand .menuLockup {
+  display: none;
+}
+
+.picturePhone .menu .menuBrand .menuMark {
+  display: block;
+}
+
+/* The open menu, as a line of its own under the bar's items. */
+.picturePhone .menuPanelRow {
+  position: static;
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: flex;
+  min-width: 0;
+  box-shadow: none;
+}
+
+.picturePhone .menuEntry {
+  height: 1.5rem;
+  padding: 0 0.5rem;
+}

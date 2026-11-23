@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { AppButton, AppInput, NOT_READY, PracticeVault } from "../AppMock";
-import { LessonControl } from "../kit";
 import { TAUGHT } from "../Beginner";
-import { useMoment, useMomentNote } from "./position";
+import { useFooterAction, useMoment, useMomentNote } from "./position";
 import { Stage } from "./index";
 
 /**
@@ -118,6 +117,11 @@ export function YearThenWithdrawMoment() {
           ? "Type 500"
           : null;
   useMomentNote("withdraw", take.ready && n > take.position.deposit ? "That is more than your deposit" : null);
+  // The lesson's own control is the footer's button (see `useFooterAction`).
+  useFooterAction(
+    "year",
+    year.done ? null : { label: "Skip ahead a year", disabled: !year.ready, onPress: () => year.apply({ ...year.position, deposit: year.position.deposit * (1 + APR) }) },
+  );
   return (
     <Stage>
       <PracticeVault
@@ -151,15 +155,6 @@ export function YearThenWithdrawMoment() {
           </>
         ) : null}
       </PracticeVault>
-      {year.done ? null : (
-        <LessonControl
-          disabled={!year.ready}
-          hint={NOT_READY}
-          onClick={() => year.apply({ ...year.position, deposit: year.position.deposit * (1 + APR) })}
-        >
-          Skip ahead a year
-        </LessonControl>
-      )}
     </Stage>
   );
 }

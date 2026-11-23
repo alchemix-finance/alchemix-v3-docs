@@ -1,0 +1,162 @@
+/* A sum: a line to an amount, the result under a rule. */
+.breakdown {
+  max-width: 30rem;
+  margin: 0 0 1.25rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-md);
+  background: var(--m-panel);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.4375rem 0;
+}
+
+.row dt {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 400;
+  line-height: 1.375rem;
+  color: var(--m-ink);
+}
+
+.row dd {
+  margin: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  line-height: 1.375rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--m-text);
+}
+
+.unit {
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+.row dd.up {
+  color: var(--m-green);
+}
+
+.row dd.down {
+  color: var(--m-red);
+}
+
+.total {
+  margin-top: 0.25rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--m-line);
+}
+
+.total dt {
+  font-weight: 500;
+  color: var(--m-text);
+}
+
+.total dd {
+  font-size: 1.0625rem;
+}
+
+/* Two things side by side: a column to each, a line to each question. */
+.versus {
+  max-width: 34rem;
+  margin: 0 0 1.25rem;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-md);
+  background: var(--m-panel);
+  overflow: hidden;
+}
+
+.vHead,
+.vRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: baseline;
+  padding: 0.625rem 1rem;
+}
+
+.vHead {
+  border-bottom: 1px solid var(--m-line);
+  font-size: var(--m-t-xs);
+  font-weight: 600;
+  line-height: 1.125rem;
+  letter-spacing: 0.02em;
+  color: var(--m-ink);
+}
+
+.vRow + .vRow {
+  border-top: 1px solid color-mix(in srgb, var(--m-line) 60%, transparent);
+}
+
+.vRow > :first-child {
+  font-size: var(--m-t-sm);
+  line-height: 1.375rem;
+  color: var(--m-ink);
+}
+
+.vRow > :not(:first-child) {
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  line-height: 1.375rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-text);
+}
+
+/* How a figure is worked out, closed until asked for. */
+.work {
+  margin: -0.5rem 0 1.25rem;
+}
+
+.workLine {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  color: var(--m-ink);
+  cursor: pointer;
+}
+
+.workLine:hover {
+  color: var(--m-text);
+}
+
+.workLine:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.workLine svg {
+  transition: transform 0.2s ease;
+}
+
+.workOpen .workLine svg {
+  transform: rotate(90deg);
+}
+
+.workBody {
+  margin-top: 0.375rem;
+  padding: 0.75rem 1rem 0.125rem;
+  border-left: 2px solid var(--m-line);
+}
+
+.workBody p {
+  font-size: var(--m-t-sm) !important;
+  line-height: 1.5rem !important;
+  margin-bottom: 0.625rem !important;
+  color: var(--m-ink) !important;
+}

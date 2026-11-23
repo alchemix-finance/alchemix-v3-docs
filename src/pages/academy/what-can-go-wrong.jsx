@@ -6,7 +6,7 @@ import Content from "@site/src/components/Academy/lessons/whatCanLiquidate.mdx";
    5,000 owed, and the wallet as lesson 6 starts it. The page's what-ifs act
    on the practice vault and leave this position alone. */
 const START = { wallet: 5_350, walletAl: 0, deposit: 10_000, debt: 5_000, earmarked: null, fixedYield: null };
-const MOMENTS = ["drop", "loss", "liquidation"];
+const MOMENTS = ["read-liq-ltv", "drop", "read-ltv-held", "loss", "liquidation", "read-liq-steps", "read-liq-cost", "read-earmarked"];
 
 export default function Lesson() {
   return (

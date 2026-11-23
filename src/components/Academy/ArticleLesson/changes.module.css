@@ -1,0 +1,91 @@
+/* What a step changed: one row per stat, the stat's tile beside the sentence
+   that explains it. At the text column's width. */
+.changes {
+  display: grid;
+  gap: 1rem;
+  max-width: var(--article-text);
+  margin: 0 0 1.5rem;
+}
+
+.change {
+  display: grid;
+  grid-template-columns: 12.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+
+/* The mirrored tile is drawn by the practice vault's own rules, which read
+   the app's colors and face from the vault's frame. Outside the frame the row
+   sets the same ones (AppMock/styles.module.css, `.frame`). */
+.slot {
+  --app-muted: oklch(0.708 0 0);
+  --app-fg: oklch(0.985 0 0);
+  --app-alchemix: oklch(0.8461 0.0792 57.05);
+
+  display: flex;
+  align-items: flex-start;
+  min-height: 4.75rem;
+  color: var(--app-fg);
+  font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+.slot > * {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* A row about a figure that is not one of the vault's tiles (a Fixed Yield
+   card's Expected Output) has no copy to draw, and is its sentence alone. */
+.change:has(> .slot:empty) {
+  display: block;
+}
+
+.slot:empty {
+  display: none;
+}
+
+.change .why p {
+  margin: 0;
+}
+
+.change .why p + p {
+  margin-top: 0.5rem;
+}
+
+/* A phone: the tile over its sentence, each row a block of its own. */
+@media (max-width: 600px) {
+  .changes {
+    gap: 1.25rem;
+  }
+
+  .change {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .slot {
+    min-height: 0;
+  }
+}
+
+/* Beside the practice element: the stat is on screen next to the row, so the
+   row is its sentence alone, with a rule that lights with the stat. */
+[data-side] .changes {
+  gap: 0.875rem;
+}
+
+[data-side] .change {
+  display: block;
+  padding-left: 0.875rem;
+  border-left: 2px solid var(--m-line-strong, var(--m-line));
+  transition: border-color 0.2s ease;
+}
+
+[data-side] .changeOn {
+  border-left-color: var(--m-copper);
+}
+
+[data-side] .slot {
+  display: none;
+}

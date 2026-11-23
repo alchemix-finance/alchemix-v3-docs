@@ -1,8 +1,7 @@
 /* The article lessons: a short run of pages of prose with the
    figures and practice moments in it, between the Shell's pinned header (the
    nav, then the position strip) and its pinned footer (Back, the page's
-   place, the one action). The breadcrumb and the preview banner are
-   LessonPage's. */
+   place, the one action). The preview banner is LessonPage's. */
 
 /* The column: 60rem (960px, `--lesson-col` on the Shell's pinned page),
    centered in the window, with a 1rem gutter either side. The text is
@@ -23,7 +22,7 @@
      a line at most, five sixths of the column, so the space to their right
      reads as a paragraph's margin. At 42.5rem and 47.5rem in a 75rem column
      it read as a gap. One number, so it is easy to tune. */
-  --article-text: 50rem;
+  --article-text: var(--lesson-text, 50rem);
   /* The lesson text's own type, set for reading a page of it. It carried the
      members area's 0.04em tracking, which is made for a headline's one-line
      lead: over paragraphs it spread every word, and with 1.7 leading the
@@ -37,17 +36,74 @@
   width: 100%;
   max-width: calc(var(--article-col) + 2rem);
   margin-inline: auto;
-  padding: clamp(2.25rem, 5vw, 3.625rem) 1rem 3rem;
+  /* The room over the page's first line follows the window's height: a
+     laptop's window keeps more of itself for the practice element. */
+  padding: clamp(2rem, 5.4vh, 3.5rem) 1rem 3rem;
   /* Lesson 1's strip comes in above a reader who has scrolled past it, and
      the page makes up the height itself (see PositionStrip). The browser's
      own scroll anchoring would make it up a second time. */
   overflow-anchor: none;
 }
 
+/* Where the reader is, over the page's title: the way back to the map (an
+   arrow, the track, the lesson's number), a hairline, the lesson's name. The
+   nav row's type, on the column's left edge. */
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.crumbBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  /* A taller target than the line, without moving the line. */
+  margin-block: -0.5rem;
+  padding-block: 0.5rem;
+  color: var(--m-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.crumbBack:hover {
+  color: var(--m-copper);
+  text-decoration: none;
+}
+
+.crumbBack:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+  border-radius: var(--m-r-sm);
+}
+
+.crumbRule {
+  flex: none;
+  width: 1px;
+  height: 1rem;
+  background: var(--m-line-strong);
+}
+
+.crumbTitle {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--m-text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* The page's title: the lesson's on page 1, the page's own after that. The
-   Check page opens on the Check's own heading. */
+   Check page opens on the Check's own heading. The breadcrumb and the title
+   have more room over them (the body's padding) than the title has under
+   it, so the two stand nearer the page they head than the bar above. */
 .title {
-  margin: 0 0 1.5rem;
+  margin: 0 0 clamp(1.5rem, 3.2vh, 2rem);
   font-family: var(--m-display);
   font-size: clamp(1.875rem, 3.8vw, 2.75rem);
   line-height: 1.1;
@@ -57,39 +113,22 @@
   text-wrap: balance;
 }
 
-/* The header names the lesson on every page, at every width: the big title
-   is on page 1 only. LessonPage's back link drops the title below 1000px
-   and keeps the track label; here the title stays and the track label goes
-   instead, since the map already names the track. Each class doubled, so
-   the rule beats LessonPage's on specificity rather than on order. */
-@media (max-width: 1000px) {
-  .headTitle.headTitle {
-    display: block;
-    min-width: 0;
-  }
-
-  .headDivider.headDivider {
-    display: block;
-  }
-
-  .headTrack.headTrack {
-    display: none;
-  }
-}
-
 /* ── The position strip ── */
 
 /* The pinned header's second row. The Shell draws the band the width of the
    window; the row inside sits in the reading column. */
-/* One slim row, the stage's width: "Practice wallet" on the left (the
-   course's demo wallet, and it says so), then each field as its label and
-   value on one line, spread across the row. Five fit at 1440 (Earmarked
-   joins in lesson 5, a Fixed Yield slot in lesson 8); on a phone the label
-   takes its own line and the fields wrap under it. */
+/* One slim row: "Practice wallet" (the course's demo wallet, and it says
+   so), then each field as its label and value on one line. The label and the
+   fields are one group in the middle of the row, a fixed step apart: spread
+   across the row's width, a reader's eye had 500px to cross between Wallet
+   and Deposit, and the three numbers did not read as one wallet. Five fit at
+   1440 (Earmarked joins in lesson 5, a Fixed Yield slot in lesson 8); on a
+   phone the label takes its own line and the fields wrap under it. */
 .strip {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem 1.5rem;
   max-width: calc(var(--lesson-col, 60rem) + 2rem);
   margin-inline: auto;
@@ -131,13 +170,17 @@
 }
 
 .stripRow {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.125rem 1.25rem;
+  /* Five fields (lesson 8) stand closer, so the row keeps one line. */
+  gap: 0.125rem 4rem;
   min-width: 0;
   margin: 0;
+}
+
+.stripRow[data-fields="5"] {
+  column-gap: 3rem;
 }
 
 .field {
@@ -158,6 +201,10 @@
 }
 
 .fieldValue {
+  /* One height whatever is rolling inside it, so the header never changes
+     size under the page. */
+  box-sizing: border-box;
+  height: 1.3125rem;
   margin: 0;
   font-size: var(--m-t-sm);
   font-weight: 500;
@@ -172,41 +219,121 @@
   color: var(--m-muted);
 }
 
-/* The field a moment just changed: the practice vault's copper wash, held
-   while the number tweens and then faded, 3 seconds in all.
-   Nothing under reduced motion. */
-.fieldWash {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: rgba(245, 192, 154, 0.2);
-  box-shadow: inset 0 0 0 1px rgba(245, 192, 154, 0.55);
-  pointer-events: none;
-  animation: fieldWash 3s ease-in-out forwards;
+/* The value's box is as wide as the widest number the field holds on this
+   track (`.fieldWide`, laid out and never drawn), with the number of the
+   moment over it from the left. A number gaining or losing digits then
+   moves nothing in the row. */
+.fieldValue {
+  display: inline-grid;
+  justify-items: start;
+  /* The two share one baseline, which is the one the field's label is set on. */
+  align-items: baseline;
 }
 
-@keyframes fieldWash {
+.fieldWide,
+.fieldNow {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+.fieldWide {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.fieldNow {
+  position: relative;
+}
+
+/* The value's digits roll to a new number (NumberFlow). Its unit is the
+   number's own suffix, so it travels with the digits as they change width. */
+.fieldFlow {
+  --number-flow-mask-height: 0.2em;
+  --number-flow-char-height: 1.25rem;
+  /* The room the rolling digits fade in is taken back, so the row is as
+     tall as it is with plain text. */
+  margin-block: -2px;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.fieldFlow::part(suffix) {
+  font-size: var(--m-t-xs);
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+/* The number just changed: copper while it rolls, then back to the text's
+   color. This is the whole of the change's light: a box of light around the
+   field read as the highlight a label gives, on a field no label named. Two names for one animation, so a second change in a row runs it
+   again (the field alternates between them). */
+@keyframes fieldTintA {
   0%,
-  35% {
-    opacity: 1;
+  45% {
+    color: var(--m-copper);
   }
   100% {
-    opacity: 0;
+    color: var(--m-text);
   }
 }
 
-/* A field the reader is pointing at in the text (`Stat`). */
-.field {
-  transition: box-shadow 0.2s ease;
+@keyframes fieldTintB {
+  0%,
+  45% {
+    color: var(--m-copper);
+  }
+  100% {
+    color: var(--m-text);
+  }
 }
 
-.fieldPointed {
-  box-shadow: inset 0 0 0 1px var(--m-copper), 0 0 12px rgba(245, 192, 154, 0.3);
+.fieldValue[data-tint="a"] {
+  animation: fieldTintA 2.8s ease-out;
+}
+
+.fieldValue[data-tint="b"] {
+  animation: fieldTintB 2.8s ease-out;
+}
+
+/* What the reader's last step did to the field: a small copper tag right
+   under the number it is about, lying across the header's lower edge. It
+   takes none of the row's room, so nothing in the strip moves when it comes
+   or goes, and a tag with two amounts never meets the next field. It ends
+   above the page's breadcrumb line, so it covers no words. */
+.fieldDelta {
+  position: absolute;
+  top: calc(100% + 0.1875rem);
+  left: -0.5rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.625rem;
+  padding: 0 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--m-copper) 38%, transparent);
+  border-radius: 0.4375rem;
+  background: color-mix(in srgb, var(--m-copper) 13%, #161c21);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-copper);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* A phone's strip wraps onto two lines, with no room under a field for the
+   tag, or for a field to keep more width than its number needs. */
+@media (max-width: 600px) {
+  .fieldDelta,
+  .fieldWide {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fieldWash {
-    display: none;
+  .fieldValue[data-tint] {
+    animation: none;
   }
 }
 
@@ -223,8 +350,17 @@
     line-height: 1rem;
   }
 
+  /* The fields follow one another from the left, a fixed step apart, three
+     to a line where they fit. Spread across the line, the first two stood at
+     its two ends and a third alone on the next. */
   .stripRow {
-    gap: 0 0.5rem;
+    flex: 1 1 auto;
+    gap: 0 0.75rem;
+  }
+
+  .field {
+    padding-inline: 0.25rem;
+    margin-inline: -0.25rem;
   }
 
   /* A step smaller on a phone, so three fields keep one line even while a
@@ -239,6 +375,20 @@
   }
 }
 
+/* The narrowest phones (360px): the fields sit closer, so three of them keep
+   one line while a tween runs Wallet and Deposit through four digits at once.
+   At the wider gaps the strip took a second line for the length of the tween,
+   and the header grew and shrank by 25px under the reader. */
+@media (max-width: 380px) {
+  .stripRow {
+    gap: 0 0.25rem;
+  }
+
+  .field {
+    gap: 0.25rem;
+  }
+}
+
 /* Where lesson 1's strip comes in. */
 .marker {
   height: 1px;
@@ -247,15 +397,19 @@
 /* The blocks after a moment, arriving once the reader has acted: a short
    fade in place. Nothing under reduced motion. */
 .reveal {
-  animation: reveal 0.35s ease-out both;
+  animation: reveal 0.4s cubic-bezier(0.3, 0.7, 0.2, 1) 0.14s both;
 }
 
+/* It comes in a moment after the run before it starts to fold, and rises
+   the last few pixels into place, so the two read as one movement. */
 @keyframes reveal {
   from {
     opacity: 0;
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
+    transform: none;
   }
 }
 
@@ -263,76 +417,6 @@
   .reveal {
     animation: none;
   }
-}
-
-/* "Run again" under a finished practice element. Until every step on the
-   element is done the row has no height. Then it takes a row of its own,
-   pulled up into the 2rem the element leaves under itself: 0.75rem under the
-   element, 1.5rem over the text that follows. When it arrives because the
-   reader just acted, the row opens over 0.3s, so the text under it slides
-   the 25px instead of snapping. */
-.again {
-  height: 0;
-}
-
-.againOn {
-  display: flex;
-  height: 1.3125rem;
-  margin: -1.25rem 0 1.5rem;
-}
-
-.againIn {
-  overflow: hidden;
-  animation: againIn 0.3s ease both;
-}
-
-@keyframes againIn {
-  from {
-    height: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    opacity: 0;
-  }
-  to {
-    height: 1.3125rem;
-    margin-top: -1.25rem;
-    margin-bottom: 1.5rem;
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .againIn {
-    animation: none;
-  }
-}
-
-.againButton {
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  height: 1.3125rem;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0;
-  color: var(--m-muted);
-  cursor: pointer;
-}
-
-.againButton:hover {
-  color: var(--m-text);
-}
-
-.againButton:focus-visible {
-  outline: 2px solid var(--m-copper);
-  outline-offset: 3px;
-  border-radius: 4px;
 }
 
 /* ── The prose ── */
@@ -344,9 +428,215 @@
 /* A page's text blocks, at the text width. Only the page's own blocks (and
    the ones a moment reveals), so a paragraph inside a practice element or a
    figure's caption keeps that element's width. */
-.prose > div > :is(p, ul, ol, .sub, .intro, .do),
-.prose > div > .reveal > :is(p, ul, ol, .sub, .intro, .do) {
+.prose > div > :is(p, ul, ol, .sub, .intro, .do, .pastWrap),
+.prose > div > .reveal > :is(p, ul, ol, .sub, .intro, .do),
+.prose > div > .group > :is(p, ul, ol, .sub, .intro, .do),
+.prose > div > .group > .reveal > :is(p, ul, ol, .sub, .intro, .do) {
   max-width: var(--article-text);
+}
+
+/* A page laid out beside its practice element (`Bench`). In the page's one
+   column its blocks are the page's own, so they keep the text width. */
+.bench > :is(p, ul, ol, .sub, .intro, .do, .pastWrap),
+.bench > .reveal > :is(p, ul, ol, .sub, .intro, .do),
+.bench > .group > :is(p, ul, ol, .sub, .intro, .do),
+.bench > .group > .reveal > :is(p, ul, ol, .sub, .intro, .do) {
+  max-width: var(--article-text);
+}
+
+/* Where the page is wide enough for a practice vault drawn four stats across
+   with a column of text beside it: the page's text on the left, under the
+   page's title where reading starts, and the element on the right. The text
+   is read first and says what to do on the element, so it comes first; on
+   the right it was the last thing on the page the eye reached. The page's
+   column is then
+   84rem (the Shell widens
+   `--lesson-col` for a page laid out this way), so the row, the wallet strip
+   and the footer share one left edge and one right edge. Each column stops
+   under the pinned header while the longer one scrolls (`--bench-top`, set
+   by the Bench), so the stats and the sentence about them stay on screen
+   together.
+
+   The style sheet says whether the window is wide enough (`--side`), the
+   Bench reads it and draws the text's column, and only a row drawn that way
+   (`data-side`) is laid out as a grid: the page as the server sends it is
+   the one-column order, and a grid around it put the title and the text in
+   the element's column until the scripts ran. */
+@container (min-width: 76rem) {
+  /* The lesson's column, for the page (`--lesson-rows` is set by the Shell
+     on a lesson that has rows). */
+  .body {
+    --lesson-col: var(--lesson-rows, 60rem);
+  }
+
+  /* The wallet strip and the footer's row stand in the nav row's column on
+     every page, a page of one text column included, so the header's two
+     rows and the footer keep the same edges through a lesson. */
+  .strip,
+  .bar {
+    --lesson-col: var(--nav-col, 84rem);
+  }
+
+  /* Less room under a page laid out in rows: nothing follows the row, and
+     the full 3rem let the page scroll far enough to bring the element up
+     against the wallet strip. */
+  .body:has([data-side]) {
+    padding-bottom: 1.5rem;
+  }
+
+  /* The room over a row's breadcrumb is the room every page keeps (the
+     body's own padding). It was 1.5rem here, less than half of what a page
+     of text keeps, so the breadcrumb and title stood nearer the wallet strip
+     on every page but a lesson's first. Once the page is scrolled the
+     columns keep BENCH_GAP under the pinned header, as before. */
+
+  /* The Check is the one page of such a lesson with a single column of
+     text: it stands in the middle of the wide column, with the breadcrumb
+     over its left edge. */
+  .check {
+    margin-inline: var(--lesson-rows-center, 0);
+  }
+
+  .crumbCenter {
+    max-width: var(--article-text);
+    margin-inline: var(--lesson-rows-center, 0);
+  }
+
+  .bench {
+    --side: 1;
+  }
+
+  /* Until the Bench has drawn its two columns (the page as the server sends
+     it, for the moment before the scripts run) the row is held back, so the
+     reader does not watch one column turn into two. It shows by itself after
+     two seconds if the scripts never run. */
+  .bench:not([data-side]) {
+    visibility: hidden;
+    animation: benchLate 0s linear 2s forwards;
+  }
+
+  /* The element's column is as wide as the practice vault needs for four
+     stats across, and the text has the rest: a reading measure of about 60
+     characters, wide enough for most page titles on one line. */
+  .bench[data-side] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 47rem);
+    grid-template-rows: auto 1fr;
+    column-gap: 2.5rem;
+    align-items: start;
+    /* Tall enough for the page to scroll to where the columns stop under
+       the header, where the element's foot would otherwise stay under the
+       footer (`--row-least`, set by the Bench; 0 on every other row). */
+    min-height: var(--row-least, 0px);
+  }
+
+  /* An element narrower than its column (the Swap card, a capture at a
+     reading width) takes its own width on the row's right edge, and the text
+     takes the rest of the row, so the row keeps both of its edges. */
+  .bench[data-side].benchFit {
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--card));
+  }
+
+  /* A second row on a page (a second figure with its own text) stands apart
+     from the first as a section does. */
+  .bench[data-side] + .bench[data-side] {
+    margin-top: 4.5rem;
+  }
+
+  /* The breadcrumb and the page's title, over both columns. */
+  .benchHead {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  /* The title has more room under it than the columns keep under the pinned
+     header (BENCH_GAP), so once they stop there the title is out of the
+     window whole, descenders included. */
+  .benchHead .title {
+    margin-bottom: clamp(1.875rem, 3.2vh, 2rem);
+  }
+
+  .benchCard {
+    grid-column: 2;
+    grid-row: 2;
+    position: sticky;
+    top: var(--card-top, var(--bench-top, 7.5rem));
+    min-width: 0;
+    /* The stage inside is as wide as this column. */
+    container-type: inline-size;
+    /* What the element leaves under itself is not part of the column's
+       height (`--trail`, measured by the Bench), so the row ends where the
+       element does. */
+    margin-bottom: calc(-1 * var(--trail, 0px));
+  }
+
+  /* The text's column: plain text on the page, under the title, as lesson
+     1's text is. Its first line starts level with the element's top edge.
+     It is as tall as its text and no taller. As a panel the height of the
+     element it was a second box with its lower half empty wherever the text
+     was short. The parts of it that are not reading text have their own
+     shape: the step's instruction (`doBody`) and the lines finished steps
+     fold to (`pastLine`). */
+  .rail {
+    grid-column: 1;
+    grid-row: 2;
+    position: sticky;
+    top: var(--bench-top, 7.5rem);
+    min-width: 0;
+    align-self: start;
+  }
+
+  /* Beside a narrow element (the Swap card) the column is wider than a line
+     of text should run, so its blocks keep a reading measure. */
+  .rail > *,
+  .rail > .group > *,
+  .rail .reveal > * {
+    max-width: 36rem;
+  }
+}
+
+@keyframes benchLate {
+  to {
+    visibility: visible;
+  }
+}
+
+/* The stage fills the element's column, and starts level with the text. */
+[data-side] .benchCard .stage {
+  --stage: 100cqw;
+  margin-top: 0;
+}
+
+/* A capture at a reading width fills the element's column in a row kept at
+   the full width (`Beside full`). */
+[data-side]:not(.benchFit) .benchCard .column {
+  max-width: none;
+}
+
+/* An element that is not a stage (the Swap card, the year's chart, a
+   capture at a reading width) starts level with the text too. */
+[data-side] .benchCard > :is(.column, .swapPlace, .steps):first-child,
+[data-side] .benchCard > [data-step] + :is(.column, .swapPlace, .steps) {
+  margin-top: 0;
+}
+
+/* A step list that is the row's element (lesson 8's loop) fills its column. */
+[data-side] .benchCard > .steps {
+  max-width: none;
+}
+
+/* A sequence's steps, drawn in the text's column (`useRailSlot`). */
+.railSlot:empty {
+  display: none;
+}
+
+.railSlot .steps {
+  margin: 1.5rem 0 1.5rem;
+}
+
+.railSlot .steps > ol {
+  margin-bottom: 0;
 }
 
 .prose p {
@@ -379,6 +669,91 @@
   font-weight: 600;
 }
 
+/* A link out to the docs: the text's own color with a copper underline. In
+   the site's link color it was copper with no underline, which is what a
+   label that lights the practice element looks like. */
+.prose p a {
+  color: var(--m-text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--m-copper) 75%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.prose p a:hover {
+  color: var(--m-copper);
+  text-decoration-color: var(--m-copper);
+}
+
+/* A table: two cases set side by side, row by row (a loan from a lender
+   against an Alchemix loan), or one rule per row. A paragraph that carried
+   the same figures ran to twenty in nine sentences. A quiet panel like
+   `Intro`, at the text's width, with the site's striped rows and cell
+   borders taken off. A column of figures is right-aligned in the MDX
+   (`---:`). */
+.prose table {
+  display: table;
+  width: 100%;
+  max-width: var(--article-text);
+  margin: 0.25rem 0 1.5rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--m-line);
+  border-radius: var(--m-r-lg, 10px);
+  background: var(--m-panel-strong);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+.prose table tr {
+  border: 0;
+  background: none;
+}
+
+.prose table :is(th, td) {
+  padding: 0.625rem 0.875rem;
+  border: 0;
+  border-top: 1px solid var(--m-line);
+  text-align: left;
+  vertical-align: top;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-ink);
+}
+
+.prose table thead th {
+  border-top: 0;
+  font-size: var(--m-t-sm);
+  font-weight: 600;
+  color: var(--m-text);
+}
+
+.prose table tbody td:first-child {
+  color: var(--m-text);
+}
+
+/* Beside a practice element the text's column is narrow: a figure stays on
+   one line (a cell that broke "10,000 and / 8,600" read as two figures), and
+   a column's heading takes two even lines instead of one and a word. A
+   column of figures is the one the MDX right-aligns (`---:`), which reaches
+   the cell as an inline style; a column of words wraps. */
+.rail table {
+  font-size: var(--m-t-sm);
+}
+
+.rail table :is(th, td) {
+  padding: 0.5625rem 0.75rem;
+}
+
+.rail table td[style*="right"] {
+  white-space: nowrap;
+}
+
+.rail table thead th {
+  vertical-align: bottom;
+  text-wrap: balance;
+}
+
 /* `Sub`: a short heading over a few paragraphs. The body face at a weight
    above the text, so it reads as a label for the run under it and the page
    keeps one display heading (its title). */
@@ -402,16 +777,201 @@
   display: flow-root;
 }
 
-/* `Stat`: a stat's name that lights its tile. A dotted underline in copper,
-   apart from a Term's grey one, and a faint copper wash while pointed at. */
+/* The instruction is the one block on a page that asks the reader to act,
+   so it is set apart from the text that explains: a copper rule on its left
+   and a faint copper ground, the color of the lesson's own buttons. It
+   stands in the page's text and looked like one more paragraph of it. */
+.doBody {
+  margin: 0 0 1.25rem;
+  padding: 0.875rem 1rem;
+  border-left: 2px solid var(--m-copper);
+  border-radius: 0 var(--m-r-md) var(--m-r-md) 0;
+  background: var(--m-copper-fill);
+}
+
+/* What kind of block it is, over the instruction: "Try it", or "Step 1 of
+   2" on a page with two steps. */
+.doLabel {
+  margin: 0 0 0.375rem;
+  font-size: var(--m-t-xs);
+  font-weight: 600;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--m-copper);
+}
+
+.prose .doBody p {
+  margin-bottom: 0.75rem;
+  color: var(--m-text);
+}
+
+.prose .doBody p:last-child {
+  margin-bottom: 0;
+}
+
+/* `ReadOn`: the Continue button at the end of one part of a page that is
+   read. The lesson's copper, in outline, so the footer's Next stays the
+   page's one filled button. */
+.readOn {
+  margin: 0 0 1.25rem;
+}
+
+.readOnButton {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid var(--m-copper-line);
+  border-radius: var(--m-r-md);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--m-copper);
+  cursor: pointer;
+}
+
+.readOnButton:hover {
+  border-color: var(--m-copper);
+  background: var(--m-copper-fill);
+}
+
+.readOnButton:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 2px;
+}
+
+/* A finished step: a tick and the step's name, on one line with a hairline
+   under it. The text that led to the step is folded behind it (`StepGroup`)
+   and the line opens it again. */
+.pastLine {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0.625rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--m-line);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--m-t-sm);
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  text-align: left;
+  color: var(--m-ink);
+  cursor: pointer;
+}
+
+/* The line's own box, which opens from nothing as the run it names folds. */
+.pastWrap {
+  overflow: hidden;
+}
+
+/* The first line of the column starts where the text would. */
+.pastWrap:first-child .pastLine {
+  padding-top: 0;
+}
+
+/* The tick is drawn as the line opens. */
+.pastFresh .pastTick path {
+  stroke-dasharray: 1;
+  animation: pastTick 0.32s ease-out 0.16s both;
+}
+
+@keyframes pastTick {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pastFresh .pastTick path {
+    animation: none;
+  }
+}
+
+/* A step's instruction once the step is done, in a run opened again. */
+.doDone .doBody {
+  border-left-color: var(--m-line);
+  background: transparent;
+}
+
+.doDone .doLabel {
+  color: var(--m-muted);
+}
+
+.pastLine:hover {
+  color: var(--m-text);
+}
+
+.pastLine:focus-visible {
+  outline: 2px solid var(--m-copper);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.pastTick {
+  flex: none;
+  color: var(--m-copper);
+}
+
+.pastTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pastChevron {
+  flex: none;
+  color: var(--m-muted);
+  transition: transform 0.2s ease;
+}
+
+.pastLine[aria-expanded="true"] .pastChevron {
+  transform: rotate(180deg);
+}
+
+/* A run of text. The one the reader is on has room over it after the lines
+   of the steps before it. One opened again from its line is quieter, with a
+   hairline under it as its line has. */
+.pastWrap ~ .group[data-current] {
+  padding-top: 1.25rem;
+}
+
+.groupPast {
+  padding: 1rem 0 0;
+  border-bottom: 1px solid var(--m-line);
+}
+
+.prose .groupPast p {
+  color: var(--m-ink);
+}
+
+/* `Stat`: the name of something on the page, in the text. At rest it is the
+   text's own type in copper, with no box, and a band of light crosses it in
+   its turn (`data-cue`, see cue.js) as it crosses the thing it names. The
+   padding is taken back by the margin, so the pill it gets when pointed at
+   moves nothing. */
 .stat {
-  text-decoration: underline dotted;
-  text-decoration-color: color-mix(in srgb, var(--m-copper) 70%, transparent);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 0.2em;
-  border-radius: 2px;
+  --stat-base: color-mix(in srgb, var(--m-copper) 86%, #fff);
+  padding: 0.09375em 0.1875em 0.125em;
+  margin: -0.09375em -0.1875em -0.125em;
+  border-radius: 0.375em;
+  color: var(--stat-base);
+  font-weight: 500;
+  white-space: nowrap;
   cursor: default;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .stat:focus-visible {
@@ -419,9 +979,308 @@
   outline-offset: 2px;
 }
 
+/* The letters: the label's color with one band of light, drawn four times
+   the label's width so the band rests off its right-hand end. */
+.statText {
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 42%, #fff 50%, transparent 58%, transparent 100%),
+    linear-gradient(var(--stat-base), var(--stat-base));
+  background-repeat: no-repeat;
+  background-size: 400% 100%, 100% 100%;
+  background-position: 0% 0, 0 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Pointed at, or its thing on the page is: the full highlight, as the thing gets. */
 .statOn {
-  background: var(--m-copper-fill);
-  color: var(--m-text);
+  background-color: color-mix(in srgb, var(--m-copper) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--m-copper) 70%, transparent), 0 0 16px color-mix(in srgb, var(--m-copper) 36%, transparent);
+}
+
+.statOn .statText {
+  background-image: none;
+  -webkit-text-fill-color: var(--m-text);
+  animation: none;
+}
+
+/* ── The light on what the text names ──
+   While a label is on screen, a band of light keeps crossing it and, in the
+   same moment, the thing it names (`data-cue`, set by cue.js with the turn,
+   `--cue-delay`). One round is `--cue-cycle` long. The thing also keeps a
+   faint rim, so at any moment the reader can see what the text in front of
+   them is about; nothing else on the page is marked. The light is drawn on
+   two pseudo-elements: a faint band on the thing's face (`::before`) and a
+   bright one on its rim (`::after`, a hairline ring cut out with a mask).
+
+   `data-cue` says how the thing is marked: "box" on its own box, "words"
+   around its words with the same room on every side (`--cue-inset`, measured
+   by cue.js), "line" for a marker too thin for a ring, which glows, "ring"
+   for a typed field, "under" for a field of the wallet strip. */
+@keyframes cueSweep {
+  0% {
+    background-position: 100% 0, 0 0;
+  }
+  72%,
+  100% {
+    background-position: 0% 0, 0 0;
+  }
+}
+
+.stat[data-cue] .statText {
+  animation: cueSweep var(--cue-cycle, 3.6s) cubic-bezier(0.45, 0, 0.55, 1) var(--cue-delay, 0s) infinite;
+}
+
+.body [data-cue-rel] {
+  position: relative;
+}
+
+.body :is([data-cue="box"], [data-cue="words"])::before,
+.body :is([data-cue="box"], [data-cue="words"])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-repeat: no-repeat;
+  background-size: 400% 100%, 100% 100%;
+  background-position: 0% 0, 0 0;
+  pointer-events: none;
+  transition: box-shadow 0.22s ease, background-color 0.22s ease, opacity 0.4s ease;
+  animation: cueSweep var(--cue-cycle, 3.6s) cubic-bezier(0.45, 0, 0.55, 1) var(--cue-delay, 0s) infinite;
+}
+
+/* Waiting its turn (cue.js): things whose rings would sit against each
+   other, and, on a page that names many things, the names of every paragraph
+   but the one whose turn it is. Pointed at, it lights all the same. */
+.body [data-cue-wait]:not([data-pointed])::before,
+.body [data-cue-wait]:not([data-pointed])::after,
+.strip [data-cue-wait]:not([data-pointed])::before,
+.strip [data-cue-wait]:not([data-pointed])::after {
+  opacity: 0;
+}
+
+.stat[data-cue-wait] .statText {
+  background-size: 0 0, 100% 100%;
+}
+
+.body :is([data-cue="line"], [data-cue="ring"])[data-cue-wait]:not([data-pointed]) {
+  box-shadow: none;
+  animation: none;
+}
+
+/* While the reader points at one label or thing, every other mark on the
+   page is off (`data-cue-quiet` on the root, set by the lesson frame), so
+   the only highlight on screen is the one they asked for. The other labels
+   keep their color. */
+[data-cue-quiet] .body :is([data-cue="box"], [data-cue="words"]):not([data-pointed])::before,
+[data-cue-quiet] .body :is([data-cue="box"], [data-cue="words"]):not([data-pointed])::after,
+[data-cue-quiet] .strip [data-cue="under"]:not([data-pointed])::before,
+[data-cue-quiet] .strip [data-cue="under"]:not([data-pointed])::after {
+  opacity: 0;
+}
+
+[data-cue-quiet] .stat:not(.statOn) .statText {
+  background-size: 0 0, 100% 100%;
+}
+
+[data-cue-quiet] .body :is([data-cue="line"], [data-cue="ring"]):not([data-pointed]) {
+  box-shadow: none;
+  animation: none;
+}
+
+.body [data-cue="words"]::before,
+.body [data-cue="words"]::after {
+  inset: var(--cue-inset, 0);
+  border-radius: var(--cue-radius, 0.5rem);
+}
+
+.body :is([data-cue="box"], [data-cue="words"])::before {
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 42%, rgba(245, 192, 154, 0.16) 50%, transparent 58%, transparent 100%),
+    linear-gradient(rgba(245, 192, 154, 0.04), rgba(245, 192, 154, 0.04));
+}
+
+.body :is([data-cue="box"], [data-cue="words"])::after {
+  padding: 1px;
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 40%, rgba(252, 224, 200, 1) 50%, transparent 60%, transparent 100%),
+    linear-gradient(rgba(245, 192, 154, 0.38), rgba(245, 192, 154, 0.38));
+  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-clip: content-box, border-box;
+  -webkit-mask-composite: xor;
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+}
+
+/* A marker too thin for a ring: a soft glow that breathes. */
+@keyframes cueLine {
+  from {
+    box-shadow: 0 0 0 1px rgba(245, 192, 154, 0.3), 0 0 5px 1px rgba(245, 192, 154, 0.25);
+  }
+  to {
+    box-shadow: 0 0 0 1px rgba(245, 192, 154, 0.6), 0 0 10px 2px rgba(245, 192, 154, 0.5);
+  }
+}
+
+.body [data-cue="line"] {
+  animation: cueLine 1.8s ease-in-out var(--cue-delay, 0s) infinite alternate;
+}
+
+/* A typed field takes no pseudo-element: its own rim, breathing the same way. */
+@keyframes cueRing {
+  from {
+    box-shadow: 0 0 0 1px rgba(245, 192, 154, 0.32);
+  }
+  to {
+    box-shadow: 0 0 0 1px rgba(245, 192, 154, 0.8), 0 0 12px rgba(245, 192, 154, 0.22);
+  }
+}
+
+.body [data-cue="ring"] {
+  animation: cueRing 1.8s ease-in-out var(--cue-delay, 0s) infinite alternate;
+}
+
+/* A field of the wallet strip gets no ring: the strip is one slim row, and a
+   box in it sat against the row's own rules. Its mark is a line of light on
+   the header's lower edge, under the field's words (`--cue-l`, `--cue-r` and
+   `--cue-drop`, measured by cue.js), with a faint wash rising from it. */
+.strip [data-cue="under"]::before,
+.strip [data-cue="under"]::after {
+  content: "";
+  position: absolute;
+  left: var(--cue-l, 0);
+  right: var(--cue-r, 0);
+  bottom: calc(-1 * var(--cue-drop, 0px));
+  pointer-events: none;
+  transition: opacity 0.4s ease, box-shadow 0.22s ease;
+}
+
+.strip [data-cue="under"]::before {
+  top: calc(-1 * var(--cue-rise, 0px));
+  border-radius: 0.375rem 0.375rem 0 0;
+  background: linear-gradient(to top, rgba(245, 192, 154, 0.1), rgba(245, 192, 154, 0) 92%);
+  opacity: 0.55;
+}
+
+.strip [data-cue="under"]::after {
+  height: 2px;
+  border-radius: 2px;
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 38%, rgba(255, 240, 226, 1) 50%, transparent 62%, transparent 100%),
+    linear-gradient(rgba(245, 192, 154, 0.55), rgba(245, 192, 154, 0.55));
+  background-repeat: no-repeat;
+  background-size: 400% 100%, 100% 100%;
+  background-position: 0% 0, 0 0;
+  animation: cueSweep var(--cue-cycle, 3.6s) cubic-bezier(0.45, 0, 0.55, 1) var(--cue-delay, 0s) infinite;
+}
+
+/* ── Pointed at ──
+   The reader is pointing at the label, or at the thing itself: the full
+   highlight. The rim becomes a whole copper ring, the face takes a wash and
+   a glow, and the light crosses both faster and brighter than at rest, one
+   pass after another, so the eye is drawn to the thing and held there. */
+@keyframes cueGlow {
+  from {
+    box-shadow: 0 0 14px rgba(245, 192, 154, 0.3);
+  }
+  to {
+    box-shadow: 0 0 26px rgba(245, 192, 154, 0.55);
+  }
+}
+
+.body :is([data-cue="box"], [data-cue="words"])[data-pointed]::before {
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 38%, rgba(255, 236, 220, 0.3) 50%, transparent 62%, transparent 100%),
+    linear-gradient(rgba(245, 192, 154, 0.1), rgba(245, 192, 154, 0.1));
+  animation:
+    cueSweep 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+    cueGlow 0.8s ease-in-out infinite alternate;
+}
+
+.body :is([data-cue="box"], [data-cue="words"])[data-pointed]::after {
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 36%, #fff 50%, transparent 64%, transparent 100%),
+    linear-gradient(rgba(250, 210, 180, 0.95), rgba(250, 210, 180, 0.95));
+  animation: cueSweep 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes cueLineOn {
+  from {
+    box-shadow: 0 0 0 2px rgba(245, 192, 154, 0.8), 0 0 8px 2px rgba(245, 192, 154, 0.45);
+  }
+  to {
+    box-shadow: 0 0 0 2px rgba(255, 228, 208, 1), 0 0 18px 4px rgba(245, 192, 154, 0.8);
+  }
+}
+
+.body [data-cue="line"][data-pointed] {
+  animation: cueLineOn 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes cueRingOn {
+  from {
+    box-shadow: 0 0 0 1px rgba(250, 210, 180, 0.85), 0 0 12px rgba(245, 192, 154, 0.3);
+  }
+  to {
+    box-shadow: 0 0 0 1px rgba(255, 236, 220, 1), 0 0 26px rgba(245, 192, 154, 0.55);
+  }
+}
+
+.body [data-cue="ring"][data-pointed] {
+  animation: cueRingOn 0.8s ease-in-out infinite alternate;
+}
+
+.strip [data-cue="under"][data-pointed]::before {
+  background: linear-gradient(to top, rgba(245, 192, 154, 0.24), rgba(245, 192, 154, 0) 96%);
+  opacity: 1;
+}
+
+.strip [data-cue="under"][data-pointed]::after {
+  background-image:
+    linear-gradient(112deg, transparent 0%, transparent 34%, #fff 50%, transparent 66%, transparent 100%),
+    linear-gradient(rgba(250, 210, 180, 1), rgba(250, 210, 180, 1));
+  box-shadow: 0 0 12px 1px rgba(245, 192, 154, 0.7);
+  animation: cueSweep 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* Without motion the label keeps its color and the thing its still rim; a
+   thing pointed at is the whole ring and its glow, still. */
+@media (prefers-reduced-motion: reduce) {
+  .stat[data-cue] .statText,
+  .body :is([data-cue="box"], [data-cue="words"])::before,
+  .body :is([data-cue="box"], [data-cue="words"])::after,
+  .body :is([data-cue="box"], [data-cue="words"])[data-pointed]::before,
+  .body :is([data-cue="box"], [data-cue="words"])[data-pointed]::after,
+  .strip [data-cue="under"]::after,
+  .strip [data-cue="under"][data-pointed]::after {
+    animation: none;
+  }
+
+  .body :is([data-cue="box"], [data-cue="words"])[data-pointed]::before {
+    box-shadow: 0 0 20px rgba(245, 192, 154, 0.4);
+  }
+
+  .body [data-cue="line"],
+  .body [data-cue="line"][data-pointed] {
+    box-shadow: 0 0 0 1px rgba(245, 192, 154, 0.5), 0 0 8px 1px rgba(245, 192, 154, 0.4);
+    animation: none;
+  }
+
+  .body [data-cue="line"][data-pointed] {
+    box-shadow: 0 0 0 2px rgba(245, 192, 154, 0.95), 0 0 14px 2px rgba(245, 192, 154, 0.65);
+  }
+
+  .body [data-cue="ring"],
+  .body [data-cue="ring"][data-pointed] {
+    box-shadow: 0 0 0 1px rgba(245, 192, 154, 0.5);
+    animation: none;
+  }
+
+  .body [data-cue="ring"][data-pointed] {
+    box-shadow: 0 0 0 1px rgba(250, 210, 180, 0.95), 0 0 20px rgba(245, 192, 154, 0.4);
+  }
 }
 
 /* `Intro`: text about the course, in a quiet panel at the column's width. */
@@ -499,12 +1358,15 @@
   overflow: hidden;
 }
 
-/* ── The Check, the reading list, Start over ── */
+/* ── The Check, the reading list ── */
 
 /* The Check's own page. */
 .check {
   width: 100%;
   max-width: var(--article-text);
+  /* Room under the result, so a page that has followed a review down can go
+     the little further that takes the breadcrumb out of the window whole. */
+  padding-bottom: 2.5rem;
 }
 
 
@@ -516,28 +1378,6 @@
 .deeper {
   margin-top: 2.5rem;
   box-sizing: border-box;
-}
-
-.foot {
-  margin-top: 2.5rem;
-}
-
-.reset {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--m-muted);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  padding: 0.25rem 0;
-  cursor: pointer;
-}
-
-.reset:hover {
-  color: var(--m-text);
 }
 
 /* Only for a screen reader: pages after the first keep the lesson's h1, and
@@ -572,7 +1412,29 @@
 
 .barLeft {
   justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   min-width: 0;
+}
+
+/* "Redo this page", after Back: the same quiet button a step quieter, with
+   a turn-back mark. Where there is no Back (page 1) it starts the row as
+   Back does. */
+.barLeft .barReset {
+  gap: 0.375rem;
+  margin-left: 0;
+  font-weight: 400;
+  color: var(--m-muted);
+  white-space: nowrap;
+}
+
+.barLeft .barReset:first-child {
+  margin-left: -0.75rem;
+}
+
+.barLeft .barReset:hover {
+  color: var(--m-text);
 }
 
 .barPlace {
@@ -630,6 +1492,11 @@
 
   .barPlace {
     text-align: center;
+  }
+
+  /* "Redo this page" is its mark alone, so Back, the place and Next keep one row. */
+  .barResetLabel {
+    display: none;
   }
 
   /* The reason stacks over the button, so the row keeps one line of place. */

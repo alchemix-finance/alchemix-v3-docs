@@ -1,11 +1,10 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import AcademyShell, { MEMBERS_LIVE } from "@site/src/components/Academy/Shell";
-import { FooterBar } from "@site/src/components/Academy/ArticleLesson";
+import { Crumb, FooterBar } from "@site/src/components/Academy/ArticleLesson";
 import { Arrow } from "@site/src/components/Academy/kit";
 import { useTrackDone } from "@site/src/components/Academy/TrackFinish";
 import { INTERMEDIATE, trackByKey } from "@site/src/components/Academy/lib/track";
-import lp from "@site/src/components/Academy/LessonPage/styles.module.css";
 import ls from "@site/src/components/Academy/lesson.module.css";
 import tm from "@site/src/pages/academy/track.module.css";
 import styles from "@site/src/components/Academy/ArticleLesson/styles.module.css";
@@ -15,7 +14,7 @@ import own from "./beginner-complete.module.css";
  * Where the beginner track ends. The last lesson's footer leads here once it
  * is passed, and the
  * map links here once every beginner lesson is complete. The same frame as a
- * lesson page: the pinned header, the column, the pinned footer with one
+ * lesson page: the pinned header, the lessons' wide column, the pinned footer with one
  * action.
  *
  * The old page was rigid and read like documentation, its lower half a
@@ -101,20 +100,9 @@ export default function BeginnerComplete() {
           }
         />
       }
-      left={
-        <Link to="/academy" className={lp.back}>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M19 12H6M11 18l-6-6 6-6" />
-          </svg>
-          <span className={lp.backLesson}>
-            <span className={`${lp.backTrack} ${styles.headTrack}`}>{track ? track.label : "Academy"}</span>
-            <span className={`${lp.backSep} ${styles.headTrack}`}> · </span>
-            Finished
-          </span>
-        </Link>
-      }
     >
-      <main className={styles.body}>
+      <main className={`${styles.body} ${own.wide}`}>
+        <Crumb track={track ? track.label : "Academy"} place="Finished" />
         {done ? (
         <>
         {/* 1. The finish itself. */}

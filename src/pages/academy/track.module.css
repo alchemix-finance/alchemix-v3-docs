@@ -47,7 +47,9 @@
   top: -4.5px;
 }
 
-@media (max-width: 1023px) {
+/* Under 1100px the frame's side hairlines stand at the window's edge (see
+   the Shell's `--m-edge`), where a dot would be cut in half. */
+@media (max-width: 1099px) {
   .frameNode {
     display: none;
   }
@@ -306,36 +308,40 @@
   justify-content: flex-end;
 }
 
-/* One segment per lesson, so a longer track is a longer row: grey ahead,
-   green once passed, copper for the lesson the hero's button opens. The
-   members area's 6px pill, cut into lessons. The check after the last
-   segment keeps its room when hidden, so finishing a track moves nothing. */
+/* One circle per lesson, so a longer track is a longer row. The circles are
+   the course picture's points and the hero's mark for the next lesson, at
+   the mark's size: a grey outline ahead, a copper ring for the lesson the
+   hero's button opens, filled green once passed. They were 6px bars, the
+   page's only marker that was not a circle. The check after the last circle
+   keeps its room when hidden, so finishing a track moves nothing. */
 .segments {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.375rem;
 }
 
 .segment {
   display: block;
-  width: 1.125rem;
-  height: 0.375rem;
-  border-radius: var(--m-r-full);
-  background: var(--m-line-strong);
-  transition: background 0.3s ease;
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1.25px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 /* Both classes, so each wins on specificity rather than on order: see
    .resetLink.testLink. */
 .segment.segmentDone {
+  border-color: var(--m-green);
   background: var(--m-green);
 }
 
-/* The next lesson is outlined, never filled: a filled segment read as a
+/* The next lesson is outlined, never filled: a filled circle read as a
    lesson already passed. */
 .segment.segmentNext {
-  background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--m-copper);
+  border: 1.75px solid var(--m-copper);
 }
 
 .segmentsCheck {
